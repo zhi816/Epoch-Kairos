@@ -15,7 +15,7 @@
 Epoch-Kairos/
 ├── AGENTS.md              # 【Schema】專案規則手冊（AI 協作指南與作業核心）
 ├── raw/                   # 【Raw Sources】不可變原始素材層（論文筆記、摘要、使用者文件）
-│   └── my-focus/          #  個人精選研究、私人筆記與核心關注資料區
+│   └── my-focus/          #  個人資料區
 ├── wiki/                  # 【The Wiki】AI 維護之知識核心（Markdown）
 │   ├── index.md           # 內容總索引（按年份與領域交織分類）
 │   ├── log.md             # 操作日誌（Append-only 時間流動記錄）
