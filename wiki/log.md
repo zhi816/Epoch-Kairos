@@ -86,3 +86,71 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 3.8 Flash
 - **校正事項**：經使用者精準糾正，修正先前日誌條目中誤植之模型型號，全面校準為真實運行的 Gemini 3.8 Flash，維持知識庫審計紀錄之絕對真實性。
+
+## [2026-11-06 21:50] audit | 全庫 Markdown 規範審查與既有事實錯誤盤點
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **審查範圍**：AGENTS.md、README.md、wiki/index.md、wiki/log.md、wiki/papers/、wiki/concepts/ 共 6 份 Markdown，並對照 raw/ 與 web/assets/css/theme.css。
+- **外部核驗**：以 Crossref API 逐一核對 10 筆 DOI 之年份、作者、期刊與卷期；以官方 nobelprize.org 與新聞來源核對 2026 年四項諾貝爾獎歸屬。
+- **核驗結論（2026 諾獎歸屬無誤）**：生理學或醫學獎 Deisseroth、Hegemann、Nagel；物理獎 Francis Halzen；化學獎 Henri B. Kagan 與 Kenso Soai；經濟學獎 Robert E. Hall 與 Michael Woodford。
+- **盤點發現**：共列出 6 類問題，計事實錯誤 4 項、與 AGENTS.md 自身規則矛盾 6 項、連結失效 3 項、LaTeX 品質 5 項、Schema 設計建議 6 項、其他 3 項。
+
+## [2026-11-06 21:50] fix | 校正光遺傳學論文年份、作者與證據歸屬（重大事實修正）
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **年份校正**：經 Crossref 核驗 DOI 10.1038/nn1525，該論文實際發表於 2005 年 9 月（Nature Neuroscience, 8(9), 1263-1268），而非原記載之 2025 年。依 AGENTS.md 檔名規則，以 git mv 將 wiki/papers/2025-optogenetics.md 更名為 wiki/papers/2005-optogenetics.md。
+- **作者校正**：原 authors 欄位將「論文作者」與「諾獎得獎者」混記。現分離為兩欄：authors 為 Boyden, Zhang, Bamberg, Nagel, Deisseroth（2005 年論文實際作者，Hegemann 非此篇作者）；laureates 為 Deisseroth, Hegemann, Nagel（2026 諾獎得獎者）。
+- **證據歸屬校正**：原「決定性數據」一節將 2007 年之後他人的活體實驗誤記為本篇成果。現拆分為「本篇論文之核心證據」（離體培養神經元之概念驗證）與「後續領域關鍵證據」（逐筆標註 Aravanis 2007、Adamantidis 2007、Gradinaru 2009、Tye 2011、Liu 2012、Ramirez 2013 之出處）。
+- **新增範圍說明**：於頁首明示 2026 諾獎表彰為一系列工作，並以 key_papers 欄位列出 Nagel 2002（Science）與 Nagel 2003（PNAS）兩篇奠基論文。
+- **Frontmatter 擴充**：新增 laureates、domain、concepts、status、hook、key_papers 六個欄位；venue 改為純期刊卷期；honor 移除顯示層前綴。
+- **章節對齊**：將 01 至 07 編號章節改為與 AGENTS.md 六張圖卡節奏同名（Hook、Dilemma、Secret、Evidence、Revolution、Kairos），使後續網頁編譯可直接對應。
+
+## [2026-11-06 21:50] math | 修正 LaTeX 符號、整流函數因次與光循環動力學完整性
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **化學符號修正**：原 $Na^+$ 會被 KaTeX 排為斜體變數 N 乘以 a。全面改為 \mathrm{} 正體包覆，計修正 Na+、Ca2+、H+、Cl- 四處。
+- **因次修正**：原整流函數 G(V_m) 分母僅為 (V_m - V_0)，單位為 mV 之負一次方，導致 I_ChR2 實際算出為電導而非電流。改為分母 (V_m - E)/V_1 之無因次形式，並補註 V_0 與 V_1 為整流尺度參數。
+- **動力學補完**：原僅列單一 dO/dt 方程，且衰減項 (k_d + k_r) O 與標準 C→O→D→C 光循環不符。現補齊三態完整方程組與守恆條件 C+O+D=1，並說明 k_r 遠小於 k_d 為高頻光刺激下光電流去敏化之成因。
+- **行動端防溢出**：依 AGENTS.md 第三章第 3 條，將超長之 Hodgkin-Huxley 膜電位方程改以 \begin{aligned} 分行對齊，解決 3:4 豎版卡片與手機窄螢幕之破版風險。
+- **公式內中文移除**：原 \text{觸發毫秒級單一動作電位（Spike）} 置於公式內會觸發 KaTeX 缺字形警告並導致字型不一致，已改寫為正文敘述。
+
+## [2026-11-06 21:50] fix | 校正 wiki/index.md 事實錯誤並重建索引結構
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **AlphaFold 條目校正**：2024 諾貝爾化學獎依據為 AlphaFold2（Nature, 2021）與 David Baker 之蛋白質設計，原條目誤記為 AlphaFold3。已改正並註明 raw/2024-alphafold3.pdf 屬後續延伸工作，應另立條目。
+- **CRISPR 嬰兒條目校正**：該案例於 2025 年 5 月發表於 NEJM，技術為鹼基編輯（Base Editing）而非傳統 CRISPR 切割，已自 2026 年移至 2025 年並更正技術描述。
+- **化學獎得獎者補全**：2026 諾貝爾化學獎由 Henri B. Kagan 與 Kenso Soai 共享，原條目僅記 Soai。
+- **得獎者資訊補入**：為四項 2026 諾獎與 2024、2025 相關條目逐筆補入得獎者姓名與原始文獻年份線索。
+- **檔名年份對齊**：原索引多數待入庫條目以獲獎年命名，與 AGENTS.md 之 paper_year 前綴規則及 raw/ 實際檔名不符（如 2024-hopfield 對應 raw/1982-hopfield-network.pdf）。現於各條目標註原始文獻真實年份與對應 raw/ 檔案，待收錄時定案。
+- **新增狀態標記**：導入 [published]、[wiki]、[planned] 三態，取代原先與實況不符之 [已完成]（web/papers/ 當時並未產出）。
+- **新增待辦區塊**：記錄 raw/1982-hopfield-network.pdf 與 raw/2012-crispr-cas9.pdf 實為下載失敗之 HTML 頁面，須重新取得。
+- **移除易腐資訊**：刪去「最新操作日誌」一行，避免與 log.md 重複記載而產生漂移。
+
+## [2026-11-06 21:50] fix | 統一 Wiki 內部連結格式為標準相對路徑
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **問題**：全庫並存三種 Wikilink 寫法（[[papers/...]]、[[wiki/papers/...]]、[[2026-...]]），且雙中括號語法在 GitHub 上不會轉為可點連結。
+- **處置**：wiki/index.md 與 wiki/concepts/neural-circuits.md 之內部連結全面改為標準 Markdown 相對路徑，確保在 GitHub 網頁與本機編輯器皆可正常跳轉。
+- **失效連結移除**：wiki/papers/2005-optogenetics.md 原指向不存在之 concepts/brain-machine-interface，已移除待該頁建立後再補。
+
+## [2026-11-06 21:55] rule | AGENTS.md Schema 強化：事實核驗前置、Frontmatter 擴充與標籤兩層制
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **範例錯誤修正**：第六章與第七章之範例原沿用誤植之 2025 年份（`2025-optogenetics.md`、`paper_year: 2025`、「2025 發表 ｜ 2026 諾貝爾獎」），若不修正將使後續 AI 持續複製同一錯誤。已全面校正為 2005。
+- **新增事實核驗前置步驟**：Ingest 第 1 步明定凡有 DOI 者須先以 Crossref API 核對年份、作者、期刊卷期，嚴禁憑記憶或檔名推定；並明定「作者與得獎者分離」、「本篇證據與後續成果分離」兩項硬性要求。
+- **Frontmatter 擴充**：新增 `laureates`、`domain`、`concepts`、`status`、`hook`、`key_papers` 六欄並逐欄註解；`venue` 限記期刊卷期，`honor` 移除顯示層前綴。
+- **新增單頁容納多篇工作原則**：明定諾獎表彰系列工作時，以代表性單篇為主軸、其餘列入 `key_papers` 並於頁首加註範圍說明，嚴禁混記為單篇貢獻。
+- **LaTeX 規範補強**：新增化學離子須以 `\mathrm{}` 正體書寫之明文禁令（並以 `$Na^+$` 為反例），以及正文金額須轉義為 `\$` 之規定，預先排除經濟學條目收錄時之解析衝突。
+- **色彩系統去重**：第二章原硬編碼色值已與 `theme.css` 漂移（次要文字 `#888888` 對 `#8E8E93`、生醫微光 0.15 對 0.16）。現改為僅記 CSS 變數名稱與設計意圖，並明定 `theme.css` 為色碼唯一真實來源。
+- **標籤改為兩層制**：`domain` 單選對應五大色系，`domain_tags` 多選且限白名單；新增標籤與色系歸屬對照表，並訂立「新標籤須先登記再使用」之維護規則，解決原先十餘個白名單外標籤無色可配之問題。
+- **日誌規範補全**：原僅定義 `ingest` 一種動作，現正式列出 12 種動作詞彙白名單；並明定日誌連結一律使用相對路徑，禁用 `file:///` 本機絕對路徑。
+- **Lint 檢查項擴充**：由 5 項增至 8 項，新增年份與作者真實性抽查、標籤合規性、連結有效性三項，並細化 LaTeX 與索引一致性之具體判準。
+- **raw/ 權限澄清**：明定 AI 不得重新命名 `raw/` 檔案（校正僅在 `wiki/` 層進行，更名須使用者親為），並載明 `raw/` 全目錄被 `.gitignore` 排除之代價。
+
+## [2026-11-06 21:55] lint | 全庫合規性驗證
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **表情符號檢查**：以 Unicode 區段掃描（U+1F000-1FAFF、U+2600-27BF、U+FE0F、U+20E3、區域指示符）逐字元檢驗全部 Markdown 檔案，結果為 0 筆，完全合規。
+- **連結檢查**：全庫已無殘留之 `[[...]]` 雙中括號語法（除日誌中描述該問題之文字本身），亦無 `file:///` 本機絕對路徑。
+- **舊檔名參照檢查**：已無指向 `2025-optogenetics` 之殘留參照。
+- **未完成項目（留待後續）**：`web/index.html`、`web/papers/`、`timeline.css`、`cards.css`、`timeline.js`、`cards.js` 尚未產出，Lint 第 3 條三層對齊仍未通過；`raw/1982-hopfield-network.pdf` 與 `raw/2012-crispr-cas9.pdf` 為下載失敗之 HTML，須使用者重新取得；`concepts/brain-machine-interface.md` 尚未建立。

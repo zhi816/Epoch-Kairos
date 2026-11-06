@@ -10,8 +10,8 @@
 ---
 
 ## 關鍵突破支柱
-* **光遺傳學（Optogenetics）**：由 Deisseroth 等人開創，透過微生物感光蛋白與細胞特異性啟動子，首次實現了無干擾的單一迴路精確光控。
-  * 詳見核心論文：[[wiki/papers/2025-optogenetics|2025-optogenetics.md]]
+* **光遺傳學（Optogenetics）**：由 Nagel、Hegemann 鑑定光控離子通道，Boyden、Deisseroth 等人移植至哺乳動物神經元，結合細胞特異性啟動子，首次實現單一細胞類型的毫秒級精確光控。
+  * 詳見核心論文：[光遺傳學（2005 發表 ｜ 2026 諾貝爾生理學或醫學獎）](../papers/2005-optogenetics.md)
 
 ---
 
