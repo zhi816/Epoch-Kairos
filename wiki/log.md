@@ -28,3 +28,12 @@
 - **檔案重命名**：將檔案正式校準為 [`raw/2025-optogenetics.md`](file:///C:/MyAdapter/Company/Epoch-Kairos/raw/2025-optogenetics.md) 與 [`wiki/papers/2025-optogenetics.md`](file:///C:/MyAdapter/Company/Epoch-Kairos/wiki/papers/2025-optogenetics.md)。
 - **規則更新**：[`AGENTS.md`](file:///C:/MyAdapter/Company/Epoch-Kairos/AGENTS.md) 明確定義：檔名一律以 `paper_year` 為前綴，維護學術真實性。
 - **全域鏈結修復**：同步更新 `wiki/concepts/neural-circuits.md` 與 `wiki/index.md` 的內部雙向連結。
+
+## [2026-11-04] update | 前端展示層升級：3:4 豎版小紅書風卡片輪播 ＋ 深入長文雙層架構
+- **行動端體驗升級**：將展示層全面重構為「行動優先（Mobile-First）」的雙層閱讀體驗。
+- **上半部（30 秒極速吸收）**：3:4 豎版知識卡片輪播（CSS Scroll-Snap，維持 6 張黃金節奏：Hook、Dilemma、Secret、Evidence、Revolution、Kairos）。
+- **下半部（深度學術推導）**：完整 Markdown 長文解析，強制支援 KaTeX 高精度 LaTeX 數學公式渲染（行內 `$...$`, 塊級 `$$...$$`）。
+
+## [2026-11-04] update | 前端響應式 Split-View 設計（電腦左圖右文 ＋ 手機上下疊加）
+- **電腦桌面端**：左欄黏性固定 3:4 卡片（支援水平左右交互）；右欄長文獨立垂直上下滑動，對照閱讀體驗極佳。
+- **手機行動端**：自動折疊為上下單欄流，上半部卡片橫滑、下半部長文縱滑。

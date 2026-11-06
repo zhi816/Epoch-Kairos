@@ -6,7 +6,7 @@ award_year: 2026
 timeline_year: 2026
 authors: "Karl Deisseroth, Peter Hegemann, Georg Nagel, Edward S. Boyden, Feng Zhang"
 venue: "Nature Neuroscience & 2026 諾貝爾生理學或醫學獎"
-honor: "🏆 2026 諾貝爾醫學獎"
+honor: "[榮譽] 2026 諾貝爾生理學或醫學獎"
 domain_tags: ["#神經科學", "#腦科學", "#生物科技"]
 my_focus: false
 doi_url: "https://doi.org/10.1038/nn1525"

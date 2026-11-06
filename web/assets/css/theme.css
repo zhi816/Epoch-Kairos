@@ -1,0 +1,143 @@
+/**
+ * Epoch-Kairos Design Tokens (theme.css)
+ * 
+ * Design Inspirations:
+ * - Deimos Designer Encyclopedia (https://deimos.evilrabbit.com/)
+ *   Editorial minimalism, deep obsidian canvas, hairline borders, serif hierarchy.
+ * - Shopify Editions Fall '26 - Expo Mode (https://www.shopify.com/editions/fall2026)
+ *   Color-coded cross-disciplinary glow sections, runway timeline.
+ * 
+ * Strict Constraint: Emoji-Free design. All badges and indicators use text/geometry.
+ */
+
+:root {
+  /* Canvas & Surfaces (Deimos Obsidian Architecture) */
+  --bg-canvas: #0B0C0E;
+  --bg-surface: #161618;
+  --bg-surface-raised: #202023;
+  --bg-surface-sunken: #101012;
+
+  /* Typography Colors */
+  --text-primary: #EDEDED;
+  --text-muted: #8E8E93;
+  --text-subtle: #55555A;
+  --text-inverted: #0B0C0E;
+
+  /* Hairline Borders & Rules */
+  --border-hairline: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-hover: rgba(255, 255, 255, 0.28);
+
+  /* Typography Families */
+  --font-serif: "Newsreader", "Geist Serif", "Playfair Display", "Georgia", "Songti TC", serif;
+  --font-sans: "Geist Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", "ui-monospace", monospace;
+
+  /* Discipline Accent Glows (Shopify Color-Coded Sections) */
+  /* 1. Biotech & Medicine */
+  --color-bio: #00E599;
+  --glow-bio: rgba(0, 229, 153, 0.16);
+  --border-bio: rgba(0, 229, 153, 0.35);
+
+  /* 2. AI & Computation */
+  --color-ai: #00F0FF;
+  --glow-ai: rgba(0, 240, 255, 0.16);
+  --border-ai: rgba(0, 240, 255, 0.35);
+
+  /* 3. Physics & Astronomy */
+  --color-physics: #8B5CF6;
+  --glow-physics: rgba(139, 92, 246, 0.20);
+  --border-physics: rgba(139, 92, 246, 0.40);
+
+  /* 4. Macroeconomics & Governance */
+  --color-econ: #FFB800;
+  --glow-econ: rgba(255, 184, 0, 0.16);
+  --border-econ: rgba(255, 184, 0, 0.35);
+
+  /* 5. Energy & Materials */
+  --color-energy: #FF5722;
+  --glow-energy: rgba(255, 87, 34, 0.16);
+  --border-energy: rgba(255, 87, 34, 0.35);
+
+  /* Global Transitions & Radius */
+  --radius-card: 16px;
+  --radius-badge: 6px;
+  --radius-btn: 8px;
+  --transition-smooth: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base Reset & Core Styles */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Serif Class for Editorial Elegance */
+.editorial-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+/* Monospace Class for Academic Metadata */
+.metadata-mono {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Domain Badge Common Rules */
+.domain-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  border-radius: var(--radius-badge);
+  border: 1px solid var(--border-hairline);
+  background: var(--bg-surface-sunken);
+  color: var(--text-muted);
+  transition: var(--transition-smooth);
+}
+
+.domain-badge[data-domain="bio"] {
+  border-color: var(--border-bio);
+  color: var(--color-bio);
+  box-shadow: 0 0 12px var(--glow-bio);
+}
+
+.domain-badge[data-domain="ai"] {
+  border-color: var(--border-ai);
+  color: var(--color-ai);
+  box-shadow: 0 0 12px var(--glow-ai);
+}
+
+.domain-badge[data-domain="physics"] {
+  border-color: var(--border-physics);
+  color: var(--color-physics);
+  box-shadow: 0 0 12px var(--glow-physics);
+}
+
+.domain-badge[data-domain="econ"] {
+  border-color: var(--border-econ);
+  color: var(--color-econ);
+  box-shadow: 0 0 12px var(--glow-econ);
+}
+
+.domain-badge[data-domain="energy"] {
+  border-color: var(--border-energy);
+  color: var(--color-energy);
+  box-shadow: 0 0 12px var(--glow-energy);
+}
