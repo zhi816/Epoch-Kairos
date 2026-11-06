@@ -25,7 +25,7 @@
 
 ## 二、視覺設計與高階色彩系統 (Color Design Tokens)
 
-> **唯一真實來源（Single Source of Truth）**：所有色碼之實際數值一律以 [`web/assets/css/theme.css`](./web/assets/css/theme.css) 之 CSS 變數為準。本章僅記載設計意圖與變數名稱，嚴禁在此重複硬編碼色值，以免兩處漂移。修改配色時只改 `theme.css`。
+> **唯一真實來源（Single Source of Truth）**：所有色碼之實際數值一律以 [`web/assets/css/theme.css`](./web/assets/css/theme.css) 之 CSS 變數為準。本章之「參考色值」欄僅供閱讀時快速辨識，若與 `theme.css` 不一致，一律以 `theme.css` 為準。修改配色時以 `theme.css` 為主，並同步更新本表參考色值。
 
 ### 1. 基礎畫布與文字色彩（源自 Deimos）
 * 背景底色：`--bg-canvas`（黑曜石冷灰暗黑底，深度低噪聲）
@@ -41,13 +41,13 @@
 ### 2. 跨學科專屬色碼微光系統（源自 Shopify Editions）
 各學科分配專屬色碼與微光（Glow），用於卡片標籤、公式光暈與跑道時間線。Frontmatter 之 `domain` 欄位即取下表之鍵值：
 
-| `domain` 鍵值 | 學科範疇 | 色彩意象 | CSS 變數 |
-|---|---|---|---|
-| `bio` | 生醫與生命科技 | 冷翠螢光綠 | `--color-bio` / `--glow-bio` / `--border-bio` |
-| `ai` | 人工智慧與計算 | 霓虹電能青 | `--color-ai` / `--glow-ai` / `--border-ai` |
-| `physics` | 物理、天文與量子 | 深邃宇宙紫 | `--color-physics` / `--glow-physics` / `--border-physics` |
-| `econ` | 宏觀經濟與治理 | 香檳琥珀金 | `--color-econ` / `--glow-econ` / `--border-econ` |
-| `energy` | 清潔能源與新材料 | 等離子珊瑚橙 | `--color-energy` / `--glow-energy` / `--border-energy` |
+| `domain` 鍵值 | 學科範疇 | 色彩意象 | CSS 變數 | 參考色值（以 `theme.css` 為準） |
+|---|---|---|---|---|
+| `bio` | 生醫與生命科技 | 冷翠螢光綠 | `--color-bio` / `--glow-bio` / `--border-bio` | `#00E599` / `rgba(0, 229, 153, 0.16)` / `rgba(0, 229, 153, 0.35)` |
+| `ai` | 人工智慧與計算 | 霓虹電能青 | `--color-ai` / `--glow-ai` / `--border-ai` | `#00F0FF` / `rgba(0, 240, 255, 0.16)` / `rgba(0, 240, 255, 0.35)` |
+| `physics` | 物理、天文與量子 | 深邃宇宙紫 | `--color-physics` / `--glow-physics` / `--border-physics` | `#8B5CF6` / `rgba(139, 92, 246, 0.20)` / `rgba(139, 92, 246, 0.40)` |
+| `econ` | 宏觀經濟與治理 | 香檳琥珀金 | `--color-econ` / `--glow-econ` / `--border-econ` | `#FFB800` / `rgba(255, 184, 0, 0.16)` / `rgba(255, 184, 0, 0.35)` |
+| `energy` | 清潔能源與新材料 | 等離子珊瑚橙 | `--color-energy` / `--glow-energy` / `--border-energy` | `#FF5722` / `rgba(255, 87, 34, 0.16)` / `rgba(255, 87, 34, 0.35)` |
 
 ---
 
