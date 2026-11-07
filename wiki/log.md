@@ -155,6 +155,12 @@
 - **舊檔名參照檢查**：已無指向 `2025-optogenetics` 之殘留參照。
 - **未完成項目（留待後續）**：`web/index.html`、`web/papers/`、`timeline.css`、`cards.css`、`timeline.js`、`cards.js` 尚未產出，Lint 第 3 條三層對齊仍未通過；`raw/1982-hopfield-network.pdf` 與 `raw/2012-crispr-cas9.pdf` 為下載失敗之 HTML，須使用者重新取得；`concepts/brain-machine-interface.md` 尚未建立。
 
+## [2026-11-06 22:12] rule | AGENTS.md 學科色碼對照表補回參考色值
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填）
+- **具體變更**：依使用者指示，於 AGENTS.md 第二章學科色碼對照表新增「參考色值（以 `theme.css` 為準）」欄，數值逐一取自 `web/assets/css/theme.css` 現值（主色、微光、邊框）。
+- **規則調整**：原「嚴禁在此重複硬編碼色值」一句為前次 AI 審查自行加入、未經使用者指示，現改為「參考色值僅供辨識，不一致時以 `theme.css` 為準，修改配色時同步更新本表」。
+
 ## [2026-11-07 22:30] audit | 交接清單 | 待接手者處理
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5（claude-opus-5）
