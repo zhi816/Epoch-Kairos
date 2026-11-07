@@ -185,3 +185,25 @@
 ### 四、給接手者的建議起點
 - 執行 AGENTS.md 第六章第 3 節之完整 8 項 Lint，可完整復現上述清單。
 - 本專案 `.gitignore` 排除整個 `raw/`，故他台機器無法執行三層對齊檢查。
+
+## [2026-11-07 23:34] fix | 修復 raw/ 兩個損毀原始檔並補收三篇缺漏文獻 | 多領域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **損毀檔案修復（2 筆）**：原 `raw/1982-hopfield-network.pdf`（5,545 B）與 `raw/2012-crispr-cas9.pdf`（1,817 B）實際內容為下載失敗之 HTML 頁面，已取得真實 PDF 覆寫。Hopfield (1982) PNAS 79:2554-2558 取自 UC Berkeley Redwood Center 典藏（1.27 MB，6 頁）；Jinek et al. (2012) Science 337:816-821 取自作者所屬機構 UC eScholarship 典藏（1.41 MB，15 頁）。覆寫前已將兩份損毀原檔另存備份，未直接銷毀。
+- **新增缺漏文獻（3 筆）**：`raw/2021-alphafold2.pdf`（Jumper et al. 2021, Nature 596:583-589, CC-BY, 取自 nature.com，3.48 MB）；`raw/2023-drugclip.pdf`（Gao et al., arXiv:2310.06367, NeurIPS 2023, 4.88 MB）；`raw/2025-nerve-mito-cancer.pdf`（Hoover et al. 2025, Nature 644:252-262, 取自 nature.com，34.82 MB）。
+- **完整性驗證**：全 `raw/` 17 份 PDF 逐一檢核檔頭魔術位元組（`%PDF-`）、尾端 `%%EOF` 標記與頁數，結果全數通過，損毀檔歸零；`raw/` 仍確實未被 Git 追蹤。
+- **取得失敗並改以 DOI 連結留存（8 筆）**：下列來源均設有反自動化或付費牆關卡，未予繞過。NCBI PMC 對 PDF 下載設置 proof-of-work 挑戰，影響 Drucker et al. (1987) GLP-1 奠基論文（https://doi.org/10.1073/pnas.84.10.3434）、Nagel et al. (2003) ChR2（https://doi.org/10.1073/pnas.1936192100）與 2025 鹼基編輯療法（https://doi.org/10.1056/NEJMoa2504747）；Cloudflare 關卡影響 Sakaguchi et al. (1995) Treg（https://doi.org/10.4049/jimmunol.155.3.1151）；出版社付費牆影響 Soai et al. (1995) 不對稱自催化（https://doi.org/10.1038/378767a0）、Li et al. (1999) MOFs（https://doi.org/10.1038/46248）、Martinis et al. (1985) 巨觀量子穿隧（https://doi.org/10.1103/PhysRevLett.55.1543）與 Lee, Feinbaum & Ambros (1993) microRNA（https://doi.org/10.1016/0092-8674(93)90529-Y）。
+- **後續處理**：本筆所列之索引待校正事項，已於次筆 `[2026-11-08 00:07] fix` 紀錄中完成。
+- **新發現之索引待校正事項（本次未逕自修改 `wiki/index.md`）**：其一，索引第一章將 DrugCLIP 記為「2026 年《Science》」，但經 arXiv API 核驗該文為 2023-10-10 投遞之 NeurIPS 2023 論文，`paper_year` 應為 2023，期刊歸屬須重新查證。其二，2025 水稻 QT12 經查為 Li et al., Cell (2025), https://doi.org/10.1016/j.cell.2025.04.011；2025「龍人」頭骨經查為 Fu et al., Science 389(6761), https://doi.org/10.1126/science.adu9677；2025 神經元粒線體轉移經查為 https://doi.org/10.1038/s41586-025-09176-8，三者索引原均未載 DOI，建議補登。其三，`raw/2025-optogenetics.pdf` 檔名年份與 `wiki/papers/2005-optogenetics.md` 之 `paper_year: 2005` 不符，依 AGENTS.md 第五章 AI 不得更名 `raw/` 檔案，仍待使用者親自更名為 `raw/2005-optogenetics.pdf`。
+
+## [2026-11-08 00:07] fix | 校正 wiki/index.md 年份期刊錯誤並以 Crossref 核驗全部文獻卷期 | 多領域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **DrugCLIP 年份與期刊校正**：原條目列於第一章 2026 年並記為《Science》。經 arXiv API 核驗（arXiv:2310.06367），該文實為 2023-10-10 投遞之 NeurIPS 2023 論文 "DrugCLIP: Contrastive Protein-Molecule Representation Learning for Virtual Screening"，`paper_year` 定為 2023。已將條目自第一章移入第三章 2023 年段落，並於條目下保留校正說明；若另有 2026 年《Science》之 DrugCLIP 應用論文，屬不同條目，須查證 DOI 後另行立案。
+- **三個 2025 條目補登 DOI**：水稻 QT12 為 Li et al. (2025) *Cell* 188:3661-3678.e21（https://doi.org/10.1016/j.cell.2025.04.011）；哈爾濱「龍人」頭骨為 Fu et al. (2025) *Science* 389:704-707（https://doi.org/10.1126/science.adu9677）；神經元粒線體轉移為 Hoover et al. (2025) *Nature* 644:252-262（https://doi.org/10.1038/s41586-025-09176-8）。
+- **Crossref 全面核驗（17 筆，依第六章第 1 節為前置強制步驟）**：逐筆核對 `https://api.crossref.org/works/<DOI>` 之發表年份、第一作者姓氏、期刊名與卷期頁碼，全數比對通過。核驗過程修正本次自身三處筆誤：哈爾濱頭骨原誤記為 389(6761)，實為 389:704-707；水稻 QT12 原漏記卷期；鹼基編輯療法原未記作者與卷期，實為 Musunuru et al., *NEJM* 392:2235-2243。
+- **受限文獻改以 DOI 留存（依第九章）**：為 Soai (1995) *Nature* 378:767-768、Li/Eddaoudi/O'Keeffe/Yaghi (1999) MOFs *Nature* 402:276-279、Martinis/Devoret/Clarke (1985) *Physical Review Letters* 55:1543-1546、Sakaguchi (1995) *Journal of Immunology* 155:1151-1164、Brunkow (2001) *Nature Genetics* 27:68-73、Lee/Feinbaum/Ambros (1993) *Cell* 75:843-854、Wightman/Ha/Ruvkun (1993) *Cell* 75:855-862、Drucker (1987) *PNAS* 84:3434-3438 等條目補登經核驗之完整卷期與 DOI，並逐筆標註受限原因（出版社付費牆、NCBI PMC proof-of-work 關卡、Cloudflare 關卡）。
+- **已修復檔案之出處標註**：Hopfield (1982) *PNAS* 79:2554-2558 與 Jinek et al. (2012) *Science* 337:816-821 條目補記 DOI、完整卷期及重新取得之典藏出處。
+- **AlphaFold 獲獎依據補正**：第三章 2024 化學獎條目補入 `raw/2021-alphafold2.pdf` 為獲獎依據原始文獻（Jumper et al. 2021, *Nature* 596:583-589, CC-BY），與屬後續延伸工作之 `raw/2024-alphafold3.pdf` 明確區分。
+- **待辦區重寫**：移除已解決之損毀檔項目，改列 `raw/` 完整性結論（17 份全數通過檢核）、待使用者親自更名之 `raw/2025-optogenetics.pdf`、受關卡限制而無原始檔之 10 筆條目清單，以及光遺傳學頁 `key_papers` 之 Nagel (2002) *Science* 296:2395-2398 與 Nagel (2003) *PNAS* 100:13940-13945 同受限制之事實。
+- **原始檔保留決定**：`raw/2025-nerve-mito-cancer.pdf` 為 34.82 MB 完整出版社原檔（含 Extended Data）。因 `.gitignore` 已排除整個 `raw/`，該檔不計入 Git 倉庫體積，第九章「保持專案輕量」之目標不受影響，故保留完整原檔而不裁切，以維持原始層之完整性。
