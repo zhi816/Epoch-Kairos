@@ -160,3 +160,34 @@
 - **模型版本**：（本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填）
 - **具體變更**：依使用者指示，於 AGENTS.md 第二章學科色碼對照表新增「參考色值（以 `theme.css` 為準）」欄，數值逐一取自 `web/assets/css/theme.css` 現值（主色、微光、邊框）。
 - **規則調整**：原「嚴禁在此重複硬編碼色值」一句為前次 AI 審查自行加入、未經使用者指示，現改為「參考色值僅供辨識，不一致時以 `theme.css` 為準，修改配色時同步更新本表」。
+
+## [2026-11-07 22:30] audit | 交接清單 | 待接手者處理
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **用途**：本條目為交接用之待辦清單。GitHub 上目前無任何開啟中的 PR。
+
+### 一、遠端分支 claude/latest-commit-color-removal-r7uu7s（commit 06e282b）
+- 基於 main 之 `e6a046f`，可快進合併，尚未建立 PR。
+- 已驗證通過：AGENTS.md 第二章色碼表新增之 15 個參考色值（5 色系各含主色、微光、邊框），與 `web/assets/css/theme.css` 現值逐一比對全數一致。
+- 待補正一：該分支於 log.md 追加之條目「模型版本」欄留空。依第九章規定不得省略，請接手者或使用者補填。
+- 待補正二：新規則僅套用至第二章第 2 節。第 1 節基礎色仍無參考色值；第三章第 4 條硬編碼 `#101012` 且未註明對應變數 `--bg-surface-sunken`。建議統一處理。
+- 合併提示：該分支與本條目皆在 log.md 結尾追加內容，合併時此處必然衝突。請兩筆並存並依時間排序。
+
+### 二、待修正項目
+1. `wiki/papers/2005-optogenetics.md` 引用 `raw/2005-optogenetics.pdf`，但 raw/ 實際檔名為 `raw/2025-optogenetics.pdf`。依第五章 AI 不得更名 raw/ 檔案，須由使用者更名，或將引用改回實際檔名並加註待更正。
+2. AGENTS.md 標籤白名單將 `#古人類學` 與 `#化學合成` 歸入 `physics`，語意不符。建議改歸 `bio` 與 `energy`，屬 Schema 變更須使用者確認。
+3. `wiki/index.md` Hopfield 與 Hinton 條目標為 `#量子物理`，實際屬統計物理。白名單無 `#統計物理`，須先決定是否登記新標籤。
+4. `wiki/concepts/neural-circuits.md` 仍使用白名單外之 `#計算神經學` 與 `#腦機介面`，與第八章「已收斂」之陳述不符。
+5. 本日誌早期條目標題缺少第三段領域標籤，與第六章格式規範不符。
+6. 本日誌有 3 處引用 `PROJECT_SPEC.md`，該檔案並不存在於專案中。
+7. `README.md` 尚未反映新 Schema（`status`、`laureates`、`domain`、Crossref 核驗等均未提及），且與 AGENTS.md 內容重複。
+8. AGENTS.md 未定義 `wiki/concepts/` 之 Frontmatter 規範，概念頁目前無 YAML 元資料。
+
+### 三、既有未完成項目（延續前次紀錄）
+- `web/` 展示層全層未產出：`index.html`、`papers/`、`timeline.css`、`cards.css`、`timeline.js`、`cards.js`。Lint 第 3 條三層對齊無法通過。
+- `raw/1982-hopfield-network.pdf` 與 `raw/2012-crispr-cas9.pdf` 實際內容為下載失敗之 HTML 頁面，須使用者重新取得。
+- `wiki/concepts/brain-machine-interface.md` 尚未建立。
+
+### 四、給接手者的建議起點
+- 執行 AGENTS.md 第六章第 3 節之完整 8 項 Lint，可完整復現上述清單。
+- 本專案 `.gitignore` 排除整個 `raw/`，故他台機器無法執行三層對齊檢查。
