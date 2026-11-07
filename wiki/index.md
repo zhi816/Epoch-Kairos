@@ -52,7 +52,7 @@
 
 * `2024` ｜ AlphaFold 與蛋白質結構預測 ｜ `#計算生物` `#人工智慧` ｜ `[2024 諾貝爾化學獎]` ｜ `[planned]`
   * 得獎者：David Baker（蛋白質設計）、Demis Hassabis 與 John Jumper（AlphaFold2, *Nature* 2021）。獲獎依據為 AlphaFold2，非 AlphaFold3。`raw/2024-alphafold3.pdf` 為後續延伸工作，應另立條目。
-* `2024` ｜ 人工神經網絡的統計物理基礎 ｜ `#人工智慧` `#量子物理` ｜ `[2024 諾貝爾物理學獎]` ｜ `[planned]`
+* `2024` ｜ 人工神經網絡的統計物理基礎 ｜ `#人工智慧` `#統計物理` ｜ `[2024 諾貝爾物理學獎]` ｜ `[planned]`
   * 得獎者：John Hopfield, Geoffrey Hinton。原始文獻：`raw/1982-hopfield-network.pdf`（Hopfield, 1982, PNAS）。
 * `2024` ｜ microRNA 發現與轉錄後基因調控 ｜ `#分子生物` ｜ `[2024 諾貝爾生理學或醫學獎]` ｜ `[planned]`
   * 原始文獻為 Lee, Feinbaum & Ambros (1993) 與 Wightman et al. (1993)，*Cell*。
@@ -79,12 +79,14 @@
 
 ## 五、跨領域概念頁
 
-* [神經迴路因果解耦](concepts/neural-circuits.md) ｜ `#神經科學`
+* [神經迴路因果解耦](concepts/neural-circuits.md) ｜ `#神經科學` `#生物科技` `#人工智慧`
 
 ---
 
 ## 待辦與已知問題
 
 * `raw/1982-hopfield-network.pdf` 與 `raw/2012-crispr-cas9.pdf` 實際內容為下載失敗的 HTML 頁面，須重新取得。
+* `raw/2025-optogenetics.pdf` 檔名年份有誤（該論文實為 2005 年發表）。依 `AGENTS.md` 第五章，`raw/` 更名須由使用者親自執行，建議更名為 `raw/2005-optogenetics.pdf`，並同步更新 `wiki/papers/2005-optogenetics.md` 之本機典藏路徑。
+* `wiki/concepts/brain-machine-interface.md` 尚未建立，待收錄相關論文時一併產出。
 * `wiki/papers/` 僅 1 篇，`web/papers/` 與 `web/index.html` 尚未產出，Lint 第 3 條（三層對齊）目前未通過。
 * `[planned]` 條目之檔名年份須於收錄時以 Crossref 逐一核對後定案。
