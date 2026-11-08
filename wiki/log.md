@@ -573,3 +573,14 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：本倉庫設定 `core.autocrlf=true`，Git 物件內一律為 LF；[stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py) 直接寫入 Git 物件、不經 autocrlf 轉換，使 [2026-11-08 22:47] 條目以 CRLF 進入提交 `1c8732c`，Git 隨即停止正規化工作目錄，造成整份日誌看似變更（忽略行尾 CR 後差異為零）。兩支腳本改為依倉庫既有版本的多數換行輸出，本次提交並將該條目的換行正規化為 LF，內容不變。
+
+## [2026-11-08 23:21] audit | 補查全光學 BCI、臨床基因編輯與結構生物流程的概念頁外推 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **補查範圍**：續查 6865470 Argon 批次的概念頁跨學科延伸，對照原始研究、FDA 審查文件與臨床論文。以下是高風險主張點查，並非八篇概念頁及 16 篇論文逐句校勘的完成宣告。
+- **新增確認的過度表述／證據缺口**：
+  - [腦機介面與神經編碼](concepts/brain-machine-interface.md)：將 GCaMP／GEVI 雙光子讀取與全息光遺傳寫入概括為「萬級神經元的無損閉環互動」。2026 年小鼠雙光子 mesoscope 原始研究報告的是光刺激選定的個別細胞、同時記錄數千神經元；該結果不能推出「萬級同時控制」，也沒有驗證無損或可供患者使用的 BCI。應區分神經科學實驗平台、記錄規模、刺激規模與臨床 BCI。[原始研究](https://www.nature.com/articles/s41593-026-02350-9)
+  - [可編程細胞與基因工程](concepts/programmable-cellular-engineering.md)：「已能直接在患者肝臟、視網膜與造血幹細胞中修正致病突變」把不同遞送方式和證據階段合併成一項普遍臨床能力。FDA 審查文件明確指出 Casgevy 的 CD34+ 造血幹／祖細胞是在體外編輯後回輸；視網膜 EDIT-101 是小型第 1–2 期試驗，支持繼續研究而非已成為核准治療；肝臟 LNP 鹼基編輯的人體證據則是為一名 CPS1 新生兒量身製作的 N-of-1 個案。應逐項標出體外／體內、試驗階段及個案限制。[FDA 原始審查](https://www.fda.gov/media/175179/download?attachment=)、[視網膜試驗](https://www.nejm.org/doi/10.1056/NEJMoa2309915)、[肝臟 N-of-1 原始論文](https://www.nejm.org/doi/10.1056/NEJMoa2504747)
+  - [AI 驅動之結構生物學與分子設計](concepts/ai-for-structural-biology.md)：跨學科段將 DrugCLIP 寫成數秒完成百億分子初篩，並把 AlphaFold 3＋FEP 描述成已實證的全原子誘導契合精排管線。DrugCLIP 同儕審查論文列出的 GenomeScreenDB 規模約為 10,000 個人類蛋白質、5 億個化合物；其論文版本描述的全基因組篩選耗時約 24 小時、使用 8 張 A100 GPU，與「百億／數秒」不符。AlphaFold 3 原文報告的是生物分子複合體結構預測基準，不等同於 FEP 流程或新藥管線的整合驗證；應將該段標為待驗證的提案／外推並另引直接驗證研究。此項補強 22:44 條目對 DrugCLIP 數量級與耗時問題的記錄。[DrugCLIP 原始論文紀錄](https://pubmed.ncbi.nlm.nih.gov/41505557/)、[論文版本與計算配置](https://www.biorxiv.org/content/10.1101/2024.09.02.610777v3.full)、[AlphaFold 3 原始論文](https://www.nature.com/articles/s41586-024-07487-w)
+- **概念網絡影響**：以上主張位於概念頁的跨學科延伸，並會沿相關概念連結被讀者當作已證實事實引用；修訂時須同步標註證據等級與適用範圍，避免臨床狀態、方法能力和推測流程在跨頁傳播時被強化。
+- **本輪限制與變更**：只記錄審查結果，未修改論文頁、概念頁或原始資料；尚未宣告整批內容全面通過。
