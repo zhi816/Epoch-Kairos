@@ -191,3 +191,8 @@
 ### 四、給接手者的建議起點
 - 執行 AGENTS.md 第六章第 3 節之完整 8 項 Lint，可完整復現上述清單。
 - 本專案 `.gitignore` 排除整個 `raw/`，故他台機器無法執行三層對齊檢查。
+
+## [2026-11-08 13:40] config | 專案層級 Claude Code 權限設定 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：經使用者指示並確認，新增 `.claude/settings.json`，允許 `Bash` 與 `PowerShell` 指令免逐次確認，使 Windows 端經 `claude remote-control` 開啟之對話不再每個 shell 指令都需使用者同意。此設定隨 Git 同步至所有機器。
