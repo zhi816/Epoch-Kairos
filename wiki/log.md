@@ -218,3 +218,14 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：經使用者指示並確認，新增 `.claude/settings.json`，允許 `Bash` 與 `PowerShell` 指令免逐次確認，使 Windows 端經 `claude remote-control` 開啟之對話不再每個 shell 指令都需使用者同意。此設定隨 Git 同步至所有機器。
+
+## [2026-11-08 13:46] config | 建立 raw/ 專屬私有倉庫 Mine-RAW 並完成雙倉庫分離 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **背景**：主倉庫 `.gitignore` 全目錄排除 `raw/`，故原始文獻長期無版控、無離機備份，一旦本機損毀即全數遺失。此為前次交接清單所列之殘留風險。
+- **架構決定**：使用者另建私有倉庫 `zhi816/Mine-RAW` 專門存放原始層。採「獨立倉庫」而非 Git submodule，`raw/` 於該目錄內自成一個 Git 工作區，與主倉庫彼此完全獨立。理由：submodule 需在主倉庫記錄 gitlink 並解除 `raw/` 之忽略，會使私有內容之存在暴露於公開倉庫，且 clone 主倉庫者將遭遇無權限之 submodule 錯誤。
+- **具體變更**：於 `raw/` 執行 `git init`，設定 remote 為 `https://github.com/zhi816/Mine-RAW.git`，推送 20 個檔案（17 份原始 PDF 共 112.6 MB，加 README.md、.gitignore 與 my-focus/.gitkeep），commit `da11322`。
+- **檔案大小查核**：最大檔為 `2025-nerve-mito-cancer.pdf`（34.82 MB），全部低於 GitHub 單檔 50 MB 警告門檻與 100 MB 硬性上限，無須導入 Git LFS。
+- **新增之倉庫基礎檔（3 筆）**：`raw/README.md` 說明本層定位與主倉庫對應關係；`raw/.gitignore` 排除 Thumbs.db、.DS_Store 等殼層與編輯器暫存檔；`raw/my-focus/.gitkeep` 使空的 my-focus 目錄得以在 clone 後保留（Git 不追蹤空目錄）。此三者為倉庫基礎設施而非原始文獻，不影響第五章原始層不可變之原則。
+- **分離驗證**：主倉庫 `git status` 乾淨，`git check-ignore` 確認 `raw/` 仍由 `.gitignore:2` 排除，`git ls-files` 確認主倉庫未追蹤任何 `raw/` 下檔案，巢狀 `.git` 未外洩至主倉庫。
+- **規範更新**：AGENTS.md 第五章第 1 節原記「原始素材僅存於本機」已不成立，改寫為「雙倉庫架構」並新增兩條準則：其一，主倉庫之 Git 指令永不觸及 `raw/`，`raw/` 變動須另行 `cd raw` 提交推送，兩邊無自動連動；其二，僅 clone 主倉庫者仍無法執行 Lint 第 3 條三層對齊檢查，須同時 clone `Mine-RAW` 至 `raw/`。
