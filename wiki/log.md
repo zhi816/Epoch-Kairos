@@ -530,3 +530,19 @@
 - **其他待決（DESIGN.md 第八章）**：懸星索引樣式六選一、直排標題字體八選一、桌面版隱藏機關兩個候選、預設亮星、`human` 星光色與形狀（手機 v2 暫用 `#F2B3D6` 與十字形）、祖先星連結是否寫入 Wiki、卡片是否匯出為圖片、論文頁視覺、群星立案條目是否以暗星呈現、樣稿移植至 `web/` 與 `theme.css` 改用星光色。
 - **已知內容問題（未修正）**：[2025-manchu-in-context-mt-pei](papers/2025-manchu-in-context-mt-pei.md) 第 27 行語族寫作「阿爾泰阿爾泰通古斯語族」，字詞重複且歸類有疑義。
 - **實作注意**：以 `cqw` 縮放的卡片，`container-type` 須宣告在外層、內距放內層（見 DESIGN.md 第二章第 5 節）。
+
+## [2026-11-08 22:35] audit | Argon 批次 Card 1、2、5、6 高風險主張補核 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **補查範圍**：續查 6865470 收錄之論文頁 Card 1、2、5、6，對照專案封存 PDF 與可取得的原始論文；集中記錄可定位的事實錯誤、原文未支持的因果／影響主張，以及需改作推論標示的內容。不是對所有歷史背景句逐字背書。
+- **新增確認事項**：
+  - [CRISPR-Cas9](papers/2012-crispr-cas9.md)：Card 1 寫更換 20 nt 即可「靶向任意基因」，省略 Streptococcus pyogenes Cas9 所需的 PAM；2012 原文指出該系統的 PAM 為 NGG，並非任意 20 nt 位點均可切割。Card 5 又把 dCas9、nCas9 及其後的鹼基／先導編輯工具家族寫成「本篇建立」；2012 原文報告的是雙 RNA 引導與嵌合單 RNA 切割，未報告 dCas9/nCas9；dCas9 基因調控平台見 2013 年後續研究。須把原始結果與後續衍生技術分開歸因。[封存原文](../raw/2012-crispr-cas9.pdf)、[Qi et al. 2013](https://doi.org/10.1016/j.cell.2013.02.022)
+  - [DeepSeek-R1](papers/2025-deepseek-r1.md)：Card 1 把「完全不使用 SFT」同時套到 R1-Zero 與 R1。原論文只將 R1-Zero 描述為無 SFT 起始的純 RL；DeepSeek-R1 則使用冷啟動資料、RL、拒絕採樣與後續 SFT。頁面後文有區分管線，但 Card 1 的總結仍錯誤合併兩個模型。[封存原文](../raw/2025-deepseek-r1.pdf)、[論文摘要與訓練流程](https://arxiv.org/abs/2501.12948)
+  - [可容錯量子處理器](papers/2024-fault-tolerant-quantum.md)：Card 1 將中性 87Rb 原子寫成「帶電」搬運，與原文明示的 neutral-atom 陣列不符。Card 5 把 qLDPC 說成已由本實驗實作；原文只把 qLDPC 列為未來降低開銷的方向。需另外區分 40 個 color-code qubits 與以 3D [[8,3,2]] code blocks 執行的 48 邏輯量子位元取樣電路及其邏輯閘數，不可混成同一實驗配置。[封存原文](../raw/2024-fault-tolerant-quantum.pdf)、[Nature 原文](https://www.nature.com/articles/s41586-023-06927-3)
+  - [Transformer](papers/2017-attention-is-all-you-need.md)：Card 5 說原始 Transformer 訓練「完美契合 Tensor Cores」；原論文明載使用 8 張 NVIDIA P100，NVIDIA 原廠資料指出首代 Tensor Cores 出現在 Volta 架構，而非 P100 所屬的 Pascal 世代。Card 6「拿掉歸納偏置」也過於絕對：原模型仍使用位置編碼與遮罩等結構先驗。[NeurIPS 原文](https://proceedings.neurips.cc/paper/7181-attention-is-all-you-need.pdf)、[NVIDIA Volta 架構白皮書](https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/tesla-product-literature/volta-architecture-whitepaper.pdf)
+  - [AlphaFold 2](papers/2021-alphafold2.md)：Card 5 把核孔複合體結構成果寫成直接套用 AlphaFold2 預測結構；Jumper et al. 2021 主論文本身未報告 NPC，相關後續研究是以 AlphaFold 模型結合 cryo-EM／其他實驗資料做整合建模，應標明研究與方法，不應歸為 AF2 單獨解析。[封存主論文](../raw/2021-alphafold2.pdf)、[NPC 整合 cryo-EM 與 AlphaFold 研究](https://pubmed.ncbi.nlm.nih.gov/35679401/)
+  - [AlphaFold 3](papers/2024-alphafold3.md)：Card 1 的「全面擊敗所有領域專用工具」強於 Nature 原文「優於許多既有專用工具」的摘要結論；原論文按任務與基準比較，不能擴寫成所有領域、所有工具均勝出。[封存原文](../raw/2024-alphafold3.pdf)、[Nature 原文](https://www.nature.com/articles/s41586-024-07487-w)
+  - [Sora](papers/2024-sora-world-simulator.md)：Card 1 將遮擋後維持物體存在寫成一般穩定能力；OpenAI 報告的措辭是「常能但並非總是」，且明列物理模擬限制。相關 Card 5/6 世界模型與隱式重建幾何等描述應保留為有限能力的觀察或作者詮釋，不應寫成已證明的通用物理模擬能力。[OpenAI 報告](https://openai.com/index/video-generation-models-as-world-simulators/)
+  - [神經元粒線體與癌症](papers/2025-nerve-mito-cancer.md)：Card 6 推論癌細胞偽裝成受損組織、誘使神經元依修復程序供應粒線體；封存原文支持粒線體轉移與受體癌細胞在轉移灶富集，但未證明這種「誘騙／劫持修復」機制。應標作假說或比喻；治療建議亦非本文已驗證療效。[封存原文](../raw/2025-nerve-mito-cancer.pdf)
+- **需補來源或降格為詮釋**：Aghion–Howitt、AJR、Woodford 等頁的 Card 5/6 將模型／識別結果延伸成反壟斷政策、外援成效或全球央行政策史的因果結論，原始論文未直接檢驗這些命題；若保留，需引用各自後續研究並明示是延伸解讀。
+- **範圍限制與檔案狀態**：本輪只記錄新增核實項目；Card 1、2、5、6 中其餘背景與修辭性敘述仍需分句配來源。未修改論文頁、概念頁或 raw/ 檔案。
