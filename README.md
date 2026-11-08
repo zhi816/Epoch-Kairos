@@ -22,7 +22,7 @@
 ```text
 Epoch-Kairos/
 ├── AGENTS.md              # 【Schema】專案規則手冊（AI 協作指南與作業核心）
-├── raw/                   # 【Raw Sources】不可變原始素材層（已於 .gitignore 排除，僅存本機）
+├── raw/                   # 【Raw Sources】不可變原始素材層（獨立私有倉庫 Mine-RAW，本倉庫不追蹤）
 │   └── my-focus/          # [個人專屬關注區] 個人精選研究、私人筆記與核心關注資料
 ├── wiki/                  # 【The Wiki】AI 維護之知識核心（Markdown）
 │   ├── index.md           # 內容總索引（按年份與領域組織，含條目狀態與待辦）
@@ -34,6 +34,28 @@ Epoch-Kairos/
     ├── assets/            # CSS、JS（theme.css 為全站色碼唯一真實來源）
     └── papers/            # 每篇論文之「3:4 豎版圖卡 ＋ KaTeX 學術長文」雙欄網頁
 ```
+
+### 原始層採雙倉庫分離（Dual-Repository Split）
+
+`raw/` 已於本倉庫 `.gitignore` 全目錄排除，**不隨本倉庫公開**。自 2026-11-08 起，該層改由獨立私有倉庫 [`zhi816/Mine-RAW`](https://github.com/zhi816/Mine-RAW) 版控，在 `raw/` 目錄內自成一個 Git 工作區（並非 submodule，兩倉庫彼此完全獨立）。
+
+| | Epoch-Kairos（本倉庫） | Mine-RAW |
+|---|---|---|
+| 可見性 | 公開 | 私有 |
+| 內容 | `AGENTS.md`、`wiki/`、`web/` | `raw/` 之原始 PDF 與個人筆記 |
+| 規範來源 | 本倉庫 [`AGENTS.md`](./AGENTS.md) | 同左；其倉庫內 `AGENTS.md` 僅為指回本倉庫之摘要 |
+
+**給 AI 代理與協作者的重要提醒**：在本倉庫執行任何 Git 指令永遠不會觸及 `raw/`。若 `raw/` 內容有變動，須另行 `cd raw` 單獨提交與推送，兩邊無自動連動。完整規範見 [`AGENTS.md`](./AGENTS.md) 第五章。
+
+新機器完整還原兩層：
+
+```bash
+git clone https://github.com/zhi816/Epoch-Kairos.git
+cd Epoch-Kairos
+git clone https://github.com/zhi816/Mine-RAW.git raw
+```
+
+僅 clone 本倉庫者缺少 `raw/`，無法執行 [`AGENTS.md`](./AGENTS.md) 第六章第 3 節 Lint 之第 3 項（三層對齊檢查）。
 
 ---
 

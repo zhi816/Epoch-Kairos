@@ -226,3 +226,51 @@
 - **延後處理（經使用者決定，本次僅做 Markdown 修正）**：`web/` 展示層全層未產出，Lint 第 3 條三層對齊仍未通過；光遺傳學論文頁 `status` 維持 `wiki`。
 - **尚未建立**：`wiki/concepts/brain-machine-interface.md`，待收錄相關論文時一併產出。
 - **合規檢查**：全庫檔案經表情符號 Unicode 區段掃描為 0 筆；Markdown 相對路徑連結全數指向實際存在之檔案；`file:///` 與 `[[...]]` 僅出現於描述該禁令或該問題之文字本身；`wiki/index.md` 與概念頁所用標籤全數落在第八章白名單內。
+
+## [2026-11-07 23:34] fix | 修復 raw/ 兩個損毀原始檔並補收三篇缺漏文獻 | 多領域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **損毀檔案修復（2 筆）**：原 `raw/1982-hopfield-network.pdf`（5,545 B）與 `raw/2012-crispr-cas9.pdf`（1,817 B）實際內容為下載失敗之 HTML 頁面，已取得真實 PDF 覆寫。Hopfield (1982) PNAS 79:2554-2558 取自 UC Berkeley Redwood Center 典藏（1.27 MB，6 頁）；Jinek et al. (2012) Science 337:816-821 取自作者所屬機構 UC eScholarship 典藏（1.41 MB，15 頁）。覆寫前已將兩份損毀原檔另存備份，未直接銷毀。
+- **新增缺漏文獻（3 筆）**：`raw/2021-alphafold2.pdf`（Jumper et al. 2021, Nature 596:583-589, CC-BY, 取自 nature.com，3.48 MB）；`raw/2023-drugclip.pdf`（Gao et al., arXiv:2310.06367, NeurIPS 2023, 4.88 MB）；`raw/2025-nerve-mito-cancer.pdf`（Hoover et al. 2025, Nature 644:252-262, 取自 nature.com，34.82 MB）。
+- **完整性驗證**：全 `raw/` 17 份 PDF 逐一檢核檔頭魔術位元組（`%PDF-`）、尾端 `%%EOF` 標記與頁數，結果全數通過，損毀檔歸零；`raw/` 仍確實未被 Git 追蹤。
+- **取得失敗並改以 DOI 連結留存（8 筆）**：下列來源均設有反自動化或付費牆關卡，未予繞過。NCBI PMC 對 PDF 下載設置 proof-of-work 挑戰，影響 Drucker et al. (1987) GLP-1 奠基論文（https://doi.org/10.1073/pnas.84.10.3434）、Nagel et al. (2003) ChR2（https://doi.org/10.1073/pnas.1936192100）與 2025 鹼基編輯療法（https://doi.org/10.1056/NEJMoa2504747）；Cloudflare 關卡影響 Sakaguchi et al. (1995) Treg（https://doi.org/10.4049/jimmunol.155.3.1151）；出版社付費牆影響 Soai et al. (1995) 不對稱自催化（https://doi.org/10.1038/378767a0）、Li et al. (1999) MOFs（https://doi.org/10.1038/46248）、Martinis et al. (1985) 巨觀量子穿隧（https://doi.org/10.1103/PhysRevLett.55.1543）與 Lee, Feinbaum & Ambros (1993) microRNA（https://doi.org/10.1016/0092-8674(93)90529-Y）。
+- **後續處理**：本筆所列之索引待校正事項，已於次筆 `[2026-11-08 00:07] fix` 紀錄中完成。
+- **新發現之索引待校正事項（本次未逕自修改 `wiki/index.md`）**：其一，索引第一章將 DrugCLIP 記為「2026 年《Science》」，但經 arXiv API 核驗該文為 2023-10-10 投遞之 NeurIPS 2023 論文，`paper_year` 應為 2023，期刊歸屬須重新查證。其二，2025 水稻 QT12 經查為 Li et al., Cell (2025), https://doi.org/10.1016/j.cell.2025.04.011；2025「龍人」頭骨經查為 Fu et al., Science 389(6761), https://doi.org/10.1126/science.adu9677；2025 神經元粒線體轉移經查為 https://doi.org/10.1038/s41586-025-09176-8，三者索引原均未載 DOI，建議補登。其三，`raw/2025-optogenetics.pdf` 檔名年份與 `wiki/papers/2005-optogenetics.md` 之 `paper_year: 2005` 不符，依 AGENTS.md 第五章 AI 不得更名 `raw/` 檔案，仍待使用者親自更名為 `raw/2005-optogenetics.pdf`。
+
+## [2026-11-08 00:07] fix | 校正 wiki/index.md 年份期刊錯誤並以 Crossref 核驗全部文獻卷期 | 多領域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **DrugCLIP 年份與期刊校正**：原條目列於第一章 2026 年並記為《Science》。經 arXiv API 核驗（arXiv:2310.06367），該文實為 2023-10-10 投遞之 NeurIPS 2023 論文 "DrugCLIP: Contrastive Protein-Molecule Representation Learning for Virtual Screening"，`paper_year` 定為 2023。已將條目自第一章移入第三章 2023 年段落，並於條目下保留校正說明；若另有 2026 年《Science》之 DrugCLIP 應用論文，屬不同條目，須查證 DOI 後另行立案。
+- **三個 2025 條目補登 DOI**：水稻 QT12 為 Li et al. (2025) *Cell* 188:3661-3678.e21（https://doi.org/10.1016/j.cell.2025.04.011）；哈爾濱「龍人」頭骨為 Fu et al. (2025) *Science* 389:704-707（https://doi.org/10.1126/science.adu9677）；神經元粒線體轉移為 Hoover et al. (2025) *Nature* 644:252-262（https://doi.org/10.1038/s41586-025-09176-8）。
+- **Crossref 全面核驗（17 筆，依第六章第 1 節為前置強制步驟）**：逐筆核對 `https://api.crossref.org/works/<DOI>` 之發表年份、第一作者姓氏、期刊名與卷期頁碼，全數比對通過。核驗過程修正本次自身三處筆誤：哈爾濱頭骨原誤記為 389(6761)，實為 389:704-707；水稻 QT12 原漏記卷期；鹼基編輯療法原未記作者與卷期，實為 Musunuru et al., *NEJM* 392:2235-2243。
+- **受限文獻改以 DOI 留存（依第九章）**：為 Soai (1995) *Nature* 378:767-768、Li/Eddaoudi/O'Keeffe/Yaghi (1999) MOFs *Nature* 402:276-279、Martinis/Devoret/Clarke (1985) *Physical Review Letters* 55:1543-1546、Sakaguchi (1995) *Journal of Immunology* 155:1151-1164、Brunkow (2001) *Nature Genetics* 27:68-73、Lee/Feinbaum/Ambros (1993) *Cell* 75:843-854、Wightman/Ha/Ruvkun (1993) *Cell* 75:855-862、Drucker (1987) *PNAS* 84:3434-3438 等條目補登經核驗之完整卷期與 DOI，並逐筆標註受限原因（出版社付費牆、NCBI PMC proof-of-work 關卡、Cloudflare 關卡）。
+- **已修復檔案之出處標註**：Hopfield (1982) *PNAS* 79:2554-2558 與 Jinek et al. (2012) *Science* 337:816-821 條目補記 DOI、完整卷期及重新取得之典藏出處。
+- **AlphaFold 獲獎依據補正**：第三章 2024 化學獎條目補入 `raw/2021-alphafold2.pdf` 為獲獎依據原始文獻（Jumper et al. 2021, *Nature* 596:583-589, CC-BY），與屬後續延伸工作之 `raw/2024-alphafold3.pdf` 明確區分。
+- **待辦區重寫**：移除已解決之損毀檔項目，改列 `raw/` 完整性結論（17 份全數通過檢核）、待使用者親自更名之 `raw/2025-optogenetics.pdf`、受關卡限制而無原始檔之 10 筆條目清單，以及光遺傳學頁 `key_papers` 之 Nagel (2002) *Science* 296:2395-2398 與 Nagel (2003) *PNAS* 100:13940-13945 同受限制之事實。
+- **原始檔保留決定**：`raw/2025-nerve-mito-cancer.pdf` 為 34.82 MB 完整出版社原檔（含 Extended Data）。因 `.gitignore` 已排除整個 `raw/`，該檔不計入 Git 倉庫體積，第九章「保持專案輕量」之目標不受影響，故保留完整原檔而不裁切，以維持原始層之完整性。
+
+## [2026-11-08 13:40] config | 專案層級 Claude Code 權限設定 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：經使用者指示並確認，新增 `.claude/settings.json`，允許 `Bash` 與 `PowerShell` 指令免逐次確認，使 Windows 端經 `claude remote-control` 開啟之對話不再每個 shell 指令都需使用者同意。此設定隨 Git 同步至所有機器。
+
+## [2026-11-08 13:46] config | 建立 raw/ 專屬私有倉庫 Mine-RAW 並完成雙倉庫分離 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5（claude-opus-5）
+- **背景**：主倉庫 `.gitignore` 全目錄排除 `raw/`，故原始文獻長期無版控、無離機備份，一旦本機損毀即全數遺失。此為前次交接清單所列之殘留風險。
+- **架構決定**：使用者另建私有倉庫 `zhi816/Mine-RAW` 專門存放原始層。採「獨立倉庫」而非 Git submodule，`raw/` 於該目錄內自成一個 Git 工作區，與主倉庫彼此完全獨立。理由：submodule 需在主倉庫記錄 gitlink 並解除 `raw/` 之忽略，會使私有內容之存在暴露於公開倉庫，且 clone 主倉庫者將遭遇無權限之 submodule 錯誤。
+- **具體變更**：於 `raw/` 執行 `git init`，設定 remote 為 `https://github.com/zhi816/Mine-RAW.git`，推送 20 個檔案（17 份原始 PDF 共 112.6 MB，加 README.md、.gitignore 與 my-focus/.gitkeep），commit `da11322`。
+- **檔案大小查核**：最大檔為 `2025-nerve-mito-cancer.pdf`（34.82 MB），全部低於 GitHub 單檔 50 MB 警告門檻與 100 MB 硬性上限，無須導入 Git LFS。
+- **新增之倉庫基礎檔（3 筆）**：`raw/README.md` 說明本層定位與主倉庫對應關係；`raw/.gitignore` 排除 Thumbs.db、.DS_Store 等殼層與編輯器暫存檔；`raw/my-focus/.gitkeep` 使空的 my-focus 目錄得以在 clone 後保留（Git 不追蹤空目錄）。此三者為倉庫基礎設施而非原始文獻，不影響第五章原始層不可變之原則。
+- **分離驗證**：主倉庫 `git status` 乾淨，`git check-ignore` 確認 `raw/` 仍由 `.gitignore:2` 排除，`git ls-files` 確認主倉庫未追蹤任何 `raw/` 下檔案，巢狀 `.git` 未外洩至主倉庫。
+- **規範更新**：AGENTS.md 第五章第 1 節原記「原始素材僅存於本機」已不成立，改寫為「雙倉庫架構」並新增兩條準則：其一，主倉庫之 Git 指令永不觸及 `raw/`，`raw/` 變動須另行 `cd raw` 提交推送，兩邊無自動連動；其二，僅 clone 主倉庫者仍無法執行 Lint 第 3 條三層對齊檢查，須同時 clone `Mine-RAW` 至 `raw/`。
+
+## [2026-11-08 14:14] git | 合併最新 main 至交接處理分支並調和規範衝突 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填）
+- **合併範圍**：將 main 新增之 5 筆提交（raw/ 修復與索引 Crossref 核驗、專案權限設定、Mine-RAW 雙倉庫分離）合併入 `claude/tender-faraday-ec4px6`。AGENTS.md 與 `.claude/settings.json` 自動合併；README.md、wiki/index.md、wiki/log.md 三檔衝突已手動解決。
+- **README.md**：架構圖 `raw/` 說明採用 main 之「獨立私有倉庫 Mine-RAW」寫法（本分支原寫「僅存本機」已不成立），並保留 main 新增之雙倉庫分離一節。
+- **wiki/index.md**：採用 main 補登之 DOI 與卷期，Hopfield 與 Hinton 條目保留本分支之 `#統計物理` 標籤；待辦區以 main 版本為主，刪除已由 [2026-11-07 23:34] 修復之損毀檔項目，保留本分支之 `brain-machine-interface` 概念頁待辦，並於光遺傳學更名項補註須於 `raw/` 另行推送至 Mine-RAW。
+- **wiki/log.md**：兩側條目全數保留並依時間排序，本分支 [2026-11-07 22:47] 四筆置於 main 之 [2026-11-07 23:34] 之前。本分支 [2026-11-07 22:47] audit 條目所列「重新取得兩份損毀 PDF」一項，已由 [2026-11-07 23:34] 條目完成。
+- **規範調和（AGENTS.md）**：其一，第六章日誌標題第三段規則之生效點改為本次合併入 main 之後，並明定不得以 `多領域` 代替 `全域`；main 於規則合併前並行寫入之 [2026-11-07 23:34] 與 [2026-11-08 00:07] 兩筆使用 `多領域`，依 append-only 原則維持原樣。其二，第九章「保持專案輕量」原寫「一律不收納原始 PDF」，與 Mine-RAW 已版控 17 份原始 PDF 之現況矛盾，改為「主倉庫不收納，原始 PDF 僅存於 Mine-RAW」。
+- **wiki/papers/2005-optogenetics.md**：原始檔典藏之說明由「不納入 Git 追蹤」改為「不納入本倉庫，由私有倉庫 Mine-RAW 版控」。

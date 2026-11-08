@@ -140,5 +140,5 @@ C_m \frac{dV_m}{dt} = &- \bar{g}_{\text{Na}}\, m^3 h\,(V_m - E_{\text{Na}}) \\
   * [神經迴路因果解耦](../concepts/neural-circuits.md)
 * **原始權威文獻**：
   * 官方學術出處：Boyden, E. S., Zhang, F., Bamberg, E., Nagel, G., & Deisseroth, K. (2005). Nature Neuroscience, 8(9), 1263-1268. DOI: [10.1038/nn1525](https://doi.org/10.1038/nn1525)
-  * 本機典藏：`raw/2025-optogenetics.pdf`（不納入 Git 追蹤；檔名年份有誤，論文實為 2005 年發表，建議使用者更名為 `raw/2005-optogenetics.pdf`，更名後同步更新此處）
+  * 原始檔典藏：`raw/2025-optogenetics.pdf`（不納入本倉庫，由私有倉庫 Mine-RAW 版控；檔名年份有誤，論文實為 2005 年發表，建議使用者更名為 `raw/2005-optogenetics.pdf`，更名後同步更新此處）
   * 獎項通告：[Nobel Prize in Physiology or Medicine 2026](https://www.nobelprize.org/prizes/medicine/2026/)
