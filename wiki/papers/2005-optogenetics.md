@@ -10,7 +10,7 @@ venue: "Nature Neuroscience, 8(9), 1263-1268"
 honor: "2026 諾貝爾生理學或醫學獎（表彰光控離子通道與光遺傳學之發現）"
 domain: "bio"
 domain_tags: ["#神經科學", "#生物科技"]
-concepts: ["neural-circuits"]
+concepts: ["neural-circuits", "brain-machine-interface", "programmable-cellular-engineering"]
 status: "wiki"
 my_focus: false
 doi_url: "https://doi.org/10.1038/nn1525"
@@ -138,6 +138,8 @@ C_m \frac{dV_m}{dt} = &- \bar{g}_{\text{Na}}\, m^3 h\,(V_m - E_{\text{Na}}) \\
 ## 知識網絡與文獻出處
 * **核心實體與跨領域概念**：
   * [神經迴路因果解耦](../concepts/neural-circuits.md)
+  * [腦機介面與神經編碼](../concepts/brain-machine-interface.md)
+  * [可編程細胞與基因工程](../concepts/programmable-cellular-engineering.md)
 * **原始權威文獻**：
   * 官方學術出處：Boyden, E. S., Zhang, F., Bamberg, E., Nagel, G., & Deisseroth, K. (2005). Nature Neuroscience, 8(9), 1263-1268. DOI: [10.1038/nn1525](https://doi.org/10.1038/nn1525)
   * 原始檔典藏：`raw/2005-optogenetics.pdf`（不納入本倉庫，由私有倉庫 Mine-RAW 版控）

@@ -284,3 +284,17 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 3.8 Flash
 - **具體變更**：使用者已將 raw/ 目錄下誤植為 2026 年之冰立方微中子觀測文獻更名為 `raw/2013-icecube-neutrino.pdf`。於 Mine-RAW 私有倉庫完成雙更名提交（光遺傳學與冰立方）；主倉庫同步更新 `wiki/index.md` 之參照路徑與真實發表年份（Aartsen et al. (2013) Science 342:1242856），使其符合發表年份前綴規範。
+
+
+## [2026-11-08 16:25] ingest | 全面收錄 raw/ 16 篇原始文獻並建立對應 Wiki 論文頁與跨領域概念網絡 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Argon (Medium)
+- **前置核驗**：以 Crossref API 與 arXiv 元資料逐一核驗 `raw/` 下全部 16 篇待收錄 PDF 之實際發表年份（`paper_year`）、作者名單（`authors`）、期刊卷期頁碼（`venue`）與獎項得獎者（`laureates`），嚴格分離論文作者與諾獎得獎者，並區分本篇實驗數據與後續延伸成果。
+- **新增論文頁（16 篇）**：於 `wiki/papers/` 建立 [1982-hopfield-network.md](papers/1982-hopfield-network.md)、[1992-creative-destruction-aghion.md](papers/1992-creative-destruction-aghion.md)、[2001-colonial-origins-acemoglu.md](papers/2001-colonial-origins-acemoglu.md)、[2007-woodford-inflation-dynamics.md](papers/2007-woodford-inflation-dynamics.md)、[2012-crispr-cas9.md](papers/2012-crispr-cas9.md)、[2013-icecube-neutrino.md](papers/2013-icecube-neutrino.md)、[2016-ligo-gravitational-waves.md](papers/2016-ligo-gravitational-waves.md)、[2017-attention-is-all-you-need.md](papers/2017-attention-is-all-you-need.md)、[2021-alphafold2.md](papers/2021-alphafold2.md)、[2023-drugclip.md](papers/2023-drugclip.md)、[2023-jwst-massive-galaxies.md](papers/2023-jwst-massive-galaxies.md)、[2024-alphafold3.md](papers/2024-alphafold3.md)、[2024-fault-tolerant-quantum.md](papers/2024-fault-tolerant-quantum.md)、[2024-sora-world-simulator.md](papers/2024-sora-world-simulator.md)、[2025-deepseek-r1.md](papers/2025-deepseek-r1.md)、[2025-nerve-mito-cancer.md](papers/2025-nerve-mito-cancer.md)，連同既有之 [2005-optogenetics.md](papers/2005-optogenetics.md) 共 17 篇，與 `raw/` 現有 17 份 PDF 100% 一對一對齊。
+- **跨領域概念頁擴充（7 篇新增、1 篇更新）**：更新 [neural-circuits.md](concepts/neural-circuits.md)，並新建 [brain-machine-interface.md](concepts/brain-machine-interface.md)（完成前次交接之待辦項）、[generative-world-models.md](concepts/generative-world-models.md)、[ai-for-structural-biology.md](concepts/ai-for-structural-biology.md)、[programmable-cellular-engineering.md](concepts/programmable-cellular-engineering.md)、[multi-messenger-astrophysics.md](concepts/multi-messenger-astrophysics.md)、[quantum-error-correction.md](concepts/quantum-error-correction.md)、[institutions-and-macro-dynamics.md](concepts/institutions-and-macro-dynamics.md)，完成論文頁 `concepts` 與概念頁 `papers` 雙向對齊。
+- **索引同步**：更新 [index.md](index.md)，將上述 16 篇條目狀態由 `[planned]` 升級為 `[wiki]` 並補入獨立之 AlphaFold 3 條目與全部 8 篇跨領域概念頁連結。
+
+## [2026-11-08 16:26] lint | 全庫 17 篇論文頁與 8 篇概念頁之 8 項健康檢查驗證 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Argon (Medium)
+- **具體變更**：執行 `AGENTS.md` 第六章第 3 節之 8 項 Lint 檢查：確認全庫 0 孤島頁面、論文頁 `concepts` 與概念頁 `papers` 100% 雙向對齊、`raw/` 17 份 PDF 與 `wiki/papers/` 17 篇 `.md` 完全對應、全庫 0 表情符號、LaTeX 公式無中文字元且離子符號均用 `\mathrm{}` 正體與 `aligned` 斷行、`domain` 與 `domain_tags` 全數符合第八章白名單、全庫相對路徑連結 100% 有效且無 `file:///` 或殘留 `[[...]]` 語法。
