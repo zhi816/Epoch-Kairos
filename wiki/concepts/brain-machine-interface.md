@@ -5,6 +5,7 @@ domain: "bio"
 domain_tags: ["#神經科學", "#生物科技", "#人工智慧"]
 papers: ["1982-hopfield-network", "2005-optogenetics"]
 related_concepts: ["neural-circuits", "programmable-cellular-engineering"]
+verification: "issues"
 ---
 
 # 概念：腦機介面與神經編碼 (Brain-Machine Interfaces & Neural Coding)

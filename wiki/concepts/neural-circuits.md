@@ -5,6 +5,7 @@ domain: "bio"
 domain_tags: ["#神經科學", "#生物科技", "#人工智慧"]
 papers: ["1982-hopfield-network", "2005-optogenetics", "2017-attention-is-all-you-need", "2025-nerve-mito-cancer"]
 related_concepts: ["brain-machine-interface", "programmable-cellular-engineering", "generative-world-models"]
+verification: "issues"
 ---
 
 # 概念：神經迴路因果解耦 (Neural Circuits & Causal Deconstruction)

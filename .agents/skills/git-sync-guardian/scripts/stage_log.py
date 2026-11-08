@@ -97,16 +97,25 @@ def main():
         print('沒有「' + a.agent + '」的新條目，未變更暫存區。')
         return
 
-    # 選取的條目若比 HEAD 中最新條目早（例如遠端先推了較晚的工作），依時間插入，
-    # 但不移動或重寫任何已提交內容。此處只建立 index blob，不改工作目錄。
+    # 暫存版的條目順序一律跟隨工作目錄：已提交條目照 HEAD 原樣保留，自己的新條目放在
+    # 它在工作目錄中的位置，他人的條目略過。若暫存順序與工作目錄不同，提交後日誌會一直
+    # 顯示為「已修改」，下一個代理很可能把這個順序差異當成自己的修改提交出去。
+    # 只有在工作目錄中已提交條目的相對順序被打亂時（理論上不應發生），才退回接在檔尾。
+    # 此處只建立 index blob，不改工作目錄。
     base_header, base_entries = split(base)
-    insertions = [[] for _ in range(len(base_entries) + 1)]
-    for entry, _ in sorted(mine, key=lambda item: HEADING.match(item[0]).group(1)):
-        timestamp = HEADING.match(entry).group(1)
-        i = len(base_entries)
-        while i > 0 and HEADING.match(base_entries[i - 1]).group(1) > timestamp:
-            i -= 1
-        insertions[i].append(entry)
+    base_keys_list = [norm(e) for e in base_entries]
+    mine_keys = {norm(e) for e, _ in mine}
+
+    plan, ptr = [], 0
+    for entry, key in zip(work_entries, work_keys):
+        if ptr < len(base_entries) and key == base_keys_list[ptr]:
+            plan.append(('base', base_entries[ptr]))
+            ptr += 1
+        elif key in mine_keys:
+            plan.append(('mine', entry))
+    if ptr != len(base_entries):
+        sys.stderr.write('警告：工作目錄中已提交條目的順序與 HEAD 不同，新條目改為接在檔尾。\n')
+        plan = [('base', e) for e in base_entries] + [('mine', e) for e, k in zip(work_entries, work_keys) if k in mine_keys]
 
     # 保留 base_header 與每個 base entry 的原始位元組；只正規化新插入條目的行尾。
     # Git 物件通常使用 LF；此處直接寫 index blob，不經過 autocrlf 轉換。
@@ -118,15 +127,17 @@ def main():
             return text
         return text + (eol if text.endswith('\n') else eol + eol)
 
-    for i in range(len(base_entries) + 1):
-        for entry in insertions[i]:
-            staged = ensure_blank_line(staged)
-            body = entry.replace('\r\n', '\n').rstrip('\n')
-            if eol == '\r\n':
-                body = body.replace('\n', '\r\n')
-            staged += body + eol + eol
-        if i < len(base_entries):
-            staged += base_entries[i]
+    for kind, entry in plan:
+        if kind == 'base':
+            staged += entry
+            continue
+        staged = ensure_blank_line(staged)
+        body = entry.replace('\r\n', '\n')
+        if not body.endswith('\n'):
+            body += '\n'
+        if eol == '\r\n':
+            body = body.replace('\n', '\r\n')
+        staged += body
     if a.dry_run:
         print('（dry-run）共 %d 筆，未寫入暫存區。' % len(mine))
         return

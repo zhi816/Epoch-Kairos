@@ -5,6 +5,7 @@ domain: "bio"
 domain_tags: ["#基因工程", "#生物科技", "#分子生物", "#神經科學"]
 papers: ["2005-optogenetics", "2012-crispr-cas9", "2021-alphafold2", "2024-alphafold3", "2025-nerve-mito-cancer"]
 related_concepts: ["neural-circuits", "brain-machine-interface", "ai-for-structural-biology"]
+verification: "issues"
 ---
 
 # 概念：可編程細胞與基因工程 (Programmable Cellular & Genetic Engineering)

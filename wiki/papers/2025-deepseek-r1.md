@@ -10,6 +10,7 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#強化學習", "#深度學習"]
 concepts: ["generative-world-models"]
 status: "wiki"
+verification: "issues"
 my_focus: false
 doi_url: "https://arxiv.org/abs/2501.12948"
 key_papers:

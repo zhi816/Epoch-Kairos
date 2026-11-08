@@ -24,6 +24,7 @@ papers:
   - "2026-tao-filipino-nmt-macayan"
 related_concepts:
   - "formosan-computational-linguistics"
+verification: "unverified"
 ---
 
 # 概念：低資源神經機器翻譯與檢索增強生成 (Low-Resource Neural Machine Translation & Retrieval-Augmented Generation)

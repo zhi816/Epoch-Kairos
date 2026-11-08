@@ -12,6 +12,7 @@ domain: "physics"
 domain_tags: ["#統計物理", "#人工智慧"]
 concepts: ["neural-circuits", "brain-machine-interface", "generative-world-models", "quantum-error-correction"]
 status: "wiki"
+verification: "issues"
 my_focus: false
 doi_url: "https://doi.org/10.1073/pnas.79.8.2554"
 key_papers:

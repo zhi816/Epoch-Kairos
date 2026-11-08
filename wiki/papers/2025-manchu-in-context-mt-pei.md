@@ -10,6 +10,7 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#計算語言學", "#人工智慧"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
+verification: "issues"
 my_focus: true
 focus_role: "report"
 focus_languages: ["滿語"]

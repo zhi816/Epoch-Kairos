@@ -90,6 +90,8 @@ Epoch-Kairos/
 ├── AGENTS.md                  # 【第三層：Schema】本規範文件，指導 AI 如何維護與擴充知識庫
 ├── README.md                  # 專案介紹與 GitHub Pages 瀏覽入口說明
 ├── DESIGN.md                  # 美術方向紀錄（已定、待決與否決之視覺決策）
+├── .agents/skills/            # 專屬 Skill 正本（見第六章開頭之 Skill 一覽）
+├── .claude/skills/            # 供 Claude Code 載入之轉介檔，內容指向 .agents/skills/ 正本
 │
 ├── raw/                       # 【第一層：Raw Sources】原始資料層（不可變，Immutable）
 │   ├── my-focus/              # 【使用者專屬關注區】存放個人精選研究、私人筆記與核心關注資料
@@ -98,8 +100,10 @@ Epoch-Kairos/
 ├── wiki/                      # 【第二層：The Wiki】知識庫核心層（由 AI 讀寫與維護）
 │   ├── index.md               # 內容目錄索引（Content Catalog，按年份與領域組織）
 │   ├── log.md                 # 時間流水帳日誌（Append-only，記錄所有操作）
+│   ├── issues.md              # 內容問題清單（查核發現之待修正事項與處理狀態，見第七章第 4 節）
 │   ├── papers/                # 結構化論文知識頁（Markdown）
-│   └── concepts/              # 跨領域核心概念與實體頁（Markdown）
+│   ├── concepts/              # 跨領域核心概念與實體頁（Markdown）
+│   └── evidence/              # 證據表（每頁一檔，記錄主張與第一手來源之對應，見第七章第 4 節）
 │
 └── web/                       # 【展示層：Web Presentation】供 GitHub Pages 部署之成果
     ├── index.html             # 人類重大突破時間線（Timeline）總覽頁（含「我的關注」一鍵切換）
@@ -144,12 +148,22 @@ Epoch-Kairos/
 
 AI 在協作時，必須嚴格遵循以下三大標準作業程序（SOP）：
 
+> **專屬 Skill 一覽**：正本一律置於 `.agents/skills/<名稱>/SKILL.md`，各 AI 於對應工作開始前須先完整讀取。Claude Code 只會自動載入 `.claude/skills/`，故另於該處放置同名轉介檔，內容僅指向正本；修改時只改正本，轉介檔不得另寫規則。
+>
+> | Skill | 何時使用 |
+> |---|---|
+> | [`wiki-content-audit`](./.agents/skills/wiki-content-audit/SKILL.md) | Ingest 起草前（寫作模式）、Lint 第 2 條與任何事實查核（查核模式）；附 `lint_wiki.py` 與 `crossref_check.py` 兩支檢查腳本 |
+> | [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 將論文譯為繁體中文或重建 PDF 時 |
+> | [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 任何 Git 同步、提交與推送（見第十章） |
+
 ### 1. Ingest（收錄新來源）
 當使用者在 `raw/` 放入新文件或指令收錄一篇論文時，AI 必須依序執行以下 5 個步驟：
 1. **讀取來源**：分析原始文本，提取核心命題、年代、期刊/榮譽、以及作者團隊。
    * **事實核驗為前置強制步驟**：凡有 DOI 者，一律先以 Crossref API（`https://api.crossref.org/works/<DOI>`）核對發表年份、作者名單、期刊名稱與卷期頁碼，嚴禁僅憑記憶或原始檔名推定年份。
    * **作者與得獎者必須分離**：`authors` 僅記載該篇論文之實際作者；獎項得獎者另記於 `laureates`，嚴禁混寫（諾貝爾獎常表彰一系列工作，得獎者未必為某單篇之作者）。
    * **證據歸屬必須分離**：撰寫決定性數據時，須嚴格區分「本篇論文之實驗結果」與「後續他人延伸成果」，後者必須逐筆標註原始出處與年份。
+   * **起草前先建證據表**：依 `wiki-content-audit` 寫作模式，將要寫的強主張（數值、公式、「首次／證明／導致」等斷言、後續成果歸屬）逐條對應至第一手來源之頁碼、表或圖，存為 `wiki/evidence/<slug>.md`（格式見第七章第 4 節）。以原文為準，不得以 `raw/` 中之中文譯本作為證據。
+   * **書目以腳本核對**：Crossref 核驗可執行 `python .agents/skills/wiki-content-audit/scripts/crossref_check.py <slug>`。
 2. **撰寫論文頁**：檔案命名一律以論文實際發表年份（`paper_year`）為前綴：`wiki/papers/YYYY-<slug>.md`（例如 2005 年發表、2026 年獲獎之光遺傳學，檔名為 `2005-optogenetics.md`）。若獲獎年份不同，則在 Frontmatter 中以 `award_year` 與 `honor` 完整標註，並由 `timeline_year` 決定其在前台時間線之位置。
 3. **萃取/關聯概念**：檢查是否觸及跨領域概念（如同時涉及 AI 與結構生物學），同步更新或建立 `wiki/concepts/<concept>.md`（Frontmatter 依第七章第 2 節），並將本篇檔名登記於該概念頁之 `papers` 欄位。
 4. **編譯網頁成果**：
@@ -157,6 +171,7 @@ AI 在協作時，必須嚴格遵循以下三大標準作業程序（SOP）：
    * 在 `web/index.html` 的時間線上插入卡片，正確標註領域標籤與 `data-focus` 屬性。
 5. **更新索引與日誌**：
    * 在 `wiki/index.md` 登記該論文之摘要與連結。
+   * 寫日誌前執行 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`，錯誤（ERROR）須全數排除後才可提交。
    * 在 `wiki/log.md` 結尾追加一筆符合規範之紀錄，**第一條與第二條必須明確寫清 AI 身分名稱與底層模型版本型號**：
      ```markdown
      ## [YYYY-MM-DD HH:MM] <動作> | <標題> | <領域標籤>
@@ -186,6 +201,9 @@ AI 在協作時，必須嚴格遵循以下三大標準作業程序（SOP）：
 6. **檢查年份與作者真實性**：抽查 Frontmatter 之 `paper_year` 與 `authors` 是否與 Crossref 元資料一致，並確認 `authors` 未混入 `laureates`。
 7. **檢查標籤合規性**：確認 `domain` 為六大色系之一、`domain_tags` 全數落在第八章白名單內；`my_focus: true` 者須具備 `focus_role` 與 `focus_languages`，且 `focus_role` 取自第七章第 1 節之五個鍵值。
 8. **檢查連結有效性**：確認所有相對路徑連結指向實際存在之檔案，且全庫無 `file:///` 本機絕對路徑與殘留之 `[[...]]` 語法。
+9. **檢查核實狀態一致性**：論文頁與概念頁之 `verification` 須與 `wiki/issues.md` 及 `wiki/evidence/` 一致（規則見第七章第 4 節）。
+
+> **工具分工**：第 1、3、4、5、7、8、9 條之可機械判斷部分由 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 執行（公式、化學式與長公式為啟發式檢查，警告須人工判斷）；第 6 條由 `crossref_check.py` 執行（需網路）；第 2 條與內容事實查核依 `wiki-content-audit` 查核模式人工進行，發現之問題一律登記於 `wiki/issues.md`，不得只寫在日誌。
 
 ---
 
@@ -209,6 +227,7 @@ domain: "bio"                 # 單選，對應 theme.css 六大色系：bio / a
 domain_tags: ["#神經科學", "#生物科技"]            # 多選，須取自第八章標籤白名單
 concepts: ["neural-circuits"] # 關聯之 wiki/concepts/ 頁，供 Lint 檢查反向連結
 status: "wiki"                # planned（僅立案）/ wiki（已有 Wiki 頁）/ published（已產出網頁）
+verification: "unverified"    # 內容核實狀態：unverified / partial / issues / verified（見第七章第 4 節）
 hook: "一句話白話直擊，供 Card 1 使用"
 key_papers:                   # 獎項表彰多篇工作時，逐筆列出奠基論文與 DOI
   - "Nagel et al. (2003) ... PNAS 100:13940-13945. https://doi.org/10.1073/pnas.1936192100"
@@ -253,6 +272,7 @@ domain: "bio"                 # 單選，取概念之主要學科，決定前台
 domain_tags: ["#神經科學", "#生物科技"]            # 多選，須取自第八章標籤白名單
 papers: ["2005-optogenetics"] # 引用本概念之 wiki/papers/ 檔名（不含 .md）
 related_concepts: []          # 相關之其他概念頁 slug，僅可列出已存在之頁面
+verification: "unverified"    # 內容核實狀態，同論文頁（見第七章第 4 節）
 ---
 ```
 
@@ -282,6 +302,44 @@ related_concepts: []          # 相關之其他概念頁 slug，僅可列出已�
 * **Card 4｜決定性數據（The Evidence）**：決定性實驗的大數字指標（如 100% 激發率、0.7ms 抖動、5.1σ 信號值、78% 增產）。
 * **Card 5｜時代典範轉移（The Revolution）**：後續引發的產業革命、臨床藥物突破或學術典範轉移。
 * **Card 6｜跨界思維與啟發（The Kairos）**：跨領域哲學反思與結尾金句（若為 `my_focus: true` 則深入探討個人研究之映射）。
+
+### 4. 內容核實：核實狀態、問題清單與證據表
+查核發現若只寫在日誌，便無人追蹤修正（2026-11-08 起多輪審查之發現截至 2026-11-09 均未修正）。故內容核實以下列三者記錄，`lint_wiki.py` 會檢查三者一致：
+
+1. **`verification` 欄位（論文頁與概念頁必填）**：
+
+   | 值 | 意義 | 條件 |
+   |---|---|---|
+   | `unverified` | 尚未依 `wiki-content-audit` 查核 | 無 |
+   | `partial` | 部分卡片或主張已查核，目前無未結問題 | `wiki/issues.md` 中本頁無 `open` 問題 |
+   | `issues` | 已查出問題且尚未全部修正 | `wiki/issues.md` 中本頁至少一筆 `open` 問題 |
+   | `verified` | Card 1–6 與正文之強主張已逐項對應來源 | 本頁無 `open` 問題，且 `wiki/evidence/<slug>.md` 存在 |
+
+   新收錄之頁面，若已依寫作模式完成證據表並逐項核對，可直接標 `verified`；否則標 `unverified`。
+
+2. **問題清單 `wiki/issues.md`**：查核模式之每項發現登記一筆，格式如下，編號流水不重用：
+   ```markdown
+   ### EK-001 | open | papers/1982-hopfield-network.md | Card 3 | 過度表述
+   - **問題**：頁面寫法與原文差異（引用原句或行號）。
+   - **來源**：第一手來源連結與頁／節／表／圖。
+   - **發現於**：wiki/log.md [YYYY-MM-DD HH:MM] audit（執行代理）
+   ```
+   * 第二段狀態取 `open`（待修正）、`fixed`（已修正）、`wontfix`（經使用者同意保留，須加註理由）。第三段為相對於 `wiki/` 之檔案路徑；第五段判定取 `wiki-content-audit` 之六種判定。
+   * 修正時將狀態改為 `fixed`，並追加一行 `- **處理**：日期、執行代理、修正方式`。問題清單非日誌，可就地更新狀態，但不得刪除條目。
+   * 頁面最後一筆 `open` 問題修正後，同步將 `verification` 改為 `partial`（或於證據表完成後改為 `verified`）。
+
+3. **證據表 `wiki/evidence/<slug>.md`**：每頁一檔，slug 與論文頁或概念頁檔名相同，格式如下：
+   ```markdown
+   # 證據表：<slug>
+   - **採用版本**：正式版／預印本／勘誤，並附連結
+   - **查核者**：執行代理與模型版本，日期
+
+   | 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |
+   |---|---|---|---|---|
+   | Card 4 | 容量約 0.15N | 本篇研究結果 | Hopfield 1982, p. 2556 | 符合來源 |
+   ```
+   * 「類型」取 `wiki-content-audit` 之五類：本篇研究結果、後續研究、作者解釋、依原文數據計算、Wiki 詮釋。
+   * 證據表只收強主張（數值、公式、「首次／證明／導致」等斷言、後續成果歸屬、臨床或監管狀態），敘事性背景句無須逐句列入。
 
 ---
 
@@ -354,5 +412,5 @@ related_concepts: []          # 相關之其他概念頁 slug，僅可列出已�
    - 寫日誌一律追加於檔尾，不得讀取整份日誌後整檔寫回（會覆蓋他人剛追加、尚未提交的條目），亦不得改動他人條目。
    - 目的：日誌是共用檔案，條目滯留在工作目錄會被他人誤帶、阻擋同步，甚至遭覆寫；每筆日誌都對應一個已推送的提交，多 AI 協作出問題時才能立即追查。
 7. **專屬輔助技能與工具鏈調用**：
-   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`）及日誌工具（`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。
+   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`）及日誌工具（`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。`stage_log.py` 暫存之條目順序一律跟隨工作目錄，不依時間重排，以免提交後日誌持續顯示為已修改。其餘專屬 Skill 見第六章開頭之 Skill 一覽。
 

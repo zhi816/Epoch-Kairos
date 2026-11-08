@@ -12,6 +12,7 @@ domain: "bio"
 domain_tags: ["#基因工程", "#生物科技"]
 concepts: ["programmable-cellular-engineering", "ai-for-structural-biology"]
 status: "wiki"
+verification: "issues"
 my_focus: false
 doi_url: "https://doi.org/10.1126/science.1225829"
 key_papers:

@@ -5,6 +5,7 @@ domain: "physics"
 domain_tags: ["#天體物理", "#宇宙學"]
 papers: ["2013-icecube-neutrino", "2016-ligo-gravitational-waves", "2023-jwst-massive-galaxies"]
 related_concepts: ["quantum-error-correction"]
+verification: "issues"
 ---
 
 # 概念：多信使天體物理與極端宇宙學 (Multi-Messenger Astrophysics & Extreme Cosmology)

@@ -5,6 +5,7 @@ domain: "econ"
 domain_tags: ["#宏觀經濟學", "#制度經濟學"]
 papers: ["1992-creative-destruction-aghion", "2001-colonial-origins-acemoglu", "2007-woodford-inflation-dynamics"]
 related_concepts: []
+verification: "issues"
 ---
 
 # 概念：制度演化與宏觀經濟動態 (Institutional Evolution & Macroeconomic Dynamics)

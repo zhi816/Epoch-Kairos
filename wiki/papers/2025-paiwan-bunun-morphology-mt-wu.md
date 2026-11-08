@@ -10,6 +10,7 @@ domain: "ai"
 domain_tags: ["#計算語言學", "#自然語言處理", "#深度學習"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
+verification: "partial"
 my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["排灣語", "布農語"]

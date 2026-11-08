@@ -10,6 +10,7 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#深度學習"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
+verification: "partial"
 my_focus: true
 focus_role: "report"
 focus_languages: ["北薩米語"]

@@ -12,6 +12,7 @@ domain: "econ"
 domain_tags: ["#宏觀經濟學"]
 concepts: ["institutions-and-macro-dynamics"]
 status: "wiki"
+verification: "issues"
 my_focus: false
 doi_url: "https://doi.org/10.3386/w13329"
 key_papers:

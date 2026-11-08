@@ -12,6 +12,7 @@ domain: "physics"
 domain_tags: ["#天體物理", "#宇宙學"]
 concepts: ["multi-messenger-astrophysics"]
 status: "wiki"
+verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.1103/PhysRevLett.116.061102"
 key_papers:

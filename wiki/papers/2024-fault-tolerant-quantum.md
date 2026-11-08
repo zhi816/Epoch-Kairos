@@ -10,6 +10,7 @@ domain: "physics"
 domain_tags: ["#量子物理", "#統計物理"]
 concepts: ["quantum-error-correction"]
 status: "wiki"
+verification: "issues"
 my_focus: false
 doi_url: "https://doi.org/10.1038/s41586-023-06927-3"
 key_papers:

@@ -632,3 +632,16 @@
     2. 臺灣語言學論文：`南島語言時間詞之跨語言比較初探_林鴻瑞.pdf'` 檔名末尾多出單引號殘留；`台灣南島語「說」動詞語義現象初探_謝富貴.pdf` 作者實為謝富惠教授（大同大學／聯合大學），檔名為錯字，Wiki 內文已正確對齊。
 - **變更檔案**：校正 [wiki/papers/2024-formosan-temporal-words-lim.md](papers/2024-formosan-temporal-words-lim.md) 作者署名，追加本審查紀錄。
 
+## [2026-11-09 00:48] rule | 內容核實改為狀態欄位、問題清單與證據表三者連動，並新增機械檢查腳本 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：經使用者同意，處理 `wiki-content-audit` 檢討出的五項缺口與一個腳本錯誤。
+  1. **Skill 掛載**：[AGENTS.md](../AGENTS.md) 第六章開頭新增 Skill 一覽，Ingest 與 Lint 改為明確指向 `wiki-content-audit`、`academic-paper-translator` 與 `git-sync-guardian`；新增 `.claude/skills/` 三個轉介檔，使 Claude Code 也會自動載入，正本仍在 `.agents/skills/`。
+  2. **問題清單**：新增 [wiki/issues.md](issues.md)。2026-11-08 21:40 至 23:36 各輪 audit 的發現原本只寫在日誌、無人修正，現逐筆轉為 EK-001 至 EK-056（轉錄未重查原文），另加 EK-057 至 EK-060。
+  3. **核實狀態欄位**：第七章新增第 4 節，論文頁與概念頁新增必填欄位 `verification`（`unverified` / `partial` / `issues` / `verified`），並依問題清單填入 51 頁：`issues` 28 頁；`partial` 20 頁，即 LIGO 與 19 篇已有 Card 4 核對紀錄之 my-focus 論文；`unverified` 3 頁。
+  4. **證據表**：規定存於 `wiki/evidence/<slug>.md`，只收強主張，並禁止以 `raw/` 中文譯本作為證據；Skill 同步改寫。
+  5. **機械檢查**：新增 [lint_wiki.py](../.agents/skills/wiki-content-audit/scripts/lint_wiki.py)，涵蓋 Lint 第 1、3、4、5、7、8、9 條，白名單直接讀 AGENTS.md。另新增 [crossref_check.py](../.agents/skills/wiki-content-audit/scripts/crossref_check.py)，比對年份、作者與期刊，並向 doi.org 確認 DOI 是否存在。已以注入錯誤之複本驗證 lint 七類錯誤皆可攔下。現況為 ERROR 0、WARN 32，其中 28 筆為長區塊公式未斷行。
+  6. **stage_log.py**：暫存順序改為跟隨工作目錄。原本依時間插入，使提交後日誌持續顯示為已修改；已於測試倉庫驗證三種情境。
+- **Crossref 新發現**：4 筆 DOI 在 Crossref 與 doi.org 均查無此號（EK-057 至 EK-060）。2 筆為非 Crossref 註冊之 Airiti DOI，可解析。全庫 41 篇中有 12 篇無 doi.org 連結。
+- **未處理**：EK-001 至 EK-060 之頁面內容均未修正；其中 EK-001 至 EK-056 待依 Skill 回原文確認後逐筆處理。
+

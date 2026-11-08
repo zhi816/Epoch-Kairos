@@ -10,6 +10,7 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#計算生物"]
 concepts: ["ai-for-structural-biology"]
 status: "wiki"
+verification: "issues"
 my_focus: false
 doi_url: "https://arxiv.org/abs/2310.06367"
 key_papers:

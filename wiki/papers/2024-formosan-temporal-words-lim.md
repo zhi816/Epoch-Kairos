@@ -10,6 +10,7 @@ domain: "human"
 domain_tags: ["#語言學"]
 concepts: ["formosan-computational-linguistics"]
 status: "wiki"
+verification: "partial"
 my_focus: true
 focus_role: "taiwan-linguistics"
 focus_languages: ["臺灣南島諸語"]
