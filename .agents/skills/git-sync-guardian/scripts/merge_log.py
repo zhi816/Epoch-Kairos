@@ -72,14 +72,18 @@ def main():
         result.insert(i, e)
         ours_keys.add(k)
         added.append(e)
-    eol = '\r\n' if ours.count('\r\n') * 2 >= ours.count('\n') else '\n'
+    # 換行跟隨 ours 的多數（core.autocrlf=true 時 index 內為 LF），插入的條目轉成相同換行
+    eol = '\r\n' if ours.count('\r\n') * 2 > ours.count('\n') else '\n'
     added_ids = {id(e) for e in added}
     out = head
     for e in result:
         if id(e) in added_ids:
+            body = e.replace('\r\n', '\n').rstrip('\n')
+            if eol == '\r\n':
+                body = body.replace('\n', '\r\n')
             if not out.endswith(eol + eol):
                 out = out.rstrip('\r\n') + eol + eol
-            out += e.rstrip('\r\n') + eol + eol
+            out += body + eol + eol
         else:
             out += e  # ours 的條目逐字保留，避免工作目錄與 HEAD 出現多餘差異
     out = out.rstrip('\r\n') + eol

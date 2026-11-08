@@ -82,9 +82,14 @@ def main():
         print('沒有「' + a.agent + '」的新條目，未變更暫存區。')
         return
 
-    eol = '\r\n' if base.count('\r\n') * 2 >= base.count('\n') else '\n'
-    staged = base.rstrip('\r\n') + eol + eol
-    staged += eol.join(e.rstrip('\r\n') + eol for e, _ in mine)
+    # 換行一律跟隨倉庫內既有版本的多數（core.autocrlf=true 時 Git 物件為 LF）；
+    # 直接寫入 Git 物件不會經過 autocrlf 轉換，若混入 CRLF，Git 會停止正規化工作目錄，造成整檔看似變更。
+    eol = '\r\n' if base.count('\r\n') * 2 > base.count('\n') else '\n'
+    staged = base.rstrip('\r\n') + '\n\n'
+    staged += '\n'.join(e.replace('\r\n', '\n').rstrip('\n') + '\n' for e, _ in mine)
+    staged = staged.replace('\r\n', '\n')
+    if eol == '\r\n':
+        staged = staged.replace('\n', '\r\n')
     if a.dry_run:
         print('（dry-run）共 %d 筆，未寫入暫存區。' % len(mine))
         return

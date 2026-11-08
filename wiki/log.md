@@ -568,3 +568,8 @@
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：經使用者同意，[AGENTS.md](../AGENTS.md) 第十章新增第 5 條「只提交自己的修改」（禁止 `git add -A`、`git add .`、`git commit -a`；日誌只提交自己的條目；合流以 `--autostash` 保留他人未提交修改），原工具鏈條目改為第 6 條。[git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 同步新增核心痛點與第五鐵律；`safe_commit_push.sh` 改為必須明確列出檔案並以 `--agent` 指定代理，先提交自己的修改再以 `git merge --autostash` 合流、清空暫存區後推送；`sync.sh` 改用 `--autostash`；新增 `stage_log.py`（以 HEAD 版日誌加上自己的新條目組出暫存內容）與 `merge_log.py`（依 append-only 自動排解日誌衝突，已提交條目順序不動、對方條目依時間插入）。腳本會依序尋找可執行的 `python3`、`python`、`py`。已於暫存區建立含假遠端的測試倉庫，驗證他人未提交的日誌條目、檔案與未追蹤資料夾皆不會進入提交，遠端合流與日誌衝突可自動完成。
 - **背景**：本日 [2026-11-08 22:06] 前後，Claude Code 以整檔加入 `wiki/log.md`，誤將 Codex 尚未提交的 21:40、21:46、21:57、22:00 四筆審查紀錄帶入提交 `297c287`；該四筆內容正確，未改寫歷史。
+
+## [2026-11-08 22:49] fix | 日誌暫存與合併腳本統一換行，修正上一筆提交混入的 CRLF | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：本倉庫設定 `core.autocrlf=true`，Git 物件內一律為 LF；[stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py) 直接寫入 Git 物件、不經 autocrlf 轉換，使 [2026-11-08 22:47] 條目以 CRLF 進入提交 `1c8732c`，Git 隨即停止正規化工作目錄，造成整份日誌看似變更（忽略行尾 CR 後差異為零）。兩支腳本改為依倉庫既有版本的多數換行輸出，本次提交並將該條目的換行正規化為 LF，內容不變。
