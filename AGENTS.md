@@ -330,7 +330,7 @@ related_concepts: []          # 相關之其他概念頁 slug，僅可列出已�
 > **協作背景**：
 > 本專案採用多代理人（Multi-AI）異步協同開發架構，包括 Anthropic Claude Code、OpenAI Codex / GPT、Google Antigravity / Gemini 等多個前沿 AI 系統同時參與本專案之程式開發、論文翻譯與知識庫維護。
 > 同時，專案存在嚴格的雙倉庫拓撲：公開主倉庫（`Epoch-Kairos`）與私有原始資料倉庫（`raw/` 內的 `Mine-RAW`）。
-> 由於多個 AI 在不同環境提交內容，為徹底根絕「分支分岔（Divergent branches）」、「本機遺留 commit 未推送導致狀態脫節」、「遠端衝突覆蓋」等結構性混亂，全專案所有 AI 代理人必須嚴格遵守以下四項鐵律：
+> 由於多個 AI 在不同環境提交內容，為徹底根絕「分支分岔（Divergent branches）」、「本機遺留 commit 未推送導致狀態脫節」、「遠端衝突覆蓋」、「誤提交他人修改」等結構性混亂，全專案所有 AI 代理人必須嚴格遵守以下五項鐵律：
 
 1. **「提交必含推送（Commit Implies Push）」原子操作鐵律**：
    - 只要使用者指示「提交」、「commit」或當 AI 完成某一階段性任務進行版本固化時，**必須將 `git commit` 與 `git push` 視為單一不可分割的原子操作**。
@@ -342,6 +342,11 @@ related_concepts: []          # 相關之其他概念頁 slug，僅可列出已�
    - 若當前任務涉及 `raw/` 內的任何原始素材、文獻剪藏或新生成之 PDF 譯本，檢查與提交推送操作必須在主倉庫（`Epoch-Kairos`）與私有倉庫（`Mine-RAW`，位於 `raw/`）兩邊皆完整執行。不可顧此失彼。
 4. **「日誌並行合流原則（Log Append-Only Concurrency）」**：
    - `wiki/log.md` 為追加模式（Append-only）。當多個 AI 同時在日誌末尾追加紀錄而產生 Git 合併衝突時，一律按時間戳記先後排序並保留所有條目，嚴禁覆蓋或抹除其他 AI 的工作紀錄。
-5. **專屬輔助技能與工具鏈調用**：
-   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建全自動化之狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`），各 AI 應主動調用該工具鏈以確保版控一致性。
+5. **「只提交自己的修改（Commit Only Your Own Changes）」**：
+   - 多個 AI 共用同一個工作目錄，工作目錄中常同時存在其他代理尚未提交的修改。嚴禁使用 `git add -A`、`git add .` 或 `git commit -a`；提交前須以 `git diff --stat` 逐檔確認，只暫存自己修改的檔案，未追蹤之資料夾（如他人的 `work/`）一律不得加入。
+   - `wiki/log.md` 只可提交「執行代理」為自己的條目，其他代理尚未提交的條目須留在工作目錄，由其主人自行提交；以 `scripts/stage_log.py` 逐條暫存。
+   - 合流遠端時以 `git merge --autostash` 暫收他人未提交的修改，合流後放回並維持未暫存狀態；不得把他人的修改併入自己的提交。
+   - 背景：2026-11-08 曾發生 Claude Code 以整檔加入 `wiki/log.md`，誤將 Codex 尚未提交的 4 筆審查紀錄帶入自己的提交；舊版 `safe_commit_push.sh` 亦以 `git add -A` 暫存全部檔案。
+6. **專屬輔助技能與工具鏈調用**：
+   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`）及日誌工具（`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。
 

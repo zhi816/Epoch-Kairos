@@ -18,12 +18,13 @@ description: >-
 1. **本機遺留 Commit 未推送（Dangling Unpushed Commits）**：AI 預設將 `commit` 視為本機操作，若無強制要求，常在完成任務後未執行 `git push`；隨後其他 AI 在遠端推送新節點，導致本機與遠端形成分支分岔（Divergent branches）。
 2. **提取時的分岔中斷（Pull Divergence Abortion）**：在未設定預設合流策略時，`git pull` 遇分岔會引發 `fatal: Need to specify how to reconcile divergent branches`，造成自動化流程卡死。
 3. **雙倉庫操作脫節（Dual-Repo Desynchronization）**：操作主倉庫時遺忘 `raw/` 私有倉庫，或在 `raw/` 增修文獻後未推送到 `Mine-RAW` 遠端。
+4. **誤提交他人修改（Cross-Agent Commit Contamination）**：多個 AI 共用同一個工作目錄，Git 又以「檔案」為單位暫存。只要有人整檔加入 `wiki/log.md`，或以 `git add -A` 暫存全部檔案，就會把其他代理尚未提交的條目與檔案（例如 `work/` 內的審查截圖）一起提交，造成歸屬錯誤，甚至把私人工作檔推上公開倉庫。2026-11-08 已實際發生：Claude Code 整檔加入 `wiki/log.md`，誤帶入 Codex 尚未提交的 4 筆審查紀錄。
 
 ---
 
-## 二、四大鐵律規範
+## 二、五大鐵律規範
 
-所有參與專案之 AI 代理人，在執行任何版本控制操作時必須嚴格遵守以下四項鐵律：
+所有參與專案之 AI 代理人，在執行任何版本控制操作時必須嚴格遵守以下五項鐵律：
 
 ### 1. 提交必含推送（Commit Implies Push）
 - 只要使用者指示「提交」、「commit」或當 AI 完成階段性任務進行版本固化時，**必須將 `commit` 與 `push` 視為單一不可分割的原子操作（Atomic Operation）**。
@@ -37,7 +38,13 @@ description: >-
 - 凡任務涉及 `raw/` 內之任何原始素材、文獻剪藏或新生成之 PDF 譯本，檢查與提交推送操作必須在主倉庫（`Epoch-Kairos`）與私有倉庫（`Mine-RAW`，位於 `raw/`）兩處同時執行。
 
 ### 4. 日誌並行合流原則（Log Append-Only Concurrency）
-- `wiki/log.md` 為追加模式（Append-only）。當多個 AI 同時在日誌末尾追加紀錄而產生 Git 合併衝突時，一律按時間戳記先後排序並保留所有條目，嚴禁覆蓋或抹除其他 AI 的工作紀錄。
+- `wiki/log.md` 為追加模式（Append-only）。當多個 AI 同時在日誌末尾追加紀錄而產生 Git 合併衝突時，一律按時間戳記先後排序並保留所有條目，嚴禁覆蓋或抹除其他 AI 的工作紀錄。`scripts/merge_log.py` 可自動完成：已提交的條目順序不動，對方獨有的條目依時間插入。
+
+### 5. 只提交自己的修改（Commit Only Your Own Changes）
+- 嚴禁 `git add -A`、`git add .`、`git commit -a`。提交前先看 `git diff --stat`，只暫存自己修改的檔案；未追蹤的資料夾（如他人的 `work/`）一律不得加入。
+- `wiki/log.md` 只提交「執行代理」為自己的條目：用 `scripts/stage_log.py "<代理名稱>"` 逐條暫存。它以「HEAD 版日誌＋自己的新條目」組出提交內容，工作目錄的檔案不變，別人的條目留給他們自己提交。
+- 合流遠端時用 `git merge --autostash`，讓他人未提交的修改暫時收起、合流後放回，且放回後維持「未暫存」。
+- 若暫存區在你動手前就已有檔案，代表可能是別人暫存的，先確認歸屬，不要直接提交。
 
 ---
 
@@ -57,21 +64,34 @@ description: >-
 ```
 * **功能**：依序對主倉庫與 `raw/` 私有倉庫進行遠端更新檢查：
   - 若雙方一致：回報 `Already up to date`。
-  - 若遠端領先且本機無新 commit：執行 `git pull --ff-only origin main` 安全快進。
-  - 若兩端分岔（Divergent）：自動執行安全合併 `git merge origin/main`，若遇內容衝突則警示並引導人工排解。
+  - 若遠端領先且本機無新 commit：執行 `git merge --ff-only --autostash origin/main` 安全快進。
+  - 若兩端分岔（Divergent）：執行 `git merge --autostash origin/main` 三方合併。
+  - `--autostash` 會暫收工作目錄中其他代理尚未提交的修改，合流後放回並維持未暫存；只有 `wiki/log.md` 衝突時自動以 `merge_log.py` 排解，其他衝突則警示並引導人工排解。
 
 ### 3. 原子提交並推送（Atomic Safe Commit and Push）
 ```bash
-# 同時提交並推送主倉庫與私有倉庫
-./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<提交訊息>" both
+# 主倉庫：明確列出自己的檔案；列出 wiki/log.md 時只會提交 --agent 指定代理的條目
+./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<提交訊息>" main --agent "Claude Code" -- DESIGN.md wiki/log.md
 
-# 僅提交並推送主倉庫
-./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<提交訊息>" main
-
-# 僅提交並推送私有 raw/ 倉庫
-./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<提交訊息>" raw
+# 私有 raw/ 倉庫：路徑相對於 raw/
+./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<提交訊息>" raw --agent "Codex" -- my-focus/英文論文/foo.pdf
 ```
-* **功能**：先檢查遠端是否已有新 commit（若有則先合流），接著暫存檔案、產生 commit，並立即執行 `git push origin main`，最後確認 `Ahead: 0`。
+* **功能**：
+  1. 確認暫存區原本是空的（否則中止，避免帶走他人已暫存的檔案）。
+  2. 只暫存 `--` 之後列出的路徑；`wiki/log.md` 交給 `stage_log.py` 逐條暫存。不接受 `.`、`-A`。
+  3. 先提交自己的修改，再 `git fetch` 並以 `git merge --autostash` 與遠端三方合流；只有 `wiki/log.md` 衝突時自動以 `merge_log.py` 排解，放回他人修改時的日誌衝突亦同。
+  4. 清空暫存區，讓他人修改維持未暫存；`git push origin main` 後確認 `Ahead: 0`，並列出工作目錄中仍未提交（屬於他人）的檔案。
+* 兩個倉庫都有修改時，分別執行 `main` 與 `raw` 各一次（各自列出檔案），以滿足雙倉庫一體化。
+* 腳本會自動尋找可執行的 Python（依序試 `python3`、`python`、`py`；Windows 的 `python3` 可能是微軟商店的空殼）。
+
+### 4. 日誌工具
+```bash
+# 只暫存自己的日誌條目（--dry-run 只列出不寫入）
+python .agents/skills/git-sync-guardian/scripts/stage_log.py "Claude Code" --dry-run
+
+# wiki/log.md 在 merge 或 stash pop 時衝突：依 append-only 自動排解（只寫檔，不 git add）
+python .agents/skills/git-sync-guardian/scripts/merge_log.py
+```
 
 ---
 
@@ -84,10 +104,12 @@ description: >-
 ### SOP-2：完成任務並固化成果
 1. 確認全專案無任何表情符號（Zero-Emoji）。
 2. 在 `wiki/log.md` 結尾追加符合 `AGENTS.md` 規範之條目（標明執行代理、底層模型、白名單標籤與具體變更）。
-3. 執行 `./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<符合 Conventional Commits 格式之訊息>" both`，確保兩處倉庫均推送成功。
+3. 以 `git diff --stat` 確認哪些檔案是自己改的，再執行 `./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<符合 Conventional Commits 格式之訊息>" main --agent "<代理名稱>" -- <自己的檔案> wiki/log.md`；若 `raw/` 也有自己的修改，再以 `raw` 執行一次，確保兩處倉庫均推送成功。
+4. 確認腳本最後列出的「仍未提交的修改」都不是自己的；若有自己的檔案遺漏，補上後再執行一次。
 
 ### SOP-3：遭遇 wiki/log.md 衝突時之排解
-1. 檢視衝突區塊（`<<<<<<< HEAD` 與 `>>>>>>> origin/main`）。
+`safe_commit_push.sh` 與 `sync.sh` 遇到「只有 `wiki/log.md` 衝突」時會自動呼叫 `merge_log.py` 排解。若需人工處理：
+1. 檢視衝突區塊（`<<<<<<< HEAD` 與 `>>>>>>> origin/main`），或直接執行 `python .agents/skills/git-sync-guardian/scripts/merge_log.py`。
 2. 提取兩側之日誌條目，依 `[YYYY-MM-DD HH:MM]` 時間戳記先後排序重新拼接。
 3. 刪除所有 Git 衝突標記（`<<<<<<<`, `=======`, `>>>>>>>`）。
 4. 提交合併：`git commit -m "Merge remote-tracking branch 'origin/main' into main"` 並立即 `git push origin main`。

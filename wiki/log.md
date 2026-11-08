@@ -562,3 +562,9 @@
   - **交叉核對無誤**：制度概念頁所列 2024 AJR、2025 Mokyr／Aghion／Howitt、2026 Hall／Woodford 經濟學獎年份與得主組合符合獎項公告，未列為錯誤。[Nobel 2025 公告](https://www.nobelprize.org/prizes/economic-sciences/2025/press-release/)、[瑞典央行 2026 公告](https://www.riksbank.se/en-gb/press-and-published/notices-and-press-releases/notices/2026/they-are-awarded-the-prize-in-economic-sciences-2026/)
 - **既有問題的跨頁傳播**：腦機介面、神經迴路、生成式世界模型、可編程細胞與量子糾錯概念頁會重複先前日誌所列的 Hopfield 直接因果傳承、CRISPR PAM／衍生技術歸因、Sora 能力界線及 qLDPC 實驗範圍問題；修訂時應同步校正概念頁與論文頁，避免錯誤在知識網絡擴散。
 - **範圍限制**：本輪仍是高風險主張核對，不代表八篇概念頁所有背景句均逐字查核；本次只追加日誌，未改概念頁、論文頁或 raw/ 檔案。
+
+## [2026-11-08 22:47] rule | 多 AI 協定新增「只提交自己的修改」並改寫提交與同步腳本 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：經使用者同意，[AGENTS.md](../AGENTS.md) 第十章新增第 5 條「只提交自己的修改」（禁止 `git add -A`、`git add .`、`git commit -a`；日誌只提交自己的條目；合流以 `--autostash` 保留他人未提交修改），原工具鏈條目改為第 6 條。[git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 同步新增核心痛點與第五鐵律；`safe_commit_push.sh` 改為必須明確列出檔案並以 `--agent` 指定代理，先提交自己的修改再以 `git merge --autostash` 合流、清空暫存區後推送；`sync.sh` 改用 `--autostash`；新增 `stage_log.py`（以 HEAD 版日誌加上自己的新條目組出暫存內容）與 `merge_log.py`（依 append-only 自動排解日誌衝突，已提交條目順序不動、對方條目依時間插入）。腳本會依序尋找可執行的 `python3`、`python`、`py`。已於暫存區建立含假遠端的測試倉庫，驗證他人未提交的日誌條目、檔案與未追蹤資料夾皆不會進入提交，遠端合流與日誌衝突可自動完成。
+- **背景**：本日 [2026-11-08 22:06] 前後，Claude Code 以整檔加入 `wiki/log.md`，誤將 Codex 尚未提交的 21:40、21:46、21:57、22:00 四筆審查紀錄帶入提交 `297c287`；該四筆內容正確，未改寫歷史。
