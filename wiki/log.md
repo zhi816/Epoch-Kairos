@@ -385,3 +385,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：新增 [web/prototypes/mobile-v1.html](../web/prototypes/mobile-v1.html)，為手機版排版討論用之單檔原型，含首頁（橫排標題、懸星索引、星圖與選取說明框、2 欄卡片牆）與光遺傳學論文頁（3:4 卡片橫向滑動、長文與公式容器）。資料沿用首頁 v4 之 26 篇與五學科，尚未更新為六學科；公式為手刻排版，正式版改用 KaTeX。同版本另見設計畫布「手機 v1」兩張畫板。
+
+## [2026-11-08 20:50] update | 以 6 頁完整學術正文與全 42 方言評測表譯本取代 Gagnier 2026 ePark 方言計量學既有 PDF | #自然語言處理 #計算語言學 #語言學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：依據使用者指示並嚴格遵循 `.agents/skills/academic-paper-translator/SKILL.md` 規範，對 `raw/my-focus/英文論文/Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13.pdf`（Henry Gagnier, DialRes 2026 / 2026.dialres-1.13）執行完整正文翻譯與雙欄學術版面重建。將原先 2 頁之極度簡略摘要版，全面升級為 6 頁之繁體中文學術全譯本，覆蓋原檔 `Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13_繁體中文翻譯.pdf`。完整涵蓋摘要、引言（南島語瀕危危機與方言計量學重要性、臺灣南島語方言計算研究空白）、研究方法論（族語 E 樂園 ePark 語料庫 16 語 42 方言、268 萬詞元與 587 小時配對音訊；詞級 TF-IDF 餘弦相似度、共享詞彙 Jaccard 相似度 f>5、正規化萊文斯坦編輯距離）、實證結果與七大多方言語言親疏關係解碼（阿美語北部孤立離群、泰雅語賽考利克/澤敖利二分與汶水高頻詞重疊但廣泛詞彙分歧之謎、賽德克語都達－德路固極高同質性、布農語北中南三大支群精準復原、排灣語方言連續體與高共享核心詞、魯凱語下三社與萬山孤立分支假說印證、卑南語南王古老離群地位確認）、ePark 作為方言 NLP 資源之優缺點深入評估、針對低資源方言 NLP 之四項關鍵實務建議（避開詞彙篇偏差、設定頻率門檻、依核心詞比率決定遷移策略、利用 587 小時配對語音）、未來研究方向、結論、研究限制與完整 30 筆參考文獻；精確重建 Table 1 全數 16 語 42 方言完整統計表（詞元數、詞形數、TTR、單次詞比率、詞彙篇佔比、核心詞佔比、獨有詞佔比）、Table 2 七大群組相似度統計表與 Table 3 六大篇章成對餘弦相似度對比表，所有數值逐格核驗通過，零數據缺失。於私有倉庫 Mine-RAW 完成單獨 Git 提交（commit `e9c866d`）。
