@@ -318,6 +318,30 @@ related_concepts: []          # 相關之其他概念頁 slug，僅可列出已�
 ## 九、使用者原則最高條款
 * **尊重使用者的審核權限**：未經使用者明確指示或確認，不可擅自批量竄改核心檔案。
 * **日誌身分與模型型號硬性標註**：每次寫入 `wiki/log.md` 時，必須在條目中如實載明當前操作之「AI 代理身分名稱」（例如：Antigravity by Google DeepMind）與「底層模型版本型號」（例如：Gemini 3.8 Flash），嚴禁匿名或省略，以確保知識庫長期演進之審計透明度。
+* **「提交必含推送」原子操作**：凡使用者要求「提交」、「commit」或階段任務完成時，AI 必須將 `commit` 與 `push` 視為單一原子操作，嚴禁留滯本機 commit 不推送；動工前一律先檢查遠端動態（詳見第十章）。
 * **LaTeX 完美適配為絕對重點**：每一篇論文之理論推導、動力學方程與關鍵參數，必須提供完整合規的 KaTeX 向量排版，並確保在手機與 3:4 豎版卡片上具備橫向防溢出與自適應換行能力，嚴禁截圖代替公式。
 * **拒絕任何表情符號（Emoji）**：全庫一律採用文字、中括號標籤或純幾何符號，維持嚴謹典雅的學術出版風格。
 * **保持專案輕量**：主倉庫一律不收納原始 PDF 大檔案，原始 PDF 僅存於私有倉庫 Mine-RAW（見第五章）；`wiki/` 與 `web/` 引用原文時一律採用 DOI/arXiv 官方超連結跳轉。
+
+---
+
+## 十、多 AI 協同開發與雙倉庫版本控制協定（Multi-AI Git Protocol）
+
+> **協作背景**：
+> 本專案採用多代理人（Multi-AI）異步協同開發架構，包括 Anthropic Claude Code、OpenAI Codex / GPT、Google Antigravity / Gemini 等多個前沿 AI 系統同時參與本專案之程式開發、論文翻譯與知識庫維護。
+> 同時，專案存在嚴格的雙倉庫拓撲：公開主倉庫（`Epoch-Kairos`）與私有原始資料倉庫（`raw/` 內的 `Mine-RAW`）。
+> 由於多個 AI 在不同環境提交內容，為徹底根絕「分支分岔（Divergent branches）」、「本機遺留 commit 未推送導致狀態脫節」、「遠端衝突覆蓋」等結構性混亂，全專案所有 AI 代理人必須嚴格遵守以下四項鐵律：
+
+1. **「提交必含推送（Commit Implies Push）」原子操作鐵律**：
+   - 只要使用者指示「提交」、「commit」或當 AI 完成某一階段性任務進行版本固化時，**必須將 `git commit` 與 `git push` 視為單一不可分割的原子操作**。
+   - 嚴格禁止任何僅執行 `git commit` 而將 commit 留滯於本機不推送的行為。AI 在回報任務完成時，必須確認本地分支與遠端分支完全對齊（`Ahead: 0`）。
+2. **「動工與提取前必先檢查遠端（Pre-flight Fetch Check）」防分岔機制**：
+   - 在開始任何實質性的檔案修改、或在執行 `git pull` 前，AI 必須主動執行 `git fetch origin main`，檢查遠端是否有其他 AI 剛剛推送的新 commit。
+   - 若遠端領先（Behind）且無衝突，優先透過快速前進或合流整合；若發現本機與遠端已分岔（Divergent），必須立即進行三方合併（3-way merge），且在合併時完整保留各方日誌。
+3. **「雙倉庫一體化覆蓋（Dual-Repo Parity）」**：
+   - 若當前任務涉及 `raw/` 內的任何原始素材、文獻剪藏或新生成之 PDF 譯本，檢查與提交推送操作必須在主倉庫（`Epoch-Kairos`）與私有倉庫（`Mine-RAW`，位於 `raw/`）兩邊皆完整執行。不可顧此失彼。
+4. **「日誌並行合流原則（Log Append-Only Concurrency）」**：
+   - `wiki/log.md` 為追加模式（Append-only）。當多個 AI 同時在日誌末尾追加紀錄而產生 Git 合併衝突時，一律按時間戳記先後排序並保留所有條目，嚴禁覆蓋或抹除其他 AI 的工作紀錄。
+5. **專屬輔助技能與工具鏈調用**：
+   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建全自動化之狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`），各 AI 應主動調用該工具鏈以確保版控一致性。
+
