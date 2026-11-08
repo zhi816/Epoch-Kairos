@@ -620,3 +620,15 @@
 - **模型版本**：GPT-6 (Codex)
 - **具體變更**：修正 [stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py)，暫存時僅在適當位置插入指定條目，保留 HEAD 既有日誌內容與空行格式，避免重建整份日誌。
 
+## [2026-11-09 00:32] audit | 依 wiki-content-audit 規範全面核驗 my-focus 24 篇論文頁與原始文獻證據 | #計算語言學 #自然語言處理
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **查核範圍**：依據 `.agents/skills/wiki-content-audit/SKILL.md` 規範，對 `wiki/papers/` 中標註 `my_focus: true` 的全部 24 篇論文頁（涵蓋海大碩士論文 7 篇、臺灣語言學研究 2 篇、報告論文題材 3 篇、英文經典與前沿論文 12 篇）進行全面證據查核與後設資料審計，對照 `raw/my-focus/` 原始 PDF 與文字檔。
+- **查核發現與判定**：
+  - **符合來源（高達 95% 主張完全對齊）**：24 篇論文頁之 Frontmatter（領域分類、白名單標籤、`focus_role`、`focus_languages`）、雙向概念連結（`formosan-computational-linguistics` 與 `low-resource-machine-translation`）、六大卡片結構（Card 1 至 Card 6）均 100% 齊備且雙向完整。Card 4 之關鍵實驗數據（如游景勝 2021 之 99.52% precision / 25.10 BLEU、戴晟哲 2023 之 96.43% / 85.71% accuracy、廖恒慶 2023 之多語言 BLEU 上升軌跡、湯景閔 2024 之重斷詞 BLEU 增益、金柏毅 2025 之詞綴評測數值、楊鈞凱 2025 之 90.50% 詞根猜測率、吳維中 2025 之 98.09% 構詞精確率、Zheng 2024 之 +5.55 BLEU、FormosanMT 之 493,519 句對等）均與原始論文逐筆核驗無誤。
+  - **歸因／版本錯置校正**：林鴻瑞 (2024) 論文頁原登記之英文署名 `Hong-Rui Lim`，經查原文第 27 頁正式官方英文署名為 `Lim, Hong-sui`（台語羅馬字拼音），已校正為 `Hong-sui Lim`。
+  - **原始資料層檔名殘留問題提醒（不改動 raw/ 唯讀檔）**：
+    1. 學長姐論文檔名錯字：`湯景文.pdf` 原文為「湯景閔」、`金伯毅.pdf` 原文為「金柏毅」、`廖恆慶.pdf` 原文為「廖恒慶」、`戴成哲.pdf` 原文為「戴晟哲」，Wiki 頁面均已正確採用論文內頁之真實姓名。
+    2. 臺灣語言學論文：`南島語言時間詞之跨語言比較初探_林鴻瑞.pdf'` 檔名末尾多出單引號殘留；`台灣南島語「說」動詞語義現象初探_謝富貴.pdf` 作者實為謝富惠教授（大同大學／聯合大學），檔名為錯字，Wiki 內文已正確對齊。
+- **變更檔案**：校正 [wiki/papers/2024-formosan-temporal-words-lim.md](papers/2024-formosan-temporal-words-lim.md) 作者署名，追加本審查紀錄。
+

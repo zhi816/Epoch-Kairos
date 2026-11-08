@@ -4,7 +4,7 @@ title_zh: "台灣南島語言時間詞之跨語言比較初探"
 paper_year: 2024
 award_year: 2024
 timeline_year: 2024
-authors: "Hong-Rui Lim"
+authors: "Hong-sui Lim"
 venue: "Taiwanica, 23, 1-27"
 domain: "human"
 domain_tags: ["#語言學"]
