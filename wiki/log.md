@@ -589,3 +589,15 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：經使用者同意（使用者表示本專案以自動化為目標，寫入日誌即建立提交，多 AI 協作出問題時可立即追查），[AGENTS.md](../AGENTS.md) 第六章日誌規範新增「寫入日誌即提交」，第十章新增第 6 條鐵律「寫入日誌即提交」（追加條目後須於同一回合以 `safe_commit_push.sh` 提交並推送，無須使用者另行指示；工作未完成或使用者要求暫緩時先不寫日誌；寫入一律追加於檔尾，不得整檔覆寫），原工具鏈條目順延為第 7 條。[git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 同步新增核心痛點「寫了日誌卻遲未提交」與第六鐵律，SOP-2 註明寫入日誌後立即提交，並補充 Python 需求：3.7 以上、依序自動尋找 `python3`、`python`、`py`，不寫死路徑，Mac、Linux、Windows 皆適用。
+
+## [2026-11-08 23:36] audit | Argon 6865470 首輪四篇論文 Card 1–6 原文核對 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **查核範圍**：只查 Argon 提交 `6865470` 的四篇論文頁：[Hopfield 1982](papers/1982-hopfield-network.md)、[Aghion–Howitt 1992](papers/1992-creative-destruction-aghion.md)、[AJR 2001](papers/2001-colonial-origins-acemoglu.md)、[Woodford 2007](papers/2007-woodford-inflation-dynamics.md)。逐卡檢視 Card 1–6 的關鍵主張與公式，並對照封存或正式原文；這是 16 篇中的首輪四篇定向核對，不代表全文逐句校勘。
+- **第一手來源**：[Hopfield 原文（1982，pp. 2554–2558）](../raw/1982-hopfield-network.pdf)、[Aghion & Howitt 原文（Econometrica 60(2), 1992）](https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf)、[AJR 原文（AER 91(5), 2001）](https://economics.mit.edu/sites/default/files/publications/colonial-origins-of-comparative-development.pdf)、[Woodford 原文（NBER WP 13329, 2007）](https://www.nber.org/papers/w13329)。
+- **新增確認事項**：
+  - [Hopfield 1982](papers/1982-hopfield-network.md)：Card 3（第 54–55 行）把所有局部能量極小值等同預先寫入的記憶吸引子，範圍過廣。原文 p. 5 的隨機初態模擬（N=30、n=5）約 85% 落入已指定記憶、10% 落入無明顯意義的穩定態、5% 落在記憶附近；穩定態不必是已存記憶。Card 4（第 94–96 行）的容量應表述為約 0.15N、在誤差變嚴重前的近似容量；原文稱記憶型態為 pseudoorthogonal，不能寫成嚴格正交或保證 15 個完整無誤檢索。原文未提供「相當比例隨機刪除突觸或損毀神經元仍可正確重建」這種定量結果，該主張須降格或另引直接實驗。
+  - [Aghion–Howitt 1992](papers/1992-creative-destruction-aghion.md)：Card 4（第 90–91 行）的成長率與變異數公式以線性研發技術 φ(n)=n 為條件，應在該卡明示；一般形式保留 φ(n)。原文摘要只說在某些條件下存在週期均衡，頁面進一步稱其可解釋實際商業週期，證據強度較原文更高。Card 5（第 110 行）把 1992 模型直接連到現代反壟斷標準與 Killer Acquisitions，屬後續政策延伸，須另引研究並標明非本文結果。
+  - [AJR 2001](papers/2001-colonial-origins-acemoglu.md)：Card 3（第 59–60 行）把疾病免疫機制作為已確立事實來支撐排他性限制；原文 AER pp. 1371–1372 將工具變數排他性明確列為識別假設，並把當代疾病直接影響列為主要疑慮，免疫差異是作者用來論證假設合理性的依據，不是由該識別設計單獨證明的普遍因果事實。Card 5（第 107 行）關於外援／基建必然遭攫取的結論不屬 AJR 2001 的實證檢驗，應補直接研究或標成政策推論。Card 4 的奈及利亞—智利數字偏差已記於 22:35 審查條目，本輪不重複列值。
+  - [Woodford 2007](papers/2007-woodford-inflation-dynamics.md)：Card 1（第 36 行）「嚴格證明決定權毫不動搖」強於原文摘要的「全球化不太可能削弱央行控制通膨的能力」。Card 4（第 102–104 行）列出的 β=0.99、σ=1、γ=0.2、κ=0.024 組合未能在所引 NBER 原文中找到對應校準；應補精確表／圖／頁碼，否則移除或標作頁面自行設定。把任何外國通膨或全球產出衝擊都說成可完全隔絕亦過度概括；原文指出外部發展可能影響通膨，央行需相應回應。Card 5（第 114–116 行）的點陣圖效果、終結貨幣主義及全球合作最優結論屬後續應用或綜合詮釋，不能當作本篇直接研究結果。
+- **本輪限制與變更**：只追加此審查紀錄，未修改論文頁、概念頁或 `raw/`。本輪未逐句審完這四篇，也未重查其連結概念頁；其餘 12 篇論文頁不在本輪範圍。
