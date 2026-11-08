@@ -88,8 +88,9 @@ body[data-mode="focus"] .back{border-bottom-color:rgba(143,213,253,.5);color:var
 /* 卡片牆 */
 #archive{position:relative;margin-top:30px;padding-top:18px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
-.card{display:block;width:100%;padding:0;border:0;background:none;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.cv{aspect-ratio:3/4;container-type:inline-size;box-sizing:border-box;padding:6cqw;display:flex;flex-direction:column;gap:3.6cqw;border-radius:2px}
+/* 外層當尺寸容器，內層的 cqw 內距才會以卡片寬度計算 */
+.card{display:block;width:100%;padding:0;border:0;background:none;text-align:left;cursor:pointer;container-type:inline-size;-webkit-tap-highlight-color:transparent}
+.cv{display:flex;aspect-ratio:3/4;box-sizing:border-box;padding:6cqw;display:flex;flex-direction:column;gap:3.6cqw;border-radius:2px}
 .cv .top{display:flex;justify-content:space-between;gap:3cqw;font-family:var(--mono);font-size:6.6cqw;letter-spacing:.04em;white-space:nowrap}
 .cv .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px}
 .cv .win i{position:absolute;border-radius:50%;background:#fff}
@@ -114,12 +115,14 @@ footer{margin-top:36px;padding-top:18px;border-top:1px solid rgba(232,228,218,.1
 .bar .doi{justify-content:flex-end;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--acc)}
 .car{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:18px max(16px,env(safe-area-inset-left,0px)) 4px;scroll-padding-inline:max(16px,env(safe-area-inset-left,0px))}
 .car::-webkit-scrollbar{display:none}
-.pc{flex:0 0 calc(100% - 44px);max-width:360px;scroll-snap-align:start;aspect-ratio:3/4;container-type:inline-size;box-sizing:border-box;padding:6cqw;display:flex;flex-direction:column;gap:4.4cqw;border-radius:2px;border:1px solid rgba(var(--acc-rgb),.3);background:var(--surface);color:var(--fg);overflow:hidden}
+.pc{flex:0 0 calc(100% - 44px);max-width:360px;scroll-snap-align:start;aspect-ratio:3/4;container-type:inline-size;box-sizing:border-box;display:block;border-radius:2px;border:1px solid rgba(var(--acc-rgb),.3);background:var(--surface);color:var(--fg);overflow:hidden}
 .pc .lab{font-family:var(--mono);font-size:3.4cqw;letter-spacing:.14em;color:var(--acc)}
 .pc .h{font-family:var(--serif);font-weight:600;font-size:7.6cqw;line-height:1.35;color:var(--fg-strong)}
 .pc .s{font-size:3.6cqw;line-height:1.6;color:var(--muted)}
 .pc .ft{margin-top:auto;padding-top:3cqw;border-top:1px solid var(--line);font-size:3.4cqw;color:var(--subtle)}
-.pc.cover{background:var(--acc);border:0;color:var(--card-ink);padding:5.4cqw;gap:3.4cqw}
+.pci{display:flex;flex-direction:column;width:100%;height:100%;box-sizing:border-box;padding:6cqw;gap:4.4cqw}
+.pc.cover{background:var(--acc);border:0;color:var(--card-ink)}
+.pc.cover .pci{padding:5.4cqw;gap:3.4cqw}
 .pc.cover.fc{background:#121519;color:#EAE6DF;border:1px solid rgba(var(--acc-rgb),.3)}
 .pc .hook{font-size:4.2cqw;line-height:1.6;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
 .vs{display:grid;grid-template-columns:auto 1fr 1fr;gap:2.6cqw 3cqw;align-items:center}
@@ -636,6 +639,9 @@ $('more').addEventListener('click', function(){ S.more[S.mode] = true; renderCar
 /* ---------- 論文頁 ---------- */
 var CARDNAMES = ['時代銘文', '世紀瓶頸', '突破原理', '決定性數據', '典範轉移', 'Kairos'];
 function initCarousel(root, names){ var car = root.querySelector('.car'), dots = root.querySelector('.dots .btns'), lbl = root.querySelector('.lblc'); if (!car) return;
+  root.querySelectorAll('.pc').forEach(function(pc){ var w = document.createElement('div'); w.className = 'pci';
+    ['gap', 'justifyContent'].forEach(function(k){ if (pc.style[k]){ w.style[k] = pc.style[k]; pc.style[k] = ''; } });
+    while (pc.firstChild) w.appendChild(pc.firstChild); pc.appendChild(w); });
   dots.innerHTML = ''; names.forEach(function(n, i){ var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + n); b.innerHTML = '<i></i>';
     b.addEventListener('click', function(){ var c = car.children[i]; car.scrollTo({ left: c.offsetLeft - car.children[0].offsetLeft, behavior: reduce ? 'auto' : 'smooth' }); }); dots.appendChild(b); });
   function sync(){ var step = (car.children[1] ? car.children[1].offsetLeft - car.children[0].offsetLeft : 1) || 1, i = Math.max(0, Math.min(names.length - 1, Math.round(car.scrollLeft / step)));

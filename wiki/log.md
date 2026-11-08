@@ -400,3 +400,89 @@
   - [1995-sakaguchi-treg.pdf](../raw/1995-sakaguchi-treg.pdf)、[1995-soai-asymmetric-autocatalysis.pdf](../raw/1995-soai-asymmetric-autocatalysis.pdf)、[1999-li-yaghi-mof.pdf](../raw/1999-li-yaghi-mof.pdf)、[2001-brunkow-foxp3.pdf](../raw/2001-brunkow-foxp3.pdf)、[2003-nagel-channelrhodopsin2.pdf](../raw/2003-nagel-channelrhodopsin2.pdf)
   - [2025-li-qt12-rice-thermotolerance.pdf](../raw/2025-li-qt12-rice-thermotolerance.pdf)、[2025-musunuru-in-vivo-base-editing.pdf](../raw/2025-musunuru-in-vivo-base-editing.pdf)
   - Mine-RAW 已提交 commit `7a7836a` 並推送至 `origin/main`。Nagel et al. (2002) 原始 PDF 未在本次下載資料中找到，仍待補。
+
+## [2026-11-08 21:40] audit | 核對 Gemini 4 Argon 論文收錄與吸引子概念延伸 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **審查範圍**：依 `wiki/log.md` 的模型記錄，審查 Argon 所產生的提交 `6865470`（16 篇論文頁、8 篇概念頁及索引更新）；另確認 16:57 的標籤白名單變更實際包含於 `94f5ccc`，該收錄提交在日誌中記為 Gemini 3.8 Flash。未將 Flash 的 24 篇論文頁歸入 Argon 審查範圍。
+- **宏觀結果**：頁面結構、相互連結、標籤與公式格式的 lint 通過；該 lint 不核驗論文事實與數據。已確認下列內容錯誤或證據不足，故本批內容不能視為完成事實審核。
+- **已確認與原文不符**：
+  - [DrugCLIP](papers/2023-drugclip.md)：DUD-E 與 LIT-PCBA 的 EF、AUROC、BEDROC 數值及指標歸屬與原文表格不一致；`10.66` 被錯標為 LIT-PCBA BEDROC，原文該值屬 DUD-E EF@5%；HomoAug 的 LIT-PCBA `4.21 → 5.51` 消融敘述未見於原文表格。[原文](https://www.proceedings.com/content/075/075280-1932open.pdf)
+  - [JWST 大質量星系](papers/2023-jwst-massive-galaxies.md)：將 `ε≈0.57` 指派至 `z≈7.5`；原文此值對應 `z≈9.1` 的 1σ 邊際一致性，而 `z≈7.5` 中心估計約為 `0.84`。頁面稱觀測密度為理論上限的 2–5 倍，亦超出原文結論。[原文](https://www.nature.com/articles/s41550-023-01937-7.pdf)
+  - [Woodford](papers/2007-woodford-inflation-dynamics.md)：本國利率傳導「因開放而增強」及所列基準校準，與原文數值示例及結論不符；原文指出國內通膨的政策效果不依賴進口份額參數。[原文](https://www.nber.org/system/files/working_papers/w13329/w13329.pdf)
+  - [CRISPR-Cas9](papers/2012-crispr-cas9.md)：把 PAM 近端錯配效應寫成單一錯配即可完全廢除切割，與原文對連續配對需求及遠端錯配容忍度的結果不符。[原文](https://doi.org/10.1126/science.1225829)
+  - [可容錯量子處理器](papers/2024-fault-tolerant-quantum.md)：把「40 個 color-code qubits」混寫成「40 個橫向邏輯 CNOT 閘」，混淆量子位元數與閘數。[原文](https://arxiv.org/abs/2312.03982)
+  - [神經元粒線體與癌症](papers/2025-nerve-mito-cancer.md)：測序方法、實驗模型及轉移比例被混併；原文為分選癌細胞後的 Nanopore 分析，不是頁面所稱的單細胞長讀長測序。[原文](https://pmc.ncbi.nlm.nih.gov/articles/PMC12328229/)
+- **需要改標或補證**：[AlphaFold 3](papers/2024-alphafold3.md) 將介面 LDDT 標成成功率，且複雜多醣鏈 `72.1%` 的歸屬未獲主文支持；[DeepSeek-R1](papers/2025-deepseek-r1.md) 將 `cons@64` 標成 `cons@16`，需註明所用論文版本；[Sora](papers/2024-sora-world-simulator.md) 的即時互動與狀態記憶說法超出 OpenAI 原文示例可支持的範圍，應降格為未證實能力描述。
+- **概念網絡影響**：[neural-circuits](concepts/neural-circuits.md)、[brain-machine-interface](concepts/brain-machine-interface.md)、[generative-world-models](concepts/generative-world-models.md) 與 [quantum-error-correction](concepts/quantum-error-correction.md) 將 Hopfield 吸引子延伸為 Transformer 等價、神經流形解碼、擴散模型及量子糾錯的直接歷史基礎；部分關聯僅能作類比，或需改引後續研究，避免把概念相似性寫成因果傳承。
+- **審查限制**：其餘頁面目前為抽查，尚未逐項核完所有 Card 4 數據與推論；本條目只記錄已核實結果，不代表其餘內容已通過。此次僅記錄審查，未修改論文頁或概念頁。
+
+## [2026-11-08 21:46] audit | 補查 Argon 收錄批次 Card 4 數據、歸因與版本差異 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **補查範圍**：使用 `raw/` 原始 PDF 與論文正式來源，補核尚未逐項記錄的 Argon 論文頁 Card 4；本次仍不代表 Card 1–6 全面完成逐句校勘。
+- **新增確認事項**：
+  - [Hopfield 1982](papers/1982-hopfield-network.md)：`M≈0.15N` 與原文相符，但原文稱隨機記憶向量具有「偽正交性」，未稱記憶型態嚴格正交；Card 4 的「隨機正交型態」應改為隨機／近似互不相關型態。[原文 PDF](../raw/1982-hopfield-network.pdf)
+  - [Acemoglu–Johnson–Robinson 2001](papers/2001-colonial-origins-acemoglu.md)：Table 3 第一階段係數為 `−0.61`（SE `0.13`），頁面寫 `−0.60`；原文制度指標是 `0–10` 分，頁面寫 `1–10`。原文對奈及利亞與智利的 2SLS 效果表述為「至多約 7 倍」且提醒測量誤差，頁面自行推得 `8.2` 倍時應標作依四捨五入值計算，而非原文報告值。穩健性估計也不宜概括成單一 `0.7–1.0` 範圍，需標明所指規格。[原文](https://cpi.stanford.edu/_media/pdf/Reference%20Media/Acemoglu%2C%20Johnson%2C%20and%20Robinson_2001_Development%20Economics.pdf)
+  - [IceCube 2013](papers/2013-icecube-neutrino.md)：28 個事件、662 天、4.1σ 合併顯著性及每風味通量與原文相符；頁面另稱「高能端分析 4.3σ」並給 `p≈1.5×10⁻⁵`，在該文未找到。原文報告的其他數字為 26 個新事件 `3.3σ`、預先指定分析合併 28 個事件 `4.1σ`、事後對全 28 事件計算 `4.8σ`，含較高 charm 背景時分別降為 `3.6σ` 與 `4.5σ`。[原文](https://arxiv.org/abs/1311.5238)
+  - [Transformer 2017](papers/2017-attention-is-all-you-need.md)：`41.8 BLEU` 符合專案封存的 arXiv 版本；NeurIPS 定稿 PDF 報 `41.0 BLEU`（官方摘要頁報 `41.1`）。頁面目前同時標示 NeurIPS venue 與 arXiv 連結，應注明採用的版本，避免讀者把版本差異當成單一發表值。[定稿 PDF](https://proceedings.neurips.cc/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf)
+  - [AlphaFold2](papers/2021-alphafold2.md)：`r=0.73` 是 Tunyasuvunakool et al. 人類蛋白質組伴篇之 held-out PDB 測試結果；Jumper et al. 主論文 Figure 2c 在另一組測試鏈報 `r=0.76`。`0.73` 本身有來源支持，但應在 Card 4 明確標註伴篇，避免誤認為主論文數值。[主論文](https://www.nature.com/articles/s41586-021-03819-2)、[伴篇](https://www.nature.com/articles/s41586-021-03828-1)
+- **抽查相符**：[LIGO GW150914](papers/2016-ligo-gravitational-waves.md) 的 5.1σ、質量、距離、輻射能量及引力子質量上限與封存 PDF 的核心報告值相符；Aghion–Howitt (1992) 的穩態、條件下週期均衡及 laissez-faire 下可能過度或不足創新的核心方向可由原文摘要支持。[LIGO 原文 PDF](../raw/2016-ligo-gravitational-waves.pdf)、[Aghion–Howitt 原文](https://www.nber.org/system/files/working_papers/w3223/w3223.pdf)
+- **本輪未改論文頁**：以上為審查與補充記錄；論文頁的修正仍待後續明確整理，尚未執行。
+
+## [2026-11-08 21:55] fix | 修正手機版原型卡片內距在寬視窗下失控 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：[web/prototypes/mobile-v2.html](../web/prototypes/mobile-v2.html) 的卡片牆與論文頁卡片原本在同一個元素上同時宣告尺寸容器並以 `cqw` 設定內距與間距；依 CSS 規範，元素自身屬性的 `cqw` 會參照上層容器，沒有上層容器時退回視窗寬度，導致寬視窗下內距暴增、內容被擠壓。改為外層宣告容器、內層設定內距與間距（卡片牆以按鈕為容器；論文頁卡片於初始化時包一層 `.pci`），並以 390px 與 1280px 寬度驗證。
+
+## [2026-11-08 21:57] audit | 微觀推導與吸引子概念網絡查核 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **審查範圍**：續查 6865470 Argon 批次之 Card 3 機制、公式與吸引子概念頁；以專案封存原文 PDF、官方技術報告及相關原始論文交叉核驗。以下只記錄確認的錯誤或來源缺口，未修改論文頁與概念頁。
+- **已確認的實質錯誤／過度表述**：
+  - [Hopfield 1982](papers/1982-hopfield-network.md)：Card 3 把所有局部能量極小值等同預先寫入的記憶。原文明言在零閾值下全零狀態 000… 也是穩定態，且高能穩定態不必是儲存記憶；故「能量下降至局部極小值」不能直接推出「取回已寫入記憶」。原文稱隨機型態具「pseudoorthogonality」，也不支持嚴格正交的說法。[封存原文](../raw/1982-hopfield-network.pdf)
+  - [Woodford 2007](papers/2007-woodford-inflation-dynamics.md)：Card 3 稱短期利率由央行準備金付息與供給條件決定，並提出該文未標號的 IS、NKPC 及廣義確定性公式。Woodford 原文 p.36 明說模型以 Taylor rule 表示政策，沒有建模央行如何實施操作利率；原文不同章節的模型與符號也需逐式對應，不能把另行推導的標準式標成本文原式。[封存原文](../raw/2007-woodford-inflation-dynamics.pdf)
+  - [AlphaFold2](papers/2021-alphafold2.md)：原文說三角更新受「三維可實現性包含三角不等式」啟發，並以三角邊訊息更新 pair representation；頁面寫成更新「強制滿足」歐氏三角幾何，超出原文。原文並區分 IPA 的注意力值對全域旋轉／平移不變，以及其後的座標更新為等變操作；頁面把不變與等變混稱。[封存原文](../raw/2021-alphafold2.pdf)
+  - [IceCube 2013](papers/2013-icecube-neutrino.md)：99.999% 在原文是對 6000 p.e. 門檻以上大氣緲子背景的拒斥率；該文仍估計約 6.1 個大氣微中子事件與 6.0 ± 3.4 個穿透緲子事件。頁面把拒斥率擴成同時濾除伴隨大氣微中子，混淆緲子 veto 與微中子背景估計。[封存原文](../raw/2013-icecube-neutrino.pdf)
+  - [Sora](papers/2024-sora-world-simulator.md)：Card 3 把 VAE 具體架構、3D RoPE、adaLN-Zero 與 epsilon-prediction 目標當作 Sora 已知實作。OpenAI 原始報告明言未提供模型與實作細節，並說模型以含噪 patch 為輸入、訓練預測原始乾淨 patch；因此 epsilon-MSE 公式與確定式架構既無官方支持，訓練目標也與報告描述不同。二手反向工程內容應明標推測。[OpenAI 技術報告](https://openai.com/index/video-generation-models-as-world-simulators/)
+  - [CRISPR-Cas9](papers/2012-crispr-cas9.md)、[神經粒線體轉移](papers/2025-nerve-mito-cancer.md)：頁面加入 R-loop 自由能、切割速率常數、K_d，以及粒線體轉移—OCR 線性增益、轉移灶富集等符號模型；在專案所存論文 PDF 未找到這些被當作本文模型／結果的方程或參數。可保留為作者以外的教學推導，但須標明推導者、假設與來源，不應讓讀者誤認為原文實測或推導結果。[CRISPR 原文](../raw/2012-crispr-cas9.pdf)、[癌症原文](../raw/2025-nerve-mito-cancer.pdf)
+- **吸引子／概念網絡來源錯置**：
+  - [腦機介面](concepts/brain-machine-interface.md)把 Hopfield 1982 能量吸引子寫成當代 BCI 神經流形解碼的數學基礎；神經流形是獨立的群體神經動態研究脈絡，原文與目前所引來源不足以建立此直接因果傳承。
+  - [神經迴路](concepts/neural-circuits.md)把 Transformer 注意力與 Hopfield 網路等價列在 2017 支柱下；等價結果來自連續／現代 Hopfield 更新規則的後續工作（Ramsauer et al. 2021），不應歸給 1982 原始網路或 2017 Transformer 原文。[後續原始論文](https://arxiv.org/abs/2008.02217)
+  - [生成式世界模型](concepts/generative-world-models.md)將 Hopfield/Hinton、Boltzmann 機、score matching、擴散模型及 Transformer 寫成一條直接奠基鏈，混合不同年代與不同方法；須改標為概念類比並補各自來源。
+  - [量子糾錯](concepts/quantum-error-correction.md)把 Hopfield 1982 列為表面碼／色碼隨機鍵 Ising 映射的直接來源。映射可追溯至拓撲量子記憶的統計物理推導（Dennis et al. 2002），其原文沒有引用 Hopfield；應分開「數學類比」與「歷史來源」。此外，橫向閘不能單獨保證任意深度的通用容錯計算；通用橫向閘集合受 Eastin–Knill 定理限制，需說明其他非 Clifford／非橫向資源。[映射原始論文](https://arxiv.org/abs/quant-ph/0110143)、[Eastin–Knill 原始論文](https://arxiv.org/abs/0811.4262)
+- **校正範圍**：此輪是針對高風險機制與跨域連結的逐項核對，不等於 16 篇每一句背景敘述均已完成校勘。此前 Card 4 審查與本輪 Card 3／概念查核的已知問題均已分輪記錄；所有論文頁、概念頁仍保持原狀。
+
+## [2026-11-08 22:00] audit | 補核檢索效能、數學示例與量子糾錯通用性 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **補查範圍**：繼續對照 Argon 批次 Card 3 的 DrugCLIP、JWST 與量子糾錯敘述；只讀取封存原文與官方來源，未修改論文頁。
+- **新增確認事項**：
+  - [DrugCLIP](papers/2023-drugclip.md)：Card 3 寫「十億個分子全庫檢索在毫秒內完成」，但原文 Section 4.3 報告 6 billion Enamine 分子檢索耗時「少於 10,000 秒（約 30 小時）」，量級明顯不同。Card 3 的 test-time K 個構型取最大相似度亦未在原文方法中找到；原文描述 RDKit 構型主要用於訓練期噪聲輸入／消融，應標為頁面外推或刪除。HomoAug 原文描述同源序列搜尋、AlphaFold DB、TM-align 與全域／口袋相似度篩選，頁面所寫 Pfam 作為實際工具未獲支持。[封存原文](../raw/2023-drugclip.pdf)
+  - [JWST 大質量星系](papers/2023-jwst-massive-galaxies.md)：頁面前述主計算採 Sheth–Tormen 暈質量函數，後續卻附上 Press–Schechter erfc 解析式。雖然文字有標示 PS 近似，仍需明確說明它是補充近似而非 Boylan-Kolchin 論文使用的 HMF，並避免將兩種質量函數結果混為本文推導。[封存原文](../raw/2023-jwst-massive-galaxies.pdf)
+  - [量子糾錯概念頁](concepts/quantum-error-correction.md)：定義段稱以橫向閘即可阻止錯誤擴散並實現「任意深度」量子演算法，漏掉通用容錯計算所需資源與限制。Eastin–Knill 定理指出可偵測單一物理錯誤的非平凡量子碼不存在通用橫向邏輯閘集合；應改為橫向閘可限制某類錯誤傳播，並說明需其他非橫向／測量型資源以達通用性。[原始定理論文](https://arxiv.org/abs/0811.4262)
+  - **經查無誤**：2026 年「光遺傳學獲諾貝爾生醫獎」及「IceCube 高能天體微中子獲諾貝爾物理獎」標籤與 2026 官方獎項公告相符；未列為錯誤。[瑞典皇家科學院：Physics 2026](https://www.kva.se/en/news/the-nobel-prize-in-physics-2026/)、[美國生理學會：Medicine 2026](https://www.physiology.org/detail/news/2026/10/05/karl-deisseroth--peter-hegemann-and-georg-nagel-named-2026-nobel-laureates-in-physiology-or-medicine)
+- **限制**：此補查仍是針對高風險主張；未將全部 16 篇每一段背景、引用與補充方程宣告為逐句通過。論文頁與概念頁未動，本次只追加日誌。
+
+## [2026-11-08 22:00] design | 卡片版型定為 F「星窗＋一句話」 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：使用者於設計畫布「卡片實驗」六種版型中選定 F（保留深色星空小窗，窗內以學科色寫一句白話說明論文在做什麼，雙年份移至底部；桌面與手機一致）。[DESIGN.md](../DESIGN.md) 第二章第 3 節改寫卡片內容規格並標為已定，第 5 節補充實作注意（`cqw` 容器須宣告在外層），第四章我的關注卡片改採 F，否決紀錄新增「大號年份當主角」與未選之 A 至 E，待決事項新增卡片一句話之資料欄位與論文名是否兩行。
+
+## [2026-11-08 22:06] audit | 交接清單：卡片版型 F、card_line 欄位與手機版後續 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **用途**：使用者將改用手機繼續交代工作，本條為接手者的待辦清單。美術方向的完整決策與否決紀錄見 [DESIGN.md](../DESIGN.md)；設計畫布為使用者私人連結，接手代理多半無法開啟，重點均已抄錄於 DESIGN.md。
+- **目前已定**：學科六類（`chem`、`human`）與 `focus_role`、`focus_languages` 已寫入 AGENTS.md 與 41 篇 Frontmatter；首頁主案為設計畫布首頁 v4；手機版原型為 [web/prototypes/mobile-v2.html](../web/prototypes/mobile-v2.html)；卡片版型定為 F「星窗＋一句話」（DESIGN.md 第二章第 3 節）。
+- **等待使用者確認（尚未動工）**：
+  1. 新增論文頁 Frontmatter 欄位 `card_line`：卡片星窗內的一句白話，20 字以內，主詞是「這篇做了什麼」，不用「開創性、顛覆性」等形容詞與縮寫術語；`hook` 保留給論文頁 Card 1 長版。樣本：光遺傳學「用一道藍光，開關大腦裡特定的神經元」、Attention「不再逐字讀句子，讓每個字同時看見整句」、LIGO「第一次直接測到黑洞相撞發出的重力波」、Aghion「新技術淘汰舊技術，經濟才能長期成長」、賽德克語機器翻譯「讓電腦在賽德克語與中文之間翻譯」。
+  2. 論文名過長（如 Attention Is All You Need）是否允許最多兩行（建議允許）。
+  3. 我的關注卡片改用 F 後，研究語言（`focus_languages`）改放星窗左上角小標籤（建議）。
+- **確認後的工作順序**：
+  1. AGENTS.md 第七章論文頁範本加入 `card_line` 與撰寫規則，記一筆 `rule`。
+  2. 依各論文頁內文為 41 篇擬 `card_line`，先整理成清單請使用者審閱，同意後寫入 Frontmatter 並記 `update`。
+  3. 將 mobile-v2 的卡片牆與論文頁封面改為 F，資料讀 `card_line`：修改 [web/prototypes/mobile-v2-src/template.html](../web/prototypes/mobile-v2-src/template.html) 與 [data.py](../web/prototypes/mobile-v2-src/data.py)，於倉庫根目錄執行 `python web/prototypes/mobile-v2-src/build.py` 重建，勿直接改產出的 mobile-v2.html。
+  4. 更新 DESIGN.md 待決事項並記 `design`。
+- **其他待決（DESIGN.md 第八章）**：懸星索引樣式六選一、直排標題字體八選一、桌面版隱藏機關兩個候選、預設亮星、`human` 星光色與形狀（手機 v2 暫用 `#F2B3D6` 與十字形）、祖先星連結是否寫入 Wiki、卡片是否匯出為圖片、論文頁視覺、群星立案條目是否以暗星呈現、樣稿移植至 `web/` 與 `theme.css` 改用星光色。
+- **已知內容問題（未修正）**：[2025-manchu-in-context-mt-pei](papers/2025-manchu-in-context-mt-pei.md) 第 27 行語族寫作「阿爾泰阿爾泰通古斯語族」，字詞重複且歸類有疑義。
+- **實作注意**：以 `cqw` 縮放的卡片，`container-type` 須宣告在外層、內距放內層（見 DESIGN.md 第二章第 5 節）。

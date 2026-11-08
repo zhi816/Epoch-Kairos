@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Epoch Kairos 手機版 v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* 手機版原型 v2：資料由 wiki/ Frontmatter 產生；全黑星空，單一深色主題 */
+:root{
+  color-scheme:dark;
+  --ink:#0B0C0E; --surface:#141517; --sunken:#101012;
+  --fg:#E8E4DA; --fg-strong:#F4F1EA; --body:#D9D5CB; --soft:#B5B0A6; --muted:#9A958C; --subtle:#88837A;
+  --line:rgba(232,228,218,0.12); --card-ink:#0F1013; --blue:#8FD5FD; --acc:#9BDCB1; --acc-rgb:155,220,177;
+  --serif:'Noto Serif TC','Songti TC',serif; --sans:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;
+  --latin:'Newsreader',Georgia,serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+html{background:var(--ink)}
+body{margin:0;background:var(--ink);color:var(--fg);font-family:var(--sans);-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible{outline:1px solid var(--fg-strong);outline-offset:2px}
+#sky{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:48px;box-sizing:border-box}
+.mono{font-family:var(--mono);letter-spacing:.14em;font-size:11px;color:var(--subtle)}
+.stack{display:flex;flex-direction:column}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hair{height:1px;background:linear-gradient(90deg,rgba(232,228,218,.22),rgba(232,228,218,.04) 60%,rgba(232,228,218,0))}
+[hidden]{display:none !important}
+
+/* 標題與隱藏機關 */
+.hero{display:flex;flex-direction:column;gap:8px;padding-top:28px}
+.hero svg{width:100%;height:auto;display:block;overflow:visible}
+.motto{display:flex;align-items:center;flex-wrap:wrap;min-height:44px}
+.motto .zh{font-family:var(--serif);font-size:17px;letter-spacing:.5em;color:#EAE6DF}
+.secret{width:44px;height:44px;margin-left:-10px;border:0;background:none;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.secret i{display:block;width:3px;height:3px;border-radius:50%;background:#FFFDF8;box-shadow:0 0 3px 1px rgba(255,255,255,.3);animation:beacon 7s ease-in-out infinite;transition:width .3s,height .3s,box-shadow .3s}
+.secret[data-armed="true"] i{width:5px;height:5px;animation:none;box-shadow:0 0 0 3px var(--ink),0 0 0 4px rgba(143,213,253,.85),0 0 12px 4px rgba(143,213,253,.45)}
+body[data-mode="focus"] .secret i{width:10px;height:10px;animation:none;background:radial-gradient(circle,#FFFDF8 0 1.3px,rgba(255,253,248,0) 1.8px);box-shadow:inset 0 0 0 1px var(--blue),0 0 10px 2px rgba(143,213,253,.55)}
+.hint{font-size:12px;line-height:1.5;color:var(--blue)}
+
+/* 星圖 */
+.mapsec{margin-top:26px}
+.mapwrap{position:relative;margin:10px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0}
+.map{position:relative;width:100%;overflow:hidden;touch-action:pan-y}
+.map svg.bg{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.nd{position:absolute;width:0;height:0}
+.nd>*{position:absolute}
+.flow{stroke-dasharray:4 17;animation:flow 1.7s linear infinite}
+.back{min-height:36px;padding:0 0 1px;border:0;border-bottom:1px solid rgba(232,228,218,.4);background:none;font-size:12px;letter-spacing:.06em;color:var(--fg);cursor:pointer}
+body[data-mode="focus"] .back{border-bottom-color:rgba(143,213,253,.5);color:var(--blue)}
+.lbl{white-space:nowrap;font-size:11px;line-height:1.25;color:#EAE6DF;text-shadow:0 0 6px var(--ink),0 0 2px var(--ink);pointer-events:none;transition:opacity .25s}
+.lbl.r{left:9px;top:0;transform:translateY(-50%)}
+.lbl.l{right:9px;top:0;transform:translateY(-50%);text-align:right}
+.lbl.sel{padding:2px 6px;border-radius:4px;background:rgba(11,12,14,.78);color:#F4F1EA;text-shadow:none}
+.dot{left:0;top:0;border-radius:50%;background:#FFFDF8;transform:translate(-50%,-50%)}
+.hub{left:-22px;top:-22px;width:44px;height:44px;border:0;background:none;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hub .halo{position:absolute;left:-6px;top:-6px;width:56px;height:56px;border-radius:50%;pointer-events:none}
+.hub svg{position:relative;overflow:visible}
+.hublbl{font-family:var(--serif);font-size:12px;color:#EAE6DF;white-space:nowrap;text-shadow:0 0 6px var(--ink);pointer-events:none}
+.hublbl.r{left:14px}.hublbl.l{right:14px}
+.star{left:-14px;top:-14px;width:28px;height:28px;border:0;padding:0;border-radius:50%;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.star .ring{position:absolute;left:7px;top:7px;width:14px;height:14px;box-sizing:border-box;border-radius:50%;animation:pulse 4.2s ease-in-out infinite}
+.star .core{border-radius:50%;background:#FFFDF8;transition:width .2s,height .2s}
+.map[data-zoom="none"] .star{pointer-events:none}
+.cpt{left:0;top:0;width:7px;height:7px;box-sizing:border-box;border:1px solid #EAE6DF;transform:translate(-50%,-50%) rotate(45deg)}
+.kairos{left:0;top:0;width:4px;height:4px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);box-shadow:0 0 5px 2px rgba(255,255,255,.85),0 0 18px 6px rgba(244,241,234,.22)}
+
+/* 篩選列（原懸星索引） */
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:12px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0;padding:2px max(16px,env(safe-area-inset-left,0px)) 4px;scroll-padding-inline:16px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 13px;border-radius:999px;border:1px solid rgba(232,228,218,.16);background:rgba(11,12,14,.6);font-family:var(--serif);font-size:13px;letter-spacing:.06em;color:var(--c,#EAE6DF);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.chip b{font-family:var(--latin);font-weight:400;font-size:15px;letter-spacing:0}
+.chip[aria-pressed="true"]{border-color:var(--c,#F4F1EA);background:rgba(var(--rgb,232,228,218),.12)}
+.chip[aria-disabled="true"]{opacity:.45}
+.chip svg{overflow:visible}
+
+/* 說明框 */
+.info{margin-top:12px;display:flex;flex-direction:column;gap:7px;padding:15px 16px;border-radius:10px;border:1px solid rgba(var(--rgb,232,228,218),.3);background:rgba(11,12,14,.6);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.info .nm{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.4;color:var(--fg-strong)}
+.info .meta{font-size:12px;line-height:1.6;color:var(--muted)}
+.info .foot{display:flex;justify-content:space-between;align-items:center;margin-top:2px;padding-top:9px;border-top:1px solid var(--line)}
+.info .go{display:inline-flex;align-items:center;min-height:44px;font-size:15px;color:var(--fg-strong)}
+.info .tip{font-size:13px;line-height:1.7;color:var(--soft)}
+
+/* 卡片牆 */
+#archive{position:relative;margin-top:30px;padding-top:18px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+/* 外層當尺寸容器，內層的 cqw 內距才會以卡片寬度計算 */
+.card{display:block;width:100%;padding:0;border:0;background:none;text-align:left;cursor:pointer;container-type:inline-size;-webkit-tap-highlight-color:transparent}
+.cv{display:flex;aspect-ratio:3/4;box-sizing:border-box;padding:6cqw;display:flex;flex-direction:column;gap:3.6cqw;border-radius:2px}
+.cv .top{display:flex;justify-content:space-between;gap:3cqw;font-family:var(--mono);font-size:6.6cqw;letter-spacing:.04em;white-space:nowrap}
+.cv .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px}
+.cv .win i{position:absolute;border-radius:50%;background:#fff}
+.cv .big{position:absolute;left:6cqw;right:6cqw;bottom:5cqw;display:flex;flex-direction:column;gap:1.6cqw}
+.cv .big small{font-size:6.6cqw;line-height:1.2}
+.cv .yr{font-family:var(--latin);font-style:italic;font-weight:300;font-size:27cqw;line-height:.85;letter-spacing:-.03em}
+.cv .lang{font-family:var(--serif);font-weight:400;line-height:1.05;letter-spacing:.02em;white-space:nowrap}
+.cv .ttl{font-family:var(--serif);font-weight:600;font-size:9.6cqw;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cv .bot{display:flex;justify-content:space-between;align-items:baseline;gap:3cqw;padding-top:3cqw;font-size:6.6cqw;white-space:nowrap}
+.cv .bot span:first-child{overflow:hidden;text-overflow:ellipsis}
+.cv.ms{color:var(--card-ink)}
+.cv.ms .top,.cv.ms .bot{color:rgba(15,16,19,.78)}
+.cv.ms .bot{border-top:1px solid rgba(15,16,19,.24)}
+.cv.fc{background:#121519;color:#EAE6DF}
+.cv.fc .bot{border-top:1px solid rgba(234,230,223,.14);color:var(--muted)}
+.more{margin-top:14px;width:100%;min-height:48px;border:1px solid rgba(232,228,218,.22);border-radius:999px;background:none;color:var(--fg);font-size:14px;cursor:pointer}
+footer{margin-top:36px;padding-top:18px;border-top:1px solid rgba(232,228,218,.1);display:flex;flex-direction:column;gap:6px}
+
+/* 論文頁 */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:space-between;align-items:center;height:52px;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:0 8px;background:rgba(11,12,14,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(232,228,218,.08)}
+.bar a{display:inline-flex;align-items:center;min-width:44px;min-height:44px;padding:0 8px;font-size:14px}
+.bar .doi{justify-content:flex-end;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--acc)}
+.car{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:18px max(16px,env(safe-area-inset-left,0px)) 4px;scroll-padding-inline:max(16px,env(safe-area-inset-left,0px))}
+.car::-webkit-scrollbar{display:none}
+.pc{flex:0 0 calc(100% - 44px);max-width:360px;scroll-snap-align:start;aspect-ratio:3/4;container-type:inline-size;box-sizing:border-box;display:block;border-radius:2px;border:1px solid rgba(var(--acc-rgb),.3);background:var(--surface);color:var(--fg);overflow:hidden}
+.pc .lab{font-family:var(--mono);font-size:3.4cqw;letter-spacing:.14em;color:var(--acc)}
+.pc .h{font-family:var(--serif);font-weight:600;font-size:7.6cqw;line-height:1.35;color:var(--fg-strong)}
+.pc .s{font-size:3.6cqw;line-height:1.6;color:var(--muted)}
+.pc .ft{margin-top:auto;padding-top:3cqw;border-top:1px solid var(--line);font-size:3.4cqw;color:var(--subtle)}
+.pci{display:flex;flex-direction:column;width:100%;height:100%;box-sizing:border-box;padding:6cqw;gap:4.4cqw}
+.pc.cover{background:var(--acc);border:0;color:var(--card-ink)}
+.pc.cover .pci{padding:5.4cqw;gap:3.4cqw}
+.pc.cover.fc{background:#121519;color:#EAE6DF;border:1px solid rgba(var(--acc-rgb),.3)}
+.pc .hook{font-size:4.2cqw;line-height:1.6;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.vs{display:grid;grid-template-columns:auto 1fr 1fr;gap:2.6cqw 3cqw;align-items:center}
+.vs .hd{font-size:3.4cqw;color:var(--subtle);text-align:center}
+.vs .nm{font-size:4.2cqw;color:#EAE6DF;white-space:nowrap}
+.vs .cell{display:flex;flex-direction:column;align-items:center;gap:.8cqw;padding:2.4cqw 1cqw;border-radius:1cqw;background:rgba(232,228,218,.04)}
+.vs .cell b{font-family:var(--serif);font-weight:600;font-size:8cqw;line-height:1}
+.vs .cell span{font-size:3.2cqw;color:var(--muted);text-align:center}
+.vs .ok b{color:var(--acc)} .vs .no b{color:#6F6B64}
+.chipx{padding:2.4cqw 3cqw;border-radius:1cqw;font-size:3.8cqw;line-height:1.55}
+.bign{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(var(--acc-rgb),.35)}
+.bign b{font-family:var(--latin);font-weight:300;font-size:12cqw;line-height:1;color:var(--acc)}
+.bign span{font-size:3.6cqw;line-height:1.5;color:var(--soft)}
+.tl{display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.8cqw;line-height:1.45;color:#EAE6DF}
+.tl b{font-family:var(--latin);font-weight:400;font-size:4.6cqw;color:var(--acc)}
+.dots{display:flex;justify-content:space-between;align-items:center;padding:4px 0 0}
+.dots .btns{display:flex;margin-right:-8px}
+.dots button{width:28px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.dots button i{height:6px;width:6px;border-radius:3px;background:rgba(232,228,218,.28);transition:width .2s}
+.dots button[aria-current="true"] i{width:18px;background:var(--acc)}
+article{display:flex;flex-direction:column;gap:22px;padding-top:26px;font-size:16px;line-height:1.85;color:var(--body)}
+article p,article ul,article ol{margin:0}
+article h1{margin:0;font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.4;color:var(--fg-strong);text-wrap:balance}
+article h2{margin:0;font-family:var(--serif);font-weight:600;font-size:20px;line-height:1.5;color:var(--fg-strong)}
+article h2 small{display:block;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.14em;color:var(--acc)}
+article h3{margin:6px 0 0;font-size:15px;font-weight:500;color:#EAE6DF}
+article ul,article ol{padding-left:20px;display:flex;flex-direction:column;gap:6px}
+dl{margin:0;display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px 12px;padding:14px 0;border-block:1px solid var(--line);font-size:13px;line-height:1.6}
+dt{color:var(--subtle)} dd{margin:0}
+aside{padding:14px 16px;border-radius:8px;background:rgba(232,228,218,.04);font-size:14px;line-height:1.75;color:var(--soft)}
+.mathbox{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:18px 16px;border-radius:6px;background:var(--sunken);box-shadow:inset 0 0 0 1px rgba(var(--acc-rgb),.22),0 0 24px rgba(var(--acc-rgb),.10)}
+.eq{font-family:var(--latin);font-size:17px;color:var(--fg-strong);white-space:nowrap}
+.eq i{font-style:italic}
+.eq sub{font-size:.66em;font-style:normal;vertical-align:-.35em;line-height:0}
+.eq sup{font-size:.66em;line-height:0}
+.al{display:grid;grid-template-columns:auto auto;column-gap:8px;row-gap:10px;width:max-content;align-items:center}
+.al>:nth-child(odd){text-align:right}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 2px}
+.fr>span:first-child{border-bottom:1px solid currentColor;padding:0 2px 1px}
+.fr>span:last-child{padding:1px 2px 0}
+.refs a{display:block;padding:8px 0;font-size:13px;color:var(--acc)}
+
+body[data-route="home"] #paper,body[data-route="paper"] #home{display:none}
+@keyframes beacon{0%,100%{opacity:.35}50%{opacity:.95}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.45}50%{transform:scale(1.18);opacity:.9}}
+@keyframes flow{to{stroke-dashoffset:-42}}
+@media (prefers-reduced-motion:reduce){.secret i,.star .ring,.flow{animation:none}}
+</style>
+</head>
+<body data-route="home" data-mode="stars">
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<div class="page" id="home">
+  <header class="hero">
+    <span class="mono" id="tagline" style="font-size:10px;letter-spacing:.22em">THE KAIROS OF HUMAN THOUGHT</span>
+    <h1 style="margin:0"><svg viewBox="0 0 358 66" role="img" aria-label="Epoch Kairos"><defs><linearGradient id="tf" x1="0" x2="358" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop id="tf0" offset="0" stop-color="rgba(234,230,223,0.6)"/><stop offset="0.7" stop-color="#EAE6DF"/></linearGradient></defs><text x="0" y="54" textLength="356" lengthAdjust="spacing" fill="url(#tf)" style="font-family:Newsreader,Georgia,serif;font-weight:300;font-size:66px">Epoch Kairos</text></svg></h1>
+    <div class="motto"><span class="zh">人類群星閃耀時</span><button type="button" class="secret" id="secret" data-armed="false" aria-label="我的星系"><i></i></button><span class="hint" id="hint" hidden></span></div>
+  </header>
+
+  <section class="mapsec" aria-label="知識星圖">
+    <div class="row" style="min-height:36px"><span class="mono" id="maplabel" style="letter-spacing:.12em">CONSTELLATION ｜ 知識星圖</span><button type="button" class="back" id="back" hidden>← 全圖</button></div>
+    <div class="mapwrap"><div class="hair" style="position:absolute;left:16px;right:16px;top:0"></div><div class="map" id="map"></div></div>
+    <div class="chips" id="chips" role="group" aria-label="篩選"></div>
+    <div class="info" id="info" aria-live="polite"></div>
+  </section>
+
+  <section id="archive" aria-label="檔案">
+    <div class="hair" style="position:absolute;left:0;right:0;top:0"></div>
+    <div class="row" style="align-items:baseline"><span class="mono" id="archlabel" style="letter-spacing:.12em">ARCHIVE ｜ 群星檔案</span><span id="archinfo" style="font-size:12px;color:var(--subtle)"></span></div>
+    <div class="grid" id="grid"></div>
+    <button type="button" class="more" id="more" hidden></button>
+  </section>
+
+  <footer><span style="font-family:var(--latin);font-weight:300;font-size:22px;color:#EAE6DF">Epoch Kairos</span><span style="font-size:12px;color:var(--subtle)">內容由 wiki/ 編譯・原文一律連至 DOI</span></footer>
+</div>
+
+<div class="page" id="paper"></div>
+
+<template id="tpl-opto">
+  <div class="car" aria-label="六張知識圖卡，可左右滑動">
+    <section class="pc cover" aria-label="第 1 張 時代銘文">
+      <span style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:3.4cqw;letter-spacing:.1em;color:rgba(15,16,19,.75)"><span>EPOCH KAIROS</span><span>No.{{NO}}</span></span>
+      <span class="cwin" style="position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:#1E2A24">
+        <span style="position:absolute;left:74%;top:26%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 0 1.4cqw #1E2A24,0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)"></span>
+        <span style="position:absolute;left:5cqw;bottom:4cqw;display:flex;flex-direction:column;gap:1cqw;color:var(--acc)"><span style="font-size:3.6cqw">發表</span><span style="font-family:var(--latin);font-style:italic;font-weight:300;font-size:26cqw;line-height:.85;letter-spacing:-.03em">2005</span></span>
+      </span>
+      <span style="font-size:3.8cqw;color:rgba(15,16,19,.75)">生醫與生命科技・#神經科學 #生物科技</span>
+      <span style="font-family:var(--serif);font-weight:600;font-size:9cqw;line-height:1.2">光遺傳學</span>
+      <span style="font-size:4.3cqw;line-height:1.6">讓科學家能用一道藍光，在千分之一秒內開關大腦中某一類特定的神經元。</span>
+      <span style="padding-top:2.6cqw;border-top:1px solid rgba(15,16,19,.22);font-size:3.6cqw;color:rgba(15,16,19,.75)">2005 發表 ｜ 2026 諾貝爾獎</span>
+    </section>
+
+    <section class="pc" aria-label="第 2 張 世紀瓶頸" style="gap:5cqw">
+      <span class="lab">02 ｜ 世紀瓶頸</span>
+      <span class="h">快的不準，準的不快</span>
+      <span class="vs" role="table" aria-label="電極刺激與化學藥物的比較">
+        <span role="row" style="display:contents"><span></span><span class="hd" role="columnheader">速度</span><span class="hd" role="columnheader">專一性</span></span>
+        <span role="row" style="display:contents"><span class="nm" role="rowheader">電極刺激</span><span class="cell ok" role="cell"><b>快</b><span>毫秒級</span></span><span class="cell no" role="cell"><b>散</b><span>波及周圍神經元</span></span></span>
+        <span role="row" style="display:contents"><span class="nm" role="rowheader">化學藥物</span><span class="cell no" role="cell"><b>慢</b><span>數秒至數十分鐘</span></span><span class="cell ok" role="cell"><b>準</b><span>鎖定特定受體</span></span></span>
+      </span>
+      <span class="s">大腦以毫秒為單位運作。電刺激跟得上速度卻無法挑對象，藥物挑得準卻慢了好幾個數量級。</span>
+      <span class="ft" style="font-size:4cqw;color:#EAE6DF">缺的是一個又快又準的開關。</span>
+    </section>
+
+    <section class="pc" aria-label="第 3 張 突破原理">
+      <span class="lab">03 ｜ 突破原理</span>
+      <span class="h">一道藍光，一個開關</span>
+      <span class="stack" style="gap:2cqw">
+        <span class="chipx" style="background:rgba(143,213,253,.1);color:#CDE9FB">約 470 nm 藍光｜ChR2 開啟，陽離子內流，神經元放電</span>
+        <span class="chipx" style="background:rgba(230,198,134,.1);color:#EEDCB5">約 580 nm 黃光｜NpHR 抑制（Zhang 等 2007 延伸）</span>
+      </span>
+      <span class="mathbox" style="padding:4cqw 3cqw;border-radius:1cqw"><span class="eq" style="font-size:4.6cqw"><i>I</i><sub>ChR2</sub> = <i>g</i><sub>ChR2</sub> · <i>O</i>(<i>t</i>) · <i>G</i>(<i>V</i><sub><i>m</i></sub>) · (<i>V</i><sub><i>m</i></sub> − <i>E</i><sub>ChR2</sub>)</span></span>
+      <span class="s">光電流 ＝ 最大電導 × 開放比例 × 電壓整流 × 驅動力。綠藻的趨光蛋白直接成為神經元上的光控離子通道。</span>
+    </section>
+
+    <section class="pc" aria-label="第 4 張 決定性數據">
+      <span class="lab">04 ｜ 決定性數據</span>
+      <span style="flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw">
+        <span class="bign"><b>&lt;1 ms</b><span>藍光照射後，光電流在亞毫秒內啟動</span></span>
+        <span class="bign"><b>1 : 1</b><span>一次短光脈衝，誘發一個動作電位</span></span>
+        <span class="bign"><b>數十 Hz</b><span>神經元逐次跟隨脈衝序列放電</span></span>
+        <span class="bign"><b>0</b><span>外加輔因子，內源視黃醛即足夠</span></span>
+      </span>
+      <span class="ft">範圍：Boyden 等 2005，離體培養神經元之概念驗證</span>
+    </section>
+
+    <section class="pc" aria-label="第 5 張 典範轉移">
+      <span class="lab">05 ｜ 典範轉移</span>
+      <span class="h">從看見大腦，到改寫迴路</span>
+      <span style="flex:1;display:flex;flex-direction:column;justify-content:space-between;padding-left:4cqw;background:linear-gradient(180deg,rgba(var(--acc-rgb),.5),rgba(var(--acc-rgb),.08)) left top/1px 100% no-repeat">
+        <span class="tl"><b>2007</b><span>植入光纖，清醒小鼠活體光控</span></span>
+        <span class="tl"><b>2007</b><span>光控下視丘神經元誘發甦醒</span></span>
+        <span class="tl"><b>2009</b><span>解構帕金森氏症迴路</span></span>
+        <span class="tl"><b>2011</b><span>杏仁核投射雙向調控焦慮</span></span>
+        <span class="tl"><b>2012</b><span>恐懼記憶召回與記憶印痕操控</span></span>
+      </span>
+      <span class="ft">以上皆為後續他人成果，出處見長文</span>
+    </section>
+
+    <section class="pc" aria-label="第 6 張 Kairos" style="background:radial-gradient(circle at 80% 14%,rgba(var(--acc-rgb),.14),rgba(var(--acc-rgb),0) 46%),var(--surface)">
+      <span class="lab">06 ｜ KAIROS</span>
+      <span style="margin-top:auto;font-family:var(--serif);font-size:7cqw;line-height:1.6;color:var(--fg-strong)">困擾神經科學近百年的難題，解答不在神經科學內部，而在單細胞綠藻的冷門角落。</span>
+      <span style="display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--soft)"><span>觀察相關</span><span aria-hidden="true" style="flex:1;height:1px;background:linear-gradient(90deg,rgba(var(--acc-rgb),.2),var(--acc))"></span><span style="color:var(--acc)">操控因果</span></span>
+    </section>
+  </div>
+  <div class="dots"><span class="mono lblc" style="letter-spacing:.12em;color:var(--muted)"></span><span class="btns"></span></div>
+
+  <article>
+    <header class="stack" style="gap:10px">
+      <span class="mono" style="color:var(--acc)">2005 發表 ｜ 2026 諾貝爾生理學或醫學獎</span>
+      <h1>光遺傳學：以光精準控制大腦神經元</h1>
+      <span style="font-family:var(--latin);font-style:italic;font-size:16px;line-height:1.5;color:var(--soft)">Millisecond-timescale, genetically targeted optical control of neural activity</span>
+    </header>
+    <dl>
+      <dt>作者</dt><dd>Boyden, Zhang, Bamberg, Nagel, Deisseroth</dd>
+      <dt>得獎者</dt><dd>Deisseroth, Hegemann, Nagel</dd>
+      <dt>期刊</dt><dd>Nature Neuroscience, 8(9), 1263-1268</dd>
+      <dt>標籤</dt><dd>#神經科學 #生物科技</dd>
+    </dl>
+    <aside>本頁範圍：2026 年獎項表彰一系列工作。本頁以 Boyden 等 (2005) 為主軸；Nagel 與 Hegemann 2002、2003 年的奠基論文列於文末。Hegemann 並非 2005 年該篇的作者。</aside>
+
+    <section class="stack" style="gap:12px">
+      <h2><small>CARD 1 ｜ THE HOOK</small>時代銘文</h2>
+      <p>在 2005 年以前，神經科學能「看見」大腦活動，卻無法「指定」某一類神經元在某一毫秒放電。這篇論文讓單一類型的神經元變成一個可以用光開關的電路元件，把大腦研究從觀察相關性，推進到操控因果。</p>
+    </section>
+
+    <section class="stack" style="gap:12px">
+      <h2><small>CARD 2 ｜ THE DILEMMA</small>世紀瓶頸</h2>
+      <p>探索意識、情感與腦部疾病的迴路時，神經科學長期受困於時間與空間精度無法兼得：</p>
+      <ul>
+        <li><b style="color:#EAE6DF;font-weight:500">電刺激快而不準</b>：微電極刺激可達毫秒級，但電流在腦組織中擴散，會同時激活周圍的興奮性、抑制性神經元與過路軸突，因果關係無從拆解。</li>
+        <li><b style="color:#EAE6DF;font-weight:500">藥物準而不快</b>：藥理學可經由專一受體作用於特定神經元，但擴散與代謝需數秒至數十分鐘，追不上以毫秒進行的神經電訊號。</li>
+      </ul>
+    </section>
+
+    <section class="stack" style="gap:12px">
+      <h2><small>CARD 3 ｜ THE SECRET</small>突破架構與原理</h2>
+      <p>源自綠藻 <i>Chlamydomonas reinhardtii</i> 的 ChR2，兼具感光色素與離子通道兩種功能。藍光（約 470 nm）照射時通道打開，陽離子（Na<sup>+</sup>、Ca<sup>2+</sup>、H<sup>+</sup>）內流，細胞去極化並誘發動作電位。</p>
+      <h3>光敏感通道之光電流方程</h3>
+      <div class="mathbox" role="math" aria-label="I ChR2 等於 g ChR2 乘 O(t) 乘 G(Vm) 乘 (Vm 減 E ChR2)"><span class="eq"><i>I</i><sub>ChR2</sub>(<i>t</i>, <i>V</i><sub><i>m</i></sub>) = <i>g</i><sub>ChR2</sub> · <i>O</i>(<i>t</i>) · <i>G</i>(<i>V</i><sub><i>m</i></sub>) · (<i>V</i><sub><i>m</i></sub> − <i>E</i><sub>ChR2</sub>)</span></div>
+      <span style="align-self:flex-end;margin-top:-6px;font-size:11px;color:var(--subtle)">公式過長時可左右滑動</span>
+      <h3>三態光循環動力學</h3>
+      <div class="mathbox" role="math" aria-label="關閉態、開放態、去敏化態三個微分方程，三者總和為一"><span class="eq al">
+        <span><span class="fr"><span><i>dC</i></span><span><i>dt</i></span></span></span><span>= <i>k<sub>r</sub></i> <i>D</i> − <i>k<sub>a</sub></i>(<i>I</i>) <i>C</i></span>
+        <span><span class="fr"><span><i>dO</i></span><span><i>dt</i></span></span></span><span>= <i>k<sub>a</sub></i>(<i>I</i>) <i>C</i> − <i>k<sub>d</sub></i> <i>O</i></span>
+        <span><span class="fr"><span><i>dD</i></span><span><i>dt</i></span></span></span><span>= <i>k<sub>d</sub></i> <i>O</i> − <i>k<sub>r</sub></i> <i>D</i></span>
+        <span><i>C</i> + <i>O</i> + <i>D</i></span><span>= 1</span>
+      </span></div>
+      <h3>膜電位整合方程（aligned 斷行）</h3>
+      <div class="mathbox" role="math" aria-label="Hodgkin-Huxley 膜電位方程加入光電流項"><span class="eq al">
+        <span><i>C<sub>m</sub></i> <span class="fr"><span><i>dV<sub>m</sub></i></span><span><i>dt</i></span></span> =</span><span>− <i>ḡ</i><sub>Na</sub> <i>m</i><sup>3</sup><i>h</i> (<i>V<sub>m</sub></i> − <i>E</i><sub>Na</sub>)</span>
+        <span></span><span>− <i>ḡ</i><sub>K</sub> <i>n</i><sup>4</sup> (<i>V<sub>m</sub></i> − <i>E</i><sub>K</sub>)</span>
+        <span></span><span>− <i>g<sub>L</sub></i> (<i>V<sub>m</sub></i> − <i>E<sub>L</sub></i>)</span>
+        <span></span><span>− <i>I</i><sub>ChR2</sub>(<i>t</i>, <i>V<sub>m</sub></i>) + <i>I</i><sub>ext</sub></span>
+      </span></div>
+      <p>藍光脈衝入射時，<span class="eq" style="font-size:16px"><i>I</i><sub>ChR2</sub></span> 快速提供去極化內向電流，使膜電位在毫秒內越過激發閾值，觸發單一動作電位。</p>
+    </section>
+
+    <section class="stack" style="gap:12px">
+      <h2><small>CARD 4 ｜ THE EVIDENCE</small>決定性數據</h2>
+      <h3 style="margin:0">本篇論文（Boyden 等 2005）</h3>
+      <ul>
+        <li>藍光照射後，ChR2 光電流於亞毫秒尺度啟動。</li>
+        <li>短促藍光脈衝可穩定誘發單一動作電位，放電抖動落在毫秒量級。</li>
+        <li>神經元能在數 Hz 至數十 Hz 範圍內逐次跟隨脈衝序列。</li>
+        <li>哺乳動物神經元內源視黃醛即足以支持 ChR2 作用。</li>
+      </ul>
+      <h3>後續他人成果（非本篇）</h3>
+      <ul style="font-size:14px;color:var(--soft)">
+        <li>Aravanis 等 (2007), J Neural Eng：植入光纖於清醒小鼠活體光控</li>
+        <li>Adamantidis 等 (2007), Nature：光控下視丘神經元與睡眠甦醒</li>
+        <li>Gradinaru 等 (2009), Science：解構帕金森氏症迴路</li>
+        <li>Tye 等 (2011), Nature：杏仁核投射雙向調控焦慮</li>
+        <li>Liu 等 (2012), Nature；Ramirez 等 (2013), Science：記憶印痕操控</li>
+      </ul>
+    </section>
+
+    <section class="stack" style="gap:12px">
+      <h2><small>CARD 5 ｜ THE REVOLUTION</small>時代典範轉移</h2>
+      <ul>
+        <li><b style="color:#EAE6DF;font-weight:500">連接圖譜功能化</b>：解剖學過去只能畫出靜態結構，光遺傳學讓全腦動態因果圖譜的測繪成為可能。</li>
+        <li><b style="color:#EAE6DF;font-weight:500">神經與精神疾病</b>：鎖定丘腦底核與基底核的失調迴路，修正了深腦刺激療效機制的既有理解；解析多巴胺獎勵迴路，為憂鬱症與成癮的靶向治療提供理論依據；MIT 利根川進實驗室實現記憶標記、恐懼記憶召回與偽記憶植入。</li>
+        <li><b style="color:#EAE6DF;font-weight:500">臨床轉譯</b>：光遺傳學原理已進入視網膜疾病的臨床研究階段。</li>
+      </ul>
+    </section>
+
+    <section class="stack" style="gap:12px">
+      <h2><small>CARD 6 ｜ THE KAIROS</small>跨界思維與啟發</h2>
+      <p>光遺傳學的震撼，不在憑空創造新元件，而在把單細胞綠藻演化十億年的趨光分子開關，嫁接進哺乳動物大腦的神經元。</p>
+      <ol>
+        <li><b style="color:#EAE6DF;font-weight:500">跨學科的降維打擊</b>：困擾神經科學近百年的時空精度難題，解答不在神經科學內部，而在微生物學的冷門角落。</li>
+        <li><b style="color:#EAE6DF;font-weight:500">因果的工程化閉環</b>：科學認知從觀察現象的相關性，升級為精確操控的因果判定。</li>
+      </ol>
+    </section>
+
+    <section class="stack refs" style="gap:2px;padding-top:18px;border-top:1px solid var(--line)">
+      <span class="mono">KEY PAPERS</span>
+      <a href="https://doi.org/10.1126/science.1072068">Nagel 等 (2002) Science 296:2395-2398</a>
+      <a href="https://doi.org/10.1073/pnas.1936192100">Nagel 等 (2003) PNAS 100:13940-13945</a>
+      <a href="https://doi.org/10.1038/nn1525">Boyden 等 (2005) Nat Neurosci 8:1263-1268</a>
+    </section>
+  </article>
+</template>
+
+<script>
+(function(){
+var D = /*__DATA__*/null;
+var reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+var IV = '244,241,234', BLUE = '143,213,253';
+var $ = function(id){ return document.getElementById(id); };
+var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); };
+function rndFrom(seed){ var s = seed | 0; return function(){ s = (s + 0x6D2B79F5) | 0; var t = Math.imul(s ^ (s >>> 15), 1 | s); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+var byP = {}, byF = {}, roleName = {};
+D.papers.forEach(function(p, i){ p.no = i + 1; byP[p.slug] = p; });
+D.focus.forEach(function(p, i){ p.no = i + 1; byF[p.slug] = p; });
+D.roles.forEach(function(r){ roleName[r[0]] = r[1]; });
+var HUMAN_RGB = D.dom.human.rgb;
+function pad2(n){ return (n < 10 ? '0' : '') + n; }
+function fRgb(p){ return p.d === 'human' ? HUMAN_RGB : BLUE; }
+function fColor(p){ return p.d === 'human' ? D.dom.human.color : '#8FD5FD'; }
+
+var S = { mode: 'stars', zoom: null, note: null, sel: null, fsel: null, ffilter: 'all', more: { stars: false, focus: false }, armed: false, homeScroll: 0 };
+
+/* ---------- 星空背景 ---------- */
+var sky = $('sky'), ctx = sky.getContext('2d'), skyStars = [];
+(function(){ var r = rndFrom(3901108), tints = ['#FFFFFF','#FFFFFF','#FFFFFF','#FFF3E2','#E4EEFF'];
+  for (var i = 0; i < 520; i++){ var band = r() < 0.45, x = r(), y = band ? (0.62 - x * 0.5 + (r() + r() + r() - 1.5) * 0.12) : r(), q = r(), sz = q < 0.66 ? 0.6 : (q < 0.94 ? 0.9 : 1.3);
+    skyStars.push({ x: x, y: Math.max(0, Math.min(1, y)), r: sz, o: sz > 1.2 ? 0.92 : (sz > 0.8 ? 0.7 : 0.3 + r() * 0.45), c: tints[Math.floor(r() * tints.length)], tw: sz > 0.8 && r() < 0.4, ph: r() * 6.28 }); } })();
+function drawSky(t){ var w = innerWidth, h = innerHeight, d = Math.min(devicePixelRatio || 1, 2);
+  if (sky.width !== Math.round(w * d) || sky.height !== Math.round(h * d)){ sky.width = Math.round(w * d); sky.height = Math.round(h * d); }
+  ctx.setTransform(d, 0, 0, d, 0, 0); ctx.clearRect(0, 0, w, h);
+  for (var i = 0; i < skyStars.length; i++){ var s = skyStars[i], o = s.o; if (s.tw && !reduce && t) o *= 0.6 + 0.4 * Math.sin(t / 760 + s.ph);
+    ctx.globalAlpha = o; ctx.fillStyle = s.c; ctx.beginPath(); ctx.arc(s.x * w, s.y * h, s.r, 0, 6.283); ctx.fill(); }
+  ctx.globalAlpha = 1; }
+var lastSky = 0; function skyLoop(t){ if (t - lastSky > 66){ drawSky(t); lastSky = t; } requestAnimationFrame(skyLoop); }
+drawSky(0); if (!reduce) requestAnimationFrame(skyLoop); addEventListener('resize', function(){ drawSky(0); });
+
+/* ---------- 星圖共用 ---------- */
+var map = $('map'), nodes = [], stage = { w: 1000, h: 1000 }, view = { x: 0, y: 0, w: 1000, h: 1000 }, tween = null;
+function shapeSvg(path, color, size, sw){ return '<svg width="' + size + '" height="' + size + '" viewBox="0 0 10 10" aria-hidden="true"><path d="' + path + '" fill="none" stroke="' + color + '" stroke-width="' + (sw || 1) + '"/></svg>'; }
+function curve(x1, y1, x2, y2){ var dx = x2 - x1, dy = y2 - y1, cx = (x1 + x2) / 2 - dy * 0.13, cy = (y1 + y2) / 2 + dx * 0.13; return 'M' + x1 + ' ' + y1 + ' Q' + cx.toFixed(1) + ' ' + cy.toFixed(1) + ' ' + x2 + ' ' + y2; }
+var gid = 0;
+function edge(o){ /* o: x1,y1,x2,y2,c1,c2,a,fade,w,flow,dash */
+  var g = 'eg' + (gid++), d = curve(o.x1, o.y1, o.x2, o.y2);
+  var s = '<linearGradient id="' + g + '" gradientUnits="userSpaceOnUse" x1="' + o.x1 + '" y1="' + o.y1 + '" x2="' + o.x2 + '" y2="' + o.y2 + '"><stop offset="0" stop-color="rgba(' + o.c1 + ',' + o.a.toFixed(3) + ')"/><stop offset="1" stop-color="rgba(' + o.c2 + ',' + (o.a * o.fade).toFixed(3) + ')"/></linearGradient>';
+  s += '<path d="' + d + '" fill="none" stroke="url(#' + g + ')" stroke-width="' + (o.w || 1.1) + '" stroke-linecap="round" vector-effect="non-scaling-stroke"' + (o.dash ? ' stroke-dasharray="' + o.dash + '"' : '') + '/>';
+  if (o.flow && !reduce) s += '<path class="flow" d="' + d + '" fill="none" stroke="rgba(255,253,248,0.9)" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>';
+  return s; }
+function place(){ var v = view; map.querySelector('svg.bg').setAttribute('viewBox', v.x.toFixed(1) + ' ' + v.y.toFixed(1) + ' ' + v.w.toFixed(1) + ' ' + v.h.toFixed(1));
+  for (var i = 0; i < nodes.length; i++){ var n = nodes[i], px = (n.x - v.x) / v.w * 100, py = (n.y - v.y) / v.h * 100; n.el.style.left = px + '%'; n.el.style.top = py + '%';
+  } }
+function animateTo(t){ if (tween) cancelAnimationFrame(tween.raf);
+  if (reduce){ view = t; place(); declutter(); return; }
+  var f = { x: view.x, y: view.y, w: view.w, h: view.h }, t0 = performance.now(), dur = 560;
+  tween = {}; (function step(now){ var k = Math.min(1, (now - t0) / dur), e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+    view = { x: f.x + (t.x - f.x) * e, y: f.y + (t.y - f.y) * e, w: f.w + (t.w - f.w) * e, h: f.h + (t.h - f.h) * e }; place();
+    if (k < 1) tween.raf = requestAnimationFrame(step); else { tween = null; declutter(); } })(t0); }
+function addNode(el, x, y, lab, pri){ nodes.push({ el: el, x: x, y: y, lab: lab || null, pri: pri == null ? 2 : pri, show: !!lab && pri === 1 }); }
+/* 標籤避讓：依優先序逐一放置，試右、左與上下偏移，放不下的次要標籤隱藏 */
+var SLOTS = [['r', 0], ['l', 0], ['r', -12], ['l', -12], ['r', 12], ['l', 12], ['r', -24], ['l', -24], ['r', 24], ['l', 24]];
+function declutter(){ var mr = map.getBoundingClientRect(), placed = [];
+  var items = nodes.filter(function(n){ if (!n.lab) return false; if (!n.show){ n.lab.style.opacity = 0; return false; } return true; });
+  items.sort(function(a, b){ return a.pri - b.pri; });
+  items.forEach(function(n){ var lab = n.lab, best = null;
+    function setSlot(sl){ lab.classList.toggle('l', sl[0] === 'l'); lab.classList.toggle('r', sl[0] === 'r'); lab.style.marginTop = sl[1] + 'px'; }
+    for (var i = 0; i < SLOTS.length; i++){ setSlot(SLOTS[i]); var r = lab.getBoundingClientRect();
+      if (r.left < mr.left + 2 || r.right > mr.right - 2 || r.top < mr.top || r.bottom > mr.bottom) continue;
+      var ov = 0; placed.forEach(function(q){ var w = Math.min(r.right, q.right + 3) - Math.max(r.left, q.left - 3), h = Math.min(r.bottom, q.bottom + 1) - Math.max(r.top, q.top - 1); if (w > 0 && h > 0) ov += w * h; });
+      if (!best || ov < best.ov){ best = { i: i, ov: ov, r: r }; } if (ov === 0) break; }
+    /* 論文與學科標籤一律顯示（取重疊最少的位置）；標籤與概念放不下就隱藏 */
+    if (best && (best.ov === 0 || n.pri <= 2)){ setSlot(SLOTS[best.i]); placed.push(best.r); lab.style.opacity = 1; }
+    else if (!best && n.pri <= 2){ setSlot(SLOTS[0]); placed.push(lab.getBoundingClientRect()); lab.style.opacity = 1; }
+    else lab.style.opacity = 0; }); }
+
+/* ---------- 群星星圖 ---------- */
+function domainView(k){ var d = D.dom[k], pts = [d.hub];
+  d.tags.forEach(function(t){ pts.push([D.tags[t].x, D.tags[t].y]); });
+  D.papers.forEach(function(p){ if (p.d === k) pts.push([p.x, p.y]); });
+  var x0 = Math.min.apply(null, pts.map(function(p){ return p[0]; })), x1 = Math.max.apply(null, pts.map(function(p){ return p[0]; }));
+  var y0 = Math.min.apply(null, pts.map(function(p){ return p[1]; })), y1 = Math.max.apply(null, pts.map(function(p){ return p[1]; }));
+  var size = Math.min(1000, Math.max(400, Math.max(x1 - x0, y1 - y0) + 190)), cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+  return { x: Math.max(-60, Math.min(1060 - size, cx - size / 2)), y: Math.max(-60, Math.min(1060 - size, cy - size / 2)), w: size, h: size }; }
+
+function buildStars(){
+  stage = { w: 1000, h: 1000 }; map.style.aspectRatio = '1 / 1'; nodes = [];
+  var h = '<svg class="bg" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true"><defs>';
+  D.order.forEach(function(k){ var d = D.dom[k]; h += '<radialGradient id="nb-' + k + '"><stop offset="0" stop-color="rgba(' + d.rgb + ',0.10)"/><stop offset="0.5" stop-color="rgba(' + d.rgb + ',0.04)"/><stop offset="1" stop-color="rgba(' + d.rgb + ',0)"/></radialGradient>'; });
+  h += '</defs><g id="nebs">';
+  D.order.forEach(function(k){ var d = D.dom[k]; h += '<circle data-k="' + k + '" cx="' + d.hub[0] + '" cy="' + d.hub[1] + '" r="' + (d.count ? 260 : 150) + '" fill="url(#nb-' + k + ')"/>'; });
+  var ticks = ''; for (var i = 0; i < 48; i++){ var an = i * 7.5 * Math.PI / 180, r2 = i % 4 === 0 ? 470 : 480; ticks += 'M' + (500 + 490 * Math.cos(an)).toFixed(1) + ' ' + (500 + 490 * Math.sin(an)).toFixed(1) + ' L' + (500 + r2 * Math.cos(an)).toFixed(1) + ' ' + (500 + r2 * Math.sin(an)).toFixed(1) + ' '; }
+  h += '</g><g fill="none" stroke="rgba(232,228,218,0.08)" stroke-width="1"><circle cx="500" cy="500" r="120" stroke-dasharray="3 8" vector-effect="non-scaling-stroke"/><circle cx="500" cy="500" r="210" stroke-dasharray="2 9" vector-effect="non-scaling-stroke"/><circle cx="500" cy="500" r="490" vector-effect="non-scaling-stroke"/><path d="' + ticks + '" stroke="rgba(232,228,218,0.12)" vector-effect="non-scaling-stroke"/><circle cx="500" cy="500" r="24" stroke="rgba(232,228,218,0.24)" vector-effect="non-scaling-stroke"/></g><g id="edges"></g></svg>';
+  map.innerHTML = h;
+  function mk(html){ var w = document.createElement('div'); w.className = 'nd'; w.innerHTML = html; map.appendChild(w); return w; }
+  addNode(mk('<span class="kairos" aria-hidden="true"></span>'), 500, 500);
+  D.concepts.forEach(function(c){ var w = mk('<span class="cpt" aria-hidden="true"></span><span class="lbl r" aria-hidden="true">' + esc(c.name) + '</span>'); w.dataset.c = c.slug; addNode(w, c.x, c.y, w.querySelector('.lbl'), 4); });
+  Object.keys(D.tags).forEach(function(t){ var tg = D.tags[t], d = D.dom[tg.d];
+    var w = mk('<span class="dot" aria-hidden="true" style="width:3px;height:3px;box-shadow:0 0 5px 1.5px rgba(' + d.rgb + ',.75)"></span><span class="lbl r" aria-hidden="true" style="color:var(--soft)">' + esc(t) + '</span>'); w.dataset.t = t; addNode(w, tg.x, tg.y, w.querySelector('.lbl'), 3); });
+  D.order.forEach(function(k){ var d = D.dom[k];
+    var w = mk('<button type="button" class="hub" data-hub="' + k + '" aria-label="' + esc(d.full + '，' + d.count + ' 篇') + '"><span class="halo" style="background:radial-gradient(closest-side,rgba(' + d.rgb + ',.32),rgba(' + d.rgb + ',.1) 45%,rgba(' + d.rgb + ',0) 100%)"></span>' + shapeSvg(d.shape, d.color, 13, 0.9) + '</button><span class="hublbl lbl r" aria-hidden="true">' + esc(d.name) + ' <span style="font-family:var(--latin);color:var(--muted)">' + d.count + '</span></span>');
+    w.dataset.k = k; addNode(w, d.hub[0], d.hub[1], w.querySelector('.hublbl'), 1); });
+  D.papers.forEach(function(p){ var d = D.dom[p.d], aw = !!p.award;
+    var w = mk('<button type="button" class="star" data-p="' + p.slug + '" aria-label="' + esc(p.short + '，' + p.p + ' 發表' + (aw ? '，' + p.award : '')) + '" tabindex="-1">' + (aw ? '<span class="ring" aria-hidden="true" style="border:1px dashed rgba(244,241,234,.55)"></span>' : '') + '<span class="core" aria-hidden="true"></span></button><span class="lbl r" aria-hidden="true">' + esc(p.short) + '</span>');
+    w.dataset.p = p.slug; addNode(w, p.x, p.y, w.querySelector('.lbl'), 2); });
+}
+
+function starsEdges(){ gid = 0; var z = S.zoom, sel = S.sel ? byP[S.sel] : null, s = '';
+  var selTags = {}, selDom = {}; if (sel) sel.tags.forEach(function(t){ selTags[t] = 1; selDom[D.tags[t].d] = 1; });
+  function inZ(k){ return !z || z === k; }
+  D.order.forEach(function(k){ var d = D.dom[k]; s += edge({ x1: 500, y1: 500, x2: d.hub[0], y2: d.hub[1], c1: IV, c2: d.rgb, a: selDom[k] ? 0.55 : (inZ(k) ? (d.count ? 0.3 : 0.12) : 0.05), fade: 0.7 }); });
+  Object.keys(D.tags).forEach(function(t){ var tg = D.tags[t], d = D.dom[tg.d]; s += edge({ x1: d.hub[0], y1: d.hub[1], x2: tg.x, y2: tg.y, c1: d.rgb, c2: d.rgb, a: selTags[t] ? 0.9 : (inZ(tg.d) ? 0.55 : 0.08), fade: 0.35, w: selTags[t] ? 1.7 : 1.1, flow: !!selTags[t] }); });
+  D.papers.forEach(function(p){ p.tags.forEach(function(t){ var tg = D.tags[t], lit = sel && sel.slug === p.slug; s += edge({ x1: tg.x, y1: tg.y, x2: p.x, y2: p.y, c1: D.dom[tg.d].rgb, c2: IV, a: lit ? 0.95 : ((inZ(tg.d) || inZ(p.d)) ? 0.42 : 0.06), fade: 0.25, w: lit ? 1.7 : 1.1, flow: lit }); }); });
+  if (sel) D.concepts.forEach(function(c){ if (c.papers.indexOf(sel.slug) >= 0) s += edge({ x1: c.x, y1: c.y, x2: sel.x, y2: sel.y, c1: IV, c2: IV, a: 0.7, fade: 0.4, dash: '2 5' }); });
+  map.querySelector('#edges').innerHTML = s; }
+
+function starsState(){ var z = S.zoom, sel = S.sel ? byP[S.sel] : null;
+  map.dataset.zoom = z || 'none';
+  var selTags = {}; if (sel) sel.tags.forEach(function(t){ selTags[t] = 1; });
+  map.querySelectorAll('#nebs circle').forEach(function(c){ c.style.opacity = (!z || z === c.dataset.k) ? 1 : 0.25; });
+  nodes.forEach(function(n){ var el = n.el, ds = el.dataset;
+    if (ds.k){ var on = !z || z === ds.k, d = D.dom[ds.k]; el.style.opacity = d.count ? (on ? 1 : 0.35) : 0.45; el.querySelector('button').setAttribute('aria-pressed', z === ds.k ? 'true' : 'false'); }
+    else if (ds.t){ var tg = D.tags[ds.t], lit = !!selTags[ds.t]; el.querySelector('.dot').style.opacity = lit ? 1 : (!z || z === tg.d ? 0.85 : 0.2); n.show = lit || z === tg.d; }
+    else if (ds.p){ var p = byP[ds.p], d = D.dom[p.d], isSel = sel && sel.slug === p.slug, act = !z || z === p.d || p.tags.some(function(t){ return D.tags[t].d === z; });
+      var core = el.querySelector('.core'), sz = isSel ? 8 : (z ? 6 : (p.award ? 5 : 4)); core.style.width = core.style.height = sz + 'px';
+      core.style.boxShadow = isSel ? '0 0 5px 2px rgba(' + d.rgb + ',.95),0 0 18px 6px rgba(' + d.rgb + ',.45)' : '0 0 4px 1px rgba(' + d.rgb + ',.9),0 0 10px 3px rgba(' + d.rgb + ',.3)';
+      var ring = el.querySelector('.ring'); if (ring) ring.style.borderColor = isSel ? d.color : 'rgba(244,241,234,.55)';
+      el.style.opacity = (isSel || act) ? 1 : 0.18; n.show = !!(isSel || (z && z === p.d)); n.pri = isSel ? 0 : 2; n.lab.classList.toggle('sel', !!isSel); n.lab.style.color = isSel ? '#F4F1EA' : '#D9D5CB';
+      var b = el.querySelector('button'); b.tabIndex = z && act ? 0 : -1; b.setAttribute('aria-pressed', isSel ? 'true' : 'false'); }
+    else if (ds.c){ var c = D.concepts.filter(function(x){ return x.slug === ds.c; })[0], lc = sel && c.papers.indexOf(sel.slug) >= 0;
+      el.style.opacity = sel ? (lc ? 1 : 0.2) : (z ? 0.3 : 0.6); n.show = !!lc; } });
+  starsEdges(); }
+
+/* ---------- 我的星系星圖 ---------- */
+function buildFocus(){
+  stage = { w: 1000, h: D.focusH }; map.style.aspectRatio = '1000 / ' + D.focusH; nodes = [];
+  var H = D.focusH, ys = Object.keys(D.rowY).map(Number), grid = '';
+  ys.forEach(function(y){ grid += 'M60 ' + D.rowY[y] + ' H960 '; });
+  var h = '<svg class="bg" viewBox="0 0 1000 ' + H + '" preserveAspectRatio="none" aria-hidden="true"><defs><radialGradient id="nbf"><stop offset="0" stop-color="rgba(' + BLUE + ',0.11)"/><stop offset="0.5" stop-color="rgba(' + BLUE + ',0.045)"/><stop offset="1" stop-color="rgba(' + BLUE + ',0)"/></radialGradient></defs>';
+  h += '<g id="nebs"><circle data-k="F" cx="330" cy="640" r="420" fill="url(#nbf)"/><circle data-k="L" cx="670" cy="640" r="420" fill="url(#nbf)"/></g>';
+  h += '<path d="' + grid + '" fill="none" stroke="rgba(' + BLUE + ',0.10)" vector-effect="non-scaling-stroke"/>';
+  h += '<path d="M60 ' + D.thesis.y + ' H960" fill="none" stroke="rgba(' + BLUE + ',0.24)" stroke-dasharray="3 5" vector-effect="non-scaling-stroke"/>';
+  h += '<path d="M345 200 V' + (D.thesis.y - 50) + ' M655 200 V' + (D.thesis.y - 50) + '" fill="none" stroke="rgba(232,228,218,0.06)" stroke-dasharray="1 4" vector-effect="non-scaling-stroke"/><g id="edges"></g></svg>';
+  map.innerHTML = h;
+  function mk(html){ var w = document.createElement('div'); w.className = 'nd'; w.innerHTML = html; map.appendChild(w); return w; }
+  ys.forEach(function(y){ addNode(mk('<span class="lbl r" aria-hidden="true" style="left:0;font-family:var(--mono);font-size:9px;color:var(--subtle);text-shadow:none">' + y + '</span>'), 14, D.rowY[y]); });
+  addNode(mk('<span class="lbl r" aria-hidden="true" style="left:0;font-family:var(--mono);font-size:9px;color:var(--blue);text-shadow:none">NOW</span>'), 14, D.thesis.y);
+  var zc = { F: 0, B: 0, L: 0 }; D.focus.forEach(function(p){ zc[p.con.length > 1 ? 'B' : p.con[0]]++; });
+  [['F', 190, '僅南島語'], ['B', 500, '兩者交集'], ['L', 810, '僅低資源翻譯']].forEach(function(c){ var w = mk('<span class="lbl" aria-hidden="true" style="left:0;top:0;transform:translate(-50%,-50%);font-size:10.5px;letter-spacing:.1em;color:var(--subtle)">' + c[2] + ' <span style="font-family:var(--latin);font-size:12px;color:var(--blue)">' + zc[c[0]] + '</span></span>'); w.dataset.col = c[0]; addNode(w, c[1], 205); });
+  Object.keys(D.fhubs).forEach(function(k){ var hb = D.fhubs[k], n = D.focus.filter(function(p){ return p.con.indexOf(k) >= 0; }).length;
+    var w = mk('<button type="button" class="hub" data-fhub="' + k + '" aria-label="' + esc('篩選概念：' + hb.full + '，' + n + ' 篇') + '"><span class="halo" style="background:radial-gradient(closest-side,rgba(' + BLUE + ',.32),rgba(' + BLUE + ',.1) 45%,rgba(' + BLUE + ',0) 100%)"></span>' + shapeSvg('M5 0.3 L9.7 5 L5 9.7 L0.3 5 Z M5 2.7 L7.3 5 L5 7.3 L2.7 5 Z', '#EAE6DF', 14, 0.8) + '</button><span class="hublbl" aria-hidden="true" style="left:0;top:24px;transform:translateX(-50%)">' + esc(hb.name) + ' <span style="font-family:var(--latin);color:var(--blue)">' + n + '</span></span>');
+    w.dataset.fk = k; addNode(w, hb.x, hb.y); });
+  D.ancestors.forEach(function(a){ var w = mk('<button type="button" class="star" data-anc="' + a.slug + '" aria-label="' + esc(a.short + '，群星里程碑，回到群星查看') + '"><span class="core" aria-hidden="true" style="width:5px;height:5px;box-shadow:0 0 4px 1px rgba(' + BLUE + ',.9),0 0 10px 3px rgba(' + BLUE + ',.3)"></span></button><span class="lbl" aria-hidden="true" style="top:12px;' + (a.x > 850 ? 'right:-10px' : 'left:0;transform:translateX(-50%)') + ';font-family:var(--latin);font-size:11px;color:var(--soft)">' + esc(a.short) + '</span>');
+    w.dataset.anc = a.slug; addNode(w, a.x, a.y); });
+  var th = mk('<span aria-hidden="true" class="star" style="pointer-events:none"><span class="ring" style="left:3px;top:3px;width:22px;height:22px;border:1px dashed rgba(' + BLUE + ',.85)"></span><span class="core" style="width:4px;height:4px;box-shadow:0 0 8px 2px rgba(' + BLUE + ',.7)"></span></span><span class="lbl r" aria-hidden="true" style="left:18px"><span style="font-family:var(--serif);font-size:13px;letter-spacing:.06em">我的碩論</span><br><span style="font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--blue)">IN PROGRESS</span></span>');
+  addNode(th, D.thesis.x, D.thesis.y, null);
+  D.focus.forEach(function(p){ var w = mk('<button type="button" class="star" data-f="' + p.slug + '" aria-label="' + esc(p.short + '，' + p.year + '，' + roleName[p.role]) + '"><span class="core" aria-hidden="true"></span></button><span class="lbl r" aria-hidden="true">' + esc(p.short) + '</span>');
+    w.dataset.f = p.slug; addNode(w, p.x, p.y, w.querySelector('.lbl'), 0); });
+}
+function fMatch(p, key){ return key === 'all' || key === 'role:' + p.role || (key.indexOf('con:') === 0 && p.con.indexOf(key.slice(4)) >= 0); }
+function focusEdges(){ gid = 0; var ff = S.ffilter, sel = S.fsel ? byF[S.fsel] : null, s = '';
+  Object.keys(D.fhubs).forEach(function(k){ var hb = D.fhubs[k], on = ff === 'all' || ff.indexOf('role:') === 0 || ff === 'con:' + k;
+    s += edge({ x1: hb.x, y1: hb.y, x2: D.thesis.x, y2: D.thesis.y, c1: BLUE, c2: IV, a: sel && sel.con.indexOf(k) >= 0 ? 0.42 : (on ? 0.26 : 0.05), fade: 0.9 }); });
+  D.focus.forEach(function(p){ p.con.forEach(function(k){ var hb = D.fhubs[k], lit = sel && sel.slug === p.slug, on = fMatch(p, ff) && (ff.indexOf('con:') !== 0 || ff === 'con:' + k);
+    s += edge({ x1: hb.x, y1: hb.y, x2: p.x, y2: p.y, c1: fRgb(p) === BLUE ? BLUE : HUMAN_RGB, c2: IV, a: lit ? 0.95 : (on ? 0.22 : 0.04), fade: 0.35, w: lit ? 1.7 : 1, flow: lit }); }); });
+  D.ancestors.forEach(function(a){ s += edge({ x1: a.x, y1: a.y, x2: D.fhubs.L.x, y2: D.fhubs.L.y, c1: IV, c2: BLUE, a: (ff === 'all' || ff === 'con:L') ? 0.4 : 0.06, fade: 0.6, dash: '2 6' }); });
+  map.querySelector('#edges').innerHTML = s; }
+function focusState(){ var ff = S.ffilter, sel = S.fsel ? byF[S.fsel] : null; map.dataset.zoom = 'focus';
+  map.querySelectorAll('#nebs circle').forEach(function(c){ c.style.opacity = (ff === 'all' || ff.indexOf('role:') === 0 || ff === 'con:' + c.dataset.k) ? 1 : 0.3; });
+  nodes.forEach(function(n){ var el = n.el, ds = el.dataset;
+    if (ds.f){ var p = byF[ds.f], rgb = fRgb(p), isSel = sel && sel.slug === p.slug, on = fMatch(p, ff), core = el.querySelector('.core'), sz = isSel ? 14 : 10;
+      core.style.width = core.style.height = sz + 'px';
+      core.style.background = 'radial-gradient(circle,#FFFDF8 0 ' + (isSel ? 1.8 : 1.3) + 'px,rgba(255,253,248,0) ' + (isSel ? 2.4 : 1.8) + 'px)';
+      core.style.boxShadow = isSel ? 'inset 0 0 0 1.2px #EAF6FF,0 0 8px 2px rgba(' + rgb + ',.7),0 0 20px 6px rgba(' + rgb + ',.3)' : 'inset 0 0 0 1px rgba(' + rgb + ',.95),0 0 6px 1px rgba(' + rgb + ',.4)';
+      el.style.opacity = (isSel || on) ? 1 : 0.18; n.show = !!isSel; n.lab.classList.toggle('sel', !!isSel); el.querySelector('button').setAttribute('aria-pressed', isSel ? 'true' : 'false'); }
+    else if (ds.fk){ var on2 = ff === 'all' || ff.indexOf('role:') === 0 || ff === 'con:' + ds.fk; el.style.opacity = on2 ? 1 : 0.35; el.querySelector('button').setAttribute('aria-pressed', ff === 'con:' + ds.fk ? 'true' : 'false'); }
+    else if (ds.col){ el.style.opacity = (ds.col === 'F' && ff === 'con:L') || (ds.col === 'L' && ff === 'con:F') ? 0.35 : 1; }
+    else if (ds.anc){ el.style.opacity = (ff === 'all' || ff === 'con:L') ? 1 : 0.3; } });
+  focusEdges(); }
+
+/* ---------- 篩選列、說明框、卡片 ---------- */
+function chipHtml(key, label, count, color, rgb, pressed, disabled, shape){
+  return '<button type="button" class="chip" data-chip="' + key + '" aria-pressed="' + pressed + '"' + (disabled ? ' aria-disabled="true"' : '') + ' style="--c:' + color + ';--rgb:' + rgb + '">' + (shape ? shapeSvg(shape, color, 11, 1.1) : '') + esc(label) + ' <b>' + count + '</b></button>'; }
+function renderChips(){ var h = '';
+  if (S.mode === 'stars'){ h += chipHtml('all', '全部', D.papers.length, '#EAE6DF', '232,228,218', !S.zoom, false);
+    D.order.slice().sort(function(a, b){ return (D.dom[b].count > 0) - (D.dom[a].count > 0); }).forEach(function(k){ var d = D.dom[k]; h += chipHtml(k, d.name, d.count, d.color, d.rgb, S.zoom === k, !d.count, d.shape); }); }
+  else { h += chipHtml('all', '全部', D.focus.length, '#EAE6DF', '232,228,218', S.ffilter === 'all', false);
+    D.roles.forEach(function(r){ var n = D.focus.filter(function(p){ return p.role === r[0]; }).length; h += chipHtml('role:' + r[0], r[1], n, '#8FD5FD', BLUE, S.ffilter === 'role:' + r[0], false, 'M0.8 5 A4.2 4.2 0 1 0 9.2 5 A4.2 4.2 0 1 0 0.8 5 Z M4.1 5 A0.9 0.9 0 1 0 5.9 5 A0.9 0.9 0 1 0 4.1 5 Z'); }); }
+  $('chips').innerHTML = h; }
+
+function renderInfo(){ var el = $('info'), h = '', rgb = '232,228,218';
+  if (S.mode === 'stars'){
+    var sel = S.sel ? byP[S.sel] : null;
+    if (sel){ var d = D.dom[sel.d]; rgb = d.rgb;
+      h += '<div style="display:flex;align-items:center;gap:8px">' + shapeSvg(d.shape, d.color, 10, 1.2) + '<span class="mono" style="color:' + d.color + '">' + sel.p + ' 發表 ｜ ' + esc(sel.award || sel.venueShort) + '</span></div>';
+      h += '<span class="nm">' + esc(sel.short) + '</span><span class="meta">' + esc(d.full + '・' + sel.tags.join(' ')) + '</span>';
+      h += '<div class="foot"><span style="font-size:12px;color:var(--subtle)">已收錄 Wiki</span><a class="go" href="#paper/' + sel.slug + '">閱讀論文頁 →</a></div>'; }
+    else if (S.note){ var dn = D.dom[S.note]; rgb = dn.rgb;
+      h += '<div style="display:flex;align-items:center;gap:8px">' + shapeSvg(dn.shape, dn.color, 10, 1.2) + '<span class="mono" style="color:' + dn.color + '">' + esc(dn.full) + '</span></div><span class="tip">這個學科還沒有已收錄的論文' + (dn.planned ? '，另有 ' + dn.planned + ' 篇已立案、待收錄' : '') + '。</span>'; }
+    else if (S.zoom){ var dz = D.dom[S.zoom]; rgb = dz.rgb;
+      h += '<div style="display:flex;align-items:center;gap:8px">' + shapeSvg(dz.shape, dz.color, 10, 1.2) + '<span class="mono" style="color:' + dz.color + '">' + esc(dz.full) + ' ・ ' + dz.count + ' 篇</span></div><span class="tip">點星看詳情。點「← 全圖」或再點一次學科回到全圖。</span>'; }
+    else { h += '<span class="tip">點一個學科中心，放大那一區；放大後點星看詳情。</span><span class="meta">' + D.papers.length + ' 顆星・' + Object.keys(D.tags).length + ' 個標籤・' + D.concepts.length + ' 個概念頁</span>'; } }
+  else {
+    var f = S.fsel ? byF[S.fsel] : null; rgb = BLUE;
+    if (f){ rgb = fRgb(f); var cl = f.con.length > 1 ? '臺灣南島語 × 低資源翻譯' : (f.con[0] === 'F' ? '臺灣南島語計算語言學' : '低資源機器翻譯');
+      h += '<span class="mono" style="color:' + fColor(f) + '">' + esc(roleName[f.role] + ' ｜ ' + f.venueShort + ' ' + f.year) + '</span><span class="nm">' + esc(f.short) + '</span>';
+      h += '<span class="meta">' + (f.langs.length ? '研究語言：' + esc(f.langs.join('、')) : '研究類型：' + esc(f.langDisp)) + '<br>' + esc(cl) + (f.d === 'human' ? '・人文（語言學）' : '') + '</span>';
+      h += '<div class="foot"><span style="font-size:12px;color:var(--subtle)">我的關注</span><a class="go" href="#paper/' + f.slug + '">閱讀論文頁 →</a></div>'; }
+    else { h += '<span class="tip">縱軸是發表年，左右兩欄各屬一個概念，中間是兩者交集，最下方是我的碩論。點星看詳情。</span><span class="meta">' + D.focus.length + ' 顆星・2 個概念頁・' + D.ancestors.length + ' 顆祖先星（虛線為建議連結，資料尚未建立）</span>'; } }
+  el.style.setProperty('--rgb', rgb); el.innerHTML = h; }
+
+function tint(rgb, k){ var c = rgb.split(',').map(Number), ink = [15, 17, 20]; return 'rgb(' + c.map(function(v, i){ return Math.round(ink[i] + (v - ink[i]) * k); }).join(',') + ')'; }
+var cardSky = {}; (function(){ var r = rndFrom(20051263); D.papers.concat(D.focus).forEach(function(p){ var dots = []; for (var i = 0; i < 9; i++) dots.push([4 + r() * 92, 4 + r() * 50, r() < 0.8 ? 1 : 1.5, 0.35 + r() * 0.55]); cardSky[p.slug] = { dots: dots, sx: 58 + r() * 28, sy: 16 + r() * 22 }; }); })();
+function skyDots(slug){ return cardSky[slug].dots.map(function(q){ return '<i style="left:' + q[0].toFixed(1) + '%;top:' + q[1].toFixed(1) + '%;width:' + q[2] + 'px;height:' + q[2] + 'px;opacity:' + q[3].toFixed(2) + '"></i>'; }).join(''); }
+function langSize(s){ var n = s.length; return n <= 2 ? 24 : n === 3 ? 19 : n === 4 ? 15 : n === 5 ? 12.5 : n === 6 ? 11 : n === 7 ? 9.6 : 8.6; }
+function msCard(p){ var d = D.dom[p.d], panel = tint(d.rgb, 0.1), s = cardSky[p.slug], ss = p.award ? '3.4cqw' : '2.8cqw';
+  var sh = p.award ? '0 0 0 1.7cqw ' + panel + ',0 0 0 2.3cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)' : '0 0 3cqw .6cqw rgba(244,241,234,.45)';
+  return '<button type="button" class="card" data-open="' + p.slug + '" aria-label="' + esc(p.short + '，' + p.p + ' 發表' + (p.award ? '，' + p.award : '') + '，開啟論文頁') + '"><span class="cv ms" style="background:' + d.color + '"><span class="top"><span>No.' + pad2(p.no) + '</span><span>' + esc(d.name) + '</span></span><span class="win" style="background:' + panel + '">' + skyDots(p.slug) +
+    '<i style="left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:' + ss + ';height:' + ss + ';transform:translate(-50%,-50%);background:#FFFDF8;box-shadow:' + sh + '"></i><span class="big" style="color:' + d.color + '"><small>發表</small><span class="yr">' + p.p + '</span></span></span><span class="ttl">' + esc(p.short) + '</span><span class="bot"><span>' + esc(p.award || p.venueShort) + '</span></span></span></button>'; }
+function fCard(p){ var rgb = fRgb(p), col = fColor(p), s = cardSky[p.slug];
+  return '<button type="button" class="card" data-open="' + p.slug + '" aria-label="' + esc(p.short + '，' + p.year + '，' + roleName[p.role] + '，開啟論文頁') + '"><span class="cv fc" style="box-shadow:inset 0 0 0 1px rgba(' + rgb + ',.28)"><span class="top" style="color:' + col + '"><span>F.' + pad2(p.no) + '</span><span>' + esc(roleName[p.role]) + '</span></span>' +
+    '<span class="win" style="background:radial-gradient(110% 80% at ' + s.sx.toFixed(1) + '% ' + s.sy.toFixed(1) + '%,rgba(' + rgb + ',.14),rgba(' + rgb + ',0) 60%),#0C0E11">' + skyDots(p.slug) +
+    '<i style="left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:48cqw;height:15cqw;transform:translate(-50%,-50%) rotate(-16deg);box-sizing:border-box;background:none;border:1px dashed rgba(' + rgb + ',.3)"></i>' +
+    '<i style="left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:5cqw;height:5cqw;transform:translate(-50%,-50%);background:radial-gradient(circle,#FFFDF8 0 .8cqw,rgba(255,253,248,0) 1.1cqw);box-shadow:inset 0 0 0 .45cqw ' + col + ',0 0 3.4cqw .6cqw rgba(' + rgb + ',.4)"></i>' +
+    '<span class="big"><small style="color:' + col + '">' + esc(p.langLabel) + '</small><span class="lang" style="font-size:' + langSize(p.langDisp) + 'cqw">' + esc(p.langDisp) + '</span></span></span><span class="ttl">' + esc(p.short) + '</span><span class="bot"><span>' + esc(p.venueShort) + '</span><span style="flex-shrink:0;font-family:var(--latin);font-size:7.6cqw;color:' + col + '">' + p.year + '</span></span></span></button>'; }
+function renderCards(){ var list, info, more = S.more[S.mode];
+  if (S.mode === 'stars'){ list = D.papers.filter(function(p){ return !S.zoom || p.d === S.zoom; }); info = list.length + ' 張・' + (S.zoom ? D.dom[S.zoom].name : '全部') + '・依時間線排列'; }
+  else { list = D.focus.slice().sort(function(a, b){ return b.year - a.year || a.x - b.x; }).filter(function(p){ return fMatch(p, S.ffilter); });
+    var fl = S.ffilter === 'all' ? '全部' : (S.ffilter.indexOf('role:') === 0 ? roleName[S.ffilter.slice(5)] : D.fhubs[S.ffilter.slice(4)].name); info = list.length + ' 張・' + fl + '・新到舊'; }
+  var shown = more ? list : list.slice(0, 8);
+  $('grid').innerHTML = shown.map(S.mode === 'stars' ? msCard : fCard).join('');
+  $('archinfo').textContent = info;
+  var mb = $('more'); mb.hidden = shown.length >= list.length; mb.textContent = '顯示其餘 ' + (list.length - shown.length) + ' 張'; }
+
+/* ---------- 模式與隱藏機關 ---------- */
+var armTimer = null;
+function setArmed(on){ S.armed = on; var b = $('secret'), hint = $('hint'); b.dataset.armed = on ? 'true' : 'false';
+  if (on){ hint.textContent = S.mode === 'stars' ? '群星之中，還有一片我的星系・再點一下進入' : '回到群星・再點一下'; hint.hidden = false; b.setAttribute('aria-label', S.mode === 'stars' ? '再按一次進入我的星系' : '再按一次回到群星');
+    clearTimeout(armTimer); armTimer = setTimeout(function(){ setArmed(false); }, 6000); }
+  else { hint.hidden = true; b.setAttribute('aria-label', S.mode === 'stars' ? '我的星系' : '回到群星'); clearTimeout(armTimer); } }
+function applyMode(m){ if (S.mode === m && map.childElementCount) return; S.mode = m; document.body.dataset.mode = m; setArmed(false);
+  var f = m === 'focus';
+  $('tf0').setAttribute('stop-color', f ? 'rgba(143,213,253,0.85)' : 'rgba(234,230,223,0.6)');
+  $('tagline').textContent = f ? 'A PERSONAL CONSTELLATION' : 'THE KAIROS OF HUMAN THOUGHT';
+  $('maplabel').textContent = f ? 'MY CONSTELLATION ｜ 我的星系' : 'CONSTELLATION ｜ 知識星圖'; $('maplabel').style.color = f ? 'var(--blue)' : '';
+  $('archlabel').textContent = f ? 'ARCHIVE ｜ 我的星系檔案' : 'ARCHIVE ｜ 群星檔案';
+  $('chips').setAttribute('aria-label', f ? '依角色篩選' : '學科篩選');
+  if (f){ buildFocus(); view = { x: 0, y: 0, w: 1000, h: D.focusH }; }
+  else { buildStars(); view = S.zoom ? domainView(S.zoom) : { x: 0, y: 0, w: 1000, h: 1000 }; }
+  place(); refresh(); }
+function refresh(){ var f = S.mode === 'focus', back = $('back');
+  if (f){ back.hidden = false; back.textContent = '← 回到群星'; focusState(); }
+  else { back.hidden = !S.zoom; back.textContent = '← 全圖'; starsState(); }
+  renderChips(); renderInfo(); renderCards(); if (!tween) declutter(); }
+function zoomTo(k){ S.note = null;
+  if (k && !D.dom[k].count){ S.zoom = null; S.note = k; S.sel = null; animateTo({ x: 0, y: 0, w: 1000, h: 1000 }); refresh(); return; }
+  if (S.zoom === k || !k){ S.zoom = null; S.sel = null; animateTo({ x: 0, y: 0, w: 1000, h: 1000 }); }
+  else { S.zoom = k; if (S.sel && byP[S.sel].d !== k) S.sel = null; animateTo(domainView(k)); }
+  S.more.stars = false; refresh(); }
+
+$('secret').addEventListener('click', function(){ if (!S.armed){ setArmed(true); return; } setArmed(false); location.hash = S.mode === 'stars' ? '#my-constellation' : '#'; });
+$('back').addEventListener('click', function(){ if (S.mode === 'focus') location.hash = '#'; else zoomTo(null); });
+map.addEventListener('click', function(e){ var b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.hub) zoomTo(b.dataset.hub);
+  else if (b.dataset.p){ S.sel = b.dataset.p; refresh(); }
+  else if (b.dataset.fhub){ var k = 'con:' + b.dataset.fhub; S.ffilter = S.ffilter === k ? 'all' : k; S.more.focus = false; refresh(); }
+  else if (b.dataset.f){ S.fsel = S.fsel === b.dataset.f ? null : b.dataset.f; refresh(); }
+  else if (b.dataset.anc){ S.zoom = byP[b.dataset.anc].d; S.sel = b.dataset.anc; S.note = null; location.hash = '#'; } });
+$('chips').addEventListener('click', function(e){ var b = e.target.closest('[data-chip]'); if (!b) return; var k = b.dataset.chip;
+  if (S.mode === 'stars') zoomTo(k === 'all' ? null : k);
+  else { S.ffilter = (k === 'all' || S.ffilter === k) ? 'all' : k; S.more.focus = false; refresh(); } });
+$('grid').addEventListener('click', function(e){ var b = e.target.closest('[data-open]'); if (b) location.hash = '#paper/' + b.dataset.open; });
+$('more').addEventListener('click', function(){ S.more[S.mode] = true; renderCards(); });
+
+/* ---------- 論文頁 ---------- */
+var CARDNAMES = ['時代銘文', '世紀瓶頸', '突破原理', '決定性數據', '典範轉移', 'Kairos'];
+function initCarousel(root, names){ var car = root.querySelector('.car'), dots = root.querySelector('.dots .btns'), lbl = root.querySelector('.lblc'); if (!car) return;
+  root.querySelectorAll('.pc').forEach(function(pc){ var w = document.createElement('div'); w.className = 'pci';
+    ['gap', 'justifyContent'].forEach(function(k){ if (pc.style[k]){ w.style[k] = pc.style[k]; pc.style[k] = ''; } });
+    while (pc.firstChild) w.appendChild(pc.firstChild); pc.appendChild(w); });
+  dots.innerHTML = ''; names.forEach(function(n, i){ var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + n); b.innerHTML = '<i></i>';
+    b.addEventListener('click', function(){ var c = car.children[i]; car.scrollTo({ left: c.offsetLeft - car.children[0].offsetLeft, behavior: reduce ? 'auto' : 'smooth' }); }); dots.appendChild(b); });
+  function sync(){ var step = (car.children[1] ? car.children[1].offsetLeft - car.children[0].offsetLeft : 1) || 1, i = Math.max(0, Math.min(names.length - 1, Math.round(car.scrollLeft / step)));
+    if (car.scrollLeft + car.clientWidth >= car.scrollWidth - 4) i = names.length - 1;
+    Array.prototype.forEach.call(dots.children, function(b, j){ b.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    lbl.textContent = (i + 1) + ' / ' + names.length + ' ｜ ' + names[i] + (names.length > 1 ? '　左右滑動' : ''); }
+  car.addEventListener('scroll', function(){ requestAnimationFrame(sync); }, { passive: true }); sync();
+  root.querySelectorAll('.cwin').forEach(function(w){ var r = rndFrom(1263); for (var i = 0; i < 16; i++){ var s = document.createElement('i'), sz = r() < 0.8 ? 1 : 1.5; s.style.cssText = 'position:absolute;border-radius:50%;background:#fff;left:' + (4 + r() * 92).toFixed(1) + '%;top:' + (4 + r() * 52).toFixed(1) + '%;width:' + sz + 'px;height:' + sz + 'px;opacity:' + (0.35 + r() * 0.55).toFixed(2); w.appendChild(s); } }); }
+function genericPaper(p, isF){ var d = D.dom[p.d], rgb = isF ? fRgb(p) : d.rgb, col = isF ? fColor(p) : d.color, s = cardSky[p.slug];
+  var years = isF ? p.year + ' 發表' : p.p + ' 發表 ｜ ' + (p.award || p.venueShort);
+  var cover = isF
+    ? '<section class="pc cover fc" aria-label="第 1 張 時代銘文"><span style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:3.4cqw;letter-spacing:.1em;color:' + col + '"><span>MY CONSTELLATION</span><span>F.' + pad2(p.no) + '</span></span>' +
+      '<span style="position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:radial-gradient(110% 80% at ' + s.sx.toFixed(1) + '% ' + s.sy.toFixed(1) + '%,rgba(' + rgb + ',.14),rgba(' + rgb + ',0) 60%),#0C0E11" class="cwin"><span style="position:absolute;left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:3cqw;height:3cqw;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#FFFDF8 0 .5cqw,rgba(255,253,248,0) .7cqw);box-shadow:inset 0 0 0 .3cqw ' + col + ',0 0 3cqw .5cqw rgba(' + rgb + ',.4)"></span>' +
+      '<span style="position:absolute;left:5cqw;bottom:4cqw;display:flex;flex-direction:column;gap:1cqw"><span style="font-size:3.4cqw;color:' + col + '">' + esc(p.langLabel) + '</span><span style="font-family:var(--serif);font-size:' + (langSize(p.langDisp) * 0.62).toFixed(1) + 'cqw;line-height:1.05;color:#EAE6DF">' + esc(p.langDisp) + '</span></span></span>' +
+      '<span style="font-size:3.8cqw;color:var(--muted)">' + esc(roleName[p.role] + '・' + p.tags.join(' ')) + '</span><span style="font-family:var(--serif);font-weight:600;font-size:7.4cqw;line-height:1.3">' + esc(p.short) + '</span><span class="hook" style="color:var(--soft)">' + esc(p.hook) + '</span>' +
+      '<span style="padding-top:2.6cqw;border-top:1px solid rgba(234,230,223,.14);font-size:3.6cqw;color:var(--muted)">' + esc(years + ' ｜ ' + p.venueShort) + '</span></section>'
+    : '<section class="pc cover" aria-label="第 1 張 時代銘文" style="background:' + d.color + '"><span style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:3.4cqw;letter-spacing:.1em;color:rgba(15,16,19,.75)"><span>EPOCH KAIROS</span><span>No.' + pad2(p.no) + '</span></span>' +
+      '<span class="cwin" style="position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:' + tint(d.rgb, 0.1) + '"><span style="position:absolute;left:5cqw;bottom:4cqw;display:flex;flex-direction:column;gap:1cqw;color:' + d.color + '"><span style="font-size:3.6cqw">發表</span><span style="font-family:var(--latin);font-style:italic;font-weight:300;font-size:26cqw;line-height:.85;letter-spacing:-.03em">' + p.p + '</span></span></span>' +
+      '<span style="font-size:3.8cqw;color:rgba(15,16,19,.75)">' + esc(d.full + '・' + p.tags.join(' ')) + '</span><span style="font-family:var(--serif);font-weight:600;font-size:7.6cqw;line-height:1.25">' + esc(p.short) + '</span><span class="hook">' + esc(p.hook) + '</span>' +
+      '<span style="padding-top:2.6cqw;border-top:1px solid rgba(15,16,19,.22);font-size:3.6cqw;color:rgba(15,16,19,.75)">' + esc(years) + '</span></section>';
+  var pending = '<section class="pc" aria-label="第 2 張 尚待編譯" style="justify-content:center;gap:5cqw"><span class="lab">02–06</span><span class="h">其餘五張卡片尚待編譯</span><span class="s">世紀瓶頸、突破原理、決定性數據、典範轉移與 Kairos 的內容已寫在 Wiki 論文頁，網頁版會在編譯時一併產出。</span></section>';
+  return '<div class="car" aria-label="知識圖卡，可左右滑動">' + cover + pending + '</div><div class="dots"><span class="mono lblc" style="letter-spacing:.12em;color:var(--muted)"></span><span class="btns"></span></div>' +
+    '<article><header class="stack" style="gap:10px"><span class="mono" style="color:var(--acc)">' + esc(years) + '</span><h1>' + esc(p.titleZh) + '</h1><span style="font-family:var(--latin);font-style:italic;font-size:16px;line-height:1.5;color:var(--soft)">' + esc(p.title) + '</span></header>' +
+    '<dl><dt>作者</dt><dd>' + esc(p.authors) + '</dd><dt>出處</dt><dd>' + esc(p.venue) + '</dd><dt>標籤</dt><dd>' + esc(p.tags.join(' ')) + '</dd>' + (isF ? '<dt>語言</dt><dd>' + esc(p.langs.length ? p.langs.join('、') : '（未針對特定語言）') + '</dd>' : '') + '</dl>' +
+    '<section class="stack" style="gap:12px"><h2><small>CARD 1 ｜ THE HOOK</small>時代銘文</h2><p>' + esc(p.hook) + '</p></section>' +
+    '<aside>這篇的長文與其餘卡片尚未編譯成網頁。原型先以 Wiki Frontmatter 產生封面卡與基本資料。</aside>' +
+    (p.doi ? '<section class="stack refs" style="gap:2px;padding-top:18px;border-top:1px solid var(--line)"><span class="mono">SOURCE</span><a href="' + esc(p.doi) + '">' + esc(p.doi.replace('https://', '')) + '</a></section>' : '') + '</article>'; }
+function showPaper(slug){ var isF = !!byF[slug], p = byF[slug] || byP[slug], el = $('paper'); if (!p){ location.hash = '#'; return; }
+  var d = D.dom[p.d], rgb = isF ? fRgb(p) : d.rgb, col = isF ? fColor(p) : d.color;
+  el.style.setProperty('--acc', col); el.style.setProperty('--acc-rgb', rgb);
+  document.body.dataset.route = 'paper';
+  var bar = '<div class="bar"><a href="' + (isF ? '#my-constellation' : '#') + '">← ' + (isF ? '我的星系' : '群星') + '</a><span class="mono">' + (isF ? 'F.' + pad2(p.no) + ' ｜ ' + esc(roleName[p.role]) : 'No.' + pad2(p.no) + ' ｜ ' + esc(d.name)) + '</span>' + (p.doi ? '<a class="doi" href="' + esc(p.doi) + '">DOI</a>' : '<span style="min-width:44px"></span>') + '</div>';
+  if (slug === '2005-optogenetics'){ el.innerHTML = bar + $('tpl-opto').innerHTML.replace('{{NO}}', pad2(p.no)); initCarousel(el, CARDNAMES); }
+  else { el.innerHTML = bar + genericPaper(p, isF); initCarousel(el, ['時代銘文', '尚待編譯']); }
+  window.scrollTo(0, 0); }
+
+/* ---------- 路由 ---------- */
+function route(){ var h = location.hash;
+  if (h.indexOf('#paper/') === 0){ if (document.body.dataset.route === 'home') S.homeScroll = window.scrollY; showPaper(decodeURIComponent(h.slice(7))); return; }
+  var wasPaper = document.body.dataset.route === 'paper'; document.body.dataset.route = 'home';
+  var m = h === '#my-constellation' ? 'focus' : 'stars';
+  if (m !== S.mode || !map.childElementCount) applyMode(m); else refresh();
+  if (S.mode === 'stars' && S.zoom){ animateTo(domainView(S.zoom)); }
+  if (wasPaper) window.scrollTo(0, S.homeScroll); }
+addEventListener('hashchange', route); route();
+})();
+</script>
+</body>
+</html>
