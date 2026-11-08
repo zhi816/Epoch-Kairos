@@ -364,3 +364,9 @@
 - **模型版本**：Gemini 3.8 Flash
 - **具體變更**：依據使用者指示並嚴格遵循 `.agents/skills/academic-paper-translator/SKILL.md` 規範，對 `raw/my-focus/英文論文/Improving Low-Resource Machine Translation for Formosan Languages _ 2024.findings-acl.670v2.pdf`（Zheng et al., ACL 2024 Findings）執行完整正文翻譯與雙欄學術版面重建。將原先 2 頁之極度簡略摘要版，全面升級為 9 頁之繁體中文學術全譯本，覆蓋原檔 `Improving Low-Resource Machine Translation for Formosan Languages _ 2024.findings-acl.670v2_繁體中文翻譯.pdf`。完整涵蓋摘要、導言（RQ1~RQ4 四大核心命題）、相關工作、資料集（16 語語言特徵、瀕危現況、太魯閣/賽德克辨析、原民會線上辭典提取、切分標準、外部賽德克辭典、西－納瓦特爾 Axolotl 語料）、實驗設定（SentencePiece Unigram、Transformer 6+6 層、Quadro RTX 8000、SacreBLEU 與 chrF）、結果與分析、詞彙量敏感度、詞典 vs 平行句增量、偽平行資料對比、外部辭典驗證、西班牙語－納瓦特爾語跨語系驗證、多語言預訓練探索、結論、研究限制、致謝與完整 26 筆參考文獻；精確重建 Table 1 至 Table 12 全數 12 張學術表格，所有數值、評測指標、增幅與 $R^2$ 均逐格核驗通過，零數據缺失。於私有倉庫 Mine-RAW 完成單獨 Git 提交（commit `1b2a6a3`）。
 
+## [2026-11-08 20:30] update | 以 7 頁完整學術正文與全基準數據表譯本取代 Scheppat et al. 2026 FormosanMT 既有 PDF | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：依據使用者指示並嚴格遵循 `.agents/skills/academic-paper-translator/SKILL.md` 規範，對 `raw/my-focus/英文論文/FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273.pdf`（Scheppat et al., LREC 2026）執行完整正文翻譯與雙欄學術版面重建。將原先 2 頁之極度簡略摘要版，全面升級為 7 頁之繁體中文學術全譯本，覆蓋原檔 `FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273_繁體中文翻譯.pdf`。完整涵蓋摘要、導言（6 項核心貢獻）、相關工作、FormosanMT 語料庫（15 種官方南島語背景、資料來源 FormosanBank 與 ILRDF 影音字幕、拼寫正規化與長度語意過濾、493,519 句對 80/10/10 切分與方言標籤保留）、基準實驗（OpenNMT-py 從頭訓練、NLLB-200 繁體中文 Tokenizer 重構修復、動態雙向採樣與 Adafactor 優化）、結果與討論（15 語與華語雙向翻譯評測、4 語與英語雙向評測、黏著構詞對 BLEU/chrF++ 之影響、阿美語－英語真實生成質性案例對比分析）、結論、研究限制、倫理聲明、致謝、附錄資料抽取技術細節（fetch_xml、clean_xml、make_corpus、scrape_videos、make_xml）與完整 30 筆參考文獻；精確重建 Table 1 至 Table 5 全數 5 張學術表格與 Figure 1 流程圖，所有句對數、評測指標（BLEU、chrF++）均逐格核驗通過，零數據缺失。於私有倉庫 Mine-RAW 完成單獨 Git 提交（commit `45b9ba7`）。
+
+
