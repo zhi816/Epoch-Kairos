@@ -74,22 +74,12 @@ $$P(y \mid x) = \prod_{t=1}^{|y|} P_{\text{LLM}}\Big( y_t \;\Big|\; y_{<t}, x, \
 
 ---
 
-## Card 4 ｜ 決定性數據 (The Evidence)
+## Card 4 ｜ 可核實的原文證據 (The Evidence)
 
-### 本篇論文（Frontull & Ströhle 2025）之核心證據
-* **極低資源目標語言與評測基準**：
-  * 以阿爾卑斯山區極度瀕危的羅曼語族語言**拉定語（Ladin / Val Badia 方言）**與**巴斯克語（Basque）**為主要評測標的。
-* **各檢索策略之 BLEU 與彗星指標（COMET）對比（英語 $\to$ 拉定語）**：
-  * **零樣本（0-shot LLM 基線）**：BLEU 僅 **$4.12$**（模型幾無拉定語概念）。
-  * **傳統整句稠密檢索（Sentence-level k-NN）**：BLEU 微升至 $8.45$（檢索出的句子常與目標句話題無關）。
-  * **詞典單詞注入（Word-level Dictionary）**：BLEU 達到 $11.30$（出現嚴重語法拼裝畸形）。
-  * **片段少樣本提示（Fragment-Shot Prompting）**：BLEU 分數飆升至 **$17.85$**（相比整句檢索淨提升 **$+9.40$ BLEU**，COMET 評分提升超過 $0.25$）。
-* **長句與複雜從句上的推理收益**：
-  * 在長度超過 25 個單詞的複雜從句測試子集上，Fragment-Shot 的語法合格率（Syntactic Soundness）達到 **$83.4\%$**，遠超傳統整句 Few-Shot 的 $32.1\%$。
+### 本篇論文的實驗範圍與發現
+* 論文提出 Fragment-Shot Prompting 與 Pivoted Fragment-Shot，使用 GPT-3.5、GPT-4o、o1-mini、LLaMA-3.3 與 DeepSeek-R1，評估義大利語與兩種拉丁語變體間的翻譯。
+* 原文摘要的主要發現是：依句法覆蓋檢索片段範例有助於所研究語言的翻譯，句法覆蓋與翻譯品質呈正向關係；推理能力較強的模型較能利用檢索知識，Pivoted Fragment-Shot 也改善了兩種拉丁語變體之間的翻譯。
 
-### 相關少樣本 ICL 文獻對照（非本篇成果，標註出處）
-* **Brown et al. (2020, GPT-3)**：確立整句上下文學習範式；本篇證明整句 ICL 在極低資源語言上完全失效，必須下沉至句法片段層次。
-* **Rubin et al. (2022, EPR)**：主動學習整句範例檢索器；Frontull 等人證明語素片段覆蓋率才是低資源翻譯的唯一關鍵幾何特徵。
 
 ---
 
