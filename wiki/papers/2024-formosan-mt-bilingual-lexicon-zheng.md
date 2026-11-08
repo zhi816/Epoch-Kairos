@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#計算語言學", "#深度學習"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
-verification: "partial"
+verification: "issues"
 my_focus: true
 focus_role: "international"
 focus_languages: ["臺灣南島諸語"]

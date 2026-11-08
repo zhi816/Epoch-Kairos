@@ -645,3 +645,9 @@
 - **Crossref 新發現**：4 筆 DOI 在 Crossref 與 doi.org 均查無此號（EK-057 至 EK-060）。2 筆為非 Crossref 註冊之 Airiti DOI，可解析。全庫 41 篇中有 12 篇無 doi.org 連結。
 - **未處理**：EK-001 至 EK-060 之頁面內容均未修正；其中 EK-001 至 EK-056 待依 Skill 回原文確認後逐筆處理。
 
+## [2026-11-09 00:55] audit | 24 篇 my-focus 論文頁與 2 篇概念頁全維度第一手原文獨立查核 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Argon
+- **具體變更**：應使用者要求，針對先前由 Gemini 3.8 Flash 起草（`94f5ccc`）並自審（`e71a3e0`）之 24 篇 `my_focus: true` 論文頁與 2 篇關聯概念頁（[wiki/concepts/formosan-computational-linguistics.md](concepts/formosan-computational-linguistics.md)、[wiki/concepts/low-resource-machine-translation.md](concepts/low-resource-machine-translation.md)），逐篇對照 `raw/my-focus/` 下全部 24 份第一手原始文獻（7 篇海大碩士論文全文、2 篇臺灣語言學期刊全文、15 篇國際會議與期刊英文論文全文）執行 Frontmatter、Card 1–6、數學公式與架構圖全維度事實查核。
+  - **查核範圍與完成度**：24 篇 `my-focus` 論文頁與 2 篇概念頁全數核對完畢（26/26）。
+  - **問題登記**：先前 Codex（`dc622ac`）已清理各篇之 Card 4 數據，惟本次逐頁比對第一手原文後，於全部 24 篇論文頁及 2 篇概念頁之 Frontmatter、Card 1–3、Card 5–6 均查出與原文矛盾、方法錯置或無來源公式等問題，合計新增登記 **EK-061 至 EK-087**（共 27 筆問題條目）至 [wiki/issues.md](issues.md)，並依第七章第 4 節將對應 19 篇原標 `partial` 之論文頁與 2 篇原標 `unverified` 之概念頁 `verification` 狀態同步設為 `issues`（查核模式不改動頁面正文內容）。

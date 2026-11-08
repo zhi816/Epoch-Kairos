@@ -22,7 +22,7 @@ papers:
   - "2026-tao-filipino-nmt-macayan"
 related_concepts:
   - "low-resource-machine-translation"
-verification: "unverified"
+verification: "issues"
 ---
 
 # 概念：臺灣南島語計算語言學與構詞解析 (Formosan Computational Linguistics & Morphological Analysis)

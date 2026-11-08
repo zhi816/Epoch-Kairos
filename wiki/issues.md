@@ -341,3 +341,140 @@
 - **問題**：`10.18653/v1/2026.lrec-1.273` 在 Crossref 與 doi.org 均查無此號；可能尚未註冊或 DOI 有誤。
 - **來源**：須回 LREC 2026 論文集原文首頁核對
 - **發現於**：同 EK-057
+
+## 24 篇 my-focus 論文頁與 2 篇概念頁第一手原文全維度查核（2026-11-09 Antigravity / Gemini 4 Argon）
+
+### EK-061 | open | papers/2021-seediq-chinese-mt-you.md | Frontmatter doi_url | 原文不符
+- **問題**：包含本篇在內之 7 篇海大碩士論文（`2021-seediq-chinese-mt-you.md`、`2023-atayal-truku-morphology-dai.md`、`2023-atayalic-multilingual-mt-liao.md`、`2024-taiwanese-mt-resegmentation-tang.md`、`2025-atayalic-affix-mt-jin.md`、`2025-atayalic-oov-enumeration-yang.md`、`2025-paiwan-bunun-morphology-mt-wu.md`），Frontmatter `doi_url` 均複製貼上同一個已過期之臺灣博碩士論文知識加值系統臨時查詢 session 網址（`https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1`），並非永久連結。
+- **來源**：`raw/my-focus/學長姐論文/` 下 7 篇碩士論文原檔
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-062 | open | papers/2021-seediq-chinese-mt-you.md | Card 3 | 原文不符
+- **問題**：（1）第 52–54 行將前綴二元語素模型寫為以詞根為條件之 $P(s_{\text{pre}} \mid r) = \prod P(p_i \mid p_{i-1}, r)$；原文 §3.3（p. 27，式 3）之前綴二元機率模型為 $P(\text{pfx}) = P(x_1 \mid \$)\prod_{i=2}^m P(x_i \mid x_{i-1})$，不以詞根為條件。（2）第 60–68 行與架構圖將 $\mathbf{e}_{\text{word}}(w_t)$ 寫作「由自訓練 Skip-gram / FastText 學習之詞根或詞彙語義表示」；原文 §1.3.1（p. 4）、§4.2–4.3（pp. 30–33）與 §5.3（pp. 37–39，表 11）中，「自訓練詞嵌入」指 Seq2Seq Bi-LSTM 模型內以 one-hot 輸入端到端訓練之 Embedding Layer，而 fastText Skip-gram 屬「預訓練詞嵌入」；且表 11（p. 38）證實預訓練 Skip-gram 結合詞綴特徵會使 BLEU 由 22.28 暴跌至 12.09，改用詞根形式亦跌至 12.32 與 4.49，最佳系統（25.10 BLEU）係使用表面詞形搭配端到端自訓練 Embedding Layer 與 52 維布林詞綴組合特徵。
+- **來源**：`raw/my-focus/學長姐論文/.md/賽德克族中文機器翻譯之研究_游景勝.md`（§1.3.1 p. 4、§3.3 p. 27、§4.2–4.3 pp. 30–33、§5.3 pp. 37–39 表 11）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-063 | open | papers/2023-atayal-truku-morphology-dai.md | Card 3–4 | 原文不符
+- **問題**：（1）Card 3（第 45–60 行）寫出正向書寫轉換函數 $\Phi_{\text{ortho}}(\sigma) = w$ 並稱「雙唇音弱化（$p \to b$ 或 $p \to v$）」；原文 §3.4（pp. 27–28）明確指出無法歸納出泰雅語與太魯閣語的書寫形式轉換規則，故不再產生真正的書寫形式，而是對「詞根＋中綴＋後綴」制定三條比對規則（直接比對、保留最後兩母音、刪去全部母音）後，再以一元／二元模型挑選前綴；且 §3.1.2（p. 21）僅列泰雅語 $p \to b$ 及太魯閣語 $k \to b$、$t \to d$，無 $p \to v$。（2）Card 4（第 82 行）僅引結論章稱考慮邊界的二元模型在太魯閣語獲最佳 85.71%，漏未交代 §4.2.2（p. 36，表 21 對照表 22）中太魯閣語測試集上考慮邊界之一元模型（91.84%）實高於二元模型（85.71%），以及泰雅語測試集不考慮邊界之二元模型達 100.00%（表 20）。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
+- **來源**：`raw/my-focus/學長姐論文/.md/泰雅與太魯閣 構詞結構之自動解析_戴成哲.md`（§3.1.2 p. 21、§3.4 pp. 27–28、§4.2.2 p. 36 表 20–22）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-064 | open | papers/2023-atayalic-multilingual-mt-liao.md | Card 2–4 | 原文不符
+- **問題**：（1）Card 2（第 36 行）稱「泰雅語的 m-qaniq（吃）、賽德克語的 m-ekan 與太魯閣語的 m-ekan 在傳統詞級切分下被視為三個完全無關的獨立詞彙 ID」；泰雅語「吃」之主事焦點形為 `maniq`（詞根 `qaniq`），且賽德克語與太魯閣語同形詞 `mekan` 合併時字串完全相同。（2）Card 3（第 59–65 行）稱句首僅加目標語標籤 `<2zh>`、`<2tay>`、`<2trv>`、`<2sdq>`；原文 §4.1（p. 16）與 §4.3.2（p. 21）定義之標籤格式為同時編碼來源語與目標語之 `<X2Y>`（以單字母 `A`、`S`、`T`、`C`、`M`、`I` 表示，如 `<S2C>`、`<M2C>`）。（3）Card 1–3 僅描述泛泰雅三語聯合訓練（`|V|=10,000`，對應表 15 之 18.97／17.61／19.92 BLEU），完全漏述 §4.3 與 §5.4 之馬來語／印尼語遷移式學習（`|V|=15,000` 或 `20,000`），致與 Card 4 所列最佳分數（表 21–22 之 20.81／19.38／20.84 與 21.98／21.97／26.69）脫節。（4）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
+- **來源**：`raw/my-focus/學長姐論文/.md/泛泰雅族群與中文之多語言機器翻譯研究_廖恆慶.md`（§4.1 p. 16、§4.3 p. 21、§5.2 p. 27 表 15、§5.4 pp. 31–32 表 21–22）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-065 | open | papers/2024-taiwanese-mt-resegmentation-tang.md | Card 3 | 原文不符
+- **問題**：（1）第 43–56 行與架構圖稱使用 `IBM Model`／`fast_align` 統計詞對齊、點互資訊 $\operatorname{PMI}(w_i, t_j)$ 與 BERT 語言模型流暢度先驗進行全局最佳化；原文 §3.3（pp. 26–36）完全未使用統計詞對齊、PMI 或 BERT 流暢度打分，而是以最大二分匹配（Maximum Bipartite Matching，依同字 1.0、台華辭典翻譯 0.8、同義詞詞林 0.6 與最小子詞分數設定權重）執行四階段規則重斷詞（連續未對齊詞連接、部分對齊切分與同義詞重斷詞）。（2）第 59–62 行稱 BERT 台語斷詞器採用四分類 `B-I-E-S` 標籤；原文 §3.2（pp. 24–25，圖 14）明言「斷詞標記工作採用 BI 標籤模式」，僅有 `B` 與 `I` 二類標籤。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061），且 `concepts` 誤掛入 `formosan-computational-linguistics`（台語屬漢藏語系閩南語，非臺灣南島語）。
+- **來源**：`raw/my-focus/學長姐論文/.md/利用重斷詞改善台語機器翻譯系統_湯景文.md`（§3.2 pp. 24–25 圖 14、§3.3 pp. 26–36）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-066 | open | papers/2025-atayalic-affix-mt-jin.md | Card 3 | 原文不符
+- **問題**：（1）第 48–49 行稱輸入序列轉為中括號語素標籤 `[PRE:m] [ROOT:qaniq] [SUF:un]`；原文 §2.2–2.3（pp. 11–16）定義之三種格式為「原文形式」、「詞根形式」（搭配 `F1`、`FM002` 等詞綴組合編號）及「詞綴字串形式」（前綴加 `-`、中綴以 `<...>` 標記並移至詞根前、後綴加 `-`，如 `m- osa <m> dayang <n> tatak -an`），無 `[PRE:...]` 等標籤。（2）第 52–68 行與架構圖將模型寫為單一編碼器內執行 LayerNorm 加法融合；原文 §3.1.1（pp. 22–25，圖 5）之最佳架構 `FC_ftr_jnt` 係採用**兩個獨立並聯之 Transformer Encoder**（其一編碼子詞嵌入，其二編碼 26／29／49／62 維布林詞綴特徵向量），再將兩編碼器輸出串接（Concatenate）送入解碼器；且未提及華翻族最佳架構 `CF_bert_base`（§3.2.2，pp. 30–31，圖 14）係以 `bert-base-chinese` 取代華語端編碼器。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
+- **來源**：`raw/my-focus/學長姐論文/.md/使用詞綴資訊提升泛泰雅機器翻譯_金伯毅.md`（§2.2–2.3 pp. 11–16、§3.1–3.2 pp. 22–31 圖 5、14）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-067 | open | papers/2025-atayalic-oov-enumeration-yang.md | Card 3 | 原文不符
+- **問題**：（1）第 45–52 行與第 66 行架構圖稱系統以音韻轉換函數 $\Phi_{\text{phon}}(p \oplus \text{Infix}(i, r) \oplus s) = w_{\text{unk}}$ 正向生成表面形，並將「第二階段：候選詞根篩選」標為「保留率 > 94%」。原文 §3.2、§3.3、§4.2、§4.3（pp. 29–35、47–57、73）中，94.08%／94.33%／95.74% 召回率屬「第一階段：候選詞根挑選」（直接檢查詞根或其刪母音／中綴變體是否為未知詞子字串，且前後剩餘子串為合法前後綴）；而利用書寫形式轉換規則比對之「第二階段：候選詞根篩選」因過濾掉過多正解詞根、對猜測有害，作者於 p. 73 明言**最終系統決定不執行該步驟**。（2）第 57–64 行將隨機森林寫為對單一候選詞根獨立打分之單點分類器；原文 §3.5（pp. 42–45）實為**成對比較（Pairwise）二元分類器**，對任意兩候選詞根 $(x, y)$ 抽取 44 維特徵（$x$ 13 維、$y$ 13 維、差值 13 維、比值 5 維）進行 $\binom{n}{2}$ 循環賽投票選出最高票詞根。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
+- **來源**：`raw/my-focus/學長姐論文/.md/以構詞規則窮舉來解決泰雅未知詞問題_楊鈞凱.md`（§3.2–3.5 pp. 29–45、§4.2–4.3 pp. 47–57、§5 p. 73）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-068 | open | papers/2025-paiwan-bunun-morphology-mt-wu.md | Card 1–3 | 原文不符
+- **問題**：（1）Card 1（第 29 行）、Card 2（第 36 行）與 Card 3（第 47–52、65 行）稱本文建立環綴算子、音節週期性自相關檢測，並將「構詞解析器提取之深層詞根與詞綴特徵注入預訓練多語言遷移模型」。原文第 3–6 章（pp. 9–33）中，重疊詞僅以複製詞根末 1–2 個 CV 音節為 `<RED>` 之四步驟字串規則處理；且第 4–5 章之機器翻譯實驗**完全未使用任何詞綴或構詞解析資訊**，第 6 章結論（p. 33）明確將「針對詞綴資訊並將資訊導入模型訓練中」列為未來工作。（2）Card 3（第 58–62 行）列出含 KL 散度正則化項之損失函數；原文 §4.3（pp. 23–24）僅為馬來語／印尼語預訓練後直接微調之兩階段訓練，無 KL 散度正則化項。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
+- **來源**：`raw/my-focus/學長姐論文/.md/排灣布農的構詞結構自動分析與機器翻譯_吳維中.md`（§3.1–3.2 pp. 9–15、§4.3 pp. 23–24、§6 p. 33）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-069 | open | papers/2022-formosan-say-verbs-hsieh.md | Frontmatter 與 Card 3 | 原文不符
+- **問題**：（1）Frontmatter `title`（第 2 行）與主標題（第 20 行）將英文標題寫為 `"Semantic Phenomena of Verbs of Saying in Formosan Languages: A Typological Investigation"`；原文末頁（PDF p. 46，期刊 p. 92）之正式英文標題為 `"On the Semantics of SAY Verbs in Formosan Languages"`。（2）Card 3（第 46–63 行）之集合聯集式與連續向量空間線性插值式未見於原文（原文圖 4，p. 83 係以 `X[述說]、[動作]` 語義特徵標記描述語法化鏈），未標明為 Wiki 自行形式化推導。
+- **來源**：`raw/my-focus/台灣相關論文/台灣南島語「說」動詞語義現象初探_謝富貴.pdf`（p. 83 圖 4、p. 92 英文摘要頁）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-070 | open | papers/2024-formosan-temporal-words-lim.md | Frontmatter、Card 3 與 Card 6 | 原文不符
+- **問題**：（1）Frontmatter `title`（第 2 行）與主標題（第 20 行）將英文標題寫為 `"A Preliminary Cross-Linguistic Comparison of Temporal Words in Formosan Languages"`；原文末頁（PDF p. 27）之正式英文標題為 `"A Preliminary Comparative Study of Formosan Temporal Words"`。（2）Card 3（第 45–57 行）之代數分解式未見於原文，未標明為 Wiki 自行推導。（3）Card 6（第 93 行）稱泰雅語「包含未實現前綴（如 `sa-`）卻帶有過去時間詞根……檢索詞庫中對應之『昨天』詞根，從而推導出『明天』之正確語義」；原文表 12（p. 14）明確標示賽考利克泰雅語 `sa`（如 `sa knwan` 過去何時、`sa kaxa'` 前天）為**實現（realis，過去）**標記而非未實現標記，且表 3（p. 7）顯示泰雅語「昨天」（`shera'/hera'`）與「明天」（`suxan`）屬異根（類型 1.2）。
+- **來源**：`raw/my-focus/台灣相關論文/南島語言時間詞之跨語言比較初探_林鴻瑞.pdf'`（p. 7 表 3、p. 14 表 12、p. 27 英文摘要頁）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-071 | open | papers/2024-finnish-northern-sami-mt-saleva.md | Card 3 與 Card 5 | 原文不符
+- **問題**：（1）Card 3（第 55 行）將語言模型先驗正則化項之 KL 散度方向寫反為 $\mathcal{D}_{\text{KL}}(P_{\text{NMT}} \,\|\, P_{\text{LM}})$；原文 §3.2（p. 12950）定義之目標函數為由固定 LM 指向 NMT 之正向 KL 散度 $D_{\text{KL}}(p_{\text{LM}}(y) \,\|\, p_{\text{NMT}}(y \mid x))$。（2）Card 3 架構圖（第 63 行）將芬蘭語與北薩米語單語語料庫一併送入「逆向神經翻譯模型」；原文 §3.1（p. 12950）中，北薩米語單語資料由逆向模型回譯，而芬蘭語單語資料由正向模型正譯（forward translation）。（3）Card 5（第 80 行）稱「當回譯資料量充足時，必須全面採用 Tagged BT」；原文 §4.3（p. 12952，表 5）明確指出 `<BT>` 標記效果不一，在僅用回譯時使域內 UiT 測試集 BLEU 微降（41.75 至 41.71），結合正譯與回譯時使 UiT（38.96 至 38.84）與 YLE（17.91 至 17.36）之 BLEU 均下降。
+- **來源**：`raw/my-focus/報告論文題材/2024.findings-acl.768.pdf`（§3.1–3.2 p. 12950、§4.3 p. 12952 表 5）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-072 | open | papers/2025-manchu-in-context-mt-pei.md | Frontmatter、Card 3 與 Card 5–6 | 原文不符
+- **問題**：（1）Frontmatter `hook`（第 17 行）、引言（第 22 行）、Card 5（第 83 行）與 Card 6（第 95 行）稱注入語法書會導致翻譯效能「推理衰退／下降」；原文 §4.3（p. 8772，表 3）與附錄 E（p. 8783，表 10）顯示加入語法書段落使分數微幅上升但統計上不顯著（$p = 0.4$），原文結論為「語法書幾乎無助益（grammars hardly help）」，而非造成衰退。（2）Card 3（第 45–53 行）將提示組合寫為「五大獨立組件的笛卡爾積」並以 $\arg\max$ 解碼；原文 §4（p. 8770）明言窮舉所有組合不可行，故採依序貪婪疊加（sequential greedy integration），且實驗使用溫度 0.9／1.0 採樣。（3）Card 3（第 62 行）稱加密實驗將滿文轉寫為「模型完全未見過的對應符號」；原文 §5.2（p. 8773）實為拉丁字母循環位移密碼（如 `a -> e`、`amban -> encep`）。
+- **來源**：`raw/my-focus/報告論文題材/2025.acl-long.429.pdf`（§4 p. 8770、§4.3 p. 8772 表 3、§5.2 p. 8773、附錄 E p. 8783 表 10）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-073 | open | papers/2026-tao-filipino-nmt-macayan.md | Card 3 與 Card 6 | 原文不符
+- **問題**：（1）Card 3（第 45–51 行與第 60 行架構圖）稱在菲律賓語（Tagalog）大規模預訓練並加上參數距離懲罰項；原文 §4.6（p. 32）中，Tagalog（Filipino）即為目標語言，Model 3 係先將 `NLLB-200 (600M)` 於巴丹語群親屬語 **Ivatan-to-Tagalog（伊巴丹語－菲律賓語）**平行語料微調，再於 Yami-to-Tagalog（達悟語－菲律賓語）微調，且無任何 $L_2$ 參數距離懲罰項。（2）Card 3（第 53–57 行與第 63 行架構圖）與 Card 6（第 90 行）稱本文訓練「構詞感知子詞正則化（Morphology-Aware Subword BPE），將語言學詞綴字典注入分詞優先級，確保 `mi-`、`ma-`、`om-` 不被截斷」；原文 §7（p. 34）明確指出**受限於研究時程，本文直接使用 NLLB-200 預設分詞器**，並將子詞／構詞分詞列為未來工作建議。
+- **來源**：`raw/my-focus/報告論文題材/2026.loresmt-1.2.pdf`（§4.6 p. 32、§7 p. 34）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-074 | open | papers/2019-generalized-data-augmentation-xia.md | Card 3 | 原文不符
+- **問題**：（1）第 49–53 行稱以「字元級音變轉換模型」或構詞映射將高資源語言轉為低資源語言；原文 §3.1–3.2（pp. 5788–5789）實為透過正交 Procrustes SVD 與 CSLS 雙語詞典歸納進行逐詞替換（Word-by-word Substitution），或結合基於去噪自編碼與迭代回譯之改良無監督機器翻譯（M-UMT）。（2）第 56–59 行將 NMT 訓練寫為帶權重衰減係數 $\alpha_k$ 之加權對數似然；原文 §4.4（pp. 5790–5791）係將真實與偽平行語料直接串接預訓練後進行混合微調（mixed fine-tuning），無 $\alpha_k$ 加權目標式。
+- **來源**：`raw/my-focus/英文論文/Generalized Data Augmentation for Low-Resource Translation_P19-1579.pdf`（§3.1–3.2 pp. 5788–5789、§4.4 pp. 5790–5791）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-075 | open | papers/2023-low-resource-nmt-survey-ranathunga.md | Card 1、Card 3 與 Card 6 | 原文不符
+- **問題**：Card 1（第 17 行）與 Card 3（第 43–63 行）稱綜述建立四大支柱（含「語言學先驗融合：詞綴特徵拼接／投影、句法樹與詞典注入」及「輕量化 Adapter、參數高效微調 PEFT」）並列出含 $L_2$ 錨定項之遷移學習公式；Card 6（第 87 行）稱「綜述指出：在資料量小於一萬句的極端低資源語境中……真正的突破口在於構詞感知與外部符號知識庫的在線檢索（RAG）」。原文（ACM CSUR 2023，§3–§11，圖 1、2、7）將低資源 NMT 分為六類技術（資料增強、無監督、半監督、多語言、遷移學習、零樣本／樞紐），全文僅有一條 Google Scholar 離群值檢定公式（p. 229:22，式 1），決策流程圖（圖 7）以 50 萬句為低資源分界，且全文從未提及 RAG、LLM、Adapter 或 PEFT。
+- **來源**：`raw/my-focus/英文論文/Neural Machine Translation for Low-resource Languages A Survey_3567592.pdf`（§3–§11 pp. 229:5–229:22 圖 1、2、7）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-076 | open | papers/2024-formosan-mt-bilingual-lexicon-zheng.md | Card 3 | 原文不符
+- **問題**：第 45–68 行稱本文採溫度採樣係數 $\tau$、動態衰減權重 $\beta \in (0, 1]$ 之混合損失函數，並定義交叉注意力香農熵；原文 §4–§5（pp. 11251–11254）全文無任何數學公式，方法一（`+ Lex.`）僅將雙語詞典詞條與平行句直接串接訓練，方法二（`+ PPD`，§5.1）則隨機替換平行句中 20% 族語詞彙合成偽平行資料，方法三為兩者結合。Card 3 完全漏述產生最佳成績（+5.55 BLEU／+10.33 chrF）之方法二 PPD，卻虛構溫度採樣、動態權重與注意力熵公式。
+- **來源**：`raw/my-focus/英文論文/Improving Low-Resource Machine Translation for Formosan Languages _ 2024.findings-acl.670v2.pdf`（§4–§5 pp. 11251–11254）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-077 | open | papers/2025-formosanbench-llm-benchmark-lin.md | Card 2、Card 3 與 Card 6 | 原文不符
+- **問題**：（1）Card 3（第 50 行）將資料點寫為含英語譯文與語音對齊之五元組；原文 §4（pp. 16529–16530，表 1）之三項任務取自三個彼此獨立之資料源（MT 取自原民會線上辭典族華句對且無英語譯文、ASR 取自族語 E 樂園教材音檔、摘要取自族語維基百科條目與首段），並非同源五元組。（2）Card 3 架構圖（第 72 行）列出 `chrF++` 與 `SBERT` 指標；原文 §5.3（p. 16532）僅使用 BLEU、WER、ROUGE-2／ROUGE-L、GPT-4o-mini 評分（1–5 分）與人工評估，未使用 `chrF++` 或 `SBERT`。（3）Card 2（第 37 行）與 Card 6（第 99 行）稱「論文揭示的 4~6 倍 Tokenizer 膨脹問題」；誠如 Card 4（第 81 行）已註明，原文並未測量或報告 Tokenizer 膨脹倍率。
+- **來源**：`raw/my-focus/英文論文/FormosanBench Benchmarking Low-Resource Austronesian Languages in the Era of Large Language Models _ 2025.findings-emnlp.897.pdf`（§4 pp. 16529–16530 表 1、§5.3 p. 16532）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-078 | open | papers/2025-indigenous-tek-ai-revitalization-wang.md | Card 1 與 Card 3 | 原文不符
+- **問題**：（1）Card 1（第 29 行）作者姓名寫作「王 reen-cheng」，中英大小寫混雜。（2）Card 3（第 45–53 行）將模型寫為 Nonaka 四階段 SECI 遞迴算子；原文 §3.2（pp. 7–11，圖 3）係將 Nonaka 模型擴展為四層知識矩陣（$K_1$ 個體內隱、$K_2$ 個體外顯、$K_3$ 部落社群、$K_4$ 文化系統）與 12 個知識轉換階段，並搭配五層 LKM 架構（§3.4，圖 5）與 Plan–Act–Observe–Adjust 代理迴圈（§3.5，圖 6）。（3）Card 3（第 56–61 行）列出基於餘弦相似度之禁忌懲罰損失函數；原文為質性系統架構論文，全文無任何數學公式或損失函數（文化禁忌係由第一層部落會議審查、第三層語義標籤與第五層規則權限矩陣控管）。
+- **來源**：`raw/my-focus/英文論文/From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization Modeling Knowledge Cycles in Indigenous Cultural Systems_socsci-15-00007.pdf`（§3.2–3.5 pp. 7–15 圖 3–6）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-079 | open | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 3 | 原文不符
+- **問題**：第 43–62 行與架構圖稱方言距離係「對共享同一個語義概念的詞彙集合 $\mathcal{V}_{AB}$」計算編輯距離並執行「多維尺度分析（MDS）」。原文 §2.3（p. 125）並未對齊同義概念詞表亦未使用 MDS，而是直接對語料庫表面詞形計算三項指標：（1）詞級 TF-IDF 餘弦相似度（`min_df=2`、`sublinear_tf=True`）、（2）頻率 $\ge 5$ 詞型之未加權 Jaccard 相似度、（3）各方言前 500 高頻詞型雙向平均之字元級正規化 Levenshtein 距離。Card 3 完全漏述前兩項核心指標（TF-IDF 餘弦與 Jaccard），且虛構概念對齊詞表與 MDS。
+- **來源**：`raw/my-focus/英文論文/Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13.pdf`（§2.3 p. 125）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-080 | open | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 3 與 Card 6 | 原文不符
+- **問題**：（1）Card 3（第 47 行與第 62 行架構圖）稱資料清洗採語言識別器与語義對齊過濾 $\operatorname{AlignScore}(x_i, y_i) \ge \tau$；原文 §3.3（p. 3448）係使用正則表達式與詞／字元長度比門檻（2 詞以上剔除 $r \le 0.2$ 或 $r > 8.0$；少於 2 詞剔除字元比 $r \le 0.05$ 或 $r > 20.0$），無語義對齊模型或語言識別器。（2）Card 3（第 49 行）所列 15 語言代碼含錯誤代碼 `puy`、`ruk`、`cou`、`sai`、`kan`、`sed` 且同時列出 `sed` 與 `trv`（漏列噶瑪蘭語 `ckv` 與撒奇萊雅語 `szy`）；原文表 1（p. 3447）之 ISO 639-3 代碼為 `ami, bun, ckv, dru, pwn, pyu, ssf, sxr, szy, tao, tay, trv, tsu, xnb, xsy`。（3）Card 3（第 53–59 行）稱對 NLLB-200 進行 15 語多語言聯合微調；原文 §4.2（p. 3450）明言係針對各族語－華語及 4 個族語－英語**分別訓練獨立之雙向雙語模型**，並於 §6（p. 3453）將多語言聯合預訓練列為未來工作。（4）Card 6（第 90 行）寫「30 萬高品質句對」，與 Card 4 之總量 493,519 句不一致。
+- **來源**：`raw/my-focus/英文論文/FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273.pdf`（§3.3 p. 3448、表 1 p. 3447、§4.2 p. 3450、§6 p. 3453）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-081 | open | papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md | Card 1 與 Card 3 | 原文不符
+- **問題**：（1）Card 1（第 30 行）將作者寫作「王 reen-cheng 教授」，中英大小寫混雜。（2）Card 3（第 44–53 行）列出雙軌混合檢索線性加權公式（結合餘弦相似度與 BM25），並於第 62 行與架構圖（第 65–69 行）稱辭典模組解析出「詞根＋詞綴焦點＋中文詞條」且與向量庫並聯檢索。原文 §3.1–3.2（pp. 4–5，圖 1–3）全文無任何數學公式、未使用 BM25，亦未由辭典解析詞根與焦點；實際流程（圖 3）為**串聯式條件分支（if-else fallback）**：逐詞先查記憶體內 JSON 雜湊表（`Is it in the hash map? YES -> Word Merge`），僅當詞典未命中（`NO`）時才查詢 Qdrant 向量資料庫。
+- **來源**：`raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（§3.1–3.2 pp. 4–5 圖 1–3）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-082 | open | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 3 與 Card 4 | 原文不符
+- **問題**：（1）Card 3（第 44–53 行）稱依據「句法成分樹（Constituency Tree）」拆解來源句，並檢索包含片段及其「對應目標語譯文子串的最小對齊例句對」。原文 §3（p. 3，圖 1）完全未使用句法成分樹剖析器或子串級目標語對齊，而是以**由 7 個連續詞遞減至 1 個詞之滑動視窗（sliding window）**在檢索庫來源端進行精確子字串匹配，為每個不重疊片段隨機抽取至多 6 組完整雙語句對；且 Card 3 漏述 Pivoted Fragment-Shot（§3，pp. 3–4，圖 2）經由義大利語樞紐進行兩階段巢狀片段檢索（排除整句完全重疊）之機制。（2）Card 4（第 83–84 行）兩度將研究對象 **Ladin（拉定語，北義多洛米蒂山區雷托－羅曼語支少數民族語言：Val Badia 與 Gherdëina）**誤寫為「**拉丁語**變體」。
+- **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`（§1 p. 1、§3–§4 pp. 3–4 圖 1–2）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-083 | open | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 3 | 過度表述
+- **問題**：Card 3（第 46–62 行）僅以抽象算子描述檢索，未交代原文 §3.2（p. 132）之具體檢索設計：詞彙表（Glossary）係以 spaCy `en_core_web_sm` 斷詞後進行 `{1,2}`-gram 重疊匹配，翻譯記憶庫（Translation Memory）係以 `Tantivy` 函式庫執行 Top-$N$ BM25 檢索，並以 `MADLAD-400-10B`／`OPUS-MT`／`NLLB-54B` 搭配 `Gemini 2.0 Flash` 進行少樣本思維鏈（CoT）後編輯；且原文全文無數學公式（式 52、56 應標明為依原文流程整理之示意式）。
+- **來源**：`raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`（§3.2 p. 132、§4.1–4.2 pp. 132–133）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-084 | open | papers/2026-context-volume-rag-domain-shift-setiawan.md | Card 3 | 原文不符
+- **問題**：第 54–60 行稱論文證明 $\operatorname{chrF++}$ 與語境容量呈精確對數線性公式，且第 48 行稱使用「稠密檢索器」召回上下文。原文 §4.3 與 §5.2–5.3（pp. 90–93，表 2、4、5、6）全文無此對數線性公式；表現最佳之平行句檢索策略並非稠密向量檢索，而是基於 `rapidfuzz` 字元級正規化 Levenshtein 相似度 $\ge 0.5$ 之**詞級模糊匹配（Word-Level Fuzzy Matching）**；且句級檢索（BM25、BGE、ChrF-RAG）於 $K \approx 60$ 即飽和，詞級檢索於每詞 $n = 10$（有效句數 $K \approx 137$，35.28 chrF++）達峰值後，於 $n = 15, 20$（$K \approx 205, 272$）因語境雜訊回落至 35.16 與 34.22 chrF++（表 5），並非單調無限上升。
+- **來源**：`raw/my-focus/英文論文/llm 輔助/Context Volume Drives Performance Tackling Domain Shift in Extremely.pdf`（§4.3 p. 90、§5.2–5.3 pp. 91–93、附錄 E p. 100 表 4–6）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-085 | open | papers/2026-data-centric-russian-kyrgyz-mt-novokshanov.md | Card 3 | 原文不符
+- **問題**：（1）第 46–48 行將 SONAR 評分寫為餘弦相似度；原文 §2.1.1（p. 226）明言使用 `blaser_2.0` 跨語言語義相似度預測模型（輸出 1–5 分段，故門檻為 3.0 與 3.7，餘弦相似度不可能大於 1）。（2）第 61–72 行與架構圖將四階段課程學習順序與資料集完全寫反：頁面寫作「階段 1：FineWeb-2 合成回譯 50 萬句 -> 階段 2：SONAR 標準品質 -> 階段 3：SONAR 高品質 -> 階段 4：官方驗證集收斂」。原文 §2.3.3（pp. 227–228）與表 1（p. 226）之真實順序為：**階段 1：OPUS 標準品質多語資料**（$3.0 \le \text{SONAR} < 3.7$，含俄、吉、烏茲別克、塔吉克四語全方向共 8,207,314 句）-> **階段 2：OPUS 高品質多語資料**（$\text{SONAR} \ge 3.7$，7,069,840 句）-> **階段 3：FineWeb-2 開源合成回譯資料**（由 50 萬篇吉爾吉斯語文件切出 1,849,234 段，經 Gemma-3-27B 與 Qwen3-235B 回譯及 MADLAD-400-7B-MT 交叉熵 $(0.1, 4.5)$ 過濾後保留 1,566,927 句對、雙向 3,133,854 句）-> **階段 4：SiberianPersonaChat 高品質合成對話資料**（由 GPT-4o 翻譯之 56,529 段俄吉對話、雙向 113,058 句，絕非在官方驗證集上訓練）。另漏述烏茲別克語／塔吉克語輔助遷移（§2.3.1）與 `mt0-large` 詞表剪枝（1.23B 至 800M，§2.3.2）。
+- **來源**：`raw/my-focus/英文論文/llm 輔助/Data-Centric Approach at the LoResMT 2026 Turkic Translation.pdf`（§2.1.1 p. 226 表 1、§2.3.1–2.3.3 pp. 227–228）
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-086 | open | concepts/formosan-computational-linguistics.md | Frontmatter 與關鍵突破支柱 | 原文不符
+- **問題**：（1）Frontmatter `papers`（第 13 行）將研究臺灣閩南語（漢藏語系漢語族）之 `2024-taiwanese-mt-resegmentation-tang` 列入「臺灣南島語計算語言學」概念頁。（2）第 48–50 行重述 `2025-atayalic-oov-enumeration-yang.md` 之錯誤，稱楊鈞凱（2025）「利用音韻變化規則與構詞律正向窮舉所有合法衍生形」（實為子字串候選詞根挑選搭配成對隨機森林循環賽投票，且正向書寫形式比對篩選因有害而未執行，見 EK-067）。（3）第 57 行稱 Gagnier（2026）「利用正規化 Levenshtein 編輯距離與多維度對齊，量化臺灣南島語 16 族 42 方言」（漏述 TF-IDF 餘弦與 Jaccard 相似度且原文無多維尺度對齊，見 EK-079）。
+- **來源**：同 EK-065、EK-067、EK-079
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+
+### EK-087 | open | concepts/low-resource-machine-translation.md | 關鍵技術路徑 | 原文不符
+- **問題**：第 49–52 行將構詞特徵增強寫為詞根嵌入與詞綴嵌入拼接投影 $e(w) = W_{\text{proj}}[e_{\text{root}}(w) \,\|\, e_{\text{affix}}(w)]$ 並歸給游景勝（2021）與金柏毅（2025）；惟游景勝（2021）實驗證實詞根嵌入使 BLEU 暴跌、最佳模型係使用表面詞形搭配 52 維詞綴特徵（見 EK-062），而金柏毅（2025）最佳模型 `FC_ftr_jnt` 係使用雙獨立並聯 Transformer Encoder 分別編碼「詞綴字串形式子詞」與「詞綴組合特徵向量」後於編碼器輸出端串接（見 EK-066）。
+- **來源**：同 EK-062、EK-066
+- **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
