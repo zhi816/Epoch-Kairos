@@ -27,6 +27,8 @@
 
 > **唯一真實來源（Single Source of Truth）**：所有色碼之實際數值一律以 [`web/assets/css/theme.css`](./web/assets/css/theme.css) 之 CSS 變數為準。本章之「參考色值」欄僅供閱讀時快速辨識，若與 `theme.css` 不一致，一律以 `theme.css` 為準。修改配色時以 `theme.css` 為主，並同步更新本表參考色值。
 
+> **美術方向紀錄**：首頁、星圖、卡片、索引與「我的星系」等視覺方向之已定、暫定、待決與否決事項，統一記於 [`DESIGN.md`](./DESIGN.md)。設計或實作 `web/` 前須先閱讀該檔，且不得重提其「否決紀錄」所列方案。
+
 ### 1. 基礎畫布與文字色彩（源自 Deimos）
 
 | 用途 | CSS 變數 | 設計意圖 | 參考色值（以 `theme.css` 為準） |
@@ -87,6 +89,7 @@
 Epoch-Kairos/
 ├── AGENTS.md                  # 【第三層：Schema】本規範文件，指導 AI 如何維護與擴充知識庫
 ├── README.md                  # 專案介紹與 GitHub Pages 瀏覽入口說明
+├── DESIGN.md                  # 美術方向紀錄（已定、待決與否決之視覺決策）
 │
 ├── raw/                       # 【第一層：Raw Sources】原始資料層（不可變，Immutable）
 │   ├── my-focus/              # 【使用者專屬關注區】存放個人精選研究、私人筆記與核心關注資料

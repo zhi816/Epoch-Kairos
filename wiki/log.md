@@ -347,3 +347,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：依新規範為 24 篇 `my_focus: true` 論文頁補上 `focus_role` 與 `focus_languages`（學長姐論文 7、報告題材 3、臺灣語言學 2、國際文獻 8、大模型輔助 4）；研究語言依論文頁正文與 `raw/my-focus/` 原文核對，Zheng 等（2024）之 16 種、Gagnier（2026）之 16 語 42 方言、Scheppat 等（2026）之 15 種、謝富貴（2022）與林鴻瑞（2024）之多語比較，依規範記為 `臺灣南島諸語`；綜述與文化復振兩篇記為空陣列。[2022-formosan-say-verbs-hsieh](papers/2022-formosan-say-verbs-hsieh.md) 與 [2024-formosan-temporal-words-lim](papers/2024-formosan-temporal-words-lim.md) 之 `domain` 由 `ai` 改為 `human`、`domain_tags` 改為 `#語言學`；[2025-indigenous-tek-ai-revitalization-wang](papers/2025-indigenous-tek-ai-revitalization-wang.md) 加註 `#社會學`；概念頁 [formosan-computational-linguistics](concepts/formosan-computational-linguistics.md) 加註 `#語言學`；[index.md](index.md) 對應三筆條目之標籤同步更新。全庫 41 篇論文與 10 篇概念頁之 `domain` 與 `domain_tags` 經腳本比對均落在新白名單內（ai 28、physics 5、bio 3、econ 3、human 2、chem 0）。`raw/` 僅讀取，未修改。
+
+## [2026-11-08 19:50] design | 建立美術方向紀錄 DESIGN.md | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：經使用者同意，新增根目錄 [DESIGN.md](../DESIGN.md)，彙整本次美術方向討論之設計原則、首頁版面（主案 v4、備案 v3）、懸星索引、我的星系（隱藏機關、空心星標記、發表年縱軸星圖、深色語言名卡片）、論文頁、字體、六類學科色彩與形狀、待決事項、否決紀錄與版本歷程，並以「已定、暫定、待決、否決」標記狀態，供所有代理實作 `web/` 前查閱。[AGENTS.md](../AGENTS.md) 第二章新增指向該檔之說明，第四章目錄樹補列 `DESIGN.md`。`theme.css` 色值未變更，樣稿星光色仍待使用者確認後移植。
