@@ -19,7 +19,7 @@ import subprocess
 import sys
 
 LOG_PATH = 'wiki/log.md'
-HEADING = re.compile(r'(?m)^## \[\d{4}-\d{2}-\d{2} \d{2}:\d{2}\]')
+HEADING = re.compile(r'(?m)^## \[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\]')
 AGENT_LINE = re.compile(r'(?m)^- \*\*執行代理\*\*：(.*)$')
 
 
@@ -46,6 +46,7 @@ def norm(entry):
 def main():
     ap = argparse.ArgumentParser(description='只暫存指定代理寫的 wiki/log.md 條目')
     ap.add_argument('agent', help='執行代理名稱的一部分，例如 "Claude Code"、"Codex"、"Antigravity"')
+    ap.add_argument('--heading', action='append', default=[], help='只選取指定的新日誌標題行；可重複指定')
     ap.add_argument('--dry-run', action='store_true', help='只列出結果，不寫入暫存區')
     a = ap.parse_args()
 
@@ -68,6 +69,17 @@ def main():
         sys.exit(1)
 
     new_entries = [e for e, k in zip(work_entries, work_keys) if k not in base_keys]
+    if a.heading:
+        available = {e.splitlines()[0].strip() for e in new_entries if e.splitlines()}
+        missing = set(a.heading) - available
+        if missing:
+            sys.stderr.write('錯誤：找不到指定的新日誌標題：\n')
+            for heading in sorted(missing):
+                sys.stderr.write('  ' + heading + '\n')
+            sys.exit(1)
+        selected = set(a.heading)
+        new_entries = [e for e in new_entries if e.splitlines() and e.splitlines()[0].strip() in selected]
+
     mine, others = [], []
     for e in new_entries:
         m = AGENT_LINE.search(e)
@@ -77,17 +89,32 @@ def main():
     for e, who in mine:
         print('暫存：' + e.splitlines()[0])
     for e, who in others:
+        if a.heading and e.splitlines()[0].strip() in set(a.heading):
+            sys.stderr.write('錯誤：指定的日誌標題不屬於代理「' + a.agent + '」：' + e.splitlines()[0] + '\n')
+            sys.exit(1)
         print('略過（' + who + '）：' + e.splitlines()[0])
     if not mine:
         print('沒有「' + a.agent + '」的新條目，未變更暫存區。')
         return
 
-    # 換行一律跟隨倉庫內既有版本的多數（core.autocrlf=true 時 Git 物件為 LF）；
-    # 直接寫入 Git 物件不會經過 autocrlf 轉換，若混入 CRLF，Git 會停止正規化工作目錄，造成整檔看似變更。
+    # 選取的條目若比 HEAD 中最新條目早（例如遠端先推了較晚的工作），依時間插入，
+    # 但不移動任何已提交條目。此處只建立 index blob，不改工作目錄。
+    base_header, base_entries = split(base)
+    staged_entries = list(base_entries)
+    for entry, _ in sorted(mine, key=lambda item: HEADING.match(item[0]).group(1)):
+        timestamp = HEADING.match(entry).group(1)
+        i = len(staged_entries)
+        while i > 0 and HEADING.match(staged_entries[i - 1]).group(1) > timestamp:
+            i -= 1
+        staged_entries.insert(i, entry)
+
+    # 換行一律跟隨 HEAD 版日誌的多數（core.autocrlf=true 時 Git 物件為 LF）；
+    # 直接寫入 Git 物件不會經過 autocrlf 轉換，避免混入異常行尾。
     eol = '\r\n' if base.count('\r\n') * 2 > base.count('\n') else '\n'
-    staged = base.rstrip('\r\n') + '\n\n'
-    staged += '\n'.join(e.replace('\r\n', '\n').rstrip('\n') + '\n' for e, _ in mine)
-    staged = staged.replace('\r\n', '\n')
+    staged = base_header.replace('\r\n', '\n').rstrip('\n') + '\n\n'
+    for entry in staged_entries:
+        staged += entry.replace('\r\n', '\n').rstrip('\n') + '\n\n'
+    staged = staged.rstrip('\n') + '\n'
     if eol == '\r\n':
         staged = staged.replace('\n', '\r\n')
     if a.dry_run:

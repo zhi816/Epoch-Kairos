@@ -285,7 +285,6 @@
 - **模型版本**：Gemini 3.8 Flash
 - **具體變更**：使用者已將 raw/ 目錄下誤植為 2026 年之冰立方微中子觀測文獻更名為 `raw/2013-icecube-neutrino.pdf`。於 Mine-RAW 私有倉庫完成雙更名提交（光遺傳學與冰立方）；主倉庫同步更新 `wiki/index.md` 之參照路徑與真實發表年份（Aartsen et al. (2013) Science 342:1242856），使其符合發表年份前綴規範。
 
-
 ## [2026-11-08 16:25] ingest | 全面收錄 raw/ 16 篇原始文獻並建立對應 Wiki 論文頁與跨領域概念網絡 | 全域
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Argon (Medium)
@@ -322,16 +321,17 @@
 - **模型版本**：Gemini 3.8 Flash
 - **具體變更**：依據使用者指示，參考 HTML + Headless Chrome 學術轉檔管線（於暫存區撰寫通用腳本，未修改任何外部原始目錄），為 `raw/my-focus/` 內未有中文翻譯版之 13 篇英文文獻（1 篇報告論文題材、8 篇英文論文、4 篇 llm 輔助論文）分三批產出高品質繁體中文學術譯本 PDF，並存入各自所屬之 `raw/my-focus/` 子目錄中。各文檔均涵蓋完整摘要、導言、核心數學架構與公式、決定性實驗數據標準三線表、消融實證分析與結論。全部 13 份生成之 PDF 檔案大小介於 250 KB 至 765 KB 之間，逐一通過 `%PDF-` 檔頭與 `%%EOF` 檔尾魔術字元完整性檢驗。
 
-
 ## [2026-11-08 18:41] fix | 24 篇新增論文 Card 4 原文數據核對與修正 | 全域
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6 (Codex)
 - **具體變更**：逐篇回查 24 篇論文原始 PDF，重寫各頁 Card 4；修正指標名稱、語言方向、測試集與基線語境，保留原文可核實數值。對綜述與概念框架研究，改列原文的研究範圍與質性結論，不再附會模型評測數字。論文頁：[2019-generalized-data-augmentation-xia](papers/2019-generalized-data-augmentation-xia.md)、[2021-seediq-chinese-mt-you](papers/2021-seediq-chinese-mt-you.md)、[2022-formosan-say-verbs-hsieh](papers/2022-formosan-say-verbs-hsieh.md)、[2023-atayal-truku-morphology-dai](papers/2023-atayal-truku-morphology-dai.md)、[2023-atayalic-multilingual-mt-liao](papers/2023-atayalic-multilingual-mt-liao.md)、[2023-low-resource-nmt-survey-ranathunga](papers/2023-low-resource-nmt-survey-ranathunga.md)、[2024-finnish-northern-sami-mt-saleva](papers/2024-finnish-northern-sami-mt-saleva.md)、[2024-formosan-mt-bilingual-lexicon-zheng](papers/2024-formosan-mt-bilingual-lexicon-zheng.md)、[2024-formosan-temporal-words-lim](papers/2024-formosan-temporal-words-lim.md)、[2024-taiwanese-mt-resegmentation-tang](papers/2024-taiwanese-mt-resegmentation-tang.md)、[2025-atayalic-affix-mt-jin](papers/2025-atayalic-affix-mt-jin.md)、[2025-atayalic-oov-enumeration-yang](papers/2025-atayalic-oov-enumeration-yang.md)、[2025-formosanbench-llm-benchmark-lin](papers/2025-formosanbench-llm-benchmark-lin.md)、[2025-fragment-shot-reasoning-mt-frontull](papers/2025-fragment-shot-reasoning-mt-frontull.md)、[2025-indigenous-tek-ai-revitalization-wang](papers/2025-indigenous-tek-ai-revitalization-wang.md)、[2025-manchu-in-context-mt-pei](papers/2025-manchu-in-context-mt-pei.md)、[2025-paiwan-bunun-morphology-mt-wu](papers/2025-paiwan-bunun-morphology-mt-wu.md)、[2025-tulun-adaptable-lrl-mt-merx](papers/2025-tulun-adaptable-lrl-mt-merx.md)、[2026-context-volume-rag-domain-shift-setiawan](papers/2026-context-volume-rag-domain-shift-setiawan.md)、[2026-data-centric-russian-kyrgyz-mt-novokshanov](papers/2026-data-centric-russian-kyrgyz-mt-novokshanov.md)、[2026-epark-formosan-dialectometry-gagnier](papers/2026-epark-formosan-dialectometry-gagnier.md)、[2026-formosanmt-parallel-corpus-scheppat](papers/2026-formosanmt-parallel-corpus-scheppat.md)、[2026-hybrid-dictionary-rag-llm-paiwan-wang](papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)、[2026-tao-filipino-nmt-macayan](papers/2026-tao-filipino-nmt-macayan.md)。
 - **原始資料**：僅讀取 `raw/my-focus/` 來源，未修改原始 PDF；本次修改限於上述 24 個 Wiki Card 4 區塊與本紀錄。
+
 ## [2026-11-08 19:15] update | 以較完整正文譯本取代滿語 ICL 論文既有 PDF | 全域
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6 (Codex)
 - **具體變更**：以 9 頁繁體中文正文譯本取代專案原有 3 頁版本；新檔涵蓋正文至致謝、Table 1–7 與 Figure 1–3。替換後 SHA-256 為 97E79A9F3325C66A62C5211277A6FC71D3EFC7728E6E3D3E8F09035DA8CB7961，與來源譯本一致。此譯本未含參考文獻及附錄 A–I；審閱另發現「所有指標均翻倍」的敘述過度概括、將滿語分類為「阿爾泰語系」以及致謝漏列 ANR-23-IACL-0007，使用時應留意。原始英文 PDF 未修改。
+
 ## [2026-11-08 19:40] config | 將學術論文翻譯 Skill 納入 Codex 專案自動發現 | 全域
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6 (Codex)
@@ -353,7 +353,6 @@
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：經使用者同意，新增根目錄 [DESIGN.md](../DESIGN.md)，彙整本次美術方向討論之設計原則、首頁版面（主案 v4、備案 v3）、懸星索引、我的星系（隱藏機關、空心星標記、發表年縱軸星圖、深色語言名卡片）、論文頁、字體、六類學科色彩與形狀、待決事項、否決紀錄與版本歷程，並以「已定、暫定、待決、否決」標記狀態，供所有代理實作 `web/` 前查閱。[AGENTS.md](../AGENTS.md) 第二章新增指向該檔之說明，第四章目錄樹補列 `DESIGN.md`。`theme.css` 色值未變更，樣稿星光色仍待使用者確認後移植。
 
-
 ## [2026-11-08 20:10] config | .gitignore 排除 macOS 系統檔 .DS_Store | 全域
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
@@ -368,8 +367,6 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 3.8 Flash
 - **具體變更**：依據使用者指示並嚴格遵循 `.agents/skills/academic-paper-translator/SKILL.md` 規範，對 `raw/my-focus/英文論文/FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273.pdf`（Scheppat et al., LREC 2026）執行完整正文翻譯與雙欄學術版面重建。將原先 2 頁之極度簡略摘要版，全面升級為 7 頁之繁體中文學術全譯本，覆蓋原檔 `FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273_繁體中文翻譯.pdf`。完整涵蓋摘要、導言（6 項核心貢獻）、相關工作、FormosanMT 語料庫（15 種官方南島語背景、資料來源 FormosanBank 與 ILRDF 影音字幕、拼寫正規化與長度語意過濾、493,519 句對 80/10/10 切分與方言標籤保留）、基準實驗（OpenNMT-py 從頭訓練、NLLB-200 繁體中文 Tokenizer 重構修復、動態雙向採樣與 Adafactor 優化）、結果與討論（15 語與華語雙向翻譯評測、4 語與英語雙向評測、黏著構詞對 BLEU/chrF++ 之影響、阿美語－英語真實生成質性案例對比分析）、結論、研究限制、倫理聲明、致謝、附錄資料抽取技術細節（fetch_xml、clean_xml、make_corpus、scrape_videos、make_xml）與完整 30 筆參考文獻；精確重建 Table 1 至 Table 5 全數 5 張學術表格與 Figure 1 流程圖，所有句對數、評測指標（BLEU、chrF++）均逐格核驗通過，零數據缺失。於私有倉庫 Mine-RAW 完成單獨 Git 提交（commit `45b9ba7`）。
-
-
 
 ## [2026-11-08 20:34] update | 以 8 頁完整學術正文與全數據表譯本取代 Lin et al. 2025 FormosanBench 既有 PDF | #自然語言處理 #計算語言學 #人工智慧
 - **執行代理**：Antigravity by Google DeepMind
@@ -400,6 +397,7 @@
   - [1995-sakaguchi-treg.pdf](../raw/1995-sakaguchi-treg.pdf)、[1995-soai-asymmetric-autocatalysis.pdf](../raw/1995-soai-asymmetric-autocatalysis.pdf)、[1999-li-yaghi-mof.pdf](../raw/1999-li-yaghi-mof.pdf)、[2001-brunkow-foxp3.pdf](../raw/2001-brunkow-foxp3.pdf)、[2003-nagel-channelrhodopsin2.pdf](../raw/2003-nagel-channelrhodopsin2.pdf)
   - [2025-li-qt12-rice-thermotolerance.pdf](../raw/2025-li-qt12-rice-thermotolerance.pdf)、[2025-musunuru-in-vivo-base-editing.pdf](../raw/2025-musunuru-in-vivo-base-editing.pdf)
   - Mine-RAW 已提交 commit `7a7836a` 並推送至 `origin/main`。Nagel et al. (2002) 原始 PDF 未在本次下載資料中找到，仍待補。
+
 ## [2026-11-08 20:50] update | 以 6 頁完整學術正文與全 42 方言評測表譯本取代 Gagnier 2026 ePark 方言計量學既有 PDF | #自然語言處理 #計算語言學 #語言學
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 3.8 Flash
@@ -585,6 +583,11 @@
 - **概念網絡影響**：以上主張位於概念頁的跨學科延伸，並會沿相關概念連結被讀者當作已證實事實引用；修訂時須同步標註證據等級與適用範圍，避免臨床狀態、方法能力和推測流程在跨頁傳播時被強化。
 - **本輪限制與變更**：只記錄審查結果，未修改論文頁、概念頁或原始資料；尚未宣告整批內容全面通過。
 
+## [2026-11-08 23:26] config | 新增 Wiki 內容正確性審查 Skill | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6 (Codex)
+- **具體變更**：新增 repo-local Skill，規範 Wiki 論文與概念頁逐項核對第一手來源、數據上下文、公式與歸因、跨頁引用及審查範圍回報：[wiki-content-audit](../.agents/skills/wiki-content-audit/SKILL.md)。
+
 ## [2026-11-08 23:48] rule | 多 AI 協定新增「寫入日誌即提交」並補充 Python 環境說明 | 全域
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
@@ -601,3 +604,13 @@
   - [AJR 2001](papers/2001-colonial-origins-acemoglu.md)：Card 3（第 59–60 行）把疾病免疫機制作為已確立事實來支撐排他性限制；原文 AER pp. 1371–1372 將工具變數排他性明確列為識別假設，並把當代疾病直接影響列為主要疑慮，免疫差異是作者用來論證假設合理性的依據，不是由該識別設計單獨證明的普遍因果事實。Card 5（第 107 行）關於外援／基建必然遭攫取的結論不屬 AJR 2001 的實證檢驗，應補直接研究或標成政策推論。Card 4 的奈及利亞—智利數字偏差已記於 22:35 審查條目，本輪不重複列值。
   - [Woodford 2007](papers/2007-woodford-inflation-dynamics.md)：Card 1（第 36 行）「嚴格證明決定權毫不動搖」強於原文摘要的「全球化不太可能削弱央行控制通膨的能力」。Card 4（第 102–104 行）列出的 β=0.99、σ=1、γ=0.2、κ=0.024 組合未能在所引 NBER 原文中找到對應校準；應補精確表／圖／頁碼，否則移除或標作頁面自行設定。把任何外國通膨或全球產出衝擊都說成可完全隔絕亦過度概括；原文指出外部發展可能影響通膨，央行需相應回應。Card 5（第 114–116 行）的點陣圖效果、終結貨幣主義及全球合作最優結論屬後續應用或綜合詮釋，不能當作本篇直接研究結果。
 - **本輪限制與變更**：只追加此審查紀錄，未修改論文頁、概念頁或 `raw/`。本輪未逐句審完這四篇，也未重查其連結概念頁；其餘 12 篇論文頁不在本輪範圍。
+
+## [2026-11-08 23:39] config | 擴充 Wiki 正確性 Skill 為寫入前證據工作流 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6 (Codex)
+- **具體變更**：調整 [wiki-content-audit](../.agents/skills/wiki-content-audit/SKILL.md) 的適用時機，讓來源收錄、Wiki 論文與概念頁撰寫／更新從起草前建立證據表開始，並依來源、主張、卡片與跨頁引用在完成後核對；保留既有唯讀查核模式。
+
+## [2026-11-08 23:58] config | 同代理日誌精確暫存與 Wiki 寫作前證據流程 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6 (Codex)
+- **具體變更**：更新 [Wiki 內容 Skill](../.agents/skills/wiki-content-audit/SKILL.md)，將來源主張證據表前置至起草階段；增補 [stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py) 與 [safe_commit_push.sh](../.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh) 的標題精確選取，避免同代理並行日誌誤暫存，並依時間插入暫存版以保留已提交條目順序。

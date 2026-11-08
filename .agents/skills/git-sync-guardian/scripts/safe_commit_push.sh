@@ -17,12 +17,13 @@ for cand in python3 python py; do
 done
 
 usage() {
-  echo "Usage: $0 \"<commit_message>\" <main|raw> --agent \"<執行代理名稱>\" -- <path> [<path> ...]"
+  echo "Usage: $0 \"<commit_message>\" <main|raw> --agent \"<執行代理名稱>\" [--log-heading \"<exact heading>\"] -- <path> [<path> ...]"
   echo ""
   echo "  main | raw   要提交的倉庫：main 為 Epoch-Kairos，raw 為 raw/ 內的 Mine-RAW。"
   echo "               兩邊都有修改時請分別執行兩次（各自列出自己的檔案）。"
   echo "  --agent      執行代理名稱的一部分（例如 \"Claude Code\"、\"Codex\"、\"Antigravity\"），"
   echo "               用來挑出 wiki/log.md 中自己寫的條目。列出 wiki/log.md 時為必填。"
+  echo "  --log-heading  只提交指定的新日誌標題；可重複使用，供同代理多個工作階段並行時精確選取。"
   echo "  -- <path>    只會提交這些路徑（相對於該倉庫根目錄）。不接受 '.'、'-A' 或倉庫根目錄。"
   echo ""
   echo "Example: $0 \"docs(design): update DESIGN.md\" main --agent \"Claude Code\" -- DESIGN.md wiki/log.md"
@@ -33,9 +34,11 @@ usage() {
 [ $# -ge 4 ] || usage
 COMMIT_MSG="$1"; TARGET="$2"; shift 2
 AGENT=""
+LOG_HEADINGS=()
 while [ $# -gt 0 ] && [ "$1" != "--" ]; do
   case "$1" in
     --agent) AGENT="$2"; shift 2 ;;
+    --log-heading) LOG_HEADINGS+=("$2"); shift 2 ;;
     *) echo "Unknown option '$1'."; usage ;;
   esac
 done
@@ -78,7 +81,9 @@ for P in "${PATHS[@]}"; do
   if [ "$P" = "wiki/log.md" ] && [ "$TARGET" = "main" ]; then
     [ -n "$AGENT" ] || { echo "ERROR: 提交 wiki/log.md 時必須以 --agent 指定執行代理名稱。"; exit 1; }
     [ -n "$PY" ] || { echo "ERROR: 找不到 python，無法逐條暫存日誌。"; exit 1; }
-    PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/stage_log.py" "$AGENT"
+    STAGE_ARGS=("$AGENT")
+    for H in "${LOG_HEADINGS[@]}"; do STAGE_ARGS+=(--heading "$H"); done
+    PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/stage_log.py" "${STAGE_ARGS[@]}"
   else
     git add -- "$P"
   fi
