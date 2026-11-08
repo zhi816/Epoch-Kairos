@@ -19,12 +19,13 @@ description: >-
 2. **提取時的分岔中斷（Pull Divergence Abortion）**：在未設定預設合流策略時，`git pull` 遇分岔會引發 `fatal: Need to specify how to reconcile divergent branches`，造成自動化流程卡死。
 3. **雙倉庫操作脫節（Dual-Repo Desynchronization）**：操作主倉庫時遺忘 `raw/` 私有倉庫，或在 `raw/` 增修文獻後未推送到 `Mine-RAW` 遠端。
 4. **誤提交他人修改（Cross-Agent Commit Contamination）**：多個 AI 共用同一個工作目錄，Git 又以「檔案」為單位暫存。只要有人整檔加入 `wiki/log.md`，或以 `git add -A` 暫存全部檔案，就會把其他代理尚未提交的條目與檔案（例如 `work/` 內的審查截圖）一起提交，造成歸屬錯誤，甚至把私人工作檔推上公開倉庫。2026-11-08 已實際發生：Claude Code 整檔加入 `wiki/log.md`，誤帶入 Codex 尚未提交的 4 筆審查紀錄。
+5. **寫了日誌卻遲未提交（Logged but Uncommitted）**：代理寫入日誌後，若使用者沒有另外說「提交」就不提交，條目會滯留在共用的 `wiki/log.md`，被他人誤帶、阻擋大家同步，或在他人「讀取後整檔寫回」時被覆蓋；出問題時也找不到對應的提交。
 
 ---
 
-## 二、五大鐵律規範
+## 二、六大鐵律規範
 
-所有參與專案之 AI 代理人，在執行任何版本控制操作時必須嚴格遵守以下五項鐵律：
+所有參與專案之 AI 代理人，在執行任何版本控制操作時必須嚴格遵守以下六項鐵律：
 
 ### 1. 提交必含推送（Commit Implies Push）
 - 只要使用者指示「提交」、「commit」或當 AI 完成階段性任務進行版本固化時，**必須將 `commit` 與 `push` 視為單一不可分割的原子操作（Atomic Operation）**。
@@ -45,6 +46,11 @@ description: >-
 - `wiki/log.md` 只提交「執行代理」為自己的條目：用 `scripts/stage_log.py "<代理名稱>"` 逐條暫存。它以「HEAD 版日誌＋自己的新條目」組出提交內容，工作目錄的檔案不變，別人的條目留給他們自己提交。
 - 合流遠端時用 `git merge --autostash`，讓他人未提交的修改暫時收起、合流後放回，且放回後維持「未暫存」。
 - 若暫存區在你動手前就已有檔案，代表可能是別人暫存的，先確認歸屬，不要直接提交。
+
+### 6. 寫入日誌即提交（Log Implies Commit）
+- 日誌條目代表一項工作已完成。在 `wiki/log.md` 追加自己的條目後，**必須在同一回合內**以 `safe_commit_push.sh` 提交並推送該條目與本項工作修改的檔案，不需等待使用者另外說「提交」；僅在使用者明確要求暫緩時例外。這是使用者對所有代理的常設授權：本專案以自動化為目標，每筆日誌都對應一個已推送的提交，多 AI 協作出問題時才能立即追查。
+- 工作尚未完成、或使用者要求先不提交時，**先不要寫日誌**；進度留在工作檔，完成後一次寫入、一次提交。
+- 寫日誌一律**追加於檔尾**（例如以附加模式開檔），不得把整份日誌讀進來再整檔寫回，以免覆蓋他人剛追加、尚未提交的條目；亦不得改動他人條目。
 
 ---
 
@@ -82,7 +88,7 @@ description: >-
   3. 先提交自己的修改，再 `git fetch` 並以 `git merge --autostash` 與遠端三方合流；只有 `wiki/log.md` 衝突時自動以 `merge_log.py` 排解，放回他人修改時的日誌衝突亦同。
   4. 清空暫存區，讓他人修改維持未暫存；`git push origin main` 後確認 `Ahead: 0`，並列出工作目錄中仍未提交（屬於他人）的檔案。
 * 兩個倉庫都有修改時，分別執行 `main` 與 `raw` 各一次（各自列出檔案），以滿足雙倉庫一體化。
-* 腳本會自動尋找可執行的 Python（依序試 `python3`、`python`、`py`；Windows 的 `python3` 可能是微軟商店的空殼）。
+* 需要 Python 3.7 以上（僅用標準函式庫）。腳本會自動尋找可執行的 Python：依序試 `python3`、`python`、`py`，每個實際執行一次，取第一個成功者；不寫死任何路徑，Mac、Linux、Windows 皆適用（Windows 的 `python3` 可能是微軟商店的空殼，會被略過）。三者都不可用時腳本會報錯，請告知使用者安裝 Python。
 
 ### 4. 日誌工具
 ```bash
@@ -103,7 +109,7 @@ python .agents/skills/git-sync-guardian/scripts/merge_log.py
 
 ### SOP-2：完成任務並固化成果
 1. 確認全專案無任何表情符號（Zero-Emoji）。
-2. 在 `wiki/log.md` 結尾追加符合 `AGENTS.md` 規範之條目（標明執行代理、底層模型、白名單標籤與具體變更）。
+2. 在 `wiki/log.md` 結尾**追加**符合 `AGENTS.md` 規範之條目（標明執行代理、底層模型、白名單標籤與具體變更）。寫入日誌後立即進行第 3 步，不等使用者指示（鐵律 6）。
 3. 以 `git diff --stat` 確認哪些檔案是自己改的，再執行 `./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<符合 Conventional Commits 格式之訊息>" main --agent "<代理名稱>" -- <自己的檔案> wiki/log.md`；若 `raw/` 也有自己的修改，再以 `raw` 執行一次，確保兩處倉庫均推送成功。
 4. 確認腳本最後列出的「仍未提交的修改」都不是自己的；若有自己的檔案遺漏，補上後再執行一次。
 

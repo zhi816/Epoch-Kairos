@@ -584,3 +584,8 @@
   - [AI 驅動之結構生物學與分子設計](concepts/ai-for-structural-biology.md)：跨學科段將 DrugCLIP 寫成數秒完成百億分子初篩，並把 AlphaFold 3＋FEP 描述成已實證的全原子誘導契合精排管線。DrugCLIP 同儕審查論文列出的 GenomeScreenDB 規模約為 10,000 個人類蛋白質、5 億個化合物；其論文版本描述的全基因組篩選耗時約 24 小時、使用 8 張 A100 GPU，與「百億／數秒」不符。AlphaFold 3 原文報告的是生物分子複合體結構預測基準，不等同於 FEP 流程或新藥管線的整合驗證；應將該段標為待驗證的提案／外推並另引直接驗證研究。此項補強 22:44 條目對 DrugCLIP 數量級與耗時問題的記錄。[DrugCLIP 原始論文紀錄](https://pubmed.ncbi.nlm.nih.gov/41505557/)、[論文版本與計算配置](https://www.biorxiv.org/content/10.1101/2024.09.02.610777v3.full)、[AlphaFold 3 原始論文](https://www.nature.com/articles/s41586-024-07487-w)
 - **概念網絡影響**：以上主張位於概念頁的跨學科延伸，並會沿相關概念連結被讀者當作已證實事實引用；修訂時須同步標註證據等級與適用範圍，避免臨床狀態、方法能力和推測流程在跨頁傳播時被強化。
 - **本輪限制與變更**：只記錄審查結果，未修改論文頁、概念頁或原始資料；尚未宣告整批內容全面通過。
+
+## [2026-11-08 23:48] rule | 多 AI 協定新增「寫入日誌即提交」並補充 Python 環境說明 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：經使用者同意（使用者表示本專案以自動化為目標，寫入日誌即建立提交，多 AI 協作出問題時可立即追查），[AGENTS.md](../AGENTS.md) 第六章日誌規範新增「寫入日誌即提交」，第十章新增第 6 條鐵律「寫入日誌即提交」（追加條目後須於同一回合以 `safe_commit_push.sh` 提交並推送，無須使用者另行指示；工作未完成或使用者要求暫緩時先不寫日誌；寫入一律追加於檔尾，不得整檔覆寫），原工具鏈條目順延為第 7 條。[git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 同步新增核心痛點「寫了日誌卻遲未提交」與第六鐵律，SOP-2 註明寫入日誌後立即提交，並補充 Python 需求：3.7 以上、依序自動尋找 `python3`、`python`、`py`，不寫死路徑，Mac、Linux、Windows 皆適用。
