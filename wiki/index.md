@@ -21,7 +21,7 @@
 * `2026` ｜ 分子同手性與 Soai 不對稱自催化 ｜ `#化學合成` ｜ `[2026 諾貝爾化學獎]` ｜ `[planned]`
   * 得獎者：Henri B. Kagan, Kenso Soai。原始文獻：Soai et al. (1995) *Nature* 378:767-768，https://doi.org/10.1038/378767a0（出版社付費牆，`raw/` 暫無原始檔）；Kagan 之不對稱氫化工作可追溯至 1970 年代。
 * `2026` ｜ 南極「冰立方」（IceCube）高能微中子觀測 ｜ `#天體物理` ｜ `[2026 諾貝爾物理學獎]` ｜ `[planned]`
-  * 得獎者：Francis Halzen。原始文獻見 `raw/2026-icecube-neutrino.pdf`，收錄時須核對實際發表年份。
+  * 得獎者：Francis Halzen。原始文獻見 `raw/2013-icecube-neutrino.pdf`（Aartsen et al. (2013) *Science* 342:1242856，https://doi.org/10.1126/science.1242856；實際發表年份為 2013 年）。
 * `2026` ｜ 宏觀經濟穩定政策的微觀基礎 ｜ `#宏觀經濟學` ｜ `[2026 諾貝爾經濟學獎]` ｜ `[planned]`
   * 得獎者：Robert E. Hall, Michael Woodford。原始文獻見 `raw/2007-woodford-inflation-dynamics.pdf`。
 * `2026` ｜ GLP-1 受體促效劑奠基性研究 ｜ `#生物科技` ｜ `[2026 引文桂冠獎]` ｜ `[planned]`

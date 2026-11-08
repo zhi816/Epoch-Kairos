@@ -279,3 +279,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 3.8 Flash
 - **具體變更**：使用者已將 raw/ 目錄下誤植為 2025 年之光遺傳學文獻更名為 `raw/2005-optogenetics.pdf`。已同步更新 `wiki/papers/2005-optogenetics.md` 之原始檔典藏路徑與 `wiki/index.md` 待辦紀錄，使其符合論文發表年份前綴規範。
+
+## [2026-11-08 16:00] update | 更新冰立方微中子原始檔檔名與發表年份 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：使用者已將 raw/ 目錄下誤植為 2026 年之冰立方微中子觀測文獻更名為 `raw/2013-icecube-neutrino.pdf`。於 Mine-RAW 私有倉庫完成雙更名提交（光遺傳學與冰立方）；主倉庫同步更新 `wiki/index.md` 之參照路徑與真實發表年份（Aartsen et al. (2013) Science 342:1242856），使其符合發表年份前綴規範。
