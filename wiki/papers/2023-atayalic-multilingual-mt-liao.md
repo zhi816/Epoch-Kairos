@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#深度學習", "#計算語言學"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "senior-thesis"
+focus_languages: ["泰雅語", "賽德克語", "太魯閣語"]
 doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "首創泛泰雅語群（泰雅語、賽德克語、太魯閣語）與中文之多語言 Transformer 機器翻譯框架，以共享 BPE 子詞與語言標籤實現同源語族跨語言正向遷移。"
 ---

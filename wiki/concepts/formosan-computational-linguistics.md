@@ -2,7 +2,7 @@
 title: "Formosan Computational Linguistics & Morphological Analysis"
 title_zh: "臺灣南島語計算語言學與構詞解析"
 domain: "ai"
-domain_tags: ["#計算語言學", "#自然語言處理", "#人工智慧"]
+domain_tags: ["#計算語言學", "#自然語言處理", "#人工智慧", "#語言學"]
 papers:
   - "2021-seediq-chinese-mt-you"
   - "2022-formosan-say-verbs-hsieh"

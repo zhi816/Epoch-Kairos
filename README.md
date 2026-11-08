@@ -72,7 +72,7 @@ git clone https://github.com/zhi816/Mine-RAW.git raw
 * **雙年份標註**：`paper_year`（實際發表年份，決定檔名）與 `award_year`（獲獎年份）分開記載，前台並列呈現，例如「2005 發表 ｜ 2026 諾貝爾獎」。
 * **作者與得獎者分離**：`authors` 僅記該篇論文之實際作者，獎項得獎者另記於 `laureates`；獎項表彰多篇工作時，奠基論文列入 `key_papers`。
 * **條目狀態三態**：`planned`（僅立案）、`wiki`（已有 Wiki 頁）、`published`（已產出網頁）。
-* **兩層標籤制**：`domain` 單選，決定配色（`bio` 生醫綠、`ai` 電能青、`physics` 宇宙紫、`econ` 琥珀金、`energy` 珊瑚橙）；`domain_tags` 多選，限用 `AGENTS.md` 第八章白名單。
+* **兩層標籤制**：`domain` 單選，決定配色（`bio` 生醫綠、`ai` 電能青、`physics` 宇宙紫、`econ` 琥珀金、`chem` 珊瑚橙、`human` 玫瑰粉）；`domain_tags` 多選，限用 `AGENTS.md` 第八章白名單。
 * **LaTeX 為最高技術標準**：全站以 KaTeX 向量排版公式，化學離子用 `\mathrm{}` 正體，長公式以 `aligned` 斷行並具行動端橫向防溢出。
 
 ---

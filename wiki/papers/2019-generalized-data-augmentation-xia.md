@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#深度學習", "#人工智慧"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "international"
+focus_languages: ["亞塞拜然語", "白俄羅斯語", "加利西亞語", "斯洛伐克語"]
 doi_url: "https://doi.org/10.18653/v1/P19-1579"
 hook: "CMU 團隊奠定低資源翻譯資料增強的通用框架：結合親屬高資源語言樞紐轉換與標記回譯，系統性化解極小語料庫下的神經翻譯過擬合瓶頸。"
 ---

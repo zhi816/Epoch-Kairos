@@ -7,10 +7,12 @@ timeline_year: 2025
 authors: "Reen-Cheng Wang, Ming-Che Hsieh, Liang-Chun Lai"
 venue: "Social Sciences, 15(1), 7:1-7:21"
 domain: "ai"
-domain_tags: ["#人工智慧", "#計算語言學"]
+domain_tags: ["#人工智慧", "#計算語言學", "#社會學"]
 concepts: ["formosan-computational-linguistics"]
 status: "wiki"
 my_focus: true
+focus_role: "international"
+focus_languages: []
 doi_url: "https://doi.org/10.3390/socsci15010007"
 hook: "以排灣族五年祭與傳統生態知識（TEK）為田野本體，提出將口傳非線性默會知識蒸餾為 AI 知識圖譜與生成循環之數學架構，開闢原住民文化與大模型融合之新範式。"
 ---

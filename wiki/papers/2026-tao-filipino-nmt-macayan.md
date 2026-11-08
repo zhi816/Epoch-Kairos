@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#深度學習", "#計算語言學"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "report"
+focus_languages: ["達悟語"]
 doi_url: "https://doi.org/10.18653/v1/2026.loresmt-1.2"
 hook: "以臺灣唯一海洋南島語達悟語（雅美語）為核心，突破不足五千句之極度數據匱乏，首創以菲律賓巴丹親屬語族進行跨海同源遷移之神經機器翻譯新範式。"
 ---

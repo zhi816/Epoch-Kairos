@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#計算語言學", "#深度學習"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "senior-thesis"
+focus_languages: ["台語"]
 doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "針對本土低資源語言語料庫斷詞標準不一的痛點，提出基於華語跨語言詞對齊與 BERT 預訓練模型的台語重斷詞管線，顯著改善台華神經機器翻譯效能。"
 ---

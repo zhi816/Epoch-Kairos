@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#人工智慧", "#計算語言學"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "international"
+focus_languages: ["排灣語"]
 doi_url: "https://doi.org/10.3390/engproc2025120052"
 hook: "臺東大學團隊首創混合式「辭典＋密集檢索 RAG＋LLM」排灣語翻譯框架，以精確字詞錨定與語義平行例句雙輪驅動，徹底破解極低資源南島語大模型翻譯幻覺。"
 ---

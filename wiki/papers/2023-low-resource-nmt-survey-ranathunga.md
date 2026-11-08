@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#深度學習", "#人工智慧"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "international"
+focus_languages: []
 doi_url: "https://doi.org/10.1145/3567592"
 hook: "ACM Computing Surveys 旗艦級 37 頁長篇綜述，全景式解構低資源神經機器翻譯的技術譜系，奠定資料增強、多語言遷移、構詞先驗融合與大模型時代的總體方法論。"
 ---

@@ -6,11 +6,13 @@ award_year: 2022
 timeline_year: 2022
 authors: "Fuhui Hsieh"
 venue: "Journal of Taiwanese Languages and Literature, 17(1), 47-92"
-domain: "ai"
-domain_tags: ["#計算語言學", "#自然語言處理"]
+domain: "human"
+domain_tags: ["#語言學"]
 concepts: ["formosan-computational-linguistics"]
 status: "wiki"
 my_focus: true
+focus_role: "taiwan-linguistics"
+focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.6710/JTLL.202204_17(1).0002"
 hook: "揭開台灣南島語「說」動詞跨越述說、認知、施為與語法化的多義演化路徑，證明述說動詞源自兼具『說』與『做』的原始施為動詞，並為計算語法解析提供了深層跨語言類型學先驗。"
 ---

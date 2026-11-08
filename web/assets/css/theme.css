@@ -39,12 +39,12 @@
   --glow-bio: rgba(0, 229, 153, 0.16);
   --border-bio: rgba(0, 229, 153, 0.35);
 
-  /* 2. AI & Computation */
+  /* 2. AI, Computation & Mathematics */
   --color-ai: #00F0FF;
   --glow-ai: rgba(0, 240, 255, 0.16);
   --border-ai: rgba(0, 240, 255, 0.35);
 
-  /* 3. Physics & Astronomy */
+  /* 3. Physics, Astronomy & Earth Science */
   --color-physics: #8B5CF6;
   --glow-physics: rgba(139, 92, 246, 0.20);
   --border-physics: rgba(139, 92, 246, 0.40);
@@ -54,10 +54,15 @@
   --glow-econ: rgba(255, 184, 0, 0.16);
   --border-econ: rgba(255, 184, 0, 0.35);
 
-  /* 5. Energy & Materials */
-  --color-energy: #FF5722;
-  --glow-energy: rgba(255, 87, 34, 0.16);
-  --border-energy: rgba(255, 87, 34, 0.35);
+  /* 5. Chemistry, Materials & Energy */
+  --color-chem: #FF5722;
+  --glow-chem: rgba(255, 87, 34, 0.16);
+  --border-chem: rgba(255, 87, 34, 0.35);
+
+  /* 6. Language, Mind & Society */
+  --color-human: #FF4FD8;
+  --glow-human: rgba(255, 79, 216, 0.16);
+  --border-human: rgba(255, 79, 216, 0.35);
 
   /* Global Transitions & Radius */
   --radius-card: 16px;
@@ -136,8 +141,14 @@ html, body {
   box-shadow: 0 0 12px var(--glow-econ);
 }
 
-.domain-badge[data-domain="energy"] {
-  border-color: var(--border-energy);
-  color: var(--color-energy);
-  box-shadow: 0 0 12px var(--glow-energy);
+.domain-badge[data-domain="chem"] {
+  border-color: var(--border-chem);
+  color: var(--color-chem);
+  box-shadow: 0 0 12px var(--glow-chem);
+}
+
+.domain-badge[data-domain="human"] {
+  border-color: var(--border-human);
+  color: var(--color-human);
+  box-shadow: 0 0 12px var(--glow-human);
 }

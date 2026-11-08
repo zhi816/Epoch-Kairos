@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#人工智慧", "#深度學習"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "llm-assisted"
+focus_languages: ["達豪語"]
 doi_url: "https://doi.org/10.18653/v1/2026.loresmt-1.7"
 hook: "墨爾本大學團隊於 LoResMT 2026 揭示極低資源 RAG 核心規律：在印尼瀕危達豪語上證實，大模型的語境容量（Context Volume）是修復領域偏移的決定性動力。"
 ---

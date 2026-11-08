@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#人工智慧", "#計算語言學"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "llm-assisted"
+focus_languages: ["德頓語", "比斯拉馬語"]
 doi_url: "https://doi.org/10.18653/v1/2025.acl-demos.13"
 hook: "墨爾本大學團隊於 ACL 2025 推出之混合式翻譯系統：結合專用低資源 NMT 與大模型術語感知後編輯，以動態詞彙表與翻譯記憶庫實現免微調即時自適應。"
 ---

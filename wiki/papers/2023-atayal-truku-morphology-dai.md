@@ -11,6 +11,8 @@ domain_tags: ["#計算語言學", "#自然語言處理", "#人工智慧"]
 concepts: ["formosan-computational-linguistics"]
 status: "wiki"
 my_focus: true
+focus_role: "senior-thesis"
+focus_languages: ["泰雅語", "太魯閣語"]
 doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "將南島語構詞自動解析體系由單一賽德克語跨越至泰雅語與太魯閣語，建立音韻縮減與深層原形歸納規則，實現高精度構詞結構與焦點語素自動解耦。"
 ---

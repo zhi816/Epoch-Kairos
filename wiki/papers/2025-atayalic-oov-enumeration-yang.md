@@ -11,6 +11,8 @@ domain_tags: ["#計算語言學", "#自然語言處理", "#人工智慧"]
 concepts: ["formosan-computational-linguistics"]
 status: "wiki"
 my_focus: true
+focus_role: "senior-thesis"
+focus_languages: ["泰雅語", "賽德克語", "太魯閣語"]
 doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "首創以構詞律與音韻逆向窮舉候選詞根，結合特徵工程與隨機森林排名器，將泛泰雅語未登錄詞（OOV）的深層詞根猜測正確率推升至 90% 以上。"
 ---

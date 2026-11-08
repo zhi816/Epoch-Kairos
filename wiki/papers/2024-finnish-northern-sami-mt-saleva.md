@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#深度學習"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "report"
+focus_languages: ["北薩米語"]
 doi_url: "https://doi.org/10.18653/v1/2024.findings-acl.768"
 hook: "以極低資源烏拉爾語系北薩米語為驗證標的，系統性解構回譯、標記回譯、前向翻譯與語言模型先驗之邊界條件，揭示標記回譯在域外測試集上激增 4.24 BLEU 的強健性機制。"
 ---

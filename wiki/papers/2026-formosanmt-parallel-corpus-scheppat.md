@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#計算語言學", "#深度學習"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "international"
+focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.18653/v1/2026.lrec-1.273"
 hook: "波士頓學院團隊於 LREC 2026 推出首個涵蓋全臺 15 種南島語之標準化雙語平行語料庫 FormosanMT，並開源繁體中文相容之 NLLB-200 預訓練微調基線。"
 ---

@@ -11,6 +11,8 @@ domain_tags: ["#計算語言學", "#自然語言處理", "#深度學習"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "senior-thesis"
+focus_languages: ["排灣語", "布農語"]
 doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "將構詞解析與神經機器翻譯體系由泛泰雅語群跨語系推廣至排灣語與布農語，創下構詞解析精確率 98.09% 與 99.79% 的驚人紀錄，驗證了構詞感知翻譯框架的跨語系普適性。"
 ---

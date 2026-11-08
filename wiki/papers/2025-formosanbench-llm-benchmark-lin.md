@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#人工智慧", "#計算語言學"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "international"
+focus_languages: ["阿美語", "泰雅語", "排灣語"]
 doi_url: "https://doi.org/10.18653/v1/2025.findings-emnlp.897"
 hook: "中研院語言所與夏威夷大學團隊登上 EMNLP 2025：建立首個涵蓋機器翻譯、語音辨識與摘要的臺灣南島語大模型多任務基準，揭開前沿 LLM 在瀕危母語上的真實效能鴻溝。"
 ---

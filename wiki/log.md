@@ -336,3 +336,14 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6 (Codex)
 - **具體變更**：新增 repo-local Skill 至 ``.agents/skills/academic-paper-translator/SKILL.md``，讓 Codex 可在 Epoch-Kairos 專案依 Skill 中繼資料自動發現並按需載入。此版與已更新的 Gemini 全域版及外部備份內容一致；涵蓋原論文版面保留、逐項數據核對、全文範圍清單與逐頁 PDF 檢查。
+
+## [2026-11-08 19:42] rule | 學科大分類由五類擴為六類並新增個人關注欄位規範 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：經使用者確認，`domain` 由五值擴為六值：`energy`（清潔能源與新材料）更名為 `chem`（化學、材料與能源），原 `#材料科學`、`#清潔能源`、`#化學合成` 隨之移轉；新增 `human`（語言、心理與社會），登記 `#語言學`、`#心理學`、`#社會學`；`ai` 擴為「人工智慧、計算與數學」並登記 `#數學`；`physics` 擴為「物理、天文與地球科學」並登記 `#地球科學`、`#氣候科學`。同步修改 [AGENTS.md](../AGENTS.md) 第二章色彩表（新增學科邊界說明）、第六章 Lint 第 7 條、第七章論文頁 Frontmatter 範本與第八章白名單；[theme.css](../web/assets/css/theme.css) 將 `--*-energy` 變數更名為 `--*-chem`，新增 `--color-human: #FF4FD8` 一組變數與對應徽章樣式；[README.md](../README.md) 配色說明同步更新。另於第七章第 1 節新增 `my_focus: true` 專用之 `focus_role`（五值，依 `raw/my-focus/` 來源分類）與 `focus_languages` 欄位規範，供前台「我的星系」使用。
+- **變更理由**：原 `energy` 色系無任何已收錄條目，立案條目（分子同手性、MOFs）皆屬諾貝爾化學獎；純語言學研究原無對應色系而被迫歸入 `ai`。`domain` 以不超過七值為度，細分交由 `domain_tags`。
+
+## [2026-11-08 19:43] update | 24 篇個人關注論文補齊 focus 欄位並遷移兩篇純語言學論文至 human | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：依新規範為 24 篇 `my_focus: true` 論文頁補上 `focus_role` 與 `focus_languages`（學長姐論文 7、報告題材 3、臺灣語言學 2、國際文獻 8、大模型輔助 4）；研究語言依論文頁正文與 `raw/my-focus/` 原文核對，Zheng 等（2024）之 16 種、Gagnier（2026）之 16 語 42 方言、Scheppat 等（2026）之 15 種、謝富貴（2022）與林鴻瑞（2024）之多語比較，依規範記為 `臺灣南島諸語`；綜述與文化復振兩篇記為空陣列。[2022-formosan-say-verbs-hsieh](papers/2022-formosan-say-verbs-hsieh.md) 與 [2024-formosan-temporal-words-lim](papers/2024-formosan-temporal-words-lim.md) 之 `domain` 由 `ai` 改為 `human`、`domain_tags` 改為 `#語言學`；[2025-indigenous-tek-ai-revitalization-wang](papers/2025-indigenous-tek-ai-revitalization-wang.md) 加註 `#社會學`；概念頁 [formosan-computational-linguistics](concepts/formosan-computational-linguistics.md) 加註 `#語言學`；[index.md](index.md) 對應三筆條目之標籤同步更新。全庫 41 篇論文與 10 篇概念頁之 `domain` 與 `domain_tags` 經腳本比對均落在新白名單內（ai 28、physics 5、bio 3、econ 3、human 2、chem 0）。`raw/` 僅讀取，未修改。

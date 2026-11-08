@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#計算語言學", "#深度學習"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "senior-thesis"
+focus_languages: ["賽德克語"]
 doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "奠定泛泰雅語群神經機器翻譯的開創性基石：提出深層原形構詞解析二元模型，結合自訓練詞嵌入與多維詞綴特徵向量拼接，突破極端低資源南島語翻譯難關。"
 ---

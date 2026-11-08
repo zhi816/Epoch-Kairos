@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#深度學習", "#計算語言學"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "senior-thesis"
+focus_languages: ["泰雅語", "賽德克語", "太魯閣語"]
 doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "提出三種族語文字表示形式與三種神經編碼器架構，深度融合深層詞根與多維詞綴特徵嵌入，顯著突破泛泰雅語群神經機器翻譯的語法焦點對齊瓶頸。"
 ---

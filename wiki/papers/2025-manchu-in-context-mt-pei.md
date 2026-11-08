@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#計算語言學", "#人工智慧"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "report"
+focus_languages: ["滿語"]
 doi_url: "https://doi.org/10.18653/v1/2025.acl-long.429"
 hook: "在極度瀕危通古斯語系滿語上展開 LLM 翻譯組件消融實驗，顛覆性證實：包含後綴與搭配的辭典是效能核心驅動力，而語法書與思維鏈（CoT）反而引發推理衰退。"
 ---

@@ -126,13 +126,13 @@
   * 原始文獻：`raw/my-focus/報告論文題材/2025.acl-long.429.pdf`（Pei et al. (2025) ACL 2025, 8767-8788）。
 * `2025` ｜ [FormosanBench：大語言模型時代臺灣低資源南島語言之評測基準](papers/2025-formosanbench-llm-benchmark-lin.md) ｜ `#自然語言處理` `#人工智慧` `#計算語言學` ｜ *EMNLP 2025 Findings* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/英文論文/FormosanBench Benchmarking Low-Resource Austronesian Languages in the Era of Large Language Models _ 2025.findings-emnlp.897.pdf`（Lin et al. (2025) Findings of EMNLP 2025, 16527-16539）。
-* `2025` ｜ [從默會知識蒸餾到 AI 賦能文化復振：原住民族文化系統之知識循環建模](papers/2025-indigenous-tek-ai-revitalization-wang.md) ｜ `#人工智慧` `#計算語言學` ｜ *Social Sciences 2025* ｜ `[wiki]`
+* `2025` ｜ [從默會知識蒸餾到 AI 賦能文化復振：原住民族文化系統之知識循環建模](papers/2025-indigenous-tek-ai-revitalization-wang.md) ｜ `#人工智慧` `#計算語言學` `#社會學` ｜ *Social Sciences 2025* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/英文論文/From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization Modeling Knowledge Cycles in Indigenous Cultural Systems_socsci-15-00007.pdf`（Wang et al. (2025) Social Sciences 15(1):7）。
 * `2025` ｜ [以推理補償數據：基於大語言模型之低資源機器翻譯](papers/2025-fragment-shot-reasoning-mt-frontull.md) ｜ `#自然語言處理` `#人工智慧` `#深度學習` ｜ *arXiv 2025* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`（Frontull & Ströhle (2025) arXiv:2505.22293）。
 * `2025` ｜ [TULUN：透明且可自適應之低資源機器翻譯系統](papers/2025-tulun-adaptable-lrl-mt-merx.md) ｜ `#自然語言處理` `#人工智慧` `#計算語言學` ｜ *ACL 2025 Demos* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`（Merx et al. (2025) ACL 2025 System Demos, 129-139）。
-* `2024` ｜ [台灣南島語言時間詞之跨語言比較初探](papers/2024-formosan-temporal-words-lim.md) ｜ `#計算語言學` `#自然語言處理` ｜ *《台灣學誌》2024* ｜ `[wiki]`
+* `2024` ｜ [台灣南島語言時間詞之跨語言比較初探](papers/2024-formosan-temporal-words-lim.md) ｜ `#語言學` ｜ *《台灣學誌》2024* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/台灣相關論文/南島語言時間詞之跨語言比較初探_林鴻瑞.pdf'`（林鴻瑞 (2024)《台灣學誌》23:1-27）。
 * `2024` ｜ [利用重斷詞改善台語機器翻譯系統](papers/2024-taiwanese-mt-resegmentation-tang.md) ｜ `#自然語言處理` `#計算語言學` `#深度學習` ｜ *2024 海大碩士論文* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/學長姐論文/利用重斷詞改善台語機器翻譯系統_湯景文.pdf`（湯景閔 (2024)，指導教授：林川傑博士）。
@@ -146,7 +146,7 @@
   * 原始文獻：`raw/my-focus/學長姐論文/泛泰雅族群與中文之多語言機器翻譯研究_廖恆慶.pdf`（廖恒慶 (2023)，指導教授：林川傑博士）。
 * `2023` ｜ [低資源語言神經機器翻譯綜述](papers/2023-low-resource-nmt-survey-ranathunga.md) ｜ `#自然語言處理` `#深度學習` `#人工智慧` ｜ *ACM Computing Surveys 2023* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/英文論文/Neural Machine Translation for Low-resource Languages A Survey_3567592.pdf`（Ranathunga et al. (2023) ACM CSUR 55(11):229）。
-* `2022` ｜ [台灣南島語「說」動詞語義現象初探](papers/2022-formosan-say-verbs-hsieh.md) ｜ `#計算語言學` `#自然語言處理` ｜ *《臺灣語文研究》2022* ｜ `[wiki]`
+* `2022` ｜ [台灣南島語「說」動詞語義現象初探](papers/2022-formosan-say-verbs-hsieh.md) ｜ `#語言學` ｜ *《臺灣語文研究》2022* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/台灣相關論文/台灣南島語「說」動詞語義現象初探_謝富貴.pdf`（謝富惠 (2022)《臺灣語文研究》17(1):47-92）。
 * `2021` ｜ [賽德克語－中文機器翻譯之研究](papers/2021-seediq-chinese-mt-you.md) ｜ `#自然語言處理` `#計算語言學` `#深度學習` ｜ *2021 海大碩士論文* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/學長姐論文/賽德克族中文機器翻譯之研究_游景勝.pdf`（游景勝 (2021)，指導教授：林川傑博士）。

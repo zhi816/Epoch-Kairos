@@ -6,11 +6,13 @@ award_year: 2024
 timeline_year: 2024
 authors: "Hong-Rui Lim"
 venue: "Taiwanica, 23, 1-27"
-domain: "ai"
-domain_tags: ["#計算語言學", "#自然語言處理"]
+domain: "human"
+domain_tags: ["#語言學"]
 concepts: ["formosan-computational-linguistics"]
 status: "wiki"
 my_focus: true
+focus_role: "taiwan-linguistics"
+focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.6242/twnica.202404_(23).0001"
 hook: "在 Dixon 語言學框架下全面解構台灣南島語時間推移詞的分合類型，揭示以『距今天數』為核心的對稱構詞特徵與實現／非實現標記系統，為低資源語法感知計算提供了嚴密的形態規則。"
 ---

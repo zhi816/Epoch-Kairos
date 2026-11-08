@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#計算語言學", "#深度學習"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "international"
+focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.18653/v1/2024.findings-acl.670"
 hook: "東京大學松尾豐實驗室登上 ACL 2024 之重磅研究：首創將官方雙語線上辭典條目直接轉化為平行訓練數據，系統性解密詞典資源如何突破臺灣南島語神經翻譯的資料冰河期。"
 ---

@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#人工智慧", "#深度學習"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "llm-assisted"
+focus_languages: ["拉定語"]
 doi_url: "https://arxiv.org/abs/2505.22293"
 hook: "提出片段少樣本（Fragment-Shot Prompting）機制，以句法最大覆蓋片段取代傳統整句檢索，成功激發大語言模型在極度資料匱乏下的跨語素推理翻譯潛能。"
 ---

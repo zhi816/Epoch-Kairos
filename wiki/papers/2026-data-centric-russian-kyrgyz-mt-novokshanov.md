@@ -11,6 +11,8 @@ domain_tags: ["#自然語言處理", "#深度學習", "#人工智慧"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
 my_focus: true
+focus_role: "llm-assisted"
+focus_languages: ["吉爾吉斯語"]
 doi_url: "https://doi.org/10.18653/v1/2026.loresmt-1.25"
 hook: "斬獲 LoResMT 2026 突厥語翻譯競賽第一名桂冠：以 SONAR 跨語言語義過濾與四階段課程學習，確立極低資源神經翻譯『資料純度勝於模型複雜度』的黃金法則。"
 ---

@@ -11,6 +11,8 @@ domain_tags: ["#計算語言學", "#自然語言處理"]
 concepts: ["formosan-computational-linguistics"]
 status: "wiki"
 my_focus: true
+focus_role: "international"
+focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.18653/v1/2026.dialres-1.13"
 hook: "首度對臺灣原民會族語 E 樂園（ePark）42 種方言展開大規模計量方言學分析，以正規化編輯距離與聚類矩陣精準量化南島語親緣分支與語料品質。"
 ---
