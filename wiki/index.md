@@ -94,7 +94,7 @@
 ## 待辦與已知問題
 
 * `raw/` 完整性：2026-11-07 已修復 `raw/1982-hopfield-network.pdf` 與 `raw/2012-crispr-cas9.pdf`（原為下載失敗之 HTML 頁面），並補入 `raw/2021-alphafold2.pdf`、`raw/2023-drugclip.pdf`、`raw/2025-nerve-mito-cancer.pdf`。現全 17 份 PDF 均通過檔頭魔術位元組與尾端 `%%EOF` 完整性檢核。
-* **待使用者親自處理**：`raw/2025-optogenetics.pdf` 檔名年份與 `wiki/papers/2005-optogenetics.md` 之 `paper_year: 2005` 不符。依 AGENTS.md 第五章，AI 不得更名 `raw/` 檔案，須由使用者更名為 `raw/2005-optogenetics.pdf`（於 `raw/` 內另行提交推送至 Mine-RAW），並告知 AI 同步更新 `wiki/papers/2005-optogenetics.md` 之原始檔典藏路徑。
+* `raw/` 檔名校正：使用者已將 `raw/2025-optogenetics.pdf` 更名為 `raw/2005-optogenetics.pdf`，`wiki/papers/2005-optogenetics.md` 原始檔典藏路徑已同步更新完畢。
 * 下列條目之原始文獻受出版社付費牆或反自動化關卡（NCBI PMC proof-of-work、Cloudflare）限制，`raw/` 暫無原始檔，一律依第九章以 DOI 連結留存：Soai (1995) 不對稱自催化、Yaghi (1999) MOFs、Martinis (1985) 巨觀量子穿隧、Sakaguchi (1995) Treg、Brunkow (2001)、Ambros (1993) microRNA、Drucker (1987) GLP-1、Li (2025) 水稻 QT12、Fu (2025) 哈爾濱頭骨、2025 鹼基編輯療法（NEJM）。
 * 光遺傳學頁 `key_papers` 之 Nagel et al. (2002) *Science*（https://doi.org/10.1126/science.1072068）與 Nagel et al. (2003) *PNAS*（https://doi.org/10.1073/pnas.1936192100）亦受上述關卡限制，`raw/` 暫無原始檔。
 * `wiki/concepts/brain-machine-interface.md` 尚未建立，待收錄相關論文時一併產出。
