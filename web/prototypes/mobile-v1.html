@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Epoch Kairos 手機版</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* 全黑星空，單一深色主題；手機直式單欄，桌面置中成手機寬度 */
+:root{
+  color-scheme:dark;
+  --ink:#0B0C0E; --surface:#141517; --sunken:#101012;
+  --fg:#E8E4DA; --fg-strong:#F4F1EA; --body:#D9D5CB; --soft:#B5B0A6; --muted:#9A958C; --subtle:#88837A;
+  --line:rgba(232,228,218,0.12); --bio:#9BDCB1; --card-ink:#0F1013;
+  --serif:'Noto Serif TC','Songti TC',serif; --sans:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;
+  --latin:'Newsreader',Georgia,serif; --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+html{background:var(--ink)}
+body{background:var(--ink);color:var(--fg);font-family:var(--sans);-webkit-text-size-adjust:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible{outline:1px solid var(--fg-strong);outline-offset:2px}
+#sky{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.page{position:relative;z-index:1;max-width:440px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px;box-sizing:border-box}
+.mono{font-family:var(--mono);letter-spacing:.14em;font-size:11px;color:var(--subtle)}
+.stack{display:flex;flex-direction:column}
+.hair{height:1px;background:linear-gradient(90deg,rgba(232,228,218,.22),rgba(232,228,218,.04) 60%,rgba(232,228,218,0))}
+
+/* home */
+.hero{display:flex;flex-direction:column;gap:10px;padding-top:28px}
+.hero svg{width:100%;height:auto;display:block;overflow:visible}
+.motto{display:flex;align-items:center;flex-wrap:wrap;min-height:44px}
+.motto>span:first-child{font-family:var(--serif);font-size:17px;letter-spacing:.5em;color:#EAE6DF}
+.secret{width:44px;height:44px;margin-left:-8px;border:0;background:none;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.secret i{width:4px;height:4px;border-radius:50%;background:#FFFDF8;box-shadow:0 0 6px 2px rgba(143,213,253,.7);animation:blink 3.6s ease-in-out infinite}
+.hint{font-size:12px;color:#8FD5FD}
+#home section{margin-top:30px}
+.legend i{display:inline-block}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.allbtn{min-height:44px;border:0;background:none;padding:0;cursor:pointer;font-family:var(--serif);font-size:13px;letter-spacing:.1em}
+.allbtn b{font-family:var(--latin);font-weight:400;font-size:18px;letter-spacing:0}
+.rail{display:flex;justify-content:space-between;align-items:flex-start;padding:0 6px;background:linear-gradient(90deg,rgba(232,228,218,.32),rgba(232,228,218,.06)) top left/100% 1px no-repeat}
+.strand{display:flex;gap:6px;align-items:flex-start;min-width:44px;border:0;background:none;padding:0 0 4px;cursor:pointer;transition:opacity .2s}
+.strand .col{display:flex;flex-direction:column;align-items:center;width:14px}
+.strand .ln{width:1px;height:7px}
+.strand .ln.top{height:12px}
+.strand .bead{border-radius:50%;background:#FFFDF8}
+.strand .cnt{margin-top:7px;font-family:var(--latin);font-size:18px;line-height:1}
+.strand .nm{padding-top:12px;writing-mode:vertical-rl;font-family:var(--serif);font-size:13px;letter-spacing:.3em;line-height:1;white-space:nowrap}
+.mapwrap{position:relative;margin:12px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0;padding:14px 4px}
+.map{position:relative;width:100%;aspect-ratio:1000/920;max-width:100%}
+.map>*{position:absolute}
+.neb{transform:translate(-50%,-50%);aspect-ratio:1/1;border-radius:50%;pointer-events:none}
+.map svg{left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.flow{stroke-dasharray:4 17;animation:flow 1.7s linear infinite}
+.tag{width:3px;height:3px;margin:-1.5px 0 0 -1.5px;border-radius:50%;background:#FFFDF8;z-index:3}
+.taglbl{white-space:nowrap;font-size:11px;color:#EAE6DF;z-index:4;text-shadow:0 0 6px var(--ink),0 0 2px var(--ink);pointer-events:none}
+.concept{width:7px;height:7px;margin:-3.5px 0 0 -3.5px;box-sizing:border-box;border:1px solid #EAE6DF;transform:rotate(45deg);z-index:3}
+.hub{transform:translate(-22px,-50%);display:flex;align-items:center;border:0;background:none;padding:0 4px 0 0;cursor:pointer;z-index:4;color:#EAE6DF}
+.hub .ic{position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.hub .halo{position:absolute;left:-8px;top:-8px;width:60px;height:60px;border-radius:50%}
+.hub .lbl{margin-left:-8px;font-family:var(--serif);font-size:12px;white-space:nowrap;text-shadow:0 0 6px var(--ink)}
+.star{width:28px;height:28px;margin:-14px 0 0 -14px;border:0;padding:0;border-radius:50%;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:5}
+.star .ring{position:absolute;left:7px;top:7px;width:14px;height:14px;box-sizing:border-box;border-radius:50%;animation:pulse 4.2s ease-in-out infinite}
+.star .dot{border-radius:50%;background:#FFFDF8}
+.core{left:50%;top:50%;width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:#fff;box-shadow:0 0 5px 2px rgba(255,255,255,.85),0 0 18px 6px rgba(244,241,234,.22);z-index:3}
+.info{margin-top:12px;display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:10px;background:rgba(11,12,14,.6);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.info .nm{font-family:var(--serif);font-weight:600;font-size:19px;line-height:1.4;color:var(--fg-strong)}
+.info .foot{display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:10px;border-top:1px solid var(--line)}
+.info .go{display:inline-flex;align-items:center;min-height:44px;font-size:15px;color:var(--fg-strong)}
+.legend{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:11px;color:var(--subtle)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.card{display:block;width:100%;padding:0;border:0;background:none;text-align:left;cursor:pointer;outline-offset:3px}
+.cv{aspect-ratio:3/4;max-width:100%;container-type:inline-size;box-sizing:border-box;padding:6cqw;display:flex;flex-direction:column;gap:4cqw;border-radius:2px;color:var(--card-ink)}
+.cv .top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:5.6cqw;color:rgba(15,16,19,.75)}
+.cv .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px}
+.cv .win i{position:absolute;border-radius:50%;background:#fff}
+.cv .yr{position:absolute;left:6cqw;bottom:5cqw;display:flex;flex-direction:column;gap:1.4cqw}
+.cv .yr small{font-size:5.4cqw}
+.cv .yr b{font-family:var(--latin);font-style:italic;font-weight:300;font-size:25cqw;line-height:.85;letter-spacing:-.03em}
+.cv .ttl{font-family:var(--serif);font-weight:600;font-size:8.2cqw;line-height:1.32;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cv .hn{padding-top:3cqw;border-top:1px solid rgba(15,16,19,.22);font-size:5.6cqw;color:rgba(15,16,19,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.more{margin-top:14px;width:100%;min-height:48px;border:1px solid rgba(232,228,218,.22);border-radius:999px;background:none;color:var(--fg);font-size:14px;cursor:pointer}
+footer{margin-top:36px;padding-top:18px;border-top:1px solid rgba(232,228,218,.1);display:flex;flex-direction:column;gap:6px}
+
+/* paper */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:space-between;align-items:center;height:52px;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:0 8px;background:rgba(11,12,14,.86);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid rgba(232,228,218,.08)}
+.bar a{display:inline-flex;align-items:center;min-width:44px;min-height:44px;padding:0 8px;font-size:14px}
+.bar .doi{justify-content:flex-end;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--bio)}
+.car{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:18px max(16px,env(safe-area-inset-left,0px)) 4px;scroll-padding-inline:max(16px,env(safe-area-inset-left,0px))}
+.car::-webkit-scrollbar{display:none}
+.pc{flex:0 0 calc(100% - 44px);max-width:360px;scroll-snap-align:start;aspect-ratio:3/4;container-type:inline-size;box-sizing:border-box;padding:6cqw;display:flex;flex-direction:column;gap:4.4cqw;border-radius:2px;border:1px solid rgba(155,220,177,.3);background:var(--surface);color:var(--fg)}
+.pc .lab{font-family:var(--mono);font-size:3.4cqw;letter-spacing:.14em;color:var(--bio)}
+.pc .h{font-family:var(--serif);font-weight:600;font-size:7.6cqw;line-height:1.35;color:var(--fg-strong)}
+.pc .s{font-size:3.6cqw;line-height:1.6;color:var(--muted)}
+.pc .ft{margin-top:auto;padding-top:3cqw;border-top:1px solid var(--line);font-size:3.4cqw;color:var(--subtle)}
+.pc.cover{background:var(--bio);border:0;color:var(--card-ink);padding:5.4cqw;gap:3.6cqw}
+.meter{display:grid;grid-template-columns:15cqw minmax(0,1fr);align-items:center;gap:2cqw;font-size:3.6cqw;color:var(--muted)}
+.meter i{height:1.6cqw;border-radius:1cqw;background:rgba(232,228,218,.1);position:relative;overflow:hidden}
+.meter i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--v);background:var(--bio)}
+.chip{padding:2.4cqw 3cqw;border-radius:1cqw;font-size:3.8cqw;line-height:1.55}
+.big{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(155,220,177,.35)}
+.big b{font-family:var(--latin);font-weight:300;font-size:12cqw;line-height:1;color:var(--bio)}
+.big span{font-size:3.6cqw;line-height:1.5;color:var(--soft)}
+.dots{display:flex;justify-content:space-between;align-items:center;padding:4px 0 0}
+.dots .btns{display:flex;margin-right:-8px}
+.dots button{width:28px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.dots button i{height:6px;width:6px;border-radius:3px;background:rgba(232,228,218,.28);transition:width .2s}
+.dots button[aria-current="true"] i{width:18px;background:var(--bio)}
+article{display:flex;flex-direction:column;gap:22px;padding-top:26px;font-size:16px;line-height:1.85;color:var(--body)}
+article p,article ul{margin:0}
+article h1{margin:0;font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.4;color:var(--fg-strong);text-wrap:balance}
+article h2{margin:0;font-family:var(--serif);font-weight:600;font-size:20px;line-height:1.5;color:var(--fg-strong)}
+article h2 small{display:block;font-family:var(--mono);font-weight:400;font-size:11px;letter-spacing:.14em;color:var(--bio)}
+article h3{margin:6px 0 0;font-size:15px;font-weight:500;color:#EAE6DF}
+article ul{padding-left:20px;display:flex;flex-direction:column;gap:6px}
+dl{margin:0;display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px 12px;padding:14px 0;border-block:1px solid var(--line);font-size:13px;line-height:1.6}
+dt{color:var(--subtle)} dd{margin:0}
+aside{padding:14px 16px;border-radius:8px;background:rgba(232,228,218,.04);font-size:14px;line-height:1.75;color:var(--soft)}
+.mathbox{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:18px 16px;border-radius:6px;background:var(--sunken);box-shadow:inset 0 0 0 1px rgba(155,220,177,.22),0 0 24px rgba(155,220,177,.10)}
+.eq{font-family:var(--latin);font-size:17px;color:var(--fg-strong);white-space:nowrap}
+.eq i{font-style:italic}
+.eq sub{font-size:.66em;font-style:normal;vertical-align:-.35em;line-height:0}
+.eq sup{font-size:.66em;line-height:0}
+.al{display:grid;grid-template-columns:auto auto;column-gap:8px;row-gap:10px;width:max-content;align-items:center}
+.al>:nth-child(odd){text-align:right}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.15;margin:0 2px}
+.fr>span:first-child{border-bottom:1px solid currentColor;padding:0 2px 1px}
+.fr>span:last-child{padding:1px 2px 0}
+.refs a{display:block;padding:8px 0;font-size:13px;color:var(--bio)}
+
+[data-view]{display:none}
+body[data-route="home"] [data-view="home"],body[data-route="paper"] [data-view="paper"]{display:block}
+
+@keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.45}50%{transform:scale(1.18);opacity:.9}}
+@keyframes flow{to{stroke-dashoffset:-42}}
+@media (prefers-reduced-motion:reduce){.secret i,.star .ring,.flow{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<div class="page" data-view="home" id="home"></div>
+
+<div class="page" data-view="paper" id="paper">
+  <div class="bar">
+    <a href="#home">← 群星</a>
+    <span class="mono">No.01 ｜ 生醫</span>
+    <a class="doi" href="https://doi.org/10.1038/nn1525">DOI</a>
+  </div>
+
+  <div class="car" id="car" aria-label="六張知識圖卡，可左右滑動">
+    <section class="pc cover" aria-label="第 1 張 時代銘文">
+      <span style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:3.4cqw;letter-spacing:.1em;color:rgba(15,16,19,.75)"><span>EPOCH KAIROS</span><span>No.01</span></span>
+      <span class="win" id="coverwin" style="position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:#1E2A24">
+        <span style="position:absolute;left:74%;top:26%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 0 1.4cqw #1E2A24,0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)"></span>
+        <span style="position:absolute;left:5cqw;bottom:4cqw;display:flex;flex-direction:column;gap:1cqw;color:var(--bio)">
+          <span style="font-size:3.6cqw">發表</span>
+          <span style="font-family:var(--latin);font-style:italic;font-weight:300;font-size:26cqw;line-height:.85;letter-spacing:-.03em">2005</span>
+        </span>
+      </span>
+      <span style="font-size:3.8cqw;color:rgba(15,16,19,.75)">生醫與生命科技・#神經科學 #生物科技</span>
+      <span style="font-family:var(--serif);font-weight:600;font-size:9cqw;line-height:1.2">光遺傳學</span>
+      <span style="font-size:4.3cqw;line-height:1.6">讓科學家能用一道藍光，在千分之一秒內開關大腦中某一類特定的神經元。</span>
+      <span style="padding-top:2.6cqw;border-top:1px solid rgba(15,16,19,.22);font-size:3.6cqw;color:rgba(15,16,19,.75)">2005 發表 ｜ 2026 諾貝爾生理學或醫學獎</span>
+    </section>
+
+    <section class="pc" aria-label="第 2 張 世紀瓶頸" style="gap:5cqw">
+      <span class="lab">02 ｜ 世紀瓶頸</span>
+      <span class="h">快的不準，準的不快</span>
+      <span class="stack" style="gap:2.4cqw">
+        <span style="font-size:4.6cqw;color:#EAE6DF">電極刺激</span>
+        <span class="meter"><span>速度</span><i style="--v:95%"></i><span>專一性</span><i style="--v:12%"></i></span>
+        <span class="s">毫秒級，但電流會波及周圍所有神經元與過路軸突。</span>
+      </span>
+      <span class="stack" style="gap:2.4cqw">
+        <span style="font-size:4.6cqw;color:#EAE6DF">化學藥物</span>
+        <span class="meter"><span>速度</span><i style="--v:10%"></i><span>專一性</span><i style="--v:90%"></i></span>
+        <span class="s">能鎖定特定受體，但擴散與代謝要數秒到數十分鐘。</span>
+      </span>
+      <span class="ft" style="font-size:4cqw;color:#EAE6DF">缺的是一個又快又準的開關。</span>
+    </section>
+
+    <section class="pc" aria-label="第 3 張 突破原理">
+      <span class="lab">03 ｜ 突破原理</span>
+      <span class="h">一道藍光，一個開關</span>
+      <span class="stack" style="gap:2cqw">
+        <span class="chip" style="background:rgba(143,213,253,.1);color:#CDE9FB">約 470 nm 藍光｜ChR2 開啟，陽離子內流，神經元放電</span>
+        <span class="chip" style="background:rgba(230,198,134,.1);color:#EEDCB5">約 580 nm 黃光｜NpHR 抑制（Zhang 等 2007 延伸）</span>
+      </span>
+      <span class="mathbox" style="padding:4cqw 3cqw;border-radius:1cqw">
+        <span class="eq" style="font-size:4.6cqw"><i>I</i><sub>ChR2</sub> = <i>g</i><sub>ChR2</sub> · <i>O</i>(<i>t</i>) · <i>G</i>(<i>V</i><sub><i>m</i></sub>) · (<i>V</i><sub><i>m</i></sub> − <i>E</i><sub>ChR2</sub>)</span>
+      </span>
+      <span class="s">光電流 ＝ 最大電導 × 開放比例 × 電壓整流 × 驅動力。綠藻的趨光蛋白直接成為神經元上的光控離子通道。</span>
+    </section>
+
+    <section class="pc" aria-label="第 4 張 決定性數據">
+      <span class="lab">04 ｜ 決定性數據</span>
+      <span style="flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw">
+        <span class="big"><b>&lt;1 ms</b><span>藍光照射後，光電流在亞毫秒內啟動</span></span>
+        <span class="big"><b>1 : 1</b><span>一次短光脈衝，誘發一個動作電位</span></span>
+        <span class="big"><b>數十 Hz</b><span>神經元逐次跟隨脈衝序列放電</span></span>
+        <span class="big"><b>0</b><span>外加輔因子，內源視黃醛即足夠</span></span>
+      </span>
+      <span class="ft">範圍：Boyden 等 2005，離體培養神經元之概念驗證</span>
+    </section>
+
+    <section class="pc" aria-label="第 5 張 典範轉移">
+      <span class="lab">05 ｜ 典範轉移</span>
+      <span class="h">從看見大腦，到改寫迴路</span>
+      <span style="flex:1;display:flex;flex-direction:column;justify-content:space-between;padding-left:4cqw;background:linear-gradient(180deg,rgba(155,220,177,.5),rgba(155,220,177,.08)) left top/1px 100% no-repeat">
+        <span class="meter" style="grid-template-columns:12cqw minmax(0,1fr);font-size:3.8cqw;line-height:1.45;color:#EAE6DF"><b style="font-family:var(--latin);font-weight:400;font-size:4.6cqw;color:var(--bio)">2007</b><span>植入光纖，清醒小鼠活體光控</span></span>
+        <span class="meter" style="grid-template-columns:12cqw minmax(0,1fr);font-size:3.8cqw;line-height:1.45;color:#EAE6DF"><b style="font-family:var(--latin);font-weight:400;font-size:4.6cqw;color:var(--bio)">2007</b><span>光控下視丘神經元誘發甦醒</span></span>
+        <span class="meter" style="grid-template-columns:12cqw minmax(0,1fr);font-size:3.8cqw;line-height:1.45;color:#EAE6DF"><b style="font-family:var(--latin);font-weight:400;font-size:4.6cqw;color:var(--bio)">2009</b><span>解構帕金森氏症迴路</span></span>
+        <span class="meter" style="grid-template-columns:12cqw minmax(0,1fr);font-size:3.8cqw;line-height:1.45;color:#EAE6DF"><b style="font-family:var(--latin);font-weight:400;font-size:4.6cqw;color:var(--bio)">2011</b><span>杏仁核投射雙向調控焦慮</span></span>
+        <span class="meter" style="grid-template-columns:12cqw minmax(0,1fr);font-size:3.8cqw;line-height:1.45;color:#EAE6DF"><b style="font-family:var(--latin);font-weight:400;font-size:4.6cqw;color:var(--bio)">2012</b><span>恐懼記憶召回與記憶印痕操控</span></span>
+      </span>
+      <span class="ft">以上皆為後續他人成果，出處見長文</span>
+    </section>
+
+    <section class="pc" aria-label="第 6 張 Kairos" style="background:radial-gradient(circle at 80% 14%,rgba(155,220,177,.14),rgba(155,220,177,0) 46%),var(--surface)">
+      <span class="lab">06 ｜ KAIROS</span>
+      <span style="margin-top:auto;font-family:var(--serif);font-size:7cqw;line-height:1.6;color:var(--fg-strong)">困擾神經科學近百年的難題，解答不在神經科學內部，而在單細胞綠藻的冷門角落。</span>
+      <span style="display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--soft)">
+        <span>觀察相關</span><span aria-hidden="true" style="flex:1;height:1px;background:linear-gradient(90deg,rgba(155,220,177,.2),var(--bio))"></span><span style="color:var(--bio)">操控因果</span>
+      </span>
+    </section>
+  </div>
+
+  <div class="dots">
+    <span class="mono" id="cardlbl" style="letter-spacing:.12em;color:var(--muted)">1 / 6 ｜ 時代銘文　左右滑動</span>
+    <span class="btns" id="dots"></span>
+  </div>
+
+  <article>
+    <header class="stack" style="gap:10px">
+      <span class="mono" style="color:var(--bio)">2005 發表 ｜ 2026 諾貝爾生理學或醫學獎</span>
+      <h1>光遺傳學：以光精準控制大腦神經元</h1>
+      <span style="font-family:var(--latin);font-style:italic;font-size:16px;line-height:1.5;color:var(--soft)">Millisecond-timescale, genetically targeted optical control of neural activity</span>
+    </header>
+
+    <dl>
+      <dt>作者</dt><dd>Boyden, Zhang, Bamberg, Nagel, Deisseroth</dd>
+      <dt>得獎者</dt><dd>Deisseroth, Hegemann, Nagel</dd>
+      <dt>期刊</dt><dd>Nature Neuroscience, 8(9), 1263-1268</dd>
+      <dt>標籤</dt><dd>#神經科學 #生物科技</dd>
+    </dl>
+
+    <aside>本頁範圍：2026 年獎項表彰一系列工作。本頁以 Boyden 等 (2005) 為主軸；Nagel 與 Hegemann 2002、2003 年的奠基論文列於文末。Hegemann 並非 2005 年該篇的作者。</aside>
+
+    <section class="stack" style="gap:12px;margin:0">
+      <h2><small>CARD 1 ｜ THE HOOK</small>時代銘文</h2>
+      <p>在 2005 年以前，神經科學能「看見」大腦活動，卻無法「指定」某一類神經元在某一毫秒放電。這篇論文讓單一類型的神經元變成一個可以用光開關的電路元件，把大腦研究從觀察相關性，推進到操控因果。</p>
+    </section>
+
+    <section class="stack" style="gap:12px;margin:0">
+      <h2><small>CARD 3 ｜ THE SECRET</small>突破架構與原理</h2>
+      <p>源自綠藻 <i>Chlamydomonas reinhardtii</i> 的 ChR2，兼具感光色素與離子通道兩種功能。藍光（約 470 nm）照射時通道打開，陽離子（Na<sup>+</sup>、Ca<sup>2+</sup>、H<sup>+</sup>）內流，細胞去極化並誘發動作電位。</p>
+      <h3>光敏感通道之光電流方程</h3>
+      <div class="mathbox" role="math" aria-label="I ChR2 等於 g ChR2 乘 O(t) 乘 G(Vm) 乘 (Vm 減 E ChR2)">
+        <span class="eq"><i>I</i><sub>ChR2</sub>(<i>t</i>, <i>V</i><sub><i>m</i></sub>) = <i>g</i><sub>ChR2</sub> · <i>O</i>(<i>t</i>) · <i>G</i>(<i>V</i><sub><i>m</i></sub>) · (<i>V</i><sub><i>m</i></sub> − <i>E</i><sub>ChR2</sub>)</span>
+      </div>
+      <span style="align-self:flex-end;margin-top:-6px;font-size:11px;color:var(--subtle)">公式過長時可左右滑動</span>
+
+      <h3>三態光循環動力學</h3>
+      <div class="mathbox" role="math" aria-label="關閉態、開放態、去敏化態三個微分方程，三者總和為一">
+        <span class="eq al">
+          <span><span class="fr"><span><i>dC</i></span><span><i>dt</i></span></span></span><span>= <i>k<sub>r</sub></i> <i>D</i> − <i>k<sub>a</sub></i>(<i>I</i>) <i>C</i></span>
+          <span><span class="fr"><span><i>dO</i></span><span><i>dt</i></span></span></span><span>= <i>k<sub>a</sub></i>(<i>I</i>) <i>C</i> − <i>k<sub>d</sub></i> <i>O</i></span>
+          <span><span class="fr"><span><i>dD</i></span><span><i>dt</i></span></span></span><span>= <i>k<sub>d</sub></i> <i>O</i> − <i>k<sub>r</sub></i> <i>D</i></span>
+          <span><i>C</i> + <i>O</i> + <i>D</i></span><span>= 1</span>
+        </span>
+      </div>
+
+      <h3>膜電位整合方程（aligned 斷行）</h3>
+      <div class="mathbox" role="math" aria-label="Hodgkin-Huxley 膜電位方程加入光電流項">
+        <span class="eq al">
+          <span><i>C<sub>m</sub></i> <span class="fr"><span><i>dV<sub>m</sub></i></span><span><i>dt</i></span></span> =</span><span>− <i>ḡ</i><sub>Na</sub> <i>m</i><sup>3</sup><i>h</i> (<i>V<sub>m</sub></i> − <i>E</i><sub>Na</sub>)</span>
+          <span></span><span>− <i>ḡ</i><sub>K</sub> <i>n</i><sup>4</sup> (<i>V<sub>m</sub></i> − <i>E</i><sub>K</sub>)</span>
+          <span></span><span>− <i>g<sub>L</sub></i> (<i>V<sub>m</sub></i> − <i>E<sub>L</sub></i>)</span>
+          <span></span><span>− <i>I</i><sub>ChR2</sub>(<i>t</i>, <i>V<sub>m</sub></i>) + <i>I</i><sub>ext</sub></span>
+        </span>
+      </div>
+      <p>藍光脈衝入射時，<span class="eq" style="font-size:16px"><i>I</i><sub>ChR2</sub></span> 快速提供去極化內向電流，使膜電位在毫秒內越過激發閾值，觸發單一動作電位。</p>
+    </section>
+
+    <section class="stack" style="gap:12px;margin:0">
+      <h2><small>CARD 4 ｜ THE EVIDENCE</small>決定性數據</h2>
+      <h3 style="margin:0">本篇論文（Boyden 等 2005）</h3>
+      <ul>
+        <li>藍光照射後，ChR2 光電流於亞毫秒尺度啟動。</li>
+        <li>短促藍光脈衝可穩定誘發單一動作電位，放電抖動落在毫秒量級。</li>
+        <li>神經元能在數 Hz 至數十 Hz 範圍內逐次跟隨脈衝序列。</li>
+        <li>哺乳動物神經元內源視黃醛即足以支持 ChR2 作用。</li>
+      </ul>
+      <h3>後續他人成果（非本篇）</h3>
+      <ul style="font-size:14px;color:var(--soft)">
+        <li>Aravanis 等 (2007), J Neural Eng：植入光纖於清醒小鼠活體光控</li>
+        <li>Gradinaru 等 (2009), Science：釐清深腦刺激之有效作用標的</li>
+        <li>Tye 等 (2011), Nature：杏仁核投射雙向調控焦慮</li>
+      </ul>
+    </section>
+
+    <section class="stack refs" style="gap:2px;margin:0;padding-top:18px;border-top:1px solid var(--line)">
+      <span class="mono">KEY PAPERS</span>
+      <a href="https://doi.org/10.1126/science.1072068">Nagel 等 (2002) Science 296:2395-2398</a>
+      <a href="https://doi.org/10.1073/pnas.1936192100">Nagel 等 (2003) PNAS 100:13940-13945</a>
+      <a href="https://doi.org/10.1038/nn1525">Boyden 等 (2005) Nat Neurosci 8:1263-1268</a>
+    </section>
+  </article>
+</div>
+
+<script>
+(function(){
+  function rndFrom(seed){var s=seed|0;return function(){s=(s+0x6D2B79F5)|0;var t=Math.imul(s^(s>>>15),1|s);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}
+  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- 星空背景 ---------- */
+  var sky=document.getElementById('sky'),ctx=sky.getContext('2d'),skyStars=[];
+  (function(){var r=rndFrom(3901108),tints=['#FFFFFF','#FFFFFF','#FFFFFF','#FFF3E2','#E4EEFF'];
+    for(var i=0;i<520;i++){var band=r()<0.45,x=r(),y=band?(0.62-x*0.5+(r()+r()+r()-1.5)*0.12):r();var q=r();var sz=q<0.66?0.6:(q<0.94?0.9:1.3);
+      skyStars.push({x:x,y:Math.max(0,Math.min(1,y)),r:sz,o:sz>1.2?0.92:(sz>0.8?0.7:0.3+r()*0.45),c:tints[Math.floor(r()*tints.length)],tw:sz>0.8&&r()<0.4,ph:r()*6.28});}})();
+  function drawSky(t){var w=innerWidth,h=innerHeight,d=Math.min(devicePixelRatio||1,2);
+    if(sky.width!==Math.round(w*d)||sky.height!==Math.round(h*d)){sky.width=Math.round(w*d);sky.height=Math.round(h*d);}
+    ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,w,h);
+    for(var i=0;i<skyStars.length;i++){var s=skyStars[i],o=s.o;if(s.tw&&!reduce&&t)o*=0.6+0.4*Math.sin(t/760+s.ph);
+      ctx.globalAlpha=o;ctx.fillStyle=s.c;ctx.beginPath();ctx.arc(s.x*w,s.y*h,s.r,0,6.283);ctx.fill();}
+    ctx.globalAlpha=1;}
+  var last=0;function loop(t){if(t-last>66){drawSky(t);last=t;}requestAnimationFrame(loop);}
+  drawSky(0);if(!reduce)requestAnimationFrame(loop);addEventListener('resize',function(){drawSky(0);});
+
+  /* ---------- 資料（沿用桌面 v4） ---------- */
+  var SHAPES={bio:'M0.8 5 A4.2 4.2 0 1 0 9.2 5 A4.2 4.2 0 1 0 0.8 5 Z',ai:'M1 1 H9 V9 H1 Z',physics:'M5 0.6 L9.6 9.2 L0.4 9.2 Z',econ:'M5 0.3 L9.7 5 L5 9.7 L0.3 5 Z',energy:'M5 0.4 L9.2 2.8 L9.2 7.2 L5 9.6 L0.8 7.2 L0.8 2.8 Z'};
+  var DOM={bio:{name:'生醫',full:'生醫與生命科技',color:'#9BDCB1',rgb:'155,220,177',x:285,y:300},ai:{name:'AI',full:'人工智慧與計算',color:'#8FD5FD',rgb:'143,213,253',x:725,y:290},physics:{name:'物理',full:'物理、天文與量子',color:'#D3BEFD',rgb:'211,190,253',x:730,y:620},econ:{name:'經濟',full:'宏觀經濟與治理',color:'#E6C686',rgb:'230,198,134',x:235,y:610},energy:{name:'能源',full:'清潔能源與新材料',color:'#FFB6A3',rgb:'255,182,163',x:470,y:720}};
+  var TAGS={ai_ai:{name:'人工智慧',d:'ai',x:831,y:348},ai_rl:{name:'強化學習',d:'ai',x:895,y:238},ai_cb:{name:'計算生物',d:'ai',x:721,y:408},ai_cv:{name:'計算機視覺',d:'ai',x:722,y:144},ai_dl:{name:'深度學習',d:'ai',x:827,y:204},bio_neuro:{name:'神經科學',d:'bio',x:430,y:180},bio_biotech:{name:'生物科技',d:'bio',x:352,y:209},bio_immuno:{name:'免疫學',d:'bio',x:248,y:427},bio_agri:{name:'農業科技',d:'bio',x:149,y:358},bio_paleo:{name:'古人類學',d:'bio',x:138,y:263},bio_gene:{name:'基因工程',d:'bio',x:205,y:171},bio_mol:{name:'分子生物',d:'bio',x:287,y:131},phy_astro:{name:'天體物理',d:'physics',x:862,y:718},phy_quantum:{name:'量子物理',d:'physics',x:725,y:766},phy_stat:{name:'統計物理',d:'physics',x:822,y:507},phy_cosmo:{name:'宇宙學',d:'physics',x:863,y:623},econ_macro:{name:'宏觀經濟學',d:'econ',x:164,y:742},econ_inst:{name:'制度經濟學',d:'econ',x:107,y:635},en_chem:{name:'化學合成',d:'energy',x:501,y:847},en_mat:{name:'材料科學',d:'energy',x:382,y:820}};
+  var P=[
+    ['opto','光遺傳學','bio',['bio_neuro','bio_biotech'],2005,2026,'諾貝爾生理學或醫學獎',1,421,249],
+    ['soai','分子同手性與不對稱自催化','energy',['en_chem'],1995,2026,'諾貝爾化學獎',1,563,860],
+    ['icecube','冰立方高能微中子觀測','physics',['phy_astro'],2013,2026,'諾貝爾物理學獎',1,877,787],
+    ['hallwoodford','宏觀穩定政策的微觀基礎','econ',['econ_macro'],0,2026,'諾貝爾經濟學獎',1,102,773],
+    ['glp1','GLP-1 受體促效劑','bio',['bio_biotech'],1987,2026,'引文桂冠獎',0,361,276],
+    ['mofs','金屬有機骨架 MOFs','energy',['en_mat'],1999,2025,'諾貝爾化學獎',1,331,860],
+    ['mqt','超導電路巨觀量子穿隧','physics',['phy_quantum'],1985,2025,'諾貝爾物理學獎',1,689,824],
+    ['treg','調節性 T 細胞與免疫耐受','bio',['bio_immuno'],1995,2025,'諾貝爾生理學或醫學獎',1,203,476],
+    ['aghion','創造性破壞與創新驅動成長','econ',['econ_macro'],1992,2025,'諾貝爾經濟學獎',1,167,810],
+    ['deepseek','DeepSeek-R1 推理擴展','ai',['ai_ai','ai_rl'],2025,0,'',0,888,292],
+    ['nervemito','神經元向癌細胞轉移粒線體','bio',['bio_neuro','bio_biotech'],2025,0,'',0,381,141],
+    ['qt12','抗高溫水稻基因 QT12','bio',['bio_agri'],2025,0,'',0,81,376],
+    ['harbin','「龍人」確認為丹尼索瓦人','bio',['bio_paleo'],2025,0,'',0,70,245],
+    ['baseedit','首例客製化鹼基編輯療法','bio',['bio_gene'],2025,0,'',0,182,102],
+    ['alphafold','AlphaFold2 蛋白質結構預測','ai',['ai_cb','ai_ai'],2021,2024,'諾貝爾化學獎',1,763,356],
+    ['hopfield','Hopfield 網絡與統計物理','ai',['ai_ai','phy_stat'],1982,2024,'諾貝爾物理學獎',1,845,432],
+    ['mirna','microRNA 與轉錄後調控','bio',['bio_mol'],1993,2024,'諾貝爾生理學或醫學獎',1,291,60],
+    ['acemoglu','制度形成與長期繁榮','econ',['econ_inst'],2001,2024,'諾貝爾經濟學獎',1,70,585],
+    ['sora','Sora 與世界模型','ai',['ai_cv'],2024,0,'',0,731,76],
+    ['ftqc','容錯量子計算','physics',['phy_quantum'],2024,0,'',0,760,826],
+    ['invivo','體內 CRISPR 與個人化 mRNA 疫苗','bio',['bio_gene'],2024,0,'',0,137,145],
+    ['jwst','JWST 早期巨大星系','physics',['phy_cosmo','phy_astro'],2023,0,'',0,909,670],
+    ['drugclip','DrugCLIP 虛擬篩選','ai',['ai_ai','ai_cb'],2023,0,'',0,787,402],
+    ['attention','Attention Is All You Need','ai',['ai_ai','ai_dl'],2017,0,'',0,832,272],
+    ['ligo','LIGO 重力波直接探測','physics',['phy_astro'],2016,2017,'諾貝爾物理學獎',1,929,746],
+    ['crispr','CRISPR-Cas9 基因剪刀','bio',['bio_gene','bio_biotech'],2012,2020,'諾貝爾化學獎',1,275,196]
+  ].map(function(a){return{id:a[0],name:a[1],d:a[2],tags:a[3],p:a[4],a:a[5],honor:a[6],nobel:!!a[7],x:a[8],y:a[9]};});
+  var CONCEPTS=[{id:'neural',d:'bio',papers:['opto'],x:491,y:260}];
+  var byId={};P.forEach(function(p){byId[p.id]=p;});
+  var counts={};P.forEach(function(p){counts[p.d]=(counts[p.d]||0)+1;});
+  var sky2={};(function(){var r=rndFrom(20051263);P.forEach(function(p){var dots=[];for(var i=0;i<9;i++)dots.push([4+r()*92,4+r()*50,r()<0.8?1:1.5,0.35+r()*0.55]);sky2[p.id]={dots:dots,sx:58+r()*28,sy:16+r()*22};});})();
+  var ticks='';for(var i=0;i<48;i++){var an=i*7.5*Math.PI/180,r2=i%4===0?380:390;ticks+='M'+(500+400*Math.cos(an)).toFixed(1)+' '+(460+400*Math.sin(an)).toFixed(1)+' L'+(500+r2*Math.cos(an)).toFixed(1)+' '+(460+r2*Math.sin(an)).toFixed(1)+' ';}
+
+  var st={domain:'all',sel:'opto',showAll:false,hint:false};
+  function pct(v,m){return(v/m*100).toFixed(3)+'%';}
+  function years(p){if(p.p&&p.a)return p.p+' 發表 ｜ '+p.a+' 獲獎';if(p.a)return'發表年待核 ｜ '+p.a+' 獲獎';return p.p+' 發表';}
+  function tint(rgb,k){var c=rgb.split(',').map(Number),ink=[15,17,20];return'rgb('+c.map(function(v,i){return Math.round(ink[i]+(v-ink[i])*k);}).join(',')+')';}
+
+  function renderHome(){
+    var f=st.domain,sel=byId[st.sel],inF=function(d){return f==='all'||f===d;};
+    var selTags={},selDoms={};sel.tags.forEach(function(t){selTags[t]=1;selDoms[TAGS[t].d]=1;});
+    var IV='244,241,234',defs='',paths='',n=0;
+    function edge(x1,y1,x2,y2,c1,c2,base,fade,lit,inDom,flow){var dx=x2-x1,dy=y2-y1,cx=(x1+x2)/2-dy*0.13,cy=(y1+y2)/2+dx*0.13,a=lit>0?lit:(inDom?base:base*0.14),g='g'+(n++);
+      defs+='<linearGradient id="'+g+'" gradientUnits="userSpaceOnUse" x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'"><stop offset="0" stop-color="rgba('+c1+','+a.toFixed(3)+')"/><stop offset="1" stop-color="rgba('+c2+','+(a*fade).toFixed(3)+')"/></linearGradient>';
+      var d='M'+x1+' '+y1+' Q'+cx.toFixed(1)+' '+cy.toFixed(1)+' '+x2+' '+y2;
+      paths+='<path d="'+d+'" fill="none" stroke="url(#'+g+')" stroke-width="'+(lit>0.6?2.6:1.5)+'" stroke-linecap="round"/>';
+      if(flow)paths+='<path class="flow" d="'+d+'" fill="none" stroke="rgba(255,253,248,0.9)" stroke-width="2.2" stroke-linecap="round"/>';}
+    Object.keys(DOM).forEach(function(k){var d=DOM[k];edge(500,460,d.x,d.y,IV,d.rgb,0.3,0.7,selDoms[k]?0.55:0,inF(k),false);});
+    Object.keys(TAGS).forEach(function(id){var t=TAGS[id],d=DOM[t.d];edge(d.x,d.y,t.x,t.y,d.rgb,d.rgb,0.6,0.35,selTags[id]?0.9:0,inF(t.d),!!selTags[id]);});
+    P.forEach(function(p){p.tags.forEach(function(id){var t=TAGS[id],lit=p.id===sel.id;edge(t.x,t.y,p.x,p.y,DOM[t.d].rgb,IV,0.45,0.2,lit?0.95:0,inF(t.d)||inF(p.d),lit);});});
+    CONCEPTS.forEach(function(k){k.papers.forEach(function(pid){var p=byId[pid],lit=pid===sel.id;edge(k.x,k.y,p.x,p.y,IV,IV,0.4,0.3,lit?0.9:0,inF(k.d)||inF(p.d),lit);});});
+
+    var h='';
+    h+='<header class="hero"><span class="mono" style="font-size:10px;letter-spacing:.22em">THE KAIROS OF HUMAN THOUGHT</span>';
+    h+='<h1 style="margin:0"><svg viewBox="0 0 358 66" role="img" aria-label="Epoch Kairos"><defs><linearGradient id="tf" x1="0" x2="358" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="rgba(234,230,223,0.6)"/><stop offset="0.7" stop-color="#EAE6DF"/></linearGradient></defs><text x="0" y="54" textLength="356" lengthAdjust="spacingAndGlyphs" fill="url(#tf)" style="font-family:Newsreader,Georgia,serif;font-weight:300;font-size:68px">Epoch Kairos</text></svg></h1>';
+    h+='<div class="motto"><span>人類群星閃耀時</span><button class="secret" data-act="hint" aria-label="進入我的星系"><i></i></button>'+(st.hint?'<span class="hint">群星之中，還有一片我的星系</span>':'')+'</div></header>';
+
+    h+='<section aria-label="學科索引" class="stack" style="gap:10px"><div class="row"><span class="mono" style="letter-spacing:.2em">INDEX</span>';
+    var allOn=f==='all';
+    h+='<button class="allbtn" data-act="all" aria-pressed="'+allOn+'" style="color:'+(allOn?'#F4F1EA':'#9A958C')+'"><span style="border-bottom:1px solid '+(allOn?'rgba(244,241,234,.7)':'transparent')+';padding-bottom:2px">全部 <b>'+P.length+'</b></span></button></div><div class="rail">';
+    Object.keys(DOM).forEach(function(k){var d=DOM[k],on=f===k,line=on?'rgba('+d.rgb+',.95)':'rgba('+d.rgb+',.6)';
+      h+='<button class="strand" data-act="dom" data-k="'+k+'" aria-pressed="'+on+'" aria-label="篩選學科：'+d.full+'，'+counts[k]+' 篇" style="opacity:'+(inF(k)?1:0.38)+'"><span class="col"><span class="ln top" style="background:'+line+'"></span>';
+      P.filter(function(p){return p.d===k;}).forEach(function(p){var ringed=p.a&&p.nobel,sz=ringed?6:5,sh=ringed?'0 0 0 2px #0B0C0E,0 0 0 2.8px rgba(244,241,234,.55),0 0 6px 2px rgba('+d.rgb+',.45)':'0 0 4px 1px rgba('+d.rgb+',.6)';
+        if(p.id===sel.id){sz=7;sh='0 0 0 2px #0B0C0E,0 0 0 3px '+d.color+',0 0 10px 3px rgba('+d.rgb+',.7)';}
+        h+='<span class="bead" style="width:'+sz+'px;height:'+sz+'px;box-shadow:'+sh+'"></span><span class="ln" style="background:'+line+'"></span>';});
+      h+='<svg width="13" height="13" viewBox="0 0 10 10" aria-hidden="true" style="overflow:visible;filter:drop-shadow(0 0 '+(on?4:2)+'px rgba('+d.rgb+','+(on?.95:.5)+'))"><path d="'+SHAPES[k]+'" fill="none" stroke="'+d.color+'"/></svg><span class="cnt" style="color:'+d.color+'">'+counts[k]+'</span></span><span class="nm" style="color:'+d.color+'">'+d.name+'</span></button>';});
+    h+='</div></section>';
+
+    h+='<section aria-label="知識星圖"><div class="row" style="align-items:baseline"><span class="mono" style="letter-spacing:.12em">CONSTELLATION ｜ 知識星圖</span><span style="font-size:11px;color:var(--subtle)">點星看詳情</span></div>';
+    h+='<div class="mapwrap"><div class="hair" style="position:absolute;left:16px;right:16px;top:0"></div><div class="map">';
+    Object.keys(DOM).forEach(function(k){var d=DOM[k],a=inF(k)?0.1:0.025;h+='<span class="neb" style="left:'+pct(d.x,1000)+';top:'+pct(d.y,920)+';width:'+(k==='bio'?64:(k==='econ'||k==='energy'?44:54))+'%;background:radial-gradient(closest-side,rgba('+d.rgb+','+a+'),rgba('+d.rgb+','+(a*0.38).toFixed(3)+') 48%,rgba('+d.rgb+',0) 100%)"></span>';});
+    h+='<svg viewBox="0 0 1000 920" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="rgba(232,228,218,0.08)" stroke-width="1.4"><circle cx="500" cy="460" r="120" stroke-dasharray="3 8"/><circle cx="500" cy="460" r="250" stroke-dasharray="2 9"/><circle cx="500" cy="460" r="400"/><path d="'+ticks+'" stroke="rgba(232,228,218,0.12)"/><circle cx="500" cy="460" r="26" stroke="rgba(232,228,218,0.24)"/></g><defs>'+defs+'</defs>'+paths+'</svg>';
+    h+='<span class="core" aria-hidden="true"></span>';
+    Object.keys(TAGS).forEach(function(id){var t=TAGS[id],d=DOM[t.d],lit=!!selTags[id];
+      h+='<span class="tag" aria-hidden="true" style="left:'+pct(t.x,1000)+';top:'+pct(t.y,920)+';opacity:'+(lit?1:(inF(t.d)?0.85:0.18))+';box-shadow:0 0 5px 1.5px rgba('+d.rgb+','+(lit?.95:.7)+')"></span>';
+      if(lit)h+='<span class="taglbl" aria-hidden="true" style="left:'+pct(t.x,1000)+';top:'+pct(t.y,920)+';transform:'+(t.x<780?'translate(8px,-50%)':'translate(calc(-100% - 8px),-50%)')+'">#'+t.name+'</span>';});
+    CONCEPTS.forEach(function(k){h+='<span class="concept" aria-hidden="true" style="left:'+pct(k.x,1000)+';top:'+pct(k.y,920)+';opacity:'+(inF(k.d)?1:0.22)+'"></span>';});
+    Object.keys(DOM).forEach(function(k){var d=DOM[k],on=f===k,ha=on?0.5:0.3;
+      h+='<button class="hub" data-act="dom" data-k="'+k+'" aria-pressed="'+on+'" aria-label="篩選學科：'+d.full+'" style="left:'+pct(d.x,1000)+';top:'+pct(d.y,920)+';opacity:'+(inF(k)?1:0.3)+'"><span class="ic"><span class="halo" style="background:radial-gradient(closest-side,rgba('+d.rgb+','+ha+'),rgba('+d.rgb+','+(ha*0.3).toFixed(2)+') 45%,rgba('+d.rgb+',0) 100%)"></span><svg width="13" height="13" viewBox="0 0 10 10" aria-hidden="true" style="position:relative;overflow:visible"><path d="'+SHAPES[k]+'" fill="none" stroke="'+d.color+'" stroke-width="0.8"/></svg></span><span class="lbl">'+d.name+'</span></button>';});
+    P.forEach(function(p){var d=DOM[p.d],focus=p.id===sel.id,active=f==='all'||f===p.d||p.tags.some(function(t){return TAGS[t].d===f;}),sz=focus?7:(p.a?5:4);
+      var sh=focus?'0 0 5px 2px rgba('+d.rgb+',.95),0 0 16px 5px rgba('+d.rgb+',.45)':'0 0 4px 1px rgba('+d.rgb+',.9),0 0 9px 2px rgba('+d.rgb+',.3)';
+      var ring=p.nobel?(focus?d.color:'rgba(244,241,234,.6)'):'rgba(244,241,234,.28)';
+      h+='<button class="star" data-act="sel" data-id="'+p.id+'" aria-pressed="'+focus+'" aria-label="'+p.name+'，'+years(p)+'" style="left:'+pct(p.x,1000)+';top:'+pct(p.y,920)+';opacity:'+((focus||active)?1:0.18)+'">'+(p.a?'<span class="ring" style="border:1px dashed '+ring+'"></span>':'')+'<span class="dot" style="width:'+sz+'px;height:'+sz+'px;box-shadow:'+sh+'"></span></button>';});
+    h+='</div></div>';
+
+    var sd=DOM[sel.d],hasPage=sel.id==='opto';
+    h+='<div class="info" aria-live="polite" style="border:1px solid rgba('+sd.rgb+',.35)"><div style="display:flex;align-items:center;gap:8px"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" style="overflow:visible"><path d="'+SHAPES[sel.d]+'" fill="none" stroke="'+sd.color+'" stroke-width="1.2"/></svg><span class="mono" style="color:'+sd.color+'">'+years(sel)+'</span></div>';
+    h+='<span class="nm">'+sel.name+'</span><span style="font-size:12px;color:var(--muted)">'+sd.full+'・'+sel.tags.map(function(t){return'#'+TAGS[t].name;}).join(' ')+'</span><span style="font-size:13px;color:var(--soft)">'+(sel.a?sel.a+' '+sel.honor:'尚未獲獎')+'</span>';
+    h+='<div class="foot"><span style="font-size:12px;color:var(--subtle)">已收錄 Wiki</span>'+(hasPage?'<a class="go" href="#paper">閱讀論文頁 →</a>':'<span class="go" style="font-size:13px;color:var(--subtle)">論文頁製作中</span>')+'</div></div>';
+    h+='<div class="legend"><span><i style="width:4px;height:4px;border-radius:50%;background:#FFFDF8;box-shadow:0 0 4px 1px rgba(143,213,253,.9)"></i>論文</span><span><i style="width:10px;height:10px;box-sizing:border-box;border-radius:50%;border:1px dashed rgba(244,241,234,.6)"></i>獲獎</span><span><i style="width:3px;height:3px;border-radius:50%;background:#FFFDF8;box-shadow:0 0 4px 1px rgba(155,220,177,.8)"></i>標籤</span><span><i style="width:6px;height:6px;box-sizing:border-box;border:1px solid #EAE6DF;transform:rotate(45deg)"></i>概念頁</span><span>'+P.length+' 顆星・'+Object.keys(TAGS).length+' 個標籤</span></div></section>';
+
+    var list=P.filter(function(p){return f==='all'||p.d===f;}),shown=st.showAll?list:list.slice(0,8);
+    h+='<section id="archive" aria-label="群星檔案" style="position:relative;padding-top:18px"><div class="hair" style="position:absolute;left:0;right:0;top:0"></div><div class="row" style="align-items:baseline"><span class="mono" style="letter-spacing:.12em">ARCHIVE ｜ 群星檔案</span><span style="font-size:12px;color:var(--subtle)">'+list.length+' 張・'+(allOn?'全部':DOM[f].name)+'</span></div><div class="grid">';
+    shown.forEach(function(p){var d=DOM[p.d],panel=tint(d.rgb,0.1),no=P.indexOf(p)+1,s=sky2[p.id],isSel=p.id===sel.id,ss='2.6cqw',sh='0 0 3cqw .6cqw rgba(244,241,234,.45)';
+      if(p.a&&p.nobel){ss='3.2cqw';sh='0 0 0 1.6cqw '+panel+',0 0 0 2.2cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)';}else if(p.a){ss='3cqw';sh='0 0 0 1.6cqw '+panel+',0 0 0 2cqw rgba(244,241,234,.25),0 0 4cqw .8cqw rgba(244,241,234,.3)';}
+      h+='<button class="card" data-act="sel" data-id="'+p.id+'" data-scroll="1" aria-pressed="'+isSel+'" aria-label="'+p.name+'，'+years(p)+'" style="outline:'+(isSel?'1px solid #F4F1EA':'none')+'"><span class="cv" style="background:'+d.color+'"><span class="top"><span>No.'+(no<10?'0':'')+no+'</span><span>已收錄</span></span><span class="win" style="background:'+panel+'">';
+      s.dots.forEach(function(q){h+='<i style="left:'+q[0].toFixed(1)+'%;top:'+q[1].toFixed(1)+'%;width:'+q[2]+'px;height:'+q[2]+'px;opacity:'+q[3].toFixed(2)+'"></i>';});
+      h+='<i style="left:'+s.sx.toFixed(1)+'%;top:'+s.sy.toFixed(1)+'%;width:'+ss+';height:'+ss+';transform:translate(-50%,-50%);background:#FFFDF8;box-shadow:'+sh+'"></i><span class="yr" style="color:'+d.color+'"><small>'+d.name+'・'+(p.p?'發表':'獲獎')+'</small><b>'+(p.p||p.a)+'</b></span></span><span class="ttl">'+p.name+'</span><span class="hn">'+(p.a?p.a+' '+p.honor:'尚未獲獎')+'</span></span></button>';});
+    h+='</div>'+(shown.length<list.length?'<button class="more" data-act="more">顯示其餘 '+(list.length-shown.length)+' 張</button>':'')+'</section>';
+    h+='<footer><span style="font-family:var(--latin);font-weight:300;font-size:22px;color:#EAE6DF">Epoch Kairos</span><span style="font-size:12px;color:var(--subtle)">內容由 wiki/ 編譯・原文一律連至 DOI</span></footer>';
+    document.getElementById('home').innerHTML=h;
+  }
+
+  document.getElementById('home').addEventListener('click',function(e){var b=e.target.closest('[data-act]');if(!b)return;var a=b.getAttribute('data-act');
+    if(a==='hint')st.hint=!st.hint;
+    else if(a==='all')st.domain='all';
+    else if(a==='dom'){var k=b.getAttribute('data-k');st.domain=st.domain===k?'all':k;}
+    else if(a==='sel'){st.sel=b.getAttribute('data-id');}
+    else if(a==='more')st.showAll=true;
+    else return;
+    renderHome();
+    if(a==='sel'&&b.getAttribute('data-scroll')){var m=document.querySelector('.mapwrap');if(m)m.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});}
+  });
+
+  /* ---------- 論文頁卡片 ---------- */
+  (function(){var w=document.getElementById('coverwin'),r=rndFrom(1263);for(var i=0;i<16;i++){var s=document.createElement('i'),sz=r()<0.8?1:1.5;s.style.cssText='position:absolute;border-radius:50%;background:#fff;left:'+(4+r()*92).toFixed(1)+'%;top:'+(4+r()*52).toFixed(1)+'%;width:'+sz+'px;height:'+sz+'px;opacity:'+(0.35+r()*0.55).toFixed(2);w.appendChild(s);}})();
+  var NAMES=['時代銘文','世紀瓶頸','突破原理','決定性數據','典範轉移','Kairos'],car=document.getElementById('car'),dotsEl=document.getElementById('dots'),lbl=document.getElementById('cardlbl'),cur=0;
+  NAMES.forEach(function(n,i){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','第 '+(i+1)+' 張：'+n);b.innerHTML='<i></i>';b.addEventListener('click',function(){var c=car.children[i];car.scrollTo({left:c.offsetLeft-car.children[0].offsetLeft,behavior:reduce?'auto':'smooth'});});dotsEl.appendChild(b);});
+  function sync(){var step=car.children[1].offsetLeft-car.children[0].offsetLeft||1,i=Math.max(0,Math.min(5,Math.round(car.scrollLeft/step)));if(car.scrollLeft+car.clientWidth>=car.scrollWidth-4)i=5;cur=i;
+    Array.prototype.forEach.call(dotsEl.children,function(b,j){b.setAttribute('aria-current',j===i?'true':'false');});lbl.textContent=(i+1)+' / 6 ｜ '+NAMES[i]+'　左右滑動';}
+  car.addEventListener('scroll',function(){requestAnimationFrame(sync);},{passive:true});
+
+  /* ---------- 路由 ---------- */
+  function route(){var r=location.hash==='#paper'?'paper':'home';if(document.body.getAttribute('data-route')!==r){document.body.setAttribute('data-route',r);window.scrollTo(0,0);}if(r==='paper')sync();}
+  renderHome();route();addEventListener('hashchange',route);
+})();
+</script>
+</body>
+</html>

@@ -380,3 +380,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 3.8 Flash
 - **具體變更**：依據使用者指示並嚴格遵循 `.agents/skills/academic-paper-translator/SKILL.md` 規範，對 `raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（Wang et al., Eng. Proc. 2025 / ICKII 2025）執行完整正文翻譯與雙欄學術版面重建。將原先 2 頁之極度簡略摘要版，全面升級為 5 頁之繁體中文學術全譯本，覆蓋原檔 `Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052_繁體中文翻譯.pdf`。完整涵蓋摘要、引言（聯合國瀕危語言危機、排灣語數位語料匱乏、逐字對譯困境）、文獻探討（機器翻譯四大範式演進與對比表 Table 1、RAG 對少數語言之優勢、混合詞－字元模型）、研究方法論（辭典預翻譯雜湊映射、Qdrant 向量檢索庫建置、LLM 句法感知事後編輯；Figure 1~3 流程架構）、語料採集（東排灣學習手冊、排灣語參考語法、九階對話篇、排灣語聖經）、實驗設定（250 句教育部教材測試集；GPT-4o mini、Llama 3.1-70B、Gemma 3-27B、DeepSeek-R1-Distill-Llama-70B）、結果與深度討論（餘弦相似度自 0.210~0.236 躍升至 0.810~0.846、BLEU 自 1.7~4.4 劇增至 40.8~51.9、ROUGE-L F1 自 0.135~0.177 提升至 0.548~0.632；Figure 4~6 指標儀表板；專有名詞與複合詞對齊優勢；倒裝句與文化從屬子句局限）、結論、研究經費資助（國科會大專生研究計畫 NSTC 114-2813-C-143-032-H）、成大人類研究倫理審查聲明（IRB）、資料可用性聲明、致謝（臺東大學人文創新與社會實踐中心）與完整 18 筆參考文獻；精確重建 Table 1 範式對比表與 Figure 1~6 全數架構及跨模型效能對比，零數據缺失。於私有倉庫 Mine-RAW 完成單獨 Git 提交（commit `4b07186`）。
+
+## [2026-11-08 20:50] design | 手機版排版初版原型 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：新增 [web/prototypes/mobile-v1.html](../web/prototypes/mobile-v1.html)，為手機版排版討論用之單檔原型，含首頁（橫排標題、懸星索引、星圖與選取說明框、2 欄卡片牆）與光遺傳學論文頁（3:4 卡片橫向滑動、長文與公式容器）。資料沿用首頁 v4 之 26 篇與五學科，尚未更新為六學科；公式為手刻排版，正式版改用 KaTeX。同版本另見設計畫布「手機 v1」兩張畫板。
