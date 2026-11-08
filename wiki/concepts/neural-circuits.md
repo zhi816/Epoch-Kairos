@@ -1,6 +1,15 @@
+---
+title: "Neural Circuits & Causal Deconstruction"
+title_zh: "神經迴路因果解耦"
+domain: "bio"
+domain_tags: ["#神經科學", "#生物科技", "#人工智慧"]
+papers: ["2005-optogenetics"]
+related_concepts: []
+---
+
 # 概念：神經迴路因果解耦 (Neural Circuits & Causal Deconstruction)
 
-> 領域：`#神經科學` `#計算神經學` `#腦機介面`
+> 領域：`#神經科學` `#生物科技` `#人工智慧`
 
 ---
 

@@ -192,6 +192,41 @@
 - 執行 AGENTS.md 第六章第 3 節之完整 8 項 Lint，可完整復現上述清單。
 - 本專案 `.gitignore` 排除整個 `raw/`，故他台機器無法執行三層對齊檢查。
 
+## [2026-11-07 22:47] rule | 交接清單 Schema 項目處理（標籤白名單、日誌格式、概念頁 Frontmatter、基礎色參考值） | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填）
+- **依據**：接手 [2026-11-07 22:30] 交接清單。第二節第 2、3、5 項屬 Schema 決策，均經使用者於本次工作階段明確確認後執行。
+- **標籤白名單（交接第二節第 2、3 項）**：`#古人類學` 由 `physics` 改歸 `bio`；`#化學合成` 由 `physics` 改歸 `energy`；`#統計物理` 正式登記為 `physics` 標籤，並自「已收斂」清單移出。原「已知待處理」段落更名為「已收斂之舊標籤」，並補記概念頁 `#計算神經學`、`#腦機介面` 之收斂。
+- **日誌標題第三段（交接第二節第 5 項）**：AGENTS.md 第六章新增規則：操作對象為單一論文或概念頁時填其 `domain_tags`，涉及多條目或全庫之操作填 `全域`。自 2026-11-07 起適用，既有條目依 append-only 原則不回溯修改。
+- **概念頁 Frontmatter（交接第二節第 8 項）**：AGENTS.md 第七章新增第 2 節，定義 `title`、`title_zh`、`domain`、`domain_tags`、`papers`、`related_concepts` 六欄與雙向對應原則；原第 2 節前端展示層規範順延為第 3 節。Ingest 第 3 步與 Lint 第 1 條同步改為比對論文頁 `concepts` 與概念頁 `papers`。
+- **基礎色參考色值（交接第一節待補正二）**：AGENTS.md 第二章第 1 節改為表格並補齊參考色值，數值逐一取自 `web/assets/css/theme.css` 現值，另補列原未登記之 `--border-hover` 與 `--text-inverted`；第三章第 4 條之 `#101012` 加註對應變數 `--bg-surface-sunken`。
+
+## [2026-11-07 22:47] fix | 交接清單 Wiki 內容項目處理 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填）
+- **Hopfield 與 Hinton 條目（交接第二節第 3 項）**：`wiki/index.md` 標籤由 `#人工智慧` `#量子物理` 改為 `#人工智慧` `#統計物理`。
+- **概念頁標籤與元資料（交接第二節第 4、8 項）**：`wiki/concepts/neural-circuits.md` 新增 Frontmatter，`papers: ["2005-optogenetics"]` 與論文頁 `concepts` 雙向對應；白名單外之 `#計算神經學`、`#腦機介面` 收斂為 `#生物科技`、`#人工智慧`；`wiki/index.md` 概念頁條目之標籤同步更新。
+- **raw/ 檔名參照（交接第二節第 1 項）**：依 AGENTS.md 第五章（AI 不得更名 raw/ 檔案），`wiki/papers/2005-optogenetics.md` 之本機典藏路徑改回實際檔名 `raw/2025-optogenetics.pdf`，並加註年份有誤、建議使用者更名為 `raw/2005-optogenetics.pdf`。`wiki/index.md` 待辦區塊同步登記此事，以及 `brain-machine-interface` 概念頁尚未建立。
+- **PROJECT_SPEC.md 引用（交接第二節第 6 項）**：經查 Git 全部歷史，`PROJECT_SPEC.md` 從未提交至本倉庫。[2026-11-04 21:35]、[2026-11-06 21:03]、[2026-11-06 21:30] 三筆條目所述對該檔之修改無法於版控中驗證。依 append-only 原則不改動原條目，現行規範一律以 `AGENTS.md` 為準；若使用者本機仍存有該檔，請自行決定納入版控或刪除。
+
+## [2026-11-07 22:47] update | README.md 對齊新 Schema 並精簡與 AGENTS.md 重複內容 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填）
+- **具體變更（交接第二節第 7 項）**：README 開頭明示 `AGENTS.md` 為唯一權威規範；參考來源改為可點擊連結並壓縮為每項一行；架構圖註明 `raw/` 已排除於版控；新增「知識條目的關鍵規則」一節，摘要 Crossref 核驗、雙年份、`authors` 與 `laureates` 分離、`status` 三態、`domain` 與 `domain_tags` 兩層標籤及 LaTeX 標準；收錄進度改為指向 `wiki/index.md`，避免 README 存放易腐資訊。
+
+## [2026-11-07 22:47] audit | 交接清單處理結果與剩餘待辦 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填）
+- **合併狀態**：交接第一節之分支 `claude/latest-commit-color-removal-r7uu7s` 已由 PR #1 合併入 main；log.md 結尾衝突已解，[2026-11-06 22:12] 與 [2026-11-07 22:30] 兩筆依時間並存。
+- **已完成**：第一節待補正二；第二節第 1 至 8 項（第 1 項 AI 僅能於 wiki/ 層處理，實際更名仍待使用者）。
+- **待使用者處理**：
+  1. [2026-11-06 22:12] 條目與本次四筆條目之「模型版本」欄：Claude Code 雲端工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者依第九章自行補填。
+  2. 將 `raw/2025-optogenetics.pdf` 更名為 `raw/2005-optogenetics.pdf`，再請 AI 同步更新論文頁之本機典藏路徑。
+  3. 重新取得 `raw/1982-hopfield-network.pdf` 與 `raw/2012-crispr-cas9.pdf`（現為下載失敗之 HTML 頁面）。
+- **延後處理（經使用者決定，本次僅做 Markdown 修正）**：`web/` 展示層全層未產出，Lint 第 3 條三層對齊仍未通過；光遺傳學論文頁 `status` 維持 `wiki`。
+- **尚未建立**：`wiki/concepts/brain-machine-interface.md`，待收錄相關論文時一併產出。
+- **合規檢查**：全庫檔案經表情符號 Unicode 區段掃描為 0 筆；Markdown 相對路徑連結全數指向實際存在之檔案；`file:///` 與 `[[...]]` 僅出現於描述該禁令或該問題之文字本身；`wiki/index.md` 與概念頁所用標籤全數落在第八章白名單內。
+
 ## [2026-11-07 23:34] fix | 修復 raw/ 兩個損毀原始檔並補收三篇缺漏文獻 | 多領域
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5（claude-opus-5）
@@ -229,3 +264,13 @@
 - **新增之倉庫基礎檔（3 筆）**：`raw/README.md` 說明本層定位與主倉庫對應關係；`raw/.gitignore` 排除 Thumbs.db、.DS_Store 等殼層與編輯器暫存檔；`raw/my-focus/.gitkeep` 使空的 my-focus 目錄得以在 clone 後保留（Git 不追蹤空目錄）。此三者為倉庫基礎設施而非原始文獻，不影響第五章原始層不可變之原則。
 - **分離驗證**：主倉庫 `git status` 乾淨，`git check-ignore` 確認 `raw/` 仍由 `.gitignore:2` 排除，`git ls-files` 確認主倉庫未追蹤任何 `raw/` 下檔案，巢狀 `.git` 未外洩至主倉庫。
 - **規範更新**：AGENTS.md 第五章第 1 節原記「原始素材僅存於本機」已不成立，改寫為「雙倉庫架構」並新增兩條準則：其一，主倉庫之 Git 指令永不觸及 `raw/`，`raw/` 變動須另行 `cd raw` 提交推送，兩邊無自動連動；其二，僅 clone 主倉庫者仍無法執行 Lint 第 3 條三層對齊檢查，須同時 clone `Mine-RAW` 至 `raw/`。
+
+## [2026-11-08 14:14] git | 合併最新 main 至交接處理分支並調和規範衝突 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填）
+- **合併範圍**：將 main 新增之 5 筆提交（raw/ 修復與索引 Crossref 核驗、專案權限設定、Mine-RAW 雙倉庫分離）合併入 `claude/tender-faraday-ec4px6`。AGENTS.md 與 `.claude/settings.json` 自動合併；README.md、wiki/index.md、wiki/log.md 三檔衝突已手動解決。
+- **README.md**：架構圖 `raw/` 說明採用 main 之「獨立私有倉庫 Mine-RAW」寫法（本分支原寫「僅存本機」已不成立），並保留 main 新增之雙倉庫分離一節。
+- **wiki/index.md**：採用 main 補登之 DOI 與卷期，Hopfield 與 Hinton 條目保留本分支之 `#統計物理` 標籤；待辦區以 main 版本為主，刪除已由 [2026-11-07 23:34] 修復之損毀檔項目，保留本分支之 `brain-machine-interface` 概念頁待辦，並於光遺傳學更名項補註須於 `raw/` 另行推送至 Mine-RAW。
+- **wiki/log.md**：兩側條目全數保留並依時間排序，本分支 [2026-11-07 22:47] 四筆置於 main 之 [2026-11-07 23:34] 之前。本分支 [2026-11-07 22:47] audit 條目所列「重新取得兩份損毀 PDF」一項，已由 [2026-11-07 23:34] 條目完成。
+- **規範調和（AGENTS.md）**：其一，第六章日誌標題第三段規則之生效點改為本次合併入 main 之後，並明定不得以 `多領域` 代替 `全域`；main 於規則合併前並行寫入之 [2026-11-07 23:34] 與 [2026-11-08 00:07] 兩筆使用 `多領域`，依 append-only 原則維持原樣。其二，第九章「保持專案輕量」原寫「一律不收納原始 PDF」，與 Mine-RAW 已版控 17 份原始 PDF 之現況矛盾，改為「主倉庫不收納，原始 PDF 僅存於 Mine-RAW」。
+- **wiki/papers/2005-optogenetics.md**：原始檔典藏之說明由「不納入 Git 追蹤」改為「不納入本倉庫，由私有倉庫 Mine-RAW 版控」。

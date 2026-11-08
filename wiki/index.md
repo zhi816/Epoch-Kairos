@@ -57,7 +57,7 @@
 * `2024` ｜ AlphaFold 與蛋白質結構預測 ｜ `#計算生物` `#人工智慧` ｜ `[2024 諾貝爾化學獎]` ｜ `[planned]`
   * 得獎者：David Baker（蛋白質設計）、Demis Hassabis 與 John Jumper（AlphaFold2, *Nature* 2021）。獲獎依據為 AlphaFold2，非 AlphaFold3。
   * 獲獎依據原始文獻：`raw/2021-alphafold2.pdf`（Jumper et al. (2021) "Highly accurate protein structure prediction with AlphaFold", *Nature* 596:583-589, https://doi.org/10.1038/s41586-021-03819-2，CC-BY）。`raw/2024-alphafold3.pdf` 為後續延伸工作，應另立條目。
-* `2024` ｜ 人工神經網絡的統計物理基礎 ｜ `#人工智慧` `#量子物理` ｜ `[2024 諾貝爾物理學獎]` ｜ `[planned]`
+* `2024` ｜ 人工神經網絡的統計物理基礎 ｜ `#人工智慧` `#統計物理` ｜ `[2024 諾貝爾物理學獎]` ｜ `[planned]`
   * 得獎者：John Hopfield, Geoffrey Hinton。原始文獻：`raw/1982-hopfield-network.pdf`（Hopfield (1982) *PNAS* 79:2554-2558, https://doi.org/10.1073/pnas.79.8.2554；2026-11-07 已自 UC Berkeley Redwood Center 典藏重新取得，原檔為下載失敗之 HTML）。
 * `2024` ｜ microRNA 發現與轉錄後基因調控 ｜ `#分子生物` ｜ `[2024 諾貝爾生理學或醫學獎]` ｜ `[planned]`
   * 原始文獻為 Lee, Feinbaum & Ambros (1993) *Cell* 75:843-854，https://doi.org/10.1016/0092-8674(93)90529-Y 與 Wightman, Ha & Ruvkun (1993) *Cell* 75:855-862，https://doi.org/10.1016/0092-8674(93)90530-4（均為出版社付費牆，`raw/` 暫無原始檔）。
@@ -87,15 +87,16 @@
 
 ## 五、跨領域概念頁
 
-* [神經迴路因果解耦](concepts/neural-circuits.md) ｜ `#神經科學`
+* [神經迴路因果解耦](concepts/neural-circuits.md) ｜ `#神經科學` `#生物科技` `#人工智慧`
 
 ---
 
 ## 待辦與已知問題
 
 * `raw/` 完整性：2026-11-07 已修復 `raw/1982-hopfield-network.pdf` 與 `raw/2012-crispr-cas9.pdf`（原為下載失敗之 HTML 頁面），並補入 `raw/2021-alphafold2.pdf`、`raw/2023-drugclip.pdf`、`raw/2025-nerve-mito-cancer.pdf`。現全 17 份 PDF 均通過檔頭魔術位元組與尾端 `%%EOF` 完整性檢核。
-* **待使用者親自處理**：`raw/2025-optogenetics.pdf` 檔名年份與 `wiki/papers/2005-optogenetics.md` 之 `paper_year: 2005` 不符。依 AGENTS.md 第五章，AI 不得更名 `raw/` 檔案，須由使用者更名為 `raw/2005-optogenetics.pdf`。
+* **待使用者親自處理**：`raw/2025-optogenetics.pdf` 檔名年份與 `wiki/papers/2005-optogenetics.md` 之 `paper_year: 2005` 不符。依 AGENTS.md 第五章，AI 不得更名 `raw/` 檔案，須由使用者更名為 `raw/2005-optogenetics.pdf`（於 `raw/` 內另行提交推送至 Mine-RAW），並告知 AI 同步更新 `wiki/papers/2005-optogenetics.md` 之原始檔典藏路徑。
 * 下列條目之原始文獻受出版社付費牆或反自動化關卡（NCBI PMC proof-of-work、Cloudflare）限制，`raw/` 暫無原始檔，一律依第九章以 DOI 連結留存：Soai (1995) 不對稱自催化、Yaghi (1999) MOFs、Martinis (1985) 巨觀量子穿隧、Sakaguchi (1995) Treg、Brunkow (2001)、Ambros (1993) microRNA、Drucker (1987) GLP-1、Li (2025) 水稻 QT12、Fu (2025) 哈爾濱頭骨、2025 鹼基編輯療法（NEJM）。
 * 光遺傳學頁 `key_papers` 之 Nagel et al. (2002) *Science*（https://doi.org/10.1126/science.1072068）與 Nagel et al. (2003) *PNAS*（https://doi.org/10.1073/pnas.1936192100）亦受上述關卡限制，`raw/` 暫無原始檔。
+* `wiki/concepts/brain-machine-interface.md` 尚未建立，待收錄相關論文時一併產出。
 * `wiki/papers/` 僅 1 篇，`web/papers/` 與 `web/index.html` 尚未產出，Lint 第 3 條（三層對齊）目前未通過。
 * `[planned]` 條目之檔名年份須於收錄時以 Crossref 逐一核對後定案。
