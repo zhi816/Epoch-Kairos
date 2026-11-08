@@ -390,3 +390,13 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：依使用者對手機 v1 的五項決定，新增 [web/prototypes/mobile-v2.html](../web/prototypes/mobile-v2.html)：首屏改為標題 → 星圖 → 學科篩選列（取代懸星索引）→ 說明框 → 卡片牆；星圖總覽時只能點學科中心，點後放大到該學科一區再點星；點卡片直接進論文頁並在返回時回到原捲動位置；隱藏機關改為點兩下（第一下提示、第二下進入），明滅節奏與桌面版一致；新增我的星系手機版（直式發表年縱軸、概念中心置頂、三欄、`human` 論文以玫瑰粉空心星呈現、依 `focus_role` 篩選、深色語言名卡片）。資料改由 `wiki/` 41 篇論文與 10 篇概念頁之 Frontmatter 產生，學科為六類；尚無專屬網頁之論文以 Frontmatter 產生封面卡與基本資料。修正 v1 之標題字形拉伸、卡片小字約 9px、第 2 張卡以百分比長條示意之誤導，並補齊光遺傳學長文第 2、5、6 張卡內容（出處同 Wiki 論文頁）。[DESIGN.md](../DESIGN.md) 新增第二章第 5 節「手機版」並更新待決事項與版本歷程。
+
+## [2026-11-08 21:37] git | 移入並推送 11 篇核實後的里程碑論文原始 PDF | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：依使用者明確授權，核對論文首頁與 PDF 檔案完整性後，將 11 篇原始 PDF 移入私有 Mine-RAW：
+  - [1985-martinis-quantum-tunneling.pdf](../raw/1985-martinis-quantum-tunneling.pdf)、[1987-drucker-glp1.pdf](../raw/1987-drucker-glp1.pdf)
+  - [1993-lee-lin4-microrna.pdf](../raw/1993-lee-lin4-microrna.pdf)、[1993-wightman-lin14-microrna.pdf](../raw/1993-wightman-lin14-microrna.pdf)
+  - [1995-sakaguchi-treg.pdf](../raw/1995-sakaguchi-treg.pdf)、[1995-soai-asymmetric-autocatalysis.pdf](../raw/1995-soai-asymmetric-autocatalysis.pdf)、[1999-li-yaghi-mof.pdf](../raw/1999-li-yaghi-mof.pdf)、[2001-brunkow-foxp3.pdf](../raw/2001-brunkow-foxp3.pdf)、[2003-nagel-channelrhodopsin2.pdf](../raw/2003-nagel-channelrhodopsin2.pdf)
+  - [2025-li-qt12-rice-thermotolerance.pdf](../raw/2025-li-qt12-rice-thermotolerance.pdf)、[2025-musunuru-in-vivo-base-editing.pdf](../raw/2025-musunuru-in-vivo-base-editing.pdf)
+  - Mine-RAW 已提交 commit `7a7836a` 並推送至 `origin/main`。Nagel et al. (2002) 原始 PDF 未在本次下載資料中找到，仍待補。
