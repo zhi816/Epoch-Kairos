@@ -352,3 +352,9 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：經使用者同意，新增根目錄 [DESIGN.md](../DESIGN.md)，彙整本次美術方向討論之設計原則、首頁版面（主案 v4、備案 v3）、懸星索引、我的星系（隱藏機關、空心星標記、發表年縱軸星圖、深色語言名卡片）、論文頁、字體、六類學科色彩與形狀、待決事項、否決紀錄與版本歷程，並以「已定、暫定、待決、否決」標記狀態，供所有代理實作 `web/` 前查閱。[AGENTS.md](../AGENTS.md) 第二章新增指向該檔之說明，第四章目錄樹補列 `DESIGN.md`。`theme.css` 色值未變更，樣稿星光色仍待使用者確認後移植。
+
+
+## [2026-11-08 20:10] config | .gitignore 排除 macOS 系統檔 .DS_Store | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：經使用者確認，於 `.gitignore` 新增 `.DS_Store`，避免 macOS 自動產生之資料夾設定檔被誤提交。
