@@ -298,3 +298,21 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Argon (Medium)
 - **具體變更**：執行 `AGENTS.md` 第六章第 3 節之 8 項 Lint 檢查：確認全庫 0 孤島頁面、論文頁 `concepts` 與概念頁 `papers` 100% 雙向對齊、`raw/` 17 份 PDF 與 `wiki/papers/` 17 篇 `.md` 完全對應、全庫 0 表情符號、LaTeX 公式無中文字元且離子符號均用 `\mathrm{}` 正體與 `aligned` 斷行、`domain` 與 `domain_tags` 全數符合第八章白名單、全庫相對路徑連結 100% 有效且無 `file:///` 或殘留 `[[...]]` 語法。
+
+## [2026-11-08 16:57] rule | 於 AGENTS.md 登記 #自然語言處理 與 #計算語言學 標籤並整理 raw/my-focus/ 結構 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Argon (Medium)
+- **具體變更**：經使用者確認，於 `AGENTS.md` 第八章 `ai` 領域標籤白名單新增 `#自然語言處理` 與 `#計算語言學` 兩項標籤，供使用者碩士論文關注區（`raw/my-focus/`，臺灣南島語與低資源機器翻譯研究）條目使用；同時依使用者指示於 `raw/my-focus/` 移除未追蹤之 `translation_tool/` 轉檔工具快取目錄與 3 份重複之雙胞胎 PDF，保留 `_繁體中文翻譯.pdf` 全文譯本、`.md` 學長姐論文解析與中文分類目錄結構。
+
+## [2026-11-08 17:18] ingest | 收錄 raw/my-focus/ 24 篇臺灣南島語與低資源機器翻譯論文並擴充概念網絡 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **收錄範圍**：全面收錄 `raw/my-focus/` 下 24 篇使用者個人核心關注研究，涵蓋臺灣相關語言學論文 2 篇、海大林川傑教授指導碩士論文 7 篇、報告論文題材 3 篇、英文經典與前沿論文 12 篇。
+- **Wiki 論文頁產出（24 篇）**：於 `wiki/papers/` 建立 [2022-formosan-say-verbs-hsieh.md](papers/2022-formosan-say-verbs-hsieh.md)、[2024-formosan-temporal-words-lim.md](papers/2024-formosan-temporal-words-lim.md)、[2021-seediq-chinese-mt-you.md](papers/2021-seediq-chinese-mt-you.md)、[2023-atayal-truku-morphology-dai.md](papers/2023-atayal-truku-morphology-dai.md)、[2023-atayalic-multilingual-mt-liao.md](papers/2023-atayalic-multilingual-mt-liao.md)、[2024-taiwanese-mt-resegmentation-tang.md](papers/2024-taiwanese-mt-resegmentation-tang.md)、[2025-atayalic-oov-enumeration-yang.md](papers/2025-atayalic-oov-enumeration-yang.md)、[2025-atayalic-affix-mt-jin.md](papers/2025-atayalic-affix-mt-jin.md)、[2025-paiwan-bunun-morphology-mt-wu.md](papers/2025-paiwan-bunun-morphology-mt-wu.md)、[2024-finnish-northern-sami-mt-saleva.md](papers/2024-finnish-northern-sami-mt-saleva.md)、[2025-manchu-in-context-mt-pei.md](papers/2025-manchu-in-context-mt-pei.md)、[2026-tao-filipino-nmt-macayan.md](papers/2026-tao-filipino-nmt-macayan.md)、[2019-generalized-data-augmentation-xia.md](papers/2019-generalized-data-augmentation-xia.md)、[2023-low-resource-nmt-survey-ranathunga.md](papers/2023-low-resource-nmt-survey-ranathunga.md)、[2024-formosan-mt-bilingual-lexicon-zheng.md](papers/2024-formosan-mt-bilingual-lexicon-zheng.md)、[2025-formosanbench-llm-benchmark-lin.md](papers/2025-formosanbench-llm-benchmark-lin.md)、[2025-indigenous-tek-ai-revitalization-wang.md](papers/2025-indigenous-tek-ai-revitalization-wang.md)、[2025-fragment-shot-reasoning-mt-frontull.md](papers/2025-fragment-shot-reasoning-mt-frontull.md)、[2025-tulun-adaptable-lrl-mt-merx.md](papers/2025-tulun-adaptable-lrl-mt-merx.md)、[2026-hybrid-dictionary-rag-llm-paiwan-wang.md](papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)、[2026-epark-formosan-dialectometry-gagnier.md](papers/2026-epark-formosan-dialectometry-gagnier.md)、[2026-formosanmt-parallel-corpus-scheppat.md](papers/2026-formosanmt-parallel-corpus-scheppat.md)、[2026-context-volume-rag-domain-shift-setiawan.md](papers/2026-context-volume-rag-domain-shift-setiawan.md)、[2026-data-centric-russian-kyrgyz-mt-novokshanov.md](papers/2026-data-centric-russian-kyrgyz-mt-novokshanov.md)。每篇均具備 6 張標準卡片結構，Card 3 包含標準 KaTeX 公式，Card 4 包含精確真實數據，Card 6 深入探討個人碩士論文映射。
+- **跨領域概念頁建立（2 篇新增）**：新建 [formosan-computational-linguistics.md](concepts/formosan-computational-linguistics.md)（臺灣南島語計算語言學與構詞解析，關聯 16 篇論文）與 [low-resource-machine-translation.md](concepts/low-resource-machine-translation.md)（低資源神經機器翻譯與檢索增強生成，關聯 18 篇論文），達成雙向反向連結 100% 對齊。
+- **索引與目錄同步**：更新 [index.md](index.md)，新增第六章「個人核心關注研究」24 篇論文索引與概念頁連結，全庫論文數達到 41 篇、概念頁達到 10 篇。
+
+## [2026-11-08 17:19] lint | 全庫 41 篇論文頁與 10 篇概念頁之 8 項健康檢查全面通過 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：執行 `AGENTS.md` 第六章第 3 節之 8 項 Lint 檢查：驗證 41 篇論文與 10 篇概念頁，確認全庫 0 孤島頁面、雙向引用 100% 對齊、`raw/` 17 篇全球 PDF 與 17 篇全域論文精確對齊、`raw/my-focus/` 31 處原始參照檔案 100% 存在、全庫 0 表情符號、LaTeX 公式內部無中文字元、`domain` 與 `domain_tags` 全數符合第八章白名單（含新增之 `#自然語言處理` 與 `#計算語言學`）、全庫相對路徑連結 100% 有效。8 項檢查全數以 0 錯誤通過。
