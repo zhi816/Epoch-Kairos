@@ -546,3 +546,19 @@
   - [神經元粒線體與癌症](papers/2025-nerve-mito-cancer.md)：Card 6 推論癌細胞偽裝成受損組織、誘使神經元依修復程序供應粒線體；封存原文支持粒線體轉移與受體癌細胞在轉移灶富集，但未證明這種「誘騙／劫持修復」機制。應標作假說或比喻；治療建議亦非本文已驗證療效。[封存原文](../raw/2025-nerve-mito-cancer.pdf)
 - **需補來源或降格為詮釋**：Aghion–Howitt、AJR、Woodford 等頁的 Card 5/6 將模型／識別結果延伸成反壟斷政策、外援成效或全球央行政策史的因果結論，原始論文未直接檢驗這些命題；若保留，需引用各自後續研究並明示是延伸解讀。
 - **範圍限制與檔案狀態**：本輪只記錄新增核實項目；Card 1、2、5、6 中其餘背景與修辭性敘述仍需分句配來源。未修改論文頁、概念頁或 raw/ 檔案。
+
+## [2026-11-08 22:44] audit | Argon 概念頁與跨篇引用再核對及 DrugCLIP 時間勘誤 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **補查範圍**：交叉核對 6865470 涉及的八篇概念頁與其所連論文；檢查概念定義、關鍵支柱、跨學科延伸是否把不同年代、研究結果或 messenger 類別混為一談。
+- **新增確認事項**：
+  - [多信使天體物理](concepts/multi-messenger-astrophysics.md)：核心定義把深空紅外線列為與重力波、微中子及宇宙射線並列的「獨立信使」，但紅外線屬電磁波譜；NASA 的分類是光（全電磁波譜）、粒子（包含宇宙射線與微中子）及重力波。概念頁定義與後文「三大信使」也不一致，應統一分類。[NASA 多信使說明](https://svs.gsfc.nasa.gov/gallery/multimessengerastronomy/)
+  - [生成式世界模型](concepts/generative-world-models.md)：支柱將 Hopfield 與 Hinton 的能量模型／Boltzmann 分佈合標為 1982。Hopfield 網路原文是 1982；Ackley、Hinton、Sejnowski 的 Boltzmann machine 學習論文為 1985，應分開作者、時間與來源。把這些研究直接寫成擴散分數匹配與注意力機制的歷史基礎也超出目前引用證據，需標作類比或補上中間研究。[Hopfield 原文](../raw/1982-hopfield-network.pdf)、[Ackley et al. 1985](https://doi.org/10.1207/s15516709cog0901_7)
+  - [制度演化與宏觀經濟動態](concepts/institutions-and-macro-dynamics.md)：Card 支柱稱 AJR 以殖民者疫病死亡率「嚴格識別」制度而非地理為收入差距的唯一根因。原文是以歐洲殖民死亡率作為現行制度的工具變數，並在工具變數排除限制與控制條件下估計制度對所得的效果；不能概括為已排除所有地理直接作用或證明制度是唯一根因。[AER 原文摘要](https://www.aeaweb.org/articles?id=10.1257/aer.91.5.1369)
+  - [生成式世界模型](concepts/generative-world-models.md)：將「無須人工示範」歸給 DeepSeek-R1，重複了論文頁的 R1/R1-Zero 混淆。無 SFT 的純 RL 是 R1-Zero；R1 使用冷啟動資料並包含後續 SFT。另將可驗證獎勵的適用性從原文的數學／程式任務推廣到任意驗證器與科學探索代理，應標為展望而非本文驗證結果。[原文](../raw/2025-deepseek-r1.pdf)
+  - [AI 結構生物學](concepts/ai-for-structural-biology.md)：跨學科段宣稱 DrugCLIP 可「數秒」篩選百億級分子。DrugCLIP 原文報告的是預先編碼 6 billion Enamine 分子的檢索用時低於 10,000 秒，並非數秒或該實驗已完成百億級檢索；應照實標示資料庫規模與計時條件。[原文](../raw/2023-drugclip.pdf)
+  - **勘誤前一輪日誌**：2026-11-08 22:00 條目轉述 DrugCLIP 原文的「<10,000 秒（約 30 小時）」時沿用了原文錯誤換算。10,000 秒約為 2.78 小時，因此該報告時長上限應寫「低於約 2.78 小時」；原文括號的 30 小時與其秒數不相符。此勘誤補充並取代前條目中的小時換算，不改寫既有日誌。
+  - [量子糾錯概念](concepts/quantum-error-correction.md)：跨學科段把可重構中性原子陣列描述為已能在實驗室直接實作 3D／4D 拓撲碼與常數編碼率 qLDPC；所引 2024 實驗論文將 qLDPC 列為後續降低開銷的方向，並未報告這些碼已在該實驗實作。需限定在原文展示的碼族與實驗配置。[Nature 原文](https://www.nature.com/articles/s41586-023-06927-3)
+  - **交叉核對無誤**：制度概念頁所列 2024 AJR、2025 Mokyr／Aghion／Howitt、2026 Hall／Woodford 經濟學獎年份與得主組合符合獎項公告，未列為錯誤。[Nobel 2025 公告](https://www.nobelprize.org/prizes/economic-sciences/2025/press-release/)、[瑞典央行 2026 公告](https://www.riksbank.se/en-gb/press-and-published/notices-and-press-releases/notices/2026/they-are-awarded-the-prize-in-economic-sciences-2026/)
+- **既有問題的跨頁傳播**：腦機介面、神經迴路、生成式世界模型、可編程細胞與量子糾錯概念頁會重複先前日誌所列的 Hopfield 直接因果傳承、CRISPR PAM／衍生技術歸因、Sora 能力界線及 qLDPC 實驗範圍問題；修訂時應同步校正概念頁與論文頁，避免錯誤在知識網絡擴散。
+- **範圍限制**：本輪仍是高風險主張核對，不代表八篇概念頁所有背景句均逐字查核；本次只追加日誌，未改概念頁、論文頁或 raw/ 檔案。
