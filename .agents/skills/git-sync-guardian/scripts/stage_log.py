@@ -98,25 +98,35 @@ def main():
         return
 
     # 選取的條目若比 HEAD 中最新條目早（例如遠端先推了較晚的工作），依時間插入，
-    # 但不移動任何已提交條目。此處只建立 index blob，不改工作目錄。
+    # 但不移動或重寫任何已提交內容。此處只建立 index blob，不改工作目錄。
     base_header, base_entries = split(base)
-    staged_entries = list(base_entries)
+    insertions = [[] for _ in range(len(base_entries) + 1)]
     for entry, _ in sorted(mine, key=lambda item: HEADING.match(item[0]).group(1)):
         timestamp = HEADING.match(entry).group(1)
-        i = len(staged_entries)
-        while i > 0 and HEADING.match(staged_entries[i - 1]).group(1) > timestamp:
+        i = len(base_entries)
+        while i > 0 and HEADING.match(base_entries[i - 1]).group(1) > timestamp:
             i -= 1
-        staged_entries.insert(i, entry)
+        insertions[i].append(entry)
 
-    # 換行一律跟隨 HEAD 版日誌的多數（core.autocrlf=true 時 Git 物件為 LF）；
-    # 直接寫入 Git 物件不會經過 autocrlf 轉換，避免混入異常行尾。
+    # 保留 base_header 與每個 base entry 的原始位元組；只正規化新插入條目的行尾。
+    # Git 物件通常使用 LF；此處直接寫 index blob，不經過 autocrlf 轉換。
     eol = '\r\n' if base.count('\r\n') * 2 > base.count('\n') else '\n'
-    staged = base_header.replace('\r\n', '\n').rstrip('\n') + '\n\n'
-    for entry in staged_entries:
-        staged += entry.replace('\r\n', '\n').rstrip('\n') + '\n\n'
-    staged = staged.rstrip('\n') + '\n'
-    if eol == '\r\n':
-        staged = staged.replace('\n', '\r\n')
+    staged = base_header
+
+    def ensure_blank_line(text):
+        if not text or text.endswith('\n\n') or text.endswith('\r\n\r\n'):
+            return text
+        return text + (eol if text.endswith('\n') else eol + eol)
+
+    for i in range(len(base_entries) + 1):
+        for entry in insertions[i]:
+            staged = ensure_blank_line(staged)
+            body = entry.replace('\r\n', '\n').rstrip('\n')
+            if eol == '\r\n':
+                body = body.replace('\n', '\r\n')
+            staged += body + eol + eol
+        if i < len(base_entries):
+            staged += base_entries[i]
     if a.dry_run:
         print('（dry-run）共 %d 筆，未寫入暫存區。' % len(mine))
         return

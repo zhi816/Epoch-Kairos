@@ -614,3 +614,9 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6 (Codex)
 - **具體變更**：更新 [Wiki 內容 Skill](../.agents/skills/wiki-content-audit/SKILL.md)，將來源主張證據表前置至起草階段；增補 [stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py) 與 [safe_commit_push.sh](../.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh) 的標題精確選取，避免同代理並行日誌誤暫存，並依時間插入暫存版以保留已提交條目順序。
+
+## [2026-11-09 00:06] fix | 修正日誌暫存器保留既有內容與格式 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6 (Codex)
+- **具體變更**：修正 [stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py)，暫存時僅在適當位置插入指定條目，保留 HEAD 既有日誌內容與空行格式，避免重建整份日誌。
+
