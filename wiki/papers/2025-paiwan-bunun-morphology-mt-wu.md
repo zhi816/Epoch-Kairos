@@ -14,7 +14,6 @@ verification: "issues"
 my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["排灣語", "布農語"]
-doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "將構詞解析與神經機器翻譯體系由泛泰雅語群跨語系推廣至排灣語與布農語，創下構詞解析精確率 98.09% 與 99.79% 的驚人紀錄，驗證了構詞感知翻譯框架的跨語系普適性。"
 ---
 
@@ -103,4 +102,4 @@ $$\theta^* = \arg\min_\theta \Big[ \mathcal{L}_{\text{Paiwan-Bunun}}(\theta) + \
   * [低資源神經機器翻譯與檢索增強生成](../concepts/low-resource-machine-translation.md)
 * **原始權威文獻**：
   * 學位論文出處：吳維中 (2025)。排灣語、布農語的構詞結構自動分析與機器翻譯。國立臺灣海洋大學資訊工程學系碩士學位論文，指導教授：林川傑博士。
-  * 原始檔典藏：`raw/my-focus/學長姐論文/排灣布農的構詞結構自動分析與機器翻譯_吳維中.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/排灣布農的構詞結構自動分析與機器翻譯_吳維中.md`，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/學長姐論文/排灣語、布農語的構詞結構自動分析與機器翻譯_吳維中.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/排灣語、布農語的構詞結構自動分析與機器翻譯_吳維中.md`，由私有倉庫 Mine-RAW 版控）

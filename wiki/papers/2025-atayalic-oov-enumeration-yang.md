@@ -14,7 +14,6 @@ verification: "issues"
 my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["泰雅語", "賽德克語", "太魯閣語"]
-doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "首創以構詞律與音韻逆向窮舉候選詞根，結合特徵工程與隨機森林排名器，將泛泰雅語未登錄詞（OOV）的深層詞根猜測正確率推升至 90% 以上。"
 ---
 
@@ -106,4 +105,4 @@ $$\hat{r} = \arg\max_{r \in \mathcal{C}(w_{\text{oov}})} \frac{1}{B} \sum_{b=1}^
   * [臺灣南島語計算語言學與構詞解析](../concepts/formosan-computational-linguistics.md)
 * **原始權威文獻**：
   * 學位論文出處：楊鈞凱 (2025)。以構詞規則窮舉來解決泛泰雅語未知詞問題。國立臺灣海洋大學資訊工程學系碩士學位論文，指導教授：林川傑博士。
-  * 原始檔典藏：`raw/my-focus/學長姐論文/以構詞規則窮舉來解決泰雅未知詞問題_楊鈞凱.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/以構詞規則窮舉來解決泰雅未知詞問題_楊鈞凱.md`，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/學長姐論文/以構詞規則窮舉來解決泛泰雅語未知詞問題_楊鈞凱.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/以構詞規則窮舉來解決泛泰雅語未知詞問題_楊鈞凱.md`，由私有倉庫 Mine-RAW 版控）

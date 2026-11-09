@@ -651,3 +651,12 @@
 - **具體變更**：應使用者要求，針對先前由 Gemini 3.8 Flash 起草（`94f5ccc`）並自審（`e71a3e0`）之 24 篇 `my_focus: true` 論文頁與 2 篇關聯概念頁（[wiki/concepts/formosan-computational-linguistics.md](concepts/formosan-computational-linguistics.md)、[wiki/concepts/low-resource-machine-translation.md](concepts/low-resource-machine-translation.md)），逐篇對照 `raw/my-focus/` 下全部 24 份第一手原始文獻（7 篇海大碩士論文全文、2 篇臺灣語言學期刊全文、15 篇國際會議與期刊英文論文全文）執行 Frontmatter、Card 1–6、數學公式與架構圖全維度事實查核。
   - **查核範圍與完成度**：24 篇 `my-focus` 論文頁與 2 篇概念頁全數核對完畢（26/26）。
   - **問題登記**：先前 Codex（`dc622ac`）已清理各篇之 Card 4 數據，惟本次逐頁比對第一手原文後，於全部 24 篇論文頁及 2 篇概念頁之 Frontmatter、Card 1–3、Card 5–6 均查出與原文矛盾、方法錯置或無來源公式等問題，合計新增登記 **EK-061 至 EK-087**（共 27 筆問題條目）至 [wiki/issues.md](issues.md)，並依第七章第 4 節將對應 19 篇原標 `partial` 之論文頁與 2 篇原標 `unverified` 之概念頁 `verification` 狀態同步設為 `issues`（查核模式不改動頁面正文內容）。
+
+## [2026-11-09 09:10] fix | 游景勝 2021 頁依原文重寫並更正 raw/ 檔名 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：
+  - **raw/ 更名（使用者於對話中明確指示代為處理）**：依各論文封面更正 9 個原始檔名，於私有倉庫 Mine-RAW 以 `git mv` 提交並推送。學長姐論文 7 篇改為「封面題名_作者」（含作者錯字 湯景文→湯景閔、金伯毅→金柏毅、廖恆慶→廖恒慶、戴成哲→戴晟哲，及「賽德克族中文」等縮寫題名），PDF 與 `.md/` 文字檔同步更名；另更正 `林鴻瑞.pdf'` 尾端多餘單引號並補全題名「台灣南島語言時間詞之跨語言比較初探」，`謝富貴` 更正為封面之 `謝富惠`。主倉庫之 [wiki/index.md](index.md)、[wiki/issues.md](issues.md) 與 10 篇論文頁之典藏路徑同步更新；日誌舊條目不回溯修改。
+  - **[wiki/papers/2021-seediq-chinese-mt-you.md](papers/2021-seediq-chinese-mt-you.md)**：逐項回原文（摘要、§1.3.1、第三至六章、表 8–15）重寫 Card 1–6 與 hook，修正 EK-062（前綴公式改為原文式 (2)(3)；分清預訓練與自訓練詞嵌入），並修正未登記之問題：摘要、結論與表 8 之解析數字互不一致，改以表 8 為準並加註；補列表 11 完整結果；刪除「首創」「最行之有效」「100% 精確」等過度表述，Card 6 標為個人研究詮釋；補列構詞解析之會議版本 ROCLING 2020。新增證據表 [wiki/evidence/2021-seediq-chinese-mt-you.md](evidence/2021-seediq-chinese-mt-you.md)，`verification` 改為 `verified`。
+  - **EK-061**：7 篇碩士論文頁刪除失效之臨時查詢網址 `doi_url`（國家圖書館永久連結未能取得，lint 對此僅列 WARN）。
+  - **未處理**：其餘 6 篇碩士論文頁之 EK-063 至 EK-068 仍為 open，續修中。

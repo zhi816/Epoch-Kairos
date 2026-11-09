@@ -97,4 +97,4 @@ $$\mathbf{v}(\tau) = (1 - \tau) \mathbf{v}_{\text{lexical}} + \tau \mathbf{v}_{\
   * [臺灣南島語計算語言學與構詞解析](../concepts/formosan-computational-linguistics.md)
 * **原始權威文獻**：
   * 官方學術出處：謝富惠 (2022)。台灣南島語「說」動詞語義現象初探。《臺灣語文研究》，17(1)，47-92。DOI: [10.6710/JTLL.202204_17(1).0002](https://doi.org/10.6710/JTLL.202204_17(1).0002)
-  * 原始檔典藏：`raw/my-focus/台灣相關論文/台灣南島語「說」動詞語義現象初探_謝富貴.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/台灣相關論文/台灣南島語「說」動詞語義現象初探_謝富惠.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）

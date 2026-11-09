@@ -14,7 +14,6 @@ verification: "issues"
 my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["台語"]
-doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "針對本土低資源語言語料庫斷詞標準不一的痛點，提出基於華語跨語言詞對齊與 BERT 預訓練模型的台語重斷詞管線，顯著改善台華神經機器翻譯效能。"
 ---
 
@@ -105,4 +104,4 @@ $$y_k^* = \arg\max_{y \in \{\text{B}, \text{I}, \text{E}, \text{S}\}} \operatorn
   * [低資源神經機器翻譯與檢索增強生成](../concepts/low-resource-machine-translation.md)
 * **原始權威文獻**：
   * 學位論文出處：湯景閔 (2024)。利用重斷詞改善台語機器翻譯系統。國立臺灣海洋大學資訊工程學系碩士學位論文，指導教授：林川傑博士。
-  * 原始檔典藏：`raw/my-focus/學長姐論文/利用重斷詞改善台語機器翻譯系統_湯景文.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/利用重斷詞改善台語機器翻譯系統_湯景文.md`，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/學長姐論文/利用重斷詞改善台語機器翻譯系統_湯景閔.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/利用重斷詞改善台語機器翻譯系統_湯景閔.md`，由私有倉庫 Mine-RAW 版控）

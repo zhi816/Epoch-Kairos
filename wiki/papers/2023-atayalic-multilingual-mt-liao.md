@@ -14,7 +14,6 @@ verification: "issues"
 my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["泰雅語", "賽德克語", "太魯閣語"]
-doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "首創泛泰雅語群（泰雅語、賽德克語、太魯閣語）與中文之多語言 Transformer 機器翻譯框架，以共享 BPE 子詞與語言標籤實現同源語族跨語言正向遷移。"
 ---
 
@@ -109,4 +108,4 @@ $$\mathcal{L}_{\text{Multi}}(\theta) = -\sum_{l \in \mathcal{T}_{\text{pairs}}} 
   * [低資源神經機器翻譯與檢索增強生成](../concepts/low-resource-machine-translation.md)
 * **原始權威文獻**：
   * 學位論文出處：廖恒慶 (2023)。泛泰雅語群與中文之多語言機器翻譯研究。國立臺灣海洋大學資訊工程學系碩士學位論文，指導教授：林川傑博士。
-  * 原始檔典藏：`raw/my-focus/學長姐論文/泛泰雅族群與中文之多語言機器翻譯研究_廖恆慶.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/泛泰雅族群與中文之多語言機器翻譯研究_廖恆慶.md`，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/學長姐論文/泛泰雅語群與中文之多語言機器翻譯研究_廖恒慶.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/泛泰雅語群與中文之多語言機器翻譯研究_廖恒慶.md`，由私有倉庫 Mine-RAW 版控）

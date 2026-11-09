@@ -14,7 +14,6 @@ verification: "issues"
 my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["泰雅語", "賽德克語", "太魯閣語"]
-doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "提出三種族語文字表示形式與三種神經編碼器架構，深度融合深層詞根與多維詞綴特徵嵌入，顯著突破泛泰雅語群神經機器翻譯的語法焦點對齊瓶頸。"
 ---
 
@@ -108,4 +107,4 @@ $$\operatorname{Attention}(Q, K, V) = \operatorname{softmax}\left( \frac{(X W^Q)
   * [低資源神經機器翻譯與檢索增強生成](../concepts/low-resource-machine-translation.md)
 * **原始權威文獻**：
   * 學位論文出處：金柏毅 (2025)。使用詞綴資訊提升泛泰雅語機器翻譯效能。國立臺灣海洋大學資訊工程學系碩士學位論文，指導教授：林川傑博士。
-  * 原始檔典藏：`raw/my-focus/學長姐論文/使用詞綴資訊提升泛泰雅機器翻譯_金伯毅.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/使用詞綴資訊提升泛泰雅機器翻譯_金伯毅.md`，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/學長姐論文/使用詞綴資訊提升泛泰雅語機器翻譯效能_金柏毅.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/使用詞綴資訊提升泛泰雅語機器翻譯效能_金柏毅.md`，由私有倉庫 Mine-RAW 版控）

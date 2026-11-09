@@ -14,7 +14,6 @@ verification: "issues"
 my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["泰雅語", "太魯閣語"]
-doi_url: "https://ndltd.ncl.edu.tw/cgi-bin/gs32/gsweb.cgi/ccd=y8Gq.y/record?yes=1"
 hook: "將南島語構詞自動解析體系由單一賽德克語跨越至泰雅語與太魯閣語，建立音韻縮減與深層原形歸納規則，實現高精度構詞結構與焦點語素自動解耦。"
 ---
 
@@ -105,4 +104,4 @@ $$\langle r^*, \mathbf{a}^* \rangle = \arg\max_{\langle r, \mathbf{a} \rangle \i
   * [臺灣南島語計算語言學與構詞解析](../concepts/formosan-computational-linguistics.md)
 * **原始權威文獻**：
   * 學位論文出處：戴晟哲 (2023)。泰雅語與太魯閣語構詞結構之自動解析。國立臺灣海洋大學資訊工程學系碩士學位論文，指導教授：林川傑博士。
-  * 原始檔典藏：`raw/my-focus/學長姐論文/泰雅與太魯閣 構詞結構之自動解析_戴成哲.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/泰雅與太魯閣 構詞結構之自動解析_戴成哲.md`，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/學長姐論文/泰雅語與太魯閣語構詞結構之自動解析_戴晟哲.pdf`（對應文字檔：`raw/my-focus/學長姐論文/.md/泰雅語與太魯閣語構詞結構之自動解析_戴晟哲.md`，由私有倉庫 Mine-RAW 版控）
