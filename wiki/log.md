@@ -702,3 +702,12 @@
   - **EK-002**：Card 4 修正「隨機正交」為原文之「偽正交性（pseudoorthogonality）」；明確指出 $0.15N$ 是嚴重錯誤產生前之近似容量上限，並列出 $N=100$ 時 $n=5$（幾乎無錯）、$n=10$ 與 $n=15$ 之誤差分佈實況（原文 Fig. 2）；補列信噪比單一位元高斯尾部錯誤率積分式 (10)；將突觸損毀定量表述降格為原文之非對稱突觸（信噪比降 $1/\sqrt{2}$）、二值符號截斷（信噪比降 $\sqrt{2/\pi}$）及隨突觸失效平緩退化之 fail-soft 質性分析。
   - 新增證據表 [wiki/evidence/1982-hopfield-network.md](evidence/1982-hopfield-network.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-001 與 EK-002 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 09:42] fix | 修正日誌暫存器忽略條目間空行導致提交後殘留差異 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：
+  - **問題**：Antigravity 於 09:18 追加日誌時，在新條目前多寫一個空行（條目間成為兩個空行）。[stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py) 把條目間的空行算進前一條（已提交條目）的尾端，而已提交條目一律沿用 HEAD 版，因此多出的空行永遠不會被提交，提交後 `wiki/log.md` 持續顯示為已修改，下一位代理可能誤以為是他人的未提交內容或誤把整份日誌提交。
+  - **修正**：已提交條目的內文仍照 HEAD 原樣保留，但條目尾端的空行改用工作目錄的版本（行尾依檔案原有格式）。以暫存倉庫測試六種情境：多一個空行、他人條目夾在中間、正常追加、原檔尾無換行、CRLF 檔案、竄改已提交條目（仍以結束代碼 1 擋下），前五種提交後皆無殘留差異。
+  - **規範**：[git-sync-guardian SKILL.md](../.agents/skills/git-sync-guardian/SKILL.md) 補述空行跟隨工作目錄，並規定新條目與前一條之間只留一個空行。
+  - **殘留處理**：09:10 與 09:18 條目間多出的空行由本次提交一併納入，工作目錄恢復乾淨。

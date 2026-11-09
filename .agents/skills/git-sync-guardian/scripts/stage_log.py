@@ -43,6 +43,20 @@ def norm(entry):
     return entry.replace('\r\n', '\n').strip()
 
 
+def with_work_trailing(base_entry, work_entry, eol):
+    """已提交條目的內文照 HEAD 原樣保留，但尾端空行（即與下一條之間的間隔）改用工作目錄的版本。
+
+    split() 會把條目之間的空行算進前一條的尾端。若只沿用 HEAD 版，別的代理在追加時
+    多打或少打的空行就永遠不會被提交，提交後日誌會一直顯示為「已修改」。
+    """
+    body = base_entry.rstrip(' \t\r\n')
+    trailing = work_entry[len(work_entry.rstrip(' \t\r\n')):]
+    trailing = trailing.replace('\r\n', '\n').replace(' ', '').replace('\t', '')
+    if eol == '\r\n':
+        trailing = trailing.replace('\n', '\r\n')
+    return body + trailing
+
+
 def main():
     ap = argparse.ArgumentParser(description='只暫存指定代理寫的 wiki/log.md 條目')
     ap.add_argument('agent', help='執行代理名稱的一部分，例如 "Claude Code"、"Codex"、"Antigravity"')
@@ -105,11 +119,12 @@ def main():
     base_header, base_entries = split(base)
     base_keys_list = [norm(e) for e in base_entries]
     mine_keys = {norm(e) for e, _ in mine}
+    eol = '\r\n' if base.count('\r\n') * 2 > base.count('\n') else '\n'
 
     plan, ptr = [], 0
     for entry, key in zip(work_entries, work_keys):
         if ptr < len(base_entries) and key == base_keys_list[ptr]:
-            plan.append(('base', base_entries[ptr]))
+            plan.append(('base', with_work_trailing(base_entries[ptr], entry, eol)))
             ptr += 1
         elif key in mine_keys:
             plan.append(('mine', entry))
@@ -117,9 +132,9 @@ def main():
         sys.stderr.write('警告：工作目錄中已提交條目的順序與 HEAD 不同，新條目改為接在檔尾。\n')
         plan = [('base', e) for e in base_entries] + [('mine', e) for e, k in zip(work_entries, work_keys) if k in mine_keys]
 
-    # 保留 base_header 與每個 base entry 的原始位元組；只正規化新插入條目的行尾。
+    # 保留 base_header 與每個 base entry 內文的原始位元組；條目之間的空行跟隨工作目錄，
+    # 新插入條目的行尾正規化為檔案原有行尾。
     # Git 物件通常使用 LF；此處直接寫 index blob，不經過 autocrlf 轉換。
-    eol = '\r\n' if base.count('\r\n') * 2 > base.count('\n') else '\n'
     staged = base_header
 
     def ensure_blank_line(text):
