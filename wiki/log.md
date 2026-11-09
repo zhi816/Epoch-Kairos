@@ -1455,3 +1455,8 @@
   - 手機版論文頁（窄於 900px）：卡片並排、手指左右滑動並停在整張（Scroll-Snap）；長文標題下加「隨卡片｜全文」開關，預設隨卡片只顯示目前卡片之段落、滑卡片即換段，全文則顯示六段且與卡片互不連動，切回時回到目前段落；桌面不顯示開關、雙向同步不變。改 `tools/paper_template.html`（樣式與程式）與 `build_paper_prototype.py`（開關按鈕），重建兩頁原型，自我檢查 ERROR 0。
   - `verify_page.js` 新增手機行為檢查（可滑動、隨卡片換段、全文不連動、切回），兩頁各 35 項 PASS；另以真實水平滾動於 375 x 812 確認每次停在整張、段落跟著換，桌面以滾輪確認長文捲動帶動卡片。驗證時發現預覽環境會延遲程式捲動之 scroll 事件，腳本改為捲動後主動送出事件。
   - [DESIGN.md](../DESIGN.md) 第五章第 1 節（手機版、核實狀態改為已定）、第八章第 15 項、第十章；[AGENTS.md](../AGENTS.md) 第七章第 3 節手機端佈局；paper-card-writer 之 `references/paper-page.md`（資料來源表、驗證項目、目視檢查改為九項）與 SKILL.md 交付格式同步。`lint_wiki.py` ERROR 0。
+
+## [2026-11-09 22:36] rule | 明定 hook 不在網站顯示、只作為撰寫導語之素材 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：查核 `hook` 來歷：2026-11-06 由 Claude Code 新增，原定「供 Card 1 使用」；11-08 新增 `card_line` 後改為 Card 1 長版；11-09 因過長（中位數 93 字）改由卡片檔導語取代，說明改為「供論文頁長文開頭使用」，但長文開頭實際取自論文頁內文之開頭引言，全部建置腳本皆未使用 `hook`。使用者同意保留欄位、不顯示、只作為撰寫導語之素材。[AGENTS.md](../AGENTS.md) 第七章第 1 節 Frontmatter 範例註解與「卡片一句話」說明、[DESIGN.md](../DESIGN.md) 第二章第 3 節與第十章、paper-card-writer 之 `references/cover.md` 第五節同步改寫；欄位仍為必填，Lint 與 41 篇論文頁不變。`lint_wiki.py` ERROR 0、`check_cards.py` ERROR 0。
