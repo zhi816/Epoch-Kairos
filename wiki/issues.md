@@ -301,10 +301,11 @@
 - **來源**：[原始研究](https://www.nature.com/articles/s41593-026-02350-9)
 - **發現於**：wiki/log.md [2026-11-08 23:21] audit
 
-### EK-045 | open | concepts/generative-world-models.md | 支柱與時間線 | 歸因／版本錯置
+### EK-045 | fixed | concepts/generative-world-models.md | 支柱與時間線 | 歸因／版本錯置
 - **問題**：將 Hopfield/Hinton 能量模型合標為 1982（Boltzmann machine 學習論文為 Ackley、Hinton、Sejnowski 1985），並把 Hopfield、Boltzmann、score matching、擴散模型與 Transformer 寫成直接奠基鏈；須分開作者年代並改標為概念類比或補中間研究。
 - **來源**：[Hopfield 封存原文](../raw/1982-hopfield-network.pdf)、[Ackley et al. 1985](https://doi.org/10.1207/s15516709cog0901_7)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit、[2026-11-08 22:44] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂生成式世界模型概念頁：分開標註 Hopfield (1982) 李亞普諾夫能量函數與 Ackley、Hinton、Sejnowski (1985) 波茲曼機學習演算法之年代；將擴散模型、分數匹配與 Transformer 注意力之聯繫明確界定為統計物理能量景觀與連續狀態空間之深層理論類比與現代聯想記憶等價性，刪除直接線性奠基之過度概括。
 
 ### EK-046 | open | concepts/generative-world-models.md | DeepSeek-R1 段 | 歸因／版本錯置
 - **問題**：將「無須人工示範」歸給 DeepSeek-R1（實為 R1-Zero），並把可驗證獎勵從原文之數學與程式任務推廣到任意驗證器與科學探索代理，應標為展望。
@@ -356,10 +357,11 @@
 - **來源**：同 EK-042
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit、[2026-11-08 22:44] audit
 
-### EK-056 | open | concepts/generative-world-models.md | Sora 段 | 過度表述
+### EK-056 | fixed | concepts/generative-world-models.md | Sora 段 | 過度表述
 - **問題**：重述 Sora 能力界線問題（見 EK-036），把有限能力觀察寫成已證明之通用物理模擬。
 - **來源**：[OpenAI 技術報告](https://openai.com/index/video-generation-models-as-world-simulators/)
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit、[2026-11-08 22:44] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂生成式世界模型概念頁 Sora 支柱：將其界定為「時空圖塊與視覺物理世界模擬初步探索」，明確指出純視覺擴散模型基於高維統計關聯擬合，在因果狀態改變與嚴格物理規律（如碰撞、破碎）時頻繁出現穿模與失真，指明其距通用物理世界模型之長期挑戰。
 
 ## DOI 無法解析（2026-11-09 crossref_check.py）
 

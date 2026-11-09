@@ -939,3 +939,16 @@
   - **EK-041**：Card 6 將「癌細胞偽裝受損組織誘使神經救濟」明確標註為【演化假說與機制隱喻】，強調本文已嚴格證實轉移與富集現象，但觸發神經供能之上游精確分子信號仍為假說；Card 5 將靶向隧道奈米管之聯合療法明確標記為轉化醫學前景展望，非本文臨床已驗證之療法。
   - 新增證據表 [wiki/evidence/2025-nerve-mito-cancer.md](evidence/2025-nerve-mito-cancer.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-039、EK-040 與 EK-041 標記為 `fixed` 並追加處理紀錄。
+
+
+## [2026-11-09 10:58] fix | 生成式世界模型概念頁依原文修訂統計物理類比與能力局限並建立證據表 | #人工智慧 #深度學習 #強化學習 #計算機視覺
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範全面核實修訂 [wiki/concepts/generative-world-models.md](concepts/generative-world-models.md)。
+  - **EK-045**：分開標註 Hopfield (1982) 李亞普諾夫能量函數與 Ackley、Hinton、Sejnowski (1985) 波茲曼機學習演算法之年代；將擴散模型、分數匹配與 Transformer 注意力之聯繫界定為統計物理能量景觀與連續狀態空間之深層理論類比與現代聯想記憶等價性，刪除直接線性歷史奠基之過度概括。
+  - **EK-056**：Sora 支柱明確界定為「時空圖塊與視覺物理世界模擬初步探索」，客觀指出純視覺擴散模型基於高維統計關聯擬合，在因果狀態改變與嚴格物理規律（如碰撞、破碎）時頻繁穿模與失真，指明其距通用物理世界模型之長期挑戰。
+  - **EK-046**：明確將「無須人工示範」限定於 R1-Zero 純 RL 模型，說明完整版 R1 結合冷啟動、多階段 SFT 與二次 RL，並將可驗證獎勵（RLVR）向任意領域驗證器與自主科學探索代理之推廣標明為重大未來展望。
+  - 同步將 [wiki/papers/2025-deepseek-r1.md](papers/2025-deepseek-r1.md) 與 [wiki/evidence/2025-deepseek-r1.md](evidence/2025-deepseek-r1.md) 之 hook 與評測數據（cons@16 訓練動態與 cons@64 正式基準對比）精煉對齊。
+  - 新增概念證據表 [wiki/evidence/generative-world-models.md](evidence/generative-world-models.md)，概念頁 `verification` 狀態提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-045 與 EK-056 標記為 `fixed` 並追加處理紀錄。

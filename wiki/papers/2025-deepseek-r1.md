@@ -16,7 +16,7 @@ doi_url: "https://doi.org/10.1038/s41586-025-09422-z"
 key_papers:
   - "Shao, Z. et al. (2024) DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models (GRPO). arXiv:2402.03300. https://arxiv.org/abs/2402.03300"
   - "DeepSeek-AI (Guo, D. et al.) (2025) DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. arXiv:2501.12948. https://arxiv.org/abs/2501.12948"
-hook: "徹底跳過人工標註之監督式微調（SFT）步驟，在基礎語言模型上僅憑基於規則的結果獎勵與群體相對策略優化（GRPO），首次公開證明長鏈推理、自我驗證與「頓悟時刻（Aha Moment）」可由大規模純強化學習自發湧現。"
+hook: "在基礎語言模型上僅憑基於規則的結果獎勵與群體相對策略優化（GRPO），以純強化學習（DeepSeek-R1-Zero）首次公開證明長鏈推理、自我驗證與「頓悟時刻（Aha Moment）」無須人工示範即可自發湧現；並透過多階段冷啟動與蒸餾管線（DeepSeek-R1）全面比肩頂尖閉源推理模型。"
 ---
 
 # DeepSeek-R1 與推理運算擴展定律：以純強化學習激發大型語言模型之自我反思與長鏈推理湧現
@@ -81,13 +81,14 @@ $$\begin{aligned}
 ## Card 4 ｜ 決定性數據 (The Evidence)
 
 ### 本篇論文（DeepSeek-AI 2025）之核心證據
-* **DeepSeek-R1-Zero 純 RL 之 AIME 準確率從 $15.6\%$ 暴漲至 $71.0\%$（多數決達 $86.7\%$）**：在完全不給任何人工思維鏈範例的純強化學習過程中，DeepSeek-R1-Zero 在美國數學邀請賽（AIME 2024）上的單次採樣通過率（Pass@1）從初始的 **$15.6\%$** 穩步飆升至 **$71.0\%$**（與 OpenAI o1-0912 持平）；若結合 64 次採樣多數決（cons@64），準確率更達 **$86.7\%$**（此處數值依據 arXiv:2501.12948 預印本 Table 1 之 64 次採樣共識評估，非 cons@16），超越人類競賽選手平均水準。
-* **推理長度（Test-Time Compute）隨訓練自發擴展與「頓悟時刻（Aha Moment）」**：在從未設定「回答越長分數越高」的前提下，模型為了提升困難題目的解題正確率，在 8,000 多個強化學習訓練步中自發將平均思考長度從數百 Token 推升至數千乃至上萬 Token；並在中間步驟觀測到模型突然中斷既有推導，寫出 *"Wait, wait. Wait. That's an aha moment I can flag here... Let's re-evaluate this step-by-step"*，重新檢驗積分符號並改正錯誤。
-* **DeepSeek-R1 全基準比肩 OpenAI o1-1217**：
-  * **數學推理**：AIME 2024 達 **$79.8\%$**（Pass@1），MATH-500 達 **$97.3\%$**。
+* **DeepSeek-R1-Zero 純 RL 之 AIME 訓練軌跡與多數決躍升**：在完全不給任何人工思維鏈範例的純強化學習過程中（對照 Nature 645:633–638 / arXiv:2501.12948 原文 §2.2 與 Figure 1(a)），DeepSeek-R1-Zero 在美國數學邀請賽（AIME 2024）上的單次採樣通過率（Pass@1）從初始的 **$15.6\%$** 穩步飆升至 **$71.0\%$**（與 OpenAI o1-0912 持平）；若結合 16 次採樣多數決（`cons@16`，見訓練動態曲線 Figure 1(a)），準確率更達 **$86.7\%$**，超越人類競賽選手平均水準。
+* **推理長度（Test-Time Compute）隨訓練自發擴展與「頓悟時刻（Aha Moment）」**：在從未設定「回答越長分數越高」的前提下，模型為了提升困難題目的解題正確率，在 8,000 多個強化學習訓練步中自發將平均思考長度從數百 Token 推升至數千乃至上萬 Token（Figure 1(b)）；並在中間步驟觀測到模型突然中斷既有推導，寫出 *"Wait, wait. Wait. That's an aha moment I can flag here... Let's re-evaluate this step-by-step"*（Table 2），重新檢驗積分符號並改正錯誤。
+* **DeepSeek-R1 全基準比肩 OpenAI o1-1217（64 次採樣共識評測）**：
+  * 在正式基準評測中（原文 §D.1 與 Table 8），多數決共識評估一律採用 64 個樣本採樣（`cons@64`）。
+  * **數學推理**：AIME 2024 達 **$79.8\%$**（Pass@1），64 次採樣多數決（`cons@64`）達 **$86.7\%$**（與 OpenAI o1-1217 持平），Pass@64 達 **$90.0\%$**；MATH-500（Pass@1）達 **$97.3\%$**（勝過 o1-1217 之 $96.4\%$）。
   * **程式競賽**：Codeforces 評分達 **$2,029$ Elo**，超越人類 **$96.3\%$** 的競賽程式設計師。
-  * **科學與通用知識**：GPQA Diamond（博士級科學問答）達 $71.5\%$，MMLU 達 $90.8\%$。
-* **蒸餾 vs. 小模型直接 RL 之決定性對比實驗**：將 DeepSeek-R1 生成的 80 萬筆推理軌跡直接監督微調給 Qwen-32B，所得 **DeepSeek-R1-Distill-Qwen-32B** 在 AIME 2024 達到 **$72.6\%$**（MATH-500 達 $94.3\%$）；相比之下，若直接對 Qwen-32B-Base 耗費龐大算力跑大規模純強化學習（Zero RL），AIME 2024 僅能達到 $47.0\%$。這嚴格證明：**強大基座模型透過強化學習探索出的新推理模式，可透過蒸餾高效遷移，但小模型自身容量不足以獨立在 RL 中搜索出同等深度的推理策略。**
+  * **科學與通用知識**：GPQA Diamond（Pass@1）達 $71.5\%$（o1-1217 為 $75.7\%$），MMLU 達 $90.8\%$。
+* **蒸餾 vs. 小模型直接 RL 之決定性對比實驗**：將 DeepSeek-R1 生成的 80 萬筆推理軌跡直接監督微調給 Qwen-32B，所得 **DeepSeek-R1-Distill-Qwen-32B** 在 AIME 2024 達到 **$72.6\%$**（`cons@64` 達 $83.3\%$，MATH-500 達 $94.3\%$）；相比之下，若直接對 Qwen2.5-32B-Base 耗費龐大算力跑大規模純強化學習（Qwen2.5-32B-Zero），AIME 2024 僅能達到 $47.0\%$（`cons@64` 僅 $60.0\%$，見 Table 16）。這嚴格證明：**強大基座模型透過強化學習探索出的新推理模式，可透過蒸餾高效遷移，但小模型自身容量不足以獨立在 RL 中搜索出同等深度的推理策略。**
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
 * **經同行評審刊登於《Nature》並引爆全球開源推理生態**：DeepSeek-R1 隨後於 2025 年正式通過同行評審發表於《Nature》，成為首篇公開完整強化學習動態與訓練配方的主流推理大模型論文；其提出的「GRPO ＋ 可驗證規則獎勵（RLVR, Reinforcement Learning with Verifiable Rewards）」迅速成為全球開源社群與各大實驗室訓練數學、程式碼與科學推理智能體（Reasoning Agents）的標準範式。
