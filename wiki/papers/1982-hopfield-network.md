@@ -12,7 +12,7 @@ domain: "physics"
 domain_tags: ["#統計物理", "#人工智慧"]
 concepts: ["neural-circuits", "brain-machine-interface", "generative-world-models", "quantum-error-correction"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1073/pnas.79.8.2554"
 key_papers:
@@ -52,8 +52,8 @@ Hopfield 將每個神經元的狀態映射為伊辛模型（Ising Model）中的
    * 欲在網路中儲存 $M$ 個記憶型態（Patterns）$\{V^s\}_{s=1}^M$，任意兩個神經元 $i$ 與 $j$ 之間的突觸權重 $T_{ij}$ 由外積和決定，且滿足對稱性 $T_{ij} = T_{ji}$ 與無自反饋 $T_{ii} = 0$。
 2. **非同步隨機更新動力學（Asynchronous Stochastic Updating）**：
    * 每個神經元以平均速率 $W$ 獨立、隨機地檢視來自其他神經元的加權輸入，並根據閾值 $U_i$ 更新自身狀態。
-3. **能量景觀與吸引子收斂（Energy Minima as Memories）**：
-   * 在對稱權重假設下，每一次單一神經元的狀態翻轉必定使全局能量 $E$ 下降或保持不變，保證網路不會陷入無窮震盪，而會必然落入局部能量極小值（即預先寫入的記憶吸引子）。
+3. **能量景觀與吸引子收斂（Energy Minima and Spurious States）**：
+   * 在對稱權重假設下，每一次單一神經元的狀態翻轉必定使全局能量 $E$ 下降或保持不變（$\Delta E \le 0$），保證網路不會陷入無窮震盪，必然收斂至局部能量極小態。需注意並非所有局部極小值皆為預先寫入的記憶吸引子；例如在零閾值下全零狀態（$0000\dots$）亦為穩定態，原文數值模擬顯示約有 10% 試驗會落入無明顯意義的偽穩定態（Spurious States），另有約 5% 停留在目標記憶的鄰近態。
 
 ### 1. 赫布突觸權重儲存矩陣 (Hebbian Storage Prescription)
 
@@ -85,16 +85,18 @@ $$\begin{aligned}
 &\le 0
 \end{aligned}$$
 
-因為當括號內總和大於零時 $\Delta V_i \ge 0$，小於零時 $\Delta V_i \le 0$，故乘積恆為非負，$\Delta E \le 0$。由於狀態空間有限，$E$ 必有下界，系統必然收斂至局部能量極小態（Stable Attractor）。
+因為當括號內總和大於零時 $\Delta V_i \ge 0$，小於零時 $\Delta V_i \le 0$，故乘積恆為非負，$\Delta E \le 0$。由於狀態空間有限，$E$ 必有下界，系統必然收斂至局部能量極小態（Stable Attractor）。極小態包含名義記憶吸引子、全零態（$0000\dots$）與混合偽態。
 
 ---
 
 ## Card 4 ｜ 決定性數據 (The Evidence)
 
 ### 本篇論文（Hopfield 1982）之核心證據
-* **記憶容量與神經元規模的線性標度律（$0.15N$ 法則）**：透過蒙地卡羅模擬與信噪比推導，Hopfield 證明一個含 $N$ 個神經元的網路可穩定記憶並低誤差檢索約 $M \approx 0.15N$ 個隨機正交型態（例如在 $N = 100$ 的網路中可穩定檢索約 15 個完整記憶狀態）。
-* **信噪比（Signal-to-Noise Ratio）解析解**：當讀取第 $s'$ 個記憶時，來自其餘 $M-1$ 個記憶的交叉干擾雜訊呈現均值為 0、標準差為 $\sigma = \sqrt{(M-1)N/2}$ 的高斯分佈，而目標信號強度為 $N/2$，清楚界定了記憶過載（Overload）相變的數學邊界。
-* **對硬體損毀的魯棒容錯性（Fail-Soft Graceful Degradation）**：即使隨機切除相當比例的突觸連接或將部分神經元損毀，系統仍能從殘缺的初始輸入重構出正確的全局記憶，展現出非局域分佈式儲存的物理韌性。
+* **記憶容量與神經元規模的線性標度律（$0.15N$ 近似上限）**：Hopfield 在 PNAS p. 2556 指出，在檢索誤差變得嚴重之前，系統約可同時儲存 $M \approx 0.15N$ 個名義記憶型態。隨機產生的型態在統計上具有「偽正交性（pseudoorthogonality）」，而非嚴格正交；當儲存數量增加時會出現位元翻轉錯誤，在 $N = 100$ 時，$n=5$ 可達成零錯誤，$n=10$ 與 $n=15$ 則已出現不同程度之位元偏差（見原文 Fig. 2 誤差分佈），因此 $0.15N$ 係指嚴重退化前之近似容量，並非保證 100% 完整無誤檢索。
+* **信噪比（Signal-to-Noise Ratio）解析解**：當讀取第 $s'$ 個名義記憶時，有效場 $H_i^{s'}$ 的期望值為 $\pm N/2$，而來自其餘 $M-1$ 個記憶的交叉干擾雜訊呈現均值為 0、標準差為 $\sigma = \sqrt{(M-1)N/2}$ 的高斯分佈。單一位元的錯誤率可由高斯分佈尾部積分推導：
+  $$P = \frac{1}{\sqrt{2\pi}\sigma} \int_{N/2}^{\infty} e^{-x^2 / (2\sigma^2)} \, dx$$
+  當 $N=100, n=10$ 時理論位元錯誤率 $P=0.0091$，100 位元皆無錯之狀態機率約 $e^{-0.91} \approx 0.40$（蒙地卡羅模擬實測值約 0.60），清楚界定了記憶過載（Overload）相變的數學邊界。
+* **對硬體損毀與突觸失效的平緩退化（Fail-Soft Degradation）**：系統展現出非局域分佈式儲存的物理韌性。Hopfield 分析指出，即使突觸連接非對稱化（如僅保留單向連接使信噪比下降 $1/\sqrt{2}$）或簡化為非線性二值符號截斷（Clipped $T_{ij} = \pm 1$，信噪比下降 $\sqrt{2/\pi}$），演算法仍能收斂至穩定極小值；隨著突觸失效增加，信噪比平緩下降、錯誤率緩慢上升，呈現「平緩退化（Fail-Soft）」而非災難性崩潰。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
 * **統計力學嚴格容量極限（$\alpha_c \approx 0.138$）**：Amit, Gutfreund & Sompolinsky (1985), *Physical Review Letters* 55:1530-1533，運用自旋玻璃副本對稱破缺（Replica Symmetry Breaking）方法，嚴格解出 Hopfield 網路在零溫下的相變臨界容量為 $M/N \approx 0.138$。

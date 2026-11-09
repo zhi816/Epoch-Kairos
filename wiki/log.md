@@ -661,6 +661,7 @@
   - **EK-061**：7 篇碩士論文頁刪除失效之臨時查詢網址 `doi_url`（國家圖書館永久連結未能取得，lint 對此僅列 WARN）。
   - **未處理**：其餘 6 篇碩士論文頁之 EK-063 至 EK-068 仍為 open，續修中。
 
+
 ## [2026-11-09 09:18] git | 統一標準化 raw/ 下 10 篇里程碑原始文獻檔名 | 全域
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 3.8 Flash
@@ -690,3 +691,14 @@
   - **概念頁**：[formosan-computational-linguistics](concepts/formosan-computational-linguistics.md) 改寫構詞解析與未知詞兩段（EK-086 第 1、2 點；第 3 點 Gagnier 未處理，維持 open）；[low-resource-machine-translation](concepts/low-resource-machine-translation.md) 改寫構詞特徵與跨語言遷移兩段（EK-087 fixed），`verification` 改為 `partial`。
   - **證據表**：新增 6 份於 [wiki/evidence/](evidence/)。問題清單 open 由 85 降至 78。
   - **未處理**：其他論文頁 Card 6 中對學長姐研究之引用（如 Xia、Ranathunga、Zheng、Tulun 頁）屬各自之 open 問題，本次未改；raw/ 另 10 篇里程碑 PDF 已由 Antigravity 更名，舊日誌條目之 raw 連結因此失效（lint 僅列 WARN）。
+
+
+## [2026-11-09 09:27] fix | Hopfield 1982 依原文核實修正吸引子與容量表述並建立證據表 | #統計物理 #人工智慧
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 PNAS 1982 封存第一手原文（`raw/1982-hopfield-network.pdf`）全面核實修訂 [wiki/papers/1982-hopfield-network.md](papers/1982-hopfield-network.md)。
+  - **EK-001**：Card 3 修正「必然落入預存記憶吸引子」之過度表述，明確交代零閾值下全零態（$0000\dots$）亦為穩定態，且依原文數值模擬，約有 10% 試驗會落入無明顯意義之偽穩定態（Spurious States）、5% 停留在記憶鄰近態。
+  - **EK-002**：Card 4 修正「隨機正交」為原文之「偽正交性（pseudoorthogonality）」；明確指出 $0.15N$ 是嚴重錯誤產生前之近似容量上限，並列出 $N=100$ 時 $n=5$（幾乎無錯）、$n=10$ 與 $n=15$ 之誤差分佈實況（原文 Fig. 2）；補列信噪比單一位元高斯尾部錯誤率積分式 (10)；將突觸損毀定量表述降格為原文之非對稱突觸（信噪比降 $1/\sqrt{2}$）、二值符號截斷（信噪比降 $\sqrt{2/\pi}$）及隨突觸失效平緩退化之 fail-soft 質性分析。
+  - 新增證據表 [wiki/evidence/1982-hopfield-network.md](evidence/1982-hopfield-network.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-001 與 EK-002 標記為 `fixed` 並追加處理紀錄。
