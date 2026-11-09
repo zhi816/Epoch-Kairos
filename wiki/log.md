@@ -850,3 +850,14 @@
   - **尚未處理（8 篇）**：Frontull 2025（EK-082）、TEK Wang 2025（EK-078）、Setiawan 2026（EK-084）、Novokshanov 2026（EK-058、EK-085）、Tulun Merx 2025（EK-057、EK-083）、Gagnier 2026（EK-059、EK-079；另 EK-086 第 3 點概念頁）、Hybrid Wang 2026（EK-081）、Scheppat 2026（EK-060、EK-080）。
   - **已查得之正確書目（供接手者使用，尚未寫入頁面）**：經 ACL Anthology BibTeX 與 doi.org 解析確認——Tulun 為 `10.18653/v1/2025.acl-demo.13`（頁面誤作 `acl-demos`）；Novokshanov 為 `10.18653/v1/2026.loresmt-1.22`，pp. 225–230（頁面誤作 `.25`）；Gagnier 為 `10.63317/4scoopyavtvi`（ELRA，Anthology `2026.dialres-1.13`，pp. 124–134）；Scheppat 為 `10.63317/3ut33xim33nt`（ELRA，Anthology `2026.lrec-1.273`，pp. 3445–3455）。
   - **接手方式**：17 篇原文 PDF 之抽取文字可依 `wiki-content-audit` 寫作模式重新抽取；每頁回原文核對後重寫、建證據表，提交時以 `--issue` 指定編號。
+
+## [2026-11-09 09:50] fix | DrugCLIP 2023 依原文核實基準數據與幾何檢索機制並建立證據表 | #人工智慧 #計算生物
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 NeurIPS 2023 原文（`raw/2023-drugclip.pdf`）全面核實修訂 [wiki/papers/2023-drugclip.md](papers/2023-drugclip.md)。
+  - **EK-024**：Card 4 對照 Table 1、3、5 精確更正 DUD-E 零樣本數值（$\text{EF}_{1\%}=31.89$、$\text{EF}_{0.5\%}=38.07$、$\text{EF}_{5\%}=10.66$、$\text{AUROC}=80.93\%$、$\text{BEDROC}=50.52\%$）與 LIT-PCBA 數值（$\text{EF}_{1\%}=5.51$、$\text{EF}_{0.5\%}=8.56$、$\text{EF}_{5\%}=2.27$、$\text{BEDROC}=6.23\%$、$\text{AUROC}=57.17\%$），糾正將 10.66% 誤植為 LIT-PCBA BEDROC 之錯誤；消融段落改述 Table 5（引入 HomoAug 使 DUD-E BEDROC 由 45.81% 升至 50.52%、$\text{EF}_{1\%}$ 由 29.12 升至 31.89），刪除非原文之 LIT-PCBA 數值。
+  - **EK-025**：Card 3 與 Card 4 依 Section 4.3（p. 8）更正 60 億 Enamine 分子庫篩選耗時為小於 10,000 秒（約 2.78 小時；原文括號誤註為約 30 小時），相較商業對接（100 億分子約需 3,000 年）具備顯著優勢，刪除「毫秒內完成十億級全庫檢索」之誇大陳述。
+  - **EK-026**：Card 3 依 Section 3.4 與 Appendix B.1 更正 HomoAug 流程為 Jackhmmer 搜尋 AlphaFold DB 聚類庫、TMalign 結構對齊（TM-score $\ge 0.4$、結合口袋對齊率 $\ge 40\%$）與 $6\,\text{Å}$ 口袋原子擷取，刪除非原文之 Pfam；刪除非原文之推論期多構型最大池化公式，改述原文 Proposition 1（RDKit 構型用於訓練期帶噪聲輸入以消除訓練—測試不一致性，推論期由雙塔向量點積或餘弦直接檢索）。
+  - 新增證據表 [wiki/evidence/2023-drugclip.md](evidence/2023-drugclip.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-024、EK-025 與 EK-026 標記為 `fixed` 並追加處理紀錄。

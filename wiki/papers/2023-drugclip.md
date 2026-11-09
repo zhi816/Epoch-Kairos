@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#計算生物"]
 concepts: ["ai-for-structural-biology"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: false
 doi_url: "https://arxiv.org/abs/2310.06367"
 key_papers:
@@ -47,50 +47,53 @@ hook: "將龐大的分子對接能量搜索轉化為共享三維幾何嵌入空�
 DrugCLIP 跳脫了「先預測結合姿態、再回歸結合能」的傳統範式，將虛擬篩選重新定義為跨模態密集檢索（Dense Retrieval）問題：
 
 1. **雙塔 $\mathrm{SE}(3)$ 三維幾何編碼器（Dual 3D Geometric Encoders）**：
-   * 基於 Uni-Mol 預訓練三維分子表徵框架，分別建立獨立的**蛋白質口袋編碼器 $E_P$**（以殘基原子與空間距離矩陣為輸入）與**小分子編碼器 $E_M$**（由 RDKit 快速生成的三維分子構型為輸入），將兩者映射至同一個正規化超球面嵌入空間 $\mathbb{S}^{d-1}$。由於推理階段雙塔完全解耦，十億個小分子的向量表徵可離線預先算好並建立索引；當面對新靶點時，僅需對蛋白質口袋做一次前向編碼，即可透過 GPU 矩陣內積在毫秒內完成全庫檢索。
+   * 基於 Uni-Mol 預訓練三維分子表徵框架，分別建立獨立的**蛋白質口袋編碼器 $g_\phi$**（以殘基原子與空間距離矩陣為輸入）與**小分子編碼器 $f_\theta$**（以三維分子原子坐標與類型為輸入），將兩者映射至同一個正規化超球面嵌入空間。由於推理階段雙塔完全解耦，小分子的向量表徵可離線預先算好並建立索引；當面對新靶點時，僅需對蛋白質口袋做一次前向編碼，即可透過 GPU 向量內積高速完成檢索（十億級化合物庫約在數小時內完成，詳見 Card 4）。
 2. **雙向對稱 InfoNCE 對比損失（Symmetric Contrastive Learning）**：
    * 在同一個訓練批次（Batch）中，真實結合的「蛋白質口袋—配體」晶體複合物構成正樣本對，而同批次內與其他蛋白質配對的分子自然構成海量負樣本（In-Batch Negatives），直接塑造出高判別力的排序邊界。
-3. **生物同源家族與AlphaFold 資料增強（HomoAug）**：
-   * 為克服 PDB 實驗結構數量有限（僅數萬筆）的瓶頸，作者提出 **HomoAug**：利用蛋白質家族演化同源性（Pfam），從 AlphaFold 蛋白質結構資料庫（AlphaFold DB）中檢索與已知靶點具有高度結構相似性（TM-score 高）的同源蛋白口袋，將其與原配體配對作為擴充正樣本，將訓練資料多樣性擴增一個數量級。
+3. **生物同源演化與 AlphaFold 資料增強（HomoAug）**：
+   * 為克服 PDB 實驗複合物結構有限（僅數萬筆）的瓶頸，作者提出 **HomoAug**：使用 Jackhmmer 在經 MMseqs（50% 序列一致性聚類）與高可信度過濾（殘基 pLDDT $> 70$ 佔比 $> 90\%$）之 AlphaFold 蛋白質結構庫（約 845 萬條序列）中檢索同源蛋白；以 TMalign 進行三維結構對齊，保留結構相似（TM-score $\ge 0.4$）且結合口袋對齊率 $\ge 40\%$ 的配對，擷取配體 $6\,\text{Å}$ 範圍內的殘基構建新口袋，成功擴增出 758,107 個全新口袋—配體訓練對（擴增了 51% 的 PDBbind 實例）。
 
 ### 1. 雙塔三維距離感知自注意力編碼 (3D Distance-Aware Representation)
 
-對於蛋白質口袋 $P = \{(a_i^P, \vec{r}_i^P)\}_{i=1}^{N_P}$ 或小分子構型 $M = \{(a_j^M, \vec{r}_j^M)\}_{j=1}^{N_M}$（其中 $a$ 為原子類型，$\vec{r} \in \mathbb{R}^3$ 為三維座標），編碼器利用原子間歐氏距離 $d_{ij} = \|\vec{r}_i - \vec{r}_j\|_2$ 的高斯核（Gaussian Kernel）編碼 $\psi(d_{ij})$ 持續更新成對幾何偏置 $q_{ij}^{(l)}$ 與節點表徵 $h_i^{(l)}$：
+對於蛋白質口袋 $x^p = \{c_p, t_p\}$ 或小分子構型 $x^m = \{c_m, t_m\}$（其中 $t$ 為原子類型，$c \in \mathbb{R}^{L \times 3}$ 為原子三維坐標），編碼器利用原子間相對歐氏距離 $d_{ij} = \|c_i - c_j\|_2$ 初始化成對表徵 $q_{ij}^0$，並在 Transformer 層間作為注意力偏置持續更新節點表徵 $h_i^{(l)}$：
 
 $$\begin{aligned}
-q_{ij}^{(l+1)} &= q_{ij}^{(l)} + \frac{Q^{(l)}(h_i^{(l)}) \cdot K^{(l)}(h_j^{(l)})^\top}{\sqrt{d_k}} \\
-\alpha_{ij}^{(l)} &= \operatorname{softmax}_{j}\left( q_{ij}^{(l+1)} \right)
+\operatorname{Attention}(Q_i^l, K_j^l, V_j^l) &= \operatorname{softmax}_j\left( \frac{Q_i^l (K_j^l)^\top}{\sqrt{d}} + q_{ij}^l \right) V_j^l \\
+q_{ij}^{l+1} &= q_{ij}^l + \frac{Q_i^l (K_j^l)^\top}{\sqrt{d}}
 \end{aligned}$$
 
-由於輸入僅依賴內部成對距離 $d_{ij}$，最終池化並經 $L_2$ 正規化輸出的口袋嵌入向量 $\vec{u}_p = E_P(P)/\|E_P(P)\|_2$ 與分子嵌入向量 $\vec{v}_m = E_M(M)/\|E_M(M)\|_2$ 對任意三維旋轉與平移完全不變（$\mathrm{SE}(3)$-Invariant），無須在對接前對齊兩者的空間方向。
+由於輸入依賴內部成對距離矩陣，輸出的口袋嵌入向量 $g_\phi(x^p)$ 與分子嵌入向量 $f_\theta(x^m)$ 對全域剛體旋轉與平移完全不變（$\mathrm{SE}(3)$-Invariant），無須在篩選前預先對齊空間坐標。
 
 ### 2. 對稱雙向 InfoNCE 對比學習目標函數 (Symmetric Contrastive Loss)
 
-給定包含 $B$ 個「蛋白質口袋—活性分子」正樣本對 $\{(P_i, M_i)\}_{i=1}^B$ 的訓練批次，定義兩者的餘弦相似度為 $s(P_i, M_j) = \vec{u}_{p_i}^\top \vec{v}_{m_j}$。DrugCLIP 同時最小化「以口袋檢索分子（Pocket-to-Mol）」與「以分子檢索口袋（Mol-to-Pocket）」的雙向交叉熵損失：
+給定包含 $N$ 個「蛋白質口袋—活性分子」正樣本對 $\{(x_k^p, x_k^m)\}_{k=1}^N$ 的訓練批次，定義兩者的相似度為 $s(x_i^p, x_j^m) = g_\phi(x_i^p)^\top f_\theta(x_j^m)$（可採點積或正規化餘弦相似度）。DrugCLIP 同時最小化「以口袋檢索分子（Pocket-to-Mol）」與「以分子檢索口袋（Mol-to-Pocket）」的雙向損失：
 
 $$\begin{aligned}
-\mathcal{L}_{\text{P2M}} &= -\frac{1}{B} \sum_{i=1}^{B} \log \frac{\exp\left( s(P_i, M_i) / \tau \right)}{\displaystyle\sum_{j=1}^{B} \exp\left( s(P_i, M_j) / \tau \right)} \\
-\mathcal{L}_{\text{M2P}} &= -\frac{1}{B} \sum_{i=1}^{B} \log \frac{\exp\left( s(P_i, M_i) / \tau \right)}{\displaystyle\sum_{j=1}^{B} \exp\left( s(P_j, M_i) / \tau \right)} \\
-\mathcal{L}_{\text{DrugCLIP}} &= \frac{1}{2} \left( \mathcal{L}_{\text{P2M}} + \mathcal{L}_{\text{M2P}} \right)
+\mathcal{L}_k^p &= -\frac{1}{N} \log \frac{\exp\left( s(x_k^p, x_k^m) / \tau \right)}{\displaystyle\sum_{i=1}^N \exp\left( s(x_k^p, x_i^m) / \tau \right)} \\
+\mathcal{L}_k^m &= -\frac{1}{N} \log \frac{\exp\left( s(x_k^p, x_k^m) / \tau \right)}{\displaystyle\sum_{i=1}^N \exp\left( s(x_i^p, x_k^m) / \tau \right)} \\
+\mathcal{L} &= \frac{1}{2} \sum_{k=1}^N \left( \mathcal{L}_k^p + \mathcal{L}_k^m \right)
 \end{aligned}$$
 
-其中 $\tau > 0$ 為可學習之溫度超參數。
+其中 $\tau > 0$ 為可學習之溫度參數。
 
-### 3. 多構型集成最大池化檢索分數 (Multi-Conformation Ensemble Scoring)
+### 3. 化學模擬噪聲注入與訓練—測試不一致性消除 (Conformation Simulation for Generalization)
 
-在推理階段，為涵蓋柔性小分子在溶液中的構型空間，對候選分子 $M$ 由 RDKit 隨機採樣 $K$ 個低能三維構型 $\{M^{(k)}\}_{k=1}^K$，取其與目標口袋 $P$ 的最大餘弦相似度作為最終虛擬篩選排序分數：
+虛擬篩選面臨晶體結合態（Holo）與未結合游離態（Apo）構型差異的「訓練—測試不一致性」。DrugCLIP 在訓練期直接利用 RDKit 生成分子模擬構型作為帶噪聲輸入 $\tilde{x}^m = \{c_m + \delta, h_m\}$。作者在 Proposition 1 中證明：雙塔距離編碼架構的評分偏差在一階泰勒展開下與距離擾動成正比，當模擬構型與結合構型接近時（存在剛體旋轉 $R$ 與平移 $t$ 滿足 $(c + \delta)R^\top + t = c$），內部距離矩陣偏差為零，即：
 
-$$S_{\text{VS}}(P, M) = \max_{k \in \{1, \dots, K\}} \left( \vec{u}_p^\top \vec{v}_{m^{(k)}} \right)$$
+$$\lim_{\delta \to 0} \{ s(\tilde{x}_m, x_p) - s(x_m, x_p) \} = 0$$
+
+相較之下，傳統單塔親和力回歸模型因混入跨分子相對距離項，即使分子內部構型逼真，仍必須依賴分子對接演算法求出旋轉平移參數才能預測。DrugCLIP 藉此完全解耦相對空間坐標，在推論期僅需計算單一口袋向量與候選分子向量的點積或餘弦相似度。
 
 ---
 
 ## Card 4 ｜ 決定性數據 (The Evidence)
 
 ### 本篇論文（Gao et al. 2023, NeurIPS）之核心證據
-* **DUD-E 基準零樣本早期富集因子（$\text{EF}_{1\%}$）翻倍超越物理對接**：在涵蓋 102 個靶點、超過 22,000 個活性分子與 140 萬個誘餌分子的 DUD-E 零樣本測試（嚴格剔除訓練集同源靶點）中，DrugCLIP 的前 $1\%$ 富集因子（$\text{EF}_{1\%}$）達到 **$28.54$**（AUROC 達 $84.74\%$、BEDROC 達 $47.41\%$），大幅超越商業級物理對接軟體 Glide-SP（$\text{EF}_{1\%} = 16.21$）、AutoDock Vina（$7.32$）以及既有深度學習方法 Planet（$11.12$）、Gnina（$15.61$）。
-* **更嚴苛無偏差基準 LIT-PCBA 之全面領先**：在專為消除人工誘餌偏差、採用真實高通量濕實驗活性與非活性數據構建的 LIT-PCBA 基準（15 個靶點、逾 260 萬筆測試對）上，DrugCLIP 在零樣本設定下取得 **$\text{EF}_{1\%} = 5.51$**（BEDROC $= 10.66\%$），顯著擊敗 Glide-SP（$\text{EF}_{1\%} = 3.41$）、Surflex（$2.50$）與所有監督式親和力回歸模型（如 DeepDTA 僅 $1.47$）。
-* **篩選速度提升逾十萬倍（$10^5\times$ Speedup）**：以篩選單一靶點對 $100$ 萬個分子為例，傳統物理對接在單核 CPU 上需耗時數千小時（約 100 天以上），而預先編碼後的 DrugCLIP 僅需數毫秒至數秒即可完成全庫內積排序，使單日篩選百億級（10-Billion-Scale）化學庫在一般實驗室硬體上成為現實。
-* **HomoAug 消融驗證**：加入基於 AlphaFold DB 的生物同源增強（HomoAug）後，在 LIT-PCBA 上將 $\text{EF}_{1\%}$ 從 $4.21$ 進一步推升至 $5.51$，證明合成結構生物資料能有效突破晶體資料庫規模限制。
+* **DUD-E 基準零樣本早期富集因子翻倍超越物理對接**：在涵蓋 102 個靶點、22,886 個活性分子與對應誘餌分子的 DUD-E 零樣本測試（嚴格剔除訓練集同源靶點）中，DrugCLIP 零樣本模型（$\text{DrugCLIP}_{\text{ZS}}$）的前 $1\%$ 富集因子（$\text{EF}_{1\%}$）達到 **$31.89$**（$\text{EF}_{0.5\%} = 38.07$、$\text{EF}_{5\%} = 10.66$、$\text{AUROC} = 80.93\%$、$\text{BEDROC} = 50.52\%$），大幅超越商業級物理對接軟體 Glide-SP（$\text{EF}_{1\%} = 16.18$、$\text{BEDROC} = 40.70\%$）、AutoDock Vina（$\text{EF}_{1\%} = 7.32$）以及既有深度學習方法 Planet（$\text{EF}_{1\%} = 8.83$）、Pafnucy（$\text{EF}_{1\%} = 3.86$）（Table 1, p. 7）。
+* **更嚴苛無偏差基準 LIT-PCBA 之全面領先**：在專為消除人工誘餌偏差、基於 PubChem 劑量效應實驗構建的 LIT-PCBA 基準（15 個靶點、7,844 個活性分子與 407,381 個非活性分子）上，DrugCLIP 取得 **$\text{EF}_{1\%} = 5.51$**、$\text{EF}_{0.5\%} = 8.56$、$\text{EF}_{5\%} = 2.27$、$\text{BEDROC} = 6.23\%$、$\text{AUROC} = 57.17\%$，顯著擊敗 Glide-SP（$\text{EF}_{1\%} = 3.41$、$\text{BEDROC} = 4.00\%$）、Surflex（$\text{EF}_{1\%} = 2.50$）、Planet（$\text{EF}_{1\%} = 3.87$）、Gnina（$\text{EF}_{1\%} = 4.63$）與監督式親和力回歸模型 DeepDTA（$\text{EF}_{1\%} = 1.47$、$\text{BEDROC} = 2.53\%$）（Table 3, p. 8）。
+* **超大規模分子庫檢索效率突破**：在包含 60 億（$6 \times 10^9$）個分子的 Enamine 超大型庫篩選實驗中（§4.3, p. 8），候選分子預先離線編碼後，DrugCLIP 完成單靶點全庫檢索耗時小於 10,000 秒（約 2.78 小時；原文括號誤註為約 30 小時）。相較之下，商業對接軟體 Glide 若在單核 CPU 篩選 100 億分子估計需耗時約 3,000 年（約 80 萬美元），單塔深度學習方法 Planet 在靶點數增加至 600 個時耗時擴增至 2 年以上。
+* **HomoAug 與構型模擬消融驗證**：在 DUD-E 消融實驗中（Table 5, p. 9），未使用 RDKit 構型與 HomoAug 時 BEDROC 為 $38.13\%$、$\text{EF}_{1\%}$ 為 $23.86$；加入 RDKit 構型後升至 $45.81\%$ 與 $29.12$；進一步加入 HomoAug 後 BEDROC 提升至 **$50.52\%$**、$\text{EF}_{1\%}$ 達到 **$31.89$**（$\text{EF}_{0.5\%} = 38.07$），證明同源增強能有效提升模型泛化力。
+* **專家雙盲評估**：在 ChemDiv 化合物庫中選取 5 個靶點進行虛擬篩選（§4.5, Table 8），由具備藥物設計經驗的專家對 DrugCLIP 與 Glide 篩選出的候選結構進行雙盲評審，在 4 個靶點中專家偏好選擇 DrugCLIP 之分子結構。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
 * **真實世界濕實驗靶點驗證與超高通量命中率**：蘭艷艷與高博文團隊在論文及後續跟進實驗中，針對多巴胺受體、5-羥色胺轉運體（SERT）與新型抗腫瘤靶點進行百萬至十億級化學庫實戰篩選並合成測試，在細胞與體外結合實驗中獲得高達 $15\%$–$20\%$ 以上之微莫耳至奈莫耳級（$\text{nM}$）高活性先導化合物命中率，並解析出冷凍電鏡複合物結構驗證其結合位點。
@@ -118,3 +121,4 @@ DrugCLIP 的核心突破源自一次極具洞察力的**「問題重構（Proble
 * **原始權威文獻**：
   * 官方學術出處：Gao, B., Qiang, B., Tan, H., Jia, Y., Ren, M., Lu, M., Liu, J., Ma, W.-Y., & Lan, Y. (2023). Advances in Neural Information Processing Systems (NeurIPS), 36, 44595-44614. arXiv: [2310.06367](https://arxiv.org/abs/2310.06367)
   * 原始檔典藏：`raw/2023-drugclip.pdf`（不納入本倉庫，由私有倉庫 Mine-RAW 版控）
+  * 證據表：[evidence/2023-drugclip.md](../evidence/2023-drugclip.md)
