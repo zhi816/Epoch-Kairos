@@ -22,15 +22,17 @@
 
 ## 1992 Aghion–Howitt 創造性破壞
 
-### EK-003 | open | papers/1992-creative-destruction-aghion.md | Card 4 | 過度表述
+### EK-003 | fixed | papers/1992-creative-destruction-aghion.md | Card 4 | 過度表述
 - **問題**：成長率與變異數公式以線性研發技術 φ(n)=n 為條件，卡片未明示；原文只說某些條件下存在週期均衡，頁面稱可解釋實際商業週期，強於原文。
 - **來源**：[Aghion & Howitt 原文（Econometrica 60(2), 1992）](https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf)
 - **發現於**：wiki/log.md [2026-11-08 23:36] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 Econometrica 1992 pp. 333, 335–338 查核後修訂：Card 3 明確標註穩態對數成長率 $g=\lambda\hat{n}\ln\gamma$ 與方差 $\sigma^2=\lambda\hat{n}(\ln\gamma)^2$ 係在線性研發技術 $\phi(n)=n$ 條件下成立；Card 4 修正極限環陳述，精確說明 2 階極限環係在跨期映射導數 $\psi'(\hat{n}) < -1$ 條件下湧現之理論動態特徵，降格原先「可解釋商業週期」之過度表述。證據表見 wiki/evidence/1992-creative-destruction-aghion.md。
 
-### EK-004 | open | papers/1992-creative-destruction-aghion.md | Card 5 | 原文未支持
+### EK-004 | fixed | papers/1992-creative-destruction-aghion.md | Card 5 | 原文未支持
 - **問題**：把 1992 模型直接連到現代反壟斷標準與 Killer Acquisitions；屬後續政策延伸，須另引研究並標明非本文結果。Card 6 若有同類政策結論亦同。
 - **來源**：同 EK-003
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit、[2026-11-08 23:36] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 5 反壟斷政策段落：明確將科技巨頭併購審查與扼殺式收購（Killer Acquisitions，引 Cunningham et al., 2021 JPE）標記為創造性破壞架構在後續產業組織文獻與政策實踐之延伸應用，非 1992 奠基論文之直接檢驗結果。證據表見 wiki/evidence/1992-creative-destruction-aghion.md。
 
 ## 2001 Acemoglu–Johnson–Robinson 殖民起源
 

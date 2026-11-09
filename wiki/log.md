@@ -725,3 +725,13 @@
   - **新增 [log_time.py](../.agents/skills/git-sync-guardian/scripts/log_time.py)**：輸出臺北時間（UTC+8）`YYYY-MM-DD HH:MM`，不受本機時區影響，跨平台可用。本條標題時間即由此取得。
   - **[stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py) 機械檢查**：自己的新條目標題晚於現在 5 分鐘以上即擋下；早於現在 60 分鐘以上須加 `--allow-stale`。[safe_commit_push.sh](../.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh) 新增 `--allow-stale-log` 轉傳，且日誌暫存失敗時還原本次暫存並中止，不留暫存給下一位代理。以含遠端之暫存倉庫測試四種情境（現在、晚 16 分鐘、早 90 分鐘、早 90 分鐘加放行），結果皆符合預期。
   - **規範**：[AGENTS.md](../AGENTS.md) 第六章 Ingest 第 5 步與第十章第 6、7 條、[git-sync-guardian SKILL.md](../.agents/skills/git-sync-guardian/SKILL.md) 第 6 條與日誌工具段，明定標題時間一律先執行 `log_time.py` 取得。
+
+## [2026-11-09 09:31] fix | Aghion-Howitt 1992 依原文核實成長率條件與極限環並建立證據表 | #宏觀經濟學 #制度經濟學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 Econometrica 1992 奠基論文原文全面核實修訂 [wiki/papers/1992-creative-destruction-aghion.md](papers/1992-creative-destruction-aghion.md)。
+  - **EK-003**：Card 3 明確標註穩態對數成長率 $g = \lambda \hat{n} \ln \gamma$ 與方差 $\sigma^2 = \lambda \hat{n} (\ln \gamma)^2$ 係在線性研發技術 $\phi(n) = n$ 條件下成立（式 2.16–2.17）；Card 4 修正極限環陳述，精確說明 2 階極限環係在跨期映射導數 $\psi'(\hat{n}) < -1$ 條件下湧現之理論動態特徵（Proposition 2），降格原先「可解釋商業週期」之過度表述。
+  - **EK-004**：Card 5 明確將科技巨頭併購審查與扼殺式收購（Killer Acquisitions，引 Cunningham et al., 2021 *JPE*）標記為創造性破壞架構在後續產業組織文獻與政策實踐之延伸應用，非 1992 奠基論文之直接檢驗結果。
+  - 新增證據表 [wiki/evidence/1992-creative-destruction-aghion.md](evidence/1992-creative-destruction-aghion.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-003 與 EK-004 標記為 `fixed` 並追加處理紀錄。

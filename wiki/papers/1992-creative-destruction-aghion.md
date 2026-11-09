@@ -12,7 +12,7 @@ domain: "econ"
 domain_tags: ["#宏觀經濟學", "#制度經濟學"]
 concepts: ["institutions-and-macro-dynamics"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.2307/2951599"
 key_papers:
@@ -85,7 +85,7 @@ w_t &= \lambda V_{t+1} \\
 
 ### 3. 穩態內生經濟成長率與方差 (Steady-State Growth Rate)
 
-在平穩均衡（Stationary Equilibrium，$n_t = \hat{n}$）下，對數產出 $\ln y(\tau)$ 在連續時間長度為 $1$ 的區間內服從複合泊松過程，其長期平均對數成長率（Average Growth Rate, $g$）與成長波動方差（Variance, $\sigma^2$）皆由研發投入 $\hat{n}$ 內生決定：
+在平穩均衡（Stationary Equilibrium，$n_t = \hat{n}$）下，若設定研發成功率為研究勞動力的線性函數 $\phi(n) = n$，對數產出 $\ln y(\tau)$ 在連續時間長度為 $1$ 的區間內服從複合泊松過程，其長期平均對數成長率（Average Growth Rate, $g$）與成長波動方差（Variance, $\sigma^2$）皆由研發投入 $\hat{n}$ 內生決定（式 2.16–2.17）：
 
 $$\begin{aligned}
 g &= \mathbb{E}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \hat{n} \ln \gamma \\
@@ -97,7 +97,7 @@ g &= \mathbb{E}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \hat{n} \ln \gamma \\
 ## Card 4 ｜ 決定性數據 (The Evidence)
 
 ### 本篇論文（Aghion & Howitt 1992）之核心理論證明
-* **穩態均衡與內生週期（Limit Cycles）並存**：作者嚴格證明跨期映射 $n_t = \hat{n}(n_{t+1})$ 為負斜率函數。除了唯一的穩定穩態均衡 $\hat{n}$ 外，當研發對未來破壞率的敏感度足夠高時，經濟體會內生湧現「高研發期與低研發期交替」的二階極限環（2-Cycle / Schumpeterian Wave），無須外生衝擊即可解釋商業週期與長期成長的耦合。
+* **穩態均衡與內生極限環（Limit Cycles）條件**：作者分析跨期研發套利映射 $n_t = \psi(n_{t+1})$。在基準模型中存在唯一平穩穩態 $\hat{n}$；在特定參數條件下（當跨期映射在穩態之導數 $\psi'(\hat{n}) < -1$ 時），穩態局部不穩定，經濟體將內生湧現「繁榮（高研發、高產出、預期低折舊）與蕭條（低研發、低產出、預期高折舊）交替」的 2 階極限環（2-Cycle / Schumpeterian Wave，Proposition 2）。原文將此作為創造性破壞產生內生波動機制的理論展示，並非宣稱該極限環已能直接解釋現實世界的複雜實證商業週期。
 * **福利雙向偏離定理**：推導出社會計畫者（Social Planner）的有效貼現率為 $r + \lambda(1 - \gamma)\hat{n}$，與私人市場的 $r + \lambda \hat{n}$ 對比，證明當創新步幅 $\gamma$ 較小時，「業務竊取效應（Business-Stealing Effect）」與「壟斷扭曲效應」可能壓倒知識外溢效應，導致自由放任市場出現過度研發（Over-investment in R&D）。
 * **顛覆性大創新對增量研發的擠出**：在連續研發步幅擴展模型中，證明私人企業傾向選擇「恰好足以奪取市場」的短視創新步幅，而低估長遠基礎躍遷的社會價值。
 
@@ -108,7 +108,7 @@ g &= \mathbb{E}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \hat{n} \ln \gamma \\
 ---
 
 ## Card 5 ｜ 時代典範轉移 (The Revolution)
-* **重塑反壟斷與產業競爭政策**：推翻了傳統芝加哥學派與早期熊彼特「壟斷必然有利於研發」或新古典「完全競爭最優」的二元對立，確立了現代反壟斷機構評估科技巨頭併購（Killer Acquisitions）與市場進入壁壘的動態分析標準。
+* **啟發動態反壟斷與產業競爭政策框架**：為產業組織學提供分析動態市場進入與技術取代的微觀基礎。隨後的政策與文獻將其延伸至現代反壟斷審查（例如 Cunningham, Ederer & Ma (2021, *Journal of Political Economy*) 針對預防性收購以扼殺潛在創新競爭者的「扼殺式收購 Killer Acquisitions」研究），利用創造性破壞架構評估專利壟斷保護與動態競爭激勵之間的權衡（非 1992 原始論文之直接檢驗結果）。
 * **微觀企業數據與宏觀成長的統一**：使宏觀經濟學得以直接利用專利引用、企業出生率（Entry Rate）、退出率（Exit Rate）與職位創造/毀滅（Job Reallocation）數據來診斷國家經濟活力。
 * **制度政治經濟學的延伸**：解釋了為何既得利益集團（Incumbents）在面對通用目的技術（如蒸汽機、電力、人工智慧）時，會遊說政府築起監管高牆以阻止「創造性破壞」，從而導致中等收入陷阱與長期停滯。
 

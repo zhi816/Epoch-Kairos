@@ -1,0 +1,18 @@
+# 證據表：1992-creative-destruction-aghion
+- **採用版本**：*Econometrica*, Vol. 60, No. 2, pp. 323–351, March 1992；DOI: https://doi.org/10.2307/2951599；封存版本見 `raw/1992-creative-destruction-aghion.pdf`
+- **查核者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-09
+
+| 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |
+|---|---|---|---|---|
+| Frontmatter | 作者 Philippe Aghion 與 Peter Howitt；2025 年諾貝爾經濟學獎由 Joel Mokyr 與 Aghion、Howitt 共同獲獎 | 本篇研究結果 / 官方事實 | Econometrica 首頁，p. 323；NobelPrize.org 官方公告 | 符合來源 |
+| Card 1 | 建立以垂直品質階梯與泊松到達為基礎的熊彼特創造性破壞內生成長模型 | 本篇研究結果 | 摘要與引言，pp. 323–325 | 符合來源 |
+| Card 2 | 克服索洛殘差外生性與 Romer (1990) 水平多樣化無淘汰之局限 | 作者解釋 | pp. 323–324，引言與相關文獻回顧 | 符合來源 |
+| Card 3 | 最終財生產函數 $y = A F(x) = A x^\alpha$ 與技術步幅 $A_t = A_0 \gamma^t$ | 本篇研究結果 | §2.1, p. 326, 式 (2.1)–(2.2) | 符合來源 |
+| Card 3 | 專利價值泛函 $V_{t+1} = \frac{\pi_{t+1}}{r + \lambda \phi(n_{t+1})}$ 與研發套利方程 $w_t = \lambda \phi'(n_t) V_{t+1}$ | 本篇研究結果 | §2.2, pp. 327–328, 式 (2.5)–(2.7) | 符合來源 |
+| Card 3 | 穩態成長率 $g = \lambda \hat{n} \ln \gamma$ 與方差 $\sigma^2 = \lambda \hat{n} (\ln \gamma)^2$ 以線性研發技術 $\phi(n)=n$ 為條件 | 本篇研究結果 | §2.4, p. 333, 式 (2.16)–(2.17)（修正 EK-003） | 符合來源 |
+| Card 4 | 特定條件下穩態不穩定並收斂至 2 階極限環（2-Cycle），展示內生波動理論機制，但非宣稱解釋真實商業週期 | 本篇研究結果 | §3, pp. 335–338, Proposition 2（修正 EK-003） | 符合來源 |
+| Card 4 | 業務竊取（Business-stealing）與壟斷扭曲可能導致私人研發超過社會最優 | 本篇研究結果 | §2.5, pp. 333–335, 福利分析與 Proposition 1 | 符合來源 |
+| Card 4 | Aghion et al. (2005) 競爭與創新倒 U 型曲線 | 後續研究 | QJE 120(2):701–728 (2005) | 符合來源 |
+| Card 4 | Klette & Kortum (2004) 與 Akcigit & Kerr (2018) 企業微觀數據動態量化 | 後續研究 | JPE 112(5):986–1018 (2004); JPE 126(4):1374–1443 (2018) | 符合來源 |
+| Card 5 | 啟發反壟斷動態競爭評估；科技巨頭扼殺式收購（Killer Acquisitions）為後續政策延伸 | 後續研究 / Wiki 詮釋 | 頁面已標記為後續政策文獻延伸（修正 EK-004） | 符合來源 |
+| Card 6 | 局部舊結構淘汰為全局演化前提、預期壽命決定當下創造力 | Wiki 詮釋 | 跨界思維反思，已標明為哲學啟發 | 不適用 |
