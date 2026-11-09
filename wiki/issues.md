@@ -286,20 +286,23 @@
 
 ## 概念頁
 
-### EK-042 | open | concepts/neural-circuits.md | 2017 支柱 | 歸因／版本錯置
+### EK-042 | fixed | concepts/neural-circuits.md | 2017 支柱 | 歸因／版本錯置
 - **問題**：把 Transformer 注意力與 Hopfield 網路等價列在 2017 支柱；等價結果來自連續／現代 Hopfield 之後續工作（Ramsauer et al. 2021），不應歸給 1982 原始網路或 2017 Transformer 原文。
 - **來源**：[Ramsauer et al.](https://arxiv.org/abs/2008.02217)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂神經迴路因果解耦概念頁：明確將縮放點積注意力與現代連續型 Hopfield 網路之數學等價性歸因於 Ramsauer et al. (2020/2021) 之理論推導，糾正原先將後續等價結果混入 2017 Vaswani et al. 原始論文之歸因錯置。建立證據表 wiki/evidence/neural-circuits.md。
 
-### EK-043 | open | concepts/brain-machine-interface.md | 核心支柱 | 歸因／版本錯置
+### EK-043 | fixed | concepts/brain-machine-interface.md | 核心支柱 | 歸因／版本錯置
 - **問題**：把 Hopfield 1982 能量吸引子寫成當代 BCI 神經流形解碼之數學基礎；神經流形屬獨立研究脈絡，現有來源不足以建立直接傳承。
 - **來源**：[Hopfield 封存原文](../raw/1982-hopfield-network.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit、[2026-11-08 21:57] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂腦機介面與神經編碼概念頁：釐清 Hopfield (1982) 為群體狀態空間吸引子提供物理啟發，而現代 BCI 之神經流形解碼源自運動皮質實證降維建模脈絡（如 Churchland et al. 2012），兩者在群體狀態空間幾何上深層呼應而非直接數學繼承。建立證據表 wiki/evidence/brain-machine-interface.md。
 
-### EK-044 | open | concepts/brain-machine-interface.md | 跨學科延伸 | 過度表述
+### EK-044 | fixed | concepts/brain-machine-interface.md | 跨學科延伸 | 過度表述
 - **問題**：將雙光子讀取與全息光遺傳寫入概括為「萬級神經元的無損閉環互動」；原始研究為光刺激選定個別細胞、同時記錄數千神經元，未驗證萬級同時控制、無損或臨床可用。
 - **來源**：[原始研究](https://www.nature.com/articles/s41593-026-02350-9)
 - **發現於**：wiki/log.md [2026-11-08 23:21] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂腦機介面概念頁全光學 BCI 段落：將實驗規模客觀限定為在動物模型中記錄數千神經元並全息光刺激數十至數百個特定細胞之單細胞級閉環調控，刪除「萬級神經元無損閉環互動」之過度表述，交代光散射深度與光熱耐受等客觀物理瓶頸。建立證據表 wiki/evidence/brain-machine-interface.md。
 
 ### EK-045 | fixed | concepts/generative-world-models.md | 支柱與時間線 | 歸因／版本錯置
 - **問題**：將 Hopfield/Hinton 能量模型合標為 1982（Boltzmann machine 學習論文為 Ackley、Hinton、Sejnowski 1985），並把 Hopfield、Boltzmann、score matching、擴散模型與 Transformer 寫成直接奠基鏈；須分開作者年代並改標為概念類比或補中間研究。
@@ -348,15 +351,17 @@
 - **來源**：[AlphaFold 3 原文](https://www.nature.com/articles/s41586-024-07487-w)
 - **發現於**：wiki/log.md [2026-11-08 23:21] audit
 
-### EK-054 | open | concepts/programmable-cellular-engineering.md | 跨學科延伸 | 過度表述
+### EK-054 | fixed | concepts/programmable-cellular-engineering.md | 跨學科延伸 | 過度表述
 - **問題**：「已能直接在患者肝臟、視網膜與造血幹細胞中修正致病突變」合併不同遞送方式與證據階段：Casgevy 為體外編輯後回輸；EDIT-101 為小型 1–2 期試驗；肝臟 LNP 鹼基編輯為單一新生兒 N-of-1 個案。另須同步校正自 CRISPR 論文頁重述之 PAM 與衍生技術歸因（見 EK-012、EK-015）。
 - **來源**：[FDA 審查文件](https://www.fda.gov/media/175179/download?attachment=)、[視網膜試驗](https://www.nejm.org/doi/10.1056/NEJMoa2309915)、[肝臟 N-of-1](https://www.nejm.org/doi/10.1056/NEJMoa2504747)
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit、[2026-11-08 23:21] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂可編程細胞與基因工程概念頁：關鍵突破支柱補列化膿性鏈球菌 Cas9 靶向必備之 5'-NGG-3' PAM 基序約束，並將 dCas9 調控底盤與鹼基/先導編輯標明為後續生態之重大延伸；跨學科延伸嚴格劃分體外改造回輸（Casgevy 造血幹細胞自體回輸）與體內局部/系統性靶向遞送（AAV 視網膜試驗與 LNP 肝臟探索性個案），消除已能在各器官普遍體內修正之過度表述。建立證據表 wiki/evidence/programmable-cellular-engineering.md。
 
-### EK-055 | open | concepts/neural-circuits.md | Hopfield 支柱 | 歸因／版本錯置
+### EK-055 | fixed | concepts/neural-circuits.md | Hopfield 支柱 | 歸因／版本錯置
 - **問題**：與 EK-043、EK-045 同源，將 Hopfield 1982 吸引子延伸為後續多個領域之直接歷史基礎；22:44 審查指出此錯誤於多個概念頁重述，修正時須同步。
 - **來源**：同 EK-042
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit、[2026-11-08 22:44] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂神經迴路因果解耦概念頁 Hopfield 支柱：明確定界 Hopfield (1982) 為二值自旋玻璃李亞普諾夫能量函數，容量上限約 0.15N，係為海馬體 CA3 自聯想迴路提供經典物理抽象原型；跨學科對偶段落客觀劃分生物化學突觸調控、經典循環吸引子與現代張量注意力機制之異同，消除將離散吸引子泛化為後續多領域直接歷史基礎之過度表述。建立證據表 wiki/evidence/neural-circuits.md。
 
 ### EK-056 | fixed | concepts/generative-world-models.md | Sora 段 | 過度表述
 - **問題**：重述 Sora 能力界線問題（見 EK-036），把有限能力觀察寫成已證明之通用物理模擬。
