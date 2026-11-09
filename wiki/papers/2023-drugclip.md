@@ -18,6 +18,7 @@ key_papers:
   - "Zhou, G. et al. (2023) Uni-Mol: A Universal 3D Molecular Representation Learning Framework. ICLR 2023. https://openreview.net/forum?id=6K2RM6wVqKu"
   - "Gao, B., Qiang, B., Tan, H., Jia, Y., Ren, M., Lu, M., Liu, J., Ma, W.-Y., & Lan, Y. (2023) DrugCLIP: Contrastive Protein-Molecule Representation Learning for Virtual Screening. NeurIPS 36:44595-44614. https://arxiv.org/abs/2310.06367"
 hook: "將龐大的分子對接能量搜索轉化為共享三維幾何嵌入空間中的向量餘弦相似度檢索，使十億級化合物庫的虛擬藥物篩選速度提升十萬倍以上，並在零樣本基準測試全面超越傳統物理對接。"
+card_line: "不再逐一模擬，從海量分子中快速挑出候選藥"
 ---
 
 # DrugCLIP：以蛋白質—分子三維對比學習實現超高速虛擬藥物篩選

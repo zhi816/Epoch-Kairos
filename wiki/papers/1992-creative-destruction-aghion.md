@@ -20,6 +20,7 @@ key_papers:
   - "Romer, P. M. (1990) Endogenous Technological Change. Journal of Political Economy 98(5):S71-S102. https://doi.org/10.1086/261725"
   - "Aghion, P., Bloom, N., Blundell, R., Griffith, R., & Howitt, P. (2005) Competition and Innovation: An Inverted-U Relationship. Quarterly Journal of Economics 120(2):701-728. https://doi.org/10.1093/qje/120.2.701"
 hook: "將熊彼特「創造性破壞」化為嚴謹的動態隨機一般均衡方程，證明長期經濟成長源自新技術對舊獨占者的不斷淘汰。"
+card_line: "新技術淘汰舊技術，經濟才能長期成長"
 ---
 
 # 創造性破壞與內生經濟成長模型（Aghion-Howitt 熊彼特成長理論）

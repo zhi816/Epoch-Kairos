@@ -20,6 +20,7 @@ key_papers:
   - "Hopfield, J. J. (1984) Neurons with graded response have collective computational properties like those of two-state neurons. PNAS 81(10):3088-3092. https://doi.org/10.1073/pnas.81.10.3088"
   - "Ackley, D. H., Hinton, G. E., & Sejnowski, T. J. (1985) A learning algorithm for Boltzmann machines. Cognitive Science 9(1):147-169. https://doi.org/10.1207/s15516709cog0901_7"
 hook: "將磁性自旋玻璃的統計物理能量景觀引入神經元網路，證明記憶與計算可作為多體物理系統的集體湧現屬性。"
+card_line: "讓神經網路從殘缺線索想起完整記憶"
 ---
 
 # Hopfield 神經網絡：人工神經網絡與聯想記憶的統計物理基礎

@@ -1047,3 +1047,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：依使用者指示，將「先審核宏觀，確認沒有問題再審視微觀，並檢查是否受吸引子影響」寫入寫完後的驗證階段。[wiki-content-audit](../.agents/skills/wiki-content-audit/SKILL.md) 寫作模式第 4 步改為兩階段驗證：宏觀審核對象與版本、核心貢獻、比例與強度、歸屬與結構、分類與連結，有問題先修正並重跑，無誤才進入微觀逐句核對；查核模式比照辦理；〈共用核對標準〉新增「吸引子」一節，定義吸引子為把輸出拉向模型熟悉樣式而偏離來源的力量，列出知識先驗、版型、敘事誇飾、鄰近內容、常見值、術語正規化、自我錨定七類之表現與檢查方法，並規定吸引子類型記於問題的「問題原因」。[academic-paper-translator](../.agents/skills/academic-paper-translator/SKILL.md) 執行流程第 4 步改為兩階段內容核對，新增〈兩階段驗證與吸引子檢查〉一節，宏觀檢查範圍與完整度、論證主線、整體語氣、結構與順序、版面整體，吸引子列流暢化、術語正規化、知識先驗、常見值、版型、鄰近內容、舊版錨定七類。兩份 Skill 的交付說明皆須交代兩階段驗證結果。
+
+## [2026-11-09 11:21] update | 41 篇論文頁寫入卡片一句話 card_line | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：依 [2026-11-09 11:15] 新增之規則，依各論文頁現行內文為 41 篇擬 `card_line`，經使用者審閱清單後全數照寫，插入各頁 Frontmatter `hook` 之下一行；全部 20 字以內，未含數值，強斷言僅 LIGO「第一次直接測到」一句（論文頁與證據表支持）。[lint_wiki.py](../.agents/skills/wiki-content-audit/scripts/lint_wiki.py) 將 `card_line` 列入論文頁必填欄位，超過 20 字或與 `hook` 相同者報 ERROR，含數字者報 WARN；執行結果 ERROR 0。

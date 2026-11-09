@@ -17,6 +17,7 @@ key_papers:
   - "Bahdanau, D., Cho, K., & Bengio, Y. (2015) Neural Machine Translation by Jointly Learning to Align and Translate. ICLR 2015. https://arxiv.org/abs/1409.0473"
   - "Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., & Polosukhin, I. (2017) Attention Is All You Need. NeurIPS 30:5998-6008. https://arxiv.org/abs/1706.03762"
 hook: "徹底屏棄循環神經網路（RNN）與卷積網路（CNN），僅憑純自注意力機制（Self-Attention）將序列任意兩點之交互路徑縮短為 O(1) 常數步，解放了算力並行化並奠定現代大型語言模型與多模態 AI 的通用基石。"
+card_line: "不再逐字讀句子，讓每個字同時看見整句"
 ---
 
 # Attention Is All You Need：開啟生成式 AI 時代的 Transformer 架構

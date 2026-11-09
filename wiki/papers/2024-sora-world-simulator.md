@@ -18,6 +18,7 @@ key_papers:
   - "Brooks, T., Peebles, B., Holmes, C., DePue, W., Guo, Y., Jing, L., Schnurr, D., Taylor, J., Luhman, T., Luhman, E., Ng, C., Wang, R., & Ramesh, A. (2024) Video generation models as world simulators. OpenAI Technical Report. https://openai.com/research/video-generation-models-as-world-simulators"
   - "Liu, Y. et al. (2024) Sora: A Review on Background, Technology, Limitations, and Opportunities of Large Vision Models. arXiv:2402.17177. https://arxiv.org/abs/2402.17177"
 hook: "將不同時長、解析度與長寬比的影片統一壓縮為三維「時空圖塊（Spacetime Patches）」，以擴散轉換器（DiT）取代傳統 U-Net 骨幹，展現出隨訓練算力擴展而湧現的三維視角一致性與物理世界模擬能力。"
+card_line: "把影片切成時空小塊，生成連貫的長影片"
 ---
 
 # Sora 與世界模型時空物理模擬：基於擴散轉換器（DiT）與時空圖塊的視覺生成湧現

@@ -19,6 +19,7 @@ key_papers:
   - "Bluvstein, D. et al. (2024) Logical quantum processor based on reconfigurable atom arrays. Nature 626(7997):58-65. https://doi.org/10.1038/s41586-023-06927-3"
   - "Google Quantum AI and Collaborators (2024) Quantum error correction below the surface code threshold. Nature 638:920-926. https://doi.org/10.1038/s41586-024-08449-y"
 hook: "利用光學鑷子在計算過程中即時移動糾纏中性銣原子，首次在單一處理器上同時編碼多達 48 個邏輯量子位元並執行橫向容錯邏輯閘，打破超導固定晶格的二維近鄰連接限制。"
+card_line: "用雷射搬動原子，在受糾錯保護的位元上運算"
 ---
 
 # 可重構中性原子陣列之邏輯量子處理器：邁向容錯量子計算的歷史跨越

@@ -16,6 +16,7 @@ focus_role: "llm-assisted"
 focus_languages: ["德頓語", "比斯拉馬語"]
 doi_url: "https://doi.org/10.18653/v1/2025.acl-demo.13"
 hook: "墨爾本大學團隊於 ACL 2025 發表開源低資源翻譯系統 TULUN：結合特化 NMT 初譯、spaCy 詞彙表與 Tantivy BM25 翻譯記憶庫檢索，交由 Gemini 2.0 Flash 進行術語感知 CoT 後編輯，在德頓語醫療與比斯拉馬語救災翻譯上取得 +16.90 至 +22.41 chrF++ 巨幅提升。"
+card_line: "讓大模型參考詞彙表與舊譯文，修潤譯稿"
 ---
 
 # TULUN：透明且可自適應之低資源機器翻譯系統 (TULUN: Transparent and Adaptable Low-resource Machine Translation)

@@ -16,6 +16,7 @@ focus_role: "international"
 focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.63317/4scoopyavtvi"
 hook: "首度對臺灣原民會「族語 E 樂園（ePark）」42 種方言展開大規模計量方言學分析：以詞級 TF-IDF 餘弦相似度、Jaccard 詞彙重疊與字元級正規化 Levenshtein 距離，客觀量化 16 族南島語親緣分支與語料品質。"
+card_line: "用族語E樂園語料，量出各族方言有多接近"
 ---
 
 # 族語 E 樂園語料庫之方言計量學分析與低資源臺灣南島語方言評估 (Dialectometry and Evaluation of the ePark Corpus)

@@ -15,6 +15,7 @@ my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["賽德克語"]
 hook: "以約六千句字典例句為訓練資料，建立賽德克語構詞結構自動解析與賽德克語－中文神經機器翻譯系統，並發現詞綴布林特徵只在自訓練詞嵌入下提升翻譯品質。"
+card_line: "讓電腦在賽德克語與中文之間翻譯"
 ---
 
 # 賽德克語－中文機器翻譯之研究 (A Study of Seediq-Chinese Machine Translation)

@@ -16,6 +16,7 @@ focus_role: "international"
 focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.63317/3ut33xim33nt"
 hook: "波士頓學院團隊於 LREC 2026 推出首個涵蓋全臺 15 種南島語之標準化平行語料庫 FormosanMT（近 50 萬句對），提出啟發式長度比與正則過濾清洗管線，開源相容繁體中文之 NLLB-200 分詞器與雙向基準模型。"
+card_line: "彙整各族語與中文的對照句，建成翻譯語料庫"
 ---
 
 # FormosanMT：臺灣南島語言家族多語言平行語料庫 (FormosanMT: A Multilingual Parallel Corpus of the Formosan Language Family)

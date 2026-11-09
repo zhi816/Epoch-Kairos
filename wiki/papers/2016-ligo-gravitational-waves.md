@@ -20,6 +20,7 @@ key_papers:
   - "Abbott, B. P. et al. (LIGO Scientific Collaboration and Virgo Collaboration) (2016) Observation of Gravitational Waves from a Binary Black Hole Merger. Physical Review Letters 116(6):061102. https://doi.org/10.1103/PhysRevLett.116.061102"
   - "Abbott, B. P. et al. (LIGO Scientific Collaboration and Virgo Collaboration) (2017) GW170817: Observation of Gravitational Waves from a Binary Neutron Star Inspiral. Physical Review Letters 119(16):161101. https://doi.org/10.1103/PhysRevLett.119.161101"
 hook: "以相當於質子直徑千分之一的極限雷射干涉精度，首次直接捕捉到 13 億光年外雙黑洞併合釋放的時空漣漪 GW150914，完美驗證愛因斯坦廣義相對論的百年預言。"
+card_line: "第一次直接測到黑洞相撞發出的重力波"
 ---
 
 # LIGO 雙黑洞重力波直接探測：聆聽時空結構的漣漪

@@ -20,6 +20,7 @@ key_papers:
   - "Acemoglu, D., Johnson, S., & Robinson, J. A. (2002) Reversal of Fortune: Geography and Institutions in the Making of the Modern World Income Distribution. Quarterly Journal of Economics 117(4):1231-1294. https://doi.org/10.1162/003355302320935025"
   - "Acemoglu, D., Johnson, S., & Robinson, J. A. (2005) Institutions as a Fundamental Cause of Long-Run Growth. Handbook of Economic Growth 1A:385-472. https://doi.org/10.1016/S1574-0684(05)01006-3"
 hook: "以數百年前歐洲殖民者的疫病死亡率作為工具變數，嚴格識別出「產權保護制度」而非地理環境，才是決定國家貧富差距高達三十倍的根本原因。"
+card_line: "從殖民者死亡率，找出制度決定國家貧富"
 ---
 
 # 比較發展的殖民起源：制度形成與國家長期繁榮成因

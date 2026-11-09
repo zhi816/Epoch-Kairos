@@ -18,6 +18,7 @@ key_papers:
   - "Boylan-Kolchin, M. (2023) Stress testing ΛCDM with high-redshift galaxy candidates. Nature Astronomy 7(6):731-735. https://doi.org/10.1038/s41550-023-01937-7"
   - "Arrabal Haro, P. et al. (2023) Confirmation and refutation of very luminous galaxies in the early Universe. Nature 622(7984):707-711. https://doi.org/10.1038/s41586-023-06521-7"
 hook: "針對詹姆斯・韋伯太空望遠鏡（JWST）在大爆炸後僅 5 至 7 億年發現的超高質量候選星系，從暗物質暈質量函數推導出嚴格的宇宙學上限，揭示部分觀測結果甚至要求超過 100% 的重子轉化效率，對早期星系演化與標準 ΛCDM 宇宙學構成空前壓力測試。"
+card_line: "算出宇宙早期最多能長出多大的星系"
 ---
 
 # JWST 早期宇宙成熟巨大星系發現：對標準 ΛCDM 宇宙學模型的極限壓力測試

@@ -17,6 +17,7 @@ key_papers:
   - "Shao, Z. et al. (2024) DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models (GRPO). arXiv:2402.03300. https://arxiv.org/abs/2402.03300"
   - "DeepSeek-AI (Guo, D. et al.) (2025) DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. arXiv:2501.12948. https://arxiv.org/abs/2501.12948"
 hook: "在基礎語言模型上僅憑基於規則的結果獎勵與群體相對策略優化（GRPO），以純強化學習（DeepSeek-R1-Zero）首次公開證明長鏈推理、自我驗證與「頓悟時刻（Aha Moment）」無須人工示範即可自發湧現；並透過多階段冷啟動與蒸餾管線（DeepSeek-R1）全面比肩頂尖閉源推理模型。"
+card_line: "以對錯獎勵訓練，讓語言模型學會逐步推理"
 ---
 
 # DeepSeek-R1 與推理運算擴展定律：以純強化學習激發大型語言模型之自我反思與長鏈推理湧現

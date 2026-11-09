@@ -20,6 +20,7 @@ key_papers:
   - "Nagel et al. (2003) Channelrhodopsin-2, a directly light-gated cation-selective membrane channel. PNAS 100:13940-13945. https://doi.org/10.1073/pnas.1936192100"
   - "Boyden et al. (2005) Millisecond-timescale, genetically targeted optical control of neural activity. Nat Neurosci 8:1263-1268. https://doi.org/10.1038/nn1525"
 hook: "讓科學家能用一道藍光，在千分之一秒內開關大腦中某一類特定的神經元。"
+card_line: "用一道藍光，開關大腦裡特定的神經元"
 ---
 
 # 光遺傳學（Optogenetics）：以光精準控制大腦神經元

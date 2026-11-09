@@ -16,6 +16,7 @@ focus_role: "taiwan-linguistics"
 focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.6242/twnica.202404_(23).0001"
 hook: "比較 16 族 42 方言的「昨天、明天、前天、後天」：多數台灣南島語依距今天數分組（昨天與明天、前天與後天共用詞根），少數依過去或未來分組；時間詞標記則分為只標實現、只標非實現與雙標三類。"
+card_line: "比較族語怎麼說昨天、明天、前天與後天"
 ---
 
 # 台灣南島語言時間詞之跨語言比較初探 (A Preliminary Comparative Study of Formosan Temporal Words)

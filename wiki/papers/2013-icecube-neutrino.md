@@ -20,6 +20,7 @@ key_papers:
   - "Aartsen, M. G. et al. (IceCube Collaboration) (2013) Evidence for High-Energy Extraterrestrial Neutrinos at the IceCube Detector. Science 342(6161):1242856. https://doi.org/10.1126/science.1242856"
   - "IceCube Collaboration et al. (2018) Multimessenger observations of a flaring blazar coincident with high-energy neutrino IceCube-170922A. Science 361(6398):eaat1378. https://doi.org/10.1126/science.aat1378"
 hook: "將南極冰蓋深處一立方公里的極地純冰轉化為巨型契忍可夫光學望遠鏡，首次以超過 4σ 統計顯著性捕捉到來自太陽系外的 PeV 級高能宇宙微中子。"
+card_line: "用南極冰層，捕捉來自宇宙的高能微中子"
 ---
 
 # 南極冰立方（IceCube）高能宇宙微中子探測：開啟高能微中子天文學時代

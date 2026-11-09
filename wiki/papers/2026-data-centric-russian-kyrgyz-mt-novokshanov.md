@@ -16,6 +16,7 @@ focus_role: "llm-assisted"
 focus_languages: ["吉爾吉斯語"]
 doi_url: "https://doi.org/10.18653/v1/2026.loresmt-1.22"
 hook: "斬獲 LoResMT 2026 突厥語翻譯競賽俄吉賽道第一名：以 SONAR（blaser_2.0）品質分級過濾與四階段課程學習（標準 OPUS → 高品質 OPUS → FineWeb-2 回譯 → 對話微調），配合 mt0-large 詞表剪枝至 800M，在競賽測試集達到 49.1 chrF++。"
+card_line: "精挑語料、分段訓練，俄譯吉爾吉斯語奪冠"
 ---
 
 # 以資料為中心之方法應用於 LoResMT 2026 突厥語翻譯挑戰賽 (Data-Centric Approach at the LoResMT 2026 Turkic Translation Challenge)

@@ -20,6 +20,7 @@ key_papers:
   - "Jumper, J. et al. (2021) Highly accurate protein structure prediction with AlphaFold. Nature 596(7873):583-589. https://doi.org/10.1038/s41586-021-03819-2"
   - "Varadi, M. et al. (2022) AlphaFold Protein Structure Database: massively expanding the structural coverage of protein-sequence space with high-accuracy models. Nucleic Acids Research 50(D1):D439-D444. https://doi.org/10.1093/nar/gkab1061"
 hook: "將演化共變資訊與三維幾何三角形不等式直接嵌入深度注意力架構，在 CASP14 競賽將蛋白質結構預測中位數誤差壓低至單一原子尺度的 0.96 Å，終結了困擾生物學半世紀的蛋白質摺疊問題。"
+card_line: "從胺基酸序列，準確預測蛋白質的立體結構"
 ---
 
 # AlphaFold2 與蛋白質結構預測：破解五十年蛋白質摺疊難題

@@ -15,6 +15,7 @@ my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["泰雅語", "賽德克語", "太魯閣語"]
 hook: "比較三種族語文本形式與多種詞綴融合架構：族語翻中文以「詞綴字串＋雙 encoder」最佳，中文翻族語則以「詞綴字串＋BERT 中文 encoder」最佳，其中 BERT 貢獻了大部分提升。"
+card_line: "測試加入詞綴資訊，能否改善泰雅語群翻譯"
 ---
 
 # 使用詞綴資訊提升泛泰雅語機器翻譯效能 (Using Affixal Information to Improve the Performance of Atayalic Languages Machine Translation)

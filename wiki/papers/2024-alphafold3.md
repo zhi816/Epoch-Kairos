@@ -17,6 +17,7 @@ key_papers:
   - "Jumper, J. et al. (2021) Highly accurate protein structure prediction with AlphaFold. Nature 596(7873):583-589. https://doi.org/10.1038/s41586-021-03819-2"
   - "Abramson, J. et al. (2024) Accurate structure prediction of biomolecular interactions with AlphaFold 3. Nature 630(8016):493-500. https://doi.org/10.1038/s41586-024-07487-w"
 hook: "以全原子擴散生成模組（Diffusion Module）與成對主幹網路（Pairformer）取代傳統胺基酸剛體框架，將高精準度結構預測從單一蛋白質擴展至涵蓋 DNA、RNA、小分子藥物配體、離子與共價修飾的完整生命分子交互作用體系。"
+card_line: "預測蛋白質與核酸、藥物結合後的立體結構"
 ---
 
 # AlphaFold 3：以生成式擴散架構統一預測全生物分子交互作用結構

@@ -15,6 +15,7 @@ my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["泰雅語", "賽德克語", "太魯閣語"]
 hook: "以構詞與音韻規則窮舉詞根的各種變化來挑選候選詞根，再以成對比較的隨機森林分類器投票選出詞根；已知詞驗證資料正確率逾九成，真實未知詞則為 64% 至 72%。"
+card_line: "窮舉構詞變化，替沒見過的泰雅語群詞找詞根"
 ---
 
 # 以構詞規則窮舉來解決泛泰雅語未知詞問題 (Solving Out-of-Vocabulary Problem in Atayalic Languages by Morphological Enumeration)

@@ -16,6 +16,7 @@ focus_role: "report"
 focus_languages: ["達悟語"]
 doi_url: "https://doi.org/10.18653/v1/2026.loresmt-1.2"
 hook: "以 NLLB-200（600M）做達悟語→菲律賓語翻譯：先以同屬巴丹語群的伊巴丹語預訓練，聖經域內 BLEU 最高（34.85）；加入由辭典例句轉譯的合成會話資料，則改善域外會話的表現。"
+card_line: "借親屬語伊巴丹語，把達悟語譯成菲律賓語"
 ---
 
 # 達悟語－菲律賓語神經機器翻譯：極低資源情境下的策略 (Tao–Filipino Neural Machine Translation: Strategies for Ultra–Low-Resource Settings)

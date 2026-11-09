@@ -16,6 +16,7 @@ focus_role: "international"
 focus_languages: ["亞塞拜然語", "白俄羅斯語", "加利西亞語", "斯洛伐克語"]
 doi_url: "https://doi.org/10.18653/v1/P19-1579"
 hook: "除了把英語回譯成低資源語言，也把相關高資源語言的平行語料「轉成」低資源語言：先以歸納詞典逐詞替換，再以改良的無監督翻譯修飾；在四個 TED 語言對上比標準回譯提升 1.5 至 8 BLEU。"
+card_line: "借相近語言的語料，替小語種擴充翻譯資料"
 ---
 
 # 低資源機器翻譯之泛化資料增強 (Generalized Data Augmentation for Low-Resource Translation)

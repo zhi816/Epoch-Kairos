@@ -15,6 +15,7 @@ my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["台語"]
 hook: "依對應的華語句，以最大二分匹配與四步驟規則重新切分台語句，讓台華平行語料的斷詞標準一致；搭配 BERT 台語斷詞後，台華雙向翻譯的詞級 BLEU 皆提升。"
+card_line: "對齊台語與華語的斷詞，改善台華翻譯"
 ---
 
 # 利用重斷詞改善台語機器翻譯系統 (Improving Taiwanese Machine Translation Systems by Word Re-Segmentation)

@@ -18,6 +18,7 @@ key_papers:
   - "Venkatesh, H. S. et al. (2019) Electrical and synaptic integration of glioma into neural circuits. Nature 573:539-545. https://doi.org/10.1038/s41586-019-1563-y"
   - "Hoover, G. et al., Ayala, G., & Grelet, S. (2025) Nerve-to-cancer transfer of mitochondria during cancer metastasis. Nature 644(8075):252-262. https://doi.org/10.1038/s41586-025-09176-8"
 hook: "首次運用雙重螢光譜系追蹤系統（MitoTRACER）於活體內直接證實：浸潤腫瘤的自主神經元會透過奈米隧道管將自身健康的粒線體直接輸送給癌細胞，賦予癌細胞抵抗氧化壓力與完成遠端器官轉移的致命能量優勢。"
+card_line: "發現神經元會把粒線體送給癌細胞"
 ---
 
 # 神經元向癌細胞轉移粒線體：揭開腫瘤神經科學中驅動癌症遠端轉移的代謝劫持機制

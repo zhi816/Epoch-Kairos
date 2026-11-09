@@ -26,7 +26,8 @@ ISSUE_STATES = {'open', 'fixed', 'wontfix'}
 VERDICTS = {'符合來源', '原文不符', '原文未支持', '過度表述', '歸因／版本錯置', '未能核實'}
 PAPER_REQUIRED = ['title', 'title_zh', 'paper_year', 'award_year', 'timeline_year', 'authors',
                   'venue', 'domain', 'domain_tags', 'concepts', 'status', 'verification', 'hook',
-                  'my_focus']
+                  'card_line', 'my_focus']
+CARD_LINE_MAX = 20  # AGENTS.md 第七章第 1 節「卡片一句話」：20 字以內，全形標點計入
 CONCEPT_REQUIRED = ['title', 'title_zh', 'domain', 'domain_tags', 'papers', 'related_concepts',
                     'verification']
 # 日誌標題第三段規則之生效時間（AGENTS.md 第六章：2026-11-08 合併入 main 後生效）。
@@ -352,6 +353,15 @@ def main():
                    '檔名年份 %s 與 paper_year %s 不一致' % (m.group(1), fm.get('paper_year')))
         if 'doi_url' not in fm:
             report('WARN', rel, 1, '缺少 doi_url（無 DOI 者請於正文註明原文連結）')
+        cl = fm.get('card_line')
+        if isinstance(cl, str):
+            if len(cl) > CARD_LINE_MAX:
+                report('ERROR', rel, where.get('card_line', 1),
+                       'card_line 須在 %d 字以內（現為 %d 字）' % (CARD_LINE_MAX, len(cl)))
+            if cl == fm.get('hook'):
+                report('ERROR', rel, where.get('card_line', 1), 'card_line 不得直接沿用 hook')
+            if re.search(r'\d', cl):
+                report('WARN', rel, where.get('card_line', 1), 'card_line 含數字；規則不放數值')
         st = fm.get('status')
         if st and st not in STATUSES:
             report('ERROR', rel, where.get('status', 1), 'status 須為 planned / wiki / published')

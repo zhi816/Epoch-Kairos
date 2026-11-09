@@ -21,6 +21,7 @@ key_papers:
   - "Cong, L. et al. (2013) Multiplex Genome Engineering Using CRISPR/Cas Systems. Science 339(6121):819-823. https://doi.org/10.1126/science.1231143"
   - "Mali, P. et al. (2013) RNA-Guided Human Genome Engineering via Cas9. Science 339(6121):823-826. https://doi.org/10.1126/science.1232033"
 hook: "揭示細菌免疫蛋白 Cas9 僅需一段人工合成的單鏈引導 RNA（sgRNA），即可精準剪斷緊鄰 PAM 基序之指定雙股 DNA，將基因工程從繁瑣的蛋白質設計轉化為簡單的 RNA 序列編程。"
+card_line: "把細菌免疫蛋白，變成能指定位置的基因剪刀"
 ---
 
 # CRISPR-Cas9 基因剪刀誕生：可編程雙 RNA 引導之 DNA 核酸內切酶

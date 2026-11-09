@@ -16,6 +16,7 @@ focus_role: "llm-assisted"
 focus_languages: ["達豪語"]
 doi_url: "https://doi.org/10.18653/v1/2026.loresmt-1.7"
 hook: "墨爾本大學團隊於 LoResMT 2026 以印尼極低資源達豪語（Dhao）攻克領域偏移：結合微調 NMT 初譯與 Gemini 2.5 Flash RAG 後編輯；實證表明檢索範例容量（Context Volume）是效能主驅動力，詞級模糊檢索可在有效容量達 137 句時恢復至接近域內水準（35.21 chrF++）。"
+card_line: "參考例句給得越多，達豪語翻譯得越好"
 ---
 
 # 語境容量驅動效能：透過檢索增強生成攻克極低資源機器翻譯之領域偏移 (Context Volume Drives Performance)
