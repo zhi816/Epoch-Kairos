@@ -1591,3 +1591,13 @@
   - Card 5 新論文模式：兩筆取第六章（p. 33）作者結論之條件與未來工作；另列同實驗室同期之金柏毅（2025）在泛泰雅語導入詞綴，註記寫明為同期平行研究（其論文頁未引用本篇，不寫成後續）。
   - Card 4 四個數字：排灣語、布農語拆詞精確率 98.09%、99.79%（表 8–9，p. 17），族語翻中文最終 BLEU 25.02、17.81（表 23，p. 32）；避開表 22 與表 24 數字不一致之中文翻排灣語方向。證據表兩列補上具體數值與表號。Card 6 未涉碩論內容、無第一人稱。
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸全部 PASS（首次封面一句話壓到代表星，因論文名兩行，導語改為單行後通過）；無頭截圖目視，修正 Card 2、4、5、6 拆字折行。`lint_wiki.py` ERROR 0。
+
+## [2026-11-10 00:20] update | 新增台語重斷詞翻譯之卡片文字檔 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第二批 C 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2024-taiwanese-mt-resegmentation-tang.md](cards/2024-taiwanese-mt-resegmentation-tang.md) 並建置 `web/prototypes/paper-v1/2024-taiwanese-mt-resegmentation-tang.html`。
+  - Card 3 無公式模式：以 paper-pdf-parser（PyMuPDF）抽取原文全文 65 頁，確認無編號公式，最大二分匹配之計分（1／0.8／0.6、乘以字數）以文字與算例敘述（§3.3, pp. 28–32），BLEU 只列名稱未列公式；示意圖取論文頁 Card 3 第 2 節「更 擔心」對「閣煩惱」之重斷例。
+  - Card 4 四個數字取自證據表第 17、22、23 列（BERT 斷詞 F1 90.69%，§4.1 p. 37；TGB 與 iCorpus 台語→華語詞級 BLEU 43.47、79.02 與基準 37.81、72.01，表 15 p. 50，經原文核對為「詞(CKIP)」欄；未對應率 16.29%，第五章 p. 51）。華語→台語分數因正解斷詞不同而不採用，範圍欄註明字級提升較小。
+  - Card 5 新論文模式：兩筆取作者自述限制（§4.3.3, p. 48）與未來工作（第五章, pp. 51–52）。Card 6 取自論文頁 Card 6 兩點，未涉碩論內容。
+  - 檢查：`check_cards.py` ERROR 0、WARN 3（TGB 為語料名稱、BERT 為模型名稱、BLEU 為指標名稱，依 style.md 第二節第 5 條保留）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 35 項）。目視與操作檢查修正四處：Card 2 與 Card 5 各一行落單二字、Card 6 末行僅「分數。」，皆改寫；複核時將導語「常未照」改為論文頁之「部分」。`lint_wiki.py` ERROR 0。
+  - 首頁卡片牆依本批協調規則未重建，由協調者處理。建置時工作目錄之 `tools/build_paper_prototype.py` 有協調者尚未提交之修改（星窗小星與卡片編號改與首頁共用），本篇原型以該版本產生。
