@@ -1601,3 +1601,12 @@
   - Card 5 新論文模式：兩筆取作者自述限制（§4.3.3, p. 48）與未來工作（第五章, pp. 51–52）。Card 6 取自論文頁 Card 6 兩點，未涉碩論內容。
   - 檢查：`check_cards.py` ERROR 0、WARN 3（TGB 為語料名稱、BERT 為模型名稱、BLEU 為指標名稱，依 style.md 第二節第 5 條保留）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 35 項）。目視與操作檢查修正四處：Card 2 與 Card 5 各一行落單二字、Card 6 末行僅「分數。」，皆改寫；複核時將導語「常未照」改為論文頁之「部分」。`lint_wiki.py` ERROR 0。
   - 首頁卡片牆依本批協調規則未重建，由協調者處理。建置時工作目錄之 `tools/build_paper_prototype.py` 有協調者尚未提交之修改（星窗小星與卡片編號改與首頁共用），本篇原型以該版本產生。
+
+## [2026-11-10 00:20] update | 新增以構詞規則窮舉解決泛泰雅語未知詞之卡片文字檔 | #計算語言學 #自然語言處理 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：卡片回填第二批 B 組第 1 篇（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2025-atayalic-oov-enumeration-yang.md](cards/2025-atayalic-oov-enumeration-yang.md) 並建置 `web/prototypes/paper-v1/2025-atayalic-oov-enumeration-yang.html`。
+  - 來源：Card 3 採無公式模式，經 paper-pdf-parser 全文搜尋與原文 PDF 第 48、55 頁（印刷頁 37、44）影像核對，全文無編號公式，餘弦相似度、成對組合數與差值、比例皆以行文敘述；說明與示意圖取論文頁 Card 3 第 1、2、4 節。Card 4 四個數字取自證據表 Card 4 第 1、3、4 列（90.50% §4.5 p. 64；63.88%、72.12% 表 38 p. 72；79.5% 依原文表 15 計算）。Card 5 採新論文模式，三筆取自論文頁 Card 2、Card 3 第 3 節與 Card 5 之作者自述（p. 74、p. 73、表 15）。Card 6 取論文頁 Card 6 第 3 點，未涉碩論內容。
+  - 檢查：`check_cards.py` ERROR 0、WARN 1（Card 2「最大」：論文頁 Card 2 第 3 點與原文 p. 46 皆寫「即使使用最大的詞根集合」，指所測詞根集合中最大者，屬描述，保留）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（3aaaf11 版）1440 x 900 與 375 x 812 結果 PASS。
+  - 複核修正：缺口名稱「方法」不在論文頁，改「猜測」；Card 2 一列與 Card 5 兩筆里程碑末字落單，縮短；Card 4 首格補上「交叉驗證」條件。
+  - 未決事項：建置時 `tools/build_paper_prototype.py` 有協調者未提交之修改（星窗小星改與首頁卡片牆共用、編號改由首頁產生），本篇原型依該版產生；首頁卡片牆依協調規則未重建，由協調者處理。
