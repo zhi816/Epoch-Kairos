@@ -1160,3 +1160,12 @@
   - 實測並對照原 PDF 頁面影像：Hopfield 1982 掃描版之式 (1)–(4) 正確轉為 LaTeX，但同頁兩處行內符號被轉成形式合法而內容錯誤之 LaTeX；Transformer 2017 之式 (1) 與 Table 2 BLEU 數值正確，跨欄之訓練成本被錯拆為兩格（PyMuPDF 亦同）。結果與使用建議寫入 [SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md) 第四、五章，並修正模型大小說明（`basic` 約 0.9 GB、`standard` 約 2.1 GB）。
   - 逐篇比對 `raw/` 封存檔首頁與論文頁標題，查出兩份封存檔與證據表所稱版本不符，登記於 [wiki/issues.md](issues.md)：EK-088，`raw/1992-creative-destruction-aghion.pdf` 實為 Bertola, NBER WP 3851（1991），並非 Aghion and Howitt (1992)；EK-089，`raw/2001-colonial-origins-acemoglu.pdf` 為 NBER WP 7771（2000 年 6 月）工作論文版，證據表卻引用 AER 2001 頁碼。兩頁 `verification` 由 `verified` 改為 `issues`；論文頁內容未改。
 - **待使用者處理**：`raw/` 為唯讀，建議使用者將兩份封存檔換為正式版（Econometrica 60(2): 323–351；AER 91(5): 1369–1401），換檔後再依原文重核兩份證據表。
+
+## [2026-11-09 15:20] config | 完成 Windows WSL2 MinerU 隔離環境安裝與跨平台解析整合 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 2.5 Pro
+- **具體變更**：
+  - 於 Windows WSL2 Ubuntu 配置 Python 3.10 隔離虛擬環境（~/.mineru-env），安裝 magic-pdf[full] 及下載 11 個核心模型與 25 個 PaddleOCR 權重，配置 CPU 模式確保穩定性與環境零污染。
+  - 修復 UniMERNet 與新版 HuggingFace transformers (4.57+) 之快取相容性問題，經實測 1985-macroscopic-quantum-tunneling.pdf 成功完成 4 頁版面預測、120 條 LaTeX 數學公式辨識、OCR 與 LayoutReader 閱讀順序重組。
+  - 更新 [.agents/skills/paper-pdf-parser/SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md)、[setup_env.py](../.agents/skills/paper-pdf-parser/scripts/setup_env.py) 與 [parse_pdf.py](../.agents/skills/paper-pdf-parser/scripts/parse_pdf.py)，支援 Windows 原生 PowerShell 自動探測並透明調用 WSL2 隔離環境。
+  - 於 [.agents/skills/academic-paper-translator/scripts/extract_paper.py](../.agents/skills/academic-paper-translator/scripts/extract_paper.py) 建立階梯式結構抽取工具，確保兩項技能與全專案流程無縫銜接。

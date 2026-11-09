@@ -9,7 +9,7 @@
 引擎：
     pymupdf  以 PyMuPDF／pymupdf4llm 抽取 PDF 的文字層，每頁前加 <!-- pdf-page: N --> 標記。
              不辨識影像，掃描版論文的公式與雙欄順序可能錯亂。
-    mineru   以 MinerU 在本機解析版面、公式（轉為 LaTeX）與表格；需先下載 basic 檔位模型。
+    mineru   以 MinerU 在本機（或 Windows WSL2 隔離環境）解析版面、公式（轉為 LaTeX）與表格。
              較慢且不含頁碼標記，供抄寫公式草稿或讀取純圖片 PDF。失敗即報錯，不改用其他引擎。
     auto     （預設）先用 PyMuPDF；過半頁面沒有文字層（純圖片 PDF）或文字層為亂碼（字型編碼錯誤）
              且 MinerU 可用時，改用 MinerU，並在終端與輸出檔註明。
@@ -27,8 +27,10 @@ import json
 import os
 import platform
 import re
+import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 REEXEC_FLAG = 'EK_PARSE_PDF_REEXEC'
 MINERU_TIER = 'basic'  # 只用版面、公式、OCR 與表格小模型；standard 另需視覺語言模型
@@ -174,23 +176,67 @@ def run_pymupdf(pdf, out_dir, pages_spec, rel_src):
     return len(thin) + len(garbled), len(texts)
 
 
+def check_wsl_mineru():
+    """檢查 Windows WSL2 Ubuntu 是否有隔離的 MinerU / magic-pdf 安裝。"""
+    if platform.system() != 'Windows':
+        return False
+    if shutil.which('wsl') is None:
+        return False
+    try:
+        cmd = ['wsl', '-d', 'Ubuntu', '-e', 'bash', '-c', 'test -x ~/.mineru-env/bin/magic-pdf']
+        res = subprocess.run(cmd, capture_output=True, stdin=subprocess.DEVNULL, timeout=30)
+        return res.returncode == 0
+    except Exception:
+        return False
+
+
+def to_wsl_path(win_path_str: str) -> str:
+    """將 Windows 路徑轉為 WSL 路徑（例如 C:\\... -> /mnt/c/...）"""
+    try:
+        res = subprocess.run(['wsl', 'wslpath', '-u', win_path_str], capture_output=True, text=True, check=True)
+        out = res.stdout.strip()
+        if out:
+            return out
+    except Exception:
+        pass
+    p = Path(win_path_str).resolve()
+    drive = p.drive.rstrip(':').lower()
+    parts = list(p.parts[1:])
+    return f"/mnt/{drive}/" + "/".join(parts)
+
+
 def mineru_ready():
-    if not os.path.exists(MINERU_KIT):
-        return False, '找不到 %s' % os.path.relpath(MINERU_KIT, ROOT)
-    res = subprocess.run([MINERU_KIT, 'models', 'verify', '--tier', MINERU_TIER], capture_output=True, text=True)
-    if res.returncode != 0:
-        return False, 'MinerU %s 檔位模型不齊全（執行 setup_env.py 查看下載方式）' % MINERU_TIER
-    return True, ''
+    # 優先檢查本機 mineru-kit
+    if os.path.exists(MINERU_KIT):
+        res = subprocess.run([MINERU_KIT, 'models', 'verify', '--tier', MINERU_TIER], capture_output=True, text=True)
+        if res.returncode == 0:
+            return True, 'local', ''
+        return False, None, 'MinerU %s 檔位模型不齊全（執行 setup_env.py 查看下載方式）' % MINERU_TIER
+    
+    # 若在 Windows，檢查 WSL2 隔離環境
+    if check_wsl_mineru():
+        return True, 'wsl', ''
+
+    return False, None, '找不到 %s 且未探測到 WSL2 隔離環境' % os.path.relpath(MINERU_KIT, ROOT)
 
 
-def run_mineru(pdf, out_dir, pages_spec, rel_src):
+def run_mineru(pdf, out_dir, pages_spec, rel_src, mode='local'):
     raw_dir = os.path.join(out_dir, 'mineru')
     os.makedirs(raw_dir, exist_ok=True)
-    # 刻意不傳 --remote／--remote-url／--api-key：只在本機解析。
-    cmd = [MINERU_KIT, 'parse', pdf, '-o', raw_dir, '-f', 'markdown', '--tier', MINERU_TIER]
-    if pages_spec and pages_spec != 'all':
-        cmd += ['-p', pages_spec]
-    print('執行：%s' % ' '.join(cmd))
+    if mode == 'wsl':
+        wsl_pdf = to_wsl_path(pdf)
+        wsl_out = to_wsl_path(raw_dir)
+        # 刻意不傳任何遠端參數，使用本機隔離環境
+        wsl_cmd = f"source ~/.local/bin/env 2>/dev/null; source ~/.mineru-env/bin/activate && magic-pdf -p '{wsl_pdf}' -o '{wsl_out}' -m auto"
+        cmd = ['wsl', '-d', 'Ubuntu', '-e', 'bash', '-c', wsl_cmd]
+        engine_desc = 'MinerU（magic-pdf，WSL2 隔離環境）'
+    else:
+        # 刻意不傳 --remote／--remote-url／--api-key：只在本機解析。
+        cmd = [MINERU_KIT, 'parse', pdf, '-o', raw_dir, '-f', 'markdown', '--tier', MINERU_TIER]
+        if pages_spec and pages_spec != 'all':
+            cmd += ['-p', pages_spec]
+        engine_desc = 'MinerU（mineru-kit parse --tier %s，本機）' % MINERU_TIER
+    print('執行：%s' % (' '.join(cmd) if isinstance(cmd, list) else cmd))
     res = subprocess.run(cmd)
     mds = sorted(glob.glob(os.path.join(raw_dir, '**', '*.md'), recursive=True))
     if res.returncode != 0 or not mds:
@@ -207,8 +253,8 @@ def run_mineru(pdf, out_dir, pages_spec, rel_src):
         extra += 'note: 已略去 %d 張嵌入圖片。\n' % n_img
     out = os.path.join(out_dir, 'content.md')
     with open(out, 'w', encoding='utf-8', newline='\n') as f:
-        f.write(header(rel_src, 'MinerU（mineru-kit parse --tier %s，本機）' % MINERU_TIER, pages_spec or 'all', extra) + '\n' + md)
-    print('引擎：MinerU（本機）')
+        f.write(header(rel_src, engine_desc, pages_spec or 'all', extra) + '\n' + md)
+    print('引擎：%s' % engine_desc)
     print('輸出：%s（原始輸出在 %s）' % (out, raw_dir))
 
 
@@ -232,8 +278,9 @@ def main():
     out_dir = os.path.abspath(args.output_dir or os.path.join(ROOT, 'work', 'parsed', name))
 
     engine = args.engine
+    mineru_mode = 'local'
     if engine == 'mineru':
-        ok, why = mineru_ready()
+        ok, mineru_mode, why = mineru_ready()
         if not ok:
             sys.stderr.write('錯誤：無法使用 MinerU：%s。未改用其他引擎。\n' % why); sys.exit(1)
     if engine in ('auto', 'pymupdf') and not has_pymupdf():
@@ -243,17 +290,17 @@ def main():
     os.makedirs(out_dir, exist_ok=True)
     print('來源：%s' % rel_src)
     if engine == 'mineru':
-        run_mineru(pdf, out_dir, args.pages, rel_src)
+        run_mineru(pdf, out_dir, args.pages, rel_src, mode=mineru_mode)
     else:
         thin, total = run_pymupdf(pdf, out_dir, args.pages, rel_src)
         if engine == 'auto':
             engine = 'pymupdf'
             if thin * 2 > total:
-                ok, why = mineru_ready()
+                ok, mineru_mode, why = mineru_ready()
                 if ok:
                     print('注意：過半頁面沒有可用文字層，改用 MinerU 重新解析（PyMuPDF 結果存為 content-pymupdf.md）。')
                     os.replace(os.path.join(out_dir, 'content.md'), os.path.join(out_dir, 'content-pymupdf.md'))
-                    run_mineru(pdf, out_dir, args.pages, rel_src)
+                    run_mineru(pdf, out_dir, args.pages, rel_src, mode=mineru_mode)
                     engine = 'mineru'
                 else:
                     print('注意：過半頁面沒有可用文字層，但無法使用 MinerU（%s）；請直接看原 PDF。' % why)

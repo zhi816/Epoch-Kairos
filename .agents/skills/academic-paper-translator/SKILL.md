@@ -32,7 +32,7 @@ description: >-
 
 ## 執行流程
 
-1. **盤點來源與範圍**：確認來源版本、PDF 頁數及使用者要求全文或節選。盤點標題、作者、摘要、各節、表格、圖片、公式、註腳、參考文獻、附錄與補充材料；建立清單以追蹤是否全部處理；可先以 `paper-pdf-parser` 抽出附頁碼標記的文字加速盤點。雙欄論文須以頁面影像確認閱讀順序，不能只信任文字抽取結果。
+1. **盤點來源與範圍**：確認來源版本、PDF 頁數及使用者要求全文或節選。盤點標題、作者、摘要、各節、表格、圖片、公式、註腳、參考文獻、附錄與補充材料；建立清單以追蹤是否全部處理；可先以 [`paper-pdf-parser`](../paper-pdf-parser/SKILL.md) 或 `scripts/extract_paper.py` 抽出附頁碼標記的文字加速盤點。雙欄論文須以頁面影像確認閱讀順序，不能只信任文字抽取結果。
 2. **翻譯並維持對齊**：依原順序逐段翻譯，保留章節編號、段落邊界、交叉引用和圖表出現次序。整理數字與專有名詞的來源位置，避免不同章節對同一結果使用不一致的數值或說法。
 3. **依原稿重建版面**：先沿用原有欄數、層級、留白和圖表樣式，再做維持可讀性所需的最小調整。不要預設輸出頁數必須與原文相同。
 4. **兩階段內容核對**：先宏觀、再微觀，依〈兩階段驗證與吸引子檢查〉進行。宏觀用來源清單確認沒有漏節、漏表、漏圖或漏附錄，且論證主線與原文一致；微觀比對正文語意、數據、公式、引用、專名與術語，表格逐格、圖表逐項核對，並做吸引子檢查。抽取文字無法證實的內容須回看原頁。
@@ -73,6 +73,27 @@ description: >-
 
 ---
 
-## PDF 文字抽取
+## 階梯式 PDF 結構解析工具鏈（PDF Extraction Toolchain）
 
-盤點與核對時可用 [`paper-pdf-parser`](../paper-pdf-parser/SKILL.md) 把原 PDF 抽成附頁碼標記的文字，方便搜尋章節、表格數字與專名。抽取結果只作定位：雙欄順序、公式、上下標與掃描頁常出錯，譯文與數字仍以原頁影像為準。處理 `raw/` 檔案時只可在本機解析，不得使用線上解析服務。
+盤點與核對時可用專屬技能 [`paper-pdf-parser`](../paper-pdf-parser/SKILL.md) 或本技能專屬腳本 `scripts/extract_paper.py` 把原 PDF 抽成附頁碼標記的文字與圖表，方便搜尋章節、表格數字與專名。
+
+### 1. 三層工具架構
+1. **第一層（輕量極速文字與插圖）**：本機原生 `pymupdf` (fitz)，針對數位原生排版 PDF 進行無損、極速文字與原圖抽取，完全避免數值辨識誤差與模型開銷。
+2. **第二層（高精度排版與 LaTeX 公式）**：隔離於 WSL2 Ubuntu 環境之 **OpenDataLab MinerU**（`magic-pdf`），具備優異之雙欄閱讀順序還原、表格結構化與 LaTeX 數學公式辨識能力。重裝深度學習依賴完全隔離於 WSL 虛擬磁碟中，絕不污染 Windows 主機與專案 Git 倉庫。
+3. **第三層（多模態大模型綜合與 Watchdog）**：由大模型專注於學術推理、概念萃取與跨頁交叉核對，而非單純承擔 OCR 苦工。
+
+### 2. 工具調用方式
+抽取腳本位於 `scripts/extract_paper.py`，支援自動環境探測與平滑降級：
+
+```bash
+# 1. 探測目前環境之解析引擎狀態
+python .agents/skills/academic-paper-translator/scripts/extract_paper.py --check-env
+
+# 2. 自動探測解析（優先使用 MinerU，未就緒平滑降級 PyMuPDF）
+python .agents/skills/academic-paper-translator/scripts/extract_paper.py raw/1985-macroscopic-quantum-tunneling.pdf
+
+# 3. 指定 PyMuPDF 極速抽取模式
+python .agents/skills/academic-paper-translator/scripts/extract_paper.py raw/1985-macroscopic-quantum-tunneling.pdf --engine pymupdf
+```
+
+> **嚴格限制**：抽取結果只作定位與輔助，數字與關鍵主張一律回原 PDF 頁面確認。處理 `raw/` 檔案時只可在本機或 WSL2 隔離環境解析，嚴禁使用任何線上外部解析 API。
