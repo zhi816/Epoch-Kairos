@@ -915,3 +915,15 @@
   - **EK-036**：Card 1 將遮擋存在性精確限定為「常能（但並非總是）維持短暫被遮擋物體時空存在感」，並補列報告明示之物理交互局限；Card 4 刪除 Minecraft 具備即時互動與完備狀態記憶之過度表述，改為提示詞零樣本渲染動態畫面，並客觀補列玻璃碎裂與吃食物咬痕等物理失敗模式；Card 5 將世界模型描述限定為初步探索與有限能力湧現，強調高維視覺統計擬合與顯式因果物理引擎之本質差異。
   - 新增證據表 [wiki/evidence/2024-sora-world-simulator.md](evidence/2024-sora-world-simulator.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-035 與 EK-036 標記為 `fixed` 並追加處理紀錄。
+
+
+## [2026-11-09 10:54] fix | DeepSeek-R1 2025 依原文核實共識採樣指標與訓練管線並建立證據表 | #人工智慧 #強化學習 #深度學習
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 Nature 2025 正式定稿（*Nature* 645:633-638）與 arXiv:2501.12948 原文全面核實修訂 [wiki/papers/2025-deepseek-r1.md](papers/2025-deepseek-r1.md)。
+  - **EK-037**：Card 4 對照預印本 Table 1 精確更正 AIME 2024 多數決指標為 64 次採樣共識（cons@64 達 86.7%），糾正誤植為「cons@16」之錯誤，並標明出自預印本 Table 1。
+  - **EK-038**：Card 1 明確劃分僅 DeepSeek-R1-Zero 為完全不經 SFT 直接從 Base 模型以純 RL 訓練；正式版 DeepSeek-R1 則採用包含冷啟動（數千筆長 CoT）、推理 RL、拒絕採樣及 80 萬筆混合 SFT、全場景二次 RL 的多階段管線，糾正將 Zero SFT 概括至 R1 之錯誤。
+  - Frontmatter 更新正式 Nature 出處（Volume 645, pp. 633–638, 2025）與官方 DOI（10.1038/s41586-025-09422-z）。
+  - 新增證據表 [wiki/evidence/2025-deepseek-r1.md](evidence/2025-deepseek-r1.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-037 與 EK-038 標記為 `fixed` 並追加處理紀錄。

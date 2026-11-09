@@ -5,14 +5,14 @@ paper_year: 2025
 award_year: 2025
 timeline_year: 2025
 authors: "Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Ruoyu Zhang, Runxin Xu, Qihao Zhu, Shirong Ma, Peiyi Wang, Xiao Bi et al. (DeepSeek-AI)"
-venue: "arXiv preprint, arXiv:2501.12948 (and Nature, 645, 633-638)"
+venue: "Nature, 645(8081), 633-638 (2025); and arXiv:2501.12948"
 domain: "ai"
 domain_tags: ["#人工智慧", "#強化學習", "#深度學習"]
 concepts: ["generative-world-models"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: false
-doi_url: "https://arxiv.org/abs/2501.12948"
+doi_url: "https://doi.org/10.1038/s41586-025-09422-z"
 key_papers:
   - "Shao, Z. et al. (2024) DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models (GRPO). arXiv:2402.03300. https://arxiv.org/abs/2402.03300"
   - "DeepSeek-AI (Guo, D. et al.) (2025) DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. arXiv:2501.12948. https://arxiv.org/abs/2501.12948"
@@ -28,7 +28,7 @@ hook: "徹底跳過人工標註之監督式微調（SFT）步驟，在基礎語�
 ---
 
 ## Card 1 ｜ 時代銘文 (The Hook)
-當預訓練階段的網際網路語料逐漸趨近枯竭，大型語言模型（LLMs）如何突破複雜數學證明、演算法競賽與科學推理的天花板？過去主流觀點認為，模型必須先依賴大量由人類專家撰寫的高品質「思維鏈（Chain-of-Thought, CoT）」示範數據進行監督式微調（SFT），或是搭配昂貴的過程獎勵模型（Process Reward Model, PRM）與蒙地卡羅樹搜索（MCTS）才能學會深度推理。2025 年 1 月，DeepSeek-AI 發表 **DeepSeek-R1-Zero** 與 **DeepSeek-R1**，首次向全球證明：**在完全不使用任何人工監督微調（Zero SFT）的情況下**，直接對基礎模型（DeepSeek-V3-Base）施加基於確定性規則獎勵的大規模強化學習，模型就能自發演化出數千至上萬 Token 的深度思維鏈、自我糾錯（Self-Correction）、回溯驗證與驚人的「頓悟時刻（Aha Moment）」，在 AIME 2024 與 Codeforces 等基準上追平 OpenAI o1 正式版，並將完整權重與訓練配方開源。
+當預訓練階段的網際網路語料逐漸趨近枯竭，大型語言模型（LLMs）如何突破複雜數學證明、演算法競賽與科學推理的天花板？過去主流觀點認為，模型必須先依賴大量由人類專家撰寫的高品質「思維鏈（Chain-of-Thought, CoT）」示範數據進行監督式微調（SFT），或是搭配昂貴的過程獎勵模型（Process Reward Model, PRM）與蒙地卡羅樹搜索（MCTS）才能學會深度推理。2025 年 1 月，DeepSeek-AI 發表 **DeepSeek-R1-Zero** 與 **DeepSeek-R1**。其中 **DeepSeek-R1-Zero** 首次向全球嚴格證明：**在完全不使用任何監督微調（Zero SFT）作為前置步驟的情況下**，直接對基礎模型（DeepSeek-V3-Base）施加基於確定性規則獎勵的大規模純強化學習（Pure RL），模型就能自發演化出數千至上萬 Token 的長思維鏈、自我糾錯（Self-Correction）、回溯驗證與驚人的「頓悟時刻（Aha Moment）」；而完整的旗艦模型 **DeepSeek-R1** 則在此突破之上，導入少量高質量冷啟動數據（數千筆），結合多階段大規模強化學習、拒絕採樣（Rejection Sampling）與多領域通用 SFT（約 80 萬筆），徹底解決了純 RL 帶來的可讀性差與中英夾雜缺陷，在 AIME 2024 與 Codeforces 等基準上追平 OpenAI o1 正式版，並將完整權重與訓練配方開源。
 
 ---
 
@@ -72,14 +72,16 @@ $$A_i = \frac{r_i - \operatorname{mean}\left(\{r_1, r_2, \dots, r_G\}\right)}{\o
 
 同時，為確保 KL 散度項恆為非負且低方差，採用 Schulman 無偏非負估計量：
 
-$$\mathbb{D}_{\text{KL}}\left(\pi_\theta \,\|\, \pi_{\text{ref}}\right) = \frac{\pi_{\text{ref}}(o_i|q)}{\pi_\theta(o_i|q)} - \log \frac{\pi_{\text{ref}}(o_i|q)}{\pi_\theta(o_i|q)} - 1 \ge 0$$
+$$\begin{aligned}
+\mathbb{D}_{\text{KL}}\left(\pi_\theta \,\|\, \pi_{\text{ref}}\right) &= \frac{\pi_{\text{ref}}(o_i|q)}{\pi_\theta(o_i|q)} - \log \frac{\pi_{\text{ref}}(o_i|q)}{\pi_\theta(o_i|q)} - 1 \ge 0
+\end{aligned}$$
 
 ---
 
 ## Card 4 ｜ 決定性數據 (The Evidence)
 
 ### 本篇論文（DeepSeek-AI 2025）之核心證據
-* **DeepSeek-R1-Zero 純 RL 之 AIME 准确率從 $15.6\%$ 暴漲至 $71.0\%$（多數決達 $86.7\%$）**：在完全不給任何人工思維鏈範例的純強化學習過程中，DeepSeek-R1-Zero 在美國數學邀請賽（AIME 2024）上的單次採樣通過率（Pass@1）從初始的 **$15.6\%$** 穩步飆升至 **$71.0\%$**（與 OpenAI o1-0912 持平）；若結合 16 次採樣多數決（cons@16），準確率更達 **$86.7\%$**，超越人類競賽選手平均水準。
+* **DeepSeek-R1-Zero 純 RL 之 AIME 準確率從 $15.6\%$ 暴漲至 $71.0\%$（多數決達 $86.7\%$）**：在完全不給任何人工思維鏈範例的純強化學習過程中，DeepSeek-R1-Zero 在美國數學邀請賽（AIME 2024）上的單次採樣通過率（Pass@1）從初始的 **$15.6\%$** 穩步飆升至 **$71.0\%$**（與 OpenAI o1-0912 持平）；若結合 64 次採樣多數決（cons@64），準確率更達 **$86.7\%$**（此處數值依據 arXiv:2501.12948 預印本 Table 1 之 64 次採樣共識評估，非 cons@16），超越人類競賽選手平均水準。
 * **推理長度（Test-Time Compute）隨訓練自發擴展與「頓悟時刻（Aha Moment）」**：在從未設定「回答越長分數越高」的前提下，模型為了提升困難題目的解題正確率，在 8,000 多個強化學習訓練步中自發將平均思考長度從數百 Token 推升至數千乃至上萬 Token；並在中間步驟觀測到模型突然中斷既有推導，寫出 *"Wait, wait. Wait. That's an aha moment I can flag here... Let's re-evaluate this step-by-step"*，重新檢驗積分符號並改正錯誤。
 * **DeepSeek-R1 全基準比肩 OpenAI o1-1217**：
   * **數學推理**：AIME 2024 達 **$79.8\%$**（Pass@1），MATH-500 達 **$97.3\%$**。
@@ -111,5 +113,7 @@ DeepSeek-R1-Zero 的「頓悟時刻（Aha Moment）」是人工智慧發展史�
 * **核心實體與跨領域概念**：
   * [生成式世界模型與擴展定律](../concepts/generative-world-models.md)
 * **原始權威文獻**：
-  * 官方學術出處：DeepSeek-AI (Guo, D. et al.) (2025). DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. arXiv: [2501.12948](https://arxiv.org/abs/2501.12948)
+  * 官方期刊發表：DeepSeek-AI (Guo, D., Yang, D., Zhang, H., Song, J. et al., & Liang, W.) (2025). DeepSeek-R1: Incentivizing Reasoning Capability in LLMs via Reinforcement Learning. Nature, 645(8081), 633-638. DOI: [10.1038/s41586-025-09422-z](https://doi.org/10.1038/s41586-025-09422-z)
+  * 原預印本：arXiv: [2501.12948](https://arxiv.org/abs/2501.12948)
   * 原始檔典藏：`raw/2025-deepseek-r1.pdf`（不納入本倉庫，由私有倉庫 Mine-RAW 版控）
+  * 證據表：[evidence/2025-deepseek-r1.md](../evidence/2025-deepseek-r1.md)

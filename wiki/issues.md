@@ -244,15 +244,17 @@
 
 ## 2025 DeepSeek-R1
 
-### EK-037 | open | papers/2025-deepseek-r1.md | Card 4 | 原文不符
+### EK-037 | fixed | papers/2025-deepseek-r1.md | Card 4 | 原文不符
 - **問題**：將 cons@64 標成 cons@16，並須註明所用論文版本。
 - **來源**：[論文](https://arxiv.org/abs/2501.12948)
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。對照 arXiv:2501.12948 預印本 Table 1 與 Nature 2025 正式發表版本核實 Card 4：更正 AIME 2024 之 86.7% 數值為 64 次採樣多數決（cons@64），糾正誤植為「cons@16」之錯誤，並標明出自預印本 Table 1。證據表見 wiki/evidence/2025-deepseek-r1.md。
 
-### EK-038 | open | papers/2025-deepseek-r1.md | Card 1 | 原文不符
+### EK-038 | fixed | papers/2025-deepseek-r1.md | Card 1 | 原文不符
 - **問題**：把「完全不使用 SFT」同時套到 R1-Zero 與 R1；原文只有 R1-Zero 為純 RL，R1 使用冷啟動資料、RL、拒絕採樣與後續 SFT。
 - **來源**：[封存原文](../raw/2025-deepseek-r1.pdf)
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。對照原文 §2.1 與 §2.3 核實修訂 Card 1：明確劃分僅 DeepSeek-R1-Zero 為完全不經 SFT 直接從 Base 模型以純 RL 訓練；正式版 DeepSeek-R1 為解決可讀性差與中英夾雜問題，採用包含冷啟動（數千筆長 CoT）、推理 RL、拒絕採樣及 80 萬筆混合 SFT、全場景二次 RL 的多階段管線，糾正將 Zero SFT 概括至 R1 之錯誤。證據表見 wiki/evidence/2025-deepseek-r1.md。
 
 ## 2025 神經元粒線體與癌症
 
