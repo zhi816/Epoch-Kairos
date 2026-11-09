@@ -1389,3 +1389,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：樣稿畫布「我的關注卡組配色」以賽德克語－中文機器翻譯為樣本比較五版內頁配色（深色卡＋藍框、學科色底、深色卡＋學科色頂帶、克萊因藍內頁、整套克萊因藍）。使用者認為學科色底閱讀起來較好，暫定 B：我的關注論文之 Card 2 至 6 與群星相同採卡組丁之學科色底與深色重點色，封面維持深色卡＋藍框。[DESIGN.md](../DESIGN.md) 第五章第 2 節改為暫定、第八章第 16 項與第十章補紀錄；paper-card-writer 之 `references/diagram.md` 套色說明同步；[todo.md](todo.md) TD-008 同步。
+
+## [2026-11-09 20:44] design | 新增論文頁參考原型與建置腳本 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：新增 `tools/build_paper_prototype.py` 與 `tools/paper_template.html`，自 `wiki/cards/` 與 `wiki/papers/` 產生論文頁 F 版參考原型（窄導軌、卡片欄、長文、資訊欄；Card 1 封面、卡組丁、Card 3 示意圖依 class 套色；KaTeX 渲染；卡片與長文捲動同步），建置前先跑 `check_cards.py`。產出 `web/prototypes/paper-v1/1982-hopfield-network.html` 與 `2021-seediq-chinese-mt-you.html`。以瀏覽器量測 Hopfield 頁：59 個公式皆渲染無錯誤、6 張卡無內容溢出、箭頭／方向鍵／捲動同步正常；賽德克語頁與手機寬度未逐項量測。paper-card-writer 之 SKILL.md 開工必讀表加入兩份範例與參考網頁。

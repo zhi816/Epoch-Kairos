@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hopfield 神經網絡｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:17cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+.art blockquote.epigraph{padding:0;background:none;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  .deck{width:min(100%,420px)}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#D3BEFD;--deep:#4D2E8B;--win:#23222B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.07</span><span>物理</span></div><div class="win"><i style="left:93.9%;top:30.3%;width:1px;height:1px;opacity:0.62"></i><i style="left:10.1%;top:41.0%;width:1.5px;height:1.5px;opacity:0.38"></i><i style="left:9.3%;top:36.4%;width:1px;height:1px;opacity:0.81"></i><i style="left:12.0%;top:41.7%;width:1px;height:1px;opacity:0.36"></i><i style="left:60.3%;top:37.8%;width:1px;height:1px;opacity:0.49"></i><i style="left:61.8%;top:39.2%;width:1.5px;height:1.5px;opacity:0.36"></i><i style="left:55.0%;top:39.3%;width:1px;height:1px;opacity:0.45"></i><i style="left:75.2%;top:6.9%;width:1px;height:1px;opacity:0.76"></i><i style="left:91.4%;top:29.3%;width:1px;height:1px;opacity:0.46"></i><i style="left:65.4%;top:20.2%;width:1px;height:1px;opacity:0.52"></i><i style="left:30.9%;top:22.0%;width:1px;height:1px;opacity:0.63"></i><i style="left:29.1%;top:45.3%;width:1px;height:1px;opacity:0.76"></i><i style="left:89.4%;top:24.7%;width:1px;height:1px;opacity:0.57"></i><i style="left:43.3%;top:41.2%;width:1px;height:1px;opacity:0.74"></i><span class="rep award"></span><span class="line"><span>讓神經網路</span><span>從殘缺線索</span><span>想起完整記憶</span></span></div><div class="tags">物理、天文與地球科學・#統計物理 #人工智慧</div><div class="name">Hopfield 神經網絡</div><div class="lead">借用磁性材料的能量模型，說明一群簡單的神經元連在一起，就能從殘缺的線索想起完整的記憶。</div><div class="yrs">1982 發表 ｜ 2024 諾貝爾獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">帶回饋的網路，會不會停下來？</span><div class="rows"><div class="row"><b>邏輯電路</b><span>單一元件時序錯亂或損壞，整個系統就崩潰</span></div><div class="row"><b>大腦</b><span>神經元隨機非同步激發、隨時可能受損，卻依然記得住</span></div><div class="row gap"><b>理論</b><span>感知器的局限被指出後，沒有數學能分析帶回饋迴路的網路是否穩定</span></div></div><span class="ft" style="color:var(--ink)">缺的是一套能說明網路必然收斂的數學。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">把記憶變成能量的谷底</span><svg class="dia" viewBox="0 0 300 124" role="img" aria-label="示意：殘缺線索像一顆球沿能量地形滾下，深谷是記憶，淺谷是偽穩定態。">
+  <path class="k-line" d="M4 18 C 30 18, 40 96, 70 96 C 100 96, 106 40, 132 40 C 156 40, 160 70, 178 70 C 196 70, 204 30, 228 30 C 252 30, 258 104, 280 104 C 290 104, 294 60, 298 40"/>
+  <circle class="k-accent" cx="70" cy="96" r="3.4"/>
+  <circle class="k-accent" cx="280" cy="104" r="3.4"/>
+  <circle class="k-muted k-ring" cx="178" cy="70" r="2.6"/>
+  <circle class="k-ink" cx="22" cy="34" r="5"/>
+  <line class="k-ink k-dash" x1="30" y1="42" x2="44" y2="66"/>
+  <text class="k-label" x="34" y="20">殘缺線索</text>
+  <text class="k-label-accent" x="70" y="116" text-anchor="middle">記憶 A</text>
+  <text class="k-label" x="178" y="90" text-anchor="middle">偽穩定態</text>
+  <text class="k-label-accent" x="280" y="120" text-anchor="end">記憶 B</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="E = -\frac{1}{2} \sum_{i \neq j} T_{ij} V_i V_j + \sum_{i} U_i V_i"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">連接對稱時，每翻轉一個神經元，能量只降不升，網路必然停在某個谷底。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">0.15N</span><span class="l">嚴重出錯前，約可存的記憶數（N 為神經元數）</span></div><div class="stat"><span class="v">≈ 85%</span><span class="l">30 個神經元存 5 個記憶，隨機起點落回指定記憶</span></div><div class="stat"><span class="v">≈ 10%</span><span class="l">同一實驗中，停在無意義的偽穩定態</span></div><div class="stat"><span class="v">1/√2</span><span class="l">突觸改為單向，信噪比只降到此倍</span></div></div><span class="ft">範圍：Hopfield 1982，30 至 100 個神經元之數值模擬與解析</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">物理學家，走進神經網路</span><div class="time"><p><b>1985</b><span>Amit 等以自旋玻璃理論解出臨界容量約 0.138N</span></p><p><b>1985</b><span>Ackley、Hinton 與 Sejnowski 提出波茲曼機</span></p><p><b>2021</b><span>現代 Hopfield 網路等價於注意力機制</span></p><p><b>2024</b><span>Hopfield 與 Hinton 獲諾貝爾物理學獎</span></p></div><span class="ft">前三項為後續他人成果，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">不要把物理定律當成計算要克服的雜訊，而要把物理定律本身，變成計算的引擎。</span><span class="shift"><span>局部規則</span><i aria-hidden="true"></i><b>湧現記憶</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">1982 發表 ｜ 2024 諾貝爾獎</span>
+<h1>Hopfield 神經網絡：人工神經網絡與聯想記憶的統計物理基礎</h1>
+<p class="en">Neural networks and physical systems with emergent collective computational abilities</p>
+<blockquote class="epigraph">「當大量簡單的非線性單元相互連接時，計算不再依賴中央處理器的逐行指令，而是系統沿著能量地形自發滑向穩定吸引子的物理演化過程。」</blockquote>
+<blockquote><strong>本頁範圍說明</strong>：2024 年諾貝爾物理學獎由 John J. Hopfield 與 Geoffrey E. Hinton 共享，表彰兩人運用統計物理工具奠定人工神經網絡與機器學習之基礎。本頁以 Hopfield (1982) 之奠基論文為主軸，並在 Frontmatter 的 <code>key_papers</code> 中列出 Hopfield (1984) 連續型神經網絡與 Ackley, Hinton &amp; Sejnowski (1985) 波茲曼機（Boltzmann Machine）之關鍵文獻；Hinton 並非 1982 年本篇論文之作者。</blockquote>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p>傳統馮・紐曼架構電腦透過記憶體位址（Address）存取資料，一旦位址損毀便無法檢索；人類大腦卻能憑藉殘缺的氣味或半句歌詞，瞬間喚起完整記憶。Hopfield 在 1982 年借鏡凝聚態物理的自旋玻璃（Spin Glass）模型，證明由簡單二元神經元組成的對稱網路擁有一個單調遞減的「李亞普諾夫能量函數（Lyapunov Energy Function）」，使「內容可尋址記憶（Content-Addressable Memory）」成為嚴格可證明的物理湧現現象。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：局部故障與組合爆炸的雙重困局</h2></div>
+<p>在 1980 年代初，神經科學與人工智慧面臨兩個核心死局：</p>
+<ul><li><strong>生物神經網路的無序與脆弱性</strong>：大腦神經元的激發具有高度隨機非同步性，且部分突觸或細胞隨時可能受損。若按照傳統數位邏輯電路設計，單一元件時序錯亂或損壞就會導致整體系統崩潰。</li><li><strong>感知器（Perceptron）後期的理論斷層</strong>：Minsky 與 Papert (1969) 指出單層感知器的局限後，學界缺乏一套嚴謹的數學語言來分析具反饋迴路（Recurrent Loops）之非線性神經網路的全局穩定性與收斂行為。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>Hopfield 將每個神經元的狀態映射為伊辛模型（Ising Model）中的二元自旋變數 <span class="m-in" data-tex="V_i \in \{0, 1\}"></span>（或 <span class="m-in" data-tex="\{-1, +1\}"></span>），並引入統計物理學的哈密頓量概念，賦予整個神經網路一個全局能量景觀（Energy Landscape）。</p>
+<ol><li><strong>對稱赫布學習律（Hebbian Synaptic Matrix）</strong>：<ul><li>欲在網路中儲存 <span class="m-in" data-tex="M"></span> 個記憶型態（Patterns）<span class="m-in" data-tex="\{V^s\}_{s=1}^M"></span>，任意兩個神經元 <span class="m-in" data-tex="i"></span> 與 <span class="m-in" data-tex="j"></span> 之間的突觸權重 <span class="m-in" data-tex="T_{ij}"></span> 由外積和決定，且滿足對稱性 <span class="m-in" data-tex="T_{ij} = T_{ji}"></span> 與無自反饋 <span class="m-in" data-tex="T_{ii} = 0"></span>。</li></ul></li><li><strong>非同步隨機更新動力學（Asynchronous Stochastic Updating）</strong>：<ul><li>每個神經元以平均速率 <span class="m-in" data-tex="W"></span> 獨立、隨機地檢視來自其他神經元的加權輸入，並根據閾值 <span class="m-in" data-tex="U_i"></span> 更新自身狀態。</li></ul></li><li><strong>能量景觀與吸引子收斂（Energy Minima and Spurious States）</strong>：<ul><li>在對稱權重假設下，每一次單一神經元的狀態翻轉必定使全局能量 <span class="m-in" data-tex="E"></span> 下降或保持不變（<span class="m-in" data-tex="\Delta E \le 0"></span>），保證網路不會陷入無窮震盪，必然收斂至局部能量極小態。需注意並非所有局部極小值皆為預先寫入的記憶吸引子；例如在零閾值下全零狀態（<span class="m-in" data-tex="0000\dots"></span>）亦為穩定態，原文數值模擬顯示約有 10% 試驗會落入無明顯意義的偽穩定態（Spurious States），另有約 5% 停留在目標記憶的鄰近態。</li></ul></li></ol>
+<h3>1. 赫布突觸權重儲存矩陣 (Hebbian Storage Prescription)</h3>
+<p>對於欲儲存的 <span class="m-in" data-tex="M"></span> 個 <span class="m-in" data-tex="N"></span> 維二元狀態向量 <span class="m-in" data-tex="V^s = (V_1^s, V_2^s, \dots, V_N^s)"></span>（其中 <span class="m-in" data-tex="V_i^s \in \{0, 1\}"></span>），突觸連接矩陣定義為：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+T_{ij} &amp;= \sum_{s=1}^{M} (2V_i^s - 1)(2V_j^s - 1), \quad (i \neq j) \\
+T_{ii} &amp;= 0
+\end{aligned}"></span>
+<h3>2. 非同步閾值更新規則 (Asynchronous Threshold Dynamics)</h3>
+<p>任意神經元 <span class="m-in" data-tex="i"></span> 接收來自全網路的突觸電流，並依階躍規則更新其二元激發態：</p>
+<span class="m-disp" data-tex="V_i \leftarrow \begin{cases} 1, &amp; \text{if } \displaystyle\sum_{j \neq i} T_{ij} V_j &gt; U_i \\ 0, &amp; \text{if } \displaystyle\sum_{j \neq i} T_{ij} V_j &lt; U_i \end{cases}"></span>
+<p>其中 <span class="m-in" data-tex="U_i"></span> 為神經元 <span class="m-in" data-tex="i"></span> 之激發閾值（本篇基準設定取 <span class="m-in" data-tex="U_i = 0"></span>）。</p>
+<h3>3. 全局李亞普諾夫能量泛函與單調收斂定理 (Lyapunov Energy Function)</h3>
+<p>Hopfield 構造出控制系統全局演化的能量函數 <span class="m-in" data-tex="E"></span>：</p>
+<span class="m-disp" data-tex="E = -\frac{1}{2} \sum_{i \neq j} T_{ij} V_i V_j + \sum_{i} U_i V_i"></span>
+<p>當神經元 <span class="m-in" data-tex="i"></span> 發生狀態變化 <span class="m-in" data-tex="\Delta V_i"></span> 時，由於 <span class="m-in" data-tex="T_{ij} = T_{ji}"></span> 且 <span class="m-in" data-tex="T_{ii} = 0"></span>，系統能量的變化量為：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\Delta E &amp;= -\Delta V_i \left( \sum_{j \neq i} T_{ij} V_j - U_i \right) \\
+&amp;\le 0
+\end{aligned}"></span>
+<p>因為當括號內總和大於零時 <span class="m-in" data-tex="\Delta V_i \ge 0"></span>，小於零時 <span class="m-in" data-tex="\Delta V_i \le 0"></span>，故乘積恆為非負，<span class="m-in" data-tex="\Delta E \le 0"></span>。由於狀態空間有限，<span class="m-in" data-tex="E"></span> 必有下界，系統必然收斂至局部能量極小態（Stable Attractor）。極小態包含名義記憶吸引子、全零態（<span class="m-in" data-tex="0000\dots"></span>）與混合偽態。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Hopfield 1982）之核心證據</h3>
+<ul><li>**記憶容量與神經元規模的線性標度律（<span class="m-in" data-tex="0.15N"></span> 近似上限）**：Hopfield 在 PNAS p. 2556 指出，在檢索誤差變得嚴重之前，系統約可同時儲存 <span class="m-in" data-tex="M \approx 0.15N"></span> 個名義記憶型態。隨機產生的型態在統計上具有「偽正交性（pseudoorthogonality）」，而非嚴格正交；當儲存數量增加時會出現位元翻轉錯誤，在 <span class="m-in" data-tex="N = 100"></span> 時，<span class="m-in" data-tex="n=5"></span> 可達成零錯誤，<span class="m-in" data-tex="n=10"></span> 與 <span class="m-in" data-tex="n=15"></span> 則已出現不同程度之位元偏差（見原文 Fig. 2 誤差分佈），因此 <span class="m-in" data-tex="0.15N"></span> 係指嚴重退化前之近似容量，並非保證 100% 完整無誤檢索。</li><li><strong>信噪比（Signal-to-Noise Ratio）解析解</strong>：當讀取第 <span class="m-in" data-tex="s&#x27;"></span> 個名義記憶時，有效場 <span class="m-in" data-tex="H_i^{s&#x27;}"></span> 的期望值為 <span class="m-in" data-tex="\pm N/2"></span>，而來自其餘 <span class="m-in" data-tex="M-1"></span> 個記憶的交叉干擾雜訊呈現均值為 0、標準差為 <span class="m-in" data-tex="\sigma = \sqrt{(M-1)N/2}"></span> 的高斯分佈。單一位元的錯誤率可由高斯分佈尾部積分推導： <span class="m-disp" data-tex="P = \frac{1}{\sqrt{2\pi}\sigma} \int_{N/2}^{\infty} e^{-x^2 / (2\sigma^2)} \, dx"></span> 當 <span class="m-in" data-tex="N=100, n=10"></span> 時理論位元錯誤率 <span class="m-in" data-tex="P=0.0091"></span>，100 位元皆無錯之狀態機率約 <span class="m-in" data-tex="e^{-0.91} \approx 0.40"></span>（蒙地卡羅模擬實測值約 0.60），清楚界定了記憶過載（Overload）相變的數學邊界。</li><li><strong>對硬體損毀與突觸失效的平緩退化（Fail-Soft Degradation）</strong>：系統展現出非局域分佈式儲存的物理韌性。Hopfield 分析指出，即使突觸連接非對稱化（如僅保留單向連接使信噪比下降 <span class="m-in" data-tex="1/\sqrt{2}"></span>）或簡化為非線性二值符號截斷（Clipped <span class="m-in" data-tex="T_{ij} = \pm 1"></span>，信噪比下降 <span class="m-in" data-tex="\sqrt{2/\pi}"></span>），演算法仍能收斂至穩定極小值；隨著突觸失效增加，信噪比平緩下降、錯誤率緩慢上升，呈現「平緩退化（Fail-Soft）」而非災難性崩潰。</li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li>**統計力學嚴格容量極限（<span class="m-in" data-tex="\alpha_c \approx 0.138"></span>）**：Amit, Gutfreund &amp; Sompolinsky (1985), <em>Physical Review Letters</em> 55:1530-1533，運用自旋玻璃副本對稱破缺（Replica Symmetry Breaking）方法，嚴格解出 Hopfield 網路在零溫下的相變臨界容量為 <span class="m-in" data-tex="M/N \approx 0.138"></span>。</li><li><strong>波茲曼機與機率生成學習</strong>：Ackley, Hinton &amp; Sejnowski (1985), <em>Cognitive Science</em> 9:147-169，將 Hopfield 確定性能量景觀推廣為含隱藏層的波茲曼機率分佈 <span class="m-in" data-tex="P(s) \propto e^{-E(s)/T}"></span>，開啟深度生成模型先河。</li><li><strong>現代密集聯想記憶與 Transformer 注意力機制之等價性</strong>：Ramsauer et al. (2021), <em>ICLR 2021</em> (arXiv:2008.02217)，證明將 Hopfield 能量函數中的二次交互作用升級為指數交互作用（Modern Hopfield Networks）後，其單步更新規則在數學上嚴格等價於 Transformer 的 Softmax 自注意力機制（Self-Attention），且儲存容量呈指數級增長。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>統計物理與人工智慧的歷史性合流</strong>：Hopfield 網路讓無數理論物理學家（如 Parisi 自旋玻璃學派）湧入神經網路研究，確立了以自由能、相變、熵與吸引子分析機器學習的學科範式。</li><li><strong>從確定性記憶到深度生成模型</strong>：Hinton 在此基礎上引入統計熱力學溫度與受限波茲曼機（RBM），直接催生了 2006 年深度學習復興與當代基於能量模型（Energy-Based Models）及擴散模型（Diffusion Models）的理論根基。</li><li><strong>計算神經科學的迴路典範</strong>：海馬體 CA3 區的自聯想迴路（Auto-associative Network）與內嗅皮質網格細胞的連續吸引子網路（Continuous Attractor Neural Networks），均以 Hopfield 能量地形作為標準理論框架。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>Hopfield 的核心洞見在於：<strong>不要把物理定律當成計算工程需要克服的雜訊，而要把物理定律本身變成計算的引擎。</strong></p>
+<ol><li><strong>物理多體系統即計算機</strong>：磁性材料中的無序自旋交互作用與大腦中的突觸傳導，在數學結構上共享同一個李亞普諾夫泛函。</li><li><strong>從局部規則到全局智慧的湧現（Emergence）</strong>：單一神經元並不知道什麼是「記憶」，但當成千上萬個神經元遵循對稱耦合規則時，記憶便作為相空間中的幾何吸引子自發誕生。</li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>1982</b><span>發表・Proceedings of the National Academy of Sciences</span></div>
+    <div class="yr award"><b>2024</b><span>諾貝爾物理學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>John J. Hopfield</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>John J. Hopfield<br>Geoffrey E. Hinton</span><span class="note">Hinton 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Proceedings of the National Academy of Sciences, 79(8), 2554-2558</span><a href="https://doi.org/10.1073/pnas.79.8.2554">doi:10.1073/pnas.79.8.2554</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#統計物理</span><span class="chip">#人工智慧</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>神經迴路因果解耦</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>腦機介面與神經編碼</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>生成式世界模型與擴展定律</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>容錯量子計算與量子糾錯碼</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1073/pnas.79.8.2554">Hopfield, J. J. (1982)</a><a href="https://doi.org/10.1073/pnas.81.10.3088">Hopfield, J. J. (1984)</a><a href="https://doi.org/10.1207/s15516709cog0901_7">Ackley, D. H., Hinton, G. E., &amp; Sejnowski, T. J. (1985)</a></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cur = -1, lock = 0;
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    if (Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = 0;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  window.addEventListener('scroll', spy, { passive: true });
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

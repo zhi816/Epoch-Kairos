@@ -43,7 +43,8 @@ description: >-
 | `wiki/papers/<slug>.md` 全文 | 卡片內容的唯一文字來源 |
 | `wiki/evidence/<slug>.md` 全文 | 數字與強斷言的唯一依據 |
 | `wiki/issues.md` 中本頁條目 | 是否有尚未修正的問題影響卡片 |
-| 範例 `wiki/cards/1982-hopfield-network.md` | 完整格式範例；只看格式，**內容不得套用到其他論文** |
+| 範例 `wiki/cards/1982-hopfield-network.md`（群星）、`wiki/cards/2021-seediq-chinese-mt-you.md`（我的關注） | 完整格式範例；只看格式，**內容不得套用到其他論文** |
+| 參考網頁 `web/prototypes/paper-v1/<slug>.html` | 上述兩份卡片檔實際做成論文頁的樣子（`python tools/build_paper_prototype.py <slug>` 產生，建置前會先跑檢查腳本）；寫完卡片可用同一指令產生自己那篇對照 |
 
 ## 四、卡片總覽
 
