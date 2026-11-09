@@ -716,3 +716,12 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：前一筆「修正日誌暫存器忽略條目間空行導致提交後殘留差異」之標題時間誤寫為 09:42，實際提交時間為 09:26（提交 `3a5d547`）。依 append-only 原則不改動原條目，於此更正。
+
+## [2026-11-09 09:31] rule | 日誌標題時間改以指令取得並由暫存腳本機械檢查 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：
+  - **起因**：本代理 09:26 之條目憑估計將時間寫為 09:42，更正條目亦誤差兩分鐘。各家 AI 皆可能未查時間即填寫標題。
+  - **新增 [log_time.py](../.agents/skills/git-sync-guardian/scripts/log_time.py)**：輸出臺北時間（UTC+8）`YYYY-MM-DD HH:MM`，不受本機時區影響，跨平台可用。本條標題時間即由此取得。
+  - **[stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py) 機械檢查**：自己的新條目標題晚於現在 5 分鐘以上即擋下；早於現在 60 分鐘以上須加 `--allow-stale`。[safe_commit_push.sh](../.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh) 新增 `--allow-stale-log` 轉傳，且日誌暫存失敗時還原本次暫存並中止，不留暫存給下一位代理。以含遠端之暫存倉庫測試四種情境（現在、晚 16 分鐘、早 90 分鐘、早 90 分鐘加放行），結果皆符合預期。
+  - **規範**：[AGENTS.md](../AGENTS.md) 第六章 Ingest 第 5 步與第十章第 6、7 條、[git-sync-guardian SKILL.md](../.agents/skills/git-sync-guardian/SKILL.md) 第 6 條與日誌工具段，明定標題時間一律先執行 `log_time.py` 取得。

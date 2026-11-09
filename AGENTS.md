@@ -182,6 +182,7 @@ AI 在協作時，必須嚴格遵循以下三大標準作業程序（SOP）：
    * **標題第三段（`<領域標籤>`）**：操作對象為單一論文或概念頁時，填其 `domain_tags`（須取自第八章白名單，以空格分隔）；涉及多個條目或全庫之操作（如 `init`、`config`、`rule`、`audit`、`lint`、`git`）一律填 `全域`，不得改用 `多領域` 等其他寫法。本規則於 2026-11-08 合併入 main 後生效；此前之條目（含於其他分支並行寫入者）缺漏第三段、使用 `多領域` 或白名單外標籤者維持原樣，不回溯修改，以維持日誌 append-only 之完整性。
    * **動作類型（`<動作>`）一律取自下列詞彙**，不得自創：
      `init`（初始化）、`ingest`（收錄新來源）、`query`（綜述檢索）、`lint`（健康檢查）、`audit`（規範審查）、`fix`（錯誤修正）、`rule`（規範變更）、`design`（視覺設計）、`math`（公式修訂）、`update`（內容更新）、`config`（組態變更）、`git`（版本控管）。
+   * **標題時間一律以指令取得，嚴禁憑估計或記憶填寫**：寫入標題前先執行 `python .agents/skills/git-sync-guardian/scripts/log_time.py`，將輸出之臺北時間（UTC+8，格式 `YYYY-MM-DD HH:MM`）原樣填入 `## [...]`。此腳本不受本機時區影響，Windows、macOS 與雲端環境皆適用。`stage_log.py` 會擋下晚於現在 5 分鐘以上、或早於現在 60 分鐘以上之自己的新條目（後者僅於推送失敗後重試等情形，可以 `--allow-stale-log` 放行）。背景：2026-11-09 曾有代理憑估計把 09:26 寫成 09:42，只能另追加更正條目。
    * **日誌連結一律使用相對路徑**，嚴禁寫入 `file:///C:/...` 等本機絕對路徑，以確保在 GitHub 與他台機器上皆不失效。
    * **寫入日誌即提交**：日誌條目代表一項工作已完成。追加自己的條目後，須在同一回合內依第十章以 `safe_commit_push.sh` 提交並推送該條目與本項工作修改的檔案，無須等待使用者另行指示（使用者明確要求暫緩時除外）。工作尚未完成、或使用者要求先不提交時，先不寫日誌。寫入一律追加於檔尾，不得讀取後整檔覆寫，亦不得改動他人條目。
 
@@ -410,7 +411,8 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
    - 在 `wiki/log.md` 追加自己的條目後，必須在同一回合內以 `safe_commit_push.sh` 提交並推送該條目與本項工作修改的檔案，無須等待使用者另行說「提交」；僅在使用者明確要求暫緩時例外。
    - 工作尚未完成、或使用者要求先不提交時，先不要寫日誌；進度留在工作檔，完成後一次寫入並提交。
    - 寫日誌一律追加於檔尾，不得讀取整份日誌後整檔寫回（會覆蓋他人剛追加、尚未提交的條目），亦不得改動他人條目。
+   - 標題時間一律先執行 `scripts/log_time.py` 取得，不得憑估計填寫（規則見第六章 Ingest 第 5 步；`stage_log.py` 會機械檢查）。
    - 目的：日誌是共用檔案，條目滯留在工作目錄會被他人誤帶、阻擋同步，甚至遭覆寫；每筆日誌都對應一個已推送的提交，多 AI 協作出問題時才能立即追查。
 7. **專屬輔助技能與工具鏈調用**：
-   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`）及日誌工具（`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。`stage_log.py` 暫存之條目順序一律跟隨工作目錄，不依時間重排，以免提交後日誌持續顯示為已修改。其餘專屬 Skill 見第六章開頭之 Skill 一覽。
+   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`）及日誌工具（`scripts/log_time.py` 取得日誌標題時間、`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。`stage_log.py` 暫存之條目順序一律跟隨工作目錄，不依時間重排，以免提交後日誌持續顯示為已修改。其餘專屬 Skill 見第六章開頭之 Skill 一覽。
 

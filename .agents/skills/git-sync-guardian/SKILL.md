@@ -52,6 +52,7 @@ description: >-
 - 日誌條目代表一項工作已完成。在 `wiki/log.md` 追加自己的條目後，**必須在同一回合內**以 `safe_commit_push.sh` 提交並推送該條目與本項工作修改的檔案，不需等待使用者另外說「提交」；僅在使用者明確要求暫緩時例外。這是使用者對所有代理的常設授權：本專案以自動化為目標，每筆日誌都對應一個已推送的提交，多 AI 協作出問題時才能立即追查。
 - 工作尚未完成、或使用者要求先不提交時，**先不要寫日誌**；進度留在工作檔，完成後一次寫入、一次提交。
 - 寫日誌一律**追加於檔尾**（例如以附加模式開檔），不得把整份日誌讀進來再整檔寫回，以免覆蓋他人剛追加、尚未提交的條目；亦不得改動他人條目。
+- **標題時間一律以指令取得**：寫標題前先執行 `python .agents/skills/git-sync-guardian/scripts/log_time.py`，把輸出的臺北時間原樣填入 `## [YYYY-MM-DD HH:MM]`，不得憑估計、記憶或對話中的時間推算。`stage_log.py` 會擋下晚於現在 5 分鐘以上或早於現在 60 分鐘以上的自己的新條目，`safe_commit_push.sh` 隨即還原本次暫存並中止；僅在條目確實早已寫好（例如推送失敗後重試）時，加 `--allow-stale-log` 放行。被擋下時，修正工作目錄中自己那筆尚未提交的條目標題即可。
 
 ---
 
@@ -93,6 +94,9 @@ description: >-
 
 ### 4. 日誌工具
 ```bash
+# 取得日誌標題時間（臺北時間，不受本機時區影響）；寫標題前必先執行
+python .agents/skills/git-sync-guardian/scripts/log_time.py
+
 # 只暫存自己的日誌條目（--dry-run 只列出不寫入）
 python .agents/skills/git-sync-guardian/scripts/stage_log.py "Claude Code" --dry-run
 

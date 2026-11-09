@@ -14,9 +14,11 @@
 結束代碼：0 成功（含沒有可暫存條目），1 錯誤（例如既有條目被改寫，違反 append-only）。
 """
 import argparse
+import os
 import re
 import subprocess
 import sys
+from datetime import datetime
 
 LOG_PATH = 'wiki/log.md'
 HEADING = re.compile(r'(?m)^## \[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\]')
@@ -43,6 +45,35 @@ def norm(entry):
     return entry.replace('\r\n', '\n').strip()
 
 
+FUTURE_MINUTES = 5    # 標題時間晚於現在超過此分鐘數：視為憑估計填寫，一律擋下
+STALE_MINUTES = 60    # 標題時間早於現在超過此分鐘數：須加 --allow-stale 才放行
+
+
+def check_timestamps(mine, allow_stale):
+    """日誌標題時間必須取自 log_time.py（臺北時間），不得憑估計填寫。回傳是否有錯誤。"""
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from log_time import now_taipei
+    now = now_taipei().replace(tzinfo=None)
+    bad = False
+    for e, _ in mine:
+        head = e.splitlines()[0]
+        m = HEADING.match(e)
+        t = datetime.strptime(m.group(1), '%Y-%m-%d %H:%M')
+        diff = (t - now).total_seconds() / 60
+        if diff > FUTURE_MINUTES:
+            sys.stderr.write('錯誤：日誌標題時間晚於現在（臺北時間 %s）：%s\n' % (now.strftime('%Y-%m-%d %H:%M'), head))
+            bad = True
+        elif -diff > STALE_MINUTES and not allow_stale:
+            sys.stderr.write('錯誤：日誌標題時間早於現在 %d 分鐘以上（臺北時間 %s）：%s\n'
+                             % (STALE_MINUTES, now.strftime('%Y-%m-%d %H:%M'), head))
+            bad = True
+    if bad:
+        sys.stderr.write('請先執行 python .agents/skills/git-sync-guardian/scripts/log_time.py 取得目前時間，\n'
+                         '再於工作目錄中修正自己這筆尚未提交的條目標題。若條目確實早已寫好（例如推送失敗後重試），\n'
+                         '可改加 --allow-stale。\n')
+    return bad
+
+
 def with_work_trailing(base_entry, work_entry, eol):
     """已提交條目的內文照 HEAD 原樣保留，但尾端空行（即與下一條之間的間隔）改用工作目錄的版本。
 
@@ -62,6 +93,8 @@ def main():
     ap.add_argument('agent', help='執行代理名稱的一部分，例如 "Claude Code"、"Codex"、"Antigravity"')
     ap.add_argument('--heading', action='append', default=[], help='只選取指定的新日誌標題行；可重複指定')
     ap.add_argument('--dry-run', action='store_true', help='只列出結果，不寫入暫存區')
+    ap.add_argument('--allow-stale', action='store_true',
+                    help='允許標題時間早於現在 %d 分鐘以上（僅限條目確實早已寫好、例如推送失敗後重試）' % STALE_MINUTES)
     a = ap.parse_args()
 
     root = git('rev-parse', '--show-toplevel').decode().strip()
@@ -99,6 +132,10 @@ def main():
         m = AGENT_LINE.search(e)
         who = m.group(1).strip() if m else '（未標明執行代理）'
         (mine if m and a.agent.lower() in who.lower() else others).append((e, who))
+
+    bad_time = check_timestamps(mine, a.allow_stale)
+    if bad_time:
+        sys.exit(1)
 
     for e, who in mine:
         print('暫存：' + e.splitlines()[0])
