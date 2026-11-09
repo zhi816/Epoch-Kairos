@@ -1053,6 +1053,11 @@
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：依 [2026-11-09 11:15] 新增之規則，依各論文頁現行內文為 41 篇擬 `card_line`，經使用者審閱清單後全數照寫，插入各頁 Frontmatter `hook` 之下一行；全部 20 字以內，未含數值，強斷言僅 LIGO「第一次直接測到」一句（論文頁與證據表支持）。[lint_wiki.py](../.agents/skills/wiki-content-audit/scripts/lint_wiki.py) 將 `card_line` 列入論文頁必填欄位，超過 20 字或與 `hook` 相同者報 ERROR，含數字者報 WARN；執行結果 ERROR 0。
 
+## [2026-11-09 11:22] config | .gitignore 排除 Python 位元組碼快取 __pycache__ | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：經使用者同意，[.gitignore](../.gitignore) 新增 `__pycache__/`。執行 `git-sync-guardian` 等 Skill 的 Python 腳本時，會在 `scripts/__pycache__/` 自動產生位元組碼快取，先前無人認領而一直列在未提交清單中；改為忽略後不再干擾各代理判斷工作目錄中的他人修改。
+
 ## [2026-11-09 11:30] design | 手機版 v2 卡片牆與論文頁封面改為版型 F | 全域
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
