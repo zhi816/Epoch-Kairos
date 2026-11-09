@@ -12,7 +12,7 @@
 ### TD-002 | waiting | web | 產出 web/ 展示層並將論文頁升級為 published
 - **內容**：`web/` 目前只有 `prototypes/` 樣稿（mobile-v1、mobile-v2）與空的 `papers/`，尚無 `web/index.html` 與任何 `web/papers/<slug>/index.html`；41 篇論文頁皆為 `status: "wiki"`，Lint 第 3 條三層對齊因而未通過。依第六章 Ingest 第 4 步與第七章第 3 節產出首頁時間線與各論文雙欄頁後，將對應論文頁改為 `published`。首頁首版（知識星圖）已於 2026-11-09 完成（原 TD-006，由 `tools/build_home.py` 產生），本條以論文頁為主。
 - **完成條件**：`web/index.html` 與各論文之 `web/papers/<slug>/index.html` 產出，對應論文頁 `status` 改為 `published`，`lint_wiki.py` 無 ERROR。
-- **等待**：[DESIGN.md](../DESIGN.md) 第八章待決事項定案。第 9 項（論文頁視覺）已於 2026-11-09 定案為樣稿「論文頁 F」（DESIGN.md 第五章），第 10 項已隨首版首頁完成；第 14 項（卡組丁深色重點色）亦已定案；尚待第 1 項（首頁主案 v4 定稿），並請使用者確認何時動工。實作時將深色重點色寫入 `theme.css`（`--deep-<domain>`）並同步 AGENTS.md 第二章色表（DESIGN.md 第七章）。
+- **等待**：[DESIGN.md](../DESIGN.md) 第八章待決事項定案。第 9 項（論文頁視覺）已於 2026-11-09 定案為樣稿「論文頁 F」（DESIGN.md 第五章），第 10 項已隨首版首頁完成；第 14 項（卡組丁深色重點色）亦已定案；第 1 項（首頁主案 v4）已於 2026-11-09 由使用者表示暫定。論文頁正式產出仍待 TD-008 卡片文字檔，並請使用者確認何時動工；在此之前以 `tools/build_paper_prototype.py` 產生之 `web/prototypes/paper-v1/` 原型代替。實作時將深色重點色寫入 `theme.css`（`--deep-<domain>`）並同步 AGENTS.md 第二章色表（DESIGN.md 第七章）。
 - **來源**：wiki/log.md [2026-11-07 22:47] audit「延後處理」與 index.md 原「待辦與已知問題」一節；2026-11-09 登記，Claude Code by Anthropic。
 
 ### TD-003 | waiting | raw | 取得光遺傳學頁奠基論文 Nagel et al. (2002) 原始 PDF
@@ -30,7 +30,7 @@
 ### TD-005 | waiting | web | 以 GitHub Actions 將 web/ 發布至 GitHub Pages
 - **內容**：GitHub Pages 之「Deploy from a branch」只接受倉庫根目錄或 `/docs`，無法直接發布 `web/`，且主倉庫目前尚無 `.github/` 目錄。新增 `.github/workflows/pages.yml`：推送至 `main` 且 `web/**` 有變動時觸發（另加 `workflow_dispatch` 供手動重新發布），依序以 `actions/checkout`、`actions/configure-pages`、`actions/upload-pages-artifact`（`path: web`）、`actions/deploy-pages` 發布，只公開 `web/` 之內容，`wiki/`、`AGENTS.md` 等不上站；寫入前先確認各 action 之最新主版本號。首頁檔名維持 `web/index.html`、論文頁維持 `web/papers/<slug>/index.html`，網址即 `https://zhi816.github.io/Epoch-Kairos/` 與 `https://zhi816.github.io/Epoch-Kairos/papers/<slug>/`。發布後將 README.md「GitHub Pages 成果展示」一行之暫定連結改為正式連結。
 - **完成條件**：工作流程首次執行成功（倉庫 Actions 分頁顯示成功），首頁網址可正常開啟，`assets/` 與 KaTeX 資源載入無誤，README 連結已更新。
-- **等待**：使用者確定首頁 `web/index.html`（TD-006）後再發布；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。
+- **等待**：首頁加入群星檔案卡片牆（TD-009）、使用者確定首頁 `web/index.html` 後再發布（首頁其餘部分已於 2026-11-09 暫定）；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。
 - **進度**：使用者已於 2026-11-09 同意我的星系公開其研究主題（臺灣南島語計算語言學、低資源機器翻譯）與 24 篇關注論文；碩論題目、資料與結果仍不公開（DESIGN.md 第八章第 13 項、paper-card-writer 第二節第 13 條）。
 - **來源**：使用者指示（首頁確定後再發布）；2026-11-09 登記，Claude Code by Anthropic。
 
@@ -39,7 +39,15 @@
 - **完成條件**：清單列畢且經使用者確認處置方式（逐列修正，或於 AGENTS.md 明訂組合值之使用規則），必要時 `lint_wiki.py` 增列檢查；未經確認前不動任何證據表。
 - **來源**：使用者指示（2026-11-09 交接，承接 EK-090 之證據表類型觀察）；2026-11-09 登記，DeepSeek Harness（DeepSeek-V4.1-Flash）。
 
-### TD-008 | open | wiki | 依 paper-card-writer 回填其餘 39 篇論文之卡片文字檔
+### TD-008 | doing | wiki | 依 paper-card-writer 回填其餘 39 篇論文之卡片文字檔
 - **內容**：目前只有 [1982-hopfield-network](cards/1982-hopfield-network.md) 與 [2021-seediq-chinese-mt-you](cards/2021-seediq-chinese-mt-you.md) 有卡片文字檔。其餘 39 篇依 [`paper-card-writer`](../.agents/skills/paper-card-writer/SKILL.md) 逐篇撰寫 `wiki/cards/<slug>.md`（封面斷行、導語、Card 2 至 6、Card 3 示意圖）。每篇都要完成該 Skill 第五節第 1 至 9 步，**包括第 7 步建置論文頁原型並驗證**（`python tools/build_paper_prototype.py <slug>` 自我檢查 ERROR 0；有瀏覽器工具者 `verify_page.js` 結果 PASS，細則見 `references/paper-page.md`），交付說明依第八節格式逐項填寫，一篇一個提交。須遵守該 Skill 第七節批次規則：一次一篇、每篇重開論文頁與證據表、每五篇重讀硬規則、用量不足以做完一整篇時不開新篇；交付前逐項核對第十一節偷工自查表。`2005-optogenetics` 與 `2016-ligo-gravitational-waves` 尚無證據表，須先依 `wiki-content-audit` 建立證據表才能寫卡片；論文頁 `verification` 為 `issues` 者，先確認問題是否影響卡片內容。我的關注論文之內頁配色已暫定與群星相同之學科色底（DESIGN.md 第五章第 2 節），不影響文字撰寫。另：`tools/build_home.py` 之 `STUDY_TYPE` 對照表日後改讀卡片檔「研究類型」，論文頁建置（TD-002）改讀 `wiki/cards/`。
 - **完成條件**：41 篇論文皆有卡片文字檔與 `web/prototypes/paper-v1/<slug>.html`，`python .agents/skills/paper-card-writer/scripts/check_cards.py --missing` 無 ERROR、無 INFO（缺檔）列，`python tools/build_paper_prototype.py`（不帶參數）全部自我檢查 ERROR 0，WARN 逐條處理或於日誌交代；未以瀏覽器驗證之篇目列於 `wiki/todo.md` 待補驗。可分批進行，每篇一筆日誌與一個提交；只寫了卡片檔而未建置驗證之篇目不算完成。
+- **負責**：第一批由三個對話分工（見進度），各做 6 篇；第二批由協調者（Claude Code，本條登記者）於第一批完成後分配。
+- **進度**：2026-11-09 第一批分配（以 `random.Random(20261109)` 自 37 篇可寫論文隨機抽 18 篇；`2005-optogenetics`、`2016-ligo-gravitational-waves` 尚無證據表，不列入）。A 組（Claude Code 協調者所在對話，預覽埠 8781）：`2024-sora-world-simulator`、`2013-icecube-neutrino`、`2025-nerve-mito-cancer`、`2026-data-centric-russian-kyrgyz-mt-novokshanov`、`2024-finnish-northern-sami-mt-saleva`、`2021-alphafold2`。B 組（預覽埠 8782）：`2024-formosan-mt-bilingual-lexicon-zheng`、`2007-woodford-inflation-dynamics`、`2025-deepseek-r1`、`2001-colonial-origins-acemoglu`、`2025-indigenous-tek-ai-revitalization-wang`、`2023-jwst-massive-galaxies`。C 組（預覽埠 8783）：`2026-epark-formosan-dialectometry-gagnier`、`2025-fragment-shot-reasoning-mt-frontull`、`2025-atayalic-oov-enumeration-yang`、`2023-low-resource-nmt-survey-ranathunga`、`2025-atayalic-affix-mt-jin`、`2024-taiwanese-mt-resegmentation-tang`。其餘 19 篇待第二批分配，第一批期間不得接手。並行協調規則（優先於 Skill 中登記 `wiki/todo.md` 與 `wiki/issues.md` 之指示）：只碰自己組別之 `wiki/cards/<slug>.md` 與 `web/prototypes/paper-v1/<slug>.html`；`build_paper_prototype.py` 一律帶 slug 執行；不重建首頁、不改 `wiki/todo.md`、`wiki/issues.md`、論文頁與證據表，發現來源問題或無法以瀏覽器驗證時，該篇於最後回報中寫明，由協調者統一處理；提交以 `safe_commit_push.py` 並加 `--log-heading` 精確指定自己的日誌標題。
 - **來源**：使用者指示（2026-11-09，建立卡片撰寫 Skill）；2026-11-09 登記，Claude Code by Anthropic。
+
+### TD-009 | waiting | web | 首頁加入群星檔案卡片牆
+- **內容**：依 [DESIGN.md](../DESIGN.md) 第二章第 3 節實作首頁下方之群星檔案卡片牆：F 版型「星窗＋一句話」，桌面 3 欄、手機 2 欄，群星為學科色底，我的關注為深色卡＋藍框。由 `tools/build_home.py` 讀取 `wiki/cards/<slug>.md` 之「封面斷行」與 Frontmatter 產生，不手寫資料、不得以程式自動切行（paper-card-writer 之 `references/cover.md` 第三節）；首頁卡片之雙年份用簡稱「諾貝爾獎」。點卡片進入論文頁：正式論文頁（TD-002）產出前連到 `web/prototypes/paper-v1/<slug>.html` 或暫不連結，動工時請使用者決定。完成後將 DESIGN.md 第二章第 0 節「首版不做卡片牆」改為已實作。
+- **完成條件**：`web/index.html` 卡片牆列出全部已收錄論文，每張卡之封面斷行取自卡片檔，`python tools/build_home.py --check` 一致；桌面 1440 x 900 與手機 375 x 812 截圖確認無溢出與重疊；DESIGN.md、AGENTS.md 第四章首頁描述同步。
+- **等待**：TD-008 完成（卡片牆每張卡之封面斷行須取自卡片檔，目前 41 篇只有 2 篇）；是否先以已完成之卡片檔做出部分卡片牆，待使用者決定。
+- **來源**：使用者指示（2026-11-09：首頁目前已暫定，剩下方卡片牆要加入，但卡片尚未完成）；2026-11-09 登記，Claude Code by Anthropic。

@@ -1460,3 +1460,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：查核 `hook` 來歷：2026-11-06 由 Claude Code 新增，原定「供 Card 1 使用」；11-08 新增 `card_line` 後改為 Card 1 長版；11-09 因過長（中位數 93 字）改由卡片檔導語取代，說明改為「供論文頁長文開頭使用」，但長文開頭實際取自論文頁內文之開頭引言，全部建置腳本皆未使用 `hook`。使用者同意保留欄位、不顯示、只作為撰寫導語之素材。[AGENTS.md](../AGENTS.md) 第七章第 1 節 Frontmatter 範例註解與「卡片一句話」說明、[DESIGN.md](../DESIGN.md) 第二章第 3 節與第十章、paper-card-writer 之 `references/cover.md` 第五節同步改寫；欄位仍為必填，Lint 與 41 篇論文頁不變。`lint_wiki.py` ERROR 0、`check_cards.py` ERROR 0。
+
+## [2026-11-09 22:45] update | 首頁暫定、卡片牆與上線排序，卡片回填第一批分工 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依使用者說明：首頁目前已暫定，剩下方群星檔案卡片牆待卡片完成後加入，GitHub Pages 等卡片完成後再上線。[DESIGN.md](../DESIGN.md) 第八章第 1 項補註；[todo.md](todo.md) 新增 TD-009（首頁加入卡片牆，等待 TD-008），TD-005 等待條件改為卡片牆加入後，TD-002 註明首頁已暫定。使用者要求以三個對話分工回填卡片（每個對話至少 6 篇、隨機、不限類別）：以 `random.Random(20261109)` 自 37 篇可寫論文抽 18 篇分為 A（本對話）、B、C 三組，光遺傳學與 LIGO 因無證據表不列入，其餘 19 篇待第二批；TD-008 改為 doing 並記錄分組、預覽埠與並行協調規則（只碰自己組別之卡片檔與原型、建置帶 slug、不改首頁與共用清單、提交加 `--log-heading`）。第一批 18 篇皆不需 `venue_short`。
