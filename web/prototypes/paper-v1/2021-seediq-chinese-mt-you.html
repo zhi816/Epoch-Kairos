@@ -133,7 +133,9 @@ button:disabled{cursor:default;opacity:.3}
 .art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
 .art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
 .art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
-.art blockquote.epigraph{padding:0;background:none;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
 .art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
 .art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
 .art th{color:var(--label);font-weight:500}
@@ -149,6 +151,7 @@ button:disabled{cursor:default;opacity:.3}
 .side .yr.award b{color:var(--star)}
 .side .yr span{color:var(--muted)}
 .side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
 .side .chips{display:flex;flex-wrap:wrap;gap:6px}
 .side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
 .side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
@@ -222,10 +225,10 @@ button:disabled{cursor:default;opacity:.3}
 <span class="kicker">2021 發表 ｜ 碩士論文</span>
 <h1>賽德克語－中文機器翻譯之研究</h1>
 <p class="en">A Study of Seediq-Chinese Machine Translation</p>
-<blockquote class="epigraph">「當一種瀕危的南島語言在數位時代面臨語料荒漠時，計算語言學的使命不是盲目等待大數據的恩賜，而是深入其構詞紋理，以符號規則與神經嵌入的雙重骨架，重新架起通往母語理解的橋樑。」（本頁引言為 Wiki 撰寫，非原文）</blockquote>
-<blockquote><strong>本頁範圍</strong>：國立臺灣海洋大學資訊工程學系碩士論文（2021 年 7 月，指導教授林川傑）。第三章之構詞結構解析方法另以短文發表於 ROCLING 2020（Lin et al., 2020）。本頁數據一律取自論文正文表格；摘要與正文數字不一致處另行註明。</blockquote>
+
 </header>
 <section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">當一種瀕危的南島語言在數位時代面臨語料荒漠時，計算語言學的使命不是盲目等待大數據的恩賜，而是深入其構詞紋理，以符號規則與神經嵌入的雙重骨架，重新架起通往母語理解的橋樑。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
 <p>游景勝的碩士論文自述「以賽德克語做為研究的第一步」，為台灣原住民語開發兩套系統：賽德克語構詞結構自動解析系統，以及賽德克語－中文機器翻譯系統（摘要，p. ii）。研究資料來自宋麗梅教授編撰、已人工標記構詞結構的賽德克語字典例句（6,069 句，作為訓練資料）與兩本語法書例句（885 句，作為測試資料）（第六章，p. 45）。論文提出「深層原形（deep root）」概念描述詞根加後綴時的結尾變化，並把構詞解析得到的詞綴資訊編成布林特徵，與詞嵌入向量拼接後送入神經翻譯模型。</p>
 </section>
 <section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：語料稀少與缺乏構詞標註</h2></div>
@@ -277,6 +280,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="blk"><span class="lab">期刊</span><span>Master&#x27;s Thesis, Department of Computer Science and Engineering, National Taiwan Ocean University</span></div>
     <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#自然語言處理</span><span class="chip">#計算語言學</span><span class="chip">#深度學習</span></div></div>
     <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>臺灣南島語計算語言學與構詞解析</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>低資源神經機器翻譯與檢索增強生成</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">國立臺灣海洋大學資訊工程學系碩士論文（2021 年 7 月，指導教授林川傑）。第三章之構詞結構解析方法另以短文發表於 ROCLING 2020（Lin et al., 2020）。本頁數據一律取自論文正文表格；摘要與正文數字不一致處另行註明。</span></div>
     <div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>已逐項對照原文查核</span></div>
   </aside>
 </div>

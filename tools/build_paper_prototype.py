@@ -253,13 +253,12 @@ def cover(fm, f, no, colors):
         win_extra = ''
         rep = '<span class="rep%s"></span>' % (' award' if fm.get('honor') else '')
     title = one(f, '封面', '封面標題') or home.short_name(fm['title_zh'])
-    venue = home.venue_short(fm['venue'], int(fm['paper_year']))
     tags = '%s・%s' % (DOMAIN[d]['full'], ' '.join(fm.get('domain_tags') or []))
     inner = ('<div class="ph"><span>%s</span><span>%s</span></div>'
              '<div class="win">%s%s%s<span class="line">%s</span></div>'
              '<div class="tags">%s</div><div class="name">%s</div><div class="lead">%s</div><div class="yrs">%s</div>') % (
         esc(no), esc(head_right), stars, win_extra, rep, lines, esc(tags), esc(title),
-        esc(one(f, '封面', '導語')), esc(home.years_line(fm, venue)))
+        esc(one(f, '封面', '導語')), esc(years_full(fm)))
     return wrap(CARD_NAMES[0], inner, ' cover' + (' focus' if focus else ''))
 
 
@@ -336,28 +335,68 @@ def article(fm, body):
                 pre.append(line)
         else:
             cur[2].append(line)
-    venue = home.venue_short(fm['venue'], int(fm['paper_year']))
-    head = ['<header>', '<span class="kicker">%s</span>' % esc(home.years_line(fm, venue)),
+    epigraph, scope, rest = pre_blocks(pre)
+    head = ['<header>', '<span class="kicker">%s</span>' % esc(years_full(fm)),
             '<h1>%s</h1>' % esc(fm['title_zh']), '<p class="en">%s</p>' % esc(fm['title'])]
-    quotes = []
-    for ln in pre:
-        s = ln.strip()
-        if s.startswith('# ') or (s.startswith('**') and '發表' in s):
-            continue
-        quotes.append(ln)
-    block = markdown(quotes)
-    block = block.replace('<blockquote>「', '<blockquote class="epigraph">「', 1)
-    head.append(block)
+    if rest:
+        head.append(markdown(rest))
     head.append('</header>')
     out = ['\n'.join(head)]
     for k, (num, name, body_lines) in enumerate(sections):
-        out.append('<section data-card="%d"><div class="sh"><span class="num" aria-hidden="true">%02d</span><h2>%s</h2></div>\n%s\n</section>'
-                   % (num, num, esc(name), markdown(body_lines)))
-    return '\n'.join(out)
+        # 樣稿「論文頁 F」：論文頁開頭之引言（> 「……」）不放在標題下，改為 01 時代銘文之第一段，去掉引號
+        lead = ''
+        if k == 0 and epigraph:
+            lead = '<p class="epigraph">%s%s</p>\n' % (
+                inline(epigraph[0]), '<span class="src">%s</span>' % inline(epigraph[1]) if epigraph[1] else '')
+        out.append('<section data-card="%d"><div class="sh"><span class="num" aria-hidden="true">%02d</span><h2>%s</h2></div>\n%s%s\n</section>'
+                   % (num, num, esc(name), lead, markdown(body_lines)))
+    return '\n'.join(out), scope
 
 
-def side(fm, concepts):
-    venue = home.venue_short(fm['venue'], int(fm['paper_year']))
+def pre_blocks(pre):
+    """把論文頁第一個 Card 段落之前的內容分成：引言、本頁範圍說明、其餘。
+
+    引言為開頭以「 起頭之引用區塊；本頁範圍說明為以 **本頁範圍 起頭之引用區塊（AGENTS.md 第七章第 1 節
+    「單篇頁容納多篇工作之原則」），改放資訊欄，不得刪除。標題行（# ）與雙年份行（**…發表…**）由頁首另行產生，略過。
+    其餘內容原樣留在頁首，以免漏掉。"""
+    blocks, cur = [], []
+    for ln in pre + ['']:
+        if ln.strip():
+            cur.append(ln)
+        elif cur:
+            blocks.append(cur)
+            cur = []
+    epigraph, scope, rest = '', '', []
+    for b in blocks:
+        s = b[0].strip()
+        if s.startswith('# ') or (s.startswith('**') and '發表' in s and len(b) == 1):
+            continue
+        if all(x.lstrip().startswith('>') for x in b):
+            text = ' '.join(re.sub(r'^\s*>\s?', '', x).strip() for x in b).strip()
+            if text.startswith('「') and not epigraph:
+                # 去掉引號；引號後之出處註記（如「（本頁引言為 Wiki 撰寫，非原文）」）不可丟，另以小字保留
+                m = re.match(r'^「(.*)」\s*(.*)$', text)
+                epigraph = (m.group(1), m.group(2)) if m else (text, '')
+                continue
+            m = re.match(r'^\*\*本頁範圍(?:說明)?\*\*\s*[：:]\s*(.*)$', text)
+            if m and not scope:
+                scope = m.group(1)
+                continue
+        rest += b + ['']
+    return epigraph, scope, rest
+
+
+def years_full(fm):
+    """論文頁之雙年份（Card 1 底部與長文頂部）：獎項寫全名，如「1982 發表 ｜ 2024 諾貝爾物理學獎」（樣稿「論文頁 F」，
+    2026-11-09 使用者確認）。首頁卡片仍用 build_home.years_line 之簡稱「2024 諾貝爾獎」。未獲獎者為期刊或會議簡稱。"""
+    honor = str(fm.get('honor') or '').split('（')[0].strip()
+    if honor and not re.match(r'^\d{4}\s', honor):
+        honor = '%s %s' % (fm['award_year'], honor)
+    return '%s 發表 ｜ %s' % (fm['paper_year'], honor or home.venue_of(fm))
+
+
+def side(fm, concepts, scope=''):
+    venue = home.venue_of(fm)
     parts = ['<div class="blk"><div class="yr"><b>%s</b><span>發表・%s</span></div>' % (fm['paper_year'], esc(venue))]
     if fm.get('honor'):
         honor = re.sub(r'^\d{4}\s*', '', str(fm['honor']).split('（')[0].strip())
@@ -392,6 +431,9 @@ def side(fm, concepts):
             label = re.split(r'\)\s', label, maxsplit=1)[0] + ')' if ')' in label else label
             items.append('<a href="%s">%s</a>' % (esc(m.group(1)), esc(label)) if m else '<span>%s</span>' % esc(label))
         parts.append('<div class="blk"><span class="lab">奠基論文</span>%s</div>' % ''.join(items))
+    if scope:
+        # 論文頁之「本頁範圍說明」：樣稿長文開頭不放，移到此處保留（說明本頁與獎項、奠基論文之關係）
+        parts.append('<div class="blk"><span class="lab">本頁範圍</span><span class="note">%s</span></div>' % inline(scope))
     v = fm.get('verification', '')
     parts.append('<div class="blk"><span class="lab">核實狀態</span><span class="ok">%s%s</span></div>' % (
         '<i aria-hidden="true"></i>' if v == 'verified' else '', esc(VERIFY_TEXT.get(v, '查核狀態：%s（顯示文字待定）' % v))))
@@ -430,18 +472,76 @@ def build(slug, papers, concepts_zh, colors, tpl, nums):
     focus_c = FOCUS.get(d, FOCUS_DEFAULT)
     vars_ = '--star:%s;--deep:%s;--win:%s;--focus:%s' % (star, DEEP[d], mix(star, '#0F1114', 0.1), focus_c)
     cards = '\n'.join([cover(fm, f, nums[slug], colors), card2(f), card3(f, svg), card4(f), card5(f), card6(f)])
+    art, scope = article(fm, body)
     page = (tpl.replace('{{PAGE_TITLE}}', esc(home.short_name(fm['title_zh'])))
             .replace('{{VARS}}', vars_)
             .replace('{{BACK}}', '../../index.html' + ('#my-constellation' if fm.get('my_focus') is True else ''))
             .replace('{{CARDS}}', cards)
-            .replace('{{ARTICLE}}', article(fm, body))
-            .replace('{{SIDE}}', side(fm, [concepts_zh[c] for c in fm.get('concepts') or [] if c in concepts_zh])))
+            .replace('{{ARTICLE}}', art)
+            .replace('{{SIDE}}', side(fm, [concepts_zh[c] for c in fm.get('concepts') or [] if c in concepts_zh], scope)))
     os.makedirs(OUTDIR, exist_ok=True)
     out = os.path.join(OUTDIR, slug + '.html')
     with open(out, 'w', encoding='utf-8', newline='\n') as fh:
         fh.write(page)
     print('已產生 %s' % os.path.relpath(out, ROOT))
-    return True
+    return selfcheck(slug, page, fm, body)
+
+
+# ---------------------------------------------------------------- 產生後自我檢查
+
+VENUE_LINE_MAX = 17   # 資訊欄「發表・期刊」約每行 8.5 字寬（1440 x 900 實測），超過兩行即提示補 venue_short
+
+
+def selfcheck(slug, page, fm, body):
+    """檢查產生的網頁有沒有把論文頁或卡片檔轉壞（paper-card-writer 第五節第 7 步）。
+    只做靜態檢查；公式能否渲染、卡片有沒有溢出，須另以瀏覽器執行 verify_page.js。ERROR 時回傳 False。"""
+    issues = []
+
+    def add(level, msg):
+        issues.append((level, msg))
+    visible = re.sub(r'<script\b.*?</script>|<style\b.*?</style>', '', page, flags=re.S)
+    visible = html.unescape(re.sub(r'<[^>]+>', ' ', visible))
+    if '\x00' in page:
+        add('ERROR', '網頁殘留公式佔位符（\\x00）：build_paper_prototype.py 之 inline() 出錯')
+    if '**' in visible:
+        add('ERROR', '網頁露出 **：論文頁或卡片檔有未配對或未轉換的粗體，片段：%s' % snippet(visible, '**'))
+    if '$' in visible:
+        add('ERROR', '網頁露出 $：公式未轉換，或金額未依 AGENTS.md 第三章寫成「美元」，片段：%s' % snippet(visible, '$'))
+    if '](' in visible:
+        add('ERROR', '網頁露出 ](：Markdown 連結未轉換，片段：%s' % snippet(visible, ']('))
+    if '`' in visible:
+        add('WARN', '網頁露出反引號：行內程式碼未配對，片段：%s' % snippet(visible, '`'))
+    if len(re.findall(r'<section class="card', page)) != 6:
+        add('ERROR', '卡片不是 6 張')
+    if re.findall(r'<section data-card="(\d)"', page) != list('123456'):
+        add('ERROR', '長文段落不是依序之 Card 1 至 6：論文頁須有「## Card N ｜ 名稱」六段')
+    for tex in re.findall(r'data-tex="([^"]*)"', page):
+        if re.search('[㐀-鿿]', html.unescape(tex)):
+            add('ERROR', '公式內含中文字元（AGENTS.md 第三章）：%s' % html.unescape(tex)[:60])
+    pre = body.split('\n## Card 1')[0]
+    if not re.search(r'^>\s*「', pre, re.M):
+        add('ERROR', '論文頁標題下沒有開頭引言（> 「……」），長文 01 段將缺第一段')
+    elif '<p class="epigraph">' not in page:
+        add('ERROR', '論文頁有開頭引言，網頁 01 段卻沒有：引言格式須為單獨一段之 > 「……」')
+    if re.search(r'^>\s*\*\*本頁範圍', pre, re.M) and '>本頁範圍</span>' not in page:
+        add('ERROR', '論文頁有本頁範圍說明，網頁資訊欄卻沒有：格式須為 > **本頁範圍說明**：……')
+    kicker = re.search(r'<span class="kicker">([^<]*)</span>', page)
+    yrs = re.search(r'<div class="yrs">([^<]*)</div>', page)
+    if not (kicker and yrs and kicker.group(1) == yrs.group(1)):
+        add('ERROR', '長文頂部與 Card 1 底部之雙年份不一致')
+    venue = home.venue_of(fm)
+    if cc.width('發表・' + venue) > VENUE_LINE_MAX:
+        add('WARN', '資訊欄「發表・%s」超過兩行：請依 paper-card-writer 之 references/paper-page.md 第三節補 venue_short' % venue)
+    for level, msg in issues:
+        print('%-5s %s  %s' % (level, slug, msg))
+    n_err = sum(1 for lv, _m in issues if lv == 'ERROR')
+    print('自我檢查 %s：ERROR %d、WARN %d' % (slug, n_err, len(issues) - n_err))
+    return n_err == 0
+
+
+def snippet(text, token):
+    i = text.find(token)
+    return re.sub(r'\s+', ' ', text[max(0, i - 20):i + 20]).strip()
 
 
 def main():

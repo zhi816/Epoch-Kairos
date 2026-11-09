@@ -7,6 +7,7 @@ timeline_year: 2016
 authors: "B. P. Abbott et al. (LIGO Scientific Collaboration and Virgo Collaboration)"
 laureates: "Rainer Weiss, Barry C. Barish, Kip S. Thorne"
 venue: "Physical Review Letters, 116(6), 061102"
+venue_short: "PRL"
 honor: "2017 諾貝爾物理學獎（表彰對 LIGO 探測器及重力波直接觀測之決定性貢獻）"
 domain: "physics"
 domain_tags: ["#天體物理", "#宇宙學"]

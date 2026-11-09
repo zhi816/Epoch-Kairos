@@ -6,6 +6,7 @@ award_year: 2024
 timeline_year: 2024
 authors: "Daron Acemoglu, Simon Johnson, James A. Robinson"
 venue: "American Economic Review, 91(5), 1369-1401"
+venue_short: "AER"
 honor: "2024 諾貝爾經濟學獎（表彰對制度如何形成並影響國家繁榮之研究）"
 domain: "econ"
 domain_tags: ["#制度經濟學", "#宏觀經濟學"]

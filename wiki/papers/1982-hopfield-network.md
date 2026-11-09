@@ -7,6 +7,7 @@ timeline_year: 2024
 authors: "John J. Hopfield"
 laureates: "John J. Hopfield, Geoffrey E. Hinton"
 venue: "Proceedings of the National Academy of Sciences, 79(8), 2554-2558"
+venue_short: "PNAS"
 honor: "2024 諾貝爾物理學獎（表彰以人工神經網絡實現機器學習之基礎性發現與發明）"
 domain: "physics"
 domain_tags: ["#統計物理", "#人工智慧"]
