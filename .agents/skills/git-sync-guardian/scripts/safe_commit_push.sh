@@ -91,12 +91,20 @@ reset_paths() {
 # arguments recursively, so only explicit relative file paths are accepted.
 for I in "${!PATHS[@]}"; do PATHS[$I]="${PATHS[$I]//\\//}"; done
 for P in "${PATHS[@]}"; do
-  if [[ -z "$P" || "$P" == "." || "$P" == "./" || "$P" == "-A" || "$P" == "--all" || "$P" == "*" || "$P" == /* || "$P" == ".." || "$P" == ../* || "$P" == */.. || "$P" == */../* || "$P" == *":("* ]]; then
+  if [[ -z "$P" || "$P" == *$'\n'* || "$P" == *$'\r'* || "$P" == "." || "$P" == "./" || "$P" == "-A" || "$P" == "--all" || "$P" == "*" || "$P" == /* || "$P" == ".." || "$P" == ../* || "$P" == */.. || "$P" == */../* || "$P" == *":("* ]]; then
     echo "ERROR: 不接受路徑 '$P'；請列出倉庫內單一檔案的相對路徑。"
     exit 1
   fi
   if [[ "$P" =~ ^[A-Za-z]: ]] || [[ -d "$REPO_PATH/$P" ]]; then
     echo "ERROR: '$P' 是絕對路徑或資料夾；為避免遞迴暫存他人檔案，請逐一列出倉庫內檔案。"
+    exit 1
+  fi
+  if ! INDEX_PATHS=$(git ls-files -- ":(literal)$P"); then
+    echo "ERROR: 無法確認 '$P' 是否為單一檔案路徑；為安全起見已中止。" >&2
+    exit 1
+  fi
+  if [ -n "$INDEX_PATHS" ] && [ "$INDEX_PATHS" != "$P" ]; then
+    echo "ERROR: '$P' 對應到索引中的資料夾內容；請逐一列出檔案。"
     exit 1
   fi
 done

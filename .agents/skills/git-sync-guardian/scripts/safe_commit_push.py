@@ -83,6 +83,8 @@ def validate_paths(repo_path, paths):
         parts = norm_path.split('/')
         if (
             not norm_path
+            or '\n' in path
+            or '\r' in path
             or norm_path in ('.', './', '-A', '--all', '*')
             or os.path.isabs(path)
             or ntpath.isabs(path)
@@ -95,6 +97,16 @@ def validate_paths(repo_path, paths):
         disk_path = os.path.join(repo_path, *parts)
         if os.path.isdir(disk_path):
             print(f"ERROR: '{path}' 是資料夾；為避免遞迴暫存他人檔案，請逐一列出檔案。")
+            return None
+        indexed = run_git(repo_path, 'ls-files', '-z', '--', f':(literal){norm_path}')
+        if indexed.returncode != 0:
+            if indexed.stderr:
+                sys.stderr.write(indexed.stderr)
+            print(f"ERROR: 無法確認 '{path}' 是否為單一檔案路徑；為安全起見已中止。")
+            return None
+        indexed_paths = [item for item in indexed.stdout.split('\0') if item]
+        if any(item != norm_path for item in indexed_paths):
+            print(f"ERROR: '{path}' 對應到索引中的資料夾內容；請逐一列出檔案。")
             return None
         normalized.append(norm_path)
     return normalized
