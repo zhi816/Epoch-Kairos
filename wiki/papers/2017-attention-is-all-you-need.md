@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#深度學習"]
 concepts: ["generative-world-models", "ai-for-structural-biology", "neural-circuits"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: false
 doi_url: "https://arxiv.org/abs/1706.03762"
 key_papers:
@@ -93,7 +93,7 @@ PE_{(pos, 2i+1)} &= \cos\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \right)
 * **路徑長度與計算複雜度對比**：自注意力層的最大交互路徑長度為 $O(1)$、順序操作數為 $O(1)$，每層計算複雜度為 $O(n^2 \cdot d)$；相比之下，循環層（Recurrent Layer）的最大路徑長度與順序操作數皆高達 $O(n)$，每層計算複雜度為 $O(n \cdot d^2)$。在自然語言常見之序列長度 $n < d$（例如 $n \ll 512$）區間，自注意力不僅完全可並行，且單層浮點運算量更低。
 * **WMT 2014 英德與英法機器翻譯雙破紀錄**：
   * **英譯德（EN-DE）**：Transformer (big) 達到 **$28.4$ BLEU**，超越當時包括集成模型（Ensembles）在內的所有既有最佳系統超過 $2.0$ BLEU。
-  * **英譯法（EN-FR）**：單一 Transformer (big) 模型達到 **$41.8$ BLEU**，創下單模型最高紀錄。
+  * **英譯法（EN-FR）**：Transformer (big) 在 NeurIPS 定稿正文第 8 頁報告達到 **$41.0$ BLEU**（而在 Table 2 及 arXiv 版中標註為 **$41.8$ BLEU**，NeurIPS 官方摘要頁載為 41.1），超越先前所有既有最佳單一模型與集成系統，且訓練成本不到先前最佳系統的四分之一。
 * **訓練算力與時間大幅下降**：基礎模型（Base Model）在 8 顆 NVIDIA P100 GPU 上僅需訓練 **12 小時**（10 萬步），大型模型（Big Model）僅需訓練 **3.5 天**（30 萬步，總算力 $2.3 \times 10^{19}$ FLOPs），僅為當時頂尖競爭模型（如 ConvS2S Ensemble、GNMT+RL Ensemble）訓練算力成本的四分之一至數十分之一。
 * **英語句法成分剖析（Constituency Parsing）遷移能力**：在 WSJ 測試集上，僅用 WSJ 訓練集達到 $91.3$ F1，半監督設置下達到 $92.7$ F1，證明自注意力機制無須專門針對句法樹設計即可自動習得深層語法結構。
 
@@ -105,7 +105,7 @@ PE_{(pos, 2i+1)} &= \cos\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \right)
 ---
 
 ## Card 5 ｜ 時代典範轉移 (The Revolution)
-* **演算法與 GPU 硬體的完美共振（Hardware Lottery Winner）**：Transformer 將原本細碎的序列時序操作全部轉化為高密度的通用矩陣乘法（GEMM），完美契合 GPU Tensor Cores 的硬體特性，直接開啟了萬卡算力集群時代。
+* **演算法與硬體架構的深度共振（Hardware Lottery Winner）**：Transformer 將原本細碎的遞迴時序操作全部轉化為高密度的通用矩陣乘法（GEMM）。雖然 2017 年原文係在 8 張 NVIDIA P100（Pascal 架構）上完成訓練，但其高度並行的矩陣運算特性，隨後與 NVIDIA 於同年底推出之 Volta 架構（首代搭載 Tensor Cores）乃至現代萬卡 GPU 叢集形成完美的硬體共振，奠定了大模型擴展的算力底座。
 * **模態壁壘的消融（Universal Modality Agnosticism）**：只要能將資訊離散化或投影為向量序列（Tokens）——無論是文字、程式碼、影像圖塊、音訊頻譜、胺基酸序列、DNA 鹼基或機器人關節動作——皆可由同一套 Transformer 架構統一建模。
 * **動態路由與可解釋表徵**：注意力權重矩陣 $\operatorname{softmax}(QK^\top/\sqrt{d_k})$ 相當於根據每次輸入內容即時生成的「動態軟性連線（Dynamic Soft Wiring）」，突破了傳統神經網路推論時權重固定不變的限制。
 
@@ -114,7 +114,7 @@ PE_{(pos, 2i+1)} &= \cos\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \right)
 ## Card 6 ｜ 跨界思維與啟發 (The Kairos)
 《Attention Is All You Need》是科學與工程史上**「減法哲學」**的巔峰之作：
 
-1. **拿掉人為強加的歸納偏置（Inductive Bias），讓資料與規模說話**：在 2017 年以前，研究者總是把注意力機制當作 RNN 或 CNN 的附屬配件；Vaswani 等人敢於問出「如果把 RNN 整個拆掉，只留注意力會怎樣？」，證明過度精密的順序結構反而束縛了模型的全局視野。
+1. **大幅放寬結構性歸納偏置（Inductive Bias），讓資料與規模說話**：相較於 RNN 強制時間步嚴格相鄰遞推、CNN 強制局部空間平移不變性等強結構偏置，Transformer 屏棄了局部鄰域限制，僅保留必要的位置編碼（Positional Encoding）與因果遮罩（Causal Mask）等基礎結構先驗，將兩兩交互的關聯權重完全交由數據驅動的自注意力矩陣自發學習，為後續擴展定律（Scaling Laws）的規模化通用性鋪平了道路。
 2. **與統計物理 Hopfield 網路的跨時空閉環**：1982 年 Hopfield 用二次能量函數定義聯想記憶，35 年後 Transformer 的縮放點積注意力被證明正是「指數型能量函數之現代連續 Hopfield 網路」的單步自由能極小化更新，完成了物理學與深度學習的完美閉環。
 
 ---

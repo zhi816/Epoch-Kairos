@@ -811,3 +811,14 @@
 - **具體變更**：剩餘 17 篇 my-focus 論文頁之第 5–6 篇，逐篇以原文 PDF 全文核對後重寫 Card 1–6 與 hook，各建證據表，`verification` 改為 `verified`：
   - [Xia et al. 2019](papers/2019-generalized-data-augmentation-xia.md)（EK-074）：改述原文之 Procrustes／SVD＋CSLS 詞典歸納逐詞替換與 M-UMT，以及預訓練後混合微調；刪除「字元級音變轉換」與加權目標式；補列表 2；刪除「被 mBART、NLLB 沿用」。
   - [Ranathunga et al. 2023](papers/2023-low-resource-nmt-survey-ranathunga.md)（EK-075）：改列原文六類技術與圖 7 選擇流程；刪除原文未提及之 Adapter、PEFT、RAG 與 $ 錨定式；註明綜述資料截至 2021–2022 年；改述 50 萬／10 萬句為原文之參考門檻。
+
+## [2026-11-09 09:44] fix | Transformer 2017 依原文核實 BLEU 版本與硬體架構並建立證據表 | #人工智慧 #深度學習
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 NeurIPS 30 定稿論文原文（`raw/2017-attention-is-all-you-need.pdf`）全面核實修訂 [wiki/papers/2017-attention-is-all-you-need.md](papers/2017-attention-is-all-you-need.md)。
+  - **EK-018**：Card 4 明確標註英譯法（EN-FR）在 NeurIPS 定稿正文第 8 頁報告為 $41.0$ BLEU，在 Table 2 與 arXiv 版中標註為 $41.8$ BLEU（官方摘要頁載為 41.1），完整呈現版本數值差異。
+  - **EK-019**：Card 5 精確指出 2017 原文係在 8 張 NVIDIA P100（Pascal 架構，無 Tensor Cores）上訓練，其高度並行之 GEMM 矩陣運算特性隨後與 Volta 架構（首代 Tensor Cores）及現代萬卡叢集產生共振，更正時代錯置。
+  - **EK-020**：Card 6 將原先「拿掉歸納偏置」改述為精確的「大幅放寬結構性歸納偏置」，明確交代模型仍保留位置編碼與因果遮罩等基礎先驗，修正絕對化表述。
+  - 新增證據表 [wiki/evidence/2017-attention-is-all-you-need.md](evidence/2017-attention-is-all-you-need.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-018、EK-019 與 EK-020 標記為 `fixed` 並追加處理紀錄。
