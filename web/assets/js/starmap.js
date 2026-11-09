@@ -6,6 +6,7 @@
  * 桌面：滑過或點選星點顯示說明框；點學科中心或懸星索引篩選學科。
  * 手機（860px 以下）：總覽只能點學科中心；點學科中心或篩選列放大該區，放大後才能點星（DESIGN.md 第二章第 5 節）。
  * 我的星系：網址錨點 #my-constellation；入口為「人類群星閃耀時」句末之星，觸控需點兩下（DESIGN.md 第四章）。
+ * 卡片牆：卡片由 tools/build_home.py 寫入頁面，本檔只依模式與篩選切換顯示（DESIGN.md 第二章第 3 節）。
  * 動畫一律受 prefers-reduced-motion 控制。
  */
 (function () {
@@ -710,12 +711,39 @@
   }
   function starStats() { return D.papers.length + ' 顆星・' + Object.keys(D.tags).length + ' 個標籤・' + D.concepts.length + ' 個概念・' + linkCount + ' 條連線'; }
 
+  /* ---------- 群星檔案（卡片牆） ----------
+   * 卡片由 tools/build_home.py 寫進頁面（只收已提交之卡片檔），本段只依模式與篩選切換 hidden，不產生任何卡片內容。
+   * 群星：學科篩選同星圖（本身學科或帶該學科標籤者，data-in）；我的星系：同索引之角色或概念篩選。 */
+  var wallCards = [].slice.call(document.querySelectorAll('#grid .wc'));
+  function renderWall() {
+    var stars = S.mode === 'stars', key = stars ? (S.filter || S.note) : S.ffilter, shown = 0, total, scope;
+    wallCards.forEach(function (c) {
+      var on;
+      if (stars) on = c.dataset.set === 'stars' && (!key || c.dataset.in.split(' ').indexOf(key) >= 0);
+      else on = c.dataset.set === 'focus' && !!byF[c.dataset.slug] && fMatch(byF[c.dataset.slug], key);
+      c.hidden = !on;
+      if (on) shown++;
+    });
+    if (stars) {
+      total = D.papers.filter(function (p) { return !key || paperIn(p, key); }).length;
+      scope = key ? DOM[key].name : '全部';
+    } else {
+      total = FO.papers.filter(function (p) { return fMatch(p, key); }).length;
+      scope = key === 'all' ? '全部' : (key.indexOf('role:') === 0 ? roleName[key.slice(5)] : hubOf(key.slice(4)).name);
+    }
+    $('archInfo').textContent = shown + ' 張・' + scope + '・' + (stars ? '依時間線排列' : '新到舊') + (total > shown ? '・另有 ' + (total - shown) + ' 篇卡片撰寫中' : '');
+    var empty = $('wallEmpty');
+    empty.hidden = shown > 0;
+    empty.textContent = total ? '這裡的卡片還在撰寫中。' : '這個學科還沒有已收錄的論文。';
+  }
+
   /* ---------- 模式文字、圖例與返回 ---------- */
   function modeTexts() {
     var f = S.mode === 'focus';
     document.querySelectorAll('.tf0').forEach(function (s) { s.setAttribute('stop-color', f ? 'rgba(' + BLUE + ',0.85)' : 'rgba(234,230,223,0.6)'); });
     document.querySelectorAll('.tagline').forEach(function (s) { s.textContent = f ? 'A PERSONAL CONSTELLATION' : 'THE KAIROS OF HUMAN THOUGHT'; });
     $('mapLabel').textContent = f ? 'MY CONSTELLATION ｜ 我的星系' : 'CONSTELLATION ｜ 知識星圖';
+    $('archLabel').textContent = f ? 'ARCHIVE ｜ 我的星系檔案' : 'ARCHIVE ｜ 群星檔案';
     $('indexLabel').textContent = f ? 'INDEX ｜ MY FOCUS' : 'INDEX';
     $('index').setAttribute('aria-label', f ? '我的星系索引' : '學科索引');
     var leg = '';
@@ -750,6 +778,7 @@
     updateChips();
     renderInfo();
     updateBack();
+    renderWall();
   }
   function refresh() { paint(); if (!tween) layoutLabels(); }
   function refreshHover() { paint(); if (!tween && cSig() !== lastCSig) layoutLabels(); else renderTip(); }

@@ -61,18 +61,6 @@ def mix(hex1, hex2, k):
     return '#%02X%02X%02X' % tuple(round(x + (y - x) * k) for x, y in zip(b, a))
 
 
-def rnd(seed):
-    s = [seed & 0xFFFFFFFF]
-
-    def r():
-        s[0] = (s[0] + 0x6D2B79F5) & 0xFFFFFFFF
-        t = s[0]
-        t = ((t ^ (t >> 15)) * (1 | t)) & 0xFFFFFFFF
-        t = (t + (((t ^ (t >> 7)) * (61 | t)) & 0xFFFFFFFF)) & 0xFFFFFFFF ^ t
-        return ((t ^ (t >> 14)) & 0xFFFFFFFF) / 4294967296
-    return r
-
-
 # ---------------------------------------------------------------- 行內文字與 Markdown
 
 MATH = re.compile(r'(\$\$.+?\$\$|\$(?:\\.|[^$\\\n])+?\$)')
@@ -244,10 +232,9 @@ def wrap(name, inner, cls=''):
 def cover(fm, f, no, colors):
     d = fm['domain']
     focus = fm.get('my_focus') is True
-    r = rnd(int(fm['paper_year']) * 7919 + len(fm['card_line']))
-    stars = ''.join('<i style="left:%.1f%%;top:%.1f%%;width:%spx;height:%spx;opacity:%.2f"></i>'
-                    % (4 + r() * 92, 4 + r() * 42, sz, sz, 0.3 + r() * 0.55)
-                    for sz in [1 if r() < 0.8 else 1.5 for _ in range(14)])
+    # 星窗小星與首頁卡片牆共用（tools/build_home.py 之 cover_sky），同一篇兩處一致
+    stars = ''.join('<i style="left:%.1f%%;top:%.1f%%;width:%spx;height:%spx;opacity:%.2f"></i>' % (x, y, sz, sz, op)
+                    for x, y, sz, op in home.cover_sky(fm))
     lines = ''.join('<span>%s</span>' % esc(x) for x in one(f, '封面', '封面斷行').split('／'))
     head_right = ROLE.get(fm.get('focus_role'), '') if focus else DOMAIN[d]['short']
     if focus:
@@ -491,17 +478,6 @@ def key_labels(keys):
 
 # ---------------------------------------------------------------- 主程式
 
-def numbering(papers):
-    """卡片編號：群星與我的關注各自依 timeline_year 由新到舊、同年依 slug 排序（暫定，首頁卡片牆實作時統一）。"""
-    out = {}
-    for focus, prefix in ((False, 'No.'), (True, 'F.')):
-        group = sorted((s for s, f in papers.items() if (f.get('my_focus') is True) == focus),
-                       key=lambda s: (-int(papers[s]['timeline_year']), s))
-        for i, s in enumerate(group):
-            out[s] = '%s%02d' % (prefix, i + 1)
-    return out
-
-
 def build(slug, papers, concepts_zh, colors, tpl, nums):
     card_path = os.path.join(WIKI, 'cards', slug + '.md')
     cc.results.clear()
@@ -599,7 +575,7 @@ def main():
                    for p in glob.glob(os.path.join(WIKI, 'concepts', '*.md'))}
     slugs = sys.argv[1:] or sorted(os.path.basename(p)[:-3] for p in glob.glob(os.path.join(WIKI, 'cards', '*.md')))
     tpl = open(TEMPLATE, encoding='utf-8').read()
-    colors, nums = star_colors(), numbering(papers)
+    colors, nums = star_colors(), home.card_numbers(papers)   # 編號與首頁卡片牆共用
     ok = all([build(s, papers, concepts_zh, colors, tpl, nums) for s in slugs])
     sys.exit(0 if ok else 1)
 

@@ -1,7 +1,7 @@
 /**
  * starmap.css：首頁知識星圖（web/index.html）
  * 學科色、字體取自 theme.css；文字色暫用樣稿象牙白（DESIGN.md 第七章，theme.css 之 --text-* 尚未定案移植）。
- * 版面：桌面左欄（直排標題、懸星索引、句末之星）＋右側星圖面板；860px 以下改為手機版（標題、星圖、篩選列、說明框）。
+ * 版面：桌面左欄（直排標題、懸星索引、句末之星）＋右側星圖面板與其下之卡片牆；860px 以下改為手機版（標題、星圖、篩選列、說明框、卡片牆）。
  */
 :root {
   color-scheme: dark;
@@ -153,6 +153,43 @@ body[data-mode="focus"] .back { border-bottom-color: rgba(var(--blue-rgb, 143, 2
 .tip-doi { align-self: flex-start; display: inline-flex; align-items: center; min-height: 24px; margin-top: 2px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; color: var(--tc, var(--fg)); border-bottom: 1px solid currentColor; line-height: 1.3; }
 .tip-doi:hover { color: var(--fg-strong); }
 
+/* ---------- 群星檔案（卡片牆，DESIGN.md 第二章第 3 節 F 版型「星窗＋一句話」） ----------
+ * 卡片固定 3:4，以容器寬度 cqw 等比縮放：尺寸容器宣告在外層 .wc，內距放在內層 .cv（DESIGN.md 第二章第 5 節實作注意）。
+ * 群星：學科星光色底、深墨字；我的關注：深色卡＋藍框（human 用玫瑰粉），星窗左上為研究語言或研究類型。
+ * 星窗與一句話之樣式與論文頁原型 Card 1（tools/paper_template.html .cover）一致，字級依 DESIGN.md 第二章第 5 節。 */
+.stage { container: stage / inline-size; }
+.archive { position: relative; margin-top: 44px; padding-top: 16px; }
+.archive::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, rgba(232, 228, 218, 0.22), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
+body[data-mode="focus"] .archive::before { background: linear-gradient(90deg, rgba(var(--blue-rgb, 143, 213, 253), 0.32), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
+.arch-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; }
+.arch-head h2 { letter-spacing: 0.12em; }
+body[data-mode="focus"] .arch-head h2 { color: var(--blue); }
+.arch-info { font-size: 12px; line-height: 1.6; color: var(--subtle); }
+.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+.wall-empty { margin: 16px 0 0; padding: 26px 0; font-size: 13px; line-height: 1.7; color: var(--soft); }
+.wc { display: block; container-type: inline-size; border-radius: 2px; color: inherit; transition: transform 0.25s ease; }
+.wc:hover { transform: translateY(-3px); }
+.wc:focus-visible { outline: 1px solid var(--fg-strong); outline-offset: 3px; }
+.cv { display: flex; flex-direction: column; gap: 3.6cqw; aspect-ratio: 3 / 4; box-sizing: border-box; padding: 6cqw; border-radius: 2px; overflow: hidden; background: var(--c); color: #0F1013; }
+.cv .top { display: flex; justify-content: space-between; align-items: baseline; gap: 3cqw; font-family: var(--font-mono); font-size: 6.6cqw; letter-spacing: 0.04em; white-space: nowrap; color: rgba(15, 16, 19, 0.78); }
+.cv .top span + span { font-family: var(--font-sans); letter-spacing: 0.12em; }
+.cv .win { position: relative; flex: 1; min-height: 0; overflow: hidden; border-radius: 1px; background: color-mix(in srgb, var(--c) 10%, #0F1114); }
+.cv .win i { position: absolute; border-radius: 50%; background: #FFFFFF; }
+.cv .rep { position: absolute; left: 76%; top: 24%; width: 2.8cqw; height: 2.8cqw; transform: translate(-50%, -50%); border-radius: 50%; background: #FFFDF8; box-shadow: 0 0 3cqw 0.6cqw rgba(244, 241, 234, 0.45); }
+.cv .rep.award { width: 3.4cqw; height: 3.4cqw; box-shadow: 0 0 0 1.7cqw color-mix(in srgb, var(--c) 10%, #0F1114), 0 0 0 2.3cqw rgba(244, 241, 234, 0.55), 0 0 5cqw 1cqw rgba(244, 241, 234, 0.35); }
+.cv .wl { position: absolute; left: 6cqw; right: 6cqw; bottom: 5cqw; display: flex; flex-direction: column; font-family: var(--font-serif-zh); font-weight: 600; font-size: 7.4cqw; line-height: 1.45; letter-spacing: 0.02em; color: var(--c); }
+.cv .ttl { font-family: var(--font-serif-zh); font-weight: 600; font-size: 9.6cqw; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.cv .bot { padding-top: 3cqw; border-top: 1px solid rgba(15, 16, 19, 0.24); font-size: 6.6cqw; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(15, 16, 19, 0.78); }
+.wc.focus .cv { background: #121519; color: #EAE6DF; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 28%, transparent); }
+.wc.focus .top { color: var(--c); }
+.wc.focus .win { background: radial-gradient(110% 80% at 80% 22%, color-mix(in srgb, var(--c) 14%, transparent), transparent 60%), #0C0E11; }
+.wc.focus .rep { left: 80%; top: 22%; width: 5cqw; height: 5cqw; background: radial-gradient(circle, #FFFDF8 0 0.8cqw, rgba(255, 253, 248, 0) 1.1cqw); box-shadow: inset 0 0 0 0.45cqw var(--c), 0 0 3.4cqw 0.6cqw color-mix(in srgb, var(--c) 40%, transparent); }
+.wc.focus .tag { position: absolute; left: 4.5cqw; top: 4.5cqw; max-width: 58cqw; box-sizing: border-box; padding: 0.5cqw 2.4cqw; border-radius: 999px; background: #0C0E11; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 35%, transparent); font-size: 6.6cqw; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--c); }
+.wc.focus .ttl { color: var(--fg-strong); }
+.wc.focus .bot { border-top-color: rgba(234, 230, 223, 0.14); color: var(--muted); }
+/* 右欄較窄時（約 1100px 以下之桌面視窗）改 2 欄，卡片內最小字才不致小於手機版 */
+@container stage (max-width: 760px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
+
 .noscript { padding: 24px 0; font-size: 14px; line-height: 1.8; color: var(--body); }
 .noscript ul { padding-left: 20px; }
 .noscript a { border-bottom: 1px solid currentColor; }
@@ -204,6 +241,10 @@ body[data-mode="focus"] .back { border-bottom-color: rgba(var(--blue-rgb, 143, 2
   .info .tipx { font-size: 13px; line-height: 1.7; color: var(--soft); }
   .info .foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 2px; padding-top: 9px; border-top: 1px solid var(--line); }
   .info .go { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--fg-strong); }
+
+  .archive { margin-top: 30px; }
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+  .wc:hover { transform: none; }
 }
 
 @keyframes beacon { 0%, 100% { opacity: 0.35; } 50% { opacity: 0.95; } }
@@ -214,5 +255,6 @@ body[data-mode="focus"] .back { border-bottom-color: rgba(var(--blue-rgb, 143, 2
 
 @media (prefers-reduced-motion: reduce) {
   .secret i, .star .ring, .flow, .desk .star.p, .map.warp { animation: none; }
-  .tf0, .lbl, .strand, .tip, .star .core, .secret i { transition: none; }
+  .tf0, .lbl, .strand, .tip, .star .core, .secret i, .wc { transition: none; }
+  .wc:hover { transform: none; }
 }

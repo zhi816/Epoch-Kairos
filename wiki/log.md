@@ -1610,3 +1610,13 @@
   - 檢查：`check_cards.py` ERROR 0、WARN 1（Card 2「最大」：論文頁 Card 2 第 3 點與原文 p. 46 皆寫「即使使用最大的詞根集合」，指所測詞根集合中最大者，屬描述，保留）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（3aaaf11 版）1440 x 900 與 375 x 812 結果 PASS。
   - 複核修正：缺口名稱「方法」不在論文頁，改「猜測」；Card 2 一列與 Card 5 兩筆里程碑末字落單，縮短；Card 4 首格補上「交叉驗證」條件。
   - 未決事項：建置時 `tools/build_paper_prototype.py` 有協調者未提交之修改（星窗小星改與首頁卡片牆共用、編號改由首頁產生），本篇原型依該版產生；首頁卡片牆依協調規則未重建，由協調者處理。
+
+## [2026-11-10 00:21] design | 首頁加入群星檔案卡片牆並將上牆流程寫入 paper-card-writer | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5（claude-opus-5-5）
+- **具體變更**：
+  - 首頁卡片牆（TD-009 實作部分）：`tools/build_home.py` 讀 Git 已提交之 `wiki/cards/<slug>.md`「封面」區段，以靜態 HTML 寫入 `web/index.html`；自己尚未提交之卡片以 `--card <slug>` 帶入（先跑 `check_cards.py`）。建置時自我檢查封面斷行與 `card_line`、行數字數、封面標題、研究類型與論文頁原型是否存在，有 ERROR 不寫檔。`tools/home_template.html`、`web/assets/css/starmap.css`（F 版型，桌面 3 欄、手機 2 欄）、`web/assets/js/starmap.js`（依模式與篩選切換）同步修改。點卡片連到論文頁原型（使用者決定）。只讀已提交版本，是為了不把他人寫到一半之卡片產生進首頁（實作當下工作目錄即有他人未提交之卡片檔）。
+  - 卡片編號與星窗小星改由 `build_home.py` 之 `card_numbers()`、`cover_sky()` 提供，`tools/build_paper_prototype.py` 共用，首頁與論文頁一致。依規重建已提交之 12 篇論文頁原型：只有 `2001-colonial-origins-acemoglu.html` 改變（前次範本修改 3aaaf11 後未重建，本次補上），其餘輸出不變。
+  - `paper-card-writer`：新增 `references/card-wall.md`（上牆步驟、只收已提交卡片、`web/index.html` 衝突處理、平行批次由協調者上牆、ERROR／FAIL／WARN 處理表、禁止事項）與 `scripts/verify_wall.js`（桌面與手機、群星與我的星系四組量測）。SKILL.md 第五節第 7 步分為 7-1 論文頁、7-2 首頁卡片牆；第二節第 14、15 條、第三節必讀、第八節交付格式、第九節、第十一節偷工自查同步；`paper-page.md`、`cover.md` 加轉介；`.claude/skills/` 轉介檔描述同步。
+  - 驗證：先以 Hopfield 走完全程（建置、`verify_wall.js` 指定 slug、目視、點卡片進原型並返回），再寫入 Skill；之後依 Skill 對 Seediq、IceCube、Acemoglu、AlphaFold2 各跑一次，皆 PASS。最終以 `verify_wall.js` 檔案原文、不設 `EK_SLUG` 驗全牆 14 張：PASS 62 項、WARN 8 項，WARN 皆屬他人已提交之卡片（兩篇論文名截斷、一篇語言標籤截斷、一篇雙年份截斷），未代改，列於 TD-009 進度。卡片牆自我檢查 ERROR 0；`build_home.py --check` 一致；`lint_wiki.py` ERROR 0；`check_cards.py` ERROR 0。
+  - 文件：DESIGN.md 第二章第 0、3 節（卡片牆已加入、連結原型、實作細節暫定）、第八章第 1 項、第十章；AGENTS.md 第四、五、六章與 Skill 一覽；README。TD-009 改為等待 TD-008 完成之最終檢查，並註明 TD-008 平行批次之協調者須在每批後重建首頁。

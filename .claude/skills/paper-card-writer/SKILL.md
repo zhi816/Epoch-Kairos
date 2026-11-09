@@ -1,7 +1,7 @@
 ---
 name: paper-card-writer
 description: >-
-  Write the text and diagram for every Epoch-Kairos paper card: the homepage cover card (card wall and paper-page Card 1) and the paper-page Cards 2-6, stored as wiki/cards/<slug>.md. Use whenever a paper is ingested, when backfilling or revising card files, or when card_line, hook-derived lead text or Card 3 diagrams change. Every field has hard length limits, source rules and a mandatory check script; do not skip steps.
+  Write the text and diagram for every Epoch-Kairos paper card: the homepage cover card (card wall and paper-page Card 1) and the paper-page Cards 2-6, stored as wiki/cards/<slug>.md, then build and browser-verify both the paper-page prototype and the homepage card wall. Use whenever a paper is ingested, when backfilling or revising card files, or when card_line, hook-derived lead text or Card 3 diagrams change. Every field has hard length limits, source rules and mandatory check scripts; do not skip steps.
 ---
 
 # paper-card-writer（轉介檔）

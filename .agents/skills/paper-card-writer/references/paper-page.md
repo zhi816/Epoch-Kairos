@@ -122,7 +122,8 @@ python tools/build_paper_prototype.py <slug>
 
 ### 第 4 步：提交
 
-* `web/prototypes/paper-v1/<slug>.html` 與卡片檔、日誌一起提交，讓使用者能直接打開檢視。
+* 論文頁驗證通過後，接著依 [`card-wall.md`](card-wall.md) 把這篇放上首頁卡片牆並驗證（SKILL.md 第五節第 7-2 步）；不得只做論文頁就提交。
+* `web/prototypes/paper-v1/<slug>.html` 與卡片檔、`web/index.html`、日誌一起提交，讓使用者能直接打開檢視。
 * 修改了 `venue_short` 時，連同論文頁與 `web/index.html` 一起提交。
 * 修改 `tools/paper_template.html` 或 `tools/build_paper_prototype.py` 的人（不屬於撰寫卡片的工作，須另經使用者同意），必須重建全部原型（不帶參數執行），並一併提交全部產生檔。
 

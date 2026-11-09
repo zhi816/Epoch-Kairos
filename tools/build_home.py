@@ -1,33 +1,46 @@
-"""建置首頁 web/index.html（知識星圖）。
+"""建置首頁 web/index.html（知識星圖與群星檔案卡片牆）。
 
 用法（於倉庫根目錄執行）：
-    python tools/build_home.py           # 重建 web/index.html
-    python tools/build_home.py --check   # 只比對，不寫檔；與現有檔案不同時結束碼為 1
+    python tools/build_home.py                      # 重建 web/index.html
+    python tools/build_home.py --card <slug> ...    # 同上，另把自己這篇尚未提交的卡片檔放上卡片牆
+    python tools/build_home.py --check [--card ...] # 只比對，不寫檔；與現有檔案不同時結束碼為 1
 
 資料來源：
     * wiki/papers/*.md、wiki/concepts/*.md 之 Frontmatter（論文、概念、雙年份、card_line、我的關注欄位）。
     * AGENTS.md 第八章標籤白名單（標籤所屬學科）。
+    * 卡片牆：wiki/cards/<slug>.md 之「封面」區段（封面斷行、封面標題、研究類型），只取 **Git 已提交**
+      （精確說是 Git 索引中）的版本，工作目錄中他人尚未提交的卡片檔不會被帶上首頁；自己這篇尚未提交時以
+      --card <slug> 帶入工作目錄之版本（paper-card-writer 之 references/card-wall.md）。每張卡連到
+      web/prototypes/paper-v1/<slug>.html，該檔須同樣已提交（或與 --card 一起存在於工作目錄）。
 
 群星模式開場不預選任何論文（DESIGN.md 第二章第 2 節），故本腳本不決定預設亮星。
 
 學科色不在本腳本定義：頁面執行時讀取 web/assets/css/theme.css 之 --color-<domain>
-（色碼唯一真實來源，見 AGENTS.md 第二章）。
+（色碼唯一真實來源，見 AGENTS.md 第二章）；卡片牆以 CSS 變數 var(--color-<domain>) 上色。
 
-本腳本只用 Python 標準函式庫，輸出內容只取決於 wiki/ 與 AGENTS.md，重跑即可重現。
-版面與樣式請改 tools/home_template.html、web/assets/css/starmap.css、web/assets/js/starmap.js，
-不要手改 web/index.html。
+本腳本只用 Python 標準函式庫（另呼叫 git 讀取已提交之卡片檔），輸出內容只取決於 wiki/、AGENTS.md 與 Git 索引，
+重跑即可重現。版面與樣式請改 tools/home_template.html、web/assets/css/starmap.css、web/assets/js/starmap.js，
+不要手改 web/index.html。卡片牆自我檢查有 ERROR 時不寫檔、結束碼為 1。
 """
 import glob
+import importlib.util
 import json
 import math
 import os
 import re
+import subprocess
 import sys
+import unicodedata
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 WIKI = os.path.join(ROOT, 'wiki')
 TEMPLATE = os.path.join(ROOT, 'tools', 'home_template.html')
 OUT = os.path.join(ROOT, 'web', 'index.html')
+CHECK_CARDS = os.path.join(ROOT, '.agents', 'skills', 'paper-card-writer', 'scripts', 'check_cards.py')
+# 卡片牆每張卡連到的論文頁（相對於 web/）。正式論文頁（wiki/todo.md TD-002）產出前連到論文頁原型（2026-11-10 使用者決定）。
+PAPER_HREF = 'prototypes/paper-v1/%s.html'
+# 封面卡之硬上限（paper-card-writer 之 references/cover.md 第三、四節）
+LINE_MAX, LINES_MAX, TITLE_MAX = 9, 3, 22
 
 # ---------------------------------------------------------------- 設定
 
@@ -514,6 +527,226 @@ def build_focus(P, C):
                  thesisAt=[500, mrow[y1] + 120], colX={'F': 190, 'B': 500, 'L': 810}, colY=205))
 
 
+# ---------------------------------------------------------------- 卡片（首頁卡片牆與論文頁原型共用）
+
+
+def card_numbers(P):
+    """卡片編號：群星 No.、我的關注 F.，各自依 timeline_year 由新到舊、同年依 slug 排序。
+    編號涵蓋全部已收錄論文（含尚無卡片檔者），補寫卡片不會改變其他卡片之編號；
+    收錄新論文時，排在它之後的論文編號會後移。首頁卡片牆與 tools/build_paper_prototype.py 共用本函式。"""
+    out = {}
+    for focus, prefix in ((False, 'No.'), (True, 'F.')):
+        group = sorted((s for s, f in P.items() if (f.get('my_focus') is True) == focus),
+                       key=lambda s: (-int(P[s]['timeline_year']), s))
+        for i, s in enumerate(group):
+            out[s] = '%s%02d' % (prefix, i + 1)
+    return out
+
+
+def rnd(seed):
+    """固定種子之亂數（mulberry32），與 web/assets/js/starmap.js 之 rndFrom 相同。"""
+    s = [seed & 0xFFFFFFFF]
+
+    def r():
+        s[0] = (s[0] + 0x6D2B79F5) & 0xFFFFFFFF
+        t = s[0]
+        t = ((t ^ (t >> 15)) * (1 | t)) & 0xFFFFFFFF
+        t = (t + (((t ^ (t >> 7)) * (61 | t)) & 0xFFFFFFFF)) & 0xFFFFFFFF ^ t
+        return ((t ^ (t >> 14)) & 0xFFFFFFFF) / 4294967296
+    return r
+
+
+def cover_sky(f):
+    """封面星窗內之 14 顆小星（左 %、上 %、直徑 px、不透明度）。首頁卡片牆與論文頁 Card 1 共用，同一篇兩處一致。"""
+    r = rnd(int(f['paper_year']) * 7919 + len(f['card_line']))
+    sizes = [1 if r() < 0.8 else 1.5 for _ in range(14)]
+    return [(4 + r() * 92, 4 + r() * 42, sz, 0.3 + r() * 0.55) for sz in sizes]
+
+
+def load_module(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def git(*args, data=None):
+    try:
+        return subprocess.run(['git', '-C', ROOT] + list(args), input=data, capture_output=True)
+    except OSError:
+        return None
+
+
+def indexed(prefix):
+    """Git 索引中 prefix 下之檔案 {相對路徑: blob}，以及未解決衝突之路徑。
+    平時索引即最近一次提交；合併進行中時，索引已含對方新增之檔案，故合併後重建也會帶上對方之卡片。
+    不在 Git 工作區（或沒有 git）時回傳 None。"""
+    r = git('ls-files', '-s', '-z', '--', prefix)
+    if r is None or r.returncode != 0:
+        return None
+    files, conflicts = {}, []
+    for rec in r.stdout.decode('utf-8').split('\0'):
+        if not rec:
+            continue
+        meta, path = rec.split('\t', 1)
+        _mode, sha, stage = meta.split()
+        if stage == '0':
+            files[path] = sha
+        elif path not in conflicts:
+            conflicts.append(path)
+    return files, conflicts
+
+
+def read_blobs(shas):
+    if not shas:
+        return {}
+    r = git('cat-file', '--batch', data=''.join(s + '\n' for s in shas).encode('ascii'))
+    if r is None or r.returncode != 0:
+        raise SystemExit('無法以 git cat-file 讀取已提交之卡片檔')
+    buf, i, out = r.stdout, 0, {}
+    for s in shas:
+        j = buf.index(b'\n', i)
+        size = int(buf[i:j].split()[2])
+        out[s] = buf[j + 1:j + 1 + size].decode('utf-8')
+        i = j + 1 + size + 1
+    return out
+
+
+def cover_fields(text):
+    """卡片檔「## 封面」區段之欄位。格式由 check_cards.py 檢查，這裡只取值。"""
+    m = re.search(r'^## 封面\n(.*?)(?=^## |\Z)', text.replace('\r\n', '\n'), re.M | re.S)
+    out = {}
+    for line in (m.group(1) if m else '').splitlines():
+        mm = re.match(r'^- ([^：\s*]+)：(.*)$', line)
+        if mm and mm.group(1) not in out:
+            out[mm.group(1)] = mm.group(2).strip()
+    return out
+
+
+def wall_sources(P, extra):
+    """卡片牆要用的卡片檔：{slug: 內容}，以及錯誤、提示與來源說明。
+    只收 Git 索引（已提交）之版本；extra（--card）指定之 slug 改用工作目錄版本，並先以 check_cards.py 檢查。"""
+    errors, notes = [], []
+    cards_dir = os.path.join(WIKI, 'cards')
+    disk = {os.path.basename(p)[:-3]: p for p in glob.glob(os.path.join(cards_dir, '*.md'))}
+    idx = indexed('wiki/cards/')
+    if idx is None:
+        notes.append(('WARN', '不在 Git 工作區：卡片牆改讀工作目錄之全部卡片檔，無法排除他人尚未提交之檔案'))
+        cards = {s: open(p, encoding='utf-8').read() for s, p in disk.items()}
+        protos = {s for s in P if os.path.exists(os.path.join(ROOT, 'web', PAPER_HREF % s))}
+        source = '工作目錄'
+    else:
+        files, conflicts = idx
+        for path in conflicts:
+            errors.append('%s 有未解決之合併衝突：先解決卡片檔衝突再重建首頁' % path)
+        slug_sha = {os.path.basename(p)[:-3]: sha for p, sha in files.items()
+                    if p.endswith('.md') and os.path.dirname(p) == 'wiki/cards'}
+        blobs = read_blobs(sorted(set(slug_sha.values())))
+        cards = {s: blobs[sha] for s, sha in slug_sha.items()}
+        pidx = indexed('web/prototypes/paper-v1/')
+        protos = {os.path.basename(p)[:-5] for p in (pidx[0] if pidx else {}) if p.endswith('.html')}
+        source = 'Git 已提交版本'
+        for s, p in sorted(disk.items()):
+            if s in extra:
+                continue
+            if s not in cards:
+                notes.append(('INFO', 'wiki/cards/%s.md 尚未提交，未放上卡片牆。是自己這篇：加 --card %s；'
+                                      '不是自己的：不要理會，也不要提交 web/index.html 以外的他人檔案' % (s, s)))
+            elif open(p, encoding='utf-8').read() != cards[s].replace('\r\n', '\n'):   # core.autocrlf 下工作目錄可能是 CRLF
+                notes.append(('INFO', 'wiki/cards/%s.md 在工作目錄有未提交之修改，牆上用的是已提交版本；'
+                                      '修改是自己的：加 --card %s' % (s, s)))
+    if extra:
+        cc = load_module('check_cards_for_home', CHECK_CARDS)
+        for s in extra:
+            path = disk.get(s)
+            if not path:
+                errors.append('--card %s：找不到 wiki/cards/%s.md' % (s, s))
+                continue
+            cc.results.clear()
+            cc.check_card(path, s, {})
+            bad = [r for r in cc.results if r[0] == 'ERROR']
+            for r in bad:
+                errors.append('--card %s：check_cards.py ERROR %s:%s %s' % (s, r[1], r[2], r[3]))
+            if bad:
+                continue
+            cards[s] = open(path, encoding='utf-8').read()
+            if os.path.exists(os.path.join(ROOT, 'web', PAPER_HREF % s)):
+                protos.add(s)
+            else:
+                protos.discard(s)
+    return cards, protos, errors, notes, source
+
+
+def build_wall(P, tag_dom, cards, protos, nums):
+    """卡片牆（DESIGN.md 第二章第 3 節 F 版型）：群星卡在前、我的關注卡在後，各依編號排列。
+    回傳 (HTML, 每張卡之摘要, 錯誤)。HTML 為靜態內容，starmap.js 只依模式與篩選切換 hidden。"""
+    errors, rows, html = [], [], []
+    roles = dict(ROLES)
+    domains = {k: (short, full) for k, short, full, _a, _p in DOMAINS}
+    for slug in sorted(cards, key=lambda s: (nums.get(s, '').startswith('F.'), nums.get(s, ''))):
+        f = P.get(slug)
+        if f is None:
+            errors.append('wiki/cards/%s.md 沒有對應之論文頁 wiki/papers/%s.md' % (slug, slug))
+            continue
+        cv = cover_fields(cards[slug])
+        where = 'wiki/cards/%s.md「封面」' % slug
+        lines = cv.get('封面斷行', '').split('／')
+        if ''.join(lines) != f['card_line']:
+            errors.append('%s：封面斷行去掉「／」後須與論文頁 card_line 逐字相同（封面斷行「%s」，card_line「%s」）'
+                          % (where, cv.get('封面斷行', ''), f['card_line']))
+        if len(lines) > LINES_MAX or any(not x or cc_width(x) > LINE_MAX for x in lines):
+            errors.append('%s：封面斷行須為 1 至 %d 行、每行 %d 字以內且不得有空行（cover.md 第三節）：%s'
+                          % (where, LINES_MAX, LINE_MAX, cv.get('封面斷行', '')))
+        title = cv.get('封面標題') or short_name(f['title_zh'])
+        if cc_width(title) > TITLE_MAX:
+            errors.append('%s：論文名「%s」超過 %d 字，須填「封面標題」（cover.md 第四節）' % (where, title, TITLE_MAX))
+        focus = f.get('my_focus') is True
+        tag = ''
+        if focus:
+            langs = f.get('focus_languages') or []
+            tag = '、'.join(langs) if langs else cv.get('研究類型', '')
+            if not tag:
+                errors.append('%s：我的關注論文之 focus_languages 為空，須填「研究類型」（cover.md 第七節）' % where)
+        if slug not in protos:
+            errors.append('%s 尚無論文頁原型 web/%s（未提交或未建置）：先執行 python tools/build_paper_prototype.py %s，'
+                          '並與卡片檔一起提交' % (slug, PAPER_HREF % slug, slug))
+        no = nums[slug]
+        d = f['domain']
+        venue = venue_of(f)
+        years = years_line(f, venue)
+        sky = ''.join('<i style="left:%.1f%%;top:%.1f%%;width:%spx;height:%spx;opacity:%.2f"></i>' % (x, y, sz, sz, op)
+                      for x, y, sz, op in cover_sky(f))
+        line_html = ''.join('<span>%s</span>' % esc(x) for x in lines)
+        if focus:
+            head = roles.get(f.get('focus_role'), '')
+            color = 'human' if d == 'human' else 'ai'
+            label = '%s：%s。%s：%s，%s，%s，開啟論文頁' % (
+                title, f['card_line'], '研究語言' if f.get('focus_languages') else '研究類型', tag, years, head)
+            win = '%s<span class="tag">%s</span><span class="rep"></span>' % (sky, esc(tag))
+            attrs = 'class="wc focus" data-set="focus" hidden'
+        else:
+            head = domains[d][0]
+            color = d
+            label = '%s：%s。%s，開啟論文頁' % (title, f['card_line'], years)
+            win = '%s<span class="rep%s"></span>' % (sky, ' award' if f.get('honor') else '')
+            ins = [d] + [tag_dom[t] for t in f.get('domain_tags') or [] if t in tag_dom and tag_dom[t] != d]
+            attrs = 'class="wc" data-set="stars" data-in="%s"' % ' '.join(dict.fromkeys(ins))
+        html.append(
+            '<a %s data-slug="%s" href="%s" style="--c:var(--color-%s)" aria-label="%s">'
+            '<span class="cv"><span class="top"><span>%s</span><span>%s</span></span>'
+            '<span class="win">%s<span class="wl">%s</span></span>'
+            '<span class="ttl">%s</span><span class="bot">%s</span></span></a>' % (
+                attrs, esc(slug), esc(PAPER_HREF % slug), color, esc(label), esc(no), esc(head),
+                win, line_html, esc(title), esc(years)))
+        rows.append((no, slug, '／'.join(lines)))
+    return '\n'.join(html), rows, errors
+
+
+def cc_width(s):
+    """字數計法同 check_cards.py（全形 1、半形 0.5；paper-card-writer 之 style.md 第一節）。"""
+    return sum(1 if unicodedata.east_asian_width(ch) in ('W', 'F', 'A') else 0.5 for ch in s)
+
+
 # ---------------------------------------------------------------- 輸出
 
 
@@ -530,30 +763,69 @@ def noscript(stars):
     return '\n'.join(rows)
 
 
-def build():
+def build(extra=()):
     P = {os.path.basename(p)[:-3]: frontmatter(p) for p in sorted(glob.glob(os.path.join(WIKI, 'papers', '*.md')))}
     C = {os.path.basename(p)[:-3]: frontmatter(p) for p in sorted(glob.glob(os.path.join(WIKI, 'concepts', '*.md')))}
     for s, f in C.items():
         if not isinstance(f.get('papers'), list):
             f['papers'] = []
-    stars = build_stars(P, C, whitelist())
+    tag_dom = whitelist()
+    stars = build_stars(P, C, tag_dom)
     data = dict(stars, focus=build_focus(P, C))
+    cards, protos, errors, notes, source = wall_sources(P, set(extra))
+    wall, rows, wall_errors = build_wall(P, tag_dom, cards, protos, card_numbers(P))
     blob = json.dumps(data, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
     t = open(TEMPLATE, encoding='utf-8').read()
-    for mark in ('/*__DATA__*/', '<!--__NOSCRIPT__-->'):
+    for mark in ('/*__DATA__*/', '<!--__NOSCRIPT__-->', '<!--__WALL__-->'):
         if t.count(mark) != 1:
             raise SystemExit('範本中 %s 必須恰好出現一次' % mark)
-    html = t.replace('/*__DATA__*/', blob).replace('<!--__NOSCRIPT__-->', noscript(stars))
-    return html, data
+    html = (t.replace('/*__DATA__*/', blob).replace('<!--__NOSCRIPT__-->', noscript(stars))
+            .replace('<!--__WALL__-->', wall))
+    report = dict(rows=rows, errors=errors + wall_errors, notes=notes, source=source, extra=list(extra),
+                  stars=sum(1 for r in rows if r[0].startswith('No.')), focus=sum(1 for r in rows if r[0].startswith('F.')))
+    return html, data, report
+
+
+def print_wall(rep):
+    """卡片牆自我檢查報告（paper-card-writer 之 references/card-wall.md 要求原樣貼進交付說明）。"""
+    print('卡片牆：群星 %d 張、我的關注 %d 張（卡片取自%s；--card：%s）' % (
+        rep['stars'], rep['focus'], rep['source'], '、'.join(rep['extra']) or '無'))
+    for no, slug, lines in rep['rows']:
+        print('  %-6s %s  %s' % (no, slug, lines))
+    for level, msg in rep['notes']:
+        print('%-5s %s' % (level, msg))
+    for msg in rep['errors']:
+        print('ERROR %s' % msg)
+    warns = sum(1 for lv, _m in rep['notes'] if lv == 'WARN')
+    print('卡片牆自我檢查：ERROR %d、WARN %d' % (len(rep['errors']), warns))
+
+
+def parse_args(argv):
+    check, extra, i = False, [], 0
+    while i < len(argv):
+        a = argv[i]
+        if a == '--check':
+            check, i = True, i + 1
+        elif a == '--card' and i + 1 < len(argv) and not argv[i + 1].startswith('--'):
+            extra.append(argv[i + 1])
+            i += 2
+        else:
+            raise SystemExit('不明參數：%s。用法：python tools/build_home.py [--check] [--card <slug> ...]' % a)
+    return check, extra
 
 
 def main():
-    html, data = build()
+    check, extra = parse_args(sys.argv[1:])
+    html, data, rep = build(extra)
     focus = data['focus'] or {'papers': []}
     summary = '群星 %d、標籤 %d、概念 %d、我的關注 %d' % (
         len(data['papers']), len(data['tags']), len(data['concepts']), len(focus['papers']))
+    print_wall(rep)
+    if rep['errors']:
+        print('卡片牆有 ERROR，未%s web/index.html' % ('比對' if check else '寫入'), file=sys.stderr)
+        return 1
     old = open(OUT, encoding='utf-8').read() if os.path.exists(OUT) else None
-    if '--check' in sys.argv[1:]:
+    if check:
         if old == html:
             print('web/index.html 與建置結果一致（%s）' % summary)
             return 0

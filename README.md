@@ -36,7 +36,7 @@ Epoch-Kairos/
     └── papers/            # 每篇論文之「3:4 豎版圖卡 ＋ KaTeX 學術長文」雙欄網頁
 ```
 
-首頁不手寫論文資料：收錄新論文或修改 Frontmatter 後，於倉庫根目錄執行 `python tools/build_home.py` 重建 `web/index.html`（`--check` 只比對不寫檔）。美術方向見 [`DESIGN.md`](./DESIGN.md)。
+首頁不手寫論文資料：收錄新論文、修改 Frontmatter 或提交新的卡片檔後，於倉庫根目錄執行 `python tools/build_home.py` 重建 `web/index.html`（`--check` 只比對不寫檔）。星圖下方之卡片牆只收已提交之卡片檔（`wiki/cards/`）。美術方向見 [`DESIGN.md`](./DESIGN.md)。
 
 ### 原始層採雙倉庫分離（Dual-Repository Split）
 
