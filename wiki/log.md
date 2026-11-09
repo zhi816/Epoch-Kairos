@@ -972,3 +972,13 @@
   - 對照 Social Sciences 原文（`raw/my-focus/英文論文/From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization Modeling Knowledge Cycles in Indigenous Cultural Systems_socsci-15-00007.pdf`）全文核對後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2025-indigenous-tek-ai-revitalization-wang.md](evidence/2025-indigenous-tek-ai-revitalization-wang.md)，頁面 `verification` 提升為 `verified`。
   - **EK-078**：Card 1 更正第一作者為國立臺東大學王任慶（Reen-Cheng Wang）教授團隊；Card 3 依原文圖 3 改寫為四層知識矩陣（$K_1 \sim K_4$）與 12 階段雙向知識循環模型，補列圖 5 之五層 LKM 架構（Layer 1 倫理治理至 Layer 5 代理部署）與圖 6 之 Plan–Act–Observe–Adjust 代理迴圈；刪除虛構之餘弦相似度禁忌損失函數，依原文說明文化禁忌係由部落會議審查、第一手權重與規則矩陣控管；Card 4 交代質性系統架構論文屬性。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-078 標記為 `fixed`。
+
+
+## [2026-11-09 11:05] fix | 依原文重寫 Setiawan 2026 達豪語跨領域 RAG 翻譯頁並建證據表 | #自然語言處理 #人工智慧 #深度學習
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 接手 Claude Opus 5.5 暫停之 8 篇 my-focus 論文頁修正工作之第 3 篇：[Setiawan et al. 2026](papers/2026-context-volume-rag-domain-shift-setiawan.md)（EK-084）。
+  - 對照 LoResMT 2026 原文（`raw/my-focus/英文論文/llm 輔助/Context Volume Drives Performance Tackling Domain Shift in Extremely.pdf`）全文核對後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2026-context-volume-rag-domain-shift-setiawan.md](evidence/2026-context-volume-rag-domain-shift-setiawan.md)，頁面 `verification` 提升為 `verified`。
+  - **EK-084**：Card 3 刪除虛構之對數線性公式與單一稠密檢索器表述，改述真實之四種檢索策略（BM25、BGE、ChrF-RAG 以及基於 RapidFuzz 之詞級模糊匹配）；交代句級檢索在 $K \approx 60 \sim 80$ 飽和與詞級檢索在 $N=10$（eff. $K \approx 137$）達峰值 35.28 chrF++ 後因語境雜訊回落之實證消融數據；補列詞典檢索單調線性增長特性與完整詞典取得 31.32 chrF++；Card 4 補齊 Table 1、2、4、5、6 詳細數據與 Table 7 三大定性失敗修復案例。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-084 標記為 `fixed`。
