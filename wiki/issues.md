@@ -510,10 +510,11 @@
 - **來源**：`raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（§3.1–3.2 pp. 4–5 圖 1–3）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 
-### EK-082 | open | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 3 與 Card 4 | 原文不符
+### EK-082 | fixed | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 3 與 Card 4 | 原文不符
 - **問題**：（1）Card 3（第 44–53 行）稱依據「句法成分樹（Constituency Tree）」拆解來源句，並檢索包含片段及其「對應目標語譯文子串的最小對齊例句對」。原文 §3（p. 3，圖 1）完全未使用句法成分樹剖析器或子串級目標語對齊，而是以**由 7 個連續詞遞減至 1 個詞之滑動視窗（sliding window）**在檢索庫來源端進行精確子字串匹配，為每個不重疊片段隨機抽取至多 6 組完整雙語句對；且 Card 3 漏述 Pivoted Fragment-Shot（§3，pp. 3–4，圖 2）經由義大利語樞紐進行兩階段巢狀片段檢索（排除整句完全重疊）之機制。（2）Card 4（第 83–84 行）兩度將研究對象 **Ladin（拉定語，北義多洛米蒂山區雷托－羅曼語支少數民族語言：Val Badia 與 Gherdëina）**誤寫為「**拉丁語**變體」。
 - **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`（§1 p. 1、§3–§4 pp. 3–4 圖 1–2）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核實後重寫：Card 3 刪除虛構之句法成分樹剖析與 argmax 公式，改述原文真實採用之 7 至 1 詞滑動視窗來源端匹配（抽取至多 6 組雙語例句、無重疊覆蓋）以及兩階段樞紐片段提示（PF）機制；Card 4 將研究對象正名為北義多洛米蒂山區雷托－羅曼語支「拉定語（Ladin）」兩大變體（Val Badia 與 Gherdëina），糾正「拉丁語變體」之筆誤；補列 Table 1–3 完整數據、推論耗時與語法有效性局限。建立證據表 wiki/evidence/2025-fragment-shot-reasoning-mt-frontull.md，頁面 verification 改為 verified。
 
 ### EK-083 | open | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 3 | 過度表述
 - **問題**：Card 3（第 46–62 行）僅以抽象算子描述檢索，未交代原文 §3.2（p. 132）之具體檢索設計：詞彙表（Glossary）係以 spaCy `en_core_web_sm` 斷詞後進行 `{1,2}`-gram 重疊匹配，翻譯記憶庫（Translation Memory）係以 `Tantivy` 函式庫執行 Top-$N$ BM25 檢索，並以 `MADLAD-400-10B`／`OPUS-MT`／`NLLB-54B` 搭配 `Gemini 2.0 Flash` 進行少樣本思維鏈（CoT）後編輯；且原文全文無數學公式（式 52、56 應標明為依原文流程整理之示意式）。

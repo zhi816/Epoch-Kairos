@@ -952,3 +952,13 @@
   - 同步將 [wiki/papers/2025-deepseek-r1.md](papers/2025-deepseek-r1.md) 與 [wiki/evidence/2025-deepseek-r1.md](evidence/2025-deepseek-r1.md) 之 hook 與評測數據（cons@16 訓練動態與 cons@64 正式基準對比）精煉對齊。
   - 新增概念證據表 [wiki/evidence/generative-world-models.md](evidence/generative-world-models.md)，概念頁 `verification` 狀態提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-045 與 EK-056 標記為 `fixed` 並追加處理紀錄。
+
+
+## [2026-11-09 11:03] fix | 依原文重寫 Frontull 2025 片段少樣本低資源翻譯頁並正名拉定語 | #自然語言處理 #人工智慧 #深度學習
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 接手 Claude Opus 5.5 暫停之 8 篇 my-focus 論文頁修正工作之第 1 篇：[Frontull et al. 2025](papers/2025-fragment-shot-reasoning-mt-frontull.md)（EK-082）。
+  - 對照 arXiv:2505.22293v1 原文（`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`）全文核實後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2025-fragment-shot-reasoning-mt-frontull.md](evidence/2025-fragment-shot-reasoning-mt-frontull.md)，頁面 `verification` 提升為 `verified`。
+  - **EK-082**：Card 3 刪除虛構之句法成分樹剖析與 argmax 公式，改述原文真實採用之 7 至 1 詞滑動視窗來源端匹配（抽取至多 6 組雙語例句、無重疊覆蓋）以及兩階段樞紐片段提示（PF）機制；Card 4 將研究對象正名為北義多洛米蒂山區雷托－羅曼語支「拉定語（Ladin）」兩大變體（Val Badia 與 Gherdëina），糾正「拉丁語變體」之筆誤；補列 Table 1–3 完整數據、推論耗時與語法有效性局限。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-082 標記為 `fixed`。
