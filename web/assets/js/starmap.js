@@ -715,8 +715,6 @@
     $('mapLabel').textContent = f ? 'MY CONSTELLATION ｜ 我的星系' : 'CONSTELLATION ｜ 知識星圖';
     $('indexLabel').textContent = f ? 'INDEX ｜ MY FOCUS' : 'INDEX';
     $('index').setAttribute('aria-label', f ? '我的星系索引' : '學科索引');
-    document.querySelectorAll('.peek-t').forEach(function (s) { s.textContent = f ? '回到群星' : '群星之中，還有一片我的星系'; });
-    document.querySelectorAll('.peek-s').forEach(function (s) { s.textContent = f ? 'BACK TO THE STARS' : 'MY CONSTELLATION ・ ' + FO.papers.length; });
     var leg = '';
     if (f) {
       leg = '<span><span class="lg-dot" style="width:9px;height:9px;background:radial-gradient(circle,#FFFDF8 0 1.2px,rgba(255,253,248,0) 1.7px);box-shadow:inset 0 0 0 1px rgba(' + BLUE + ',.95)"></span>我的關注</span>' +
@@ -870,8 +868,8 @@
   }
   document.querySelectorAll('[data-secret]').forEach(function (b) {
     b.addEventListener('click', function () {
-      /* 觸控沒有滑過：第一下浮出提示，第二下才進入 */
-      if (lastPointer === 'touch' && !S.armed) { setArmed(true); return; }
+      /* 手機版觸控：第一下浮出提示，第二下才進入。桌面版不顯示任何文字，滑鼠、鍵盤與觸控皆一下進入 */
+      if (mobile && lastPointer === 'touch' && !S.armed) { setArmed(true); return; }
       setArmed(false);
       go(S.mode === 'stars' ? '#my-constellation' : '');
     });

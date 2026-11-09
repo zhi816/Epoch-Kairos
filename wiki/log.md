@@ -1326,3 +1326,12 @@
   - [web/assets/css/starmap.css](../web/assets/css/starmap.css)：新增菱形按鈕 `.cptb`（22 x 22 點擊區），手機設為不可點。
   - [DESIGN.md](../DESIGN.md)：第二章第 2 節節點編碼新增「概念頁名稱預設隱藏」`[已定]`，第 5 節標籤避讓同步，第十章記本次變更。圖例「概念頁」與我的星系兩個概念中心未改。
   - 驗證：瀏覽器 1440 x 900 開場無概念名稱；逐一滑過與點選 17 篇論文，顯示之概念名稱恰為該論文所屬概念，與說明框及其他標籤皆無重疊；逐一滑過 8 個菱形只顯示自身名稱；實際按 Tab 聚焦菱形即顯示；點選固定、Esc 收起正常。375 x 812 開場與放大四個學科後皆無概念名稱，選中論文後只顯示所屬概念（放不下者依避讓隱藏），無重疊、無橫向捲動。手機測試時瀏覽器窗格隱藏、`requestAnimationFrame` 不觸發，測試中以計時器代替以完成放大動畫，頁面程式未改。`tools/build_home.py --check` 一致（無須重建），`lint_wiki.py` ERROR 0。
+
+## [2026-11-09 19:56] design | 句末之星桌面版滑過不出現文字 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依使用者決定（滑鼠移到「人類群星閃耀時」下方小星時不要出現文字），移除桌面版句末之星之浮出文字「群星之中，還有一片我的星系／MY CONSTELLATION ・ 24」，群星與我的星系兩種模式皆同；星點轉亮與鍵盤聚焦框保留，點一下進入。
+  - [tools/home_template.html](../tools/home_template.html)：移除浮出文字元素；重建 [web/index.html](../web/index.html)，`--check` 一致。
+  - [web/assets/css/starmap.css](../web/assets/css/starmap.css)、[web/assets/js/starmap.js](../web/assets/js/starmap.js)：移除浮出文字之樣式與文字設定；觸控點兩下改為只在手機版面，桌面寬度之觸控螢幕亦點一下進入（桌面版面本無提示文字可顯示）。按鈕之 `aria-label` 不變。
+  - [DESIGN.md](../DESIGN.md)：第四章句末之星新增「桌面版滑過不出現文字」`[已定]`，第十章記本次變更。
+  - 驗證：瀏覽器 1440 x 900 實際滑鼠滑過星點只轉亮、無文字；實際按 Tab 聚焦有聚焦框、無文字；點一下進入我的星系，滑過同一顆星仍無文字，右上「回到群星」顯示；桌面寬度觸控點一下即進入。375 x 812 觸控第一下顯示提示、第二下進入，回到群星亦同，無橫向捲動。`lint_wiki.py` ERROR 0。

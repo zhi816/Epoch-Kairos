@@ -69,15 +69,11 @@ body[data-mode="focus"] .strands { background-image: linear-gradient(90deg, rgba
 .vert-en { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 10px; letter-spacing: 0.22em; white-space: nowrap; }
 .motto-v { display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .vert-zh { writing-mode: vertical-rl; font-family: var(--font-serif-zh); font-size: 18px; letter-spacing: 0.55em; color: var(--fg-ivory); }
-.secret-wrap { position: relative; display: flex; }
 .secret { width: 24px; height: 24px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .secret i { display: block; width: 3px; height: 3px; border-radius: 50%; background: #FFFDF8; box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.3); animation: beacon 7s ease-in-out infinite; transition: width 0.3s, height 0.3s, box-shadow 0.3s; }
 .secret:hover i, .secret:focus-visible i, .secret[data-armed="true"] i { width: 5px; height: 5px; animation: none; box-shadow: 0 0 0 3px var(--ink), 0 0 0 4px rgba(var(--blue-rgb, 143, 213, 253), 0.85), 0 0 12px 4px rgba(var(--blue-rgb, 143, 213, 253), 0.45); }
 body[data-mode="focus"] .secret i { width: 10px; height: 10px; animation: none; background: radial-gradient(circle, #FFFDF8 0 1.3px, rgba(255, 253, 248, 0) 1.8px); box-shadow: inset 0 0 0 1px var(--blue), 0 0 10px 2px rgba(var(--blue-rgb, 143, 213, 253), 0.55); }
-.peek { position: absolute; left: calc(100% + 4px); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 2px; white-space: nowrap; opacity: 0; transition: opacity 0.35s ease; pointer-events: none; }
-.peek-t { font-family: var(--font-serif-zh); font-size: 13px; letter-spacing: 0.08em; color: var(--fg-ivory); }
-.peek-s { font-size: 9.5px; letter-spacing: 0.16em; color: var(--blue); }
-.secret-wrap:hover .peek, .secret-wrap:focus-within .peek { opacity: 1; }
+/* 桌面滑過句末之星不出現文字，只有星點轉亮與聚焦框（2026-11-09 使用者決定） */
 
 /* 星圖面板 */
 .stage { position: relative; flex: 999 1 560px; min-width: 0; }
@@ -218,5 +214,5 @@ body[data-mode="focus"] .back { border-bottom-color: rgba(var(--blue-rgb, 143, 2
 
 @media (prefers-reduced-motion: reduce) {
   .secret i, .star .ring, .flow, .desk .star.p, .map.warp { animation: none; }
-  .tf0, .lbl, .peek, .strand, .tip, .star .core, .secret i { transition: none; }
+  .tf0, .lbl, .strand, .tip, .star .core, .secret i { transition: none; }
 }
