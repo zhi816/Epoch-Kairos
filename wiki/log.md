@@ -1016,3 +1016,13 @@
   - **EK-079**：Card 3 刪除虛構之語義概念對齊詞表與 MDS 分析，改述原文真實採用之三項詞彙相似度指標（詞級 TF-IDF 餘弦、詞頻 $\ge 5$ 詞型 Jaccard 相似度、前 500 高頻詞之字元級正規化 Levenshtein 距離）與 Bootstrap 500 次抽樣信心區間檢驗；Card 4 補齊 Table 1–3 全語料特徵（Hapax 率 72%–79%）、多方言語言核心共有詞比例與分群發現（賽德克語 0.820 最緊密、布農語重現經典三分群、泰雅語 0.605 與魯凱語 0.648 分化最深）。
   - **EK-086**：同步修正 [concepts/formosan-computational-linguistics.md](concepts/formosan-computational-linguistics.md) 方言計量學支柱描述，刪除多維度對齊，補齊三項指標；建證據表 [wiki/evidence/formosan-computational-linguistics.md](evidence/formosan-computational-linguistics.md)，概念頁 `verification` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-059、EK-079 與 EK-086 標記為 `fixed`。
+
+
+## [2026-11-09 11:13] fix | 依原文重寫 Hybrid Wang 2026 混合翻譯頁改述條件分支檢索 | #自然語言處理 #人工智慧 #計算語言學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 接手 Claude Opus 5.5 暫停之 8 篇 my-focus 論文頁修正工作之第 7 篇：[Hybrid Wang 2026](papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)（EK-081）。
+  - 對照 MDPI *Eng. Proc.* 原文（`raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`）全文核對後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2026-hybrid-dictionary-rag-llm-paiwan-wang.md](evidence/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)，頁面 `verification` 提升為 `verified`。
+  - **EK-081**：Card 1 將通訊作者校正為「王任慶（Reen-Cheng Wang）教授團隊」；Card 3 刪除虛構之餘弦相似度結合 BM25 線性加權公式，改述原文真實採用之串聯條件分支（If-Else Fallback）管線（逐詞先查記憶體 JSON 雜湊表，命中則 Word Merge，未命中才查詢 Qdrant 向量庫），並澄明詞典模組僅做表面詞字面匹配，未進行構詞焦點解析；Card 4 補齊 250 句測試集之 Cosine（0.210–0.236 $\to$ 0.810–0.846）、BLEU（1.7–4.4 $\to$ 40.8–51.9）與 ROUGE-L（0.135–0.177 $\to$ 0.548–0.632）詳細對比數據及倒裝句局限。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-081 標記為 `fixed`。
