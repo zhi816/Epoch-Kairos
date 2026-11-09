@@ -259,10 +259,11 @@
     for (var i = 0; i < 72; i++) ticks += tick(i * 5 * Math.PI / 180, R.out, i % 6 === 0 ? R.t1 : R.t2);
     for (var j = 0; j < 24; j++) ticks += tick(j * 15 * Math.PI / 180, R.mid, R.m2);
     function ring(r, extra) { return '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '"' + (extra || '') + ' vector-effect="non-scaling-stroke"/>'; }
-    h += '</g><g fill="none" stroke="rgba(232,228,218,0.07)" stroke-width="1">' +
-      ring(120, ' stroke-dasharray="2 6"') + ring(R.mid, ' stroke-dasharray="1 7"') + ring(R.out) + ring(R.out2, ' stroke="rgba(232,228,218,0.04)"') +
+    /* 星盤圓圈、刻度與十字長軸只畫在手機；桌面為分團版面，不要外框圓圈之感（DESIGN.md 第二章第 2 節），只留中心奇點之兩圈光環 */
+    var disc = mobile ? ring(120, ' stroke-dasharray="2 6"') + ring(R.mid, ' stroke-dasharray="1 7"') + ring(R.out) + ring(R.out2, ' stroke="rgba(232,228,218,0.04)"') +
       '<path d="' + ticks + '" stroke="rgba(232,228,218,0.10)" vector-effect="non-scaling-stroke"/>' +
-      '<path d="M' + cx + ' ' + (cy - R.out - 20) + ' V' + (cy + R.out + 20) + ' M' + (cx - R.out - 20) + ' ' + cy + ' H' + (cx + R.out + 20) + '" stroke="rgba(232,228,218,0.035)" vector-effect="non-scaling-stroke"/>' +
+      '<path d="M' + cx + ' ' + (cy - R.out - 20) + ' V' + (cy + R.out + 20) + ' M' + (cx - R.out - 20) + ' ' + cy + ' H' + (cx + R.out + 20) + '" stroke="rgba(232,228,218,0.035)" vector-effect="non-scaling-stroke"/>' : '';
+    h += '</g><g fill="none" stroke="rgba(232,228,218,0.07)" stroke-width="1">' + disc +
       ring(24, ' stroke="rgba(232,228,218,0.22)"') + ring(33, ' stroke="rgba(232,228,218,0.12)" stroke-dasharray="1 3"') +
       '</g><g class="edges"></g></svg>';
     map.innerHTML = h;
