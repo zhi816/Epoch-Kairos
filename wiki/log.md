@@ -1263,3 +1263,17 @@
 - **具體變更**：
   - [2026-11-09 16:23] audit 重開 EK-081 至 EK-084、EK-086 後，相關頁面 `verification` 未同步，造成 Lint 5 筆 ERROR。已將 [2026-hybrid-dictionary-rag-llm-paiwan-wang](papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)、[2025-fragment-shot-reasoning-mt-frontull](papers/2025-fragment-shot-reasoning-mt-frontull.md)、[2025-tulun-adaptable-lrl-mt-merx](papers/2025-tulun-adaptable-lrl-mt-merx.md)、[2026-context-volume-rag-domain-shift-setiawan](papers/2026-context-volume-rag-domain-shift-setiawan.md) 與概念頁 [formosan-computational-linguistics](concepts/formosan-computational-linguistics.md) 之 `verification` 由 `verified` 改為 `issues`。
   - 驗證：Lint 全庫 ERROR 0、WARN 30。
+
+## [2026-11-09 19:33] design | 論文頁桌面版定案為樣稿論文頁 F | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：
+  - 於樣稿畫布以 Hopfield 神經網絡為樣本，製作論文頁桌面版 A 至 F 與卡組實驗（甲乙丙）。使用者選定 F：B 之架構（窄導軌、卡片欄、長文欄、資訊欄）拿掉卡片下方六項目錄並加大卡片，卡組丁（乙之內容、學科色底），長文區塊公式不加框。
+  - [DESIGN.md](../DESIGN.md) 第五章寫入定案內容（四欄版面、卡片與長文捲動同步、卡組丁各卡結構、`physics` 深色重點色樣稿值、長文公式不加框）；第八章第 9 項標記定案，新增第 14 項（卡組丁其餘五學科之深色重點色）與第 15 項（資訊欄核實狀態之顯示文字）；第九章補四筆否決紀錄；第十章補版本歷程。
+  - [todo.md](todo.md) TD-002 之「等待」更新：第 9、10 項已完成，尚待第 1 項與第 14 項。
+  - 未改 `web/`，樣稿僅存於使用者私人畫布。Lint ERROR 0、WARN 30（皆為既有警告）。
+
+## [2026-11-09 19:33] rule | 長文區塊公式不加框，桌面細部版面指向 DESIGN.md | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：經使用者確認，修改 [AGENTS.md](../AGENTS.md) 第三章第 4 條：3:4 知識圖卡內之區塊公式維持 `--bg-surface-sunken` 深色底與學科微光或細框；論文頁右側長文之區塊公式不加容器外觀，直接置中排版，第 3 條之水平捲動防溢出仍適用。第七章第 3 節桌面佈局加註細部版面與卡組配色以 DESIGN.md 第五章為準。
