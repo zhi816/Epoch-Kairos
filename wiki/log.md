@@ -881,3 +881,26 @@
   - **EK-030**：Card 1 將「全面擊敗所有領域專用工具」改為符合原文之「在單一統一深度學習架構中跨越了幾乎所有生物分子交互作用類別，預測準確度顯著超越眾多既有領域專用工具」，交代個別任務與專用工具之具體比較（如蛋白—配體超越對接軟體、蛋白—核酸超越專用預測器，但 CASP15 RNA 仍有人類專家介入模型略高）。
   - 新增證據表 [wiki/evidence/2024-alphafold3.md](evidence/2024-alphafold3.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-029 與 EK-030 標記為 `fixed` 並追加處理紀錄。
+
+
+## [2026-11-09 10:04] fix | 可容錯量子處理器 2024 依原文核實邏輯位元數與動態拓撲並建立證據表 | #量子物理 #統計物理
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 Nature 2024 定稿原文（`raw/2024-fault-tolerant-quantum.pdf`）全面核實修訂 [wiki/papers/2024-fault-tolerant-quantum.md](papers/2024-fault-tolerant-quantum.md)。
+  - **EK-032**：Card 4 對照 Abstract、Section 4 與 Fig. 4、Fig. 5 明確區分兩大獨立實驗：(1) 40 個 $d=3$ 色碼邏輯量子位元在 280 個物理原子上的分區維持與操作（使用 20 個橫向 CNOT 實施標記容錯初始化，閒置退相干率約 1%），糾正原先混淆位元數與閘數之錯誤；(2) 48 個邏輯量子位元之三維 $[[8,3,2]]$ 碼取樣電路（動用 128 個物理原子，在 4D 超立方體拓撲下執行包含 228 個雙位元閘與 48 個 CCZ 閘之深層亂序電路，全錯誤偵測下 XEB 達約 0.1）。
+  - **EK-033**：Card 1 糾正將中性原子光鑷搬運誤植為「帶電」之錯誤，精確表述為「以光學鑷子（2D AOD）相干搬運中性原子（Neutral Atoms）」。
+  - **EK-034**：Card 5 依 Outlook（p. 8）更正 qLDPC 相關表述，明確本實驗實作之編碼為表面碼、色碼與三維 $[[8,3,2]]$ 碼，qLDPC 碼僅為未來進一步降低硬體開銷的展望方向，刪除將 qLDPC 寫成已由本實驗實作之陳述。
+  - 新增證據表 [wiki/evidence/2024-fault-tolerant-quantum.md](evidence/2024-fault-tolerant-quantum.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-032、EK-033 與 EK-034 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 10:03] fix | 可容錯量子處理器 2024 依原文核實中性原子搬運與邏輯電路規格並建立證據表 | #量子物理 #統計物理
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 Nature 2024 定稿原文（`raw/2024-fault-tolerant-quantum.pdf`）全面核實修訂 [wiki/papers/2024-fault-tolerant-quantum.md](papers/2024-fault-tolerant-quantum.md)。
+  - **EK-032**：Card 4 對照 Abstract、Section 4 與 Fig. 4、5 精確拆分兩大獨立實驗——(1) 40 個 $d=3$ 色碼邏輯量子位元在 280 個物理原子上的分區維持與操作（使用 20 個橫向 CNOT 實施標記容錯初始化，閒置退相干率約 1%），糾正混淆位元數與閘數之錯誤；(2) 48 個邏輯量子位元之三維 $[[8,3,2]]$ 碼取樣電路（動用 128 個物理原子，在 4D 超立方體連接拓撲下執行包含 228 個邏輯雙位元閘與 48 個邏輯 CCZ 閘之深層亂序電路，全錯誤偵測下 XEB 達約 0.1）。
+  - **EK-033**：Card 1 糾正將中性原子光學鑷子搬運誤植為「帶電」之嚴重錯誤，精確表述為「以光學鑷子（2D AOD）相干搬運中性原子（Neutral Atoms）」。
+  - **EK-034**：Card 5 更正 qLDPC 相關表述，明確本實驗實作之編碼為表面碼、色碼與三維 $[[8,3,2]]$ 碼，qLDPC 碼僅為原文展望中進一步降低硬體開銷的關鍵未來方向，刪除將 qLDPC 寫成已由本實驗實作之陳述。
+  - 新增證據表 [wiki/evidence/2024-fault-tolerant-quantum.md](evidence/2024-fault-tolerant-quantum.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-032、EK-033 與 EK-034 標記為 `fixed` 並追加處理紀錄。

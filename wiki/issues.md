@@ -210,20 +210,23 @@
 
 ## 2024 可容錯量子處理器
 
-### EK-032 | open | papers/2024-fault-tolerant-quantum.md | Card 4 | 原文不符
+### EK-032 | fixed | papers/2024-fault-tolerant-quantum.md | Card 4 | 原文不符
 - **問題**：把「40 個 color-code qubits」混寫成「40 個橫向邏輯 CNOT 閘」，混淆量子位元數與閘數；另須與以 3D [[8,3,2]] code blocks 執行之 48 邏輯量子位元取樣電路分開敘述。
 - **來源**：[原文](https://arxiv.org/abs/2312.03982)
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit、[2026-11-08 22:35] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 Abstract、Section 4 與 Fig. 4、Fig. 5 核實修訂 Card 4：明確區分兩大獨立實驗——(1) 40 個 $d=3$ 色碼邏輯量子位元在 280 個物理原子上的分區維持與操作（使用 20 個橫向 CNOT 實施標記容錯初始化，閒置退相干率約 1%），糾正混淆位元數與閘數之錯誤；(2) 48 個邏輯量子位元之三維 $[[8,3,2]]$ 碼取樣電路（動用 128 個物理原子，在 4D 超立方體連接拓撲下執行包含 228 個邏輯雙量子位元閘與 48 個邏輯 CCZ 閘之深層亂序電路，全錯誤偵測下 XEB 達約 0.1）。證據表見 wiki/evidence/2024-fault-tolerant-quantum.md。
 
-### EK-033 | open | papers/2024-fault-tolerant-quantum.md | Card 1 | 原文不符
+### EK-033 | fixed | papers/2024-fault-tolerant-quantum.md | Card 1 | 原文不符
 - **問題**：將中性 87Rb 原子寫成「帶電」搬運；原文為 neutral-atom 陣列。
 - **來源**：[封存原文](../raw/2024-fault-tolerant-quantum.pdf)
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 Fig. 1 與 Methods 查核修訂 Card 1：糾正將中性原子光學鑷子搬運誤植為「帶電」之嚴重錯誤，精確表述為「以光學鑷子（2D AOD）相干搬運中性原子（Neutral Atoms）」。證據表見 wiki/evidence/2024-fault-tolerant-quantum.md。
 
-### EK-034 | open | papers/2024-fault-tolerant-quantum.md | Card 5 | 原文不符
+### EK-034 | fixed | papers/2024-fault-tolerant-quantum.md | Card 5 | 原文不符
 - **問題**：把 qLDPC 說成已由本實驗實作；原文只把 qLDPC 列為未來降低開銷之方向。
 - **來源**：[Nature 原文](https://www.nature.com/articles/s41586-023-06927-3)
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 Outlook（p. 8）查核修訂 Card 5：更正 qLDPC 相關表述，明確本實驗實作之編碼為表面碼、色碼與三維 $[[8,3,2]]$ 碼，qLDPC 碼僅為原文展望中進一步降低硬體開銷的關鍵未來方向，刪除將 qLDPC 寫成已由本實驗實作之陳述。證據表見 wiki/evidence/2024-fault-tolerant-quantum.md。
 
 ## 2024 Sora
 
