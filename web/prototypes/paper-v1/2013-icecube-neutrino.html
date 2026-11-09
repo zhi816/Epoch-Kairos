@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>南極冰立方高能宇宙微中子探測｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:17cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#D3BEFD;--deep:#4D2E8B;--win:#23222B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.03</span><span>物理</span></div><div class="win"><i style="left:65.1%;top:25.8%;width:1px;height:1px;opacity:0.61"></i><i style="left:95.0%;top:20.4%;width:1.5px;height:1.5px;opacity:0.44"></i><i style="left:8.3%;top:37.6%;width:1.5px;height:1.5px;opacity:0.84"></i><i style="left:77.6%;top:4.3%;width:1px;height:1px;opacity:0.62"></i><i style="left:70.7%;top:31.0%;width:1px;height:1px;opacity:0.66"></i><i style="left:4.6%;top:37.0%;width:1px;height:1px;opacity:0.62"></i><i style="left:29.4%;top:4.4%;width:1.5px;height:1.5px;opacity:0.68"></i><i style="left:5.5%;top:40.9%;width:1px;height:1px;opacity:0.63"></i><i style="left:54.7%;top:40.4%;width:1.5px;height:1.5px;opacity:0.58"></i><i style="left:4.6%;top:24.2%;width:1px;height:1px;opacity:0.79"></i><i style="left:13.4%;top:20.9%;width:1px;height:1px;opacity:0.72"></i><i style="left:7.3%;top:37.9%;width:1px;height:1px;opacity:0.65"></i><i style="left:61.6%;top:7.2%;width:1px;height:1px;opacity:0.65"></i><i style="left:86.2%;top:12.8%;width:1px;height:1px;opacity:0.71"></i><span class="rep award"></span><span class="line"><span>用南極冰層，</span><span>捕捉來自宇宙的</span><span>高能微中子</span></span></div><div class="tags">物理、天文與地球科學・#天體物理 #宇宙學</div><div class="name">南極冰立方高能宇宙微中子探測</div><div class="lead">在南極深冰布滿光感測器，捕捉微中子撞擊後產生的微光，找到高能微中子不全來自大氣的證據。</div><div class="yrs">2013 發表 ｜ 2026 諾貝爾物理學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">帶電的會轉彎，<br>光會被吸收</span><div class="rows"><div class="row"><b>宇宙射線</b><span>帶正電，被沿途磁場彎曲，抵達地球時已失去源頭方向</span></div><div class="row"><b>伽瑪射線</b><span>能量太高時被宇宙背景光吸收，跨不過宇宙學距離</span></div><div class="row gap"><b>探測器</b><span>人造水槽都不夠大，無法從近十億倍的大氣背景中挑出微中子</span></div></div><span class="ft" style="color:var(--ink)">要追到源頭，得靠不轉彎、不被吸收的微中子。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">把整塊南極冰變成望遠鏡</span><svg class="dia" viewBox="0 0 300 126" role="img" aria-label="示意：微中子在南極冰層撞出帶電粒子，粒子發出的光錐被一串串光感測器記錄。">
+  <rect class="k-soft" x="4" y="24" width="292" height="82" rx="4"/>
+  <line class="k-muted k-thin" x1="150" y1="32" x2="150" y2="100"/>
+  <line class="k-muted k-thin" x1="190" y1="32" x2="190" y2="100"/>
+  <line class="k-muted k-thin" x1="230" y1="32" x2="230" y2="100"/>
+  <line class="k-muted k-thin" x1="270" y1="32" x2="270" y2="100"/>
+  <circle class="k-ink" cx="150" cy="46" r="2.4"/>
+  <circle class="k-ink" cx="150" cy="68" r="2.4"/>
+  <circle class="k-ink" cx="150" cy="90" r="2.4"/>
+  <circle class="k-ink" cx="190" cy="46" r="2.4"/>
+  <circle class="k-ink" cx="190" cy="68" r="2.4"/>
+  <circle class="k-ink" cx="190" cy="90" r="2.4"/>
+  <circle class="k-ink" cx="230" cy="46" r="2.4"/>
+  <circle class="k-ink" cx="230" cy="68" r="2.4"/>
+  <circle class="k-ink" cx="230" cy="90" r="2.4"/>
+  <circle class="k-ink" cx="270" cy="46" r="2.4"/>
+  <circle class="k-ink" cx="270" cy="68" r="2.4"/>
+  <circle class="k-ink" cx="270" cy="90" r="2.4"/>
+  <line class="k-ink k-dash" x1="14" y1="98" x2="88" y2="70"/>
+  <polyline class="k-ink" points="81,68 88,70 84,76"/>
+  <circle class="k-accent" cx="92" cy="68" r="3.4"/>
+  <line class="k-line" x1="92" y1="68" x2="236" y2="36"/>
+  <line class="k-accent" x1="212" y1="41" x2="186" y2="27"/>
+  <line class="k-accent" x1="212" y1="41" x2="186" y2="76"/>
+  <text class="k-label" x="8" y="18">南極冰層</text>
+  <text class="k-label-accent" x="186" y="18" text-anchor="middle">光錐</text>
+  <text class="k-label" x="292" y="18" text-anchor="end">光感測器</text>
+  <text class="k-label" x="110" y="52" text-anchor="middle">帶電粒子</text>
+  <text class="k-label" x="14" y="118">微中子</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\theta_C = \arccos\left(\frac{1}{n}\right) \approx 41^\circ"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">帶電粒子在冰裡快過冰中光速時，以固定角度射出光錐；n 是冰的折射率。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">28</span><span class="l">662 天觀測中，30 TeV 至 1.2 PeV 的高能事件數</span></div><div class="stat"><span class="v">6.1</span><span class="l">同期預期的大氣微中子背景，緲子背景另計</span></div><div class="stat"><span class="v">4.1σ</span><span class="l">預先指定方法合併 28 事件，拒絕純大氣背景</span></div><div class="stat"><span class="v">2</span><span class="l">沉積能量超過 1 PeV 的事件數</span></div></div><span class="ft">範圍：Aartsen 等 2013，冰立方兩年資料，達證據而未達發現門檻</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">宇宙多了一扇微中子窗口</span><div class="time"><p><b>2014</b><span>Aartsen 等累積 37 個事件，顯著性達 5.7σ</span></p><p><b>2018</b><span>一顆微中子與耀變體爆發同步，鎖定可能源頭</span></p><p><b>2023</b><span>IceCube 繪出銀河系盤面的微中子影像</span></p><p><b>2026</b><span>Halzen 獲諾貝爾物理學獎</span></p></div><span class="ft">前三項為後續他人成果，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">實驗室造不出夠大的探測器時，就把南極的萬年冰蓋變成探測器。</span><span class="shift"><span>人造水槽</span><i aria-hidden="true"></i><b>萬年冰蓋</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2013 發表 ｜ 2026 諾貝爾物理學獎</span>
+<h1>南極冰立方（IceCube）高能宇宙微中子探測：開啟高能微中子天文學時代</h1>
+<p class="en">Evidence for High-Energy Extraterrestrial Neutrinos at the IceCube Detector</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">光子會被星際塵埃遮蔽，帶電宇宙射線會被磁場彎曲；唯有近似無質量、不帶電的微中子，能如幽靈般直線穿透百億光年的宇宙迷霧，將極端天體核心的秘密直接送到地球。</p>
+<p>自 1912 年人類發現宇宙射線以來，最高能量達 <span class="m-in" data-tex="10^{20}\,\text{eV}"></span> 的超高能宇宙射線究竟誕生於何處，始終是天體物理學的百年謎團。在 Francis Halzen 等人的推動下，科學家在南極點冰面下 <span class="m-in" data-tex="1450"></span> 至 <span class="m-in" data-tex="2450\,\text{m}"></span> 深處部署了 5,160 個數位光學模組（DOM），建成體積達 <span class="m-in" data-tex="1\,\text{km}^3"></span> 的「冰立方（IceCube）」探測器。2013 年，IceCube 合作組宣布在兩年觀測數據中捕捉到 28 個能量介於 <span class="m-in" data-tex="30\,\text{TeV}"></span> 至 <span class="m-in" data-tex="1.2\,\text{PeV}"></span> 的高能微中子事件，排除了純大氣背景假設，正式開啟人類觀測宇宙的高能微中子新窗口。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：彎曲的軌跡、不透明的宇宙與十億分之一的信噪比</h2></div>
+<p>探索極端高能宇宙面臨三大物理極限：</p>
+<ul><li><strong>帶電宇宙射線失去方向記憶</strong>：質子與原子核帶正電，在穿越銀河系與星系際磁場時受勞侖茲力偏轉，抵達地球時已完全喪失源頭方向資訊。</li><li><strong>高能伽瑪射線的宇宙不透明性</strong>：能量超過 <span class="m-in" data-tex="\text{TeV}"></span>–<span class="m-in" data-tex="\text{PeV}"></span> 的高能光子在星系際空間傳播時，會與宇宙微波背景輻射（CMB）及河外背景光（EBL）發生正負電子對產生反應（<span class="m-in" data-tex="\gamma + \gamma_{\text{CMB}} \to e^+ + e^-"></span>）而被吸收，無法跨越宇宙學距離。</li><li><strong>微中子極端微弱的交互作用截面與龐大大氣背景</strong>：微中子僅參與弱交互作用，穿透整個地球的碰撞機率在 <span class="m-in" data-tex="\text{TeV}"></span>–<span class="m-in" data-tex="\text{PeV}"></span> 能區依然極低；同時，宇宙射線轟擊地球大氣層每秒在 IceCube 產生約 <span class="m-in" data-tex="3,000"></span> 個下行的背景緲子（Atmospheric Muons），背景率比天體微中子信號高出近十億倍。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>IceCube 結合了極地冰川光學物理、契忍可夫輻射（Cherenkov Radiation）與高能起始事件（High-Energy Starting Events, HESE）主動否決技術：</p>
+<ol><li><strong>一立方公里超純極地冰作為靶物質與光學介質</strong>：<ul><li>南極深處超過 <span class="m-in" data-tex="1450\,\text{m}"></span> 的高壓古冰層中，氣泡已被完全壓入晶格形成籠形水合物，光吸收長度超過 <span class="m-in" data-tex="100\,\text{m}"></span>。86 條垂直電纜（Strings）共掛載 5,160 個光電倍增管模組，構成三維光學陣列。</li></ul></li><li><strong>次級帶電輕子之契忍可夫光錐重建</strong>：<ul><li>當高能微中子 <span class="m-in" data-tex="\nu_\ell"></span>（<span class="m-in" data-tex="\ell = e, \mu, \tau"></span>）與冰中原子核發生深非彈性散射時，產生的相對論性帶電粒子在冰中速度 <span class="m-in" data-tex="v"></span> 超過冰中光速 <span class="m-in" data-tex="c/n"></span>，激發出夾角為 <span class="m-in" data-tex="\theta_C = \arccos(1/\beta n)"></span> 的藍紫光錐。事件呈現兩種拓撲型態：<span class="m-in" data-tex="\nu_\mu"></span> 帶電流交互作用產生長距離直線軌跡（Track，角解析度 <span class="m-in" data-tex="\lesssim 1^\circ"></span>）；<span class="m-in" data-tex="\nu_e, \nu_\tau"></span> 及中性流交互作用則產生近球形的電磁/強子簇射（Cascade/Shower，能量解析度 <span class="m-in" data-tex="\approx 10\%"></span>–<span class="m-in" data-tex="15\%"></span>）。</li></ul></li><li><strong>外層主動否決區（Outer Veto Layer）過濾大氣背景</strong>：<ul><li>作者將探測器外圍與頂部的光學模組定義為「主動否決層」，僅篩選交互作用頂點（Vertex）發生在內部基準體積（Fiducial Volume，約 <span class="m-in" data-tex="400\,\text{Mt}"></span> 冰）且總收集光電子數超過 <span class="m-in" data-tex="6,000\,\text{pe}"></span>（對應沉積能量 <span class="m-in" data-tex="\gtrsim 30\,\text{TeV}"></span>）的「高能起始事件（HESE）」。此篩選對總電荷超過 <span class="m-in" data-tex="6,000\,\text{pe}"></span> 的穿透大氣緲子背景達到 <span class="m-in" data-tex="99.999\%"></span> 的拒斥率，並利用伴隨緲子濾除南半球約 <span class="m-in" data-tex="70\%"></span> 的大氣微中子，最終將兩年觀測預期的大氣緲子背景壓低至 <span class="m-in" data-tex="6.0 \pm 3.4"></span> 個事件、大氣微中子背景壓低至約 <span class="m-in" data-tex="6.1"></span> 個事件。</li></ul></li></ol>
+<h3>1. 契忍可夫輻射Frank-Tamm公式與光錐幾何 (Cherenkov Radiation Spectrum)</h3>
+<p>當次級帶電粒子以相對論速度 <span class="m-in" data-tex="\beta = v/c &gt; 1/n(\omega)"></span> 穿越折射率為 <span class="m-in" data-tex="n(\omega) \approx 1.32"></span> 的南極深冰時，單位路徑長度 <span class="m-in" data-tex="dx"></span> 與單位頻率區間 <span class="m-in" data-tex="d\omega"></span> 所輻射出的契忍可夫光子數由 Frank-Tamm 方程給出：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\frac{d^2 N_\gamma}{dx\,d\omega} &amp;= \alpha z^2 \sin^2 \theta_C(\omega) \\
+&amp;= \alpha z^2 \left( 1 - \frac{1}{\beta^2 n^2(\omega)} \right)
+\end{aligned}"></span>
+<p>其中 <span class="m-in" data-tex="\alpha \approx 1/137"></span> 為精細結構常數，<span class="m-in" data-tex="z=1"></span> 為粒子電荷數。在超相對論極限 <span class="m-in" data-tex="\beta \to 1"></span> 下，契忍可夫特徵角為：</p>
+<span class="m-disp" data-tex="\theta_C = \arccos\left(\frac{1}{n}\right) \approx 41^\circ"></span>
+<h3>2. 超高能微中子—核子深非彈性散射與地球吸收衰減 (Neutrino-Nucleon Cross Section &amp; Earth Absorption)</h3>
+<p>微中子與冰中核子 <span class="m-in" data-tex="N"></span> 的帶電流（CC）與中性流（NC）微分散射截面由夸克部分子分佈函數（PDF）<span class="m-in" data-tex="q_i(x, Q^2)"></span> 決定。在能量 <span class="m-in" data-tex="E_\nu \gtrsim 10\,\text{TeV}"></span> 時，由於 <span class="m-in" data-tex="W^\pm / Z^0"></span> 玻色子傳播子（質量 <span class="m-in" data-tex="M_W \approx 80.4\,\text{GeV}"></span>）的能標效應，總截面呈次線性冪律增長：</p>
+<span class="m-disp" data-tex="\sigma_{\nu N}(E_\nu) \propto E_\nu^{0.363} \quad (10\,\text{TeV} \lesssim E_\nu \lesssim 10\,\text{PeV})"></span>
+<p>因此，能量越高，地球本身對上行微中子（天頂角 <span class="m-in" data-tex="\theta_z &gt; 90^\circ"></span>）的遮蔽效應越顯著，穿透地球弦長 <span class="m-in" data-tex="L(\theta_z)"></span> 的存活率為：</p>
+<span class="m-disp" data-tex="P_{\text{surv}}(E_\nu, \theta_z) = \exp\left( - N_A \sigma_{\nu N}(E_\nu) \int_0^{L(\theta_z)} \rho(r)\,dl \right)"></span>
+<p>這正是高能天體微中子事件在南半球下行與水平方向顯著富集、而在正下方穿地方向受吸收衰減的物理原因。</p>
+<h3>3. 天體物理微中子冪律能譜通量 (Astrophysical Power-Law Flux)</h3>
+<p>在標準費米一階震波加速（Fermi Acceleration）機制下，天體源產生的全風味微中子微分通量 <span class="m-in" data-tex="\Phi_\nu(E_\nu)"></span> 遵循冪律譜，明顯硬於陡峭衰減的大氣微中子背景（<span class="m-in" data-tex="\propto E_\nu^{-3.7}"></span>）：</p>
+<span class="m-disp" data-tex="E_\nu^2 \Phi_{\text{astro}}(E_\nu) = \Phi_0 \left( \frac{E_\nu}{100\,\text{TeV}} \right)^{2 - \gamma}"></span>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Aartsen et al. 2013, <em>Science</em>）之核心證據</h3>
+<ul><li><strong>662 天有效觀測捕捉 28 個高能起始事件（HESE）</strong>：分析 2010 年 5 月至 2012 年 5 月共 662 天全陣列數據，在沉積能量 <span class="m-in" data-tex="30\,\text{TeV}"></span> 至 <span class="m-in" data-tex="1.2\,\text{PeV}"></span> 範圍內觀測到 28 個高能微中子候選事件（包含 21 個簇射型 Cascade 事件與 7 個緲子軌跡型 Track 事件）。</li><li><strong>統計顯著性（3.3σ–4.8σ）強烈拒絕純大氣背景</strong>：在基準大氣通量模型下，預期大氣背景僅為 <span class="m-in" data-tex="6.0 \pm 3.4"></span> 個穿透緲子與 <span class="m-in" data-tex="6.1"></span> 個大氣微中子（<span class="m-in" data-tex="\pi/K"></span> 與基準魅夸克衰變瞬發微中子）。為防確認偏誤，合作組將數據拆分分析：本次新報告的 26 個事件顯著性為 <span class="m-in" data-tex="3.3\sigma"></span>（單尾）；利用 Fisher 方法將其與先前報告 2 個 PeV 事件之預先指定分析合併，全體 28 個事件之綜合顯著性達 <strong><span class="m-in" data-tex="4.1\sigma"></span></strong>（若採當前 90% CL 魅夸克上限則為 <span class="m-in" data-tex="3.6\sigma"></span>）；若直接在全體 28 個事件上進行事後（<em>a posteriori</em>）計算，顯著性達 <strong><span class="m-in" data-tex="4.8\sigma"></span></strong>（90% CL 魅夸克上限下為 <span class="m-in" data-tex="4.5\sigma"></span>）。更正原先非原文之「4.3σ、p≈1.5×10⁻⁵」表述。</li><li><strong>首見 PeV 級宇宙微中子（「Bert」與「Ernie」）</strong>：其中兩個最高能量簇射事件的沉積能量分別高達 <span class="m-in" data-tex="1.04 \pm 0.16\,\text{PeV}"></span> 與 <span class="m-in" data-tex="1.14 \pm 0.17\,\text{PeV}"></span>，為人類史上首次探測到能量突破 <span class="m-in" data-tex="10^{15}\,\text{eV}"></span>（PeV）的微中子，比大型強子對撞機（LHC）束流能量高出兩個數量級以上。</li><li><strong><span class="m-in" data-tex="E^{-2}"></span> 硬能譜與各向同性分佈</strong>：在 <span class="m-in" data-tex="60\,\text{TeV}"></span> 至 <span class="m-in" data-tex="2\,\text{PeV}"></span> 區間，最佳擬合之各風味天體微中子通量為 <span class="m-in" data-tex="E_\nu^2 \Phi(E_\nu) = (1.2 \pm 0.4) \times 10^{-8}\,\text{GeV}\,\text{cm}^{-2}\,\text{s}^{-1}\,\text{sr}^{-1}"></span>，能譜明顯比大氣背景平緩，且天球分佈與河外各向同性天體源一致。</li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>37 事件三年數據突破 5.7σ 發現門檻並發現「Big Bird」</strong>：Aartsen et al. (IceCube Collaboration) (2014), <em>Physical Review Letters</em> 113:101101，將觀測延長至 988 天，累計 37 個高能事件（含 <span class="m-in" data-tex="2.0\,\text{PeV}"></span> 的「Big Bird」事件），拒絕純大氣背景之顯著性躍升至 <span class="m-in" data-tex="5.7\sigma"></span>。</li><li><strong>首個河外高能微中子點源認證（耀變體 TXS 0506+056）</strong>：IceCube Collaboration et al. (2018), <em>Science</em> 361:eaat1378 &amp; eaat2890，於 2017 年 9 月 22 日捕捉到 <span class="m-in" data-tex="290\,\text{TeV}"></span> 微中子事件 IceCube-170922A，並聯動全球 Fermi-LAT 與 MAGIC 等伽瑪射線望遠鏡，以超過 <span class="m-in" data-tex="3\sigma"></span> 關聯鎖定正在爆發的超大質量黑洞噴流耀變體 TXS 0506+056（且歷史回溯再發現 2014–2015 年 <span class="m-in" data-tex="3.5\sigma"></span> 微中子爆發）。</li><li><strong>格拉肖共振（Glashow Resonance, <span class="m-in" data-tex="6.3\,\text{PeV}"></span>）與銀河系盤面微中子成像</strong>：IceCube Collaboration (2021), <em>Nature</em> 591:220-224，首次探測到 <span class="m-in" data-tex="\bar{\nu}_e + e^- \to W^-"></span> 的 <span class="m-in" data-tex="6.3\,\text{PeV}"></span> 格拉肖共振事件；IceCube Collaboration (2023), <em>Science</em> 380:1338-1343，以 <span class="m-in" data-tex="4.5\sigma"></span> 顯著性繪製出首張銀河系盤面高能微中子影像。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>高能微中子天文學的正式誕生</strong>：在太陽微中子（Davis）與超新星 SN 1987A（Koshiba，MeV 能級）之後，Halzen 與 IceCube 將微中子探測能標直接推升九個數量級至 <span class="m-in" data-tex="\text{PeV}"></span>（<span class="m-in" data-tex="10^{15}\,\text{eV}"></span>），使微中子成為探索宇宙極端加速器的常規探針。</li><li><strong>多信使天文學（Multi-Messenger Astronomy）的三大支柱合流</strong>：與 LIGO/Virgo 重力波及全波段電磁波天文台組成全球即時警報網（GCN），實現「微中子導航、光學與伽瑪望遠鏡跟蹤」的協同觀測模式。</li><li><strong>以宇宙為終極粒子對撞機</strong>：利用 <span class="m-in" data-tex="\text{PeV}"></span> 級天體微中子在極端能量下檢驗粒子物理標準模型的電弱截面、微中子風味振盪比（<span class="m-in" data-tex="\nu_e : \nu_\mu : \nu_\tau \approx 1:1:1"></span>）與勞侖茲不變性破缺極限。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>Francis Halzen 與 IceCube 團隊展示了人類工程與自然極限結合的壯闊想像力：</p>
+<ol><li><strong>當實驗室造不出足夠大的探測器時，就把地球本身變成探測器</strong>：要捕捉十億分之一的幽靈粒子，人工水槽永遠不夠大；唯有將南極萬年冰蓋直接化為光學晶體，才能跨越尺度的鴻溝。</li><li><strong>「外層否決（Veto）」的逆向過濾哲學</strong>：在壓倒性的十億倍雜訊面前，關鍵不僅是增強信號，更是利用物理拓撲（頂點必須在內部生成、不得有外部入射軌跡）設計出近乎完美的反向排除篩網。</li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2013</b><span>發表・Science</span></div>
+    <div class="yr award"><b>2026</b><span>諾貝爾物理學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>M. G. Aartsen et al. (IceCube Collaboration)</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Francis Halzen</span><span class="note">Halzen 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Science, 342(6161), 1242856</span><a href="https://doi.org/10.1126/science.1242856">doi:10.1126/science.1242856</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#天體物理</span><span class="chip">#宇宙學</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>多信使天體物理與極端宇宙學</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1103/PhysRevLett.111.021103" title="Aartsen, M. G. et al. (IceCube Collaboration) (2013) First observation of PeV-energy neutrinos with IceCube. Physical Review Letters 111(2):021103.">Aartsen 等（2013a）</a><a href="https://doi.org/10.1126/science.1242856" title="Aartsen, M. G. et al. (IceCube Collaboration) (2013) Evidence for High-Energy Extraterrestrial Neutrinos at the IceCube Detector. Science 342(6161):1242856.">Aartsen 等（2013b）</a><a href="https://doi.org/10.1126/science.aat1378" title="IceCube Collaboration et al. (2018) Multimessenger observations of a flaring blazar coincident with high-energy neutrino IceCube-170922A. Science 361(6398):eaat1378.">IceCube Collaboration 等（2018）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2026 年諾貝爾物理學獎頒予冰立方微中子天文台（IceCube Neutrino Observatory）首席科學家 Francis Halzen，表彰其領導建構立方公里級南極冰層微中子望遠鏡並開創高能天體微中子天文學。本頁以 IceCube 合作組於 2013 年 11 月發表於《Science》之 28 個高能微中子事件發現論文為主軸（Francis Halzen 為共同作者與合作組領導人），並於 <code>key_papers</code> 列出同年稍早 2 個 PeV 事件（Bert 與 Ernie）之 <em>PRL</em> 論文及 2018 年耀變體 TXS 0506+056 多信使溯源論文。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

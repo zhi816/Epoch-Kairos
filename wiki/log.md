@@ -1470,3 +1470,12 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：撰寫第一批 A 組 IceCube 卡片時發現兩處工具缺口並修正：(1) paper-card-writer 規定 Card 2、5 標題之全形逗號為兩行斷點，但 `tools/build_paper_prototype.py` 未實作，標題依寬度自動折行，「帶電的會轉彎，光會被吸收」第二行只剩「收」；新增 `title_html()`，Card 2、3、5 標題於全形逗號後換行，重建 Hopfield、賽德克語兩頁原型（僅標題換行改變，自我檢查 ERROR 0）。(2) Card 4 大數字「1.14 PeV」在桌面被擠成兩行、「99.999%」超出右欄，元素仍在卡片內，`verify_page.js` 原本抓不到；新增單行元素檢查（Card 2 對照名稱、Card 4 大數字、Card 5 年份不得折行或超出自己的格子），以文字範圍量測行數以免 grid 格子被同列說明撐高而誤報；以含上述兩個數字之測試頁確認報 FAIL，Hopfield、賽德克語、IceCube 三頁皆 PASS。`references/paper-page.md` 量測項目與錯誤處理表同步。
+
+## [2026-11-09 23:04] update | 新增南極冰立方高能微中子之卡片文字檔 | #天體物理 #宇宙學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第一批 A 組第 1 篇（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2013-icecube-neutrino.md](cards/2013-icecube-neutrino.md) 並建置 `web/prototypes/paper-v1/2013-icecube-neutrino.html`。
+  - 來源：封面斷行依 `card_line`；導語改寫自 hook 與論文頁 Card 1；Card 2 取論文頁 Card 2 三點（宇宙射線偏轉、伽瑪射線吸收、近十億倍大氣背景）與 Card 6「人工水槽永遠不夠大」；Card 3 公式取論文頁契忍可夫角 $\theta_C$ 式，示意圖為空間示意（冰層、四串光感測器、微中子、帶電粒子軌跡與光錐）；Card 4 四個數字取自證據表 Card 4 列（28 事件，Table 1 p. 4；4.1σ，p. 4；2 個 PeV 事件，pp. 4–6）與 Card 3 列（預期大氣微中子背景 6.1，pp. 3–4、7–8）；Card 5 三筆後續研究取自論文頁 Card 4 後續證據（Aartsen 2014 PRL、IceCube 2018 Science、IceCube 2023 Science），獎項取自 `honor` 與 `laureates`。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0（初稿缺口名稱「工具」不在論文頁之 WARN 已改為「探測器」）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 1440 x 900 與 375 x 812 共 37 項 PASS。
+  - 複核修正：Card 4 原用「1.14 PeV」「99.999%」，桌面折行與超出右欄，改用 6.1 與 2；導語原寫「微中子撞上冰時發出藍紫光」與「來自太陽系外」，前者發光者實為次級帶電粒子、後者強於原文（原文為排除純大氣背景），改為「撞擊後產生的微光」「不全來自大氣」，並縮短以免星窗被擠小壓到代表星；Card 2 結語「穿得過一切」誇大，改為「不轉彎、不被吸收」。
+  - 驗證限制：瀏覽器窗格未繪製畫面，目視檢查改以 Chrome 無頭截圖逐張檢視；桌面切卡時長文平滑捲動無法實測（模板未改，先前已實測）。
