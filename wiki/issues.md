@@ -36,20 +36,23 @@
 
 ## 2001 Acemoglu–Johnson–Robinson 殖民起源
 
-### EK-005 | open | papers/2001-colonial-origins-acemoglu.md | Card 4 | 原文不符
+### EK-005 | fixed | papers/2001-colonial-origins-acemoglu.md | Card 4 | 原文不符
 - **問題**：Table 3 第一階段係數原文為 −0.61（SE 0.13），頁面寫 −0.60；制度指標原文為 0–10 分，頁面寫 1–10；奈及利亞與智利差距原文表述為「至多約 7 倍」並提醒測量誤差，頁面之 8.2 倍須標為依四捨五入值計算；穩健性估計不宜概括為單一 0.7–1.0 範圍。
 - **來源**：[原文（AER 91(5), 2001）](https://economics.mit.edu/sites/default/files/publications/colonial-origins-of-comparative-development.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:46] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 AER 2001 Table 3、4、5、6、7 與 p. 1387 查核修訂 Card 4：更正第一階段係數為 −0.61（SE 0.13）；PRS 產權保護指標更正為 0–10 分；奈及利亞與智利差距依原文表述為「206 對數點、至多約 7 倍差距」，並加註作者對測量誤差之提醒與純依點估計值計算之 8.2 倍對比；穩健性估計拆解為樣本替換（0.92–1.34）、控制歷史地理變數（0.74–1.36）及控制當代疾病健康變數（0.55–0.91），不再概括為單一範圍。證據表見 wiki/evidence/2001-colonial-origins-acemoglu.md。
 
-### EK-006 | open | papers/2001-colonial-origins-acemoglu.md | Card 3 | 過度表述
+### EK-006 | fixed | papers/2001-colonial-origins-acemoglu.md | Card 3 | 過度表述
 - **問題**：把疾病免疫機制寫成支撐排他性限制之既定事實。原文 pp. 1371–1372 將排他性列為識別假設，並把當代疾病直接影響列為主要疑慮；免疫差異是作者論證假設合理性的依據。
 - **來源**：同 EK-005
 - **發現於**：wiki/log.md [2026-11-08 23:36] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 pp. 1371–1372 查核修訂 Card 3：明確將排他性限制表述為計量識別假設（識別威脅為當代疾病之直接延續影響），將外來歐洲士兵與本土具免疫力成年人口之死亡率差異（引 Philip Curtin 歷史軍事統計）表述為作者論證該假設經濟與流行病學合理性之論據，而非既定客觀事實證明。證據表見 wiki/evidence/2001-colonial-origins-acemoglu.md。
 
-### EK-007 | open | papers/2001-colonial-origins-acemoglu.md | Card 5 | 原文未支持
+### EK-007 | fixed | papers/2001-colonial-origins-acemoglu.md | Card 5 | 原文未支持
 - **問題**：外援與基建必然遭攫取之結論不屬 AJR 2001 實證檢驗，應補直接研究或標為政策推論。
 - **來源**：同 EK-005
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit、[2026-11-08 23:36] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 5 發展援助段落：明確將「單純外援易遭掠奪型菁英攫取」標註為後續制度經濟學文獻與政策延伸觀點，非 AJR 2001 本文直接檢驗之經驗結果。證據表見 wiki/evidence/2001-colonial-origins-acemoglu.md。
 
 ## 2007 Woodford 通膨動態
 

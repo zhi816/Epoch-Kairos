@@ -735,3 +735,14 @@
   - **EK-004**：Card 5 明確將科技巨頭併購審查與扼殺式收購（Killer Acquisitions，引 Cunningham et al., 2021 *JPE*）標記為創造性破壞架構在後續產業組織文獻與政策實踐之延伸應用，非 1992 奠基論文之直接檢驗結果。
   - 新增證據表 [wiki/evidence/1992-creative-destruction-aghion.md](evidence/1992-creative-destruction-aghion.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-003 與 EK-004 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 09:33] fix | Acemoglu 2001 依原文核實第一階段係數與排他性假設並建立證據表 | #制度經濟學 #宏觀經濟學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 AER 2001 奠基論文原文全面核實修訂 [wiki/papers/2001-colonial-origins-acemoglu.md](papers/2001-colonial-origins-acemoglu.md)。
+  - **EK-005**：Card 4 更正 Table 3 第一階段係數為 $-0.61$（SE $0.13$）；更正 PRS 產權保護指標評分範圍為 0–10 分；奈及利亞與智利差距依原文表述為「206 對數點、至多約 7 倍差距」，加註作者對測量誤差之提醒與純依點估計值計算之 8.2 倍對比；穩健性估計拆解為樣本替換（$0.92$–$1.34$）、控制歷史地理變數（$0.74$–$1.36$）及控制當代疾病健康變數（$0.55$–$0.91$），不再概括為單一範圍。
+  - **EK-006**：Card 3 明確將排他性限制表述為計量識別假設（識別威脅為當代疾病之直接延續影響），將外來歐洲士兵與本土具免疫力成年人口之死亡率差異（引 Philip Curtin 歷史軍事統計）表述為作者論證該假設經濟與流行病學合理性之論據，而非既定客觀事實證明。
+  - **EK-007**：Card 5 明確將「單純外援易遭掠奪型菁英攫取」標註為後續制度經濟學文獻與政策延伸觀點，非 AJR 2001 本文直接檢驗之經驗結果。
+  - 新增證據表 [wiki/evidence/2001-colonial-origins-acemoglu.md](evidence/2001-colonial-origins-acemoglu.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-005、EK-006 與 EK-007 標記為 `fixed` 並追加處理紀錄。
