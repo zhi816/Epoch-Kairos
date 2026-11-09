@@ -32,3 +32,8 @@
 - **完成條件**：工作流程首次執行成功（倉庫 Actions 分頁顯示成功），首頁網址可正常開啟，`assets/` 與 KaTeX 資源載入無誤，README 連結已更新。
 - **等待**：使用者確定首頁 `web/index.html`（TD-006）後再發布；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。發布前另請使用者確認：我的星系會公開其研究主題（臺灣南島語計算語言學、低資源機器翻譯）與 24 篇關注論文，旁人可推測碩論方向，是否可接受（2026-11-09 已提醒，使用者尚未回覆）。
 - **來源**：使用者指示（首頁確定後再發布）；2026-11-09 登記，Claude Code by Anthropic。
+
+### TD-007 | open | wiki | 建立證據表「類型」欄白名單並清點違規列
+- **內容**：`wiki/evidence/` 各表之「類型」欄目前混用組合值與白名單外描述，例如 [1992-creative-destruction-aghion.md](evidence/1992-creative-destruction-aghion.md) 之「本篇研究結果 / 官方事實」、[2001-colonial-origins-acemoglu.md](evidence/2001-colonial-origins-acemoglu.md) 之「本篇研究結果 / 作者解釋」與「後續研究 / 政策推論」，不符 AGENTS.md 第七章第 4 節所定五類（本篇研究結果、後續研究、作者解釋、依原文數據計算、Wiki 詮釋）。應先全庫清點所有不合規列並列出清單與建議類型，再決定處置方式；每一列須回原文判斷主張歸屬，不得機械拆解組合值或批次改寫。
+- **完成條件**：清單列畢且經使用者確認處置方式（逐列修正，或於 AGENTS.md 明訂組合值之使用規則），必要時 `lint_wiki.py` 增列檢查；未經確認前不動任何證據表。
+- **來源**：使用者指示（2026-11-09 交接，承接 EK-090 之證據表類型觀察）；2026-11-09 登記，DeepSeek Harness（DeepSeek-V4.1-Flash）。

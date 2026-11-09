@@ -86,19 +86,21 @@ w_t &= \lambda V_{t+1} \\
 
 ### 3. 穩態內生經濟成長率與方差 (Steady-State Growth Rate)
 
-在平穩均衡（Stationary Equilibrium，$n_t = \hat{n}$）下，若設定研發成功率為研究勞動力的線性函數 $\phi(n) = n$，對數產出 $\ln y(\tau)$ 在連續時間長度為 $1$ 的區間內服從複合泊松過程，其長期平均對數成長率（Average Growth Rate, $g$）與成長波動方差（Variance, $\sigma^2$）皆由研發投入 $\hat{n}$ 內生決定（式 2.16–2.17）：
+在平穩均衡（Stationary Equilibrium，$n_t = \hat{n}$）下，對數產出 $\ln y(\tau)$ 在連續時間長度為 $1$ 的區間內服從複合泊松過程，其長期平均對數成長率（Average Growth Rate，$g$）與成長波動方差（Variance，$\sigma^2$）皆由研發投入 $\hat{n}$ 內生決定（式 3.11，§3.C，p. 336）：
 
 $$\begin{aligned}
-g &= \mathbb{E}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \hat{n} \ln \gamma \\
-\sigma^2 &= \operatorname{Var}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \hat{n} (\ln \gamma)^2
+g &= \mathbb{E}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \phi(\hat{n}) \ln \gamma \\
+\sigma^2 &= \operatorname{Var}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \phi(\hat{n}) (\ln \gamma)^2
 \end{aligned}$$
+
+在線性研發技術 $\phi(n) = n$ 之特例下，兩式化為 $g = \lambda \hat{n} \ln \gamma$ 與 $\sigma^2 = \lambda \hat{n} (\ln \gamma)^2$；原文以此通式推導，線性特例僅用於後續 Cobb–Douglas 比較靜態分析。
 
 ---
 
 ## Card 4 ｜ 決定性數據 (The Evidence)
 
 ### 本篇論文（Aghion & Howitt 1992）之核心理論證明
-* **穩態均衡與內生極限環（Limit Cycles）條件**：作者分析跨期研發套利映射 $n_t = \psi(n_{t+1})$。在基準模型中存在唯一平穩穩態 $\hat{n}$；在特定參數條件下（當跨期映射在穩態之導數 $\psi'(\hat{n}) < -1$ 時），穩態局部不穩定，經濟體將內生湧現「繁榮（高研發、高產出、預期低折舊）與蕭條（低研發、低產出、預期高折舊）交替」的 2 階極限環（2-Cycle / Schumpeterian Wave，Proposition 2）。原文將此作為創造性破壞產生內生波動機制的理論展示，並非宣稱該極限環已能直接解釋現實世界的複雜實證商業週期。
+* **穩態均衡與內生 2 階循環（Two-Cycle）條件**：作者分析跨期研發套利映射 $n_t = \psi(n_{t+1})$。基準模型存在唯一平穩穩態 $\hat{n}$；當無成長陷阱（No-Growth Trap）存在且 $c'(\hat{n}) + b'(\hat{n}) > 0$ 時，可出現高研發與低研發交替之實質 2 階循環（§3.A, pp. 332–333）。在 Cobb–Douglas 生產函數與線性研發技術 $\phi(n) = n$ 之特例下，該條件約化為市場競爭程度參數 $a$ 與利率 $r$ 足夠小。原文將此循環定位為創造性破壞導致內生波動之理論展示，並未宣稱可直接解釋現實商業週期；全文僅有 Proposition 1（p. 334），未以 $\psi'(\hat{n}) < -1$ 表述穩定條件，亦未使用「極限環（limit cycle）」一詞。
 * **福利雙向偏離定理**：推導出社會計畫者（Social Planner）的有效貼現率為 $r + \lambda(1 - \gamma)\hat{n}$，與私人市場的 $r + \lambda \hat{n}$ 對比，證明當創新步幅 $\gamma$ 較小時，「業務竊取效應（Business-Stealing Effect）」與「壟斷扭曲效應」可能壓倒知識外溢效應，導致自由放任市場出現過度研發（Over-investment in R&D）。
 * **顛覆性大創新對增量研發的擠出**：在連續研發步幅擴展模型中，證明私人企業傾向選擇「恰好足以奪取市場」的短視創新步幅，而低估長遠基礎躍遷的社會價值。
 

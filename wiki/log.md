@@ -1335,3 +1335,14 @@
   - [web/assets/css/starmap.css](../web/assets/css/starmap.css)、[web/assets/js/starmap.js](../web/assets/js/starmap.js)：移除浮出文字之樣式與文字設定；觸控點兩下改為只在手機版面，桌面寬度之觸控螢幕亦點一下進入（桌面版面本無提示文字可顯示）。按鈕之 `aria-label` 不變。
   - [DESIGN.md](../DESIGN.md)：第四章句末之星新增「桌面版滑過不出現文字」`[已定]`，第十章記本次變更。
   - 驗證：瀏覽器 1440 x 900 實際滑鼠滑過星點只轉亮、無文字；實際按 Tab 聚焦有聚焦框、無文字；點一下進入我的星系，滑過同一顆星仍無文字，右上「回到群星」顯示；桌面寬度觸控點一下即進入。375 x 812 觸控第一下顯示提示、第二下進入，回到群星亦同，無橫向捲動。`lint_wiki.py` ERROR 0。
+
+## [2026-11-09 20:12] fix | 修正 Aghion–Howitt 論文頁引用、證據表版本錯置與問題清單分節 | 全域
+- **執行代理**：DeepSeek Harness（DeepSeek）
+- **模型版本**：DeepSeek-V4.1-Flash
+- **具體變更**：依使用者交接處理四項，未擴大批次改寫。
+  - [wiki/issues.md](issues.md)：EK-088 移至「1992 Aghion–Howitt 創造性破壞」節、EK-089 移至「2001 Acemoglu–Johnson–Robinson 殖民起源」節，原置於檔尾「24 篇 my-focus」節之後；導言補上 EK-061–087（2026-11-09 00:55 audit）與 EK-088–090 之來源與範圍，並註明條目依論文分節、編號不重排。EK-031 來源欄由「待回原文核對語族表述」改為封存原文 §3（p. 8769），與其已 fixed 之處理行一致。
+  - [wiki/papers/1992-creative-destruction-aghion.md](papers/1992-creative-destruction-aghion.md)：新增 EK-090。回 *Econometrica* 正式版掃描本（JSTOR 2951599）核對，Card 3 原引「§2.4, p. 333, 式 (2.16)–(2.17)」有誤，改為 §3.C, p. 336, 式 (3.11)，成長率與方差改以 $\lambda\phi(\hat{n})$ 通式表述並註明 $\phi(n)=n$ 特例；Card 4 刪除原文不存在之「Proposition 2」與 $\psi'(\hat{n})<-1$ 條件（全文僅 Proposition 1，p. 334），改述 two-cycle 之實際條件：無成長陷阱存在且 $c'(\hat{n})+b'(\hat{n})>0$，Cobb–Douglas 線性研發下為 $a$、$r$ 足夠小（§3.A, pp. 332–333）。
+  - [wiki/evidence/1992-creative-destruction-aghion.md](evidence/1992-creative-destruction-aghion.md)：同步更正 Card 3、Card 4 兩列之敘述與位置（更正 EK-090）；採用版本行註明封存檔實為 Bertola NBER WP 3851（EK-088），兩列另以正式版掃描本核對。
+  - [wiki/todo.md](todo.md)：新增 TD-007，清點證據表「類型」欄不符五類白名單之列，待使用者確認處置方式。
+  - 未決：EK-088（Aghion 封存檔為 Bertola NBER WP 3851）、EK-089（Acemoglu 封存檔為 NBER WP 7771，AER 頁碼無法以封存檔核實）維持 open，待使用者更換封存檔或指示改採工作論文版；未逐列重核該兩表其餘各列。
+  - 驗證：`lint_wiki.py` 無 ERROR。

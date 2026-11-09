@@ -27,6 +27,7 @@
 - **來源**：[Aghion & Howitt 原文（Econometrica 60(2), 1992）](https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf)
 - **發現於**：wiki/log.md [2026-11-08 23:36] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 Econometrica 1992 pp. 333, 335–338 查核後修訂：Card 3 明確標註穩態對數成長率 $g=\lambda\hat{n}\ln\gamma$ 與方差 $\sigma^2=\lambda\hat{n}(\ln\gamma)^2$ 係在線性研發技術 $\phi(n)=n$ 條件下成立；Card 4 修正極限環陳述，精確說明 2 階極限環係在跨期映射導數 $\psi'(\hat{n}) < -1$ 條件下湧現之理論動態特徵，降格原先「可解釋商業週期」之過度表述。證據表見 wiki/evidence/1992-creative-destruction-aghion.md。
+- **處理**：2026-11-09，DeepSeek Harness（DeepSeek-V4.1-Flash）。本條原處理行引用之「§2.4, p. 333, 式 (2.16)–(2.17)」與「Proposition 2」「$\psi'(\hat{n})<-1$」經正式版核對後確認有誤，正確位置與條件見 EK-090；論文頁與證據表已同步更正。
 
 ### EK-004 | fixed | papers/1992-creative-destruction-aghion.md | Card 5 | 原文未支持
 - **問題**：把 1992 模型直接連到現代反壟斷標準與 Killer Acquisitions；屬後續政策延伸，須另引研究並標明非本文結果。Card 6 若有同類政策結論亦同。
@@ -280,7 +281,7 @@
 
 ### EK-031 | fixed | papers/2025-manchu-in-context-mt-pei.md | Card 1 | 原文不符
 - **問題**：第 27 行語族寫作「阿爾泰阿爾泰通古斯語族」，字詞重複，且「阿爾泰語系」歸類有爭議，宜依原文寫作通古斯語族（Tungusic）。
-- **來源**：待回原文核對語族表述
+- **來源**：[封存原文](../raw/my-focus/報告論文題材/2025.acl-long.429.pdf) §3（p. 8769）；處理行已回原文核對
 - **發現於**：wiki/log.md [2026-11-08 22:06] audit（Claude Code by Anthropic）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。原文 §3（p. 8769）稱滿語為 critically endangered Tungusic language；Card 1 改為「通古斯語」，刪除重複且有爭議之「阿爾泰阿爾泰」。
 
@@ -581,7 +582,14 @@
 - **來源**：封存檔 `raw/1992-creative-destruction-aghion.pdf` 第 1–2 頁（標題頁與摘要）及第 16、30–31 頁（以 MinerU 本機 OCR 確認內容）；正式版 *Econometrica* 60(2): 323–351，https://doi.org/10.2307/2951599
 - **發現於**：wiki/log.md [2026-11-09 15:13] fix（Claude Code by Anthropic）
 
+### EK-090 | fixed | papers/1992-creative-destruction-aghion.md | Card 3–4 與證據表 | 原文不符
+- **問題**：EK-003 之處理行與證據表列「§2.4, p. 333, 式 (2.16)–(2.17)」，並稱 2 階循環為「Proposition 2」、於跨期映射導數 $\psi'(\hat{n}) < -1$ 時湧現。惟 *Econometrica* 正式版全文僅有 Proposition 1（p. 334），無式 (2.16)–(2.17)；平均成長率與方差實為 §3.C 之式 (3.11)（p. 336），原文寫作 $AGR=\lambda\phi(\hat{n})\ln\gamma$、$VGR=\lambda\phi(\hat{n})(\ln\gamma)^2$，$\lambda\hat{n}\ln\gamma$ 僅為線性研發 $\phi(n)=n$ 之特例。2 階循環（two-cycle）之存在條件為無成長陷阱存在且 $c'(\hat{n})+b'(\hat{n})>0$，Cobb–Douglas 線性研發下約化為 $a$ 與 $r$ 足夠小（§3.A, pp. 332–333）；原文未以 $\psi'(\hat{n})<-1$ 表述，亦未使用「極限環（limit cycle）」一詞。
+- **來源**：*Econometrica* 60(2): 323–351 正式版掃描本（JSTOR stable 2951599），pp. 332–333、336；https://doi.org/10.2307/2951599
+- **發現於**：wiki/log.md [2026-11-09 20:12] fix（DeepSeek Harness）
+- **處理**：2026-11-09，DeepSeek Harness（DeepSeek-V4.1-Flash）。回正式版掃描本核對後修正：論文頁 Card 3 改引式 (3.11)（§3.C, p. 336），成長率與方差改以 $\lambda\phi(\hat{n})$ 通式表述並註明線性研發特例；Card 4 刪除「Proposition 2」與 $\psi'(\hat{n})<-1$ 之無來源條件，改述 two-cycle 之實際存在條件。證據表同步更正兩列之位置與敘述。EK-003 原處理行之錯誤引用由本條更正。
+
 ### EK-089 | open | papers/2001-colonial-origins-acemoglu.md | 證據表採用版本 | 歸因／版本錯置
 - **問題**：[證據表](evidence/2001-colonial-origins-acemoglu.md) 第 2 行寫採用 *American Economic Review* 91(5): 1369–1401（2001 年 12 月），並稱「封存版本見 `raw/2001-colonial-origins-acemoglu.pdf`」，各列以 AER 頁碼標示位置。但封存檔實為工作論文版 NBER Working Paper No. 7771（2000 年 6 月，69 頁），頁碼體系不同，工作論文與正式版之表格數值與措辭亦可能有差異；證據表所列 AER 頁碼無法以封存檔核實。須取得 AER 正式版逐列重核，或將證據表改為引用工作論文版並註明頁碼與版本差異。
 - **來源**：封存檔 `raw/2001-colonial-origins-acemoglu.pdf` 第 1–2 頁（NBER WP 7771 標題頁與摘要；此兩頁文字層為字型編碼亂碼，以 MinerU 本機 OCR 判讀，正文自第 3 頁起文字層正常）；AER 正式版 https://doi.org/10.1257/aer.91.5.1369
 - **發現於**：wiki/log.md [2026-11-09 15:13] fix（Claude Code by Anthropic）
+
