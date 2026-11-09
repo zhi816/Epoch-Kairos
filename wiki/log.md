@@ -1414,7 +1414,7 @@
 - **具體變更**：與樣稿畫布「論文頁 F」對照時發現 Hopfield 頁長文第 04 節露出 `**`：[tools/build_paper_prototype.py](../tools/build_paper_prototype.py) 之 `inline()` 先依公式切段再逐段轉粗體，「**容量（$0.15N$ 近似上限）**」之粗體頭尾分落公式兩側而配不起來。改為公式先換成佔位符、整段轉換後再放回。重建兩頁原型：僅 Hopfield 頁兩處粗體改變，賽德克語頁不變；瀏覽器確認 59 個公式無錯誤、長文無殘留 `**`。與樣稿之其餘差異（資訊欄期刊全名、長文開頭之 hook 引言與範圍說明、獎項簡稱）均有規範依據，待使用者決定是否調整，未修改。
 
 
-## [2026-11-09 21:15] fix | 重核 EK-088/089 第一手來源並修正 Aghion 論文頁 | #經濟學
+## [2026-11-09 21:15] fix | 重核 EK-088/089 第一手來源並修正 Aghion 論文頁 | #宏觀經濟學
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
 - **具體變更**：
@@ -1433,3 +1433,11 @@
   - 依使用者要求（較弱模型會偷懶，規範越詳細越好）補充 [paper-card-writer](../.agents/skills/paper-card-writer/SKILL.md)：新增 `references/paper-page.md`（網頁各位置資料來源、`venue_short` 規則、獎項寫法、論文頁格式要求、建置與瀏覽器驗證步驟、錯誤處理對照與禁止事項）；SKILL.md 硬規則增第 14 至 16 條（必須建置驗證、不得改工具遷就內容、不得改來源遷就卡片），作業流程增第 7 步「建置論文頁並驗證」，第 2、3 步之對照基準與素材對照改為必須寫進交付說明，批次規則增一篇一提交、不得參考他篇卡片檔、用量不足不開新篇，第八節改為逐項必填之交付格式，新增第十一節偷工自查表；`cover.md` 第六節、`diagram.md` 同步。
   - [AGENTS.md](../AGENTS.md) 第四章目錄樹補 `build_paper_prototype.py` 與 `paper_template.html`、第六章 Skill 一覽與 Ingest 第 4 步加建置驗證、第七章第 1 節加 `venue_short` 與論文頁獎項全名；[DESIGN.md](../DESIGN.md) 第五章第 1 節、第八章第 17 項與第十章同步；[todo.md](todo.md) TD-008 改為每篇須建置驗證、一篇一提交。
   - 驗證：兩頁原型建置自我檢查 ERROR 0、`verify_page.js` 兩種尺寸全 PASS；`check_cards.py` ERROR 0；`lint_wiki.py` ERROR 1 為 Codex [2026-11-09 21:15] 條目標題第三段 `#經濟學` 不在白名單，屬他人條目，未改動。
+
+## [2026-11-09 21:30] fix | 更正 Aghion 論文頁 two-cycle 頁碼並修正日誌標籤 | 全域
+- **執行代理**：DeepSeek Harness（DeepSeek）
+- **模型版本**：DeepSeek-V4.1-Flash
+- **具體變更**：
+  - [wiki/papers/1992-creative-destruction-aghion.md](papers/1992-creative-destruction-aghion.md)：Card 4 之 two-cycle 位置由「§3.A, pp. 332–333」更正為「一般存在條件 §3.A, p. 333；Cobb–Douglas 特例 p. 334」，並將「市場力量參數 $\alpha$」改為「競爭程度參數 $\alpha$」，補註 $1-\alpha$ 為 Lerner 壟斷力、$\alpha$ 越小市場力量越大。頁面更正已隨提交 b2528e0 推送，本條補記日誌。
+  - [wiki/log.md](log.md)：依使用者指示，將 [2026-11-09 21:15] fix 條目標題第三段之 `#經濟學` 改為白名單內之 `#宏觀經濟學`；Codex by OpenAI 該筆其餘內容未動。此為修改他人已提交之條目，經使用者明示授權；該標籤原不在第八章白名單內，為 `lint_wiki.py` 唯一 ERROR 之來源。
+  - 驗證：`lint_wiki.py` ERROR 0。
