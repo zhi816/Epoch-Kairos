@@ -26,3 +26,9 @@
 - **完成條件**：依使用者決定補填或註記完畢；若決定維持原樣，經同意後刪除本條。
 - **等待**：使用者提供當時之模型型號，並決定直接補入原條目（屬修改舊條目，須使用者明示同意）、另追加更正條目，或維持原樣。
 - **來源**：wiki/log.md [2026-11-07 22:47] audit「待使用者處理」第 1 項；2026-11-09 登記，Claude Code by Anthropic。
+
+### TD-005 | waiting | web | 以 GitHub Actions 將 web/ 發布至 GitHub Pages
+- **內容**：GitHub Pages 之「Deploy from a branch」只接受倉庫根目錄或 `/docs`，無法直接發布 `web/`，且主倉庫目前尚無 `.github/` 目錄。新增 `.github/workflows/pages.yml`：推送至 `main` 且 `web/**` 有變動時觸發（另加 `workflow_dispatch` 供手動重新發布），依序以 `actions/checkout`、`actions/configure-pages`、`actions/upload-pages-artifact`（`path: web`）、`actions/deploy-pages` 發布，只公開 `web/` 之內容，`wiki/`、`AGENTS.md` 等不上站；寫入前先確認各 action 之最新主版本號。首頁檔名維持 `web/index.html`、論文頁維持 `web/papers/<slug>/index.html`，網址即 `https://zhi816.github.io/Epoch-Kairos/` 與 `https://zhi816.github.io/Epoch-Kairos/papers/<slug>/`。發布後將 README.md「GitHub Pages 成果展示」一行之暫定連結改為正式連結。
+- **完成條件**：工作流程首次執行成功（倉庫 Actions 分頁顯示成功），首頁網址可正常開啟，`assets/` 與 KaTeX 資源載入無誤，README 連結已更新。
+- **等待**：使用者確定首頁 `web/index.html`（TD-002 之首頁部分）後再發布；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。
+- **來源**：使用者指示（首頁確定後再發布）；2026-11-09 登記，Claude Code by Anthropic。
