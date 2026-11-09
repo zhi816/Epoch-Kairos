@@ -1149,3 +1149,14 @@
   - 改寫 SKILL.md：定位為搜尋與頁碼定位輔助，訂定只可本機解析、輸出不進版控、`pdf-page` 須換算印刷頁碼、文字層不可靠時看原圖、下載模型須經同意五條規則，並記錄實測範圍與限制；同步 [.claude 轉介檔](../.claude/skills/paper-pdf-parser/SKILL.md) 描述。
   - 接入流程：[wiki-content-audit](../.agents/skills/wiki-content-audit/SKILL.md) 寫作模式第 1、2 步加入以本 Skill 搜尋出處、抽取結果不得作為證據；[academic-paper-translator](../.agents/skills/academic-paper-translator/SKILL.md) 盤點步驟引用本 Skill，原「後續工具鏈擴充備忘」改為簡短使用說明；[AGENTS.md](../AGENTS.md) 第六章 Skill 一覽之說明依實際用途更新。
 - **驗證**：macOS 上以系統 Python 自倉庫外執行，Hopfield 1982 指定第 2-3 頁、Transformer 2017 指定第 4、8 頁均正確輸出頁碼標記與表格數字；`--engine mineru` 與超出範圍頁碼皆以代碼 1 報錯。Windows 未實測；MinerU 因模型未下載，仍未實際解析過。
+
+## [2026-11-09 15:13] fix | MinerU 模型下載與實測，並查出兩份封存原文版本不符 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：
+  - 經使用者同意下載 MinerU `basic` 檔位模型（858 MB，存於家目錄 `~/.mineru/models`，不在倉庫內）。[parse_pdf.py](../.agents/skills/paper-pdf-parser/scripts/parse_pdf.py) 與 [setup_env.py](../.agents/skills/paper-pdf-parser/scripts/setup_env.py) 改以 `--tier basic` 檢查與解析（未加檔位時 `models verify` 會檢查 standard 檔位而失敗）。
+  - `auto` 改為預設用 PyMuPDF（有頁碼標記、每頁不到 1 秒）；過半頁面無文字層或文字層疑似亂碼（英文頁面幾乎沒有常用字，中文頁面不判定）且 MinerU 可用時才改用 MinerU，原 PyMuPDF 結果存為 `content-pymupdf.md`。MinerU 輸出之 base64 嵌入圖片於 `content.md` 改為簡短標記。
+  - 確認本 Skill 所用之 `mineru-kit` 程式碼不含遙測；遙測僅屬 `mineru` 文件庫服務，本 Skill 不使用。
+  - 實測並對照原 PDF 頁面影像：Hopfield 1982 掃描版之式 (1)–(4) 正確轉為 LaTeX，但同頁兩處行內符號被轉成形式合法而內容錯誤之 LaTeX；Transformer 2017 之式 (1) 與 Table 2 BLEU 數值正確，跨欄之訓練成本被錯拆為兩格（PyMuPDF 亦同）。結果與使用建議寫入 [SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md) 第四、五章，並修正模型大小說明（`basic` 約 0.9 GB、`standard` 約 2.1 GB）。
+  - 逐篇比對 `raw/` 封存檔首頁與論文頁標題，查出兩份封存檔與證據表所稱版本不符，登記於 [wiki/issues.md](issues.md)：EK-088，`raw/1992-creative-destruction-aghion.pdf` 實為 Bertola, NBER WP 3851（1991），並非 Aghion and Howitt (1992)；EK-089，`raw/2001-colonial-origins-acemoglu.pdf` 為 NBER WP 7771（2000 年 6 月）工作論文版，證據表卻引用 AER 2001 頁碼。兩頁 `verification` 由 `verified` 改為 `issues`；論文頁內容未改。
+- **待使用者處理**：`raw/` 為唯讀，建議使用者將兩份封存檔換為正式版（Econometrica 60(2): 323–351；AER 91(5): 1369–1401），換檔後再依原文重核兩份證據表。

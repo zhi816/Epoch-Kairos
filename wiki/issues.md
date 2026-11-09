@@ -565,3 +565,13 @@
 - **來源**：同 EK-062、EK-066
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。依 EK-062、EK-066 回原文確認之結果改寫「構詞特徵增強」段：刪除無來源之 $W_{\text{proj}}$ 拼接式，改述游景勝（2021）之布林特徵拼接（含預訓練嵌入下 BLEU 下降之反例）與金柏毅（2025）之 FC_ftr_jnt 雙 encoder；同節「跨語言遷移」段一併依廖恒慶（2023）原文改寫，刪除原文未測量之「降低 OOV 率」「零樣本遷移」。
+
+### EK-088 | open | papers/1992-creative-destruction-aghion.md | 證據表採用版本 | 未能核實
+- **問題**：[證據表](evidence/1992-creative-destruction-aghion.md) 第 2 行寫「封存版本見 `raw/1992-creative-destruction-aghion.pdf`」，並據以將各列標為「符合來源」（引用 *Econometrica* pp. 323–351 之式 (2.1)–(2.17) 等位置）。但該封存檔實為 Giuseppe Bertola, "Factor Shares and Savings in Endogenous Growth", NBER Working Paper No. 3851（1991 年 9 月，31 頁，純圖片、無文字層），並非 Aghion and Howitt (1992)；全檔僅參考文獻提及 Aghion 一次。證據表各列之頁碼與公式位置無法以封存檔核實，頁面 `verified` 狀態缺乏可追溯之來源。須由使用者將封存檔換為 *Econometrica* 正式版後，依原文重新核對證據表各列。
+- **來源**：封存檔 `raw/1992-creative-destruction-aghion.pdf` 第 1–2 頁（標題頁與摘要）及第 16、30–31 頁（以 MinerU 本機 OCR 確認內容）；正式版 *Econometrica* 60(2): 323–351，https://doi.org/10.2307/2951599
+- **發現於**：wiki/log.md [2026-11-09 15:13] fix（Claude Code by Anthropic）
+
+### EK-089 | open | papers/2001-colonial-origins-acemoglu.md | 證據表採用版本 | 歸因／版本錯置
+- **問題**：[證據表](evidence/2001-colonial-origins-acemoglu.md) 第 2 行寫採用 *American Economic Review* 91(5): 1369–1401（2001 年 12 月），並稱「封存版本見 `raw/2001-colonial-origins-acemoglu.pdf`」，各列以 AER 頁碼標示位置。但封存檔實為工作論文版 NBER Working Paper No. 7771（2000 年 6 月，69 頁），頁碼體系不同，工作論文與正式版之表格數值與措辭亦可能有差異；證據表所列 AER 頁碼無法以封存檔核實。須取得 AER 正式版逐列重核，或將證據表改為引用工作論文版並註明頁碼與版本差異。
+- **來源**：封存檔 `raw/2001-colonial-origins-acemoglu.pdf` 第 1–2 頁（NBER WP 7771 標題頁與摘要；此兩頁文字層為字型編碼亂碼，以 MinerU 本機 OCR 判讀，正文自第 3 頁起文字層正常）；AER 正式版 https://doi.org/10.1257/aer.91.5.1369
+- **發現於**：wiki/log.md [2026-11-09 15:13] fix（Claude Code by Anthropic）

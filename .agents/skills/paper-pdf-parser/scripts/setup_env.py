@@ -60,7 +60,7 @@ def models_ok():
     if not os.path.exists(MINERU_KIT):
         return None
     try:
-        res = subprocess.run([MINERU_KIT, 'models', 'verify'], capture_output=True, text=True, timeout=120)
+        res = subprocess.run([MINERU_KIT, 'models', 'verify', '--tier', 'basic'], capture_output=True, text=True, timeout=120)
         return res.returncode == 0
     except Exception:
         return None
@@ -88,7 +88,7 @@ def main():
     print('pymupdf4llm：%s' % (m4llm or '未安裝（仍可用 PyMuPDF 純文字模式）'))
     print('MinerU 套件：%s' % (mineru or '未安裝'))
     if mineru:
-        print('MinerU 模型：%s' % ({True: '齊全', False: '不齊全', None: '無法檢查'}[models]))
+        print('MinerU basic 模型：%s' % ({True: '齊全', False: '不齊全', None: '無法檢查'}[models]))
         print('硬體加速（參考）：%s' % accel(py))
     print('-' * 50)
 
@@ -111,10 +111,10 @@ def main():
     if not mineru:
         print('[MinerU 引擎，選用] uv pip install -U "mineru>=4.0,<5" --python %s' % act)
     elif models is False:
-        print('[MinerU 引擎，選用] 模型不齊全。下載約數 GB，須先徵得使用者同意，再執行：')
-        print('    %s models download' % kit)
+        print('[MinerU 引擎，選用] 模型不齊全。basic 檔位約 0.9 GB（存於 ~/.mineru/models），須先徵得使用者同意，再執行：')
+        print('    %s models download --tier basic' % kit)
     elif models:
-        print('MinerU 引擎可用。首次使用前請確認遙測設定（mineru telemetry status）。')
+        print('MinerU 引擎可用（parse_pdf.py 以 mineru-kit parse 在本機解析）。')
     print('=' * 50)
 
 
