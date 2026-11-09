@@ -30,7 +30,8 @@
 ### TD-005 | waiting | web | 以 GitHub Actions 將 web/ 發布至 GitHub Pages
 - **內容**：GitHub Pages 之「Deploy from a branch」只接受倉庫根目錄或 `/docs`，無法直接發布 `web/`，且主倉庫目前尚無 `.github/` 目錄。新增 `.github/workflows/pages.yml`：推送至 `main` 且 `web/**` 有變動時觸發（另加 `workflow_dispatch` 供手動重新發布），依序以 `actions/checkout`、`actions/configure-pages`、`actions/upload-pages-artifact`（`path: web`）、`actions/deploy-pages` 發布，只公開 `web/` 之內容，`wiki/`、`AGENTS.md` 等不上站；寫入前先確認各 action 之最新主版本號。首頁檔名維持 `web/index.html`、論文頁維持 `web/papers/<slug>/index.html`，網址即 `https://zhi816.github.io/Epoch-Kairos/` 與 `https://zhi816.github.io/Epoch-Kairos/papers/<slug>/`。發布後將 README.md「GitHub Pages 成果展示」一行之暫定連結改為正式連結。
 - **完成條件**：工作流程首次執行成功（倉庫 Actions 分頁顯示成功），首頁網址可正常開啟，`assets/` 與 KaTeX 資源載入無誤，README 連結已更新。
-- **等待**：使用者確定首頁 `web/index.html`（TD-006）後再發布；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。發布前另請使用者確認：我的星系會公開其研究主題（臺灣南島語計算語言學、低資源機器翻譯）與 24 篇關注論文，旁人可推測碩論方向，是否可接受（2026-11-09 已提醒，使用者尚未回覆）。
+- **等待**：使用者確定首頁 `web/index.html`（TD-006）後再發布；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。
+- **進度**：使用者已於 2026-11-09 同意我的星系公開其研究主題（臺灣南島語計算語言學、低資源機器翻譯）與 24 篇關注論文；碩論題目、資料與結果仍不公開（DESIGN.md 第八章第 13 項、paper-card-writer 第二節第 13 條）。
 - **來源**：使用者指示（首頁確定後再發布）；2026-11-09 登記，Claude Code by Anthropic。
 
 ### TD-007 | open | wiki | 建立證據表「類型」欄白名單並清點違規列
