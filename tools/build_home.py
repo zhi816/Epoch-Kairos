@@ -55,6 +55,14 @@ TAG_ORDER = {
     'physics': ['#統計物理', '#量子物理', '#天體物理', '#宇宙學'],
     'econ': ['#宏觀經濟學', '#制度經濟學'],
 }
+# 桌面星團之標籤順序（手機同心圓仍用 TAG_ORDER）：AI 之 #人工智慧 六篇全用，放在扇形中段，
+# 論文才會分往兩側；放在一端時每篇都要拉一條線到同一側，連線交錯成一團。
+DESK_TAG_ORDER = {
+    'ai': ['#計算生物', '#計算機視覺', '#人工智慧', '#深度學習', '#強化學習'],
+}
+# 桌面星團開口之個別設定（度，0 為向右、90 為向下）；未列者取「背離中心」與「朝左右兩側」之間。
+# AI 論文最多（6 篇），但學科中心右側只剩約 215 單位，開口朝右會擠成一團；改朝右上，用上方與生醫之間的空處。
+DESK_OPEN = {'ai': 310}
 # focus_role 鍵值與名稱（AGENTS.md 第七章第 1 節）。
 ROLES = [('senior-thesis', '學長姐論文'), ('report', '報告題材'), ('taiwan-linguistics', '臺灣語言學'),
          ('international', '國際文獻'), ('llm-assisted', '大模型輔助')]
@@ -343,17 +351,24 @@ def build_desk(S, ms):
     hub = {d['key']: DESK_HUB[d['key']] for d in S['domains']}
     # 星團開口：介於「背離中心」與「朝左右兩側」之間，讓寬版面的左右空間被用上（同樣稿 v4 之生醫、AI 兩團）
     theta = {k: cmean([ang(*hub[k], c=C), 0 if hub[k][0] >= C[0] else 180]) for k in hub}
+    theta.update(DESK_OPEN)
     tdk, towner = {}, {}
     for d in S['domains']:
-        k, order = d['key'], d['tags']
+        k = d['key']
+        first = [t for t in DESK_TAG_ORDER.get(k, []) if t in d['tags']]
+        order = first + [t for t in d['tags'] if t not in first]
         if not order:
             continue
         want = {}
         for t in order:
-            dirs = [theta[k]] * 2 + [ang(*hub[f['domain']], c=hub[k]) for f in ms.values()
-                                     if t in f['domain_tags'] and f['domain'] != k]
+            # 偏向之權重依本學科論文數加重：多數論文屬本學科之標籤（如 #人工智慧 有 6 篇 AI、1 篇物理），
+            # 不因一篇跨學科論文被拉離自己的星團；只有跨學科論文在用的標籤（如 #結構生物學）才明顯偏向對方
+            own = sum(1 for f in ms.values() if t in f['domain_tags'] and f['domain'] == k)
+            dirs = [theta[k]] * (2 + own) + [ang(*hub[f['domain']], c=hub[k]) for f in ms.values()
+                                             if t in f['domain_tags'] and f['domain'] != k]
             want[t] = rel(cmean(dirs), theta[k])
-        srt = sorted(order, key=lambda t: (round(want[t] / 10), order.index(t)))
+        # 只有明顯偏向（約 15 度以上）才改變順序，其餘依設定之標籤順序
+        srt = sorted(order, key=lambda t: (round(want[t] / 30), order.index(t)))
         n = len(srt)
         center = sum(want.values()) / n
         offs = spread(n, center, 44, -100, 100)

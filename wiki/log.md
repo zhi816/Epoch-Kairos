@@ -1394,3 +1394,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：新增 `tools/build_paper_prototype.py` 與 `tools/paper_template.html`，自 `wiki/cards/` 與 `wiki/papers/` 產生論文頁 F 版參考原型（窄導軌、卡片欄、長文、資訊欄；Card 1 封面、卡組丁、Card 3 示意圖依 class 套色；KaTeX 渲染；卡片與長文捲動同步），建置前先跑 `check_cards.py`。產出 `web/prototypes/paper-v1/1982-hopfield-network.html` 與 `2021-seediq-chinese-mt-you.html`。以瀏覽器量測 Hopfield 頁：59 個公式皆渲染無錯誤、6 張卡無內容溢出、箭頭／方向鍵／捲動同步正常；賽德克語頁與手機寬度未逐項量測。paper-card-writer 之 SKILL.md 開工必讀表加入兩份範例與參考網頁。
+
+## [2026-11-09 20:56] design | 桌面星圖疏散 AI 團 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：依使用者要求「先改一版試試看」並看過後決定保留，修改 [tools/build_home.py](../tools/build_home.py) 之桌面座標：AI 團 6 篇論文與 5 個標籤原本擠在右上角、連線交錯，成因為 `#人工智慧` 被物理之 Hopfield 一篇拉到星團最下方，以及開口朝右而右側只剩約 215 單位。新增 `DESK_OPEN`（AI 開口改為 310 度，朝右上之空處）與 `DESK_TAG_ORDER`（`#人工智慧` 排在 AI 扇形中段，手機仍用原 `TAG_ORDER`）；跨學科標籤之偏向改依本學科論文數加權，順序只在偏向約 15 度以上時才改變。重建 [web/index.html](../web/index.html)，`--check` 一致；生醫、物理、經濟座標及手機、我的星系之資料與修改前完全相同。驗證（1440 x 900）：逐一滑過 17 篇，說明框蓋到其他星點或標籤者 4 篇，與修改前相同；標籤彼此不重疊。另試過所有星團改「標籤內弧、論文外弧、朝空處展開」，論文被推到畫框上緣致說明框遮擋增為 7 至 10 篇，未採用。[DESIGN.md](../DESIGN.md) 第二章第 2 節記 `[已定]`，第十章追加一條。`lint_wiki.py` ERROR 0。
