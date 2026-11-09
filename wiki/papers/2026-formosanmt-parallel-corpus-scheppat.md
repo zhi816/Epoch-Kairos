@@ -49,7 +49,12 @@ hook: "波士頓學院團隊於 LREC 2026 推出首個涵蓋全臺 15 種南島�
 
 Scheppat 等人建立了一套自動化提取、文字正規化與多層級啟發式過濾管線（§3.3, pp. 3448–3449）。過濾核心係基於正則表達式、結構性特徵與詞/字元長度比例，而非語言識別器或神經語義對齊模型：
 
-$$\mathcal{D}_{\text{clean}} = \Big\{ (x_i, y_i) \in \mathcal{D}_{\text{norm}} \;\Big|\; \operatorname{ValidText}(x_i, y_i) \land \operatorname{RatioFilter}(x_i, y_i) \Big\}$$
+$$
+\begin{aligned}
+\mathcal{D}_{\text{clean}} = \Big\{ (x_i, y_i) \in \mathcal{D}_{\text{norm}} \;\Big|\; &\operatorname{ValidText}(x_i, y_i) \\
+&\land \operatorname{RatioFilter}(x_i, y_i) \Big\}
+\end{aligned}
+$$
 
 具體過濾規則如下：
 1. **文字正規化（Normalization）**：套用 Moses 標點正規化、Unicode NFKC 正規化、移除 ASCII 控制字元與多餘空白；
@@ -71,7 +76,12 @@ $$\mathcal{D}_{\text{clean}} = \Big\{ (x_i, y_i) \in \mathcal{D}_{\text{norm}} \
 
 語料庫收錄臺灣官方認定之原住民族語言，共對應 15 個 ISO 639-3 語言代碼（表 1, p. 3447）：
 
-$$\mathcal{L}_{15} = \{ \text{ami}, \text{bun}, \text{ckv}, \text{dru}, \text{pwn}, \text{pyu}, \text{ssf}, \text{sxr}, \text{szy}, \text{tao}, \text{tay}, \text{trv}, \text{tsu}, \text{xnb}, \text{xsy} \}$$
+$$
+\begin{aligned}
+\mathcal{L}_{15} = \{ &\text{ami}, \text{bun}, \text{ckv}, \text{dru}, \text{pwn}, \text{pyu}, \text{ssf}, \text{sxr}, \\
+&\text{szy}, \text{tao}, \text{tay}, \text{trv}, \text{tsu}, \text{xnb}, \text{xsy} \}
+\end{aligned}
+$$
 
 * 涵蓋：阿美語（`ami`）、布農語（`bun`）、噶瑪蘭語（`ckv`）、魯凱語（`dru`）、排灣語（`pwn`）、卑南語（`pyu`）、邵語（`ssf`）、拉阿魯哇語（`sxr`）、撒奇萊雅語（`szy`）、達悟/雅美語（`tao`）、泰雅語（`tay`）、賽德克語與太魯閣語（`trv`，政治上分立但語言學共享相同 ISO 代碼，數據合併）、鄒語（`tsu`）、卡那卡那富語（`xnb`）、賽夏語（`xsy`）。
 
