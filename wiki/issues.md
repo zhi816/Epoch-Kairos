@@ -230,15 +230,17 @@
 
 ## 2024 Sora
 
-### EK-035 | open | papers/2024-sora-world-simulator.md | Card 3 | 原文未支持
+### EK-035 | fixed | papers/2024-sora-world-simulator.md | Card 3 | 原文未支持
 - **問題**：把 VAE 具體架構、3D RoPE、adaLN-Zero 與 epsilon-prediction 當作 Sora 已知實作。OpenAI 報告未提供實作細節，並說模型訓練預測原始乾淨 patch，與 epsilon-MSE 公式不符；二手反向推測須明標推測。
 - **來源**：[OpenAI 技術報告](https://openai.com/index/video-generation-models-as-world-simulators/)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回 OpenAI 技術報告與 DiT、綜述原文核實修訂 Card 3：明確劃分 OpenAI 官方公開機制（時空壓縮網路、時空圖塊 Token 化、預測原始乾淨圖塊）與學界推測（adaLN-Zero 源自 Peebles & Xie 2023，3D-RoPE 與 3D-VAE 細節源自 Liu et al. 2024）；公式依官方報告明示更新為預測乾淨圖塊目標（$\hat{U}_0$），並對比經典 DiT 之 $\epsilon$ 預測目標。證據表見 wiki/evidence/2024-sora-world-simulator.md。
 
-### EK-036 | open | papers/2024-sora-world-simulator.md | Card 1 | 過度表述
+### EK-036 | fixed | papers/2024-sora-world-simulator.md | Card 1 | 過度表述
 - **問題**：將遮擋後維持物體存在寫成一般穩定能力，報告措辭為「常能但並非總是」並明列物理模擬限制；即時互動與狀態記憶之說法亦超出原文示例。Card 5、6 之世界模型與隱式幾何重建描述應保留為有限能力觀察或詮釋。
 - **來源**：同 EK-035
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit、[2026-11-08 22:35] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。對照 OpenAI 官方報告修訂 Card 1、Card 4 與 Card 5：Card 1 將遮擋存在性精確限定為「常能（但並非總是）維持短暫被遮擋物體時空存在感」，並補列報告明示之物理交互局限；Card 4 刪除 Minecraft 具備即時互動與完備狀態記憶之表述，改為提示詞零樣本渲染動態畫面，並客觀補列玻璃碎裂與吃食物咬痕等物理失敗模式；Card 5 將世界模型描述限定為初步探索與有限能力湧現，強調高維視覺統計擬合與顯式因果物理引擎之本質差異。證據表見 wiki/evidence/2024-sora-world-simulator.md。
 
 ## 2025 DeepSeek-R1
 

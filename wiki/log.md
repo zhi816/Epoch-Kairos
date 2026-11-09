@@ -904,3 +904,14 @@
   - **EK-034**：Card 5 更正 qLDPC 相關表述，明確本實驗實作之編碼為表面碼、色碼與三維 $[[8,3,2]]$ 碼，qLDPC 碼僅為原文展望中進一步降低硬體開銷的關鍵未來方向，刪除將 qLDPC 寫成已由本實驗實作之陳述。
   - 新增證據表 [wiki/evidence/2024-fault-tolerant-quantum.md](evidence/2024-fault-tolerant-quantum.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-032、EK-033 與 EK-034 標記為 `fixed` 並追加處理紀錄。
+
+
+## [2026-11-09 10:12] fix | Sora 2024 依技術報告核實去噪目標與世界模擬局限並建立證據表 | #計算機視覺 #人工智慧 #深度學習
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 OpenAI 官方技術報告（Brooks et al. 2024）與 DiT（Peebles & Xie 2023）、綜述（Liu et al. 2024）原文全面核實修訂 [wiki/papers/2024-sora-world-simulator.md](papers/2024-sora-world-simulator.md)。
+  - **EK-035**：Card 3 明確劃分 OpenAI 官方揭示之核心機制（時空壓縮網路、時空圖塊 Token 化、可變解析度與長寬比輸入、預測原始乾淨圖塊目標）與學界推測（adaLN-Zero 條件注入源自 Peebles & Xie 2023，3D-RoPE 與 3D-VAE 細節源自 Liu et al. 2024）；公式依報告明示更正為預測乾淨圖塊目標（$\hat{U}_0$），並對比經典 DiT 之噪聲預測目標 $\epsilon$。
+  - **EK-036**：Card 1 將遮擋存在性精確限定為「常能（但並非總是）維持短暫被遮擋物體時空存在感」，並補列報告明示之物理交互局限；Card 4 刪除 Minecraft 具備即時互動與完備狀態記憶之過度表述，改為提示詞零樣本渲染動態畫面，並客觀補列玻璃碎裂與吃食物咬痕等物理失敗模式；Card 5 將世界模型描述限定為初步探索與有限能力湧現，強調高維視覺統計擬合與顯式因果物理引擎之本質差異。
+  - 新增證據表 [wiki/evidence/2024-sora-world-simulator.md](evidence/2024-sora-world-simulator.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-035 與 EK-036 標記為 `fixed` 並追加處理紀錄。
