@@ -993,3 +993,14 @@
   - **EK-058**：更正 Frontmatter `doi_url` 為 `https://doi.org/10.18653/v1/2026.loresmt-1.22`（原誤記為 `.25`），經 Crossref 與 ACL Anthology 核驗無誤。
   - **EK-085**：Card 3 更正 SONAR 評分為 `blaser_2.0` 跨語言語義相似度預測模型（1–5 分制，非餘弦相似度）；糾正四階段課程學習倒置錯誤，改述真實順序（階段 1：OPUS 標準 8.2M $\to$ 階段 2：OPUS 高品質 7.1M $\to$ 階段 3：FineWeb-2 回譯 3.1M $\to$ 階段 4：合成對話 113K）；補列烏茲別克與塔吉克雙語輔助遷移、以及 mt0-large 詞表剪枝由 1.23B 壓縮至 800M 架構；Card 4 補齊 Table 1–3 與官方競賽測試集（49.1 chrF++ / 69.7 xCOMET 奪冠）詳細數據。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-058 與 EK-085 標記為 `fixed`。
+
+
+## [2026-11-09 11:08] fix | 依原文重寫 TULUN 2025 系統展示頁並更正 DOI 與檢索實作 | #自然語言處理 #人工智慧 #計算語言學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 接手 Claude Opus 5.5 暫停之 8 篇 my-focus 論文頁修正工作之第 5 篇：[Merx et al. 2025](papers/2025-tulun-adaptable-lrl-mt-merx.md)（EK-057、EK-083）。
+  - 對照 ACL 2025 System Demonstrations 原文（`raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`）全文核對後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2025-tulun-adaptable-lrl-mt-merx.md](evidence/2025-tulun-adaptable-lrl-mt-merx.md)，頁面 `verification` 提升為 `verified`。
+  - **EK-057**：更正 Frontmatter `doi_url` 為 `https://doi.org/10.18653/v1/2025.acl-demo.13`（卷號為單數 `acl-demo`，原誤記為 `acl-demos`），經 Crossref 與 ACL Anthology 核驗無誤。
+  - **EK-083**：Card 3 補齊系統具體技術實作，包含 Django 後端、Docker 容器化、初譯模型支援（MADLAD-400-10B、OPUS-MT、NLLB-54B）、spaCy en_core_web_sm 之 {1,2}-gram 詞彙表動態比對、Rust Tantivy 函式庫之 Top-N BM25 翻譯記憶庫檢索，以及 LiteLLM 代理之 Gemini 2.0 Flash CoT 後編輯提示；標明流程公式為示意式；Card 4 補齊德頓語醫療（+16.90 chrF++ / +13.51 BLEU）、比斯拉馬語救災（+22.41 chrF++ / +17.69 BLEU）、SUS 81.25 分與 FLORES 六語基準對比。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-057 與 EK-083 標記為 `fixed`。

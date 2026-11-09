@@ -366,10 +366,11 @@
 
 ## DOI 無法解析（2026-11-09 crossref_check.py）
 
-### EK-057 | open | papers/2025-tulun-adaptable-lrl-mt-merx.md | Frontmatter doi_url | 未能核實
+### EK-057 | fixed | papers/2025-tulun-adaptable-lrl-mt-merx.md | Frontmatter doi_url | 未能核實
 - **問題**：`10.18653/v1/2025.acl-demos.13` 在 Crossref 與 doi.org 均查無此號，DOI 可能有誤。
 - **來源**：須回 ACL Anthology 原文首頁核對
 - **發現於**：本檔建立時以 crossref_check.py 查得（Claude Code by Anthropic）
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回 ACL Anthology 核對：ACL 2025 System Demonstrations 卷號為單數 `2025.acl-demo`，正確 DOI 為 `10.18653/v1/2025.acl-demo.13`（原誤記為 `acl-demos`），經 Crossref 與 doi.org 解析確認無誤並更新頁面。
 
 ### EK-058 | fixed | papers/2026-data-centric-russian-kyrgyz-mt-novokshanov.md | Frontmatter doi_url | 未能核實
 - **問題**：`10.18653/v1/2026.loresmt-1.25` 在 Crossref 與 doi.org 均查無此號；可能尚未註冊或 DOI 有誤。
@@ -518,10 +519,11 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核實後重寫：Card 3 刪除虛構之句法成分樹剖析與 argmax 公式，改述原文真實採用之 7 至 1 詞滑動視窗來源端匹配（抽取至多 6 組雙語例句、無重疊覆蓋）以及兩階段樞紐片段提示（PF）機制；Card 4 將研究對象正名為北義多洛米蒂山區雷托－羅曼語支「拉定語（Ladin）」兩大變體（Val Badia 與 Gherdëina），糾正「拉丁語變體」之筆誤；補列 Table 1–3 完整數據、推論耗時與語法有效性局限。建立證據表 wiki/evidence/2025-fragment-shot-reasoning-mt-frontull.md，頁面 verification 改為 verified。
 
-### EK-083 | open | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 3 | 過度表述
+### EK-083 | fixed | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 3 | 過度表述
 - **問題**：Card 3（第 46–62 行）僅以抽象算子描述檢索，未交代原文 §3.2（p. 132）之具體檢索設計：詞彙表（Glossary）係以 spaCy `en_core_web_sm` 斷詞後進行 `{1,2}`-gram 重疊匹配，翻譯記憶庫（Translation Memory）係以 `Tantivy` 函式庫執行 Top-$N$ BM25 檢索，並以 `MADLAD-400-10B`／`OPUS-MT`／`NLLB-54B` 搭配 `Gemini 2.0 Flash` 進行少樣本思維鏈（CoT）後編輯；且原文全文無數學公式（式 52、56 應標明為依原文流程整理之示意式）。
 - **來源**：`raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`（§3.2 p. 132、§4.1–4.2 pp. 132–133）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 3 補齊系統具體技術實作，包含 Django 後端、Docker 容器化、初譯模型支援（MADLAD-400-10B、OPUS-MT、NLLB-54B）、spaCy en_core_web_sm 之 {1,2}-gram 詞彙表動態比對、Rust Tantivy 函式庫之 Top-N BM25 翻譯記憶庫檢索，以及 LiteLLM 代理之 Gemini 2.0 Flash CoT 後編輯提示；標明流程公式為示意式；Card 4 補齊德頓語醫療（+16.90 chrF++ / +13.51 BLEU）、比斯拉馬語救災（+22.41 chrF++ / +17.69 BLEU）、SUS 81.25 分與 FLORES 六語基準對比。建立證據表 wiki/evidence/2025-tulun-adaptable-lrl-mt-merx.md，頁面 verification 改為 verified。
 
 ### EK-084 | fixed | papers/2026-context-volume-rag-domain-shift-setiawan.md | Card 3 | 原文不符
 - **問題**：第 54–60 行稱論文證明 $\operatorname{chrF++}$ 與語境容量呈精確對數線性公式，且第 48 行稱使用「稠密檢索器」召回上下文。原文 §4.3 與 §5.2–5.3（pp. 90–93，表 2、4、5、6）全文無此對數線性公式；表現最佳之平行句檢索策略並非稠密向量檢索，而是基於 `rapidfuzz` 字元級正規化 Levenshtein 相似度 $\ge 0.5$ 之**詞級模糊匹配（Word-Level Fuzzy Matching）**；且句級檢索（BM25、BGE、ChrF-RAG）於 $K \approx 60$ 即飽和，詞級檢索於每詞 $n = 10$（有效句數 $K \approx 137$，35.28 chrF++）達峰值後，於 $n = 15, 20$（$K \approx 205, 272$）因語境雜訊回落至 35.16 與 34.22 chrF++（表 5），並非單調無限上升。
