@@ -1628,3 +1628,12 @@
   - 來源：Card 3 採無公式模式，經 paper-pdf-parser 全文搜尋，原文無編號公式，BLEU、WER、ROUGE 僅引用未列式（§5.3）；說明與示意圖取論文頁 Card 3 第 1 節（三項任務各自獨立之資料來源）。Card 4 取證據表 Card 4 人工檢視列之兩個數字（<40%、<10%，§6.1 p. 16533）；表 2 至 4 之 BLEU、評審分數與 WER 在證據表未列數值，依規未採。Card 5 採新論文模式，三筆取自論文頁本頁範圍（資料與程式碼公開，原文 p. 16527）與 Card 5（§6.1 資料量瓶頸、Limitations p. 16535）。Card 6 取論文頁 Card 6 第 1 點，未涉碩論內容；未採「首個基準」之說法。
   - 檢查：`check_cards.py` ERROR 0、WARN 0（初稿「完全正確」之 WARN 改為「整句全對」，新論文模式 Limitations 補頁碼）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（3aaaf11 版）1440 x 900 與 375 x 812 結果 PASS。
   - 未決事項：原文人工檢視對象為微調後之 NLLB 輸出（§6.1, p. 16533），論文頁 Card 4 未寫明，卡片因此只寫「母語者人工檢視」；證據表 Card 4 多列未記數值，交協調者決定是否補入。建置時 `tools/build_paper_prototype.py` 有協調者未提交之修改；首頁卡片牆依協調規則未重建。
+
+## [2026-11-10 00:28] update | 新增臺灣南島語時間詞比較之卡片文字檔 | #語言學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第二批 A 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2024-formosan-temporal-words-lim.md](cards/2024-formosan-temporal-words-lim.md) 並建置 `web/prototypes/paper-v1/2024-formosan-temporal-words-lim.html`。
+  - Card 3 無公式模式：以 paper-pdf-parser 抽取原文全文（27 頁）確認無編號公式，分類以表九至表十一呈現。示意圖以今天為中心畫四個時間詞，上方弧線為依天數配對，下方虛線為依前後配對。
+  - Card 4 結論模式（質性比較，無量化指標）：依天數分組為多數、卑南與阿美等依前後分組（表九，p. 11）、雙標類型最常見（§4.1 表十一，p. 12）。
+  - Card 5 新論文模式：三筆皆取作者自述之範圍與待解問題：標記為詞綴或依附詞不在本文範圍（註 13，p. 12）、臺灣以外南島語「仍有待未來進一步比較」（§5.1，p. 15）、原始南島語三階段推測有待更有力證據（§5.2.2，p. 18），均回原 PDF 頁面核對。論文頁 Card 5 第二點補上 §5.1 之菲律賓 43 種語言比較與上述引文，證據表加兩列。Card 6 未涉碩論內容、無第一人稱。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 35 項 PASS；無頭截圖目視，修正 Card 2、3、4、6 拆字折行與示意圖「天數」標籤壓線。`lint_wiki.py` ERROR 0。
