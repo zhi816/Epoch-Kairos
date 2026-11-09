@@ -1620,3 +1620,11 @@
   - `paper-card-writer`：新增 `references/card-wall.md`（上牆步驟、只收已提交卡片、`web/index.html` 衝突處理、平行批次由協調者上牆、ERROR／FAIL／WARN 處理表、禁止事項）與 `scripts/verify_wall.js`（桌面與手機、群星與我的星系四組量測）。SKILL.md 第五節第 7 步分為 7-1 論文頁、7-2 首頁卡片牆；第二節第 14、15 條、第三節必讀、第八節交付格式、第九節、第十一節偷工自查同步；`paper-page.md`、`cover.md` 加轉介；`.claude/skills/` 轉介檔描述同步。
   - 驗證：先以 Hopfield 走完全程（建置、`verify_wall.js` 指定 slug、目視、點卡片進原型並返回），再寫入 Skill；之後依 Skill 對 Seediq、IceCube、Acemoglu、AlphaFold2 各跑一次，皆 PASS。最終以 `verify_wall.js` 檔案原文、不設 `EK_SLUG` 驗全牆 14 張：PASS 62 項、WARN 8 項，WARN 皆屬他人已提交之卡片（兩篇論文名截斷、一篇語言標籤截斷、一篇雙年份截斷），未代改，列於 TD-009 進度。卡片牆自我檢查 ERROR 0；`build_home.py --check` 一致；`lint_wiki.py` ERROR 0；`check_cards.py` ERROR 0。
   - 文件：DESIGN.md 第二章第 0、3 節（卡片牆已加入、連結原型、實作細節暫定）、第八章第 1 項、第十章；AGENTS.md 第四、五、六章與 Skill 一覽；README。TD-009 改為等待 TD-008 完成之最終檢查，並註明 TD-008 平行批次之協調者須在每批後重建首頁。
+
+## [2026-11-10 00:26] update | 新增 FormosanBench 低資源南島語言評測基準之卡片文字檔 | #自然語言處理 #計算語言學 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：卡片回填第二批 B 組第 2 篇（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2025-formosanbench-llm-benchmark-lin.md](cards/2025-formosanbench-llm-benchmark-lin.md) 並建置 `web/prototypes/paper-v1/2025-formosanbench-llm-benchmark-lin.html`。
+  - 來源：Card 3 採無公式模式，經 paper-pdf-parser 全文搜尋，原文無編號公式，BLEU、WER、ROUGE 僅引用未列式（§5.3）；說明與示意圖取論文頁 Card 3 第 1 節（三項任務各自獨立之資料來源）。Card 4 取證據表 Card 4 人工檢視列之兩個數字（<40%、<10%，§6.1 p. 16533）；表 2 至 4 之 BLEU、評審分數與 WER 在證據表未列數值，依規未採。Card 5 採新論文模式，三筆取自論文頁本頁範圍（資料與程式碼公開，原文 p. 16527）與 Card 5（§6.1 資料量瓶頸、Limitations p. 16535）。Card 6 取論文頁 Card 6 第 1 點，未涉碩論內容；未採「首個基準」之說法。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0（初稿「完全正確」之 WARN 改為「整句全對」，新論文模式 Limitations 補頁碼）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（3aaaf11 版）1440 x 900 與 375 x 812 結果 PASS。
+  - 未決事項：原文人工檢視對象為微調後之 NLLB 輸出（§6.1, p. 16533），論文頁 Card 4 未寫明，卡片因此只寫「母語者人工檢視」；證據表 Card 4 多列未記數值，交協調者決定是否補入。建置時 `tools/build_paper_prototype.py` 有協調者未提交之修改；首頁卡片牆依協調規則未重建。
