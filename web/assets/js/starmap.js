@@ -72,7 +72,7 @@
   if (FO) { fLinkCount = FO.hubs.length; FO.papers.forEach(function (p) { fLinkCount += p.con.length; }); }
 
   /* 群星開場不預選任何論文（2026-11-09 使用者決定：流光干擾操作感）；我的星系預設亮「我的碩論」 */
-  var S = { mode: 'stars', filter: null, note: null, sel: null, hover: null, hoverD: null, ffilter: 'all', fsel: TH, armed: false };
+  var S = { mode: 'stars', filter: null, note: null, sel: null, hoverC: null, pinC: null, hover: null, hoverD: null, ffilter: 'all', fsel: TH, armed: false };
 
   function rndFrom(seed) {
     var s = seed | 0;
@@ -214,12 +214,16 @@
       /* 學科與論文名稱一律顯示（取重疊最少處）；標籤與概念名稱放不下就隱藏 */
       /* 說明框避讓權重：學科與概念名稱 6、論文名稱 4、標籤 2 */
       var wt = n.pri === 1 || n.pri === 4 ? 6 : (n.pri === 3 ? 2 : 4);
-      if (best && (best.ov === 0 || n.pri <= 2)) { setSlot(slots[best.i]); placed.push(withW(best.r, wt)); lab.style.opacity = 1; }
-      else if (!best && n.pri <= 2) { setSlot(slots[0]); placed.push(withW(lab.getBoundingClientRect(), wt)); lab.style.opacity = 1; }
+      if (best && (best.ov === 0 || n.pri <= 2 || n.must)) { setSlot(slots[best.i]); placed.push(withW(best.r, wt)); lab.style.opacity = 1; }
+      else if (!best && (n.pri <= 2 || n.must)) { setSlot(slots[0]); placed.push(withW(lab.getBoundingClientRect(), wt)); lab.style.opacity = 1; }
       else lab.style.opacity = 0;
     });
     labelRects = placed;
+    lastCSig = cSig();
   }
+  /* 目前應顯示名稱之概念頁；滑過時若有變動才重排標籤 */
+  var lastCSig = '';
+  function cSig() { return nodes.filter(function (n) { return n.el.dataset.c && n.show; }).map(function (n) { return n.el.dataset.c; }).join(','); }
   function withW(r, w) { return { left: r.left, right: r.right, top: r.top, bottom: r.bottom, w: w }; }
   function layoutLabels() { declutter(); renderTip(); }
 
@@ -274,11 +278,6 @@
     }
     addNode(mk(k), 500, 500);
 
-    D.concepts.forEach(function (c) {
-      var w = mk('<span class="cpt" aria-hidden="true"></span><span class="lbl cptlbl r" aria-hidden="true">' + esc(c.name) + '</span>');
-      w.dataset.c = c.slug;
-      addNode(w, c.x, c.y, w.querySelector('.lbl'), 4, c.x >= 500 ? 'r' : 'l');
-    });
     Object.keys(D.tags).forEach(function (t) {
       var tg = D.tags[t], d = DOM[tg.d];
       var w = mk('<span class="dot" aria-hidden="true" style="width:3px;height:3px;box-shadow:0 0 5px 1.5px rgba(' + d.rgb + ',.75)"></span><span class="lbl r" aria-hidden="true">' + esc(t) + (mobile ? '' : '<sup>' + tg.count + '</sup>') + '</span>');
@@ -304,6 +303,15 @@
       w.dataset.p = p.slug;
       if (!mobile) hoverable(w.querySelector('button'), function () { setHover(p.slug); }, scheduleHoverClear);
       addNode(w, p.x, p.y, w.querySelector('.lbl'), 2);
+    });
+    /* 概念頁菱形：名稱預設隱藏，滑過、聚焦或點選菱形，或選中／滑過之論文屬於該概念時才顯示（DESIGN.md 第二章第 2 節）。
+       排在星點之後，鍵盤先經過學科與星點；名稱另以 aria-label 提供給螢幕閱讀器。 */
+    D.concepts.forEach(function (c) {
+      var w = mk('<button type="button" class="cptb" data-cpt="' + c.slug + '" aria-pressed="false" aria-label="' + esc('概念頁：' + c.name + '，' + c.papers.length + ' 篇論文') + '"' + (mobile ? ' tabindex="-1"' : '') + '><span class="cpt" aria-hidden="true"></span></button>' +
+        '<span class="lbl cptlbl r" aria-hidden="true">' + esc(c.name) + '</span>');
+      w.dataset.c = c.slug;
+      if (!mobile) hoverable(w.querySelector('button'), function () { setHoverC(c.slug); }, function () { setHoverC(null); });
+      addNode(w, c.x, c.y, w.querySelector('.lbl'), 4, c.x >= 500 ? 'r' : 'l');
     });
     if (!mobile) addTip();
   }
@@ -349,9 +357,13 @@
         }
       } else if (ds.c) {
         var c = conceptBy[ds.c], lc = !!(sel && c.papers.indexOf(sel.slug) >= 0);
+        var named = lc || S.hoverC === ds.c || S.pinC === ds.c;
         var cact = !fx || c.d === fx || c.papers.some(function (s) { return byP[s].d === fx; });
-        if (mobile) { el.style.opacity = sel ? (lc ? 1 : 0.2) : (z ? 0.3 : 0.6); n.show = lc; }
-        else { el.style.opacity = lc ? 1 : (cact ? 0.62 : 0.2); n.show = true; }
+        if (mobile) el.style.opacity = named ? 1 : (sel ? 0.2 : (z ? 0.3 : 0.6));
+        else el.style.opacity = named ? 1 : (cact ? 0.62 : 0.2);
+        n.show = named;
+        n.must = named && !mobile; /* 桌面：符合條件者一律顯示；手機沿用避讓，放不下就隱藏 */
+        el.querySelector('button').setAttribute('aria-pressed', S.pinC === ds.c ? 'true' : 'false');
       }
     });
     starsEdges(fx, sel, selTags, selDom);
@@ -739,10 +751,12 @@
     updateBack();
   }
   function refresh() { paint(); if (!tween) layoutLabels(); }
-  function refreshHover() { paint(); renderTip(); }
+  function refreshHover() { paint(); if (!tween && cSig() !== lastCSig) layoutLabels(); else renderTip(); }
   function setHover(slug) { clearTimeout(hoverTimer); if (S.hover === slug) return; S.hover = slug; refreshHover(); }
   function scheduleHoverClear() { clearTimeout(hoverTimer); hoverTimer = setTimeout(function () { if (S.hover !== null) { S.hover = null; refreshHover(); } }, 220); }
   function setHoverD(k) { if (S.hoverD === k) return; S.hoverD = k; refreshHover(); }
+  function setHoverC(k) { if (S.hoverC === k) return; S.hoverC = k; refreshHover(); }
+  function togglePinC(k) { S.pinC = S.pinC === k ? null : k; refresh(); }
   function announce() {
     if (mobile) return;
     var t = '';
@@ -771,6 +785,8 @@
     document.body.dataset.mode = m;
     S.hover = null;
     S.hoverD = null;
+    S.hoverC = null;
+    S.pinC = null;
     setArmed(false);
     modeTexts();
     buildIndex();
@@ -802,15 +818,16 @@
     refresh();
     announce();
   }
-  function clearSel() { S.sel = null; S.hover = null; refresh(); $('live').textContent = '已取消選取'; }
+  function clearSel() { S.sel = null; S.pinC = null; S.hover = null; refresh(); $('live').textContent = '已取消選取'; }
   function selectPaper(slug) { S.sel = slug; S.note = null; S.hover = null; refresh(); announce(); }
   function selectFocus(slug) { S.fsel = slug; S.hover = null; refresh(); announce(); }
   function setFFilter(k) { S.ffilter = (k === 'all' || S.ffilter === k) ? 'all' : k; S.hoverD = null; refresh(); }
 
   map.addEventListener('click', function (e) {
-    var t = e.target.closest('[data-hub],[data-p],[data-fhub],[data-f],[data-thesis]');
+    var t = e.target.closest('[data-hub],[data-p],[data-cpt],[data-fhub],[data-f],[data-thesis]');
     if (!t || !map.contains(t)) return;
     if (t.dataset.hub) pickDomain(t.dataset.hub);
+    else if (t.dataset.cpt) togglePinC(t.dataset.cpt);
     else if (t.dataset.p) selectPaper(t.dataset.p);
     else if (t.dataset.fhub) setFFilter('con:' + t.dataset.fhub);
     else if (t.dataset.f) selectFocus(t.dataset.f);
@@ -832,7 +849,7 @@
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
     if (S.mode === 'stars' && (S.filter || S.note)) pickDomain(null);
-    else if (S.mode === 'stars' && S.sel) clearSel();
+    else if (S.mode === 'stars' && (S.sel || S.pinC)) clearSel();
     else if (S.mode === 'focus' && S.ffilter !== 'all') setFFilter('all');
   });
 
@@ -879,6 +896,7 @@
     if (was === mobile) return;
     S.hover = null;
     S.hoverD = null;
+    S.hoverC = null;
     if (!mobile && S.note) { S.filter = S.note; }
     if (mobile && S.filter && !DOM[S.filter].count) { S.note = S.filter; S.filter = null; }
     if (mobile && S.sel && S.filter && byP[S.sel].d !== S.filter) S.sel = null;
