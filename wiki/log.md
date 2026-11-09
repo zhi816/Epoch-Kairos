@@ -765,3 +765,13 @@
   - **EK-011**：Card 5 典範轉移段落明確將「終結貨幣主義奠定通膨目標制」歸為 Woodford 系列奠基理論（以 2003 年《Interest and Prices》為代表），將點陣圖與前瞻指引實踐標註為該微觀基礎理論之後續政策延伸應用，並釐清開放經濟貨幣政策獨立性結論與國際協調最優性之文獻界線。
   - 新增證據表 [wiki/evidence/2007-woodford-inflation-dynamics.md](evidence/2007-woodford-inflation-dynamics.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-008、EK-009、EK-010 與 EK-011 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 09:37] fix | 問題清單改為逐條暫存，避免整檔提交帶入他人修改 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：
+  - **事件**：本代理 09:35 之提交（`a8f6655`）以整檔方式提交 [wiki/issues.md](issues.md)，誤將 Antigravity 尚未提交之 EK-008 至 EK-011 狀態變更一併帶入。Antigravity 於 13 秒後提交其 Woodford 頁（`04932f0`），遠端未留下不一致，但此風險與日誌相同，先前沒有工具防護。
+  - **新增 [stage_issues.py](../.agents/skills/git-sync-guardian/scripts/stage_issues.py)**：以「HEAD 版問題清單＋指定編號條目之工作目錄版本」組出提交內容，未指定之條目留在工作目錄；新條目依工作目錄位置插入，必要時帶入新分節標題；工作目錄刪除已提交條目或指定編號不存在時擋下。
+  - **[safe_commit_push.sh](../.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh)**：列出 `wiki/issues.md` 時必須以 `--issue EK-NNN` 指定編號，否則還原本次暫存並中止。
+  - **測試**：以含遠端之暫存倉庫測試六種情境（兩代理各改一筆、新分節加新條目、分節中間插入、指定不存在編號、刪除既有條目、未給 `--issue`），結果皆符合預期；並對真實問題清單以 `--dry-run` 試跑。
+  - **規範**：[AGENTS.md](../AGENTS.md) 第十章第 5、7 條、[git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 與 [wiki-content-audit](../.agents/skills/wiki-content-audit/SKILL.md) 補述。

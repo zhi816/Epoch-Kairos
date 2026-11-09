@@ -17,13 +17,14 @@ for cand in python3 python py; do
 done
 
 usage() {
-  echo "Usage: $0 \"<commit_message>\" <main|raw> --agent \"<執行代理名稱>\" [--log-heading \"<exact heading>\"] -- <path> [<path> ...]"
+  echo "Usage: $0 \"<commit_message>\" <main|raw> --agent \"<執行代理名稱>\" [--log-heading \"<exact heading>\"] [--issue EK-NNN ...] -- <path> [<path> ...]"
   echo ""
   echo "  main | raw   要提交的倉庫：main 為 Epoch-Kairos，raw 為 raw/ 內的 Mine-RAW。"
   echo "               兩邊都有修改時請分別執行兩次（各自列出自己的檔案）。"
   echo "  --agent      執行代理名稱的一部分（例如 \"Claude Code\"、\"Codex\"、\"Antigravity\"），"
   echo "               用來挑出 wiki/log.md 中自己寫的條目。列出 wiki/log.md 時為必填。"
   echo "  --log-heading  只提交指定的新日誌標題；可重複使用，供同代理多個工作階段並行時精確選取。"
+  echo "  --issue      提交 wiki/issues.md 時必填：只提交這些編號的條目（可重複）；其他代理的修改留在工作目錄。"
   echo "  --allow-stale-log  允許日誌標題時間早於現在 60 分鐘以上（僅限推送失敗後重試等情形）。"
   echo "               日誌標題時間一律先以 scripts/log_time.py 取得；晚於現在 5 分鐘以上會被擋下。"
   echo "  -- <path>    只會提交這些路徑（相對於該倉庫根目錄）。不接受 '.'、'-A' 或倉庫根目錄。"
@@ -38,11 +39,13 @@ COMMIT_MSG="$1"; TARGET="$2"; shift 2
 AGENT=""
 LOG_HEADINGS=()
 ALLOW_STALE=""
+ISSUES=()
 while [ $# -gt 0 ] && [ "$1" != "--" ]; do
   case "$1" in
     --agent) AGENT="$2"; shift 2 ;;
     --log-heading) LOG_HEADINGS+=("$2"); shift 2 ;;
     --allow-stale-log) ALLOW_STALE="--allow-stale"; shift ;;
+    --issue) ISSUES+=("$2"); shift 2 ;;
     *) echo "Unknown option '$1'."; usage ;;
   esac
 done
@@ -92,6 +95,17 @@ for P in "${PATHS[@]}"; do
       # 暫存區在步驟 0 已確認為乾淨，這裡把本次已暫存的路徑還原，避免留給下一位代理。
       git reset -q -- "${PATHS[@]}" 2>/dev/null || true
       echo "ERROR: 日誌暫存失敗（見上方訊息），已還原本次暫存，未提交任何內容。"
+      exit 1
+    fi
+  elif [ "$P" = "wiki/issues.md" ] && [ "$TARGET" = "main" ]; then
+    if [ ${#ISSUES[@]} -eq 0 ]; then
+      git reset -q -- "${PATHS[@]}" 2>/dev/null || true
+      echo "ERROR: 提交 wiki/issues.md 時必須以 --issue EK-NNN 列出自己修改的問題編號（可重複），已還原本次暫存。"
+      exit 1
+    fi
+    if ! PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/stage_issues.py" "${ISSUES[@]}"; then
+      git reset -q -- "${PATHS[@]}" 2>/dev/null || true
+      echo "ERROR: 問題清單暫存失敗（見上方訊息），已還原本次暫存，未提交任何內容。"
       exit 1
     fi
   else

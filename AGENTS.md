@@ -405,6 +405,7 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
 5. **「只提交自己的修改（Commit Only Your Own Changes）」**：
    - 多個 AI 共用同一個工作目錄，工作目錄中常同時存在其他代理尚未提交的修改。嚴禁使用 `git add -A`、`git add .` 或 `git commit -a`；提交前須以 `git diff --stat` 逐檔確認，只暫存自己修改的檔案，未追蹤之資料夾（如他人的 `work/`）一律不得加入。
    - `wiki/log.md` 只可提交「執行代理」為自己的條目，其他代理尚未提交的條目須留在工作目錄，由其主人自行提交；以 `scripts/stage_log.py` 逐條暫存。
+   - `wiki/issues.md` 亦為共用檔案，只可提交自己修改的問題條目：`safe_commit_push.sh` 列出該檔時須以 `--issue EK-NNN` 指定編號，由 `scripts/stage_issues.py` 逐條暫存。
    - 合流遠端時以 `git merge --autostash` 暫收他人未提交的修改，合流後放回並維持未暫存狀態；不得把他人的修改併入自己的提交。
    - 背景：2026-11-08 曾發生 Claude Code 以整檔加入 `wiki/log.md`，誤將 Codex 尚未提交的 4 筆審查紀錄帶入自己的提交；舊版 `safe_commit_push.sh` 亦以 `git add -A` 暫存全部檔案。
 6. **「寫入日誌即提交（Log Implies Commit）」**：
@@ -414,5 +415,5 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
    - 標題時間一律先執行 `scripts/log_time.py` 取得，不得憑估計填寫（規則見第六章 Ingest 第 5 步；`stage_log.py` 會機械檢查）。
    - 目的：日誌是共用檔案，條目滯留在工作目錄會被他人誤帶、阻擋同步，甚至遭覆寫；每筆日誌都對應一個已推送的提交，多 AI 協作出問題時才能立即追查。
 7. **專屬輔助技能與工具鏈調用**：
-   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`）及日誌工具（`scripts/log_time.py` 取得日誌標題時間、`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。`stage_log.py` 暫存之條目順序一律跟隨工作目錄，不依時間重排，以免提交後日誌持續顯示為已修改。其餘專屬 Skill 見第六章開頭之 Skill 一覽。
+   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`）及日誌工具（`scripts/log_time.py` 取得日誌標題時間、`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/stage_issues.py` 逐條暫存自己修改的問題條目、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。`stage_log.py` 暫存之條目順序一律跟隨工作目錄，不依時間重排，以免提交後日誌持續顯示為已修改。其餘專屬 Skill 見第六章開頭之 Skill 一覽。
 
