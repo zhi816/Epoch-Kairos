@@ -7,14 +7,13 @@
 資料來源：
     * wiki/papers/*.md、wiki/concepts/*.md 之 Frontmatter（論文、概念、雙年份、card_line、我的關注欄位）。
     * AGENTS.md 第八章標籤白名單（標籤所屬學科）。
-    * Git 歷史：每篇論文頁首次提交之時間，用以決定群星模式預設亮起的「最新收錄」論文
-      （DESIGN.md 第八章第 12 項）。同一次提交收錄多篇時，依序取發表年較新者、slug 字母序較後者。
-      淺層 clone（shallow clone）會讓所有論文的首次提交時間相同，請在完整歷史上執行。
+
+群星模式開場不預選任何論文（DESIGN.md 第二章第 2 節），故本腳本不決定預設亮星。
 
 學科色不在本腳本定義：頁面執行時讀取 web/assets/css/theme.css 之 --color-<domain>
 （色碼唯一真實來源，見 AGENTS.md 第二章）。
 
-本腳本只用 Python 標準函式庫，輸出內容只取決於 wiki/、AGENTS.md 與 Git 歷史，重跑即可重現。
+本腳本只用 Python 標準函式庫，輸出內容只取決於 wiki/ 與 AGENTS.md，重跑即可重現。
 版面與樣式請改 tools/home_template.html、web/assets/css/starmap.css、web/assets/js/starmap.js，
 不要手改 web/index.html。
 """
@@ -23,7 +22,6 @@ import json
 import math
 import os
 import re
-import subprocess
 import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
@@ -112,15 +110,6 @@ def whitelist():
     if not tags:
         raise SystemExit('讀不到 AGENTS.md 第八章之標籤白名單')
     return tags
-
-
-def first_added(rel):
-    try:
-        out = subprocess.run(['git', 'log', '--follow', '--diff-filter=A', '--format=%aI', '--', rel],
-                             cwd=ROOT, capture_output=True, text=True, check=True).stdout.split()
-    except (OSError, subprocess.CalledProcessError):
-        return ''
-    return out[-1] if out else ''
 
 
 # ---------------------------------------------------------------- 顯示文字
@@ -258,12 +247,6 @@ def build_stars(P, C, tag_dom):
             pos[s] = pol(base[s] + off, 430 + (i % 2) * 30)
     relax(pos, sorted(pos), 96, 372, 472, 500)
 
-    # 「最新收錄」：Git 首次提交時間新者在前；同一次提交者依發表年、slug 由新到舊。
-    added = {s: first_added('wiki/papers/%s.md' % s) for s in ms}
-    if not any(added.values()):
-        print('WARN 讀不到 Git 歷史，最新收錄改以發表年判定', file=sys.stderr)
-    rank = sorted(ms, key=lambda s: (added[s], int(ms[s]['paper_year']), s), reverse=True)
-
     papers = []
     for s, f in sorted(ms.items(), key=lambda kv: (-int(kv[1]['timeline_year']), kv[0])):
         venue = venue_short(f['venue'], int(f['paper_year']))
@@ -271,7 +254,7 @@ def build_stars(P, C, tag_dom):
             slug=s, name=short_name(f['title_zh']), titleZh=f['title_zh'], title=f['title'], d=f['domain'],
             tags=f['domain_tags'], p=int(f['paper_year']), a=int(f['award_year']), award=award_line(f),
             nobel='諾貝爾' in (f.get('honor') or ''), honor=f.get('honor') or '', venue=venue,
-            years=years_line(f, venue), cardLine=f['card_line'], doi=f.get('doi_url', ''), rank=rank.index(s),
+            years=years_line(f, venue), cardLine=f['card_line'], doi=f.get('doi_url', ''),
             x=round(pos[s][0]), y=round(pos[s][1])))
     cpos = {}
     for s, f in C.items():
@@ -289,7 +272,7 @@ def build_stars(P, C, tag_dom):
         tag_out[t] = dict(d=tags[t]['d'], x=round(tags[t]['xy'][0]), y=round(tags[t]['xy'][1]),
                           count=sum(1 for f in ms.values() if t in f['domain_tags']))
     assert set(dom_keys) >= {p['d'] for p in papers}
-    return dict(domains=domains, tags=tag_out, papers=papers, concepts=concepts, defaultPaper=rank[0] if rank else None)
+    return dict(domains=domains, tags=tag_out, papers=papers, concepts=concepts)
 
 
 # ---------------------------------------------------------------- 我的星系
@@ -406,8 +389,8 @@ def build():
 def main():
     html, data = build()
     focus = data['focus'] or {'papers': []}
-    summary = '群星 %d、標籤 %d、概念 %d、我的關注 %d；預設亮星 %s' % (
-        len(data['papers']), len(data['tags']), len(data['concepts']), len(focus['papers']), data['defaultPaper'])
+    summary = '群星 %d、標籤 %d、概念 %d、我的關注 %d' % (
+        len(data['papers']), len(data['tags']), len(data['concepts']), len(focus['papers']))
     old = open(OUT, encoding='utf-8').read() if os.path.exists(OUT) else None
     if '--check' in sys.argv[1:]:
         if old == html:

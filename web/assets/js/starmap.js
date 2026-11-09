@@ -54,12 +54,13 @@
     FO.roles.forEach(function (r) { roleName[r[0]] = r[1]; });
   }
   var domainOrder = D.domains.slice().sort(function (a, b) { return (b.count > 0) - (a.count > 0); });
+  /* 星點之鍵盤順序：依學科索引順序，同學科內依時間線由新到舊（與懸星索引之珠子同序） */
   var paperOrder = [];
   domainOrder.forEach(function (d) {
-    D.papers.filter(function (p) { return p.d === d.key; }).sort(function (a, b) { return a.rank - b.rank; })
-      .forEach(function (p) { paperOrder.push(p); });
+    D.papers.filter(function (p) { return p.d === d.key; }).forEach(function (p) { paperOrder.push(p); });
   });
-  function firstIn(k) { return paperOrder.filter(function (p) { return p.d === k; })[0]; }
+  /* 論文是否屬於某學科篩選：本身學科相同，或帶有該學科之標籤 */
+  function paperIn(p, k) { return p.d === k || p.tags.some(function (t) { return D.tags[t].d === k; }); }
   function fRgb(p) { return p.d === 'human' ? DOM.human.rgb : BLUE; }
   function fCol(p) { return p.d === 'human' ? DOM.human.color : BLUE_C; }
   function fMatch(p, key) { return key === 'all' || key === 'role:' + p.role || (key.indexOf('con:') === 0 && p.con.indexOf(key.slice(4)) >= 0); }
@@ -70,7 +71,8 @@
   var fLinkCount = 0;
   if (FO) { fLinkCount = FO.hubs.length; FO.papers.forEach(function (p) { fLinkCount += p.con.length; }); }
 
-  var S = { mode: 'stars', filter: null, note: null, sel: D.defaultPaper, hover: null, hoverD: null, ffilter: 'all', fsel: TH, armed: false };
+  /* 群星開場不預選任何論文（2026-11-09 使用者決定：流光干擾操作感）；我的星系預設亮「我的碩論」 */
+  var S = { mode: 'stars', filter: null, note: null, sel: null, hover: null, hoverD: null, ffilter: 'all', fsel: TH, armed: false };
 
   function rndFrom(seed) {
     var s = seed | 0;
@@ -328,7 +330,7 @@
         n.show = mobile ? (lit || z === tg.d) : true;
       } else if (ds.p) {
         var p = byP[ds.p], dp = DOM[p.d], isSel = !!(sel && sel.slug === p.slug);
-        var act = !fx || fx === p.d || p.tags.some(function (t) { return D.tags[t].d === fx; });
+        var act = !fx || paperIn(p, fx);
         var core = el.querySelector('.core'), sz = isSel ? (mobile ? 8 : 7) : ((mobile && z) ? 6 : (p.award ? 5 : 4));
         core.style.width = core.style.height = sz + 'px';
         core.style.boxShadow = isSel ? '0 0 5px 2px rgba(' + dp.rgb + ',.95),0 0 18px 6px rgba(' + dp.rgb + ',.45)' : '0 0 4px 1px rgba(' + dp.rgb + ',.9),0 0 11px 3px rgba(' + dp.rgb + ',.3)';
@@ -673,7 +675,7 @@
         rgb = dz.rgb;
         h += '<div class="ihd">' + shapeSvg(dz.shape, dz.color, 10, 1.2) + '<span class="mono" style="color:' + dz.color + '">' + esc(dz.full + ' ・ ' + dz.count + ' 篇') + '</span></div><span class="tipx">點星看詳情。點「← 全圖」或再點一次學科回到全圖。</span>';
       } else {
-        h += '<span class="tipx">點一個學科中心，放大那一區；放大後點星看詳情。</span><span class="meta">' + esc(starStats()) + '</span>';
+        h += '<span class="tipx">點學科放大那一區，再點星點查看論文。</span><span class="meta">' + esc(starStats()) + '</span>';
       }
     } else {
       var f = S.fsel && S.fsel !== TH ? byF[S.fsel] : null;
@@ -789,16 +791,18 @@
       refresh();
       return;
     }
+    /* 桌面篩選只淡化其他學科，不代選星點；已選之星若不在該學科內則取消 */
     S.note = null;
     if (!k || S.filter === k) S.filter = null;
     else {
       S.filter = k;
       if (!d.count) S.note = k;
-      else if (!S.sel || byP[S.sel].d !== k) S.sel = firstIn(k).slug;
+      if (S.sel && !paperIn(byP[S.sel], k)) S.sel = null;
     }
     refresh();
     announce();
   }
+  function clearSel() { S.sel = null; S.hover = null; refresh(); $('live').textContent = '已取消選取'; }
   function selectPaper(slug) { S.sel = slug; S.note = null; S.hover = null; refresh(); announce(); }
   function selectFocus(slug) { S.fsel = slug; S.hover = null; refresh(); announce(); }
   function setFFilter(k) { S.ffilter = (k === 'all' || S.ffilter === k) ? 'all' : k; S.hoverD = null; refresh(); }
@@ -828,6 +832,7 @@
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
     if (S.mode === 'stars' && (S.filter || S.note)) pickDomain(null);
+    else if (S.mode === 'stars' && S.sel) clearSel();
     else if (S.mode === 'focus' && S.ffilter !== 'all') setFFilter('all');
   });
 
@@ -876,7 +881,7 @@
     S.hoverD = null;
     if (!mobile && S.note) { S.filter = S.note; }
     if (mobile && S.filter && !DOM[S.filter].count) { S.note = S.filter; S.filter = null; }
-    if (!mobile && !S.sel && !S.note) S.sel = S.filter ? firstIn(S.filter).slug : D.defaultPaper;
+    if (mobile && S.sel && S.filter && byP[S.sel].d !== S.filter) S.sel = null;
     rebuild();
   }
   if (mqMobile.addEventListener) mqMobile.addEventListener('change', onLayout); else mqMobile.addListener(onLayout);
