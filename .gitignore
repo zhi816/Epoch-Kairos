@@ -3,3 +3,6 @@ raw/
 
 # macOS 系統自動產生之資料夾設定檔
 .DS_Store
+
+# Python 執行腳本時自動產生之位元組碼快取
+__pycache__/
