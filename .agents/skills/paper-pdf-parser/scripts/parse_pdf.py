@@ -1,127 +1,231 @@
 #!/usr/bin/env python3
-"""Cross-platform PDF parser for academic and scientific papers.
+"""parse_pdf.py: 把論文 PDF 抽成附頁碼標記的 Markdown，供撰寫與查核時搜尋、定位頁碼。
 
-Supports OpenDataLab MinerU (with MPS/CUDA hardware acceleration)
-and PyMuPDF (fast local text extraction).
-Works on macOS and Windows.
+用法（倉庫內任何位置皆可執行，macOS 與 Windows 通用）：
+    python .agents/skills/paper-pdf-parser/scripts/parse_pdf.py raw/<檔名>.pdf
+    python .agents/skills/paper-pdf-parser/scripts/parse_pdf.py raw/<檔名>.pdf --pages 1-3,8
+    python .agents/skills/paper-pdf-parser/scripts/parse_pdf.py raw/<檔名>.pdf --engine mineru
+
+引擎：
+    pymupdf  以 PyMuPDF／pymupdf4llm 抽取 PDF 的文字層，每頁前加 <!-- pdf-page: N --> 標記。
+             不辨識影像，掃描版論文的公式與雙欄順序可能錯亂。
+    mineru   以 MinerU 在本機解析版面、公式與表格；需先下載模型。失敗即報錯，不改用其他引擎。
+    auto     （預設）MinerU 模型齊全時用 MinerU，否則用 PyMuPDF，並在終端與輸出檔註明。
+
+一律只在本機解析：本腳本不會傳入 MinerU 的 --remote、--remote-url 或 --api-key，
+因 raw/ 含未公開之學位論文與私人資料。輸出預設為 work/parsed/<檔名>/（已列入 .gitignore）。
+輸出僅供搜尋與定位，不得作為證據；證據表一律回原 PDF 引用印刷頁碼、表或圖。
+
+結束代碼：0 成功；1 輸入或環境錯誤；2 解析失敗。
 """
-
 import argparse
+import datetime
+import glob
+import json
 import os
 import platform
 import subprocess
 import sys
 
-
-def find_venv_python():
-    venv_dir = os.path.abspath(".venv-mineru")
-    if platform.system() == "Windows":
-        py_bin = os.path.join(venv_dir, "Scripts", "python.exe")
-        mineru_bin = os.path.join(venv_dir, "Scripts", "mineru.exe")
-    else:
-        py_bin = os.path.join(venv_dir, "bin", "python")
-        mineru_bin = os.path.join(venv_dir, "bin", "mineru")
-    return py_bin if os.path.exists(py_bin) else None, mineru_bin if os.path.exists(mineru_bin) else None
+REEXEC_FLAG = 'EK_PARSE_PDF_REEXEC'
+MIN_PAGE_CHARS = 50  # 少於此字數之頁面視為缺少文字層（多為掃描影像）
 
 
-def parse_with_mineru(input_path, output_dir, pages="all", mineru_bin="mineru"):
-    os.makedirs(output_dir, exist_ok=True)
-    out_file = os.path.join(output_dir, "content.md")
-    cmd = [
-        mineru_bin,
-        "parse",
-        input_path,
-        "-p", pages,
-        "-o", out_file,
-        "-f", "markdown",
-    ]
-    print(f"Executing MinerU: {' '.join(cmd)}")
-    res = subprocess.run(cmd)
-    if res.returncode == 0:
-        print(f"MinerU parsing completed successfully: {out_file}")
+def repo_root():
+    here = os.path.dirname(os.path.abspath(__file__))
+    try:
+        out = subprocess.run(['git', 'rev-parse', '--show-toplevel'], cwd=here,
+                             capture_output=True, check=True)
+        return out.stdout.decode().strip()
+    except Exception:
+        return os.path.abspath(os.path.join(here, '..', '..', '..', '..'))
+
+
+ROOT = repo_root()
+VENV = os.path.join(ROOT, '.venv-mineru')
+BIN = os.path.join(VENV, 'Scripts' if platform.system() == 'Windows' else 'bin')
+EXE = '.exe' if platform.system() == 'Windows' else ''
+VENV_PY = os.path.join(BIN, 'python' + EXE)
+MINERU_KIT = os.path.join(BIN, 'mineru-kit' + EXE)
+
+
+def taipei_now():
+    t = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=8)
+    return t.strftime('%Y-%m-%d %H:%M')
+
+
+def parse_pages(spec, count):
+    """'all' 或 '1-5,8'（1 起算）轉為 0 起算之頁序清單。"""
+    if spec in (None, '', 'all'):
+        return list(range(count))
+    pages = []
+    for part in spec.split(','):
+        part = part.strip()
+        if '-' in part:
+            a, b = part.split('-', 1)
+            lo, hi = int(a), int(b)
+        else:
+            lo = hi = int(part)
+        if lo < 1 or hi > count or lo > hi:
+            raise ValueError('頁碼 %s 超出範圍（本檔共 %d 頁）' % (part, count))
+        pages.extend(range(lo - 1, hi))
+    return sorted(set(pages))
+
+
+def describe_pages(pages, count):
+    if pages == list(range(count)):
+        return '全部 %d 頁' % count
+    spans, start, prev = [], None, None
+    for p in pages:
+        if start is None:
+            start = prev = p
+        elif p == prev + 1:
+            prev = p
+        else:
+            spans.append((start, prev)); start = prev = p
+    spans.append((start, prev))
+    return ','.join(str(a + 1) if a == b else '%d-%d' % (a + 1, b + 1) for a, b in spans) + '（共 %d 頁）' % count
+
+
+def header(src, engine, pages_desc, extra=''):
+    return ('<!--\n'
+            'source: %s\n'
+            'engine: %s\n'
+            'pages: %s；pdf-page 為 PDF 檔內頁序，不一定等於期刊印刷頁碼\n'
+            'generated: %s (UTC+8)\n'
+            'note: 本檔為搜尋與定位輔助，不得作為證據。證據表一律回原 PDF 核對，引用印刷頁碼、表或圖。\n'
+            '%s-->\n') % (src, engine, pages_desc, taipei_now(), extra)
+
+
+def has_pymupdf():
+    try:
+        import pymupdf  # noqa: F401
         return True
-    else:
-        print(f"MinerU parsing failed with return code {res.returncode}")
+    except ImportError:
         return False
 
 
-def parse_with_pymupdf(input_path, output_dir, py_bin=sys.executable):
-    os.makedirs(output_dir, exist_ok=True)
-    out_file = os.path.join(output_dir, "content.md")
-    
-    script = (
-        "import sys, os\n"
-        "input_pdf = sys.argv[1]\n"
-        "out_file = sys.argv[2]\n"
-        "try:\n"
-        "    import pymupdf4llm\n"
-        "    md_text = pymupdf4llm.to_markdown(input_pdf)\n"
-        "    with open(out_file, 'w', encoding='utf-8') as f:\n"
-        "        f.write(md_text)\n"
-        "    print('PyMuPDF4LLM extraction complete.')\n"
-        "except Exception as e:\n"
-        "    import fitz\n"
-        "    doc = fitz.open(input_pdf)\n"
-        "    text = []\n"
-        "    for page_num in range(len(doc)):\n"
-        "        page = doc[page_num]\n"
-        "        text.append(f'## Page {page_num + 1}\\n\\n' + page.get_text())\n"
-        "    with open(out_file, 'w', encoding='utf-8') as f:\n"
-        "        f.write('\\n\\n'.join(text))\n"
-        "    print('PyMuPDF basic extraction complete.')\n"
-    )
+def maybe_reexec():
+    """目前的 Python 沒有 PyMuPDF 而 .venv-mineru 存在時，改用其 Python 重新執行本腳本。"""
+    if has_pymupdf() or os.environ.get(REEXEC_FLAG) or not os.path.exists(VENV_PY):
+        return
+    env = dict(os.environ, **{REEXEC_FLAG: '1'})
+    sys.exit(subprocess.run([VENV_PY, os.path.abspath(__file__)] + sys.argv[1:], env=env).returncode)
 
-    cmd = [py_bin, "-c", script, input_path, out_file]
-    print(f"Executing PyMuPDF extraction...")
+
+def dist_version(name):
+    try:
+        from importlib.metadata import version
+        return version(name)
+    except Exception:
+        return '?'
+
+
+def run_pymupdf(pdf, out_dir, pages_spec, rel_src):
+    import pymupdf
+    doc = pymupdf.open(pdf)
+    try:
+        pages = parse_pages(pages_spec, doc.page_count)
+    except ValueError as e:
+        sys.stderr.write('錯誤：%s\n' % e); sys.exit(1)
+    try:
+        import pymupdf4llm
+        chunks = pymupdf4llm.to_markdown(doc, pages=pages, page_chunks=True, show_progress=False)
+        texts = [(c['metadata']['page_number'], c['text']) for c in chunks]
+        engine = 'pymupdf4llm %s（PyMuPDF %s）' % (dist_version('pymupdf4llm'), dist_version('PyMuPDF'))
+    except ImportError:
+        texts = [(p + 1, doc[p].get_text()) for p in pages]
+        engine = 'PyMuPDF %s 純文字' % dist_version('PyMuPDF')
+    thin = [n for n, t in texts if len(t.strip()) < MIN_PAGE_CHARS]
+    extra = ''
+    if thin:
+        extra = 'warning: 第 %s 頁幾乎沒有文字層（可能是掃描影像），內容須直接看原 PDF。\n' % '、'.join(map(str, thin))
+    body = ''.join('\n<!-- pdf-page: %d -->\n\n%s\n' % (n, t.strip()) for n, t in texts)
+    out = os.path.join(out_dir, 'content.md')
+    with open(out, 'w', encoding='utf-8', newline='\n') as f:
+        f.write(header(rel_src, engine, describe_pages(pages, doc.page_count), extra) + body)
+    print('引擎：%s' % engine)
+    print('頁數：%s' % describe_pages(pages, doc.page_count))
+    if thin:
+        print('注意：第 %s 頁幾乎沒有文字層，可能是掃描影像。' % '、'.join(map(str, thin)))
+    print('輸出：%s' % out)
+
+
+def mineru_ready():
+    if not os.path.exists(MINERU_KIT):
+        return False, '找不到 %s' % os.path.relpath(MINERU_KIT, ROOT)
+    res = subprocess.run([MINERU_KIT, 'models', 'verify'], capture_output=True, text=True)
+    if res.returncode != 0:
+        return False, 'MinerU 模型不齊全（執行 setup_env.py 查看下載方式）'
+    return True, ''
+
+
+def run_mineru(pdf, out_dir, pages_spec, rel_src):
+    raw_dir = os.path.join(out_dir, 'mineru')
+    os.makedirs(raw_dir, exist_ok=True)
+    # 刻意不傳 --remote／--remote-url／--api-key：只在本機解析。
+    cmd = [MINERU_KIT, 'parse', pdf, '-o', raw_dir, '-f', 'markdown']
+    if pages_spec and pages_spec != 'all':
+        cmd += ['-p', pages_spec]
+    print('執行：%s' % ' '.join(cmd))
     res = subprocess.run(cmd)
-    if res.returncode == 0:
-        print(f"Extraction saved to: {out_file}")
-        return True
-    else:
-        print(f"PyMuPDF extraction failed with return code {res.returncode}")
-        return False
+    mds = sorted(glob.glob(os.path.join(raw_dir, '**', '*.md'), recursive=True))
+    if res.returncode != 0 or not mds:
+        sys.stderr.write('錯誤：MinerU 解析失敗（代碼 %s，產出 %d 個 Markdown）。未改用其他引擎；'
+                         '如只需搜尋文字，請改加 --engine pymupdf。\n' % (res.returncode, len(mds)))
+        sys.exit(2)
+    with open(mds[0], encoding='utf-8') as f:
+        md = f.read()
+    extra = 'warning: MinerU 輸出不含頁碼標記；定位頁碼時請另以 --engine pymupdf 產生對照。原始輸出見 mineru/。\n'
+    out = os.path.join(out_dir, 'content.md')
+    with open(out, 'w', encoding='utf-8', newline='\n') as f:
+        f.write(header(rel_src, 'MinerU（mineru-kit parse，本機）', pages_spec or 'all', extra) + '\n' + md)
+    print('引擎：MinerU（本機）')
+    print('輸出：%s（原始輸出在 %s）' % (out, raw_dir))
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Parse academic paper PDF into structured Markdown")
-    parser.add_argument("input_pdf", help="Path to the PDF file to parse")
-    parser.add_argument("--output-dir", "-o", default=None, help="Output directory for parsed results")
-    parser.add_argument("--engine", "-e", choices=["auto", "mineru", "pymupdf"], default="auto", help="Parsing engine")
-    parser.add_argument("--pages", "-p", default="all", help="Pages to parse (default: 'all')")
+    ap = argparse.ArgumentParser(description='把論文 PDF 抽成附頁碼標記的 Markdown（搜尋與定位用，非證據）')
+    ap.add_argument('input_pdf', help='PDF 路徑')
+    ap.add_argument('--output-dir', '-o', help='輸出目錄（預設 work/parsed/<檔名>/）')
+    ap.add_argument('--engine', '-e', choices=['auto', 'mineru', 'pymupdf'], default='auto')
+    ap.add_argument('--pages', '-p', default='all', help="頁碼，例如 '1-5,8'；預設 all")
+    args = ap.parse_args()
+    maybe_reexec()
 
-    args = parser.parse_args()
-
-    if not os.path.isfile(args.input_pdf):
-        print(f"Error: File not found: {args.input_pdf}")
-        sys.exit(1)
-
-    base_name = os.path.splitext(os.path.basename(args.input_pdf))[0]
-    output_dir = args.output_dir or os.path.join("work", "parsed", base_name)
-
-    venv_py, mineru_bin = find_venv_python()
-    effective_py = venv_py or sys.executable
+    pdf = os.path.abspath(args.input_pdf)
+    if not os.path.isfile(pdf):
+        sys.stderr.write('錯誤：找不到檔案 %s\n' % args.input_pdf); sys.exit(1)
+    try:
+        rel_src = os.path.relpath(pdf, ROOT).replace(os.sep, '/')
+    except ValueError:  # Windows 不同磁碟機
+        rel_src = pdf
+    name = os.path.splitext(os.path.basename(pdf))[0]
+    out_dir = os.path.abspath(args.output_dir or os.path.join(ROOT, 'work', 'parsed', name))
 
     engine = args.engine
-    if engine == "auto":
-        if mineru_bin:
-            engine = "mineru"
-        else:
-            engine = "pymupdf"
-            print("Note: MinerU not found in venv. Falling back to PyMuPDF.")
-
-    print(f"Input: {args.input_pdf}")
-    print(f"Output Directory: {output_dir}")
-    print(f"Engine: {engine}")
-
-    if engine == "mineru":
-        target_bin = mineru_bin or "mineru"
-        success = parse_with_mineru(args.input_pdf, output_dir, pages=args.pages, mineru_bin=target_bin)
-        if not success:
-            print("MinerU failed. Attempting PyMuPDF fallback...")
-            parse_with_pymupdf(args.input_pdf, output_dir, py_bin=effective_py)
+    if engine in ('auto', 'mineru'):
+        ok, why = mineru_ready()
+        if engine == 'mineru' and not ok:
+            sys.stderr.write('錯誤：無法使用 MinerU：%s。未改用其他引擎。\n' % why); sys.exit(1)
+        if engine == 'auto':
+            engine = 'mineru' if ok else 'pymupdf'
+            if not ok:
+                print('注意：%s，本次改用 PyMuPDF（只抽文字層，不解析公式與表格）。' % why)
+    if engine == 'pymupdf' and not has_pymupdf():
+        sys.stderr.write('錯誤：找不到 PyMuPDF。請依 paper-pdf-parser 說明建立 .venv-mineru，'
+                         '或執行 setup_env.py 查看安裝指引。\n')
+        sys.exit(1)
+    os.makedirs(out_dir, exist_ok=True)
+    print('來源：%s' % rel_src)
+    if engine == 'mineru':
+        run_mineru(pdf, out_dir, args.pages, rel_src)
     else:
-        parse_with_pymupdf(args.input_pdf, output_dir, py_bin=effective_py)
+        run_pymupdf(pdf, out_dir, args.pages, rel_src)
+    with open(os.path.join(out_dir, 'meta.json'), 'w', encoding='utf-8') as f:
+        json.dump({'source': rel_src, 'engine': engine, 'pages': args.pages, 'generated': taipei_now()},
+                  f, ensure_ascii=False, indent=2)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

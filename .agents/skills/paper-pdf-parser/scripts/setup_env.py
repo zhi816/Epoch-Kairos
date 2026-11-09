@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Cross-platform environment detector and setup assistant for paper-pdf-parser.
+"""setup_env.py: 檢查 paper-pdf-parser 的執行環境（macOS 與 Windows 通用，只讀不改）。
 
-Supports macOS and Windows. Checks Python version, uv, GPU/MPS acceleration,
-and installation status of MinerU and PyMuPDF.
+用法（倉庫內任何位置皆可執行）：
+    python .agents/skills/paper-pdf-parser/scripts/setup_env.py
+
+檢查項目：作業系統、uv、倉庫根目錄之 .venv-mineru、PyMuPDF 與 pymupdf4llm、MinerU 套件與模型、
+硬體加速（僅供參考）。缺少項目時列出對應平台的安裝指令；本腳本不會自行安裝或下載任何東西。
 """
-
+import argparse
 import os
 import platform
 import shutil
@@ -12,122 +15,108 @@ import subprocess
 import sys
 
 
-def detect_system():
-    os_name = platform.system()
-    arch = platform.machine()
-    python_ver = sys.version.split()[0]
-    return {
-        "os": os_name,
-        "arch": arch,
-        "python": python_ver,
-    }
+def repo_root():
+    here = os.path.dirname(os.path.abspath(__file__))
+    try:
+        out = subprocess.run(['git', 'rev-parse', '--show-toplevel'], cwd=here,
+                             capture_output=True, check=True)
+        return out.stdout.decode().strip()
+    except Exception:
+        return os.path.abspath(os.path.join(here, '..', '..', '..', '..'))
 
 
-def find_uv():
-    return shutil.which("uv")
+ROOT = repo_root()
+WIN = platform.system() == 'Windows'
+BIN = os.path.join(ROOT, '.venv-mineru', 'Scripts' if WIN else 'bin')
+EXE = '.exe' if WIN else ''
+VENV_PY = os.path.join(BIN, 'python' + EXE)
+MINERU_KIT = os.path.join(BIN, 'mineru-kit' + EXE)
 
 
-def check_venv(venv_path=".venv-mineru"):
-    if not os.path.exists(venv_path):
+def dist_version(py, dist):
+    code = ('import importlib.metadata as m\n'
+            'try:\n    print(m.version(%r))\n'
+            'except Exception:\n    pass\n') % dist
+    try:
+        res = subprocess.run([py, '-I', '-c', code], capture_output=True, text=True, timeout=30)
+        return res.stdout.strip() or None
+    except Exception:
         return None
-    if platform.system() == "Windows":
-        py_bin = os.path.join(venv_path, "Scripts", "python.exe")
-    else:
-        py_bin = os.path.join(venv_path, "bin", "python")
-    return py_bin if os.path.exists(py_bin) else None
 
 
-def check_module_in_python(py_bin, module_name, dist_name=None):
-    dist = dist_name or module_name
-    code = (
-        f"try:\n"
-        f"    import {module_name}\n"
-        f"    import importlib.metadata\n"
-        f"    try:\n"
-        f"        print(importlib.metadata.version('{dist}'))\n"
-        f"    except Exception:\n"
-        f"        print(getattr({module_name}, '__version__', 'unknown'))\n"
-        f"except Exception:\n"
-        f"    pass\n"
-    )
+def accel(py):
+    code = ('import torch\n'
+            'if torch.cuda.is_available(): print("CUDA：" + torch.cuda.get_device_name(0))\n'
+            'elif getattr(torch.backends, "mps", None) and torch.backends.mps.is_available(): print("MPS（Apple Silicon）")\n'
+            'else: print("僅 CPU")\n')
     try:
-        res = subprocess.run(
-            [py_bin, "-c", code],
-            capture_output=True,
-            text=True,
-            timeout=10,
-        )
-        if res.returncode == 0 and res.stdout.strip():
-            return res.stdout.strip()
+        res = subprocess.run([py, '-I', '-c', code], capture_output=True, text=True, timeout=60)
+        return res.stdout.strip() or '無法判斷'
     except Exception:
-        pass
-    return None
+        return '無法判斷'
 
 
-def detect_hardware_acceleration(py_bin):
-    code = (
-        "import torch\n"
-        "if torch.cuda.is_available():\n"
-        "    print('cuda:' + torch.cuda.get_device_name(0))\n"
-        "elif hasattr(torch.backends, 'mps') and torch.backends.mps.is_available():\n"
-        "    print('mps:Apple Silicon Metal')\n"
-        "else:\n"
-        "    print('cpu:CPU Only')\n"
-    )
+def models_ok():
+    if not os.path.exists(MINERU_KIT):
+        return None
     try:
-        res = subprocess.run(
-            [py_bin, "-c", code],
-            capture_output=True,
-            text=True,
-            timeout=15,
-        )
-        if res.returncode == 0:
-            return res.stdout.strip()
+        res = subprocess.run([MINERU_KIT, 'models', 'verify'], capture_output=True, text=True, timeout=120)
+        return res.returncode == 0
     except Exception:
-        pass
-    return "unknown"
+        return None
 
 
-def print_status():
-    sys_info = detect_system()
-    uv_bin = find_uv()
-    venv_py = check_venv()
+def main():
+    ap = argparse.ArgumentParser(description='檢查 paper-pdf-parser 執行環境')
+    ap.add_argument('--check', action='store_true', help='相容舊用法；預設即為檢查')
+    ap.parse_args()
+    venv = VENV_PY if os.path.exists(VENV_PY) else None
+    py = venv or sys.executable
+    uv = shutil.which('uv')
+    mupdf = dist_version(py, 'PyMuPDF')
+    m4llm = dist_version(py, 'pymupdf4llm')
+    mineru = dist_version(py, 'mineru')
+    models = models_ok() if mineru else None
 
-    print("==================================================")
-    print("Paper PDF Parser - Environment Status")
-    print("==================================================")
-    print(f"OS: {sys_info['os']} ({sys_info['arch']})")
-    print(f"Host Python: {sys_info['python']}")
-    print(f"uv installed: {'Yes (' + uv_bin + ')' if uv_bin else 'No'}")
-    print(f"Virtualenv (.venv-mineru): {'Found (' + venv_py + ')' if venv_py else 'Not found'}")
+    print('=' * 50)
+    print('paper-pdf-parser 環境檢查')
+    print('=' * 50)
+    print('作業系統：%s（%s）' % (platform.system(), platform.machine()))
+    print('uv：%s' % (uv or '未安裝'))
+    print('虛擬環境 .venv-mineru：%s' % (os.path.relpath(venv, ROOT) if venv else '不存在'))
+    print('PyMuPDF：%s' % (mupdf or '未安裝'))
+    print('pymupdf4llm：%s' % (m4llm or '未安裝（仍可用 PyMuPDF 純文字模式）'))
+    print('MinerU 套件：%s' % (mineru or '未安裝'))
+    if mineru:
+        print('MinerU 模型：%s' % ({True: '齊全', False: '不齊全', None: '無法檢查'}[models]))
+        print('硬體加速（參考）：%s' % accel(py))
+    print('-' * 50)
 
-    target_py = venv_py or sys.executable
-
-    mupdf_ver = check_module_in_python(target_py, "fitz")
-    print(f"PyMuPDF: {'Available (v' + mupdf_ver + ')' if mupdf_ver else 'Not installed'}")
-
-    mineru_ver = check_module_in_python(target_py, "mineru")
-    print(f"MinerU: {'Available (v' + mineru_ver + ')' if mineru_ver else 'Not installed'}")
-
-    if mineru_ver:
-        hw = detect_hardware_acceleration(target_py)
-        print(f"Hardware Acceleration: {hw}")
-
-    print("--------------------------------------------------")
-    if not mineru_ver or not mupdf_ver:
-        print("[Setup Instructions]")
-        if sys_info["os"] == "Darwin":
-            print("1. brew install uv")
-            print("2. uv venv .venv-mineru --python 3.12")
-            print("3. uv pip install -U \"mineru>=4.0,<5\" pymupdf --python .venv-mineru/bin/python")
-        elif sys_info["os"] == "Windows":
-            print("1. powershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\"")
-            print("2. uv venv .venv-mineru --python 3.12")
-            print("3. uv pip install -U \"mineru>=4.0,<5\" pymupdf --python .venv-mineru\\Scripts\\python.exe")
+    act = '.venv-mineru\\Scripts\\python.exe' if WIN else '.venv-mineru/bin/python'
+    kit = '.venv-mineru\\Scripts\\mineru-kit.exe' if WIN else '.venv-mineru/bin/mineru-kit'
+    steps = []
+    if not uv:
+        steps.append('brew install uv' if not WIN else
+                     'powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"')
+    if not venv:
+        steps.append('uv venv .venv-mineru --python 3.12')
+    if not mupdf or not m4llm:
+        steps.append('uv pip install pymupdf pymupdf4llm --python %s' % act)
+    if steps:
+        print('[PyMuPDF 引擎所需步驟]（於倉庫根目錄執行）')
+        for i, s in enumerate(steps, 1):
+            print('%d. %s' % (i, s))
     else:
-        print("Ready: All required dependencies are present.")
-    print("==================================================")
+        print('PyMuPDF 引擎可用：parse_pdf.py 可抽出附頁碼標記之文字。')
+    if not mineru:
+        print('[MinerU 引擎，選用] uv pip install -U "mineru>=4.0,<5" --python %s' % act)
+    elif models is False:
+        print('[MinerU 引擎，選用] 模型不齊全。下載約數 GB，須先徵得使用者同意，再執行：')
+        print('    %s models download' % kit)
+    elif models:
+        print('MinerU 引擎可用。首次使用前請確認遙測設定（mineru telemetry status）。')
+    print('=' * 50)
 
 
-if __name__ == "__main__":
-    print_status()
+if __name__ == '__main__':
+    main()

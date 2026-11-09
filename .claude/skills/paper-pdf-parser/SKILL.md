@@ -1,7 +1,7 @@
 ---
 name: paper-pdf-parser
 description: >-
-  Extract and parse academic paper PDFs into structured Markdown with LaTeX math formulas, tables, and restored reading order using OpenDataLab MinerU and PyMuPDF. Supports cross-platform execution on macOS and Windows with automatic environment detection, hardware acceleration (MPS/CUDA/CPU), and graceful fallback.
+  Extract academic paper PDFs into searchable Markdown with PDF page markers (PyMuPDF; optional local MinerU for layout, formulas and tables), so wiki-content-audit and academic-paper-translator can locate claims, numbers and pages quickly. The output is a locating aid, never evidence. Runs locally only on macOS and Windows.
 ---
 
 # paper-pdf-parser（轉介檔）

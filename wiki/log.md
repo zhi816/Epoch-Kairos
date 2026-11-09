@@ -1138,3 +1138,14 @@
   - 新增專屬技能 [.agents/skills/paper-pdf-parser/SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md) 與 Claude 轉介檔，支援雙欄排版重構、KaTeX 公式提取與表格結構化。
   - 提供跨平台腳本：setup_env.py（環境診斷與 Windows/macOS 雙機指引）及 parse_pdf.py（支援 MinerU 與 PyMuPDF 自動降級之解析 CLI）。
   - 於 AGENTS.md 第六章登記 paper-pdf-parser 技能，並於 .gitignore 排除 .venv* 與 work/。
+
+## [2026-11-09 14:44] fix | 修正 paper-pdf-parser 並接入查核與翻譯流程 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **檢查發現**：[2026-11-09 12:30] 新增之 [paper-pdf-parser](../.agents/skills/paper-pdf-parser/SKILL.md) 實測無法使用 MinerU：MinerU 4 之 `mineru parse` 需先啟動本機服務，且版面、公式、表格與 OCR 模型均未下載（`mineru-kit models verify` 失敗）；腳本失敗後僅印一行即改用 PyMuPDF，改用後 `--pages` 失效、輸出整份論文，亦未產出說明所稱之 `images/`、`tables/`。說明文件之「100% 數值保真」、「公式轉為 KaTeX」與實測不符（Hopfield 1982 掃描版之公式與雙欄順序錯亂）；主要輸出不含頁碼，不利證據表定位；其他 Skill 均未引用本 Skill。
+- **具體變更**：
+  - 重寫 [parse_pdf.py](../.agents/skills/paper-pdf-parser/scripts/parse_pdf.py)：每頁加 `<!-- pdf-page: N -->` 標記，`--pages` 對兩種引擎皆有效，檔頭註明來源、實際引擎、頁碼範圍與「不得作為證據」，另輸出 `meta.json`；MinerU 改以 `mineru-kit parse` 本機執行且不傳任何遠端參數，指定 `--engine mineru` 而無法使用時直接報錯，`auto` 改用 PyMuPDF 時明確註明；標出缺少文字層之頁面；路徑改以倉庫根目錄為準，系統 Python 缺 PyMuPDF 時自動改用 `.venv-mineru` 執行。
+  - 重寫 [setup_env.py](../.agents/skills/paper-pdf-parser/scripts/setup_env.py)：修正 PyMuPDF 版本檢查，新增 pymupdf4llm 與 MinerU 模型檢查；模型下載（約數 GB）列為須經使用者同意之選用步驟。
+  - 改寫 SKILL.md：定位為搜尋與頁碼定位輔助，訂定只可本機解析、輸出不進版控、`pdf-page` 須換算印刷頁碼、文字層不可靠時看原圖、下載模型須經同意五條規則，並記錄實測範圍與限制；同步 [.claude 轉介檔](../.claude/skills/paper-pdf-parser/SKILL.md) 描述。
+  - 接入流程：[wiki-content-audit](../.agents/skills/wiki-content-audit/SKILL.md) 寫作模式第 1、2 步加入以本 Skill 搜尋出處、抽取結果不得作為證據；[academic-paper-translator](../.agents/skills/academic-paper-translator/SKILL.md) 盤點步驟引用本 Skill，原「後續工具鏈擴充備忘」改為簡短使用說明；[AGENTS.md](../AGENTS.md) 第六章 Skill 一覽之說明依實際用途更新。
+- **驗證**：macOS 上以系統 Python 自倉庫外執行，Hopfield 1982 指定第 2-3 頁、Transformer 2017 指定第 4、8 頁均正確輸出頁碼標記與表格數字；`--engine mineru` 與超出範圍頁碼皆以代碼 1 報錯。Windows 未實測；MinerU 因模型未下載，仍未實際解析過。
