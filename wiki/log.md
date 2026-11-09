@@ -1510,3 +1510,12 @@
   - `2025-fragment-shot-reasoning-mt-frontull`：Card 5 稱片段選例「遠比整句語意檢索更有效」，原文無整句語意檢索對照（RS 為隨機 16 組句對，作者並說明無合適模型可算語意相似度），登記 EK-091（原文未支持）；C 組另指稱 GPT-4o「ZS 23.03 → FS 21.18」在表 1 找不到，經核對為表 1 Gherdëina → Italian 列，數字正確，不登記。
   - `2026-epark-formosan-dialectometry-gagnier`：Card 5 稱「證實即可自動重現分群假說」，未保留原文「Among most groups」之限定與排灣語無法判定、萬山方言指標分歧之例外，登記 EK-092（過度表述）；「首次」為作者自述，非錯誤。
   - 兩頁 `verification` 由 `verified` 改為 `issues`。[todo.md](todo.md) TD-008 記錄第一批結果：A 組完成 2 篇、停止 3 篇、1 篇未完成，C 組 6 篇停止，B 組進行中；停止篇目待使用者決定 Card 3 無公式、Card 5 無後續研究之處理方式後重新分配。`lint_wiki.py` ERROR 0。
+
+## [2026-11-09 23:42] rule | 卡片新增 Card 3 無公式模式與 Card 5 新論文模式 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第一批卡片回填中，C 組 6 篇與 A 組 2 篇因論文頁無區塊公式或 Card 5 無後續研究而停下；剩餘 37 篇同時具備兩者者僅 12 篇。使用者同意協調者建議，新增兩種模式：
+  - **Card 3 無公式模式**：原文有表達本篇機制之公式者，仍須依 wiki-content-audit 補進論文頁；原文只有通用評估指標公式（BLEU、chrF 等）或完全沒有公式者，填「公式：無」並寫「無公式理由」（以「原文無公式：」或「原文僅有評估指標公式：」開頭，寫出如何確認），網頁不放公式框。評估指標公式不得充當突破原理，此點為協調者實作時之補充，已向使用者說明。
+  - **Card 5 新論文模式**：發表兩年內（2026 年時為 paper_year ≥ 2024）且論文頁無可用後續研究者，加「模式：新論文」，里程碑 2 至 4 筆，寫本篇公開之資源與作者明列之限制、下一步，出處須為「本篇」加原文位置、年份等於發表年，註記寫明出自本篇；一般模式之里程碑不得全部出自本篇。
+  - 實作：`check_cards.py`（Card 3 新增「無公式理由」欄、論文頁有區塊公式時不得填無；Card 5 新增「模式」欄與上述各項檢查）、`tools/build_paper_prototype.py`（無公式時不輸出公式框）。以暫存之 wiki 副本測試 7 種情形（合格、論文頁有公式卻填無、2021 年論文用新論文模式、一般模式全出自本篇、無公式未寫理由、本篇列未附位置、無公式之 Card 3 渲染）全部符合預期；既有 5 份卡片檔 ERROR 0，4 頁原型重建後輸出不變。
+  - 文件：paper-card-writer 之 `card-03-secret.md` 第四節、`card-05-revolution.md` 第六節、`file-format.md`、`paper-page.md` 錯誤處理表、SKILL.md 第二節第 4 條與第九、十一節；[AGENTS.md](../AGENTS.md) 第七章第 3 節 Card 3、Card 5 與第九章 LaTeX 條；[DESIGN.md](../DESIGN.md) 第五章第 2 節與第十章；[todo.md](todo.md) TD-008 註明停止篇目可重新分配，另列發表早於 2024 年且無後續研究之 4 篇仍須先補後續研究。`lint_wiki.py` ERROR 0。

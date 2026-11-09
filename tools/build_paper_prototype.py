@@ -282,10 +282,12 @@ def card2(f):
 def card3(f, svg):
     s = 'Card 3｜突破原理'
     svg = re.sub(r'^<svg ', '<svg class="dia" ', svg.strip())
-    inner = ('<span class="kc">03 ｜ 突破原理</span><span class="hd">%s</span>%s'
-             '<div class="fbox"><span class="m-disp" data-tex="%s"></span></div>'
+    formula = one(f, s, '公式')
+    # 無公式模式（公式填「無」，card-03-secret.md 第四節）：不放公式框，只留示意圖與說明
+    fbox = '' if formula == '無' else '<div class="fbox"><span class="m-disp" data-tex="%s"></span></div>' % esc(formula)
+    inner = ('<span class="kc">03 ｜ 突破原理</span><span class="hd">%s</span>%s%s'
              '<span class="tx" style="margin-top:auto;color:var(--ink2)">%s</span>') % (
-        title_html(one(f, s, '標題')), svg, esc(one(f, s, '公式')), card_inline(one(f, s, '說明')))
+        title_html(one(f, s, '標題')), svg, fbox, card_inline(one(f, s, '說明')))
     return wrap(CARD_NAMES[2], inner)
 
 

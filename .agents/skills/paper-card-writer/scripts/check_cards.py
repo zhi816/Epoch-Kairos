@@ -10,6 +10,7 @@
 只用 Python 標準函式庫（3.7 以上）。有 ERROR 時以代碼 1 結束。
 """
 import argparse
+import datetime
 import glob
 import os
 import re
@@ -24,15 +25,20 @@ SECTIONS = ['封面', 'Card 2｜世紀瓶頸', 'Card 3｜突破原理', 'Card 4�
 SPEC = {
     '封面': [('封面斷行', 1, 1), ('導語', 1, 1), ('封面標題', 0, 1), ('研究類型', 0, 1)],
     'Card 2｜世紀瓶頸': [('標題', 1, 1), ('對照', 2, 3), ('缺口', 1, 1), ('結語', 1, 1)],
-    'Card 3｜突破原理': [('標題', 1, 1), ('公式', 1, 1), ('說明', 1, 1), ('圖類型', 1, 1), ('圖來源', 0, 1), ('圖說', 1, 1)],
+    'Card 3｜突破原理': [('標題', 1, 1), ('公式', 1, 1), ('無公式理由', 0, 1), ('說明', 1, 1), ('圖類型', 1, 1), ('圖來源', 0, 1), ('圖說', 1, 1)],
     'Card 4｜決定性數據': [('模式', 1, 1), ('數字', 0, 4), ('結論', 0, 3), ('範圍', 1, 1)],
-    'Card 5｜典範轉移': [('標題', 1, 1), ('里程碑', 3, 5), ('註記', 1, 1)],
+    'Card 5｜典範轉移': [('模式', 0, 1), ('標題', 1, 1), ('里程碑', 2, 5), ('註記', 1, 1)],
     'Card 6｜Kairos': [('結語', 1, 1), ('轉變', 1, 1)],
 }
 HEADER_KEYS = ['論文頁', '證據表', '撰寫者', '最後核對']
 MATH_OK = {('Card 3｜突破原理', '說明'), ('Card 4｜決定性數據', '數字'), ('Card 4｜決定性數據', '結論')}
 NO_TEXT_CHECK = {('Card 3｜突破原理', '公式')}
-SOURCE_FIELDS = {('Card 5｜典範轉移', '里程碑'), ('Card 4｜決定性數據', '數字'), ('Card 4｜決定性數據', '結論'), ('Card 3｜突破原理', '圖來源')}
+SOURCE_FIELDS = {('Card 5｜典範轉移', '里程碑'), ('Card 4｜決定性數據', '數字'), ('Card 4｜決定性數據', '結論'), ('Card 3｜突破原理', '圖來源'),
+                 ('Card 3｜突破原理', '無公式理由')}
+# Card 3 無公式模式：「公式」填「無」，「無公式理由」以下列其一開頭（card-03-secret.md 第四節）
+NO_FORMULA_REASONS = ('原文無公式：', '原文僅有評估指標公式：')
+# Card 5 新論文模式只適用於發表兩年內之論文（card-05-revolution.md 第六節）
+NEW_PAPER_YEARS = 2
 
 BANNED = ['開創性', '顛覆性', '革命性', '劃時代', '史無前例', '空前', '偉大', '驚人', '震撼', '完美', '神奇', '奇蹟',
           '天才', '最強', '無敵', '終極', '必讀', '改寫人類', '改變世界']
@@ -559,7 +565,22 @@ def check_card(path, slug, all_cards):
     if v:
         limit(path, ln, 'Card 3 標題', v, 16)
     f, ln = one(s, '公式')
-    if f:
+    reason, rln = one(s, '無公式理由')
+    if f == '無':
+        # 無公式模式：論文頁一條區塊公式都沒有，且原文沒有表達本篇機制的公式（card-03-secret.md 第四節）
+        if wiki_formulas(paper):
+            report('ERROR', path, ln, '論文頁有區塊公式，不得使用無公式模式；請取用論文頁的公式')
+        if not reason:
+            report('ERROR', path, ln, '公式填「無」時須填「無公式理由」')
+        else:
+            limit(path, rln, '無公式理由', reason, 50)
+            if not reason.startswith(NO_FORMULA_REASONS):
+                report('ERROR', path, rln, '「無公式理由」須以「%s」開頭' % '」或「'.join(NO_FORMULA_REASONS))
+            elif not SRC_MARK.search(reason) and '全文' not in reason:
+                report('ERROR', path, rln, '「無公式理由」須寫出如何確認（如「全文無編號公式」或評估指標公式所在之節、頁）')
+    elif reason:
+        report('ERROR', path, rln, '有公式時不得填「無公式理由」')
+    if f and f != '無':
         if '$' in f:
             report('ERROR', path, ln, 'Card 3 公式不得加 $ 或 $$')
         if CJK.search(f):
@@ -646,7 +667,24 @@ def check_card(path, slug, all_cards):
         limit(path, ln, 'Card 5 標題', v, 16)
     prev, has_award = 0, False
     py = fm.get('paper_year') if isinstance(fm.get('paper_year'), int) else 0
-    for value, vln in vals.get((s, '里程碑'), []):
+    mode5, mln = one(s, '模式')
+    newmode = mode5 == '新論文'
+    rows = vals.get((s, '里程碑'), [])
+    if mode5 and not newmode:
+        report('ERROR', path, mln, 'Card 5「模式」只能填「新論文」；一般論文不填此欄')
+    if newmode:
+        this_year = datetime.date.today().year
+        if py < this_year - NEW_PAPER_YEARS:
+            report('ERROR', path, mln, '新論文模式只適用於發表 %d 年內之論文（paper_year ≥ %d）；較早之論文須先依 wiki-content-audit 補後續研究'
+                   % (NEW_PAPER_YEARS, this_year - NEW_PAPER_YEARS))
+        if not 2 <= len(rows) <= 4:
+            report('ERROR', path, 1, '新論文模式「里程碑」須有 2 至 4 筆，目前 %d 筆' % len(rows))
+    else:
+        if not 3 <= len(rows) <= 5:
+            report('ERROR', path, 1, 'Card 5「里程碑」須有 3 至 5 筆，目前 %d 筆' % len(rows))
+        if rows and all(len(value.split('｜')) == 3 and value.split('｜')[2].startswith('本篇') for value, _l in rows):
+            report('ERROR', path, 1, 'Card 5 里程碑全部出自本篇；論文太新且論文頁沒有後續研究時改用「模式：新論文」，否則須先補後續研究')
+    for value, vln in rows:
         parts = split_parts(path, vln, 'Card 5「里程碑」', value, 3)
         if not parts:
             continue
@@ -672,8 +710,11 @@ def check_card(path, slug, all_cards):
             names = re.findall(r'([A-Z][A-Za-z\'\-]+)(?=,|$)', laureates)
             if names and not any(n in content for n in names):
                 report('WARN', path, vln, '獎項列內容未提及 laureates 中的得獎者姓氏')
-        elif source == '本篇':
-            pass
+        elif source == '本篇' or source.startswith('本篇 '):
+            if newmode and not SRC_MARK.search(source):
+                report('ERROR', path, vln, '新論文模式之本篇列須寫出位置，如「本篇 §7」「本篇 p. 9」')
+            if newmode and y != py:
+                report('ERROR', path, vln, '新論文模式之本篇列年份須等於發表年 %d' % py)
         else:
             m = re.match(r'([A-Z][A-Za-z\'\-]+|[一-鿿]{2,4}(?=[\s,]))', source)
             if not m:
@@ -687,6 +728,8 @@ def check_card(path, slug, all_cards):
     v, ln = one(s, '註記')
     if v:
         limit(path, ln, 'Card 5 註記', v, 24)
+        if newmode and '本篇' not in v:
+            report('ERROR', path, ln, '新論文模式之註記須說明哪些列出自本篇（例如「以上皆出自本篇，尚無後續研究」）')
 
     # ---------- Card 6
     s = 'Card 6｜Kairos'
