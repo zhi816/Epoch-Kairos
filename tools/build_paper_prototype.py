@@ -94,15 +94,19 @@ def text_fmt(t):
 
 
 def inline(s):
-    out = []
-    for part in MATH.split(s):
-        if len(part) > 4 and part.startswith('$$') and part.endswith('$$'):
-            out.append('<span class="m-disp" data-tex="%s"></span>' % esc(part[2:-2].strip()))
-        elif len(part) > 2 and part.startswith('$') and part.endswith('$'):
-            out.append('<span class="m-in" data-tex="%s"></span>' % esc(part[1:-1]))
+    # 公式先換成佔位符，整段轉完粗體、斜體與連結再放回：若逐段轉換，
+    # 「**容量（$0.15N$ 近似上限）**」之粗體頭尾分落公式兩側而配不起來，網頁會露出 **
+    maths = []
+
+    def keep(m):
+        part = m.group(0)
+        if part.startswith('$$'):
+            maths.append('<span class="m-disp" data-tex="%s"></span>' % esc(part[2:-2].strip()))
         else:
-            out.append(text_fmt(part))
-    return ''.join(out)
+            maths.append('<span class="m-in" data-tex="%s"></span>' % esc(part[1:-1]))
+        return '\x00%d\x00' % (len(maths) - 1)
+    t = text_fmt(MATH.sub(keep, s))
+    return re.sub(r'\x00(\d+)\x00', lambda m: maths[int(m.group(1))], t)
 
 
 LIST = re.compile(r'^(\s*)([*-]|\d+\.)\s+(.*)$')

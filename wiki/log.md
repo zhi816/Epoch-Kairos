@@ -1407,3 +1407,8 @@
   - 量測結果：賽德克語頁 9 個公式、Hopfield 頁 59 個公式皆無 KaTeX 錯誤；兩頁 6 張卡皆無內容溢出、無橫向捲動，手機卡片維持 3:4（343 x 457），長文區塊公式可橫向捲動；桌面箭頭、圓點、方向鍵切換與滾輪捲動同步正常。
   - 修正 [tools/paper_template.html](../tools/paper_template.html)：(1) 手機寬度下箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之 343px 可用寬度，標籤斷成兩行；480px 以下改將標籤移至下一行置中。(2) 手機版卡片在長文上方，捲動同步在長文尚未捲到第一節時一律判為第 1 節，讀者選好第 4 張後稍一捲動即被拉回第 1 張；改為長文未到第一節時不換卡，桌面長文開頭仍對應封面卡。
   - [tools/build_paper_prototype.py](../tools/build_paper_prototype.py)：`re.split` 之 `maxsplit` 改以關鍵字傳入，消除 Python 3.13 之 DeprecationWarning。重建兩頁原型，差異僅上述樣式與腳本。`lint_wiki.py` ERROR 0。
+
+## [2026-11-09 21:04] fix | 論文頁原型長文含公式之粗體未轉換 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：與樣稿畫布「論文頁 F」對照時發現 Hopfield 頁長文第 04 節露出 `**`：[tools/build_paper_prototype.py](../tools/build_paper_prototype.py) 之 `inline()` 先依公式切段再逐段轉粗體，「**容量（$0.15N$ 近似上限）**」之粗體頭尾分落公式兩側而配不起來。改為公式先換成佔位符、整段轉換後再放回。重建兩頁原型：僅 Hopfield 頁兩處粗體改變，賽德克語頁不變；瀏覽器確認 59 個公式無錯誤、長文無殘留 `**`。與樣稿之其餘差異（資訊欄期刊全名、長文開頭之 hook 引言與範圍說明、獎項簡稱）均有規範依據，待使用者決定是否調整，未修改。
