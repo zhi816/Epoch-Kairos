@@ -871,3 +871,13 @@
   - **EK-028**：Card 3 明確標註 Boylan-Kolchin 論文之累積暗物質暈數量與質量密度計算係採用 Sheth & Tormen (1999) 橢球坍縮質量函數進行數值積分，並註明互補誤差函數 $\operatorname{erfc}$ 解析解僅為經典 Press-Schechter (1974) 球對稱坍縮近似，修正歸屬混淆。
   - 新增證據表 [wiki/evidence/2023-jwst-massive-galaxies.md](evidence/2023-jwst-massive-galaxies.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-027 與 EK-028 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 09:57] fix | AlphaFold 3 2024 依原文核實介面指標與修飾預測數據並建立證據表 | #計算生物 #人工智慧 #結構生物學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 Nature 2024 定稿原文（`raw/2024-alphafold3.pdf`）全面核實修訂 [wiki/papers/2024-alphafold3.md](papers/2024-alphafold3.md)。
+  - **EK-029**：Card 4 對照 Extended Data Table 1 精確更正蛋白質—核酸複合體指標為平均介面 LDDT（iLDDT，雙股 DNA 為 64.8、RNA 為 39.4），糾正將分數誤標為百分比成功率之錯誤；修正糖基化與修飾殘基數值歸屬：72.1% 屬高質量單殘基糖基化成功率（多殘基多醣鏈成功率為 42.4%），修飾殘基總體成功率為 59.9%（蛋白質修飾 51.0%、DNA 修飾 68.6%、RNA 修飾 40.9%），共價配體為 78.5%。
+  - **EK-030**：Card 1 將「全面擊敗所有領域專用工具」改為符合原文之「在單一統一深度學習架構中跨越了幾乎所有生物分子交互作用類別，預測準確度顯著超越眾多既有領域專用工具」，交代個別任務與專用工具之具體比較（如蛋白—配體超越對接軟體、蛋白—核酸超越專用預測器，但 CASP15 RNA 仍有人類專家介入模型略高）。
+  - 新增證據表 [wiki/evidence/2024-alphafold3.md](evidence/2024-alphafold3.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-029 與 EK-030 標記為 `fixed` 並追加處理紀錄。
