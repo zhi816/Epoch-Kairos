@@ -1174,3 +1174,14 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：依使用者指示，於 [paper-pdf-parser](../.agents/skills/paper-pdf-parser/SKILL.md) 第二章新增「兩條核心原則（動手前必讀）」：原則一，預設用 PyMuPDF 定位頁碼（每頁不到 1 秒、附頁碼標記），MinerU 只用於純圖片 PDF、文字層亂碼與抄寫長公式三種情況，以免浪費時間；原則二，兩種引擎的輸出一律只當草稿，數字、公式、引文與頁碼須回原 PDF 頁面核對後才可寫入，並列出 [2026-11-09 15:13] 實測所見「看起來正確、其實錯」之實例，明訂不得以解析結果確認解析結果、亦不得以兩種引擎結果一致代替回原頁核對。原第二至六章依序改為第三至七章，用法章之重複段落改為指向第二章。Skill 描述（正本與 [.claude 轉介檔](../.claude/skills/paper-pdf-parser/SKILL.md)）、[AGENTS.md](../AGENTS.md) Skill 一覽與 [parse_pdf.py](../.agents/skills/paper-pdf-parser/scripts/parse_pdf.py) 輸出檔頭之提醒同步改為相同說法。
+
+## [2026-11-09 15:29] fix | 撤回 WSL2 MinerU 路線與 extract_paper.py，paper-pdf-parser 還原為核心原則版本 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **緣由**：依使用者指示，檢查 [2026-11-09 15:20] config（提交 3705cea、ac171e9）對 paper-pdf-parser 之修改，並以 [2026-11-09 15:22] rule 之版本為準。
+- **檢查發現**：
+  - SKILL.md 遭 Windows 反引號轉義損壞：`basic` 變成「asic」，`content.md`、`~/.mineru/models` 失去程式碼格式；硬性規則第 5 條由「不得執行 `mineru-kit models download`」弱化為「不得擅自大量下載」；實測紀錄刪去日期、平台與版本，新增之 WSL2 紀錄只寫「完全成功通過」，未對照原頁核對。
+  - parse_pdf.py 之 WSL2 路線忽略 `--pages` 卻於檔頭照寫頁碼範圍；改用舊版 `magic-pdf`（MinerU 1.x），與 macOS 之 MinerU 4.1.7 不同引擎、不同版本，輸出卻同標「MinerU」。
+  - 新增之 academic-paper-translator/scripts/extract_paper.py 預設將輸出寫入 PDF 所在目錄（即 `raw/`，違反 `raw/` 唯讀）；`auto` 優先 MinerU，與原則一相反；MinerU 失敗即默默改用 PyMuPDF；輸出無「草稿、不得作為證據」提醒；與 parse_pdf.py 功能重複。翻譯 skill 並恢復「完全避免數值辨識誤差」之過度保證。
+  - Mine-RAW 遠端未發現抽取結果，無外洩；Windows 機器本機 `raw/` 是否留有 `_extracted` 資料夾無法從本機確認。
+- **具體變更**：[SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md)、[parse_pdf.py](../.agents/skills/paper-pdf-parser/scripts/parse_pdf.py)、[setup_env.py](../.agents/skills/paper-pdf-parser/scripts/setup_env.py) 與 [academic-paper-translator](../.agents/skills/academic-paper-translator/SKILL.md) 還原為提交 97a7633 之版本；刪除 extract_paper.py；SKILL.md 第四章新增「Windows 與 WSL2」段，記錄撤回理由，並訂定日後加入 Windows MinerU 須符合之五項條件（只改 parse_pdf.py、`--pages` 生效、記錄引擎名稱與版本、輸出只寫 `work/parsed/`、無法使用即報錯、依原則二抽樣對照原頁並記錄）。[2026-11-09 15:20] 條目中指向 extract_paper.py 之連結因此失效，日誌 append-only 不回改，lint 列為 WARN。

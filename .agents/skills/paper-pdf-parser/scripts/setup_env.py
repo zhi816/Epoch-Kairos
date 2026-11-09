@@ -4,9 +4,8 @@
 用法（倉庫內任何位置皆可執行）：
     python .agents/skills/paper-pdf-parser/scripts/setup_env.py
 
-檢查項目：作業系統、uv、倉庫根目錄之 .venv-mineru、PyMuPDF 與 pymupdf4llm、MinerU 套件與模型
-（含本機 venv 與 Windows WSL2 隔離環境）、硬體加速（僅供參考）。缺少項目時列出對應平台的安裝指令；
-本腳本不會自行安裝或下載任何東西。
+檢查項目：作業系統、uv、倉庫根目錄之 .venv-mineru、PyMuPDF 與 pymupdf4llm、MinerU 套件與模型、
+硬體加速（僅供參考）。缺少項目時列出對應平台的安裝指令；本腳本不會自行安裝或下載任何東西。
 """
 import argparse
 import os
@@ -57,22 +56,6 @@ def accel(py):
         return '無法判斷'
 
 
-def check_wsl_mineru():
-    """檢查 Windows WSL2 Ubuntu 是否有隔離的 MinerU / magic-pdf 安裝。"""
-    if platform.system() != 'Windows':
-        return False, None
-    if shutil.which('wsl') is None:
-        return False, None
-    try:
-        cmd = ['wsl', '-d', 'Ubuntu', '-e', 'bash', '-c', 'test -x ~/.mineru-env/bin/magic-pdf']
-        res = subprocess.run(cmd, capture_output=True, stdin=subprocess.DEVNULL, timeout=30)
-        if res.returncode == 0:
-            return True, 'WSL2 Ubuntu (~/.mineru-env/bin/magic-pdf)'
-    except Exception:
-        pass
-    return False, None
-
-
 def models_ok():
     if not os.path.exists(MINERU_KIT):
         return None
@@ -94,7 +77,6 @@ def main():
     m4llm = dist_version(py, 'pymupdf4llm')
     mineru = dist_version(py, 'mineru')
     models = models_ok() if mineru else None
-    wsl_mineru, wsl_mineru_desc = check_wsl_mineru()
 
     print('=' * 50)
     print('paper-pdf-parser 環境檢查')
@@ -104,16 +86,10 @@ def main():
     print('虛擬環境 .venv-mineru：%s' % (os.path.relpath(venv, ROOT) if venv else '不存在'))
     print('PyMuPDF：%s' % (mupdf or '未安裝'))
     print('pymupdf4llm：%s' % (m4llm or '未安裝（仍可用 PyMuPDF 純文字模式）'))
+    print('MinerU 套件：%s' % (mineru or '未安裝'))
     if mineru:
-        print('MinerU 套件：%s' % mineru)
         print('MinerU basic 模型：%s' % ({True: '齊全', False: '不齊全', None: '無法檢查'}[models]))
         print('硬體加速（參考）：%s' % accel(py))
-    elif wsl_mineru:
-        print('MinerU 套件：%s（可用）' % wsl_mineru_desc)
-        print('MinerU 模型：已配置於 WSL2 虛擬磁碟')
-        print('硬體加速（參考）：CPU / CUDA（WSL2 Ubuntu）')
-    else:
-        print('MinerU 套件：未安裝')
     print('-' * 50)
 
     act = '.venv-mineru\\Scripts\\python.exe' if WIN else '.venv-mineru/bin/python'
@@ -132,24 +108,13 @@ def main():
             print('%d. %s' % (i, s))
     else:
         print('PyMuPDF 引擎可用：parse_pdf.py 可抽出附頁碼標記之文字。')
-
-    if not mineru and not wsl_mineru:
-        if WIN:
-            print('[MinerU 引擎，選用 - 推薦方案 A：WSL2 隔離環境（完全隔離，不污染主機）]')
-            print('    wsl -d Ubuntu -e bash -c "curl -LsSf https://astral.sh/uv/install.sh | sh"')
-            print('    wsl -d Ubuntu -e bash -c "~/.local/bin/uv venv ~/.mineru-env --python 3.10 && ~/.local/bin/uv pip install \'magic-pdf[full]\' --python ~/.mineru-env"')
-            print('[MinerU 引擎，選用 - 備選方案 B：Windows 原生（需 Python 3.10-3.12）]')
-            print('    uv pip install -U "mineru>=4.0,<5" --python %s' % act)
-        else:
-            print('[MinerU 引擎，選用] uv pip install -U "mineru>=4.0,<5" --python %s' % act)
-    elif mineru:
-        if models is False:
-            print('[MinerU 引擎，選用] 模型不齊全。basic 檔位約 0.9 GB（存於 ~/.mineru/models），須先徵得使用者同意，再執行：')
-            print('    %s models download --tier basic' % kit)
-        elif models:
-            print('MinerU 引擎可用（parse_pdf.py 以 mineru-kit parse 在本機解析）。')
-    elif wsl_mineru:
-        print('MinerU 引擎可用（parse_pdf.py 經 WSL2 隔離環境調用 magic-pdf 解析）。')
+    if not mineru:
+        print('[MinerU 引擎，選用] uv pip install -U "mineru>=4.0,<5" --python %s' % act)
+    elif models is False:
+        print('[MinerU 引擎，選用] 模型不齊全。basic 檔位約 0.9 GB（存於 ~/.mineru/models），須先徵得使用者同意，再執行：')
+        print('    %s models download --tier basic' % kit)
+    elif models:
+        print('MinerU 引擎可用（parse_pdf.py 以 mineru-kit parse 在本機解析）。')
     print('=' * 50)
 
 
