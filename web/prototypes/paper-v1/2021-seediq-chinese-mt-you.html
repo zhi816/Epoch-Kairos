@@ -166,6 +166,11 @@ button:disabled{cursor:default;opacity:.3}
   .art{padding:32px 16px 64px}
   .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
 }
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
 @media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
 </style>
 </head>
@@ -318,10 +323,13 @@ button:disabled{cursor:default;opacity:.3}
     if (Date.now() < lock || !secs.length) return;
     var inPane = paneScrolls();
     var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
-    var n = 0;
+    var n = -1;
     secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
     if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
-    show(n);
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
   }
   prev.addEventListener('click', function () { go(cur - 1, true); });
   next.addEventListener('click', function () { go(cur + 1, true); });

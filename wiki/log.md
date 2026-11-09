@@ -1399,3 +1399,11 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：依使用者要求「先改一版試試看」並看過後決定保留，修改 [tools/build_home.py](../tools/build_home.py) 之桌面座標：AI 團 6 篇論文與 5 個標籤原本擠在右上角、連線交錯，成因為 `#人工智慧` 被物理之 Hopfield 一篇拉到星團最下方，以及開口朝右而右側只剩約 215 單位。新增 `DESK_OPEN`（AI 開口改為 310 度，朝右上之空處）與 `DESK_TAG_ORDER`（`#人工智慧` 排在 AI 扇形中段，手機仍用原 `TAG_ORDER`）；跨學科標籤之偏向改依本學科論文數加權，順序只在偏向約 15 度以上時才改變。重建 [web/index.html](../web/index.html)，`--check` 一致；生醫、物理、經濟座標及手機、我的星系之資料與修改前完全相同。驗證（1440 x 900）：逐一滑過 17 篇，說明框蓋到其他星點或標籤者 4 篇，與修改前相同；標籤彼此不重疊。另試過所有星團改「標籤內弧、論文外弧、朝空處展開」，論文被推到畫框上緣致說明框遮擋增為 7 至 10 篇，未採用。[DESIGN.md](../DESIGN.md) 第二章第 2 節記 `[已定]`，第十章追加一條。`lint_wiki.py` ERROR 0。
+
+## [2026-11-09 21:00] fix | 論文頁參考原型補驗證並修正手機版兩處問題 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：接手 [2026-11-09 20:44] 未完成之驗證，以瀏覽器實測 `web/prototypes/paper-v1/` 兩頁之桌面（1440 x 900）與手機（375 x 812）。
+  - 量測結果：賽德克語頁 9 個公式、Hopfield 頁 59 個公式皆無 KaTeX 錯誤；兩頁 6 張卡皆無內容溢出、無橫向捲動，手機卡片維持 3:4（343 x 457），長文區塊公式可橫向捲動；桌面箭頭、圓點、方向鍵切換與滾輪捲動同步正常。
+  - 修正 [tools/paper_template.html](../tools/paper_template.html)：(1) 手機寬度下箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之 343px 可用寬度，標籤斷成兩行；480px 以下改將標籤移至下一行置中。(2) 手機版卡片在長文上方，捲動同步在長文尚未捲到第一節時一律判為第 1 節，讀者選好第 4 張後稍一捲動即被拉回第 1 張；改為長文未到第一節時不換卡，桌面長文開頭仍對應封面卡。
+  - [tools/build_paper_prototype.py](../tools/build_paper_prototype.py)：`re.split` 之 `maxsplit` 改以關鍵字傳入，消除 Python 3.13 之 DeprecationWarning。重建兩頁原型，差異僅上述樣式與腳本。`lint_wiki.py` ERROR 0。

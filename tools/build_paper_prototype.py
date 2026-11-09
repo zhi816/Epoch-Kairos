@@ -385,7 +385,7 @@ def side(fm, concepts):
         for k in keys:
             m = re.search(r'(https?://\S+)', k)
             label = re.sub(r'\s*https?://\S+', '', k).strip()
-            label = re.split(r'\)\s', label, 1)[0] + ')' if ')' in label else label
+            label = re.split(r'\)\s', label, maxsplit=1)[0] + ')' if ')' in label else label
             items.append('<a href="%s">%s</a>' % (esc(m.group(1)), esc(label)) if m else '<span>%s</span>' % esc(label))
         parts.append('<div class="blk"><span class="lab">奠基論文</span>%s</div>' % ''.join(items))
     v = fm.get('verification', '')
@@ -419,7 +419,7 @@ def build(slug, papers, concepts_zh, colors, tpl, nums):
         return False
     fm = papers[slug]
     text = open(os.path.join(WIKI, 'papers', slug + '.md'), encoding='utf-8').read()
-    body = re.split(r'^---\s*$', text, 2, flags=re.M)[2]
+    body = re.split(r'^---\s*$', text, maxsplit=2, flags=re.M)[2]
     f, svg = card_fields(card_path, slug)
     d = fm['domain']
     star = colors[d]
