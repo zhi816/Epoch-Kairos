@@ -1544,3 +1544,12 @@
   - Card 5 新論文模式：原文無限制與未來工作章節，三筆里程碑取原文 §3.3（p. 228）公開之模型權重、合成平行語料與線上展示，未編造影響。
   - Card 4 四個數字取自證據表（官方測試 49.1，§3.2 p. 228；公開測試 44.9 並勝過 54B 與 235B 模型，表 3 p. 228；詞表剪枝後 800M，§2.3.2 pp. 226–227；輔助語言 21.5 → 23.2，表 2 p. 227）；初稿之 NLLB 41.7 僅見於論文頁而未列入證據表，依規則撤下。Card 6 未涉碩論內容、未用第一人稱。
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 35 項 PASS（無公式框，少兩項公式框量測）；無頭截圖目視，Card 6 結語原折行落單「尾。」，已縮短。
+
+## [2026-11-10 00:04] update | 新增利用雙語詞彙資源改善臺灣南島語言翻譯之卡片文字檔 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：卡片回填第一批 B 組（TD-008），依新規則重試。依 paper-card-writer 撰寫 [wiki/cards/2024-formosan-mt-bilingual-lexicon-zheng.md](cards/2024-formosan-mt-bilingual-lexicon-zheng.md) 並建置 `web/prototypes/paper-v1/2024-formosan-mt-bilingual-lexicon-zheng.html`。
+  - 來源：Card 3 採無公式模式，經 paper-pdf-parser 全文搜尋與原文 PDF p. 4、p. 7 影像核對，全文無編號公式，BLEU、chrF 只引用未列式（p. 11251）；說明與示意圖取論文頁 Card 3 第 2 點（詞條直接當平行資料、以詞典替換族語端詞彙造偽平行資料、兩者並用）。Card 4 四個數字取自證據表 Card 4 第 1、2、5 列（+3.37 表 2；+3.11 與 +6.22 §5；+0.51 表 10）；未採摘要之 +5.55，因其只涵蓋表 9 之 6 種語言，與 16 種語言之 +3.37 並列會誤導（依表 9 重算 chrF 平均 10.33 相符、BLEU 平均為 5.70，範圍無法確定）。Card 5 採新論文模式，三筆皆取自論文頁 Card 1、Card 3 與 Card 5 作者自述限制（§3、§5.2）。Card 6 取論文頁 Card 6 第 3 點，未涉碩論內容。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（3aaaf11 版）1440 x 900 與 375 x 812 結果 PASS。
+  - 複核修正：封面一句話壓到代表星（論文名兩行、導語兩行使星窗變矮），導語改為一行；論文名、Card 2 雙語詞典說明、Card 4 兩格說明與 Card 5 首筆里程碑有一至兩字落單之行，改寫至無落單。
+  - 未決事項：原文另公開資料集（§3，GitHub）、列出人工評估等未來工作與找不到母語者審稿之限制（§6、Limitations），論文頁未記載，卡片依硬規則第 2 條未採用，交協調者決定是否補入論文頁。
