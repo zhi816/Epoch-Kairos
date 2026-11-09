@@ -794,3 +794,13 @@
   - **EK-015**：Card 5 典範轉移段落精確說明 2012 本文係透過 D10A 與 H840A 點突變完成催化結構域生化驗證，將 dCas9 作為通用轉錄調控平台（CRISPRi，引 Qi et al., 2013 Cell）及衍生之鹼基/先導編輯（David Liu 團隊 2016, 2019）明確標註為後續工具生態之重大延伸。
   - 新增證據表 [wiki/evidence/2012-crispr-cas9.md](evidence/2012-crispr-cas9.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-012、EK-013、EK-014 與 EK-015 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 09:43] fix | IceCube 2013 依原文核實顯著性與大氣背景拒斥率並建立證據表 | #天體物理 #宇宙學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 Science 2013 奠基論文原文（`raw/2013-icecube-neutrino.pdf`）全面核實修訂 [wiki/papers/2013-icecube-neutrino.md](papers/2013-icecube-neutrino.md)。
+  - **EK-016**：Card 4 刪除非原文之「4.3σ、p≈1.5×10⁻⁵」陳述，更正為原文統計分析架構：26 個新事件顯著性為 $3.3\sigma$；預先指定 Fisher 合併 28 個事件為 $4.1\sigma$（90% CL 魅夸克上限下為 $3.6\sigma$）；事後全體 28 個事件計算為 $4.8\sigma$（90% CL 魅夸克上限下為 $4.5\sigma$）。
+  - **EK-017**：Card 3 更正 $99.999\%$ 為 $6,000\,\text{pe}$ 以上「穿透大氣緲子」之拒斥率，南半球大氣微中子伴隨緲子濾除率為約 $70\%$，並補列兩年預期殘留背景之精確數據（$6.0 \pm 3.4$ 個緲子與 $6.1$ 個大氣微中子），修正過度概括。
+  - 新增證據表 [wiki/evidence/2013-icecube-neutrino.md](evidence/2013-icecube-neutrino.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-016 與 EK-017 標記為 `fixed` 並追加處理紀錄。
