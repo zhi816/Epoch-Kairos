@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0B0C0E">
+<title>Epoch Kairos ｜ 人類群星閃耀時</title>
+<meta name="description" content="Epoch Kairos 知識星圖：以學科、標籤、論文與概念頁連成的星空，收錄改變人類文明軌跡的里程碑論文。">
+<!-- 本檔由 tools/build_home.py 自 wiki/ Frontmatter 產生，請勿手改。版面改 tools/home_template.html，樣式與互動改 web/assets/css/starmap.css、web/assets/js/starmap.js。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:wght@300;400&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/css/theme.css">
+<link rel="stylesheet" href="assets/css/starmap.css">
+</head>
+<body data-mode="stars">
+<a class="skip" href="#panel">跳到星圖</a>
+<canvas id="sky" aria-hidden="true"></canvas>
+<svg class="grain" aria-hidden="true" focusable="false"><filter id="ek-grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#ek-grain)"/></svg>
+
+<div class="shell">
+  <aside class="rail" aria-label="標題與學科索引">
+    <h1 class="title-v">
+      <svg viewBox="0 0 151 860" preserveAspectRatio="xMinYMax meet" role="img" aria-label="Epoch Kairos">
+        <defs><linearGradient id="tf-v" gradientUnits="userSpaceOnUse" x1="-852" y1="0" x2="-52" y2="0"><stop class="tf0" offset="0" stop-color="rgba(234,230,223,0.6)"/><stop offset="0.7" stop-color="#EAE6DF"/></linearGradient></defs>
+        <text class="title-text" transform="rotate(-90)" x="-852" y="112" textLength="800" lengthAdjust="spacing" fill="url(#tf-v)">Epoch Kairos</text>
+      </svg>
+    </h1>
+    <div class="col">
+      <nav class="index" id="index" aria-label="學科索引">
+        <div class="index-head"><span class="mono" id="indexLabel">INDEX</span><button type="button" class="all" id="allBtn" aria-pressed="true">全部<b id="allCount"></b></button></div>
+        <div class="strands" id="strands"></div>
+      </nav>
+      <div class="railfoot">
+        <span class="vert-en mono tagline">THE KAIROS OF HUMAN THOUGHT</span>
+        <div class="motto-v">
+          <span class="vert-zh">人類群星閃耀時</span>
+          <span class="secret-wrap">
+            <button type="button" class="secret" data-secret aria-label="進入我的星系"><i></i></button>
+            <span class="peek" aria-hidden="true"><span class="peek-t"></span><span class="peek-s mono"></span></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="stage">
+    <header class="hero">
+      <span class="mono tagline">THE KAIROS OF HUMAN THOUGHT</span>
+      <h1 class="title-h"><svg viewBox="0 0 358 64" role="img" aria-label="Epoch Kairos"><defs><linearGradient id="tf-h" x1="0" x2="358" y1="0" y2="0" gradientUnits="userSpaceOnUse"><stop class="tf0" offset="0" stop-color="rgba(234,230,223,0.6)"/><stop offset="0.7" stop-color="#EAE6DF"/></linearGradient></defs><text class="title-text" x="1" y="50" textLength="356" lengthAdjust="spacing" fill="url(#tf-h)">Epoch Kairos</text></svg></h1>
+      <div class="motto"><span class="zh">人類群星閃耀時</span><button type="button" class="secret" data-secret aria-label="進入我的星系"><i></i></button><span class="hint" id="hint" hidden></span></div>
+    </header>
+
+    <section class="panel" id="panel" aria-labelledby="mapLabel" tabindex="-1">
+      <span class="hair hx" aria-hidden="true"></span><span class="hair hy" aria-hidden="true"></span>
+      <svg class="cross c1" aria-hidden="true" width="11" height="11" viewBox="0 0 11 11"><path d="M5.5 0 V11 M0 5.5 H11"/></svg>
+      <svg class="cross c2" aria-hidden="true" width="11" height="11" viewBox="0 0 11 11"><path d="M5.5 0 V11 M0 5.5 H11"/></svg>
+      <svg class="cross c3" aria-hidden="true" width="11" height="11" viewBox="0 0 11 11"><path d="M5.5 0 V11 M0 5.5 H11"/></svg>
+      <div class="panel-head"><h2 class="mono" id="mapLabel">CONSTELLATION ｜ 知識星圖</h2><button type="button" class="back" id="back" hidden></button></div>
+      <div class="mapbox"><div class="map" id="map"></div></div>
+      <div class="panel-foot"><div class="legend" id="legend"></div><span class="stats" id="stats"></span></div>
+    </section>
+
+    <div class="chips" id="chips" role="group" aria-label="學科篩選"></div>
+    <div class="info" id="info" aria-live="polite"></div>
+    <p class="sr-only" id="live" aria-live="polite"></p>
+
+    <noscript>
+      <div class="noscript">
+        <p>星圖需要 JavaScript 才能顯示。以下為群星收錄之論文：</p>
+        <ul>
+<!--__NOSCRIPT__-->
+        </ul>
+      </div>
+    </noscript>
+  </main>
+</div>
+
+<script type="application/json" id="ek-data">/*__DATA__*/</script>
+<script src="assets/js/starmap.js" defer></script>
+</body>
+</html>

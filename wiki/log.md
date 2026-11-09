@@ -1221,3 +1221,24 @@
   - 修正 [status.sh](../.agents/skills/git-sync-guardian/scripts/status.sh) 與 [status.py](../.agents/skills/git-sync-guardian/scripts/status.py) 過去以 `2>/dev/null || true` 靜默吞掉 `git fetch` 錯誤的問題：當網路中斷或沙盒封鎖 `.git/FETCH_HEAD` 寫入權限時，立即印出 Git 錯誤訊息、標記 `STALE - fetch failed` 警告並回傳非零退出碼（`exit 1`，離線檢視可加 `--allow-offline`），防止代理誤將本機快取當成最新遠端狀態。
   - 為 [stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py)、[stage_issues.py](../.agents/skills/git-sync-guardian/scripts/stage_issues.py) 與 [merge_log.py](../.agents/skills/git-sync-guardian/scripts/merge_log.py) 補齊 `sys.stdout` / `sys.stderr` 之 UTF-8 編碼重設（`reconfigure(encoding='utf-8')`），避免於 Windows PowerShell 單獨執行時因系統預設碼頁（cp950）引發編碼錯誤。
   - 同步更新 [SKILL.md](../.agents/skills/git-sync-guardian/SKILL.md) 與 [AGENTS.md](../AGENTS.md) 第十章工具鏈說明。
+
+## [2026-11-09 16:54] design | 實作首版知識星圖首頁 web/index.html | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：
+  - 完成 TD-006：依 [DESIGN.md](../DESIGN.md) 第二章第 0 節實作首版首頁，範圍為星空背景、左欄（直排 Bodoni Moda 標題、懸星索引 A、句末之星機關）、知識星圖、我的星系（`#my-constellation`）與手機版；卡片牆、論文頁、立案條目與祖先星不做。
+  - 新增建置腳本 [tools/build_home.py](../tools/build_home.py) 與範本 [tools/home_template.html](../tools/home_template.html)：讀取 `wiki/papers/`、`wiki/concepts/` 之 Frontmatter 與 [AGENTS.md](../AGENTS.md) 第八章白名單，計算星圖座標並內嵌為 JSON，產生 [web/index.html](../web/index.html)；頁面不含手寫論文資料，`--check` 可驗證首頁與資料一致。群星 17 顆、標籤 16 個、概念頁 8 個；我的星系 24 顆、概念頁 2 個。
+  - 新增 [web/assets/css/starmap.css](../web/assets/css/starmap.css) 與 [web/assets/js/starmap.js](../web/assets/js/starmap.js)：桌面依樣稿 v4／v5（滑過或點選星點顯示毛玻璃說明框：論文名、「2005 發表 ｜ 2026 諾貝爾獎」式雙年份、`card_line`、DOI；點學科中心或懸星索引篩選），手機依原型 mobile-v2（總覽點學科中心放大、篩選列、說明框、句末之星點兩下）。說明框以格狀搜尋避開學科與概念名稱，解決樣稿中提示框蓋住「神經迴路因果解耦」之問題。學科色於執行時讀取 `theme.css`。
+  - [web/assets/css/theme.css](../web/assets/css/theme.css) 學科色改用星光色（`human` 暫用 `#F2B3D6`），霓虹值另存為 `--neon-*` 備用變數；字體變數移除未載入之 Geist，新增 `--font-serif-zh`、`--font-display`（Bodoni Moda）。
+  - 預設亮星依 DESIGN.md 第八章第 12 項取 Git 首次提交日期；因 16 篇同於 2026-11-08 一次提交，同時間者依發表年、slug 由新到舊，目前為 `2025-nerve-mito-cancer`。我的星系預設亮「我的碩論」，說明框只顯示「我的碩論」「進行中」。
+  - [DESIGN.md](../DESIGN.md) 同步更新星光色已寫入、字體變數、第八章第 10 與 12 項現況，並於第十章記錄實作取捨；[wiki/todo.md](todo.md) 刪除 TD-006，TD-002 改註首頁已完成。
+  - 驗證：Chromium 於 1440x900、1920x1080、900x700 與 375x812 下皆無水平捲動；標籤無重疊；鍵盤可依序操作略過連結、索引、句末之星、學科中心、星點與說明框 DOI 連結，Escape 清除篩選；動畫與流光、星空閃爍、縮放與切換過場皆受 `prefers-reduced-motion` 控制。
+  - Lint：本次修改之檔案無 ERROR 與 WARN；全庫現有 5 筆 ERROR 來自 [2026-11-09 16:23] audit 重開 EK-081 至 EK-084、EK-086 後，相關頁面 `verification` 尚未改為 `issues`，非本次範圍，未處理。
+
+## [2026-11-09 16:54] rule | 首頁改為知識星圖並由建置腳本產生，學科色表改星光色 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：
+  - [AGENTS.md](../AGENTS.md) 第二章第 2 節色表改列星光色為現行值，新增霓虹色備用欄（`--neon-*`）；第四章目錄樹新增 `tools/`，`timeline.css`、`timeline.js` 改為 `starmap.css`、`starmap.js`，`web/index.html` 改述為知識星圖首頁；第五章展示層新增「首頁由資料產生、不得手改 `web/index.html`」；第六章 Ingest 第 4 步「在時間線插入卡片」改為執行 `python tools/build_home.py` 重建首頁；第七章雙年份呈現與第八章 `domain_tags` 用途中之「時間線」字樣同步改為知識星圖。
+  - [README.md](../README.md) 系統架構新增 `tools/`、首頁描述改為知識星圖並說明重建指令，`econ` 配色名改為香檳金。
+  - 依據：使用者 2026-11-09 確認之首版範圍與 DESIGN.md 第二章第 0 節（完成 TD-006）。
