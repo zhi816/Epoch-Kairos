@@ -30,15 +30,19 @@
 ### TD-005 | waiting | web | 以 GitHub Actions 將 web/ 發布至 GitHub Pages
 - **內容**：GitHub Pages 之「Deploy from a branch」只接受倉庫根目錄或 `/docs`，無法直接發布 `web/`，且主倉庫目前尚無 `.github/` 目錄。新增 `.github/workflows/pages.yml`：推送至 `main` 且 `web/**` 有變動時觸發（另加 `workflow_dispatch` 供手動重新發布），依序以 `actions/checkout`、`actions/configure-pages`、`actions/upload-pages-artifact`（`path: web`）、`actions/deploy-pages` 發布，只公開 `web/` 之內容，`wiki/`、`AGENTS.md` 等不上站；寫入前先確認各 action 之最新主版本號。首頁檔名維持 `web/index.html`、論文頁維持 `web/papers/<slug>/index.html`，網址即 `https://zhi816.github.io/Epoch-Kairos/` 與 `https://zhi816.github.io/Epoch-Kairos/papers/<slug>/`。發布後將 README.md「GitHub Pages 成果展示」一行之暫定連結改為正式連結。
 - **完成條件**：工作流程首次執行成功（倉庫 Actions 分頁顯示成功），首頁網址可正常開啟，`assets/` 與 KaTeX 資源載入無誤，README 連結已更新。
-- **等待**：使用者確定首頁 `web/index.html`（TD-006）後再發布；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。
+- **等待**：使用者確定首頁 `web/index.html`（TD-006）後再發布；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。發布前另請使用者確認：我的星系會公開其研究主題（臺灣南島語計算語言學、低資源機器翻譯）與 24 篇關注論文，旁人可推測碩論方向，是否可接受（2026-11-09 已提醒，使用者尚未回覆）。
 - **來源**：使用者指示（首頁確定後再發布）；2026-11-09 登記，Claude Code by Anthropic。
 
-### TD-006 | waiting | web | 實作首版 web/index.html（知識星圖首頁）
-- **內容**：依 [DESIGN.md](../DESIGN.md) 第二章第 0 節實作首版首頁：星空背景、左欄（直排標題 Bodoni Moda、懸星索引 A、句末之星機關）、知識星圖、我的星系（網址錨點 `#my-constellation`）與手機版；群星檔案卡片牆與論文頁不做。工作項目：
-  1. 建置腳本置於根目錄 `tools/`，讀取 `wiki/papers/` 與 `wiki/concepts/` 之 Frontmatter 產生 `web/index.html`，頁面不手寫論文資料（做法參考 `web/prototypes/mobile-v2-src/`）。群星預設亮星取論文頁在 Git 中首次提交日期最新者，不修改任何論文頁；「我的碩論」中心星寫在腳本設定，只顯示「我的碩論」與「進行中」。
+### TD-006 | open | web | 實作首版 web/index.html（知識星圖首頁）
+- **內容**：依 [DESIGN.md](../DESIGN.md) 第二章第 0 節實作首版首頁：星空背景、左欄（直排標題 Bodoni Moda、懸星索引 A、句末之星機關）、知識星圖、我的星系（網址錨點 `#my-constellation`）與手機版；群星檔案卡片牆與論文頁不做，本條亦不含發布（見 TD-005）。動工前先讀 DESIGN.md 第一至四章、第六至七章與第九章否決紀錄，再讀手機原型 `web/prototypes/mobile-v2-src/`：`data.py` 已有學科星光色、形狀路徑、標籤順序與星圖座標算法，`template.html` 已有手機版互動、隱藏機關與我的星系版面，可沿用。工作項目：
+  1. 建置腳本置於根目錄 `tools/`，讀取 `wiki/papers/` 與 `wiki/concepts/` 之 Frontmatter 產生 `web/index.html`，頁面不手寫論文資料。群星預設亮星取論文頁在 Git 中首次提交日期最新者（例如 `git log --follow --diff-filter=A --format=%aI -- wiki/papers/<slug>.md`），不修改任何論文頁；「我的碩論」中心星寫在腳本設定，只顯示「我的碩論」與「進行中」，不放題目與內容。
   2. 首頁樣式與程式為 `web/assets/css/starmap.css`、`web/assets/js/starmap.js`；同步修改 AGENTS.md 第四章目錄樹、第五章展示層描述、第六章 Ingest 第 4 步（「在時間線插入卡片」改為重跑建置腳本）與 README.md 之首頁描述，記 `rule` 日誌。
   3. `theme.css` 學科色改用星光色（`human` 暫用 `#F2B3D6`），霓虹值另存為備用變數；AGENTS.md 第二章色表同步並保留霓虹欄位。
-  4. 樣稿（v4 桌面截圖）為五學科、26 顆星（含立案條目）；正式版依 Frontmatter 為六學科、群星 17 顆，立案條目與祖先星連線不畫。樣稿右上「往下看群星檔案」連結首版移除；星圖說明框依 DESIGN.md 第二章第 0 節，並避免與概念名稱標籤重疊（截圖中「光遺傳學」提示框蓋住「神經迴路因果解耦」）。
-- **完成條件**：執行建置腳本可重現 `web/index.html`；桌面與手機（375px 寬）皆無破版或水平捲動；可用鍵盤操作、動畫受 `prefers-reduced-motion` 控制；`lint_wiki.py` 無 ERROR；記 `design` 日誌。
-- **等待**：使用者說可以動工。
-- **來源**：使用者指示（2026-11-09，先討論、確認後再動工）；2026-11-09 登記，Claude Code by Anthropic。
+  4. 立案條目與祖先星連線不畫。樣稿右上「往下看群星檔案」連結首版移除。星圖說明框依 DESIGN.md 第二章第 0 節，並避免與概念名稱標籤重疊（截圖中「光遺傳學」提示框蓋住「神經迴路因果解耦」）。
+  5. 年份一律寫「2005 發表 ｜ 2026 諾貝爾獎」（AGENTS.md 第七章雙年份呈現原則；未獲獎者為「發表年 ｜ 期刊或會議」），不用樣稿提示框之「2005 → 2026」箭頭（否決紀錄：不以時間差為主打）。
+- **桌面版面依據**：樣稿畫布為使用者私人連結，代理無法開啟。使用者於 2026-11-09 提供 v4 桌面截圖（未存入倉庫，需要時向使用者索取），要點如下：
+  * 左欄約佔畫面寬 30%：最左為直排「Epoch Kairos」撐滿全高；其右上為 `INDEX` 小字與「全部 N」，下接懸星索引（每學科一串，珠子為論文、獲獎者帶環，串尾為學科形狀、篇數與 01、02 等編號，學科名以學科色直排）；左欄底部為直排 `THE KAIROS OF HUMAN THOUGHT` 小字與直排宋體「人類群星閃耀時」；左欄背景為星空白點。
+  * 右側為純黑星圖面板（髮絲細框、四角 `+` 記號）：左上 `CONSTELLATION ｜ 知識星圖`；中央為十字光芒之 `KAIROS` 奇點與淡同心圓星盤；學科中心為形狀圖示、學科名與篇數，周圍有學科色星雲；標籤以「#標籤 N」小字標示；論文為發光白點，諾貝爾獎外加虛線光環；連線為學科色細曲線；左下一行圖例（學科形狀、標籤、論文、諾貝爾獎、概念頁），右下統計「N 顆星・N 個標籤・N 個概念・N 條連線」。
+  * 截圖為舊資料（五學科、26 顆星，含 9 個立案條目）。正式版依 Frontmatter 為六學科，群星 17 顆（AI 6、物理 5、生醫 3、經濟 3；化學與人文為 0，比照 DESIGN.md 第二章第 5 節排在最後並調暗），我的關注 24 顆，概念頁 10 個。
+- **完成條件**：執行建置腳本可重現 `web/index.html`；桌面與手機（375px 寬）皆無破版或水平捲動；可用鍵盤操作、動畫受 `prefers-reduced-motion` 控制；`lint_wiki.py` 無 ERROR；記 `design` 與 `rule` 日誌，刪除本條並於日誌寫明「完成 TD-006」。
+- **來源**：使用者指示（2026-11-09，討論後交由另一個 Claude Code 工作階段實作）；2026-11-09 登記並改為 open，Claude Code by Anthropic。
