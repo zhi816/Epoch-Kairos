@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#人工智慧", "#深度學習"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
-verification: "verified"
+verification: "issues"
 my_focus: true
 focus_role: "llm-assisted"
 focus_languages: ["達豪語"]

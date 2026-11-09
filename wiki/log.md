@@ -1242,3 +1242,10 @@
   - [AGENTS.md](../AGENTS.md) 第二章第 2 節色表改列星光色為現行值，新增霓虹色備用欄（`--neon-*`）；第四章目錄樹新增 `tools/`，`timeline.css`、`timeline.js` 改為 `starmap.css`、`starmap.js`，`web/index.html` 改述為知識星圖首頁；第五章展示層新增「首頁由資料產生、不得手改 `web/index.html`」；第六章 Ingest 第 4 步「在時間線插入卡片」改為執行 `python tools/build_home.py` 重建首頁；第七章雙年份呈現與第八章 `domain_tags` 用途中之「時間線」字樣同步改為知識星圖。
   - [README.md](../README.md) 系統架構新增 `tools/`、首頁描述改為知識星圖並說明重建指令，`econ` 配色名改為香檳金。
   - 依據：使用者 2026-11-09 確認之首版範圍與 DESIGN.md 第二章第 0 節（完成 TD-006）。
+
+## [2026-11-09 17:53] fix | 將 EK-081 至 EK-084、EK-086 相關頁面 verification 改為 issues | 全域
+- **執行代理**：Antigravity by Google
+- **模型版本**：Claude Sonnet 5.5
+- **具體變更**：
+  - [2026-11-09 16:23] audit 重開 EK-081 至 EK-084、EK-086 後，相關頁面 `verification` 未同步，造成 Lint 5 筆 ERROR。已將 [2026-hybrid-dictionary-rag-llm-paiwan-wang](papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)、[2025-fragment-shot-reasoning-mt-frontull](papers/2025-fragment-shot-reasoning-mt-frontull.md)、[2025-tulun-adaptable-lrl-mt-merx](papers/2025-tulun-adaptable-lrl-mt-merx.md)、[2026-context-volume-rag-domain-shift-setiawan](papers/2026-context-volume-rag-domain-shift-setiawan.md) 與概念頁 [formosan-computational-linguistics](concepts/formosan-computational-linguistics.md) 之 `verification` 由 `verified` 改為 `issues`。
+  - 驗證：Lint 全庫 ERROR 0、WARN 30。
