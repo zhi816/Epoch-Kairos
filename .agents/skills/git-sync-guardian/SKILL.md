@@ -45,13 +45,14 @@ description: >-
 - 嚴禁 `git add -A`、`git add .`、`git commit -a`。提交前先看 `git diff --stat`，只暫存自己修改的檔案；未追蹤的資料夾（如他人的 `work/`）一律不得加入。
 - `wiki/log.md` 只提交「執行代理」為自己的條目：用 `scripts/stage_log.py "<代理名稱>"` 逐條暫存。它以「HEAD 版日誌＋自己的新條目」組出提交內容，工作目錄的檔案不變，別人的條目留給他們自己提交。條目順序與條目之間的空行都跟隨工作目錄，提交後不會留下只差空行的修改。
 - `wiki/issues.md` 同樣是共用檔案，只提交自己修改的問題條目：`safe_commit_push.sh` 列出 `wiki/issues.md` 時必須以 `--issue EK-NNN`（可重複）指定編號，由 `scripts/stage_issues.py` 以「HEAD 版問題清單＋指定條目的工作目錄版本」組出提交內容；未指定的條目（例如其他代理剛改成 `fixed` 的狀態）留在工作目錄。背景：2026-11-09 Claude Code 整檔提交問題清單，誤把 Antigravity 尚未提交的 EK-008 至 EK-011 狀態變更帶入。
+- `wiki/todo.md` 同樣是共用檔案：`safe_commit_push.sh` 列出 `wiki/todo.md` 時必須以 `--todo TD-NNN`（可重複）指定自己新增、修改或刪除的條目，由 `scripts/stage_todo.py` 組出提交內容。與問題清單不同，待辦完成即刪，故指定的編號若已從工作目錄刪除，即暫存其刪除。
 - 追加日誌時，新條目與前一條之間只留一個空行（即寫入 `\n## [...]`，前一條已以換行結尾）。多打的空行雖會被一併提交，但會讓日誌格式不一致。
 - 合流遠端時用 `git merge --autostash`，讓他人未提交的修改暫時收起、合流後放回，且放回後維持「未暫存」。
 - 若暫存區在你動手前就已有檔案，代表可能是別人暫存的，先確認歸屬，不要直接提交。
 
 ### 6. 寫入日誌即提交（Log Implies Commit）
 - 日誌條目代表一項工作已完成。在 `wiki/log.md` 追加自己的條目後，**必須在同一回合內**以 `safe_commit_push.sh` 提交並推送該條目與本項工作修改的檔案，不需等待使用者另外說「提交」；僅在使用者明確要求暫緩時例外。這是使用者對所有代理的常設授權：本專案以自動化為目標，每筆日誌都對應一個已推送的提交，多 AI 協作出問題時才能立即追查。
-- 工作尚未完成、或使用者要求先不提交時，**先不要寫日誌**；進度留在工作檔，完成後一次寫入、一次提交。
+- 工作尚未完成、或使用者要求先不提交時，**先不要寫日誌**；進度與交接事項登記於 `wiki/todo.md`（`AGENTS.md` 第七章第 5 節），完成後再寫日誌、一次提交。不得以日誌條目充當交接清單。
 - 寫日誌一律**追加於檔尾**（例如以附加模式開檔），不得把整份日誌讀進來再整檔寫回，以免覆蓋他人剛追加、尚未提交的條目；亦不得改動他人條目。
 - **標題時間一律以指令取得**：寫標題前先執行 `python .agents/skills/git-sync-guardian/scripts/log_time.py`，把輸出的臺北時間原樣填入 `## [YYYY-MM-DD HH:MM]`，不得憑估計、記憶或對話中的時間推算。`stage_log.py` 會擋下晚於現在 5 分鐘以上或早於現在 60 分鐘以上的自己的新條目，`safe_commit_push.sh` 隨即還原本次暫存並中止；僅在條目確實早已寫好（例如推送失敗後重試）時，加 `--allow-stale-log` 放行。被擋下時，修正工作目錄中自己那筆尚未提交的條目標題即可。
 
@@ -87,16 +88,24 @@ description: >-
 ```
 * **功能**：
   1. 確認暫存區原本是空的（否則中止，避免帶走他人已暫存的檔案）。
-  2. 只暫存 `--` 之後列出的路徑；`wiki/log.md` 交給 `stage_log.py` 逐條暫存。不接受 `.`、`-A`。若同一代理的多個工作階段同時追加日誌，可重複傳入 `--log-heading "## [YYYY-MM-DD HH:MM] ..."` 精確挑選自己的標題，避免同代理身分造成誤暫存；被選取的條目會依時間插入暫存版，已提交條目順序不變。
+  2. 只暫存 `--` 之後列出的路徑；`wiki/log.md` 交給 `stage_log.py`、`wiki/issues.md` 交給 `stage_issues.py`（`--issue`）、`wiki/todo.md` 交給 `stage_todo.py`（`--todo`）逐條暫存。不接受 `.`、`-A`。若同一代理的多個工作階段同時追加日誌，可重複傳入 `--log-heading "## [YYYY-MM-DD HH:MM] ..."` 精確挑選自己的標題，避免同代理身分造成誤暫存；被選取的條目會依時間插入暫存版，已提交條目順序不變。
   3. 先提交自己的修改，再 `git fetch` 並以 `git merge --autostash` 與遠端三方合流；只有 `wiki/log.md` 衝突時自動以 `merge_log.py` 排解，放回他人修改時的日誌衝突亦同。
   4. 清空暫存區，讓他人修改維持未暫存；`git push origin main` 後確認 `Ahead: 0`，並列出工作目錄中仍未提交（屬於他人）的檔案。
 * 兩個倉庫都有修改時，分別執行 `main` 與 `raw` 各一次（各自列出檔案），以滿足雙倉庫一體化。
 * 需要 Python 3.7 以上（僅用標準函式庫）。腳本會自動尋找可執行的 Python：依序試 `python3`、`python`、`py`，每個實際執行一次，取第一個成功者；不寫死任何路徑，Mac、Linux、Windows 皆適用（Windows 的 `python3` 可能是微軟商店的空殼，會被略過）。三者都不可用時腳本會報錯，請告知使用者安裝 Python。
 
-### 4. 日誌工具
+### 4. 日誌與待辦工具
 ```bash
 # 取得日誌標題時間（臺北時間，不受本機時區影響）；寫標題前必先執行
 python .agents/skills/git-sync-guardian/scripts/log_time.py
+
+# 依條目讀取日誌最後幾筆（日誌只寫不讀，不得整份讀取）；--grep 查特定事項，-n 0 不限筆數
+python .agents/skills/git-sync-guardian/scripts/log_tail.py -n 3
+python .agents/skills/git-sync-guardian/scripts/log_tail.py --grep TD-004 -n 0
+
+# 新增待辦前取得下一個編號；提交 wiki/todo.md 時由 safe_commit_push.sh 的 --todo 自動調用
+python .agents/skills/git-sync-guardian/scripts/stage_todo.py --next-id
+python .agents/skills/git-sync-guardian/scripts/stage_todo.py TD-003 --dry-run
 
 # 只暫存自己修改的問題條目（提交 wiki/issues.md 時由 safe_commit_push.sh 的 --issue 自動調用）
 python .agents/skills/git-sync-guardian/scripts/stage_issues.py EK-069 EK-070 --dry-run
@@ -115,11 +124,12 @@ python .agents/skills/git-sync-guardian/scripts/merge_log.py
 ### SOP-1：開始新任務或提取更新
 1. 執行 `./.agents/skills/git-sync-guardian/scripts/status.sh` 查看狀態。
 2. 若落後遠端，執行 `./.agents/skills/git-sync-guardian/scripts/sync.sh` 同步最新成果。
+3. 接手脈絡依 `AGENTS.md` 第六章第 4 節取得：`git log --oneline -10`、整份閱讀 `wiki/todo.md`，仍需細節時以 `scripts/log_tail.py` 讀日誌最後幾筆；不得整份讀取 `wiki/log.md`。
 
 ### SOP-2：完成任務並固化成果
 1. 確認全專案無任何表情符號（Zero-Emoji）。
-2. 在 `wiki/log.md` 結尾**追加**符合 `AGENTS.md` 規範之條目（標明執行代理、底層模型、白名單標籤與具體變更）。寫入日誌後立即進行第 3 步，不等使用者指示（鐵律 6）。
-3. 以 `git diff --stat` 確認哪些檔案是自己改的，再執行 `./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<符合 Conventional Commits 格式之訊息>" main --agent "<代理名稱>" -- <自己的檔案> wiki/log.md`；若 `raw/` 也有自己的修改，再以 `raw` 執行一次，確保兩處倉庫均推送成功。
+2. 在 `wiki/log.md` 結尾**追加**符合 `AGENTS.md` 規範之條目（標明執行代理、底層模型、白名單標籤與具體變更）。本項工作若完成某筆待辦，同時從 `wiki/todo.md` 刪除該條目，並於日誌寫明編號。寫入日誌後立即進行第 3 步，不等使用者指示（鐵律 6）。
+3. 以 `git diff --stat` 確認哪些檔案是自己改的，再執行 `./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<符合 Conventional Commits 格式之訊息>" main --agent "<代理名稱>" -- <自己的檔案> wiki/log.md`（涉及待辦時加上 `--todo TD-NNN` 並列出 `wiki/todo.md`）；若 `raw/` 也有自己的修改，再以 `raw` 執行一次，確保兩處倉庫均推送成功。
 4. 確認腳本最後列出的「仍未提交的修改」都不是自己的；若有自己的檔案遺漏，補上後再執行一次。
 
 ### SOP-3：遭遇 wiki/log.md 衝突時之排解

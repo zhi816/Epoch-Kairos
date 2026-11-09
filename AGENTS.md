@@ -101,6 +101,7 @@ Epoch-Kairos/
 │   ├── index.md               # 內容目錄索引（Content Catalog，按年份與領域組織）
 │   ├── log.md                 # 時間流水帳日誌（Append-only，記錄所有操作）
 │   ├── issues.md              # 內容問題清單（查核發現之待修正事項與處理狀態，見第七章第 4 節）
+│   ├── todo.md                # 待辦清單（交接事項、未完成任務、待使用者確認之工作，見第七章第 5 節）
 │   ├── papers/                # 結構化論文知識頁（Markdown）
 │   ├── concepts/              # 跨領域核心概念與實體頁（Markdown）
 │   └── evidence/              # 證據表（每頁一檔，記錄主張與第一手來源之對應，見第七章第 4 節）
@@ -146,7 +147,7 @@ Epoch-Kairos/
 
 ## 六、AI 核心作業流程（Core Operations）
 
-AI 在協作時，必須嚴格遵循以下三大標準作業程序（SOP）：
+AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 
 > **專屬 Skill 一覽**：正本一律置於 `.agents/skills/<名稱>/SKILL.md`，各 AI 於對應工作開始前須先完整讀取。Claude Code 只會自動載入 `.claude/skills/`，故另於該處放置同名轉介檔，內容僅指向正本；修改時只改正本，轉介檔不得另寫規則。
 >
@@ -184,7 +185,7 @@ AI 在協作時，必須嚴格遵循以下三大標準作業程序（SOP）：
      `init`（初始化）、`ingest`（收錄新來源）、`query`（綜述檢索）、`lint`（健康檢查）、`audit`（規範審查）、`fix`（錯誤修正）、`rule`（規範變更）、`design`（視覺設計）、`math`（公式修訂）、`update`（內容更新）、`config`（組態變更）、`git`（版本控管）。
    * **標題時間一律以指令取得，嚴禁憑估計或記憶填寫**：寫入標題前先執行 `python .agents/skills/git-sync-guardian/scripts/log_time.py`，將輸出之臺北時間（UTC+8，格式 `YYYY-MM-DD HH:MM`）原樣填入 `## [...]`。此腳本不受本機時區影響，Windows、macOS 與雲端環境皆適用。`stage_log.py` 會擋下晚於現在 5 分鐘以上、或早於現在 60 分鐘以上之自己的新條目（後者僅於推送失敗後重試等情形，可以 `--allow-stale-log` 放行）。背景：2026-11-09 曾有代理憑估計把 09:26 寫成 09:42，只能另追加更正條目。
    * **日誌連結一律使用相對路徑**，嚴禁寫入 `file:///C:/...` 等本機絕對路徑，以確保在 GitHub 與他台機器上皆不失效。
-   * **寫入日誌即提交**：日誌條目代表一項工作已完成。追加自己的條目後，須在同一回合內依第十章以 `safe_commit_push.sh` 提交並推送該條目與本項工作修改的檔案，無須等待使用者另行指示（使用者明確要求暫緩時除外）。工作尚未完成、或使用者要求先不提交時，先不寫日誌。寫入一律追加於檔尾，不得讀取後整檔覆寫，亦不得改動他人條目。
+   * **寫入日誌即提交**：日誌條目代表一項工作已完成。追加自己的條目後，須在同一回合內依第十章以 `safe_commit_push.sh` 提交並推送該條目與本項工作修改的檔案，無須等待使用者另行指示（使用者明確要求暫緩時除外）。工作尚未完成、或使用者要求先不提交時，先不寫日誌；需記下進度或交接者，登記於 `wiki/todo.md`（見本章第 4 節）。寫入一律追加於檔尾，不得讀取後整檔覆寫，亦不得改動他人條目。
 
 ### 2. Query（知識綜合檢索）
 當使用者針對知識庫提問時：
@@ -203,8 +204,22 @@ AI 在協作時，必須嚴格遵循以下三大標準作業程序（SOP）：
 7. **檢查標籤合規性**：確認 `domain` 為六大色系之一、`domain_tags` 全數落在第八章白名單內；`my_focus: true` 者須具備 `focus_role` 與 `focus_languages`，且 `focus_role` 取自第七章第 1 節之五個鍵值。
 8. **檢查連結有效性**：確認所有相對路徑連結指向實際存在之檔案，且全庫無 `file:///` 本機絕對路徑與殘留之 `[[...]]` 語法。
 9. **檢查核實狀態一致性**：論文頁與概念頁之 `verification` 須與 `wiki/issues.md` 及 `wiki/evidence/` 一致（規則見第七章第 4 節）。
+10. **檢查待辦清單格式**：`wiki/todo.md` 之標題、狀態、範圍與必填欄位合規，且編號不重複（規則見第七章第 5 節）。
 
-> **工具分工**：第 1、3、4、5、7、8、9 條之可機械判斷部分由 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 執行（公式、化學式與長公式為啟發式檢查，警告須人工判斷）；第 6 條由 `crossref_check.py` 執行（需網路）；第 2 條與內容事實查核依 `wiki-content-audit` 查核模式人工進行，發現之問題一律登記於 `wiki/issues.md`，不得只寫在日誌。
+> **工具分工**：第 1、3、4、5、7、8、9、10 條之可機械判斷部分由 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 執行（公式、化學式與長公式為啟發式檢查，警告須人工判斷）；第 6 條由 `crossref_check.py` 執行（需網路）；第 2 條與內容事實查核依 `wiki-content-audit` 查核模式人工進行，發現之問題一律登記於 `wiki/issues.md`，不得只寫在日誌。
+
+### 4. Handoff（接手與交接）
+多個 AI 輪流接手同一專案。交接脈絡一律從下列來源取得，不從日誌整份讀取：
+1. **接手順序**：
+   1. `git log --oneline -10`：最近完成的工作。每筆日誌條目皆對應一個已推送之提交（第十章第 6 條），提交清單即日誌之精簡目錄。
+   2. 整份閱讀 `wiki/todo.md`：尚未完成之工作與等待使用者確認之事項。本檔完成即刪，篇幅維持精簡，可整份讀取。
+   3. 視任務需要，閱讀 `wiki/issues.md` 之 `open` 條目與 `DESIGN.md` 第八章待決事項。
+   4. 仍需日誌細節時，執行 `python .agents/skills/git-sync-guardian/scripts/log_tail.py`：預設輸出最後 3 筆，`-n` 調整筆數，`--grep <關鍵字>` 查特定事項。
+2. **日誌只寫不讀**：不得整份讀取 `wiki/log.md`。日誌為歷史紀錄，其中已被取代之規則與決策不得視為現行指示；現行規範一律以 `AGENTS.md`、`DESIGN.md` 為準。查特定事項以 `log_tail.py --grep` 或搜尋工具取得相關條目。
+3. **交接寫入待辦，不寫入日誌**：工作做到一半、需要他人接手，或須等使用者確認才能動工時，登記於 `wiki/todo.md`（格式見第七章第 5 節），不得以日誌條目充當交接清單。完成時刪除該條目，並於當次日誌條目寫明編號（例如「完成 TD-003」）。
+4. **讀檔編碼**：全庫文字檔一律為 UTF-8（無 BOM）。Windows PowerShell 5.1 之 `Get-Content` 預設以系統碼頁讀檔，須加 `-Encoding UTF8`，否則中文顯示為亂碼；以行數截尾（`tail -n`、`Get-Content -Tail`）亦會切在條目中間，讀日誌一律改用 `log_tail.py`。
+
+> 背景：2026-11-09 日誌已達 1,059 行、124 筆，且曾以日誌條目充當交接清單（[2026-11-08 22:06] 一筆列出待確認事項與工作順序），接手者須讀入大量歷史才能找到待辦，已被取代之舊決策亦可能被誤當現行指示。
 
 ---
 
@@ -351,6 +366,32 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
    * 「類型」取 `wiki-content-audit` 之五類：本篇研究結果、後續研究、作者解釋、依原文數據計算、Wiki 詮釋。
    * 證據表只收強主張（數值、公式、「首次／證明／導致」等斷言、後續成果歸屬、臨床或監管狀態），敘事性背景句無須逐句列入。
 
+### 5. 待辦清單 `wiki/todo.md`
+登記尚未完成之工作：交接事項、做到一半的任務、須等使用者確認才能動工的工作。各檔分工如下，不得混記：
+
+| 檔案 | 記錄對象 |
+|---|---|
+| `wiki/log.md` | 已完成之工作（歷史，只追加） |
+| `wiki/issues.md` | Wiki 內容與第一手來源不符之處（查核發現） |
+| `DESIGN.md` 第八章 | 美術方向之選擇題本身（選項、建議與否決理由） |
+| `wiki/todo.md` | 其餘尚未完成之工作；美術待決定案後之實作工作亦登記於此 |
+
+1. **條目格式**：不分節，條目依編號排列，格式如下：
+   ```markdown
+   ### TD-001 | open | web | 一句話說明要做什麼
+   - **內容**：要做什麼、涉及哪些檔案、怎麼做。
+   - **完成條件**：做到什麼程度算完成。
+   - **等待**：須等使用者決定之事項（狀態為 waiting 時必填）。
+   - **負責**：執行代理（狀態為 doing 時必填）。
+   - **進度**：已完成與卡住之處（選填，做到一半時填寫）。
+   - **來源**：wiki/log.md [YYYY-MM-DD HH:MM] 或使用者指示；登記日期與執行代理。
+   ```
+2. **狀態**：`open`（可直接接手）、`waiting`（等使用者決定，不得自行動工）、`doing`（某代理進行中，他人不得重複接手；中斷時改回 `open` 並寫明進度）。完成或放棄（放棄須經使用者同意）時直接刪除條目，不設完成狀態，歷史由日誌與 Git 保存。
+3. **範圍**：`wiki`（`wiki/` 內容）、`web`（展示層）、`raw`（原始資料，實際操作仍受第五章限制）、`rule`（`AGENTS.md`、`DESIGN.md`、`README.md` 等規範文件）、`skill`（`.agents/skills/` 與其腳本）。
+4. **編號**：`TD-` 加三位數流水號，不重用。新增前執行 `python .agents/skills/git-sync-guardian/scripts/stage_todo.py --next-id` 取得下一號（取本檔與日誌中出現過之最大編號加一，故刪除條目時當次日誌須寫明編號）。
+5. **更新與提交**：本檔非日誌，狀態、進度與內容可就地修改，完成即刪；提交時只暫存自己這次新增、修改或刪除之條目，以 `safe_commit_push.sh --todo TD-NNN` 逐條暫存（第十章第 5 條）。
+6. **不必寫日誌的情形**：只新增或更新待辦條目、而無其他已完成工作時，可直接提交，不另寫日誌。
+
 ---
 
 ## 八、專業領域標籤（Domain Tags）標準
@@ -415,14 +456,15 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
    - 多個 AI 共用同一個工作目錄，工作目錄中常同時存在其他代理尚未提交的修改。嚴禁使用 `git add -A`、`git add .` 或 `git commit -a`；提交前須以 `git diff --stat` 逐檔確認，只暫存自己修改的檔案，未追蹤之資料夾（如他人的 `work/`）一律不得加入。
    - `wiki/log.md` 只可提交「執行代理」為自己的條目，其他代理尚未提交的條目須留在工作目錄，由其主人自行提交；以 `scripts/stage_log.py` 逐條暫存。
    - `wiki/issues.md` 亦為共用檔案，只可提交自己修改的問題條目：`safe_commit_push.sh` 列出該檔時須以 `--issue EK-NNN` 指定編號，由 `scripts/stage_issues.py` 逐條暫存。
+   - `wiki/todo.md` 亦為共用檔案：`safe_commit_push.sh` 列出該檔時須以 `--todo TD-NNN` 指定自己新增、修改或刪除之條目，由 `scripts/stage_todo.py` 逐條暫存（含刪除）。
    - 合流遠端時以 `git merge --autostash` 暫收他人未提交的修改，合流後放回並維持未暫存狀態；不得把他人的修改併入自己的提交。
    - 背景：2026-11-08 曾發生 Claude Code 以整檔加入 `wiki/log.md`，誤將 Codex 尚未提交的 4 筆審查紀錄帶入自己的提交；舊版 `safe_commit_push.sh` 亦以 `git add -A` 暫存全部檔案。
 6. **「寫入日誌即提交（Log Implies Commit）」**：
    - 在 `wiki/log.md` 追加自己的條目後，必須在同一回合內以 `safe_commit_push.sh` 提交並推送該條目與本項工作修改的檔案，無須等待使用者另行說「提交」；僅在使用者明確要求暫緩時例外。
-   - 工作尚未完成、或使用者要求先不提交時，先不要寫日誌；進度留在工作檔，完成後一次寫入並提交。
+   - 工作尚未完成、或使用者要求先不提交時，先不要寫日誌；進度與交接事項登記於 `wiki/todo.md`（見第六章第 4 節），完成後再寫日誌並提交。
    - 寫日誌一律追加於檔尾，不得讀取整份日誌後整檔寫回（會覆蓋他人剛追加、尚未提交的條目），亦不得改動他人條目。
    - 標題時間一律先執行 `scripts/log_time.py` 取得，不得憑估計填寫（規則見第六章 Ingest 第 5 步；`stage_log.py` 會機械檢查）。
    - 目的：日誌是共用檔案，條目滯留在工作目錄會被他人誤帶、阻擋同步，甚至遭覆寫；每筆日誌都對應一個已推送的提交，多 AI 協作出問題時才能立即追查。
 7. **專屬輔助技能與工具鏈調用**：
-   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`）及日誌工具（`scripts/log_time.py` 取得日誌標題時間、`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/stage_issues.py` 逐條暫存自己修改的問題條目、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。`stage_log.py` 暫存之條目順序一律跟隨工作目錄，不依時間重排，以免提交後日誌持續顯示為已修改。其餘專屬 Skill 見第六章開頭之 Skill 一覽。
+   - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（`scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`）及日誌工具（`scripts/log_time.py` 取得日誌標題時間、`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/stage_issues.py` 逐條暫存自己修改的問題條目、`scripts/stage_todo.py` 逐條暫存自己修改的待辦條目並提供下一個編號、`scripts/log_tail.py` 依條目讀取日誌最後幾筆、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。`stage_log.py` 暫存之條目順序一律跟隨工作目錄，不依時間重排，以免提交後日誌持續顯示為已修改。其餘專屬 Skill 見第六章開頭之 Skill 一覽。
 

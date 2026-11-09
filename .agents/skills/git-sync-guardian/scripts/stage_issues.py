@@ -54,7 +54,8 @@ def main():
 
     root = git('rev-parse', '--show-toplevel').decode().strip()
     base = git('-C', root, 'show', 'HEAD:' + PATH).decode('utf-8')
-    work = open(f'{root}/{PATH}', 'rb').read().decode('utf-8')
+    # core.autocrlf=true 時工作目錄為 CRLF；暫存內容以 hash-object 寫入，不經換行轉換，故先統一為 LF。
+    work = open(f'{root}/{PATH}', 'rb').read().decode('utf-8').replace('\r\n', '\n')
     bb, wb = blocks(base), blocks(work)
 
     gone = [k for k in bb if k not in wb]

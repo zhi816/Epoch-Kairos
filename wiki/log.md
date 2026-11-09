@@ -1083,6 +1083,15 @@
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-042、EK-043、EK-044、EK-054、EK-055 全數標記為 `fixed`。
 
 
+## [2026-11-09 12:12] rule | 新增待辦清單 wiki/todo.md，日誌改為只寫不讀 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：經使用者同意，將交接事項與未完成工作自日誌分離。日誌已達 1,059 行、124 筆，且曾以條目充當交接清單（[2026-11-08 22:06]），接手者須讀入大量歷史才能找到待辦。
+  - **規範**：[AGENTS.md](../AGENTS.md) 第四章架構圖加入 `wiki/todo.md`；第六章新增第 4 節 Handoff（接手順序為 `git log --oneline -10`、整份閱讀 `wiki/todo.md`、必要時 `log_tail.py`；日誌只寫不讀，舊條目之決策不得視為現行指示；交接寫入待辦不寫入日誌；PowerShell 5.1 讀檔須加 `-Encoding UTF8`）；第七章新增第 5 節待辦清單格式（狀態 `open`／`waiting`／`doing`，完成或放棄即刪除並於日誌寫明編號，只新增或更新待辦而無其他完成工作時可不寫日誌）；Lint 新增第 10 條；第十章第 5、6、7 條同步。[git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 同步更新。
+  - **腳本**：新增 [stage_todo.py](../.agents/skills/git-sync-guardian/scripts/stage_todo.py)（逐條暫存待辦之新增、修改與刪除，`--next-id` 取號）與 [log_tail.py](../.agents/skills/git-sync-guardian/scripts/log_tail.py)（依條目輸出日誌最後幾筆，`--grep` 查特定事項）；[safe_commit_push.sh](../.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh) 新增 `--todo`；[lint_wiki.py](../.agents/skills/wiki-content-audit/scripts/lint_wiki.py) 檢查待辦格式，並將 todo.md 排除於孤島頁反向連結計算之外；[stage_issues.py](../.agents/skills/git-sync-guardian/scripts/stage_issues.py) 讀取工作目錄時改將 CRLF 統一為 LF，避免 `core.autocrlf=true` 時把 CRLF 寫入倉庫。
+  - **待辦轉錄**：逐項核對 [2026-11-07 22:47] 與 [2026-11-08 22:06] 兩份交接清單及 [index.md](index.md) 原「待辦與已知問題」一節。已完成者不轉錄（光遺傳學原始檔更名、Hopfield 與 CRISPR 原始檔補齊、`brain-machine-interface` 概念頁、滿語頁語族重複、`card_line` 與手機版 F 版型）；未完成者登記為 [todo.md](todo.md) TD-001（收錄 8 個原始 PDF 已入 raw/ 之立案條目）、TD-002（產出 web/ 展示層，等待 DESIGN.md 第八章定案）、TD-003（取得 Nagel 2002 原始 PDF）、TD-004（補填 6 筆日誌條目之模型版本）。index.md 該節改為指向 todo.md 與 issues.md；原述「raw/ 與 wiki/papers/ 100% 對齊」已不成立（raw/ 根目錄另有 11 份 PDF 尚無論文頁），一併移除。
+  - **驗證**：`lint_wiki.py` ERROR 0；於暫存資料夾之測試倉庫驗證 `stage_todo.py` 之修改、刪除、插入、略過他人修改，以及工作目錄為 CRLF 時之暫存結果。
+
 ## [2026-11-09 12:16] fix | 依原文與定理修訂量子糾錯碼與多信使天體物理概念頁 | #量子物理 #統計物理 #天體物理
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 3.8 Flash
