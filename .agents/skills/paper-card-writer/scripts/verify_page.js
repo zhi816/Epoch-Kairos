@@ -63,6 +63,18 @@
     const nm = d.querySelector('.card.cover .name');
     if (nm) out(nm.scrollHeight <= nm.clientHeight * 1.2, size, '封面論文名未被截斷（內容高 ' + nm.scrollHeight + 'px，顯示高 ' + nm.clientHeight + 'px）');
 
+    // 2c. 應為單行的元素不得折行，也不得超出自己的格子：Card 2 對照名稱、Card 4 大數字、Card 5 年份
+    //     （例：「1.14 PeV」在桌面被擠成兩行、「99.999%」超出右欄，元素仍在卡片內，2 抓不到）
+    const single = [...d.querySelectorAll('.card .row > b, .card .stat .v, .card .time p > b')];
+    // 以文字範圍量行數與右緣：這些元素是 grid 格子，高度會被同列的說明撐高，不能用元素高度推算行數
+    const bent = single.filter(e => {
+      const rg = d.createRange(); rg.selectNodeContents(e);
+      const lines = new Set([...rg.getClientRects()].filter(q => q.width > 0).map(q => Math.round(q.top))).size;
+      const tr = rg.getBoundingClientRect(), er = e.getBoundingClientRect();
+      return lines > 1 || tr.right > er.right + 1;
+    }).map(e => 'Card ' + ([...d.querySelectorAll('.card')].indexOf(e.closest('.card')) + 1) + '「' + e.textContent.trim() + '」');
+    out(bent.length === 0, size, '單行元素（Card 2 名稱、Card 4 大數字、Card 5 年份）共 ' + single.length + ' 個皆未折行或超出' + (bent.length ? '；折行或超出：' + bent.join('、') : ''));
+
     // 3. 卡片內公式框不得需要水平捲動（card-03-secret.md 第四節第 2 條）
     d.querySelectorAll('.card .fbox').forEach(fb => {
       const m = fb.querySelector('.m-disp') || fb;

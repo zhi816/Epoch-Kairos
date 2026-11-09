@@ -1465,3 +1465,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依使用者說明：首頁目前已暫定，剩下方群星檔案卡片牆待卡片完成後加入，GitHub Pages 等卡片完成後再上線。[DESIGN.md](../DESIGN.md) 第八章第 1 項補註；[todo.md](todo.md) 新增 TD-009（首頁加入卡片牆，等待 TD-008），TD-005 等待條件改為卡片牆加入後，TD-002 註明首頁已暫定。使用者要求以三個對話分工回填卡片（每個對話至少 6 篇、隨機、不限類別）：以 `random.Random(20261109)` 自 37 篇可寫論文抽 18 篇分為 A（本對話）、B、C 三組，光遺傳學與 LIGO 因無證據表不列入，其餘 19 篇待第二批；TD-008 改為 doing 並記錄分組、預覽埠與並行協調規則（只碰自己組別之卡片檔與原型、建置帶 slug、不改首頁與共用清單、提交加 `--log-heading`）。第一批 18 篇皆不需 `venue_short`。
+
+## [2026-11-09 23:03] update | 論文頁原型標題依逗號斷行，驗證腳本補單行元素檢查 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：撰寫第一批 A 組 IceCube 卡片時發現兩處工具缺口並修正：(1) paper-card-writer 規定 Card 2、5 標題之全形逗號為兩行斷點，但 `tools/build_paper_prototype.py` 未實作，標題依寬度自動折行，「帶電的會轉彎，光會被吸收」第二行只剩「收」；新增 `title_html()`，Card 2、3、5 標題於全形逗號後換行，重建 Hopfield、賽德克語兩頁原型（僅標題換行改變，自我檢查 ERROR 0）。(2) Card 4 大數字「1.14 PeV」在桌面被擠成兩行、「99.999%」超出右欄，元素仍在卡片內，`verify_page.js` 原本抓不到；新增單行元素檢查（Card 2 對照名稱、Card 4 大數字、Card 5 年份不得折行或超出自己的格子），以文字範圍量測行數以免 grid 格子被同列說明撐高而誤報；以含上述兩個數字之測試頁確認報 FAIL，Hopfield、賽德克語、IceCube 三頁皆 PASS。`references/paper-page.md` 量測項目與錯誤處理表同步。

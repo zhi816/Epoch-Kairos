@@ -230,6 +230,12 @@ def card_inline(s):
     return ''.join(out)
 
 
+def title_html(s):
+    """Card 2、3、5 之宋體標題：全形逗號後換行（paper-card-writer 之 card-02、card-05：逗號是兩行的斷點），
+    避免依寬度自動折行時把最後一兩個字單獨擠到第二行。"""
+    return esc(s).replace('，', '，<br>')
+
+
 def wrap(name, inner, cls=''):
     return ('      <section class="card%s" data-name="%s" aria-label="%s" aria-hidden="true">'
             '<div class="in">%s</div></section>') % (cls, esc(name), esc(name), inner)
@@ -269,7 +275,7 @@ def card2(f):
     rows += ''.join('<div class="row gap"><b>%s</b><span>%s</span></div>' % tuple(esc(x) for x in v.split('｜'))
                     for v in f.get((s, '缺口'), []))
     inner = '<span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">%s</span><div class="rows">%s</div><span class="ft" style="color:var(--ink)">%s</span>' % (
-        esc(one(f, s, '標題')), rows, esc(one(f, s, '結語')))
+        title_html(one(f, s, '標題')), rows, esc(one(f, s, '結語')))
     return wrap(CARD_NAMES[1], inner)
 
 
@@ -279,7 +285,7 @@ def card3(f, svg):
     inner = ('<span class="kc">03 ｜ 突破原理</span><span class="hd">%s</span>%s'
              '<div class="fbox"><span class="m-disp" data-tex="%s"></span></div>'
              '<span class="tx" style="margin-top:auto;color:var(--ink2)">%s</span>') % (
-        esc(one(f, s, '標題')), svg, esc(one(f, s, '公式')), card_inline(one(f, s, '說明')))
+        title_html(one(f, s, '標題')), svg, esc(one(f, s, '公式')), card_inline(one(f, s, '說明')))
     return wrap(CARD_NAMES[2], inner)
 
 
@@ -301,7 +307,7 @@ def card5(f):
     items = ''.join('<p><b>%s</b><span>%s</span></p>' % (esc(y), esc(t))
                     for y, t, _src in (v.split('｜') for v in f.get((s, '里程碑'), [])))
     inner = '<span class="kc">05 ｜ 典範轉移</span><span class="hd">%s</span><div class="time">%s</div><span class="ft">%s</span>' % (
-        esc(one(f, s, '標題')), items, esc(one(f, s, '註記')))
+        title_html(one(f, s, '標題')), items, esc(one(f, s, '註記')))
     return wrap(CARD_NAMES[4], inner)
 
 
