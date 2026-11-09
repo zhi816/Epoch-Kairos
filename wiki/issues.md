@@ -82,25 +82,29 @@
 
 ## 2012 CRISPR-Cas9
 
-### EK-012 | open | papers/2012-crispr-cas9.md | Card 1 | 過度表述
+### EK-012 | fixed | papers/2012-crispr-cas9.md | Card 1 | 過度表述
 - **問題**：寫更換 20 nt 即可「靶向任意基因」，省略 S. pyogenes Cas9 所需之 NGG PAM。
 - **來源**：[封存原文](../raw/2012-crispr-cas9.pdf)
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 Science 2012 pp. 816–817 查核後修訂 Frontmatter hook 與 Card 1：明確補列化膿性鏈球菌 Cas9 靶向序列必須緊鄰 5'-NGG-3' PAM 基序之絕對前提條件，消除「任意基因」無約束靶向之過度表述。證據表見 wiki/evidence/2012-crispr-cas9.md。
 
-### EK-013 | open | papers/2012-crispr-cas9.md | Card 4 | 原文不符
+### EK-013 | fixed | papers/2012-crispr-cas9.md | Card 4 | 原文不符
 - **問題**：把 PAM 近端錯配效應寫成單一錯配即可完全廢除切割，與原文對連續配對需求及遠端錯配容忍度之結果不符。
 - **來源**：[原文](https://doi.org/10.1126/science.1225829)
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 pp. 818–819 及 Figure 3D–E 查核修訂 Card 4：改述種子區特異性窗口，精確說明高效切割係要求緊鄰 PAM 之原間隔序列 3' 端維持「至少 13 個連續鹼基對完全互補」，而遠端（5' 端）可容忍多達 6 個連續錯配，更正原先「單一錯配即可完全廢除切割」之錯誤陳述。證據表見 wiki/evidence/2012-crispr-cas9.md。
 
-### EK-014 | open | papers/2012-crispr-cas9.md | Card 3 | 原文未支持
+### EK-014 | fixed | papers/2012-crispr-cas9.md | Card 3 | 原文未支持
 - **問題**：R-loop 自由能、切割速率常數與 K_d 等符號模型未見於原文，卻呈現為本文模型；可保留為教學推導，但須標明推導者、假設與來源。
 - **來源**：[封存原文](../raw/2012-crispr-cas9.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 3 公式小節：在 R-loop 自由能與雙結構域反應動力學公式前加註理論模型說明，明確標註此二公式為後續生物物理學文獻（如 Sternberg et al., 2014 等）對 Cas9 靶向機制的標準教學量化模型，非 2012 原文之直接方程。證據表見 wiki/evidence/2012-crispr-cas9.md。
 
-### EK-015 | open | papers/2012-crispr-cas9.md | Card 5 | 歸因／版本錯置
+### EK-015 | fixed | papers/2012-crispr-cas9.md | Card 5 | 歸因／版本錯置
 - **問題**：把 dCas9、nCas9 及鹼基／先導編輯工具家族寫成本篇建立；2012 原文報告的是雙 RNA 引導與嵌合單 RNA 切割，dCas9 調控平台見 2013 年後續研究。
 - **來源**：[封存原文](../raw/2012-crispr-cas9.pdf)、[Qi et al. 2013](https://doi.org/10.1016/j.cell.2013.02.022)
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 5 衍生工具生態系段落：精確說明 2012 本文係透過 D10A 與 H840A 突變完成催化結構域生化驗證，而將 dCas9 作為通用轉錄調控平台（CRISPRi，引 Qi et al., 2013 Cell）以及融合衍生之鹼基/先導編輯（David Liu 團隊 2016, 2019）明確標註為後續工具生態之重大延伸。證據表見 wiki/evidence/2012-crispr-cas9.md。
 
 ## 2013 IceCube 高能微中子
 

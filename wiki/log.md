@@ -782,3 +782,15 @@
 - **具體變更**：剩餘 17 篇 my-focus 論文頁之第 3–4 篇，逐篇以原文 PDF 全文核對後重寫 Card 1–6 與 hook，各建證據表，`verification` 改為 `verified`：
   - [Sälevä & Lignos 2024](papers/2024-finnish-northern-sami-mt-saleva.md)（EK-071）：KL 散度改為原文方向；芬蘭語單語資料改為正譯用途；刪除「必須全面採用標記回譯」，改述原文「標記在某些情況有益、在其他情況沒有」；題名改為 *Northern Sámi*；註明內文 33.80 與表 5 之 33.30 不一致。
   - [Pei et al. 2025](papers/2025-manchu-in-context-mt-pei.md)（EK-031、EK-072）：語族改為通古斯語；改述「語法書幾乎沒有幫助」（不顯著），下降者為 CoT；改述依序加入組件與溫度採樣；加密改為字母位移；補列人工評估與 §6 合成資料訓練 mT5 之結果。
+
+## [2026-11-09 09:41] fix | CRISPR-Cas9 2012 依原文核實 PAM 條件與種子區容忍度並建立證據表 | #基因工程 #生物科技
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 Science 2012 奠基論文原文（`raw/2012-crispr-cas9.pdf`）全面核實修訂 [wiki/papers/2012-crispr-cas9.md](papers/2012-crispr-cas9.md)。
+  - **EK-012**：Card 1 與 Frontmatter hook 補列化膿性鏈球菌 Cas9 目標序列必須緊鄰 5'-NGG-3' PAM 基序之絕對前提條件，修正「靶向任意基因」之過度表述。
+  - **EK-013**：Card 4 依原文 Figure 3D–E 改述種子區特異性，精確指出高效切割嚴格要求近端原間隔序列與 crRNA 維持「至少 13 個連續鹼基對完全互補」，遠端（5' 端）可容忍多達 6 個連續錯配，更正原先「單一錯配即可完全廢除切割」之錯誤陳述。
+  - **EK-014**：Card 3 在 R-loop 自由能與雙結構域反應動力學公式前加註理論模型說明，明確標註此二公式為後續生物物理學文獻（如 Sternberg et al., 2014 等）對 Cas9 靶向機制的標準教學量化刻畫，非 2012 原文之直接方程。
+  - **EK-015**：Card 5 典範轉移段落精確說明 2012 本文係透過 D10A 與 H840A 點突變完成催化結構域生化驗證，將 dCas9 作為通用轉錄調控平台（CRISPRi，引 Qi et al., 2013 Cell）及衍生之鹼基/先導編輯（David Liu 團隊 2016, 2019）明確標註為後續工具生態之重大延伸。
+  - 新增證據表 [wiki/evidence/2012-crispr-cas9.md](evidence/2012-crispr-cas9.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-012、EK-013、EK-014 與 EK-015 標記為 `fixed` 並追加處理紀錄。

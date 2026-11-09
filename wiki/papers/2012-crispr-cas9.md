@@ -12,7 +12,7 @@ domain: "bio"
 domain_tags: ["#基因工程", "#生物科技"]
 concepts: ["programmable-cellular-engineering", "ai-for-structural-biology"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1126/science.1225829"
 key_papers:
@@ -20,7 +20,7 @@ key_papers:
   - "Jinek, M., Chylinski, K., Fonfara, I., Hauer, M., Doudna, J. A., & Charpentier, E. (2012) A Programmable Dual-RNA–Guided DNA Endonuclease in Adaptive Bacterial Immunity. Science 337(6096):816-821. https://doi.org/10.1126/science.1225829"
   - "Cong, L. et al. (2013) Multiplex Genome Engineering Using CRISPR/Cas Systems. Science 339(6121):819-823. https://doi.org/10.1126/science.1231143"
   - "Mali, P. et al. (2013) RNA-Guided Human Genome Engineering via Cas9. Science 339(6121):823-826. https://doi.org/10.1126/science.1232033"
-hook: "揭示細菌免疫蛋白 Cas9 僅需一段人工合成的單鏈引導 RNA（sgRNA），即可在任意指定序列位置精準剪斷雙股 DNA，將基因工程從繁瑣的蛋白質設計轉化為簡單的 RNA 序列編程。"
+hook: "揭示細菌免疫蛋白 Cas9 僅需一段人工合成的單鏈引導 RNA（sgRNA），即可精準剪斷緊鄰 PAM 基序之指定雙股 DNA，將基因工程從繁瑣的蛋白質設計轉化為簡單的 RNA 序列編程。"
 ---
 
 # CRISPR-Cas9 基因剪刀誕生：可編程雙 RNA 引導之 DNA 核酸內切酶
@@ -34,7 +34,7 @@ hook: "揭示細菌免疫蛋白 Cas9 僅需一段人工合成的單鏈引導 RNA
 ---
 
 ## Card 1 ｜ 時代銘文 (The Hook)
-在 2012 年之前，若想修改生物體內的某個特定基因，科學家必須針對每一段目標 DNA 重新設計並改造一顆全新的蛋白質（如 ZFN 或 TALEN），耗時數月且成本高昂。Jinek、Doudna 與 Charpentier 團隊在 2012 年證明，化膿性鏈球菌（*Streptococcus pyogenes*）的第 II 型 CRISPR-Cas9 系統是一個由雙 RNA 引導的 DNA 內切酶，並進一步將兩條 RNA 融合成單一嵌合引導 RNA（sgRNA）。從此，靶向任意基因只需更換一段 20 個核苷酸的 RNA 序列。
+在 2012 年之前，若想修改生物體內的某個特定基因，科學家必須針對每一段目標 DNA 重新設計並改造一顆全新的蛋白質（如 ZFN 或 TALEN），耗時數月且成本高昂。Jinek、Doudna 與 Charpentier 團隊在 2012 年證明，化膿性鏈球菌（*Streptococcus pyogenes*）的第 II 型 CRISPR-Cas9 系統是一個由雙 RNA 引導的 DNA 內切酶，並進一步將兩條 RNA 融合成單一嵌合引導 RNA（sgRNA）。從此，靶向含有簡短 PAM 基序（$\text{5'-NGG-3'}$）之任意目標基因位點，只需更換一段 20 個核苷酸的 RNA 導向序列。
 
 ---
 
@@ -57,6 +57,8 @@ hook: "揭示細菌免疫蛋白 Cas9 僅需一段人工合成的單鏈引導 RNA
    * 切割啟動的絕對前提是非互補股目標序列 3' 端緊鄰一個簡短的原間隔序列鄰近基序（PAM，化膿性鏈球菌 Cas9 為 $\text{5'-NGG-3'}$）。作者將 crRNA 的 3' 端與 tracrRNA 的 5' 端以四核苷酸環（Tetraloop, $\text{GAAA}$）連接，創造出單一嵌合引導 RNA（Single-Guide RNA, sgRNA），將三元系統簡化為「Cas9 蛋白 ＋ sgRNA」二元可編程系統。
 
 ### 1. R-Loop 形成之熱力學自由能判準 (Thermodynamics of R-Loop Formation)
+
+> **理論模型說明**：以下熱力學與動力學符號方程為後續生物物理學文獻（如 Sternberg et al., 2014 等）對 Cas9 靶向機制的標準教學量化刻畫，非 2012 年原始論文之直接方程。
 
 Cas9-sgRNA 核糖核蛋白（RNP）首先透過蛋白質結構域識別非互補股上的 $\text{5'-NGG-3'}$ PAM 基序，隨後自 PAM 鄰近之種子區（Seed Region，第 1 至 10–12 個核苷酸）定向解旋雙股 DNA 並形成 RNA-DNA 雜交 R-Loop。其構型轉換自由能 $\Delta G_{\text{total}}$ 可表為：
 
@@ -85,7 +87,7 @@ $$\begin{aligned}
 ### 本篇論文（Jinek et al. 2012）之核心證據
 * **雙催化位點點突變驗證（$\text{D10A}$ 與 $\text{H840A}$）**：在質體與寡核苷酸體外切割實驗中，野生型 Cas9 產生線性化雙股斷裂（DSB）；$\text{Cas9(D10A)}$ 僅切割互補股、$\text{Cas9(H840A)}$ 僅切割非互補股，均只產生開環單股切口質體（Nicked Open Circular Plasmid）；雙突變體 $\text{Cas9(D10A/H840A)}$ 則完全喪失切割活性，嚴格鎖定兩結構域的催化分工。
 * **切割位點鹼基級定位（PAM 上游 3 bp）**：透過高解析度變性聚丙烯醯胺凝膠電泳（Denaturing PAGE）定序，確認 HNH 與 RuvC 均精準在距離 $\text{5'-NGG-3'}$ PAM 上游第 3 個核苷酸處切斷磷酸二酯鍵。
-* **種子區（Seed Sequence）特異性窗口測試**：系統性掃描目標序列單點突變，證實距離 PAM 最近的 8–12 個鹼基對（種子區）對錯配極度敏感，單一鹼基錯配即可完全廢除切割活性；而遠離 PAM 的 5' 端前幾個鹼基則具一定容錯度。
+* **種子區（Seed Sequence）特異性窗口與連續配對需求**：系統性分析目標序列突變對體外切割與體內質體消除之影響（Figure 3D–E），證實距離 PAM 最近的原間隔序列 3' 端存在關鍵「種子區」：高效切割嚴格要求 crRNA 與緊鄰 PAM 的目標 DNA 位點間維持**至少 13 個連續鹼基對的完全互補**；而在遠離 PAM 的 5' 端區域，即使存在多達 6 個連續錯配（Mismatches）仍可容忍切割活性，推翻了單一任意錯配必然完全廢除切割的簡化假設。
 * **多目標編程與 GFP 基因家族精準切割**：作者設計 5 條針對綠色螢光蛋白（GFP）基因不同位點的嵌合 sgRNA（Chimera A），在無須更動 Cas9 蛋白的情況下，100% 在預期位置切出對應長度的 DNA 片段，直接證明其通用可編程性。
 
 > **範圍界定**：本篇論文（Jinek et al. 2012）之實驗全數為純化蛋白與體外（in vitro）DNA 切割驗證，並在文末明確預見並提出將此嵌合 sgRNA-Cas9 系統用於真核生物基因組編輯之構想。
@@ -99,7 +101,7 @@ $$\begin{aligned}
 
 ## Card 5 ｜ 時代典範轉移 (The Revolution)
 * **生命科學研究的民主化與普及化**：將基因敲除、敲入與全基因組功能篩選（CRISPR KO/CRISPRi/CRISPRa 篩選庫）的時間從數月縮短至數天，成本降至數十美元，重塑了全球每一個分子生物學實驗室的日常工作流。
-* **衍生工具生態系的爆發**：本篇建立的 $\text{dCas9}$（去催化活性 Cas9）與 $\text{nCas9}$（單股切口酶）成為萬用分子底盤，衍生出表觀遺傳調控、活細胞染色質成像、鹼基編輯與先導編輯等完整技術家族。
+* **衍生工具生態系的爆發**：本篇透過催化位點突變（$\text{D10A}$ 與 $\text{H840A}$）鑑定的單股切口酶（$\text{nCas9}$）與雙突變去催化蛋白（後續稱為 $\text{dCas9}$），為後續工具開發奠定了分子底盤。後續學者將其進一步擴展為通用平台：例如 Qi et al. (2013, *Cell*) 首次利用 dCas9 建立可編程轉錄抑制（CRISPRi）調控系統，David Liu 團隊等則以 nCas9 融合催化結構域開創鹼基編輯與先導編輯，推動了整個 CRISPR 技術家族的繁榮（此屬後續應用生態之重大延伸）。
 * **農業育種與臨床遺傳病根治**：從抗病耐旱作物的非轉基因精準育種，到鐮刀型貧血、轉甲狀腺素蛋白澱粉樣變性（ATTR）及罕見代謝疾病之體內（in vivo）基因療法，人類正式邁入「可編寫基因組」時代。
 
 ---
