@@ -1169,3 +1169,8 @@
   - 修復 UniMERNet 與新版 HuggingFace transformers (4.57+) 之快取相容性問題，經實測 1985-macroscopic-quantum-tunneling.pdf 成功完成 4 頁版面預測、120 條 LaTeX 數學公式辨識、OCR 與 LayoutReader 閱讀順序重組。
   - 更新 [.agents/skills/paper-pdf-parser/SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md)、[setup_env.py](../.agents/skills/paper-pdf-parser/scripts/setup_env.py) 與 [parse_pdf.py](../.agents/skills/paper-pdf-parser/scripts/parse_pdf.py)，支援 Windows 原生 PowerShell 自動探測並透明調用 WSL2 隔離環境。
   - 於 [.agents/skills/academic-paper-translator/scripts/extract_paper.py](../.agents/skills/academic-paper-translator/scripts/extract_paper.py) 建立階梯式結構抽取工具，確保兩項技能與全專案流程無縫銜接。
+
+## [2026-11-09 15:22] rule | paper-pdf-parser 新增引擎選擇與草稿兩條核心原則 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：依使用者指示，於 [paper-pdf-parser](../.agents/skills/paper-pdf-parser/SKILL.md) 第二章新增「兩條核心原則（動手前必讀）」：原則一，預設用 PyMuPDF 定位頁碼（每頁不到 1 秒、附頁碼標記），MinerU 只用於純圖片 PDF、文字層亂碼與抄寫長公式三種情況，以免浪費時間；原則二，兩種引擎的輸出一律只當草稿，數字、公式、引文與頁碼須回原 PDF 頁面核對後才可寫入，並列出 [2026-11-09 15:13] 實測所見「看起來正確、其實錯」之實例，明訂不得以解析結果確認解析結果、亦不得以兩種引擎結果一致代替回原頁核對。原第二至六章依序改為第三至七章，用法章之重複段落改為指向第二章。Skill 描述（正本與 [.claude 轉介檔](../.claude/skills/paper-pdf-parser/SKILL.md)）、[AGENTS.md](../AGENTS.md) Skill 一覽與 [parse_pdf.py](../.agents/skills/paper-pdf-parser/scripts/parse_pdf.py) 輸出檔頭之提醒同步改為相同說法。

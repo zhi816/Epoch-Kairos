@@ -1,7 +1,7 @@
 ---
 name: paper-pdf-parser
 description: >-
-  Extract academic paper PDFs into searchable Markdown with PDF page markers (PyMuPDF; optional local MinerU for layout, formulas and tables), so wiki-content-audit and academic-paper-translator can locate claims, numbers and pages quickly. The output is a locating aid, never evidence. Runs locally only on macOS and Windows.
+  Extract academic paper PDFs into searchable Markdown with PDF page markers so wiki-content-audit and academic-paper-translator can locate claims, numbers and pages. Default to PyMuPDF; use local MinerU only for image-only PDFs, garbled text layers, or drafting long formulas. All output is a draft, never evidence: verify every number, formula and page against the original PDF before writing it anywhere. Runs locally only on macOS and Windows.
 ---
 
 # paper-pdf-parser（轉介檔）

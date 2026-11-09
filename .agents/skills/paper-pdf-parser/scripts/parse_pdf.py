@@ -16,7 +16,7 @@
 
 一律只在本機解析：本腳本不會傳入 MinerU 的 --remote、--remote-url 或 --api-key，
 因 raw/ 含未公開之學位論文與私人資料。輸出預設為 work/parsed/<檔名>/（已列入 .gitignore）。
-輸出僅供搜尋與定位，不得作為證據；證據表一律回原 PDF 引用印刷頁碼、表或圖。
+輸出一律只當草稿，僅供搜尋與定位，不得作為證據；數字、公式、引文與頁碼一律回原 PDF 頁面核對。
 
 結束代碼：0 成功；1 輸入或環境錯誤；2 解析失敗。
 """
@@ -112,7 +112,7 @@ def header(src, engine, pages_desc, extra=''):
             'engine: %s\n'
             'pages: %s；pdf-page 為 PDF 檔內頁序，不一定等於期刊印刷頁碼\n'
             'generated: %s (UTC+8)\n'
-            'note: 本檔為搜尋與定位輔助，不得作為證據。證據表一律回原 PDF 核對，引用印刷頁碼、表或圖。\n'
+            'note: 本檔是草稿，僅供搜尋與定位，不得作為證據。數字、公式、引文與頁碼一律回原 PDF 頁面核對後才可寫入。\n'
             '%s-->\n') % (src, engine, pages_desc, taipei_now(), extra)
 
 

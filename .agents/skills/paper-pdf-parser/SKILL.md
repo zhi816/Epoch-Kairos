@@ -1,7 +1,7 @@
 ---
 name: paper-pdf-parser
 description: >-
-  Extract academic paper PDFs into searchable Markdown with PDF page markers (PyMuPDF; optional local/WSL2 MinerU for layout, formulas and tables), so wiki-content-audit and academic-paper-translator can locate claims, numbers and pages quickly. The output is a locating aid, never evidence. Runs locally only on macOS and Windows.
+  Extract academic paper PDFs into searchable Markdown with PDF page markers so wiki-content-audit and academic-paper-translator can locate claims, numbers and pages. Default to PyMuPDF; use local or WSL2 MinerU only for image-only PDFs, garbled text layers, or drafting long formulas. All output is a draft, never evidence: verify every number, formula and page against the original PDF before writing it anywhere. Runs locally only on macOS and Windows.
 ---
 
 # Paper PDF Parser（論文 PDF 文字抽取與頁碼定位）
@@ -13,17 +13,38 @@ description: >-
 * `wiki-content-audit` 建立證據表前，先搜尋主張出處並記下頁碼（寫作模式第 1、2 步、查核模式）。
 * `academic-paper-translator` 盤點來源時，快速清點章節、表格與公式。
 
-**輸出只是定位輔助，不是證據。** 證據表一律回原 PDF 核對，引用印刷頁碼、表或圖；數字、限定語與公式以原 PDF 為準。
+## 二、兩條核心原則（動手前必讀）
 
-## 二、硬性規則
+### 原則一：預設用 PyMuPDF，MinerU 只在三種情況使用
+
+定位頁碼、搜尋數字與句子，PyMuPDF 就夠了：每頁不到 1 秒，而且附 `pdf-page` 頁碼標記。MinerU 每頁約 2 至 16 秒，輸出又不含頁碼標記，不得拿來對整篇論文做一般定位，以免浪費時間。只有下列三種情況才用 MinerU：
+
+1. **純圖片 PDF**：沒有文字層，PyMuPDF 讀不到字。
+2. **文字層亂碼**：字型編碼錯誤，PyMuPDF 讀出亂碼（例如字母整體位移）。
+3. **抄寫長公式**：要把原文公式轉成 KaTeX 時，用 MinerU 產生草稿，並以 `--pages` 只解析含該公式的頁面。
+
+前兩種情況 `auto` 會自動判斷並改用 MinerU，不必手動指定；第三種須明確加 `--engine mineru --pages <頁>`。
+
+### 原則二：輸出一律只當草稿，不得盲目相信
+
+兩種引擎的輸出都是程式或模型對 PDF 的判讀，不是原文。**證據表與論文頁中的數字、公式、引文與頁碼，一律回原 PDF 頁面核對後才可寫入。** 最危險的錯誤不是亂碼，而是「看起來正確、其實錯」的內容。2026-11-09 實測已見：
+
+* MinerU 把行內「threshold $U_i$」轉成 `\overline{U_i^-}`、「$U_i = 0$」轉成 `U_i = \dot{0}`：LaTeX 合法，內容錯誤（Hopfield 1982）。
+* 兩種引擎都把跨兩欄的訓練成本 $2.3 \cdot 10^{19}$ 錯拆為兩格，看似英德、英法各有一個值（Transformer 2017 Table 2）。
+* PyMuPDF 在掃描版把 ≠ 抽成 #，左右兩欄文字混排（Hopfield 1982）。
+* `pdf-page` 是 PDF 檔內頁序，不等於期刊印刷頁碼。
+
+核對時直接看原 PDF 的頁面影像。不得以解析結果確認解析結果，也不得以「兩種引擎結果一致」代替回原頁核對：兩者可能犯同一個錯，如上述錯拆的儲存格。
+
+## 三、硬性規則
 
 1. **只在本機解析**：不得使用 MinerU 的 `--remote`、`--remote-url`、`--api-key` 或任何線上解析服務。`raw/` 含未公開之學位論文與私人資料，上傳即等同公開。`parse_pdf.py` 不會傳入這些參數，直接呼叫 MinerU 時亦同。
 2. **輸出不進版控**：預設輸出至 `work/parsed/<檔名>/`，該目錄已列入 `.gitignore`。不得把解析結果複製進 `wiki/`、`web/` 或 `raw/`；`raw/` 仍為唯讀。
 3. **頁碼要換算**：`pdf-page` 是 PDF 檔內頁序，常與期刊印刷頁碼不同（例如 Hopfield 1982 的 PDF 第 2 頁為印刷頁 2554，第 1 頁是封面）。寫入證據表前回原 PDF 確認印刷頁碼。
-4. **文字層不可靠時看原圖**：掃描版論文的公式、上下標與雙欄順序常抽錯；腳本會標出幾乎沒有文字層的頁面。遇到這些頁面、表格或公式，一律直接看原 PDF 頁面。
-5. **下載模型須先徵得使用者同意**：MinerU 模型存於家目錄 `~/.mineru/models` 或 `~/.cache/magic-pdf/models`（不在倉庫內），`basic` 檔位約 0.9 GB、`standard` 檔位約 2.1 GB。未經使用者同意不得擅自大量下載模型權重。
+4. **文字層不可靠時看原圖**：掃描版論文的公式、上下標與雙欄順序常抽錯；腳本會在終端與 content.md 開頭標出無文字層或疑似亂碼的頁面。遇到這些頁面、表格或公式，一律直接看原 PDF 頁面。
+5. **下載模型須先徵得使用者同意**：MinerU 模型存於家目錄 ~/.mineru/models 或 ~/.cache/magic-pdf/models（不在倉庫內），asic 檔位約 0.9 GB、standard 檔位約 2.1 GB（2026-11-09 查 HuggingFace）。未經使用者同意不得擅自大量下載模型權重。
 
-## 三、環境
+## 四、環境
 
 先檢查環境（只讀不改，會列出缺少項目的安裝指令）：
 
@@ -65,7 +86,7 @@ uv pip install pymupdf pymupdf4llm --python .venv-mineru\Scripts\python.exe
   # 2. Windows 端之 parse_pdf.py 腳本會自動辨識並無縫調用 WSL2 引擎，無需手動切換終端。
   ```
 
-## 四、用法
+## 五、用法
 
 ```bash
 # 全文（預設 auto：先用 PyMuPDF；過半頁面無文字層或為亂碼且 MinerU 可用時改用 MinerU，並註明）
@@ -78,7 +99,7 @@ python .agents/skills/paper-pdf-parser/scripts/parse_pdf.py raw/1982-hopfield-ne
 python .agents/skills/paper-pdf-parser/scripts/parse_pdf.py raw/<檔名>.pdf --engine mineru --pages 3-4
 ```
 
-**何時用 MinerU**：定位頁碼、搜尋數字一律用預設（PyMuPDF）。只有三種情況用 MinerU：純圖片 PDF、文字層亂碼（字型編碼錯誤）的頁面，以及要把長公式抄成 KaTeX 時先產生草稿。MinerU 的輸出同樣只是草稿，引用前逐一回原頁核對。
+引擎選擇依第二章原則一；任何輸出都依原則二回原 PDF 核對。
 
 參數：`--pages`（如 `1-5,8`，預設 `all`）、`--engine`（`auto`／`pymupdf`／`mineru`）、`--output-dir`（預設 `work/parsed/<檔名>/`）。結束代碼：0 成功、1 輸入或環境錯誤、2 解析失敗。
 
@@ -89,7 +110,7 @@ python .agents/skills/paper-pdf-parser/scripts/parse_pdf.py raw/<檔名>.pdf --e
 * `meta.json`：來源、實際使用之引擎、頁碼與時間。
 * `mineru/`（僅 MinerU 引擎）：MinerU 原始輸出。其 Markdown 不含頁碼標記，定位頁碼時另以 `--engine pymupdf` 產生對照。
 
-## 五、引擎差異與已知限制
+## 六、引擎差異與實測紀錄
 
 | | PyMuPDF（pymupdf4llm） | MinerU（本機 / WSL2） |
 |---|---|---|
@@ -108,7 +129,7 @@ python .agents/skills/paper-pdf-parser/scripts/parse_pdf.py raw/<檔名>.pdf --e
 * **Aghion 1992 與 Acemoglu 2001 之封存檔**：前者為純圖片、後者封面與摘要兩頁為字型編碼亂碼，PyMuPDF 皆讀不到；MinerU 可正確 OCR。也因此查出兩份封存檔與證據表所稱版本不符（見 `wiki/issues.md` EK-088、EK-089）。
 * **Martinis 1985（Windows WSL2 實測）**：使用 WSL2 Ubuntu 隔離環境（Python 3.10 + `magic-pdf[full]` + CPU 模式），實測 4 頁版面預測、120 條 LaTeX 數學公式辨識（UniMERNet）、PaddleOCR 與 LayoutReader 閱讀順序重組完全成功通過。
 
-## 六、腳本
+## 七、腳本
 
 * `scripts/setup_env.py`：環境檢查，列出缺少項目與對應平台之安裝指令（支援偵測本機 venv 與 Windows WSL2）；不自行安裝或下載。
 * `scripts/parse_pdf.py`：解析 CLI。支援本機 `mineru-kit parse` 與 Windows WSL2 `magic-pdf` 隔離解析，並支援自動降級 PyMuPDF。
