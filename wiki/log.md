@@ -753,3 +753,15 @@
 - **具體變更**：使用者指定本代理負責剩餘 17 篇 my-focus 論文頁，本筆為第 1–2 篇。逐篇以原文 PDF 全文核對後重寫 Card 1–6 與 hook，各建證據表，`verification` 改為 `verified`：
   - [謝富惠 2022](papers/2022-formosan-say-verbs-hsieh.md)（EK-069）：英文題名改為原文 *On the Semantics of SAY Verbs in Formosan Languages*；刪除無來源之集合式與向量插值式，改述圖一至圖四之語義延伸機制與施為動詞假說；Card 6 原列之泛泰雅語例詞有誤（`kema` 為卑南語），改為原文之泰雅語 `mha`、賽德克語 `mesa`、太魯閣語 `mesa`／`sun`，並補述其兼具「做」義。
   - [林鴻瑞 2024](papers/2024-formosan-temporal-words-lim.md)（EK-070）：英文題名改為原文 *A Preliminary Comparative Study of Formosan Temporal Words*；刪除無來源之代數式，改列五個分合次類型與三種標記類型；Card 6 改正泰雅語 `sa` 為實現標記、泛泰雅語「昨天」「明天」詞根不同；註明原文表九與表十三對賽夏語歸類不一致。
+
+## [2026-11-09 09:35] fix | Woodford 2007 依原文核實校準參數與貨幣控制表述並建立證據表 | #宏觀經濟學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 NBER WP 13329 / Woodford 2007 原文全面核實修訂 [wiki/papers/2007-woodford-inflation-dynamics.md](papers/2007-woodford-inflation-dynamics.md)。
+  - **EK-008**：Card 1 與 Frontmatter hook 修正「嚴格證明決定權毫不動搖」之過度表述，貼合原文摘要「系統檢驗金融、商品與要素全球化對貨幣傳導機制三大環節（LM、IS、AS 方程）之影響，論證全球化不太可能削弱央行控制本國通膨動態的能力」。
+  - **EK-009**：Card 3 明確交代基準第 1 節直接以泰勒利率規則表示政策，第 2 節方進一步建構貨幣需求模型論證準備金行政付息對操作目標之保障；替換拼湊之未標號公式為本文推導之對數線性化開放動態 AD 方程（式 1.27）與開放 AS 關係（式 3.11/3.19）；確定性條件改依本文系統特徵根求解說明（$\phi_\pi > 1$），並註明廣義確定性不等式屬 Woodford 2003 經典封閉經濟微觀基礎。
+  - **EK-010**：Card 4 校準參數更正為原文之跨期替代彈性 $\sigma=6.37$（相對風險規避係數約 $0.157$）、$\kappa=0.0236$、$\beta=0.99$、年化泰勒係數 $\phi_\pi=2, \phi_y=1$，開放度比較更正為 $\gamma \in \{0, 0.5, 1.0\}$；修正「完全隔絕」表述，精確說明僅在 $\sigma=1$ 特例下總需求解耦，實證校準下外國衝擊會外溢，但央行可透過調整利率有效對沖外溢影響。
+  - **EK-011**：Card 5 典範轉移段落明確將「終結貨幣主義奠定通膨目標制」歸為 Woodford 系列奠基理論（以 2003 年《Interest and Prices》為代表），將點陣圖與前瞻指引實踐標註為該微觀基礎理論之後續政策延伸應用，並釐清開放經濟貨幣政策獨立性結論與國際協調最優性之文獻界線。
+  - 新增證據表 [wiki/evidence/2007-woodford-inflation-dynamics.md](evidence/2007-woodford-inflation-dynamics.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-008、EK-009、EK-010 與 EK-011 標記為 `fixed` 並追加處理紀錄。
