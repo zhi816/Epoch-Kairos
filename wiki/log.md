@@ -1160,3 +1160,8 @@
   - 實測並對照原 PDF 頁面影像：Hopfield 1982 掃描版之式 (1)–(4) 正確轉為 LaTeX，但同頁兩處行內符號被轉成形式合法而內容錯誤之 LaTeX；Transformer 2017 之式 (1) 與 Table 2 BLEU 數值正確，跨欄之訓練成本被錯拆為兩格（PyMuPDF 亦同）。結果與使用建議寫入 [SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md) 第四、五章，並修正模型大小說明（`basic` 約 0.9 GB、`standard` 約 2.1 GB）。
   - 逐篇比對 `raw/` 封存檔首頁與論文頁標題，查出兩份封存檔與證據表所稱版本不符，登記於 [wiki/issues.md](issues.md)：EK-088，`raw/1992-creative-destruction-aghion.pdf` 實為 Bertola, NBER WP 3851（1991），並非 Aghion and Howitt (1992)；EK-089，`raw/2001-colonial-origins-acemoglu.pdf` 為 NBER WP 7771（2000 年 6 月）工作論文版，證據表卻引用 AER 2001 頁碼。兩頁 `verification` 由 `verified` 改為 `issues`；論文頁內容未改。
 - **待使用者處理**：`raw/` 為唯讀，建議使用者將兩份封存檔換為正式版（Econometrica 60(2): 323–351；AER 91(5): 1369–1401），換檔後再依原文重核兩份證據表。
+
+## [2026-11-09 15:22] rule | paper-pdf-parser 新增引擎選擇與草稿兩條核心原則 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：依使用者指示，於 [paper-pdf-parser](../.agents/skills/paper-pdf-parser/SKILL.md) 第二章新增「兩條核心原則（動手前必讀）」：原則一，預設用 PyMuPDF 定位頁碼（每頁不到 1 秒、附頁碼標記），MinerU 只用於純圖片 PDF、文字層亂碼與抄寫長公式三種情況，以免浪費時間；原則二，兩種引擎的輸出一律只當草稿，數字、公式、引文與頁碼須回原 PDF 頁面核對後才可寫入，並列出 [2026-11-09 15:13] 實測所見「看起來正確、其實錯」之實例，明訂不得以解析結果確認解析結果、亦不得以兩種引擎結果一致代替回原頁核對。原第二至六章依序改為第三至七章，用法章之重複段落改為指向第二章。Skill 描述（正本與 [.claude 轉介檔](../.claude/skills/paper-pdf-parser/SKILL.md)）、[AGENTS.md](../AGENTS.md) Skill 一覽與 [parse_pdf.py](../.agents/skills/paper-pdf-parser/scripts/parse_pdf.py) 輸出檔頭之提醒同步改為相同說法。
