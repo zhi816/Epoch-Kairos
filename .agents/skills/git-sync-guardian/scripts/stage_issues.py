@@ -47,6 +47,11 @@ def norm(s):
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):
+        try:  # Windows 主控台預設編碼可能無法輸出中文
+            stream.reconfigure(encoding='utf-8')
+        except Exception:
+            pass
     ap = argparse.ArgumentParser(description='只暫存 wiki/issues.md 中指定編號的條目')
     ap.add_argument('ids', nargs='+', help='要提交的問題編號，例如 EK-069')
     ap.add_argument('--dry-run', action='store_true', help='只列出結果，不寫入暫存區')

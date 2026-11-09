@@ -1212,3 +1212,12 @@
   - EK-082：修正記錄將原文「盡量避免重疊」寫成絕對的「無重疊」；EK-084：正文和附錄對全量詞典筆數分別列 2,375 與 2,377，證據表需註明原文差異。
   - EK-081：原論文署名頁未列王任慶教授職稱，需補充職稱來源或移除該稱謂。EK-085 的四階段訓練順序與主要資料量核對符合原文，維持 `fixed`。
   - 本次只更新 `wiki/issues.md` 與本日誌，未修改論文頁、概念頁或證據表；修正工作留待後續處理。
+
+## [2026-11-09 16:41] config | 優化 git-sync-guardian 跨平台 Python 工具鏈與防靜默過期檢查 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Argon (Medium)
+- **具體變更**：
+  - 新增跨平台純 Python 版主控腳本 [status.py](../.agents/skills/git-sync-guardian/scripts/status.py)、[sync.py](../.agents/skills/git-sync-guardian/scripts/sync.py) 與 [safe_commit_push.py](../.agents/skills/git-sync-guardian/scripts/safe_commit_push.py)，參數與行為與原 `.sh` 版完全對齊，讓 Windows PowerShell 與沙盒環境（如 Codex、Antigravity）可直接透過 `python` 執行，免除啟動外部 WSL Bash 或 Git Bash 之沙盒攔截與提權耗時。
+  - 修正 [status.sh](../.agents/skills/git-sync-guardian/scripts/status.sh) 與 [status.py](../.agents/skills/git-sync-guardian/scripts/status.py) 過去以 `2>/dev/null || true` 靜默吞掉 `git fetch` 錯誤的問題：當網路中斷或沙盒封鎖 `.git/FETCH_HEAD` 寫入權限時，立即印出 Git 錯誤訊息、標記 `STALE - fetch failed` 警告並回傳非零退出碼（`exit 1`，離線檢視可加 `--allow-offline`），防止代理誤將本機快取當成最新遠端狀態。
+  - 為 [stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py)、[stage_issues.py](../.agents/skills/git-sync-guardian/scripts/stage_issues.py) 與 [merge_log.py](../.agents/skills/git-sync-guardian/scripts/merge_log.py) 補齊 `sys.stdout` / `sys.stderr` 之 UTF-8 編碼重設（`reconfigure(encoding='utf-8')`），避免於 Windows PowerShell 單獨執行時因系統預設碼頁（cp950）引發編碼錯誤。
+  - 同步更新 [SKILL.md](../.agents/skills/git-sync-guardian/SKILL.md) 與 [AGENTS.md](../AGENTS.md) 第十章工具鏈說明。

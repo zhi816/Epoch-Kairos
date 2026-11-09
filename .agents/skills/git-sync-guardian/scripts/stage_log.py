@@ -89,6 +89,11 @@ def with_work_trailing(base_entry, work_entry, eol):
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):
+        try:  # Windows 主控台預設編碼可能無法輸出中文
+            stream.reconfigure(encoding='utf-8')
+        except Exception:
+            pass
     ap = argparse.ArgumentParser(description='只暫存指定代理寫的 wiki/log.md 條目')
     ap.add_argument('agent', help='執行代理名稱的一部分，例如 "Claude Code"、"Codex"、"Antigravity"')
     ap.add_argument('--heading', action='append', default=[], help='只選取指定的新日誌標題行；可重複指定')

@@ -60,16 +60,27 @@ description: >-
 
 ## 三、自動化工具鏈指令（Automated Toolchain）
 
-本技能於 `scripts/` 目錄內建三個強健之自動化腳本，供 AI 與使用者直接調用：
+本技能於 `scripts/` 目錄內建強健之自動化腳本，同時提供**跨平台 Python 版（`.py`）**與 **Bash 版（`.sh`）**，參數與行為完全一致。
+- **Windows / PowerShell 或沙盒環境（如 Codex、Antigravity）**：**優先直接以 `python ...py` 呼叫**，無須啟動 WSL Bash 或 Git Bash，可避開沙盒攔截外部 `bash.exe` 的權限耗時。
+- **沙盒 `.git` 寫入權限提醒**：`git fetch`、`git commit`、`git push` 需要寫入 `.git/`（如 `.git/FETCH_HEAD`、`.git/index.lock`）與存取網路。若沙盒預設封鎖 `.git/` 寫入，請於第一步執行 `status.py` 時一併申請 `.git` 寫入與網路權限。
 
 ### 1. 雙倉庫狀態審計
 ```bash
+# 跨平台 Python 版（Windows PowerShell 首選）
+python .agents/skills/git-sync-guardian/scripts/status.py
+
+# Bash 版（macOS / Linux / Git Bash）
 ./.agents/skills/git-sync-guardian/scripts/status.sh
 ```
 * **功能**：同時對主倉庫與 `raw/` 私有倉庫執行 `fetch`，報告當前分支、本機與遠端 commit 雜湊、領先（Ahead）與落後（Behind）數值，以及未暫存之修改檔案。
+* **防靜默過期保護**：若 `git fetch origin main` 因網路中斷或沙盒阻擋 `.git/FETCH_HEAD` 寫入而失敗，腳本**不會靜默忽略**，會立即印出 Git 錯誤訊息、標示 `STALE - fetch failed` 警告，並在報告完本機狀態後以非零代碼（`exit 1`）結束，防止 AI 誤把過期的快取狀態當成最新遠端狀態（若確屬離線檢視，可加 `--allow-offline`）。
 
 ### 2. 安全合流提取（Safe Sync & Pull）
 ```bash
+# 跨平台 Python 版（Windows PowerShell 首選）
+python .agents/skills/git-sync-guardian/scripts/sync.py
+
+# Bash 版
 ./.agents/skills/git-sync-guardian/scripts/sync.sh
 ```
 * **功能**：依序對主倉庫與 `raw/` 私有倉庫進行遠端更新檢查：
@@ -80,11 +91,14 @@ description: >-
 
 ### 3. 原子提交並推送（Atomic Safe Commit and Push）
 ```bash
-# 主倉庫：明確列出自己的檔案；列出 wiki/log.md 時只會提交 --agent 指定代理的條目
-./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<提交訊息>" main --agent "Claude Code" -- DESIGN.md wiki/log.md
+# 主倉庫（跨平台 Python 版，Windows PowerShell 首選）：明確列出自己的檔案；列出 wiki/log.md 時只會提交 --agent 指定代理的條目
+python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "<提交訊息>" main --agent "Claude Code" -- DESIGN.md wiki/log.md
 
 # 私有 raw/ 倉庫：路徑相對於 raw/
-./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<提交訊息>" raw --agent "Codex" -- my-focus/英文論文/foo.pdf
+python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "<提交訊息>" raw --agent "Codex" -- my-focus/英文論文/foo.pdf
+
+# Bash 版（參數完全相同）
+./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<提交訊息>" main --agent "Claude Code" -- DESIGN.md wiki/log.md
 ```
 * **功能**：
   1. 確認暫存區原本是空的（否則中止，避免帶走他人已暫存的檔案）。
@@ -92,7 +106,7 @@ description: >-
   3. 先提交自己的修改，再 `git fetch` 並以 `git merge --autostash` 與遠端三方合流；只有 `wiki/log.md` 衝突時自動以 `merge_log.py` 排解，放回他人修改時的日誌衝突亦同。
   4. 清空暫存區，讓他人修改維持未暫存；`git push origin main` 後確認 `Ahead: 0`，並列出工作目錄中仍未提交（屬於他人）的檔案。
 * 兩個倉庫都有修改時，分別執行 `main` 與 `raw` 各一次（各自列出檔案），以滿足雙倉庫一體化。
-* 需要 Python 3.7 以上（僅用標準函式庫）。腳本會自動尋找可執行的 Python：依序試 `python3`、`python`、`py`，每個實際執行一次，取第一個成功者；不寫死任何路徑，Mac、Linux、Windows 皆適用（Windows 的 `python3` 可能是微軟商店的空殼，會被略過）。三者都不可用時腳本會報錯，請告知使用者安裝 Python。
+* 需要 Python 3.7 以上（僅用標準函式庫）。`.py` 版直接以當前 Python 執行並自動將標準輸出設為 UTF-8；`.sh` 版會自動依序試 `python3`、`python`、`py`，取第一個成功者。
 
 ### 4. 日誌與待辦工具
 ```bash
@@ -103,11 +117,11 @@ python .agents/skills/git-sync-guardian/scripts/log_time.py
 python .agents/skills/git-sync-guardian/scripts/log_tail.py -n 3
 python .agents/skills/git-sync-guardian/scripts/log_tail.py --grep TD-004 -n 0
 
-# 新增待辦前取得下一個編號；提交 wiki/todo.md 時由 safe_commit_push.sh 的 --todo 自動調用
+# 新增待辦前取得下一個編號；提交 wiki/todo.md 時由 safe_commit_push.py / .sh 的 --todo 自動調用
 python .agents/skills/git-sync-guardian/scripts/stage_todo.py --next-id
 python .agents/skills/git-sync-guardian/scripts/stage_todo.py TD-003 --dry-run
 
-# 只暫存自己修改的問題條目（提交 wiki/issues.md 時由 safe_commit_push.sh 的 --issue 自動調用）
+# 只暫存自己修改的問題條目（提交 wiki/issues.md 時由 safe_commit_push.py / .sh 的 --issue 自動調用）
 python .agents/skills/git-sync-guardian/scripts/stage_issues.py EK-069 EK-070 --dry-run
 
 # 只暫存自己的日誌條目（--dry-run 只列出不寫入）
@@ -122,18 +136,18 @@ python .agents/skills/git-sync-guardian/scripts/merge_log.py
 ## 四、標準作業程序 (SOP)
 
 ### SOP-1：開始新任務或提取更新
-1. 執行 `./.agents/skills/git-sync-guardian/scripts/status.sh` 查看狀態。
-2. 若落後遠端，執行 `./.agents/skills/git-sync-guardian/scripts/sync.sh` 同步最新成果。
+1. 執行 `python .agents/skills/git-sync-guardian/scripts/status.py`（或 `status.sh`）查看狀態。若報 `git fetch` 權限錯誤，立即向沙盒申請 `.git` 寫入與網路權限後重跑。
+2. 若落後遠端，執行 `python .agents/skills/git-sync-guardian/scripts/sync.py`（或 `sync.sh`）同步最新成果。
 3. 接手脈絡依 `AGENTS.md` 第六章第 4 節取得：`git log --oneline -10`、整份閱讀 `wiki/todo.md`，仍需細節時以 `scripts/log_tail.py` 讀日誌最後幾筆；不得整份讀取 `wiki/log.md`。
 
 ### SOP-2：完成任務並固化成果
 1. 確認全專案無任何表情符號（Zero-Emoji）。
 2. 在 `wiki/log.md` 結尾**追加**符合 `AGENTS.md` 規範之條目（標明執行代理、底層模型、白名單標籤與具體變更）。本項工作若完成某筆待辦，同時從 `wiki/todo.md` 刪除該條目，並於日誌寫明編號。寫入日誌後立即進行第 3 步，不等使用者指示（鐵律 6）。
-3. 以 `git diff --stat` 確認哪些檔案是自己改的，再執行 `./.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh "<符合 Conventional Commits 格式之訊息>" main --agent "<代理名稱>" -- <自己的檔案> wiki/log.md`（涉及待辦時加上 `--todo TD-NNN` 並列出 `wiki/todo.md`）；若 `raw/` 也有自己的修改，再以 `raw` 執行一次，確保兩處倉庫均推送成功。
+3. 以 `git diff --stat` 確認哪些檔案是自己改的，再執行 `python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "<符合 Conventional Commits 格式之訊息>" main --agent "<代理名稱>" -- <自己的檔案> wiki/log.md`（或 `safe_commit_push.sh`；涉及待辦時加上 `--todo TD-NNN` 並列出 `wiki/todo.md`）；若 `raw/` 也有自己的修改，再以 `raw` 執行一次，確保兩處倉庫均推送成功。
 4. 確認腳本最後列出的「仍未提交的修改」都不是自己的；若有自己的檔案遺漏，補上後再執行一次。
 
 ### SOP-3：遭遇 wiki/log.md 衝突時之排解
-`safe_commit_push.sh` 與 `sync.sh` 遇到「只有 `wiki/log.md` 衝突」時會自動呼叫 `merge_log.py` 排解。若需人工處理：
+`safe_commit_push.py` / `.sh` 與 `sync.py` / `.sh` 遇到「只有 `wiki/log.md` 衝突」時會自動呼叫 `merge_log.py` 排解。若需人工處理：
 1. 檢視衝突區塊（`<<<<<<< HEAD` 與 `>>>>>>> origin/main`），或直接執行 `python .agents/skills/git-sync-guardian/scripts/merge_log.py`。
 2. 提取兩側之日誌條目，依 `[YYYY-MM-DD HH:MM]` 時間戳記先後排序重新拼接。
 3. 刪除所有 Git 衝突標記（`<<<<<<<`, `=======`, `>>>>>>>`）。

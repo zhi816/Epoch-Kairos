@@ -35,6 +35,11 @@ def norm(entry):
 
 
 def main():
+    for stream in (sys.stdout, sys.stderr):
+        try:  # Windows 主控台預設編碼可能無法輸出中文
+            stream.reconfigure(encoding='utf-8')
+        except Exception:
+            pass
     root = subprocess.run(['git', 'rev-parse', '--show-toplevel'], capture_output=True).stdout.decode().strip()
     base, ours, theirs = (git_show(root, ':%d:%s' % (n, LOG_PATH)) for n in (1, 2, 3))
     if ours is None or theirs is None:
