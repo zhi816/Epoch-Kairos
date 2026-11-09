@@ -12,7 +12,7 @@ domain: "ai"
 domain_tags: ["#計算生物", "#人工智慧", "#結構生物學"]
 concepts: ["ai-for-structural-biology", "generative-world-models", "programmable-cellular-engineering"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1038/s41586-021-03819-2"
 key_papers:
@@ -50,9 +50,9 @@ AlphaFold2 徹底屏棄了傳統拼湊式管線，設計出端到端可微分的
 
 1. **Evoformer（演化序列與成對幾何的雙向注意力交換）**：
    * 網路同時維護兩個核心張量：多重序列比對表徵（MSA Representation，維度 $N_{\text{seq}} \times N_{\text{res}} \times c_m$）與殘基成對表徵（Pair Representation，維度 $N_{\text{res}} \times N_{\text{res}} \times c_z$）。
-   * 在 48 個 Evoformer 模組中，成對表徵透過**三角形乘法更新（Triangular Multiplicative Update）**與**三角形自注意力（Triangular Self-Attention）**在有向圖之三元閉環 $(i, j, k)$ 上傳遞訊息，強制滿足三維歐氏空間的三角幾何約束，並將幾何資訊即時回饋給 MSA 注意力權重。
+   * 在 48 個 Evoformer 模組中，成對表徵透過**三角形乘法更新（Triangular Multiplicative Update）**與**三角形自注意力（Triangular Self-Attention）**在有向圖三元閉環 $(i, j, k)$ 上傳遞訊息。其架構受三維歐氏距離「三角不等式（$d_{ij} + d_{jk} \ge d_{ik}$）」啟發，引導表徵逼近物理幾何的一致性（作為神經架構先驗，而非幾何硬性約束），並將成對幾何資訊即時回饋給 MSA 注意力。
 2. **不變點注意力（Invariant Point Attention, IPA）與 $\mathrm{SE}(3)$ 等變結構模組**：
-   * 結構模組將每個胺基酸殘基視為三維空間中的一個局部剛體座標系（Backbone Frame，$T_i = (R_i, \vec{t}_i) \in \mathrm{SE}(3)$），初始時全部置於原點（「黑洞初始化」）。IPA 在局部剛體座標系內計算三維空間點距離注意力，保證對全局三維旋轉與平移嚴格不變（$\mathrm{SE}(3)$-Equivariant），直接一步到位輸出全部主鏈與側鏈扭轉角 $\chi_1, \dots, \chi_4$。
+   * 結構模組將每個胺基酸殘基視為自由浮動的局部剛體座標系（Backbone Frame，$T_i = (R_i, \vec{t}_i) \in \mathrm{SE}(3)$），初始時全部置於原點（「黑洞初始化」）。IPA 在局部座標系內計算三維點距離注意力，其生成的標量特徵與注意力權重對全局三維旋轉與平移具備**嚴格不變性（$\mathrm{SE}(3)$-Invariance）**；結構模組隨後利用該激活值對殘基剛體坐標系進行**等變更新（$\mathrm{SE}(3)$-Equivariant Update）**，使整體結構模組滿足嚴格的等變性，直接預測全部主鏈框架與側鏈扭轉角 $\chi_1, \dots, \chi_4$。
 3. **全局部框架對齊點誤差損失（Frame Aligned Point Error, FAPE）與循環精煉（Recycling）**：
    * FAPE 損失函數將預測出的所有原子座標分別投影到每一個殘基的局部剛體座標系中與真實結構比對，自然兼顧局部鍵角與手性（Chirality）的正確性。
 
@@ -99,7 +99,7 @@ d_{ij} &= \sqrt{ \left\| T_i^{-1}(\vec{x}_j) - \left(T_i^{\text{true}}\right)^{-
 ### 本篇論文（Jumper et al. 2021）之核心證據
 * **CASP14 主鏈中位數誤差 $0.96\,\text{\AA}$ vs. 亞軍 $2.8\,\text{\AA}$**：在 CASP14 盲測評估集上，AlphaFold2 的 $95\%$ 殘基覆蓋率 $\mathrm{C}_\alpha$ 均方根偏差（$\text{r.m.s.d.}_{95}$）中位數僅為 **$0.96\,\text{\AA}$**（$95\%$ 信賴區間 $0.85$–$1.16\,\text{\AA}$，低於單一碳原子共價半徑規模），而排名第二的最佳競爭方法則為 $2.8\,\text{\AA}$（$95\%$ 信賴區間 $2.7$–$4.0\,\text{\AA}$），誤差縮小近三倍。
 * **全原子精度 $1.5\,\text{\AA}$**：包含全部側鏈重原子在內的全原子 $\text{r.m.s.d.}_{95}$ 中位數達 **$1.5\,\text{\AA}$**（亞軍為 $3.5\,\text{\AA}$），當局部預測信心指標 $\text{pLDDT} > 90$ 時，側鏈 $\chi_1$ 扭轉角正確率（誤差 $< 40^\circ$）高達 $90\%$ 以上，足以直接支援 X 光晶體學的分子置換（Molecular Replacement）相位求解。
-* **自評估信心指標 pLDDT 與真實精度高度線性吻合**：模型內建的每個殘基局部距離差異測試預測值（pLDDT，$0$–$100$ 分）與真實實驗結構之 $\text{lDDT-C}_\alpha$ 相關係數達 $r = 0.73$，使研究者能清楚分辨高信心摺疊區與天然無序區（Intrinsically Disordered Regions）。
+* **自評估信心指標 pLDDT 與真實精度高度線性吻合**：模型內建的每個殘基局部距離差異測試預測值（pLDDT，$0$–$100$ 分）與真實實驗結構之 $\text{lDDT-C}_\alpha$ 高度吻合。在近期 PDB 測試集（$n = 10,795$ 條蛋白質鏈）上，線性擬合之皮爾森相關係數高達 **$r = 0.76$**（主論文 Figure 2c；在人類蛋白質組伴篇 Tunyasuvunakool et al. 2021 中報告為 $r = 0.73$），使研究者能高度可靠地分辨高信心摺疊區與天然無序區（Intrinsically Disordered Regions）。
 * **消融實驗（Ablation Study）證實幾何與演化耦合缺一不可**：移除不變點注意力（IPA）或移除三角形更新、或僅使用預訓練語言模型取代 MSA，在無同源模板目標（Free-Modeling Category）上均導致顯著精度下降。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
@@ -109,7 +109,7 @@ d_{ij} &= \sqrt{ \left\| T_i^{-1}(\vec{x}_j) - \left(T_i^{\text{true}}\right)^{-
 ---
 
 ## Card 5 ｜ 時代典範轉移 (The Revolution)
-* **結構生物學從「實驗測定為主」進入「計算先行、實驗驗證」時代**：冷凍電鏡與 X 光晶體學家不再需要從零搭建原子模型，而是直接將 AlphaFold2 預測結構嵌入電子密度圖（如釋出逾十年未能解析之核孔複合體 Nuclear Pore Complex 完整結構）。
+* **結構生物學從「實驗測定為主」進入「計算先行、整合建模」時代**：冷凍電鏡與 X 光晶體學家不再需要從零手動搭建原子模型，而是將 AlphaFold 預測結構作為高精度初始模型，與冷凍電鏡／冷凍電子斷層掃描（cryo-EM/ET）實驗數據進行**整合建模（Integrative Modeling）**，成功攻克了困擾結構生物學逾十年、由逾千個蛋白質亞基組裝而成的核孔複合體（Nuclear Pore Complex, NPC）巨型結構。
 * **AI for Science 的第一座聖盃**：證明深度學習不僅能處理人類語言與像素，當把領域物理對稱性（如 $\mathrm{SE}(3)$ 等變性與三角不等式）精確編碼進網路架構時，AI 能攻克基礎自然科學的核心難題。
 * **蛋白質工程與合成生物學的加速引擎**：透過「序列生成（ProteinMPNN）$\to$ 結構驗證（AlphaFold2）$\to$ 濕實驗篩選」的閉環，將新型酵素、疫苗抗原與基因編輯工具的開發成功率提升數個數量級。
 

@@ -142,20 +142,23 @@
 
 ## 2021 AlphaFold2
 
-### EK-021 | open | papers/2021-alphafold2.md | Card 4 | 歸因／版本錯置
+### EK-021 | fixed | papers/2021-alphafold2.md | Card 4 | 歸因／版本錯置
 - **問題**：r=0.73 出自 Tunyasuvunakool et al. 人類蛋白質組伴篇；Jumper et al. 主論文 Figure 2c 在另一組測試鏈報 r=0.76。須標明出處。
 - **來源**：[主論文](https://www.nature.com/articles/s41586-021-03819-2)、[伴篇](https://www.nature.com/articles/s41586-021-03828-1)
 - **發現於**：wiki/log.md [2026-11-08 21:46] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文主論文 Figure 2c 查核修訂 Card 4：明確標註主論文在近期 PDB 測試集（$n=10,795$）報告皮爾森相關係數為 $r = 0.76$（線性式 $\text{lDDT-C}_\alpha = 0.997 \times \text{pLDDT} - 1.17$），而在人類蛋白質組伴篇（Tunyasuvunakool et al. 2021）中報告為 $r = 0.73$，標明不同測試集出處。證據表見 wiki/evidence/2021-alphafold2.md。
 
-### EK-022 | open | papers/2021-alphafold2.md | Card 3 | 過度表述
+### EK-022 | fixed | papers/2021-alphafold2.md | Card 3 | 過度表述
 - **問題**：原文說三角更新受三角不等式「啟發」，頁面寫成「強制滿足」歐氏三角幾何；並把 IPA 注意力值之不變性與其後座標更新之等變性混稱。
 - **來源**：[封存原文](../raw/2021-alphafold2.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 Nature 2021 pp. 584–587 查核修訂 Card 3：更正三角更新表述為受三角不等式「啟發」（作為神經先驗引導逼近物理幾何，非剛性滿足）；精確區分 IPA 模組之數學性質：IPA 局部點距離計算之標量值具全局 $\mathrm{SE}(3)$ 不變性（Invariance），而結構模組利用該激活值對殘基剛體座標系實施等變更新（Equivariant Update），修正混稱。證據表見 wiki/evidence/2021-alphafold2.md。
 
-### EK-023 | open | papers/2021-alphafold2.md | Card 5 | 歸因／版本錯置
+### EK-023 | fixed | papers/2021-alphafold2.md | Card 5 | 歸因／版本錯置
 - **問題**：把核孔複合體結構寫成直接套用 AF2 預測；後續研究是以 AlphaFold 模型結合 cryo-EM 等實驗資料做整合建模。
 - **來源**：[封存主論文](../raw/2021-alphafold2.pdf)、[NPC 整合建模研究](https://pubmed.ncbi.nlm.nih.gov/35679401/)
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 5 典範轉移段落：明確將核孔複合體（NPC）等超大複合體結構解析標記為 AlphaFold 預測模型與低解析度冷凍電鏡（cryo-EM/ET）數據結合之「整合建模（Integrative Modeling）」應用，非單純直接預測之結果。證據表見 wiki/evidence/2021-alphafold2.md。
 
 ## 2023 DrugCLIP
 

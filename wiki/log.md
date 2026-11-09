@@ -829,3 +829,14 @@
 - **具體變更**：剩餘 17 篇 my-focus 論文頁之第 7–8 篇，逐篇以原文 PDF 全文核對後重寫 Card 1–6 與 hook，各建證據表，`verification` 改為 `verified`：
   - [Zheng et al. 2024](papers/2024-formosan-mt-bilingual-lexicon-zheng.md)（EK-076）：刪除無來源之溫度採樣、動態權重與注意力熵公式，改述三種做法（詞典作平行資料、20% 替換之偽平行資料、兩者並用）；補列 16 語全部提升、平行句比詞條更有用、外部詞典增益小、多語言預訓練無明確改善等結果。
   - [Lin et al. 2025](papers/2025-formosanbench-llm-benchmark-lin.md)（EK-077）：改列三項任務之獨立資料來源與原文指標；刪除原文未報告之 Tokenizer 膨脹倍率；補列母語者人工檢視結果；註明原文切分比例、BLEU 尺度與 LLM 評審解讀三處不一致。
+
+## [2026-11-09 09:47] fix | AlphaFold2 2021 依原文核實相關係數與幾何機制並建立證據表 | #計算生物 #人工智慧 #結構生物學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 Nature 2021 定稿論文原文（`raw/2021-alphafold2.pdf`）全面核實修訂 [wiki/papers/2021-alphafold2.md](papers/2021-alphafold2.md)。
+  - **EK-021**：Card 4 明確標註主論文在近期 PDB 測試集（$n=10,795$）之線性擬合為 $\text{lDDT-C}_\alpha = 0.997 \times \text{pLDDT} - 1.17$，皮爾森相關係數為 $r = 0.76$（Figure 2c），並註明伴篇（Tunyasuvunakool et al. 2021）在人類蛋白質組報告為 $r = 0.73$，標明不同測試集出處。
+  - **EK-022**：Card 3 更正三角更新表述為受三角不等式「啟發」（作為神經先驗引導逼近物理幾何，非剛性滿足）；精確區分幾何模組之性質：IPA 局部點距離計算之標量值具全局 $\mathrm{SE}(3)$ 不變性（Invariance），而結構模組利用該激活值對殘基剛體座標系實施等變更新（Equivariant Update）。
+  - **EK-023**：Card 5 明確將核孔複合體（NPC）等超大複合體結構解析標記為 AlphaFold 預測模型與低解析度冷凍電鏡（cryo-EM/ET）數據結合之「整合建模（Integrative Modeling）」應用，非單純直接預測之結果。
+  - 新增證據表 [wiki/evidence/2021-alphafold2.md](evidence/2021-alphafold2.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-021、EK-022 與 EK-023 標記為 `fixed` 並追加處理紀錄。
