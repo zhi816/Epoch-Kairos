@@ -468,7 +468,7 @@
     gid = 0;
     var s = '', G = mobile ? FO.mob : FO.desk, pk = mobile ? 'mob' : 'desk';
     FO.hubs.forEach(function (hb) {
-      s += edge({ x1: hb[pk][0], y1: hb[pk][1], x2: G.thesisAt[0], y2: G.thesisAt[1], c1: BLUE, c2: IV, a: thSel ? 0.6 : (sel && sel.con.indexOf(hb.key) >= 0 ? 0.42 : (conOn(hb.key) ? 0.26 : 0.05)), fade: 0.9, w: thSel ? 1.6 : 1.1, flow: thSel });
+      s += edge({ x1: hb[pk][0], y1: hb[pk][1], x2: G.thesisAt[0], y2: G.thesisAt[1], c1: BLUE, c2: IV, a: thSel ? 0.6 : (sel && sel.con.indexOf(hb.key) >= 0 ? 0.42 : (conOn(hb.key) ? 0.26 : 0.05)), fade: 0.9, w: thSel ? 1.6 : 1.1 }); /* 碩論連線選中時只轉亮、不流光（2026-11-09 使用者決定） */
     });
     FO.papers.forEach(function (p) {
       p.con.forEach(function (k) {
