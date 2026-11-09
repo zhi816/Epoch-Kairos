@@ -1106,3 +1106,18 @@
     - **EK-050**：核心定義統一天體物理四大基本物理信使為電磁波（光子）、重力波、微中子與帶電宇宙射線，明確深空紅外線（如 JWST）屬電磁波譜長波波段，糾正原先將紅外線並列為獨立信使之錯誤；跨學科段落精確說明三大直進無偏轉之「中性信使（光、微中子、重力波）」協同觀測架構。
     - 建立證據表 [wiki/evidence/multi-messenger-astrophysics.md](evidence/multi-messenger-astrophysics.md)，Frontmatter `verification` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-047、EK-048、EK-049、EK-050 全數標記為 `fixed`。
+
+
+## [2026-11-09 12:18] fix | 依原文修訂結構生物學與制度經濟學概念頁 | #計算生物 #人工智慧 #制度經濟學 #宏觀經濟學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 執行未結概念頁問題第三批次（計算生物與宏觀經濟概念，共 3 筆 Issues across 2 篇概念頁）。
+  - **[ai-for-structural-biology.md](concepts/ai-for-structural-biology.md)**（EK-052、EK-053）：
+    - **EK-052**：跨學科延伸更正 DrugCLIP 單靶點 60 億 Enamine 分子檢索耗時為小於 10,000 秒（約 2.78 小時），刪除「數秒內完成百億級初篩」之誇大陳述，並客觀交代 GPU 叢集一日內完成全基因組尺度篩選之實況。
+    - **EK-053**：跨學科延伸明確將 AlphaFold 3 複合體結構預測與自由能微擾（FEP）結合標明為計算生物學界正在探索的前沿整合策略，刪除將其寫成已實證成熟精排管線之過度表述。
+    - 建立證據表 [wiki/evidence/ai-for-structural-biology.md](evidence/ai-for-structural-biology.md)，Frontmatter `verification` 提升為 `verified`。
+  - **[institutions-and-macro-dynamics.md](concepts/institutions-and-macro-dynamics.md)**（EK-051）：
+    - **EK-051**：AJR 支柱明確指出其係在排他性限制（Exclusion Restriction）假設下以歷史死亡率作為產權制度的工具變數，實證分離出制度環境之顯著因果貢獻；刪除將其寫成排除一切地理作用之「唯一根本原因」的過度表述，客觀呈現排他性外生性與地理直接影響之學術爭鳴。
+    - 建立證據表 [wiki/evidence/institutions-and-macro-dynamics.md](evidence/institutions-and-macro-dynamics.md)，Frontmatter `verification` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-051、EK-052、EK-053 全數標記為 `fixed`。至此，全庫 87 筆 issues 全部標記為 fixed，open 數量降為 0。

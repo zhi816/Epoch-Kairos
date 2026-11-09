@@ -340,20 +340,23 @@
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂多信使天體物理與極端宇宙學概念頁：核心定義統一天體物理四大基本物理信使為電磁波（光子）、重力波、微中子與帶電宇宙射線，明確深空紅外線（如 JWST）屬電磁波譜長波波段，糾正將紅外線並列為獨立信使之錯誤；跨學科段落精確說明三大直進無偏轉之「中性信使（光、微中子、重力波）」協同觀測架構。建立證據表 wiki/evidence/multi-messenger-astrophysics.md。
 
-### EK-051 | open | concepts/institutions-and-macro-dynamics.md | AJR 支柱 | 過度表述
+### EK-051 | fixed | concepts/institutions-and-macro-dynamics.md | AJR 支柱 | 過度表述
 - **問題**：稱 AJR 以殖民者死亡率「嚴格識別」制度而非地理為收入差距的唯一根因；原文是在排他性假設與控制條件下估計制度效果，不能概括為已排除所有地理作用或證明唯一根因。
 - **來源**：[AER 原文摘要](https://www.aeaweb.org/articles?id=10.1257/aer.91.5.1369)
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂制度演化與宏觀經濟動態概念頁：明確指出 AJR (2001) 係在排他性限制（Exclusion Restriction）假設下以歷史死亡率作為產權制度的工具變數，實證分離出制度環境之顯著因果貢獻；刪除將其寫成排除一切地理作用之「唯一根本原因」的過度表述，客觀呈現排他性外生性與地理直接影響之學術爭鳴。建立證據表 wiki/evidence/institutions-and-macro-dynamics.md。
 
-### EK-052 | open | concepts/ai-for-structural-biology.md | 跨學科延伸 | 原文不符
+### EK-052 | fixed | concepts/ai-for-structural-biology.md | 跨學科延伸 | 原文不符
 - **問題**：稱 DrugCLIP 可「數秒」篩選百億級分子；原文為 6 billion 分子檢索少於 10,000 秒，GenomeScreenDB 規模約 10,000 個人類蛋白質、5 億化合物，全基因組篩選約 24 小時（8 張 A100）。
 - **來源**：[DrugCLIP 封存原文](../raw/2023-drugclip.pdf)、[論文紀錄](https://pubmed.ncbi.nlm.nih.gov/41505557/)、[計算配置](https://www.biorxiv.org/content/10.1101/2024.09.02.610777v3.full)
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit、[2026-11-08 23:21] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 AI 驅動之結構生物學與分子設計概念頁：更正 DrugCLIP 單靶點 60 億 Enamine 分子檢索耗時為小於 10,000 秒（約 2.78 小時），刪除「數秒內完成百億級初篩」之誇大陳述，並客觀交代 GPU 叢集一日內完成全基因組尺度篩選之實況。建立證據表 wiki/evidence/ai-for-structural-biology.md。
 
-### EK-053 | open | concepts/ai-for-structural-biology.md | 跨學科延伸 | 原文未支持
+### EK-053 | fixed | concepts/ai-for-structural-biology.md | 跨學科延伸 | 原文未支持
 - **問題**：把 AlphaFold 3＋FEP 描述成已實證之全原子誘導契合精排管線；AF3 原文報告的是複合體結構預測基準，應標為待驗證提案並另引直接驗證研究。
 - **來源**：[AlphaFold 3 原文](https://www.nature.com/articles/s41586-024-07487-w)
 - **發現於**：wiki/log.md [2026-11-08 23:21] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 AI 驅動之結構生物學與分子設計概念頁：明確將 AlphaFold 3 複合體預測與自由能微擾（FEP）結合標明為計算生物學界正在探索的前沿整合策略，刪除將其寫成已實證成熟精排管線之過度表述。建立證據表 wiki/evidence/ai-for-structural-biology.md。
 
 ### EK-054 | fixed | concepts/programmable-cellular-engineering.md | 跨學科延伸 | 過度表述
 - **問題**：「已能直接在患者肝臟、視網膜與造血幹細胞中修正致病突變」合併不同遞送方式與證據階段：Casgevy 為體外編輯後回輸；EDIT-101 為小型 1–2 期試驗；肝臟 LNP 鹼基編輯為單一新生兒 N-of-1 個案。另須同步校正自 CRISPR 論文頁重述之 PAM 與衍生技術歸因（見 EK-012、EK-015）。

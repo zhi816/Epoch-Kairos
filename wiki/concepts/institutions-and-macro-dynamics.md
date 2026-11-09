@@ -5,7 +5,7 @@ domain: "econ"
 domain_tags: ["#宏觀經濟學", "#制度經濟學"]
 papers: ["1992-creative-destruction-aghion", "2001-colonial-origins-acemoglu", "2007-woodford-inflation-dynamics"]
 related_concepts: []
-verification: "issues"
+verification: "verified"
 ---
 
 # 概念：制度演化與宏觀經濟動態 (Institutional Evolution & Macroeconomic Dynamics)
@@ -22,7 +22,7 @@ verification: "issues"
 ## 關鍵突破支柱
 * **熊彼特創造性破壞內生成長模型（Aghion & Howitt, 1992）**：將垂直品質階梯與泊松研發到達過程結合，證明長期經濟成長源自新技術對舊技術獨占租金的持續淘汰，並揭示跨期知識外溢與業務竊取效應之間的福利張力。
   * 詳見核心論文：[創造性破壞與內生經濟成長模型（1992 發表 ｜ 2025 諾貝爾經濟學獎）](../papers/1992-creative-destruction-aghion.md)
-* **比較發展的殖民起源與制度因果識別（Acemoglu, Johnson & Robinson, 2001）**：以數百年前歐洲殖民者疫病死亡率作為工具變數，嚴格識別出「包容型產權保護制度」而非地理環境，才是決定當代國家人均所得差距逾三十倍的根本原因。
+* **比較發展的殖民起源與制度因果識別（Acemoglu, Johnson & Robinson, 2001）**：在排他性限制（Exclusion Restriction）假設下，以數百年前歐洲殖民者歷史死亡率作為當代產權保護制度的工具變數，實證分離出制度環境對跨國人均所得差距的顯著因果貢獻，為「制度優於單純地理決定論」提供了開創性的計量識別框架（但學界對排他性外生性與地理疾病之直接影響仍存有學術爭鳴）。
   * 詳見核心論文：[比較發展的殖民起源（2001 發表 ｜ 2024 諾貝爾經濟學獎）](../papers/2001-colonial-origins-acemoglu.md)
 * **開放經濟新凱因斯貨幣控制與通膨動態（Woodford, 2007）**：從個體跨期最優化與 Calvo 交錯定價微觀基礎出發，證明即使在金融、貿易與生產要素高度全球化的環境下，央行仍能透過滿足泰勒原理的利率規則與前瞻性預期錨定牢牢控制本國通膨。
   * 詳見核心論文：[宏觀經濟穩定政策的微觀基礎（2007 發表 ｜ 2026 諾貝爾經濟學獎）](../papers/2007-woodford-inflation-dynamics.md)

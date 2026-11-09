@@ -5,7 +5,7 @@ domain: "ai"
 domain_tags: ["#計算生物", "#人工智慧", "#結構生物學", "#生物科技"]
 papers: ["2012-crispr-cas9", "2017-attention-is-all-you-need", "2021-alphafold2", "2023-drugclip", "2024-alphafold3"]
 related_concepts: ["generative-world-models", "programmable-cellular-engineering"]
-verification: "issues"
+verification: "verified"
 ---
 
 # 概念：AI 驅動之結構生物學與分子設計 (AI for Structural Biology & Molecular Design)
@@ -35,7 +35,7 @@ verification: "issues"
 
 ## 跨學科交會與延伸
 1. **「結構預測 $\to$ 超高速檢索 $\to$ 從頭生成」的數位生物學閉環**：
-   * AlphaFold2/3 提供全蛋白質組與核酸複合物的高精度靶點口袋；DrugCLIP 在數秒內完成百億級小分子初篩；AlphaFold 3 與自由能微擾（FEP）再對命中分子進行全原子誘導契合精排，徹底改寫新藥研發管線。
+   * AlphaFold2/3 提供全蛋白質組與核酸複合物的高精度靶點口袋；DrugCLIP 在單靶點下於數小時內（如 60 億分子庫檢索耗時小於 2.8 小時）完成數十億級小分子初篩（較傳統物理對接提速數萬至數十萬倍，或以 GPU 叢集在一天內完成全基因組尺度篩選）；而將 AlphaFold 3 之複合體幾何預測與基於物理的自由能微擾（FEP）相結合，是目前計算生物學界正在探索的前沿整合策略（有望用於對命中分子的全原子誘導契合構型與結合自由能進行高精度精排）。
 2. **從「讀懂自然界蛋白質」到「創造自然界未曾演化的蛋白質」**：
    * 結合結構擴散與逆向摺疊（如 David Baker 團隊之 RFdiffusion 與 ProteinMPNN），人類已能定制高親和力迷你結合蛋白、人工酶與全新基因編輯器。
 
