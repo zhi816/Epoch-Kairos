@@ -1519,3 +1519,12 @@
   - **Card 5 新論文模式**：發表兩年內（2026 年時為 paper_year ≥ 2024）且論文頁無可用後續研究者，加「模式：新論文」，里程碑 2 至 4 筆，寫本篇公開之資源與作者明列之限制、下一步，出處須為「本篇」加原文位置、年份等於發表年，註記寫明出自本篇；一般模式之里程碑不得全部出自本篇。
   - 實作：`check_cards.py`（Card 3 新增「無公式理由」欄、論文頁有區塊公式時不得填無；Card 5 新增「模式」欄與上述各項檢查）、`tools/build_paper_prototype.py`（無公式時不輸出公式框）。以暫存之 wiki 副本測試 7 種情形（合格、論文頁有公式卻填無、2021 年論文用新論文模式、一般模式全出自本篇、無公式未寫理由、本篇列未附位置、無公式之 Card 3 渲染）全部符合預期；既有 5 份卡片檔 ERROR 0，4 頁原型重建後輸出不變。
   - 文件：paper-card-writer 之 `card-03-secret.md` 第四節、`card-05-revolution.md` 第六節、`file-format.md`、`paper-page.md` 錯誤處理表、SKILL.md 第二節第 4 條與第九、十一節；[AGENTS.md](../AGENTS.md) 第七章第 3 節 Card 3、Card 5 與第九章 LaTeX 條；[DESIGN.md](../DESIGN.md) 第五章第 2 節與第十章；[todo.md](todo.md) TD-008 註明停止篇目可重新分配，另列發表早於 2024 年且無後續研究之 4 篇仍須先補後續研究。`lint_wiki.py` ERROR 0。
+
+## [2026-11-09 23:52] fix | 修正 EK-091、EK-092 並分配卡片回填第二批 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：
+  - EK-091：[2025-fragment-shot-reasoning-mt-frontull](papers/2025-fragment-shot-reasoning-mt-frontull.md) Card 5 第 1 點改為「以片段覆蓋取代整句相似度選例」，限定於缺乏可靠語意嵌入模型之情境，比較對象寫明為零樣本與隨機例句（表 1, p. 6），註明作者未與整句語意檢索直接比較（§2, p. 3；§7, p. 6），刪除「顛覆」。
+  - EK-092：[2026-epark-formosan-dialectometry-gagnier](papers/2026-epark-formosan-dialectometry-gagnier.md) Card 5 第 1 點加回原文「多數語言」之限定與排灣語、萬山魯凱語之例外（摘要 p. 124、p. 128、§5 p. 130，印刷頁＝PDF 頁序＋123，依首頁 pages 124–134 換算）；第 35 行刪「開創性」，「首次」改為作者自述。
+  - 兩份證據表各增列一列，兩頁 verification 改回 verified，[issues.md](issues.md) 兩筆標為 fixed。
+  - [todo.md](todo.md) TD-008 記錄第二批分配（A 組 8 篇含指定之 Sora、B 組 7 篇、C 組 7 篇），暫不分配 8 篇（2 篇無證據表、5 篇發表早於 2024 年且無後續研究、Ranathunga 2023 後續研究僅 2 筆）與神經粒線體一篇待使用者決定。`lint_wiki.py` ERROR 0、問題清單 open 0。
