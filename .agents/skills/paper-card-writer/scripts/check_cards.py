@@ -675,9 +675,9 @@ def check_card(path, slug, all_cards):
         elif source == '本篇':
             pass
         else:
-            m = re.match(r'([A-Z][A-Za-z\'\-]+)', source)
+            m = re.match(r'([A-Z][A-Za-z\'\-]+|[一-鿿]{2,4}(?=[\s,]))', source)
             if not m:
-                report('ERROR', path, vln, '里程碑出處須以第一作者姓氏開頭（或寫「獎項」、「本篇」）')
+                report('ERROR', path, vln, '里程碑出處須以第一作者姓氏（或中文全名）開頭，或寫「獎項」、「本篇」')
             elif m.group(1) not in paper:
                 report('ERROR', path, vln, '里程碑出處作者「%s」不在論文頁中；後續研究須先寫進論文頁' % m.group(1))
             if year not in source:
