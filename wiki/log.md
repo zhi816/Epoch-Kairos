@@ -1052,3 +1052,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：依 [2026-11-09 11:15] 新增之規則，依各論文頁現行內文為 41 篇擬 `card_line`，經使用者審閱清單後全數照寫，插入各頁 Frontmatter `hook` 之下一行；全部 20 字以內，未含數值，強斷言僅 LIGO「第一次直接測到」一句（論文頁與證據表支持）。[lint_wiki.py](../.agents/skills/wiki-content-audit/scripts/lint_wiki.py) 將 `card_line` 列入論文頁必填欄位，超過 20 字或與 `hook` 相同者報 ERROR，含數字者報 WARN；執行結果 ERROR 0。
+
+## [2026-11-09 11:30] design | 手機版 v2 卡片牆與論文頁封面改為版型 F | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：依 [2026-11-08 22:06] 交接清單第 3、4 步。[data.py](../web/prototypes/mobile-v2-src/data.py) 輸出 `card_line`；[template.html](../web/prototypes/mobile-v2-src/template.html) 將群星與我的關注卡片、論文頁封面（含光遺傳學手寫頁）之星窗由大年份改為以學科色書寫之一句話，依全形逗號分段換行；底部統一為「發表年 發表 ｜ 獲獎年 諾貝爾獎」或「發表年 發表 ｜ 期刊或會議」；我的關注之研究語言改為星窗左上小標籤，代表星移至右上偏右以避開標籤與一句話。以 `python web/prototypes/mobile-v2-src/build.py` 重建 [mobile-v2.html](../web/prototypes/mobile-v2.html)，於 375px 寬檢查 41 張卡片之一句話、標籤與代表星均不重疊。[DESIGN.md](../DESIGN.md) 將一句話欄位、論文名最多兩行、研究語言小標籤改為已定，第八章第 8 項只留「卡片是否匯出為圖片」，版本歷程補記。

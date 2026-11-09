@@ -161,7 +161,7 @@ for s, f in sorted(ms.items(), key=lambda kv: (-int(kv[1]['timeline_year']), kv[
     short, vshort = SHORT[s]
     papers.append(dict(slug=s, short=short, title=f['title'], titleZh=f['title_zh'], d=f['domain'], tags=f['domain_tags'],
                        p=int(f['paper_year']), a=int(f['award_year']), award=award_line(f), venue=f['venue'], venueShort=vshort,
-                       hook=f.get('hook', ''), authors=f['authors'], doi=f.get('doi_url', ''), concepts=f['concepts'],
+                       hook=f.get('hook', ''), cardLine=f['card_line'], authors=f['authors'], doi=f.get('doi_url', ''), concepts=f['concepts'],
                        x=round(pos[s][0]), y=round(pos[s][1])))
 cpos = {}
 for s, f in C.items():
@@ -223,7 +223,7 @@ for s, f in sorted(fp.items(), key=lambda kv: (int(kv[1]['paper_year']), kv[0]))
     disp, lab = langs_display(f['focus_languages'], s)
     focus.append(dict(slug=s, short=short, title=f['title'], titleZh=f['title_zh'], d=f['domain'], tags=f['domain_tags'],
                       year=int(f['paper_year']), role=f['focus_role'], langs=f['focus_languages'], langDisp=disp, langLabel=lab,
-                      con=[CON[c] for c in f['concepts']], venue=f['venue'], venueShort=vshort, hook=f.get('hook', ''),
+                      con=[CON[c] for c in f['concepts']], venue=f['venue'], venueShort=vshort, hook=f.get('hook', ''), cardLine=f['card_line'],
                       authors=f['authors'], doi=f.get('doi_url', ''), x=fpos[s][0], y=fpos[s][1]))
 for a in ANC:
     a['x'], a['y'] = fpos['ANC:' + a['slug']]

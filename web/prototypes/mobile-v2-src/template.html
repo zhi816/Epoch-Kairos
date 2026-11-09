@@ -94,10 +94,10 @@ body[data-mode="focus"] .back{border-bottom-color:rgba(143,213,253,.5);color:var
 .cv .top{display:flex;justify-content:space-between;gap:3cqw;font-family:var(--mono);font-size:6.6cqw;letter-spacing:.04em;white-space:nowrap}
 .cv .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px}
 .cv .win i{position:absolute;border-radius:50%;background:#fff}
-.cv .big{position:absolute;left:6cqw;right:6cqw;bottom:5cqw;display:flex;flex-direction:column;gap:1.6cqw}
-.cv .big small{font-size:6.6cqw;line-height:1.2}
-.cv .yr{font-family:var(--latin);font-style:italic;font-weight:300;font-size:27cqw;line-height:.85;letter-spacing:-.03em}
-.cv .lang{font-family:var(--serif);font-weight:400;line-height:1.05;letter-spacing:.02em;white-space:nowrap}
+/* 版型 F：星窗下方以學科色寫 card_line；我的關注另於左上放研究語言小標籤 */
+.cv .line{position:absolute;left:6cqw;right:6cqw;bottom:5cqw;font-size:7.4cqw;font-weight:500;line-height:1.45;letter-spacing:.02em;text-wrap:balance}
+.seg{display:inline-block;text-wrap:balance}
+.cv .tag{position:absolute;left:4.5cqw;top:4.5cqw;max-width:58cqw;box-sizing:border-box;padding:.5cqw 2cqw;border-radius:999px;background:#0C0E11;font-size:6.6cqw;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cv .ttl{font-family:var(--serif);font-weight:600;font-size:9.6cqw;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .cv .bot{display:flex;justify-content:space-between;align-items:baseline;gap:3cqw;padding-top:3cqw;font-size:6.6cqw;white-space:nowrap}
 .cv .bot span:first-child{overflow:hidden;text-overflow:ellipsis}
@@ -207,7 +207,7 @@ body[data-route="home"] #paper,body[data-route="paper"] #home{display:none}
       <span style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:3.4cqw;letter-spacing:.1em;color:rgba(15,16,19,.75)"><span>EPOCH KAIROS</span><span>No.{{NO}}</span></span>
       <span class="cwin" style="position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:#1E2A24">
         <span style="position:absolute;left:74%;top:26%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 0 1.4cqw #1E2A24,0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)"></span>
-        <span style="position:absolute;left:5cqw;bottom:4cqw;display:flex;flex-direction:column;gap:1cqw;color:var(--acc)"><span style="font-size:3.6cqw">發表</span><span style="font-family:var(--latin);font-style:italic;font-weight:300;font-size:26cqw;line-height:.85;letter-spacing:-.03em">2005</span></span>
+        <span style="position:absolute;left:5cqw;right:5cqw;bottom:4.4cqw;font-size:6cqw;font-weight:500;line-height:1.45;letter-spacing:.02em;text-wrap:balance;color:var(--acc)">{{CARD_LINE}}</span>
       </span>
       <span style="font-size:3.8cqw;color:rgba(15,16,19,.75)">生醫與生命科技・#神經科學 #生物科技</span>
       <span style="font-family:var(--serif);font-weight:600;font-size:9cqw;line-height:1.2">光遺傳學</span>
@@ -574,19 +574,23 @@ function renderInfo(){ var el = $('info'), h = '', rgb = '232,228,218';
   el.style.setProperty('--rgb', rgb); el.innerHTML = h; }
 
 function tint(rgb, k){ var c = rgb.split(',').map(Number), ink = [15, 17, 20]; return 'rgb(' + c.map(function(v, i){ return Math.round(ink[i] + (v - ink[i]) * k); }).join(',') + ')'; }
-var cardSky = {}; (function(){ var r = rndFrom(20051263); D.papers.concat(D.focus).forEach(function(p){ var dots = []; for (var i = 0; i < 9; i++) dots.push([4 + r() * 92, 4 + r() * 50, r() < 0.8 ? 1 : 1.5, 0.35 + r() * 0.55]); cardSky[p.slug] = { dots: dots, sx: 58 + r() * 28, sy: 16 + r() * 22 }; }); })();
+/* 代表星放在星窗右上，避開下方的 card_line；我的關注的星再往右靠，讓出左上的語言標籤 */
+var cardSky = {}; (function(){ var r = rndFrom(20051263); D.papers.concat(D.focus).forEach(function(p){ var dots = []; for (var i = 0; i < 9; i++) dots.push([4 + r() * 92, 4 + r() * 50, r() < 0.8 ? 1 : 1.5, 0.35 + r() * 0.55]); cardSky[p.slug] = { dots: dots, sx: byF[p.slug] ? 74 + r() * 14 : 64 + r() * 22, sy: 14 + r() * 14 }; }); })();
 function skyDots(slug){ return cardSky[slug].dots.map(function(q){ return '<i style="left:' + q[0].toFixed(1) + '%;top:' + q[1].toFixed(1) + '%;width:' + q[2] + 'px;height:' + q[2] + 'px;opacity:' + q[3].toFixed(2) + '"></i>'; }).join(''); }
-function langSize(s){ var n = s.length; return n <= 2 ? 24 : n === 3 ? 19 : n === 4 ? 15 : n === 5 ? 12.5 : n === 6 ? 11 : n === 7 ? 9.6 : 8.6; }
+/* card_line 依全形逗號分段，每段不在中間斷開（過長時段內再平均換行），讓斷行落在語意停頓處 */
+function lineSegs(s){ var a = s.split('，'); return a.map(function(x, i){ return '<span class="seg">' + esc(x + (i < a.length - 1 ? '，' : '')) + '</span>'; }).join(''); }
+/* 卡片底部雙年份：獲獎者「發表年 發表 ｜ 獲獎年 諾貝爾獎」，其餘「發表年 發表 ｜ 期刊或會議」 */
+function yearsLine(p, isF){ return isF ? p.year + ' 發表 ｜ ' + p.venueShort : p.p + ' 發表 ｜ ' + (p.award || p.venueShort); }
 function msCard(p){ var d = D.dom[p.d], panel = tint(d.rgb, 0.1), s = cardSky[p.slug], ss = p.award ? '3.4cqw' : '2.8cqw';
   var sh = p.award ? '0 0 0 1.7cqw ' + panel + ',0 0 0 2.3cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)' : '0 0 3cqw .6cqw rgba(244,241,234,.45)';
-  return '<button type="button" class="card" data-open="' + p.slug + '" aria-label="' + esc(p.short + '，' + p.p + ' 發表' + (p.award ? '，' + p.award : '') + '，開啟論文頁') + '"><span class="cv ms" style="background:' + d.color + '"><span class="top"><span>No.' + pad2(p.no) + '</span><span>' + esc(d.name) + '</span></span><span class="win" style="background:' + panel + '">' + skyDots(p.slug) +
-    '<i style="left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:' + ss + ';height:' + ss + ';transform:translate(-50%,-50%);background:#FFFDF8;box-shadow:' + sh + '"></i><span class="big" style="color:' + d.color + '"><small>發表</small><span class="yr">' + p.p + '</span></span></span><span class="ttl">' + esc(p.short) + '</span><span class="bot"><span>' + esc(p.award || p.venueShort) + '</span></span></span></button>'; }
+  return '<button type="button" class="card" data-open="' + p.slug + '" aria-label="' + esc(p.short + '：' + p.cardLine + '。' + yearsLine(p, false) + '，開啟論文頁') + '"><span class="cv ms" style="background:' + d.color + '"><span class="top"><span>No.' + pad2(p.no) + '</span><span>' + esc(d.name) + '</span></span><span class="win" style="background:' + panel + '">' + skyDots(p.slug) +
+    '<i style="left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:' + ss + ';height:' + ss + ';transform:translate(-50%,-50%);background:#FFFDF8;box-shadow:' + sh + '"></i><span class="line" style="color:' + d.color + '">' + lineSegs(p.cardLine) + '</span></span><span class="ttl">' + esc(p.short) + '</span><span class="bot"><span>' + esc(yearsLine(p, false)) + '</span></span></span></button>'; }
 function fCard(p){ var rgb = fRgb(p), col = fColor(p), s = cardSky[p.slug];
-  return '<button type="button" class="card" data-open="' + p.slug + '" aria-label="' + esc(p.short + '，' + p.year + '，' + roleName[p.role] + '，開啟論文頁') + '"><span class="cv fc" style="box-shadow:inset 0 0 0 1px rgba(' + rgb + ',.28)"><span class="top" style="color:' + col + '"><span>F.' + pad2(p.no) + '</span><span>' + esc(roleName[p.role]) + '</span></span>' +
+  return '<button type="button" class="card" data-open="' + p.slug + '" aria-label="' + esc(p.short + '：' + p.cardLine + '。' + p.langLabel + '：' + p.langDisp + '，' + yearsLine(p, true) + '，' + roleName[p.role] + '，開啟論文頁') + '"><span class="cv fc" style="box-shadow:inset 0 0 0 1px rgba(' + rgb + ',.28)"><span class="top" style="color:' + col + '"><span>F.' + pad2(p.no) + '</span><span>' + esc(roleName[p.role]) + '</span></span>' +
     '<span class="win" style="background:radial-gradient(110% 80% at ' + s.sx.toFixed(1) + '% ' + s.sy.toFixed(1) + '%,rgba(' + rgb + ',.14),rgba(' + rgb + ',0) 60%),#0C0E11">' + skyDots(p.slug) +
-    '<i style="left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:48cqw;height:15cqw;transform:translate(-50%,-50%) rotate(-16deg);box-sizing:border-box;background:none;border:1px dashed rgba(' + rgb + ',.3)"></i>' +
+    '<i style="left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:40cqw;height:12cqw;transform:translate(-50%,-50%) rotate(-16deg);box-sizing:border-box;background:none;border:1px dashed rgba(' + rgb + ',.3)"></i>' +
     '<i style="left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:5cqw;height:5cqw;transform:translate(-50%,-50%);background:radial-gradient(circle,#FFFDF8 0 .8cqw,rgba(255,253,248,0) 1.1cqw);box-shadow:inset 0 0 0 .45cqw ' + col + ',0 0 3.4cqw .6cqw rgba(' + rgb + ',.4)"></i>' +
-    '<span class="big"><small style="color:' + col + '">' + esc(p.langLabel) + '</small><span class="lang" style="font-size:' + langSize(p.langDisp) + 'cqw">' + esc(p.langDisp) + '</span></span></span><span class="ttl">' + esc(p.short) + '</span><span class="bot"><span>' + esc(p.venueShort) + '</span><span style="flex-shrink:0;font-family:var(--latin);font-size:7.6cqw;color:' + col + '">' + p.year + '</span></span></span></button>'; }
+    '<span class="tag" style="color:' + col + ';box-shadow:inset 0 0 0 1px rgba(' + rgb + ',.35)">' + esc(p.langDisp) + '</span><span class="line" style="color:' + col + '">' + lineSegs(p.cardLine) + '</span></span><span class="ttl">' + esc(p.short) + '</span><span class="bot"><span>' + esc(yearsLine(p, true)) + '</span></span></span></button>'; }
 function renderCards(){ var list, info, more = S.more[S.mode];
   if (S.mode === 'stars'){ list = D.papers.filter(function(p){ return !S.zoom || p.d === S.zoom; }); info = list.length + ' 張・' + (S.zoom ? D.dom[S.zoom].name : '全部') + '・依時間線排列'; }
   else { list = D.focus.slice().sort(function(a, b){ return b.year - a.year || a.x - b.x; }).filter(function(p){ return fMatch(p, S.ffilter); });
@@ -651,15 +655,16 @@ function initCarousel(root, names){ var car = root.querySelector('.car'), dots =
   car.addEventListener('scroll', function(){ requestAnimationFrame(sync); }, { passive: true }); sync();
   root.querySelectorAll('.cwin').forEach(function(w){ var r = rndFrom(1263); for (var i = 0; i < 16; i++){ var s = document.createElement('i'), sz = r() < 0.8 ? 1 : 1.5; s.style.cssText = 'position:absolute;border-radius:50%;background:#fff;left:' + (4 + r() * 92).toFixed(1) + '%;top:' + (4 + r() * 52).toFixed(1) + '%;width:' + sz + 'px;height:' + sz + 'px;opacity:' + (0.35 + r() * 0.55).toFixed(2); w.appendChild(s); } }); }
 function genericPaper(p, isF){ var d = D.dom[p.d], rgb = isF ? fRgb(p) : d.rgb, col = isF ? fColor(p) : d.color, s = cardSky[p.slug];
-  var years = isF ? p.year + ' 發表' : p.p + ' 發表 ｜ ' + (p.award || p.venueShort);
+  var years = yearsLine(p, isF);
+  var line = '<span style="position:absolute;left:5cqw;right:5cqw;bottom:4.4cqw;font-size:6cqw;font-weight:500;line-height:1.45;letter-spacing:.02em;text-wrap:balance;color:' + col + '">' + lineSegs(p.cardLine) + '</span>';
   var cover = isF
     ? '<section class="pc cover fc" aria-label="第 1 張 時代銘文"><span style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:3.4cqw;letter-spacing:.1em;color:' + col + '"><span>MY CONSTELLATION</span><span>F.' + pad2(p.no) + '</span></span>' +
       '<span style="position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:radial-gradient(110% 80% at ' + s.sx.toFixed(1) + '% ' + s.sy.toFixed(1) + '%,rgba(' + rgb + ',.14),rgba(' + rgb + ',0) 60%),#0C0E11" class="cwin"><span style="position:absolute;left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:3cqw;height:3cqw;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#FFFDF8 0 .5cqw,rgba(255,253,248,0) .7cqw);box-shadow:inset 0 0 0 .3cqw ' + col + ',0 0 3cqw .5cqw rgba(' + rgb + ',.4)"></span>' +
-      '<span style="position:absolute;left:5cqw;bottom:4cqw;display:flex;flex-direction:column;gap:1cqw"><span style="font-size:3.4cqw;color:' + col + '">' + esc(p.langLabel) + '</span><span style="font-family:var(--serif);font-size:' + (langSize(p.langDisp) * 0.62).toFixed(1) + 'cqw;line-height:1.05;color:#EAE6DF">' + esc(p.langDisp) + '</span></span></span>' +
+      '<span style="position:absolute;left:4cqw;top:4cqw;padding:.4cqw 1.8cqw;border-radius:999px;background:#0C0E11;box-shadow:inset 0 0 0 1px rgba(' + rgb + ',.35);font-size:3.6cqw;line-height:1.4;white-space:nowrap;color:' + col + '">' + esc(p.langDisp) + '</span>' + line + '</span>' +
       '<span style="font-size:3.8cqw;color:var(--muted)">' + esc(roleName[p.role] + '・' + p.tags.join(' ')) + '</span><span style="font-family:var(--serif);font-weight:600;font-size:7.4cqw;line-height:1.3">' + esc(p.short) + '</span><span class="hook" style="color:var(--soft)">' + esc(p.hook) + '</span>' +
-      '<span style="padding-top:2.6cqw;border-top:1px solid rgba(234,230,223,.14);font-size:3.6cqw;color:var(--muted)">' + esc(years + ' ｜ ' + p.venueShort) + '</span></section>'
+      '<span style="padding-top:2.6cqw;border-top:1px solid rgba(234,230,223,.14);font-size:3.6cqw;color:var(--muted)">' + esc(years) + '</span></section>'
     : '<section class="pc cover" aria-label="第 1 張 時代銘文" style="background:' + d.color + '"><span style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:3.4cqw;letter-spacing:.1em;color:rgba(15,16,19,.75)"><span>EPOCH KAIROS</span><span>No.' + pad2(p.no) + '</span></span>' +
-      '<span class="cwin" style="position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:' + tint(d.rgb, 0.1) + '"><span style="position:absolute;left:5cqw;bottom:4cqw;display:flex;flex-direction:column;gap:1cqw;color:' + d.color + '"><span style="font-size:3.6cqw">發表</span><span style="font-family:var(--latin);font-style:italic;font-weight:300;font-size:26cqw;line-height:.85;letter-spacing:-.03em">' + p.p + '</span></span></span>' +
+      '<span class="cwin" style="position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:' + tint(d.rgb, 0.1) + '"><span style="position:absolute;left:' + s.sx.toFixed(1) + '%;top:' + s.sy.toFixed(1) + '%;width:' + (p.award ? '2.6cqw' : '2cqw') + ';height:' + (p.award ? '2.6cqw' : '2cqw') + ';transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:' + (p.award ? '0 0 0 1.4cqw ' + tint(d.rgb, 0.1) + ',0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)' : '0 0 3cqw .6cqw rgba(244,241,234,.45)') + '"></span>' + line + '</span>' +
       '<span style="font-size:3.8cqw;color:rgba(15,16,19,.75)">' + esc(d.full + '・' + p.tags.join(' ')) + '</span><span style="font-family:var(--serif);font-weight:600;font-size:7.6cqw;line-height:1.25">' + esc(p.short) + '</span><span class="hook">' + esc(p.hook) + '</span>' +
       '<span style="padding-top:2.6cqw;border-top:1px solid rgba(15,16,19,.22);font-size:3.6cqw;color:rgba(15,16,19,.75)">' + esc(years) + '</span></section>';
   var pending = '<section class="pc" aria-label="第 2 張 尚待編譯" style="justify-content:center;gap:5cqw"><span class="lab">02–06</span><span class="h">其餘五張卡片尚待編譯</span><span class="s">世紀瓶頸、突破原理、決定性數據、典範轉移與 Kairos 的內容已寫在 Wiki 論文頁，網頁版會在編譯時一併產出。</span></section>';
@@ -674,7 +679,7 @@ function showPaper(slug){ var isF = !!byF[slug], p = byF[slug] || byP[slug], el 
   el.style.setProperty('--acc', col); el.style.setProperty('--acc-rgb', rgb);
   document.body.dataset.route = 'paper';
   var bar = '<div class="bar"><a href="' + (isF ? '#my-constellation' : '#') + '">← ' + (isF ? '我的星系' : '群星') + '</a><span class="mono">' + (isF ? 'F.' + pad2(p.no) + ' ｜ ' + esc(roleName[p.role]) : 'No.' + pad2(p.no) + ' ｜ ' + esc(d.name)) + '</span>' + (p.doi ? '<a class="doi" href="' + esc(p.doi) + '">DOI</a>' : '<span style="min-width:44px"></span>') + '</div>';
-  if (slug === '2005-optogenetics'){ el.innerHTML = bar + $('tpl-opto').innerHTML.replace('{{NO}}', pad2(p.no)); initCarousel(el, CARDNAMES); }
+  if (slug === '2005-optogenetics'){ el.innerHTML = bar + $('tpl-opto').innerHTML.replace('{{NO}}', pad2(p.no)).replace('{{CARD_LINE}}', lineSegs(p.cardLine)); initCarousel(el, CARDNAMES); }
   else { el.innerHTML = bar + genericPaper(p, isF); initCarousel(el, ['時代銘文', '尚待編譯']); }
   window.scrollTo(0, 0); }
 
