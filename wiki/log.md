@@ -1081,3 +1081,19 @@
     - **EK-054**：關鍵突破支柱補列化膿性鏈球菌 Cas9 靶向必備之 5'-NGG-3' PAM 基序約束，並將 dCas9 調控底盤與鹼基/先導編輯標明為後續生態之重大延伸；跨學科延伸嚴格劃分體外改造回輸（Casgevy 造血幹細胞自體回輸）與體內局部/系統性靶向遞送（AAV 視網膜試驗與 LNP 肝臟探索性個案），消除已能在各器官普遍體內修正之過度表述。
     - 建立證據表 [wiki/evidence/programmable-cellular-engineering.md](evidence/programmable-cellular-engineering.md)，Frontmatter `verification` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-042、EK-043、EK-044、EK-054、EK-055 全數標記為 `fixed`。
+
+
+## [2026-11-09 12:16] fix | 依原文與定理修訂量子糾錯碼與多信使天體物理概念頁 | #量子物理 #統計物理 #天體物理
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 執行未結概念頁問題第二批次（物理天體與量子架構概念，共 4 筆 Issues across 2 篇概念頁）。
+  - **[quantum-error-correction.md](concepts/quantum-error-correction.md)**（EK-047、EK-048、EK-049）：
+    - **EK-047**：關鍵突破支柱明確將拓撲表面碼容錯閾值向 2D 隨機鍵伊辛模型（RBIM）Nishimori 線相變之精確數學映射歸因於 Dennis et al. (2002) 之規範理論推導，將 Hopfield 能量景觀與量子糾錯釐清為統計物理相變理論在神經計算與量子拓撲之平行應用，糾正直接歷史繼承之歸因錯置。
+    - **EK-048**：核心定義依據 Eastin–Knill 定理，說明任何可偵測錯誤之非平凡量子碼均不存在通用橫向邏輯閘集合；補列魔術態蒸餾（Magic State Distillation）、格子手術或代碼切換以注入非橫向非 Clifford 資源之機制，糾正原先「單憑橫向閘即可實現任意深度演算法」之定理違背。
+    - **EK-049**：跨學科延伸客觀交代中性原子處理器實驗實作之編碼為色碼與三維 [[8,3,2]] 碼，將常數編碼率 qLDPC 碼標明為該實驗展望之核心未來方向，刪除「已在實驗室直接實作 qLDPC」之過度表述。
+    - 建立證據表 [wiki/evidence/quantum-error-correction.md](evidence/quantum-error-correction.md)，Frontmatter `verification` 提升為 `verified`。
+  - **[multi-messenger-astrophysics.md](concepts/multi-messenger-astrophysics.md)**（EK-050）：
+    - **EK-050**：核心定義統一天體物理四大基本物理信使為電磁波（光子）、重力波、微中子與帶電宇宙射線，明確深空紅外線（如 JWST）屬電磁波譜長波波段，糾正原先將紅外線並列為獨立信使之錯誤；跨學科段落精確說明三大直進無偏轉之「中性信使（光、微中子、重力波）」協同觀測架構。
+    - 建立證據表 [wiki/evidence/multi-messenger-astrophysics.md](evidence/multi-messenger-astrophysics.md)，Frontmatter `verification` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-047、EK-048、EK-049、EK-050 全數標記為 `fixed`。

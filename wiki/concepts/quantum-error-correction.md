@@ -5,7 +5,7 @@ domain: "physics"
 domain_tags: ["#量子物理", "#統計物理"]
 papers: ["1982-hopfield-network", "2024-fault-tolerant-quantum"]
 related_concepts: ["multi-messenger-astrophysics"]
-verification: "issues"
+verification: "verified"
 ---
 
 # 概念：容錯量子計算與量子糾錯碼 (Fault-Tolerant Quantum Computation & Error Correction)

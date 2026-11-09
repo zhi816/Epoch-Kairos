@@ -316,25 +316,29 @@
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂生成式世界模型概念頁 DeepSeek 段落：明確將「無須人工示範」限定於 R1-Zero 純 RL 模型，說明完整版 R1 結合冷啟動、多階段 SFT 與二次 RL，並將可驗證獎勵（RLVR）向任意領域驗證器與自主科學探索代理之推廣標明為重大未來展望。證據表見 wiki/evidence/2025-deepseek-r1.md。
 
-### EK-047 | open | concepts/quantum-error-correction.md | 支柱 | 歸因／版本錯置
+### EK-047 | fixed | concepts/quantum-error-correction.md | 支柱 | 歸因／版本錯置
 - **問題**：把 Hopfield 1982 列為表面碼／色碼隨機鍵 Ising 映射之直接來源；映射可追溯至 Dennis et al. 2002，其原文未引用 Hopfield，須分開數學類比與歷史來源。
 - **來源**：[Dennis et al. 2002](https://arxiv.org/abs/quant-ph/0110143)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂容錯量子計算與量子糾錯碼概念頁：明確將拓撲表面碼容錯閾值向 2D 隨機鍵伊辛模型（RBIM）Nishimori 線相變之精確數學映射歸因於 Dennis et al. (2002) 之理論工作，將 Hopfield 能量景觀與量子糾錯釐清為統計物理相變理論在神經計算與量子拓撲之平行應用，糾正直接歷史繼承之歸因錯置。建立證據表 wiki/evidence/quantum-error-correction.md。
 
-### EK-048 | open | concepts/quantum-error-correction.md | 定義段 | 原文不符
+### EK-048 | fixed | concepts/quantum-error-correction.md | 定義段 | 原文不符
 - **問題**：稱以橫向閘即可阻止錯誤擴散並實現「任意深度」演算法；依 Eastin–Knill 定理，可偵測錯誤之非平凡量子碼不存在通用橫向邏輯閘集合，須說明其他非橫向或測量型資源。
 - **來源**：[Eastin–Knill](https://arxiv.org/abs/0811.4262)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit、[2026-11-08 22:00] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂容錯量子計算概念頁核心定義：依據 Eastin–Knill 定理，說明任何可偵測錯誤之非平凡量子碼均不存在通用橫向邏輯閘集合；補列魔術態蒸餾（Magic State Distillation）、格子手術或代碼切換以注入非橫向非 Clifford 資源之機制，糾正原先「單憑橫向閘即可實現任意深度演算法」之定理違背。建立證據表 wiki/evidence/quantum-error-correction.md。
 
-### EK-049 | open | concepts/quantum-error-correction.md | 跨學科延伸 | 過度表述
+### EK-049 | fixed | concepts/quantum-error-correction.md | 跨學科延伸 | 過度表述
 - **問題**：稱可重構中性原子陣列已能直接實作 3D／4D 拓撲碼與常數編碼率 qLDPC；所引 2024 實驗將 qLDPC 列為後續方向，未報告已實作。
 - **來源**：[Nature 原文](https://www.nature.com/articles/s41586-023-06927-3)
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂容錯量子計算概念頁跨學科延伸：客觀交代中性原子處理器實驗實作之編碼為色碼與三維 [[8,3,2]] 碼，將常數編碼率 qLDPC 碼標明為該實驗展望之核心未來方向，刪除「已在實驗室直接實作 qLDPC」之過度表述。建立證據表 wiki/evidence/quantum-error-correction.md。
 
-### EK-050 | open | concepts/multi-messenger-astrophysics.md | 核心定義 | 原文不符
+### EK-050 | fixed | concepts/multi-messenger-astrophysics.md | 核心定義 | 原文不符
 - **問題**：把深空紅外線列為與重力波、微中子、宇宙射線並列之獨立信使；紅外線屬電磁波譜。定義與後文「三大信使」亦不一致，須統一分類（光、粒子、重力波）。
 - **來源**：[NASA 多信使說明](https://svs.gsfc.nasa.gov/gallery/multimessengerastronomy/)
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂多信使天體物理與極端宇宙學概念頁：核心定義統一天體物理四大基本物理信使為電磁波（光子）、重力波、微中子與帶電宇宙射線，明確深空紅外線（如 JWST）屬電磁波譜長波波段，糾正將紅外線並列為獨立信使之錯誤；跨學科段落精確說明三大直進無偏轉之「中性信使（光、微中子、重力波）」協同觀測架構。建立證據表 wiki/evidence/multi-messenger-astrophysics.md。
 
 ### EK-051 | open | concepts/institutions-and-macro-dynamics.md | AJR 支柱 | 過度表述
 - **問題**：稱 AJR 以殖民者死亡率「嚴格識別」制度而非地理為收入差距的唯一根因；原文是在排他性假設與控制條件下估計制度效果，不能概括為已排除所有地理作用或證明唯一根因。
