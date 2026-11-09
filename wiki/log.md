@@ -746,3 +746,10 @@
   - **EK-007**：Card 5 明確將「單純外援易遭掠奪型菁英攫取」標註為後續制度經濟學文獻與政策延伸觀點，非 AJR 2001 本文直接檢驗之經驗結果。
   - 新增證據表 [wiki/evidence/2001-colonial-origins-acemoglu.md](evidence/2001-colonial-origins-acemoglu.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-005、EK-006 與 EK-007 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 09:35] fix | 依原文重寫謝富惠 2022 與林鴻瑞 2024 兩篇臺灣語言學論文頁 | #語言學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：使用者指定本代理負責剩餘 17 篇 my-focus 論文頁，本筆為第 1–2 篇。逐篇以原文 PDF 全文核對後重寫 Card 1–6 與 hook，各建證據表，`verification` 改為 `verified`：
+  - [謝富惠 2022](papers/2022-formosan-say-verbs-hsieh.md)（EK-069）：英文題名改為原文 *On the Semantics of SAY Verbs in Formosan Languages*；刪除無來源之集合式與向量插值式，改述圖一至圖四之語義延伸機制與施為動詞假說；Card 6 原列之泛泰雅語例詞有誤（`kema` 為卑南語），改為原文之泰雅語 `mha`、賽德克語 `mesa`、太魯閣語 `mesa`／`sun`，並補述其兼具「做」義。
+  - [林鴻瑞 2024](papers/2024-formosan-temporal-words-lim.md)（EK-070）：英文題名改為原文 *A Preliminary Comparative Study of Formosan Temporal Words*；刪除無來源之代數式，改列五個分合次類型與三種標記類型；Card 6 改正泰雅語 `sa` 為實現標記、泛泰雅語「昨天」「明天」詞根不同；註明原文表九與表十三對賽夏語歸類不一致。

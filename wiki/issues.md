@@ -56,25 +56,29 @@
 
 ## 2007 Woodford 通膨動態
 
-### EK-008 | open | papers/2007-woodford-inflation-dynamics.md | Card 1 | 過度表述
+### EK-008 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 1 | 過度表述
 - **問題**：「嚴格證明決定權毫不動搖」強於原文摘要「全球化不太可能削弱央行控制通膨的能力」。
 - **來源**：[原文（NBER WP 13329）](https://www.nber.org/system/files/working_papers/w13329/w13329.pdf)
 - **發現於**：wiki/log.md [2026-11-08 23:36] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文摘要 p. 2 與引言修訂 Frontmatter hook 與 Card 1：將「嚴格證明決定權毫不動搖」改述為貼合原文之「系統檢驗金融、商品與要素全球化對貨幣傳導機制三大環節（LM、IS、AS 方程）之影響，論證全球化不太可能削弱央行控制本國通膨動態的能力」。證據表見 wiki/evidence/2007-woodford-inflation-dynamics.md。
 
-### EK-009 | open | papers/2007-woodford-inflation-dynamics.md | Card 3 | 原文未支持
+### EK-009 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 3 | 原文未支持
 - **問題**：稱短期利率由準備金付息與供給條件決定，並列出未標號之 IS、NKPC 與廣義確定性公式。原文 p. 36 明說以 Taylor rule 表示政策、未建模央行如何實施操作利率；另行推導之標準式不得標為本文原式。
 - **來源**：[封存原文](../raw/2007-woodford-inflation-dynamics.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 §§1–2 查核修訂 Card 3：明確交代基準第 1 節直接以泰勒利率規則表示政策，第 2 節方進一步建構貨幣需求模型論證準備金行政付息對操作目標之保障；替換未標號之拼湊公式為本文之對數線性化開放動態 AD 方程（式 1.27）與開放 AS 關係（式 3.11/3.19）；確定性條件改依本文系統矩陣特徵根求解說明（$\phi_\pi > 1$），並註明廣義確定性不等式屬 Woodford 2003 經典封閉經濟微觀基礎。證據表見 wiki/evidence/2007-woodford-inflation-dynamics.md。
 
-### EK-010 | open | papers/2007-woodford-inflation-dynamics.md | Card 4 | 原文不符
+### EK-010 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 4 | 原文不符
 - **問題**：「本國利率傳導因開放而增強」與原文結論不符，原文指出國內通膨之政策效果不依賴進口份額參數；所列 β=0.99、σ=1、γ=0.2、κ=0.024 校準在原文找不到對應表或頁碼；把任何外國衝擊說成可完全隔絕亦過度概括。
 - **來源**：同 EK-008
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit、[2026-11-08 23:36] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 p. 14 註 9–10 與 p. 61 註 54 查核修訂 Card 4：校準參數更正為原文之跨期替代彈性 $\sigma=6.37$（相對風險規避係數約 $0.157$）、$\kappa=0.0236$、$\beta=0.99$、年化泰勒係數 $\phi_\pi=2, \phi_y=1$，開放度比較更正為 $\gamma \in \{0, 0.5, 1.0\}$；修正「完全隔絕」表述，精確說明僅在 $\sigma=1$ 特例下總需求解耦，實證校準下外國衝擊會外溢，但央行可透過調整利率有效對沖外溢影響。證據表見 wiki/evidence/2007-woodford-inflation-dynamics.md。
 
-### EK-011 | open | papers/2007-woodford-inflation-dynamics.md | Card 5 | 歸因／版本錯置
+### EK-011 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 5 | 歸因／版本錯置
 - **問題**：點陣圖效果、終結貨幣主義及全球合作最優結論屬後續應用或綜合詮釋，被寫成本篇直接研究結果。
 - **來源**：同 EK-008
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit、[2026-11-08 23:36] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 5 典範轉移段落：明確將「終結貨幣主義奠定通膨目標制」歸為 Woodford 系列奠基理論（以 2003 年《Interest and Prices》為代表），將點陣圖與前瞻指引實踐標註為該微觀基礎理論之後續政策延伸應用，並釐清開放經濟貨幣政策獨立性結論與國際協調最優性之文獻界線。證據表見 wiki/evidence/2007-woodford-inflation-dynamics.md。
 
 ## 2012 CRISPR-Cas9
 
@@ -399,15 +403,17 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文第二至六章逐項確認後重寫 Card 1–3 與 hook：刪除原文未出現之環綴、音節週期性自相關檢測與 KL 正則化式；排灣語重疊改述為原文之「重複詞根最後兩音節」字串規則；明確寫出翻譯實驗未使用構詞資訊，作者將其列為未來工作。另修正同頁未登記之問題：Card 4 補列各技術疊加之 BLEU 與前綴組合正確率，註明表 22 與表 24 數值不一致、中文翻族語最終分數含 BERT 之貢獻；刪除「跨語系普適性」「首套開源基礎設施」等無來源表述。證據表見 wiki/evidence/2025-paiwan-bunun-morphology-mt-wu.md。
 
-### EK-069 | open | papers/2022-formosan-say-verbs-hsieh.md | Frontmatter 與 Card 3 | 原文不符
+### EK-069 | fixed | papers/2022-formosan-say-verbs-hsieh.md | Frontmatter 與 Card 3 | 原文不符
 - **問題**：（1）Frontmatter `title`（第 2 行）與主標題（第 20 行）將英文標題寫為 `"Semantic Phenomena of Verbs of Saying in Formosan Languages: A Typological Investigation"`；原文末頁（PDF p. 46，期刊 p. 92）之正式英文標題為 `"On the Semantics of SAY Verbs in Formosan Languages"`。（2）Card 3（第 46–63 行）之集合聯集式與連續向量空間線性插值式未見於原文（原文圖 4，p. 83 係以 `X[述說]、[動作]` 語義特徵標記描述語法化鏈），未標明為 Wiki 自行形式化推導。
 - **來源**：`raw/my-focus/台灣相關論文/台灣南島語「說」動詞語義現象初探_謝富惠.pdf`（p. 83 圖 4、p. 92 英文摘要頁）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文全文核對後：`title` 與主標題改為英文摘要頁之正式題名 *On the Semantics of SAY Verbs in Formosan Languages*；刪除 Card 3 原文未出現之集合式、語法化分段函數與向量插值式，改述原文圖一至圖四之語義延伸機制與施為動詞假說。另修正同頁未登記之問題：Card 6 原列泛泰雅語例詞 `musa’`、`mhai`、`kema` 有誤（`kema` 為卑南語），改為原文表一、表二之泰雅語 `mha`、賽德克語 `mesa`／`kesa-un`、太魯閣語 `mesa`／`sun`，並補述其兼具「做」義；刪除 Card 5「可顯著提升依存句法分析」等無來源表述，補列作者自述之限制。證據表見 wiki/evidence/2022-formosan-say-verbs-hsieh.md。
 
-### EK-070 | open | papers/2024-formosan-temporal-words-lim.md | Frontmatter、Card 3 與 Card 6 | 原文不符
+### EK-070 | fixed | papers/2024-formosan-temporal-words-lim.md | Frontmatter、Card 3 與 Card 6 | 原文不符
 - **問題**：（1）Frontmatter `title`（第 2 行）與主標題（第 20 行）將英文標題寫為 `"A Preliminary Cross-Linguistic Comparison of Temporal Words in Formosan Languages"`；原文末頁（PDF p. 27）之正式英文標題為 `"A Preliminary Comparative Study of Formosan Temporal Words"`。（2）Card 3（第 45–57 行）之代數分解式未見於原文，未標明為 Wiki 自行推導。（3）Card 6（第 93 行）稱泰雅語「包含未實現前綴（如 `sa-`）卻帶有過去時間詞根……檢索詞庫中對應之『昨天』詞根，從而推導出『明天』之正確語義」；原文表 12（p. 14）明確標示賽考利克泰雅語 `sa`（如 `sa knwan` 過去何時、`sa kaxa'` 前天）為**實現（realis，過去）**標記而非未實現標記，且表 3（p. 7）顯示泰雅語「昨天」（`shera'/hera'`）與「明天」（`suxan`）屬異根（類型 1.2）。
 - **來源**：`raw/my-focus/台灣相關論文/台灣南島語言時間詞之跨語言比較初探_林鴻瑞.pdf`（p. 7 表 3、p. 14 表 12、p. 27 英文摘要頁）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文全文核對後：`title` 與主標題改為英文摘要頁之正式題名 *A Preliminary Comparative Study of Formosan Temporal Words*；刪除 Card 3 原文未出現之 $T(\Delta t)$、$\operatorname{Root}$ 與三類代數式，改列表九之五個次類型與表十一之三種標記類型；Card 6 改正：賽考利克泰雅語 `sa` 為實現標記（表十二），且泛泰雅語「昨天」與「明天」詞根不同（表三），改以「前天＝後天＝`kaxa’`、靠標記區分」為延伸重點。另修正同頁未登記之問題：Card 4 註明原文表九與表十三對賽夏語歸類不一致；刪除 Card 5「重構幾何視角」「建立數學先驗」等無來源表述。證據表見 wiki/evidence/2024-formosan-temporal-words-lim.md。
 
 ### EK-071 | open | papers/2024-finnish-northern-sami-mt-saleva.md | Card 3 與 Card 5 | 原文不符
 - **問題**：（1）Card 3（第 55 行）將語言模型先驗正則化項之 KL 散度方向寫反為 $\mathcal{D}_{\text{KL}}(P_{\text{NMT}} \,\|\, P_{\text{LM}})$；原文 §3.2（p. 12950）定義之目標函數為由固定 LM 指向 NMT 之正向 KL 散度 $D_{\text{KL}}(p_{\text{LM}}(y) \,\|\, p_{\text{NMT}}(y \mid x))$。（2）Card 3 架構圖（第 63 行）將芬蘭語與北薩米語單語語料庫一併送入「逆向神經翻譯模型」；原文 §3.1（p. 12950）中，北薩米語單語資料由逆向模型回譯，而芬蘭語單語資料由正向模型正譯（forward translation）。（3）Card 5（第 80 行）稱「當回譯資料量充足時，必須全面採用 Tagged BT」；原文 §4.3（p. 12952，表 5）明確指出 `<BT>` 標記效果不一，在僅用回譯時使域內 UiT 測試集 BLEU 微降（41.75 至 41.71），結合正譯與回譯時使 UiT（38.96 至 38.84）與 YLE（17.91 至 17.36）之 BLEU 均下降。
