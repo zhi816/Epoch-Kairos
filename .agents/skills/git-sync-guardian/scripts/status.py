@@ -27,9 +27,16 @@ def run_git(cwd, *args):
     )
 
 
-def git_out(cwd, *args, default=''):
+def checked_git_out(cwd, description, *args, default='unknown'):
     r = run_git(cwd, *args)
-    return r.stdout.strip() if r.returncode == 0 else default
+    if r.returncode == 0:
+        return r.stdout.strip(), True
+    err_msg = (r.stderr or r.stdout or '').strip()
+    print(f'    ERROR: {description} failed (exit code {r.returncode}).')
+    if err_msg:
+        for line in err_msg.splitlines():
+            print(f'      {line}')
+    return default, False
 
 
 def inspect_repo(index, label, repo_path, allow_offline=False):
@@ -49,26 +56,43 @@ def inspect_repo(index, label, repo_path, allow_offline=False):
                 print(f'      {line}')
         print('    WARNING: Remote commit and Ahead/Behind counts below are STALE (check network or .git write permissions).')
 
-    branch = git_out(repo_path, 'rev-parse', '--abbrev-ref', 'HEAD', default='unknown')
-    local_rev = git_out(repo_path, 'rev-parse', 'HEAD', default='unknown')
-    remote_rev = git_out(repo_path, 'rev-parse', 'origin/main', default='unknown')
-    ahead = git_out(repo_path, 'rev-list', '--count', 'origin/main..HEAD', default='0')
-    behind = git_out(repo_path, 'rev-list', '--count', 'HEAD..origin/main', default='0')
+    inspection_ok = True
+    branch, ok = checked_git_out(repo_path, 'current branch query', 'rev-parse', '--abbrev-ref', 'HEAD')
+    inspection_ok = inspection_ok and ok
+    local_rev, ok = checked_git_out(repo_path, 'local commit query', 'rev-parse', 'HEAD')
+    inspection_ok = inspection_ok and ok
+    remote_rev, ok = checked_git_out(repo_path, 'origin/main query', 'rev-parse', 'origin/main')
+    inspection_ok = inspection_ok and ok
+    ahead, ok = checked_git_out(repo_path, 'ahead count query', 'rev-list', '--count', 'origin/main..HEAD')
+    inspection_ok = inspection_ok and ok
+    behind, ok = checked_git_out(repo_path, 'behind count query', 'rev-list', '--count', 'HEAD..origin/main')
+    inspection_ok = inspection_ok and ok
     status_res = run_git(repo_path, 'status', '--porcelain')
-    status_text = status_res.stdout.rstrip('\r\n') if status_res.returncode == 0 else ''
+    if status_res.returncode == 0:
+        status_text = status_res.stdout.rstrip('\r\n')
+    else:
+        inspection_ok = False
+        status_text = None
+        err_msg = (status_res.stderr or status_res.stdout or '').strip()
+        print(f'    ERROR: git status failed (exit code {status_res.returncode}); working-tree state is unknown.')
+        if err_msg:
+            for line in err_msg.splitlines():
+                print(f'      {line}')
 
     print(f'    Branch: {branch}')
     print(f'    Local commit:  {local_rev}')
     print(f'    Remote commit: {remote_rev}' + ('' if fetch_ok else ' (STALE - fetch failed)'))
     print(f'    Ahead: {ahead} | Behind: {behind}' + ('' if fetch_ok else ' (STALE - fetch failed)'))
-    if status_text:
+    if status_text is None:
+        print('    Working tree: UNKNOWN (git status failed)')
+    elif status_text:
         print('    Uncommitted changes:')
         for line in status_text.splitlines():
             print(f'      {line}')
     else:
         print('    Working tree: Clean')
 
-    return fetch_ok or allow_offline
+    return inspection_ok and (fetch_ok or allow_offline)
 
 
 def main():
@@ -99,7 +123,7 @@ def main():
 
     print('==================================================')
     if not (ok_main and ok_raw):
-        print('ERROR: One or more repositories failed to fetch from origin/main (see WARNING above).', file=sys.stderr)
+        print('ERROR: One or more repository checks failed; see the warnings above.', file=sys.stderr)
         sys.exit(1)
 
 

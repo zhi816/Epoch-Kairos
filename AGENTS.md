@@ -475,4 +475,5 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
    - 目的：日誌是共用檔案，條目滯留在工作目錄會被他人誤帶、阻擋同步，甚至遭覆寫；每筆日誌都對應一個已推送的提交，多 AI 協作出問題時才能立即追查。
 7. **專屬輔助技能與工具鏈調用**：
    - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（同時提供跨平台 Python 版 `scripts/status.py`、`scripts/sync.py`、`scripts/safe_commit_push.py` 與 Bash 版 `scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`；Windows PowerShell 或沙盒環境優先使用 `.py` 版以省去啟動外部 Bash 之權限耗時）及日誌工具（`scripts/log_time.py` 取得日誌標題時間、`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/stage_issues.py` 逐條暫存自己修改的問題條目、`scripts/stage_todo.py` 逐條暫存自己修改的待辦條目並提供下一個編號、`scripts/log_tail.py` 依條目讀取日誌最後幾筆、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.py` / `safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。`stage_log.py` 暫存之條目順序一律跟隨工作目錄，不依時間重排，以免提交後日誌持續顯示為已修改。其餘專屬 Skill 見第六章開頭之 Skill 一覽。
+   - `safe_commit_push.py` / `.sh` 只接受倉庫內單一相對檔案路徑，拒絕資料夾與路徑跳脫，並以 literal pathspec 暫存；執行前須確認目前分支為 `main`，且先成功 fetch 才能暫存或建立提交。`status.py` / `.sh` 的本機 Git 查詢失敗必須回報未知狀態及非零退出碼；日誌衝突的合併提交失敗不得回報成功。
 

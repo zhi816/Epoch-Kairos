@@ -73,7 +73,7 @@ python .agents/skills/git-sync-guardian/scripts/status.py
 ./.agents/skills/git-sync-guardian/scripts/status.sh
 ```
 * **功能**：同時對主倉庫與 `raw/` 私有倉庫執行 `fetch`，報告當前分支、本機與遠端 commit 雜湊、領先（Ahead）與落後（Behind）數值，以及未暫存之修改檔案。
-* **防靜默過期保護**：若 `git fetch origin main` 因網路中斷或沙盒阻擋 `.git/FETCH_HEAD` 寫入而失敗，腳本**不會靜默忽略**，會立即印出 Git 錯誤訊息、標示 `STALE - fetch failed` 警告，並在報告完本機狀態後以非零代碼（`exit 1`）結束，防止 AI 誤把過期的快取狀態當成最新遠端狀態（若確屬離線檢視，可加 `--allow-offline`）。
+* **防靜默過期與查詢失敗保護**：若 `git fetch origin main` 失敗，會印出 Git 錯誤訊息、標示 `STALE - fetch failed` 並回傳非零代碼；若分支、ahead/behind 或 `git status` 查詢失敗，欄位會標示未知而不會假報 `0` 或 `Clean`，同樣以非零代碼結束。只有明確離線檢視時可加 `--allow-offline`，但它不會忽略本機 Git 查詢失敗。
 
 ### 2. 安全合流提取（Safe Sync & Pull）
 ```bash
@@ -87,7 +87,7 @@ python .agents/skills/git-sync-guardian/scripts/sync.py
   - 若雙方一致：回報 `Already up to date`。
   - 若遠端領先且本機無新 commit：執行 `git merge --ff-only --autostash origin/main` 安全快進。
   - 若兩端分岔（Divergent）：執行 `git merge --autostash origin/main` 三方合併。
-  - `--autostash` 會暫收工作目錄中其他代理尚未提交的修改，合流後放回並維持未暫存；只有 `wiki/log.md` 衝突時自動以 `merge_log.py` 排解，其他衝突則警示並引導人工排解。
+  - `--autostash` 會暫收工作目錄中其他代理尚未提交的修改，合流後放回並維持未暫存；只有 `wiki/log.md` 衝突時自動以 `merge_log.py` 排解。若日誌合併提交失敗，腳本會回報失敗並保留現況；其他衝突則警示並引導人工排解。
 
 ### 3. 原子提交並推送（Atomic Safe Commit and Push）
 ```bash
@@ -102,9 +102,9 @@ python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "<提交訊�
 ```
 * **功能**：
   1. 確認暫存區原本是空的（否則中止，避免帶走他人已暫存的檔案）。
-  2. 只暫存 `--` 之後列出的路徑；`wiki/log.md` 交給 `stage_log.py`、`wiki/issues.md` 交給 `stage_issues.py`（`--issue`）、`wiki/todo.md` 交給 `stage_todo.py`（`--todo`）逐條暫存。不接受 `.`、`-A`。若同一代理的多個工作階段同時追加日誌，可重複傳入 `--log-heading "## [YYYY-MM-DD HH:MM] ..."` 精確挑選自己的標題，避免同代理身分造成誤暫存；被選取的條目會依時間插入暫存版，已提交條目順序不變。
-  3. 先提交自己的修改，再 `git fetch` 並以 `git merge --autostash` 與遠端三方合流；只有 `wiki/log.md` 衝突時自動以 `merge_log.py` 排解，放回他人修改時的日誌衝突亦同。
-  4. 清空暫存區，讓他人修改維持未暫存；`git push origin main` 後確認 `Ahead: 0`，並列出工作目錄中仍未提交（屬於他人）的檔案。
+  2. 只暫存 `--` 之後列出的**單一相對檔案路徑**；拒絕資料夾、絕對路徑、路徑跳脫與 pathspec magic，並用 literal pathspec 防止萬用字元展開。`wiki/log.md` 交給 `stage_log.py`、`wiki/issues.md` 交給 `stage_issues.py`（`--issue`）、`wiki/todo.md` 交給 `stage_todo.py`（`--todo`）逐條暫存。若同一代理的多個工作階段同時追加日誌，可重複傳入 `--log-heading "## [YYYY-MM-DD HH:MM] ..."` 精確挑選自己的標題，避免同代理身分造成誤暫存；被選取的條目會依時間插入暫存版，已提交條目順序不變。
+  3. 確認目前分支為 `main`，先 `git fetch`，成功後才暫存與建立提交。提交後以 `git merge --autostash` 與遠端合流；若遠端在前置 fetch 後又前進，push 仍可能被拒，腳本會回報錯誤並保留本機提交供後續同步。
+  4. 日誌衝突由 `merge_log.py` 排解；合併提交失敗會明確中止，不回報成功。推送後確認 `Ahead: 0`，並列出工作目錄中仍未提交（屬於他人）的檔案。
 * 兩個倉庫都有修改時，分別執行 `main` 與 `raw` 各一次（各自列出檔案），以滿足雙倉庫一體化。
 * 需要 Python 3.7 以上（僅用標準函式庫）。`.py` 版直接以當前 Python 執行並自動將標準輸出設為 UTF-8；`.sh` 版會自動依序試 `python3`、`python`、`py`，取第一個成功者。
 

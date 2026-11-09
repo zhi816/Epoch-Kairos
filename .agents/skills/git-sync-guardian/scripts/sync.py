@@ -68,7 +68,12 @@ def merge_remote(cwd, ff_only=False):
                 return False
             if run_git(cwd, 'add', 'wiki/log.md').returncode != 0:
                 return False
-            subprocess.run(['git', '-C', cwd, 'commit', '-q', '--no-edit'])
+            commit_res = run_git(cwd, 'commit', '-q', '--no-edit')
+            if commit_res.returncode != 0:
+                if commit_res.stderr:
+                    sys.stderr.write(commit_res.stderr)
+                print('    ERROR: 日誌衝突已整理，但合併提交失敗；請保留現況並人工處理。', file=sys.stderr)
+                return False
         else:
             return False
 
@@ -76,13 +81,19 @@ def merge_remote(cwd, ff_only=False):
         if only_log_conflict(cwd) and top_stash_is_autostash(cwd):
             if not run_merge_log(cwd):
                 return False
-            run_git(cwd, 'reset', '-q')
-            run_git(cwd, 'stash', 'drop', '-q')
+            if run_git(cwd, 'reset', '-q').returncode != 0:
+                print('    ERROR: 無法清除合併索引中的暫存狀態。', file=sys.stderr)
+                return False
+            if run_git(cwd, 'stash', 'drop', '-q').returncode != 0:
+                print('    ERROR: 已合併日誌，但無法刪除 autostash；請檢查 git stash list。', file=sys.stderr)
+                return False
         else:
             print('    ERROR: 放回未提交修改時發生衝突，修改仍保存在 git stash 中，請人工處理。', file=sys.stderr)
             return False
 
-    run_git(cwd, 'reset', '-q')
+    if run_git(cwd, 'reset', '-q').returncode != 0:
+        print('    ERROR: 合流後無法清除暫存狀態。', file=sys.stderr)
+        return False
     return True
 
 

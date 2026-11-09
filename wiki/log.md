@@ -1243,6 +1243,20 @@
   - [README.md](../README.md) 系統架構新增 `tools/`、首頁描述改為知識星圖並說明重建指令，`econ` 配色名改為香檳金。
   - 依據：使用者 2026-11-09 確認之首版範圍與 DESIGN.md 第二章第 0 節（完成 TD-006）。
 
+## [2026-11-09 16:58] config | 修補 git-sync-guardian 安全暫存與錯誤狀態處理 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：
+  - 修正 Python 與 Bash 版 `safe_commit_push`：只接受倉庫內單一相對檔案路徑，拒絕資料夾、絕對路徑、路徑跳脫及 pathspec magic，使用 literal pathspec；限定目前分支為 `main`，並將 fetch 移至暫存與建立提交之前，避免 fetch 權限或網路錯誤留下新本機提交。
+  - 修正 Python 與 Bash 版狀態檢查：branch、commit、ahead/behind 或 `git status` 查詢失敗時明確顯示未知狀態並回傳非零碼，不再將查詢錯誤顯示為 `0` 或 `Clean`。
+  - 修正 Python 與 Bash 版同步及提交腳本：日誌衝突整理後的 `git commit` 失敗會中止並回報；autostash 清理失敗也會明確提示。
+  - 更新 `AGENTS.md` 與 `SKILL.md`，記錄新增的路徑、分支、前置 fetch 與錯誤處理規則。`git diff --check` 通過；未執行整合測試。
+
+## [2026-11-09 17:02] config | 阻擋已刪除資料夾的遞迴路徑暫存 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：補強 Python 與 Bash 版提交腳本，除了檢查工作目錄中的資料夾，也查詢 Git 索引以拒絕已刪除但仍含追蹤檔案的資料夾路徑；拒絕含換行的路徑，確保以 literal pathspec 暫存時只選到單一檔案。`git diff --check` 通過；未執行整合測試。
+
 ## [2026-11-09 17:53] fix | 將 EK-081 至 EK-084、EK-086 相關頁面 verification 改為 issues | 全域
 - **執行代理**：Antigravity by Google
 - **模型版本**：Claude Sonnet 5.5
