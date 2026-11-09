@@ -249,10 +249,11 @@
 
 ## 2025 滿語上下文機器翻譯
 
-### EK-031 | open | papers/2025-manchu-in-context-mt-pei.md | Card 1 | 原文不符
+### EK-031 | fixed | papers/2025-manchu-in-context-mt-pei.md | Card 1 | 原文不符
 - **問題**：第 27 行語族寫作「阿爾泰阿爾泰通古斯語族」，字詞重複，且「阿爾泰語系」歸類有爭議，宜依原文寫作通古斯語族（Tungusic）。
 - **來源**：待回原文核對語族表述
 - **發現於**：wiki/log.md [2026-11-08 22:06] audit（Claude Code by Anthropic）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。原文 §3（p. 8769）稱滿語為 critically endangered Tungusic language；Card 1 改為「通古斯語」，刪除重複且有爭議之「阿爾泰阿爾泰」。
 
 ## 概念頁
 
@@ -415,15 +416,17 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文全文核對後：`title` 與主標題改為英文摘要頁之正式題名 *A Preliminary Comparative Study of Formosan Temporal Words*；刪除 Card 3 原文未出現之 $T(\Delta t)$、$\operatorname{Root}$ 與三類代數式，改列表九之五個次類型與表十一之三種標記類型；Card 6 改正：賽考利克泰雅語 `sa` 為實現標記（表十二），且泛泰雅語「昨天」與「明天」詞根不同（表三），改以「前天＝後天＝`kaxa’`、靠標記區分」為延伸重點。另修正同頁未登記之問題：Card 4 註明原文表九與表十三對賽夏語歸類不一致；刪除 Card 5「重構幾何視角」「建立數學先驗」等無來源表述。證據表見 wiki/evidence/2024-formosan-temporal-words-lim.md。
 
-### EK-071 | open | papers/2024-finnish-northern-sami-mt-saleva.md | Card 3 與 Card 5 | 原文不符
+### EK-071 | fixed | papers/2024-finnish-northern-sami-mt-saleva.md | Card 3 與 Card 5 | 原文不符
 - **問題**：（1）Card 3（第 55 行）將語言模型先驗正則化項之 KL 散度方向寫反為 $\mathcal{D}_{\text{KL}}(P_{\text{NMT}} \,\|\, P_{\text{LM}})$；原文 §3.2（p. 12950）定義之目標函數為由固定 LM 指向 NMT 之正向 KL 散度 $D_{\text{KL}}(p_{\text{LM}}(y) \,\|\, p_{\text{NMT}}(y \mid x))$。（2）Card 3 架構圖（第 63 行）將芬蘭語與北薩米語單語語料庫一併送入「逆向神經翻譯模型」；原文 §3.1（p. 12950）中，北薩米語單語資料由逆向模型回譯，而芬蘭語單語資料由正向模型正譯（forward translation）。（3）Card 5（第 80 行）稱「當回譯資料量充足時，必須全面採用 Tagged BT」；原文 §4.3（p. 12952，表 5）明確指出 `<BT>` 標記效果不一，在僅用回譯時使域內 UiT 測試集 BLEU 微降（41.75 至 41.71），結合正譯與回譯時使 UiT（38.96 至 38.84）與 YLE（17.91 至 17.36）之 BLEU 均下降。
 - **來源**：`raw/my-focus/報告論文題材/2024.findings-acl.768.pdf`（§3.1–3.2 p. 12950、§4.3 p. 12952 表 5）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文 §3–§5 與表 1–5 核對後：KL 散度改為原文式 $D_{\text{KL}}(p_{\text{LM}}(y) \| p_{\text{NMT}}(y \mid x))$；架構圖改為北薩米語單語經反向模型回譯、芬蘭語單語（mC4）經正向模型正譯；Card 5 刪除「必須全面採用 Tagged BT」，改述原文「標記在某些情況有益、在其他情況沒有」並列出各設定數值。另修正同頁未登記之問題：題名改為原文之 *Northern Sámi*；Card 4 補列表 5 完整結果並註明內文 33.80 與表 5 之 33.30 不一致；補列作者自述之單一語言對與單次執行限制。證據表見 wiki/evidence/2024-finnish-northern-sami-mt-saleva.md。
 
-### EK-072 | open | papers/2025-manchu-in-context-mt-pei.md | Frontmatter、Card 3 與 Card 5–6 | 原文不符
+### EK-072 | fixed | papers/2025-manchu-in-context-mt-pei.md | Frontmatter、Card 3 與 Card 5–6 | 原文不符
 - **問題**：（1）Frontmatter `hook`（第 17 行）、引言（第 22 行）、Card 5（第 83 行）與 Card 6（第 95 行）稱注入語法書會導致翻譯效能「推理衰退／下降」；原文 §4.3（p. 8772，表 3）與附錄 E（p. 8783，表 10）顯示加入語法書段落使分數微幅上升但統計上不顯著（$p = 0.4$），原文結論為「語法書幾乎無助益（grammars hardly help）」，而非造成衰退。（2）Card 3（第 45–53 行）將提示組合寫為「五大獨立組件的笛卡爾積」並以 $\arg\max$ 解碼；原文 §4（p. 8770）明言窮舉所有組合不可行，故採依序貪婪疊加（sequential greedy integration），且實驗使用溫度 0.9／1.0 採樣。（3）Card 3（第 62 行）稱加密實驗將滿文轉寫為「模型完全未見過的對應符號」；原文 §5.2（p. 8773）實為拉丁字母循環位移密碼（如 `a -> e`、`amban -> encep`）。
 - **來源**：`raw/my-focus/報告論文題材/2025.acl-long.429.pdf`（§4 p. 8770、§4.3 p. 8772 表 3、§5.2 p. 8773、附錄 E p. 8783 表 10）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文全文核對後：hook 與 Card 1、5、6 改述原文結論「語法書幾乎沒有幫助」（微幅提升且不顯著，附錄 G 表 10 p = 0.4），下降者為 CoT；Card 3 刪除「笛卡爾積」與 argmax 式，改述依序加入組件之流程與溫度 0.9／1.0 採樣；加密改述為原文之字母位移替換（`amban`→`encep`）。另修正同頁未登記之問題：Card 4 補列各步驟數值、顯著性、人工評估與 §6 合成資料訓練 mT5 之結果；顯著性所在之附錄為 G（非 E）；註明英文平行語料由 Google 翻譯自中文。證據表見 wiki/evidence/2025-manchu-in-context-mt-pei.md。
 
 ### EK-073 | open | papers/2026-tao-filipino-nmt-macayan.md | Card 3 與 Card 6 | 原文不符
 - **問題**：（1）Card 3（第 45–51 行與第 60 行架構圖）稱在菲律賓語（Tagalog）大規模預訓練並加上參數距離懲罰項；原文 §4.6（p. 32）中，Tagalog（Filipino）即為目標語言，Model 3 係先將 `NLLB-200 (600M)` 於巴丹語群親屬語 **Ivatan-to-Tagalog（伊巴丹語－菲律賓語）**平行語料微調，再於 Yami-to-Tagalog（達悟語－菲律賓語）微調，且無任何 $L_2$ 參數距離懲罰項。（2）Card 3（第 53–57 行與第 63 行架構圖）與 Card 6（第 90 行）稱本文訓練「構詞感知子詞正則化（Morphology-Aware Subword BPE），將語言學詞綴字典注入分詞優先級，確保 `mi-`、`ma-`、`om-` 不被截斷」；原文 §7（p. 34）明確指出**受限於研究時程，本文直接使用 NLLB-200 預設分詞器**，並將子詞／構詞分詞列為未來工作建議。

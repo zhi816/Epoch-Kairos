@@ -775,3 +775,10 @@
   - **[safe_commit_push.sh](../.agents/skills/git-sync-guardian/scripts/safe_commit_push.sh)**：列出 `wiki/issues.md` 時必須以 `--issue EK-NNN` 指定編號，否則還原本次暫存並中止。
   - **測試**：以含遠端之暫存倉庫測試六種情境（兩代理各改一筆、新分節加新條目、分節中間插入、指定不存在編號、刪除既有條目、未給 `--issue`），結果皆符合預期；並對真實問題清單以 `--dry-run` 試跑。
   - **規範**：[AGENTS.md](../AGENTS.md) 第十章第 5、7 條、[git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 與 [wiki-content-audit](../.agents/skills/wiki-content-audit/SKILL.md) 補述。
+
+## [2026-11-09 09:40] fix | 依原文重寫 Saleva 2024 與 Pei 2025 兩篇報告題材論文頁 | #自然語言處理 #深度學習 #計算語言學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：剩餘 17 篇 my-focus 論文頁之第 3–4 篇，逐篇以原文 PDF 全文核對後重寫 Card 1–6 與 hook，各建證據表，`verification` 改為 `verified`：
+  - [Sälevä & Lignos 2024](papers/2024-finnish-northern-sami-mt-saleva.md)（EK-071）：KL 散度改為原文方向；芬蘭語單語資料改為正譯用途；刪除「必須全面採用標記回譯」，改述原文「標記在某些情況有益、在其他情況沒有」；題名改為 *Northern Sámi*；註明內文 33.80 與表 5 之 33.30 不一致。
+  - [Pei et al. 2025](papers/2025-manchu-in-context-mt-pei.md)（EK-031、EK-072）：語族改為通古斯語；改述「語法書幾乎沒有幫助」（不顯著），下降者為 CoT；改述依序加入組件與溫度採樣；加密改為字母位移；補列人工評估與 §6 合成資料訓練 mT5 之結果。
