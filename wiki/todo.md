@@ -12,7 +12,7 @@
 ### TD-002 | waiting | web | 產出 web/ 展示層並將論文頁升級為 published
 - **內容**：`web/` 目前只有 `prototypes/` 樣稿（mobile-v1、mobile-v2）與空的 `papers/`，尚無 `web/index.html` 與任何 `web/papers/<slug>/index.html`；41 篇論文頁皆為 `status: "wiki"`，Lint 第 3 條三層對齊因而未通過。依第六章 Ingest 第 4 步與第七章第 3 節產出首頁時間線與各論文雙欄頁後，將對應論文頁改為 `published`。首頁首版（知識星圖）已於 2026-11-09 完成（原 TD-006，由 `tools/build_home.py` 產生），本條以論文頁為主。
 - **完成條件**：`web/index.html` 與各論文之 `web/papers/<slug>/index.html` 產出，對應論文頁 `status` 改為 `published`，`lint_wiki.py` 無 ERROR。
-- **等待**：[DESIGN.md](../DESIGN.md) 第八章待決事項定案。第 9 項（論文頁視覺）已於 2026-11-09 定案為樣稿「論文頁 F」（DESIGN.md 第五章），第 10 項已隨首版首頁完成；尚待第 1 項（首頁主案 v4 定稿）與第 14 項（卡組丁其餘五學科之深色重點色），並請使用者確認何時動工。
+- **等待**：[DESIGN.md](../DESIGN.md) 第八章待決事項定案。第 9 項（論文頁視覺）已於 2026-11-09 定案為樣稿「論文頁 F」（DESIGN.md 第五章），第 10 項已隨首版首頁完成；第 14 項（卡組丁深色重點色）亦已定案；尚待第 1 項（首頁主案 v4 定稿），並請使用者確認何時動工。實作時將深色重點色寫入 `theme.css`（`--deep-<domain>`）並同步 AGENTS.md 第二章色表（DESIGN.md 第七章）。
 - **來源**：wiki/log.md [2026-11-07 22:47] audit「延後處理」與 index.md 原「待辦與已知問題」一節；2026-11-09 登記，Claude Code by Anthropic。
 
 ### TD-003 | waiting | raw | 取得光遺傳學頁奠基論文 Nagel et al. (2002) 原始 PDF
