@@ -607,3 +607,9 @@
 - **來源**：`raw/my-focus/英文論文/Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13.pdf`（摘要，PDF p. 1；§4.1 Paiwan，PDF p. 5；§5 結論，PDF p. 7）
 - **發現於**：wiki/log.md [2026-11-09 23:33] audit（Claude Code by Anthropic；第一批卡片回填 C 組只讀論文頁時提出，本代理回原文核對）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。Card 5 第 1 點改為「在多數語言中與既有分群研究結果相當接近，排灣語無法判定、萬山魯凱語兩指標分歧」，並附原文頁碼（摘要 p. 124、排灣語 p. 128、§5 p. 130）；第 35 行刪除「開創性」，「首次」改寫為作者自述。證據表增列對應主張，頁面 verification 改回 verified。
+
+### EK-093 | fixed | papers/2026-context-volume-rag-domain-shift-setiawan.md | Frontmatter card_line | 過度表述
+- **問題**：`card_line`「參考例句給得越多，達豪語翻譯得越好」暗示例句越多效果越好、單調上升。原文表 5 顯示詞級檢索在 N=10（有效例句約 137 句）達 35.28 chrF++ 後，N=15、N=20 回落至 35.16 與 34.22；原文主張的是「語境容量比檢索演算法更影響效能」，並非越多越好。同頁 Card 3 第 75 行亦已寫明「語境容量並非單調無限上升」。
+- **來源**：`raw/my-focus/英文論文/llm 輔助/Context Volume Drives Performance Tackling Domain Shift in Extremely.pdf`（表 5，p. 100；§6 結論，p. 94）
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。`card_line` 改為「讓大模型參考例句，修補跨領域的達豪語翻譯」（19 字，描述本篇做了什麼，不含單調之斷言），重建首頁。

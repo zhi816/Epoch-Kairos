@@ -1553,3 +1553,13 @@
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（3aaaf11 版）1440 x 900 與 375 x 812 結果 PASS。
   - 複核修正：封面一句話壓到代表星（論文名兩行、導語兩行使星窗變矮），導語改為一行；論文名、Card 2 雙語詞典說明、Card 4 兩格說明與 Card 5 首筆里程碑有一至兩字落單之行，改寫至無落單。
   - 未決事項：原文另公開資料集（§3，GitHub）、列出人工評估等未來工作與找不到母語者審稿之限制（§6、Limitations），論文頁未記載，卡片依硬規則第 2 條未採用，交協調者決定是否補入論文頁。
+
+## [2026-11-10 00:08] update | 新增達豪語跨領域 RAG 後編輯之卡片文字檔並修正 card_line | #自然語言處理 #人工智慧 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第二批 A 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2026-context-volume-rag-domain-shift-setiawan.md](cards/2026-context-volume-rag-domain-shift-setiawan.md) 並建置 `web/prototypes/paper-v1/2026-context-volume-rag-domain-shift-setiawan.html`。
+  - 撰寫時發現 `card_line`「參考例句給得越多，達豪語翻譯得越好」暗示單調上升，與原文表 5（N=10 後回落）不符，登記 EK-093 並改為「讓大模型參考例句，修補跨領域的達豪語翻譯」，重建 `web/index.html`（僅此句改變，`--check` 一致）。
+  - Card 3 無公式模式：以 paper-pdf-parser 抽取原文全文（15 頁）確認無編號公式、等號僅見於參數設定；示意圖為流程（來源句→小模型初稿→大模型後編輯→譯文，例句與詞典由來源句檢索後送入後編輯）。
+  - Card 5 新論文模式：三筆取原文 §7 Limitations（p. 95）所列限制與建議（單一語言對與領域轉換、驗證新聞與衛生等非宗教文本、改用部分詞典以減少雜訊）。
+  - Card 4 四個數字取自證據表（新約 36.17、舊約 27.11，表 1 p. 89；最終系統 35.21，表 2 p. 91；有效例句約 137，表 5 p. 100）。Card 6 未涉碩論內容。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 35 項 PASS；無頭截圖目視，Card 2 第三列折行落單「低」字，已縮短。`lint_wiki.py` ERROR 0。
