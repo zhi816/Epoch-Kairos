@@ -155,6 +155,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 > |---|---|
 > | [`wiki-content-audit`](./.agents/skills/wiki-content-audit/SKILL.md) | Ingest 起草前（寫作模式）、Lint 第 2 條與任何事實查核（查核模式）；附 `lint_wiki.py` 與 `crossref_check.py` 兩支檢查腳本 |
 > | [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 將論文譯為繁體中文或重建 PDF 時 |
+> | [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | 解析學術論文 PDF、還原雙欄排版、提取 LaTeX 公式與結構化表格時；支援 MinerU 與 PyMuPDF 跨平台雙機（macOS/Win）解析 |
 > | [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 任何 Git 同步、提交與推送（見第十章） |
 
 ### 1. Ingest（收錄新來源）

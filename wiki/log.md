@@ -1129,3 +1129,12 @@
   - 在 [.agents/skills/academic-paper-translator/SKILL.md](../.agents/skills/academic-paper-translator/SKILL.md) 技能規範追加「後續工具鏈擴充備忘（PDF 結構解析引擎）」章節。
   - 記錄純多模態大模型面對學術雙欄排版、高密度實驗數據表與長公式時之微觀數據幻覺與資源耗損痛點。
   - 確立跨平台（Windows 與 macOS 雙機環境）三層階梯式處理架構：第一層 PyMuPDF / pdfplumber 輕量無損抽取，第二層 IBM Docling / OpenDataLab MinerU 專業版面與 LaTeX 公式解析，第三層多模態大模型邏輯綜合與 Watchdog 交叉審查，並要求具備環境自動探測與缺失平滑降級能力。
+
+## [2026-11-09 12:30] config | 安裝 MinerU 與 PyMuPDF 並建立 paper-pdf-parser 專屬技能 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 以 uv 建立 Python 3.12 隔離虛擬環境（.venv-mineru），於本機完成 OpenDataLab MinerU (v4.1.7) 與 PyMuPDF (v2.1) 安裝，並啟用 Apple Silicon MPS 矩陣硬體加速。
+  - 新增專屬技能 [.agents/skills/paper-pdf-parser/SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md) 與 Claude 轉介檔，支援雙欄排版重構、KaTeX 公式提取與表格結構化。
+  - 提供跨平台腳本：setup_env.py（環境診斷與 Windows/macOS 雙機指引）及 parse_pdf.py（支援 MinerU 與 PyMuPDF 自動降級之解析 CLI）。
+  - 於 AGENTS.md 第六章登記 paper-pdf-parser 技能，並於 .gitignore 排除 .venv* 與 work/。
