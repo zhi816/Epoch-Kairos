@@ -1648,3 +1648,12 @@
   - 檢查：`check_cards.py` ERROR 0、WARN 1（WMT 為評測資料集名稱，保留）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 37 項）。目視與操作檢查修正三處：Card 4 範圍末行落單、Card 5 兩筆里程碑折行（BERT 落單、蛋白質跨行）。`lint_wiki.py` ERROR 0。
   - 首頁卡片牆依本批協調規則未重建，由協調者處理。建置時工作目錄之 `tools/build_paper_prototype.py` 有協調者尚未提交之修改，本篇原型以該版本產生。
   - 未決：證據表第 11、12 列之節號寫作 §5.1–§5.3，原文翻譯與句法剖析結果實在 §6.1、§6.3；論文頁開頭引言未註明為 Wiki 撰寫。交由協調者處理。
+
+## [2026-11-10 00:34] update | 新增使用詞綴資訊提升泛泰雅語機器翻譯之卡片文字檔 | #自然語言處理 #深度學習 #計算語言學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：卡片回填第二批 B 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2025-atayalic-affix-mt-jin.md](cards/2025-atayalic-affix-mt-jin.md) 並建置 `web/prototypes/paper-v1/2025-atayalic-affix-mt-jin.html`。
+  - 來源：Card 3 採無公式模式，經 paper-pdf-parser 全文搜尋，原文僅 §1.3.3 公式 1 至 4（BLEU、平滑化、chrF，pp. 6–7），模型架構以文字與圖示說明；說明與示意圖取論文頁 Card 3 第 1、2 節（詞綴字串形式與 FC_ftr_jnt 雙編碼器）。Card 4 四個數字取自證據表 Card 4 第 1、3 列（泰雅語→中文 19.75、23.84，§4.2.3 p. 50；中文→泰雅語 28.06、29.49，表 19；範圍之基線 21.49，表 16），選泰雅語而非增幅最大之太魯閣語。Card 5 採新論文模式，三筆取自論文頁 Card 5 未來工作（p. 71）與 Card 4 外部測試（§4.2.4 p. 50）。Card 6 取論文頁 Card 6 第 2 點，未涉碩論內容。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（3aaaf11 版）1440 x 900 與 375 x 812 結果 PASS。
+  - 複核修正：Card 4 初稿用「+6.6–7.9」「+0.9–3.7」兩個依原文計算之區間，大數字在兩種尺寸皆折行，改用單一數字；Card 2 一列與 Card 6 結語末字落單，縮短。
+  - 未決事項：建置時 `tools/build_paper_prototype.py` 有協調者未提交之修改；首頁卡片牆依協調規則未重建。
