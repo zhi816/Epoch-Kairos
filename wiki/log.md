@@ -1121,3 +1121,11 @@
     - **EK-051**：AJR 支柱明確指出其係在排他性限制（Exclusion Restriction）假設下以歷史死亡率作為產權制度的工具變數，實證分離出制度環境之顯著因果貢獻；刪除將其寫成排除一切地理作用之「唯一根本原因」的過度表述，客觀呈現排他性外生性與地理直接影響之學術爭鳴。
     - 建立證據表 [wiki/evidence/institutions-and-macro-dynamics.md](evidence/institutions-and-macro-dynamics.md)，Frontmatter `verification` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-051、EK-052、EK-053 全數標記為 `fixed`。至此，全庫 87 筆 issues 全部標記為 fixed，open 數量降為 0。
+
+## [2026-11-09 12:22] rule | 記錄學術論文 PDF 階梯式結構解析工具鏈擴充備忘 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 在 [.agents/skills/academic-paper-translator/SKILL.md](../.agents/skills/academic-paper-translator/SKILL.md) 技能規範追加「後續工具鏈擴充備忘（PDF 結構解析引擎）」章節。
+  - 記錄純多模態大模型面對學術雙欄排版、高密度實驗數據表與長公式時之微觀數據幻覺與資源耗損痛點。
+  - 確立跨平台（Windows 與 macOS 雙機環境）三層階梯式處理架構：第一層 PyMuPDF / pdfplumber 輕量無損抽取，第二層 IBM Docling / OpenDataLab MinerU 專業版面與 LaTeX 公式解析，第三層多模態大模型邏輯綜合與 Watchdog 交叉審查，並要求具備環境自動探測與缺失平滑降級能力。
