@@ -1535,3 +1535,12 @@
 - **具體變更**：第二批 A 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/1992-creative-destruction-aghion.md](cards/1992-creative-destruction-aghion.md) 並建置 `web/prototypes/paper-v1/1992-creative-destruction-aghion.html`。
   - 來源：導語改寫自 hook 與論文頁 Card 1、Card 4 福利段；Card 2 取論文頁 Card 2 兩點（知識累積、Judd 與 Romer 之水平多樣化不淘汰舊品）；Card 3 公式取論文頁專利價值式（§2.C 式 2.12），示意圖為生產率階梯（每次創新上一階、到來時間不固定）；Card 4 為理論論文採結論模式，三條取自證據表 Card 4 列（§4 pp. 338–339 福利方向不定；§3.A p. 333 與 p. 334 二階循環；§6 pp. 342–343 創新幅度偏小）；Card 5 三筆後續研究取自論文頁 Card 4 後續證據（Klette & Kortum 2004、Aghion et al. 2005、Akcigit & Kerr 2018），獎項取自 `honor` 與 `laureates`。
   - 檢查：`check_cards.py` ERROR 0、WARN 0（初稿結論用原文術語譯名「顛覆性創新」觸犯禁用詞，改寫為不帶該詞之說法）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 37 項 PASS；Chrome 無頭截圖逐張目視，Card 4 三條結論原折行落單一兩字，縮為單行。
+
+## [2026-11-10 00:03] update | 新增俄譯吉爾吉斯語資料中心翻譯系統之卡片文字檔 | #自然語言處理 #深度學習 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第二批 A 組（TD-008），首篇採用新規則之卡片。依 paper-card-writer 撰寫 [wiki/cards/2026-data-centric-russian-kyrgyz-mt-novokshanov.md](cards/2026-data-centric-russian-kyrgyz-mt-novokshanov.md) 並建置 `web/prototypes/paper-v1/2026-data-centric-russian-kyrgyz-mt-novokshanov.html`。
+  - Card 3 無公式模式：以 paper-pdf-parser 抽取原文全文（6 頁）確認無編號公式、方法以文字與表格敘述，「無公式理由」據此填寫；示意圖為流程（語意評分分級後，標準品質、高品質、回譯、對話由粗到精）。
+  - Card 5 新論文模式：原文無限制與未來工作章節，三筆里程碑取原文 §3.3（p. 228）公開之模型權重、合成平行語料與線上展示，未編造影響。
+  - Card 4 四個數字取自證據表（官方測試 49.1，§3.2 p. 228；公開測試 44.9 並勝過 54B 與 235B 模型，表 3 p. 228；詞表剪枝後 800M，§2.3.2 pp. 226–227；輔助語言 21.5 → 23.2，表 2 p. 227）；初稿之 NLLB 41.7 僅見於論文頁而未列入證據表，依規則撤下。Card 6 未涉碩論內容、未用第一人稱。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 35 項 PASS（無公式框，少兩項公式框量測）；無頭截圖目視，Card 6 結語原折行落單「尾。」，已縮短。
