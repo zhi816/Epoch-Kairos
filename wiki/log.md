@@ -1026,3 +1026,14 @@
   - 對照 MDPI *Eng. Proc.* 原文（`raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`）全文核對後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2026-hybrid-dictionary-rag-llm-paiwan-wang.md](evidence/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)，頁面 `verification` 提升為 `verified`。
   - **EK-081**：Card 1 將通訊作者校正為「王任慶（Reen-Cheng Wang）教授團隊」；Card 3 刪除虛構之餘弦相似度結合 BM25 線性加權公式，改述原文真實採用之串聯條件分支（If-Else Fallback）管線（逐詞先查記憶體 JSON 雜湊表，命中則 Word Merge，未命中才查詢 Qdrant 向量庫），並澄明詞典模組僅做表面詞字面匹配，未進行構詞焦點解析；Card 4 補齊 250 句測試集之 Cosine（0.210–0.236 $\to$ 0.810–0.846）、BLEU（1.7–4.4 $\to$ 40.8–51.9）與 ROUGE-L（0.135–0.177 $\to$ 0.548–0.632）詳細對比數據及倒裝句局限。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-081 標記為 `fixed`。
+
+
+## [2026-11-09 11:15] fix | 依原文重寫 Scheppat 2026 平行語料庫頁更正 DOI 與過濾規則 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 接手 Claude Opus 5.5 暫停之 8 篇 my-focus 論文頁修正工作之第 8 篇（完結篇）：[Scheppat et al. 2026](papers/2026-formosanmt-parallel-corpus-scheppat.md)（EK-060、EK-080）。
+  - 對照 LREC 2026 原文（`raw/my-focus/英文論文/FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273.pdf`）全文核對後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2026-formosanmt-parallel-corpus-scheppat.md](evidence/2026-formosanmt-parallel-corpus-scheppat.md)，頁面 `verification` 提升為 `verified`。
+  - **EK-060**：更正 Frontmatter `doi_url` 為 ELRA 正式註冊之 `https://doi.org/10.63317/3ut33xim33nt`，經 Crossref 與 doi.org 解析核驗無誤。
+  - **EK-080**：Card 3 刪除虛構之語言識別器與神經語義對齊評分公式，改述原文真實採用之正則清洗、非平行內容排除與詞／字元長度比例過濾門檻（雙邊 $\ge 2$ 詞剔除 $r \le 0.2$ 或 $r > 8.0$；任一邊 $< 2$ 詞剔除字元比 $r \le 0.05$ 或 $r > 20.0$）；校正 15 個 ISO 639-3 代碼並補齊噶瑪蘭語 `ckv` 與撒奇萊雅語 `szy`；澄清模型訓練為各語言對獨立雙向雙語基準，而非 15 語聯合多語言預訓練；Card 4 補齊 Table 1–4 全語料規模與評測數據；Card 6 將語料總量校正為 49.3 萬句對（含 39.7 萬族語－華語句對），消除數據矛盾。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-060 與 EK-080 標記為 `fixed`。至此，全庫 24 篇 my-focus 論文頁與對應問題清單已全數核實閉合。

@@ -384,10 +384,11 @@
 - **發現於**：同 EK-057
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回 DialRes 2026 原文首頁與 ELRA 核對：本篇由 ELRA 出版，正式註冊之 DOI 為 `10.63317/4scoopyavtvi`，經 Crossref 與 doi.org 解析確認無誤並更新頁面。
 
-### EK-060 | open | papers/2026-formosanmt-parallel-corpus-scheppat.md | Frontmatter doi_url | 未能核實
+### EK-060 | fixed | papers/2026-formosanmt-parallel-corpus-scheppat.md | Frontmatter doi_url | 未能核實
 - **問題**：`10.18653/v1/2026.lrec-1.273` 在 Crossref 與 doi.org 均查無此號；可能尚未註冊或 DOI 有誤。
 - **來源**：須回 LREC 2026 論文集原文首頁核對
 - **發現於**：同 EK-057
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回 LREC 2026 原文首頁與 ELRA 核對：本篇由 ELRA 出版，正式註冊之 DOI 為 `10.63317/3ut33xim33nt`，經 Crossref 與 doi.org 解析確認無誤並更新頁面。
 
 ## 24 篇 my-focus 論文頁與 2 篇概念頁第一手原文全維度查核（2026-11-09 Antigravity / Gemini 4 Argon）
 
@@ -505,10 +506,11 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 3 刪除虛構之語義概念對齊詞表與 MDS 分析，改述原文真實採用之三項詞彙相似度指標（詞級 TF-IDF 餘弦、詞頻 $\ge 5$ 詞型 Jaccard 相似度、前 500 高頻詞之字元級正規化 Levenshtein 距離）與 Bootstrap 500 次抽樣信心區間檢驗；Card 4 補齊 Table 1–3 全語料特徵（Hapax 率 72%–79%）、多方言語言核心共有詞比例與分群發現（賽德克語 0.820 最緊密、布農語重現經典三分群、泰雅語 0.605 與魯凱語 0.648 分化最深）。建立證據表 wiki/evidence/2026-epark-formosan-dialectometry-gagnier.md，頁面 verification 改為 verified。
 
-### EK-080 | open | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 3 與 Card 6 | 原文不符
+### EK-080 | fixed | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 3 與 Card 6 | 原文不符
 - **問題**：（1）Card 3（第 47 行與第 62 行架構圖）稱資料清洗採語言識別器与語義對齊過濾 $\operatorname{AlignScore}(x_i, y_i) \ge \tau$；原文 §3.3（p. 3448）係使用正則表達式與詞／字元長度比門檻（2 詞以上剔除 $r \le 0.2$ 或 $r > 8.0$；少於 2 詞剔除字元比 $r \le 0.05$ 或 $r > 20.0$），無語義對齊模型或語言識別器。（2）Card 3（第 49 行）所列 15 語言代碼含錯誤代碼 `puy`、`ruk`、`cou`、`sai`、`kan`、`sed` 且同時列出 `sed` 與 `trv`（漏列噶瑪蘭語 `ckv` 與撒奇萊雅語 `szy`）；原文表 1（p. 3447）之 ISO 639-3 代碼為 `ami, bun, ckv, dru, pwn, pyu, ssf, sxr, szy, tao, tay, trv, tsu, xnb, xsy`。（3）Card 3（第 53–59 行）稱對 NLLB-200 進行 15 語多語言聯合微調；原文 §4.2（p. 3450）明言係針對各族語－華語及 4 個族語－英語**分別訓練獨立之雙向雙語模型**，並於 §6（p. 3453）將多語言聯合預訓練列為未來工作。（4）Card 6（第 90 行）寫「30 萬高品質句對」，與 Card 4 之總量 493,519 句不一致。
 - **來源**：`raw/my-focus/英文論文/FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273.pdf`（§3.3 p. 3448、表 1 p. 3447、§4.2 p. 3450、§6 p. 3453）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 3 刪除虛構之語言識別器與 AlignScore 模型，改述原文真實採用之正則清洗與詞/字元長度比例過濾門檻；校正 15 個 ISO 639-3 語言代碼並補齊 ckv 與 szy；澄清模型訓練為獨立之雙向雙語基準，而非 15 語聯合多語言預訓練；Card 6 校正語料總量為 49.3 萬句對（含 39.7 萬族語－華語句對），消除數據矛盾。建立證據表 wiki/evidence/2026-formosanmt-parallel-corpus-scheppat.md，頁面 verification 改為 verified。
 
 ### EK-081 | fixed | papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md | Card 1 與 Card 3 | 原文不符
 - **問題**：（1）Card 1（第 30 行）將作者寫作「王 reen-cheng 教授」，中英大小寫混雜。（2）Card 3（第 44–53 行）列出雙軌混合檢索線性加權公式（結合餘弦相似度與 BM25），並於第 62 行與架構圖（第 65–69 行）稱辭典模組解析出「詞根＋詞綴焦點＋中文詞條」且與向量庫並聯檢索。原文 §3.1–3.2（pp. 4–5，圖 1–3）全文無任何數學公式、未使用 BM25，亦未由辭典解析詞根與焦點；實際流程（圖 3）為**串聯式條件分支（if-else fallback）**：逐詞先查記憶體內 JSON 雜湊表（`Is it in the hash map? YES -> Word Merge`），僅當詞典未命中（`NO`）時才查詢 Qdrant 向量資料庫。
