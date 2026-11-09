@@ -822,3 +822,10 @@
   - **EK-020**：Card 6 將原先「拿掉歸納偏置」改述為精確的「大幅放寬結構性歸納偏置」，明確交代模型仍保留位置編碼與因果遮罩等基礎先驗，修正絕對化表述。
   - 新增證據表 [wiki/evidence/2017-attention-is-all-you-need.md](evidence/2017-attention-is-all-you-need.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-018、EK-019 與 EK-020 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 09:46] fix | 依原文重寫 Zheng 2024 與 FormosanBench 2025 兩篇臺灣南島語翻譯文獻頁 | #自然語言處理 #計算語言學 #深度學習 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：剩餘 17 篇 my-focus 論文頁之第 7–8 篇，逐篇以原文 PDF 全文核對後重寫 Card 1–6 與 hook，各建證據表，`verification` 改為 `verified`：
+  - [Zheng et al. 2024](papers/2024-formosan-mt-bilingual-lexicon-zheng.md)（EK-076）：刪除無來源之溫度採樣、動態權重與注意力熵公式，改述三種做法（詞典作平行資料、20% 替換之偽平行資料、兩者並用）；補列 16 語全部提升、平行句比詞條更有用、外部詞典增益小、多語言預訓練無明確改善等結果。
+  - [Lin et al. 2025](papers/2025-formosanbench-llm-benchmark-lin.md)（EK-077）：改列三項任務之獨立資料來源與原文指標；刪除原文未報告之 Tokenizer 膨脹倍率；補列母語者人工檢視結果；註明原文切分比例、BLEU 尺度與 LLM 評審解讀三處不一致。

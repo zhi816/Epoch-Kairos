@@ -454,15 +454,17 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文全文核對後：Card 1、3 刪除「四大支柱」（含語言學先驗融合、Adapter、PEFT）與 $L_2$ 錨定遷移式，改列原文六類技術（資料增強、無監督、半監督、多語言、遷移學習、零樣本）與圖 7 選擇流程；Card 6 刪除「綜述指出一萬句以下應以構詞感知與 RAG 為突破口」，註明綜述資料截至 2021–2022 年，未涵蓋 LLM 與 RAG。另修正同頁未登記之問題：原 Card 4 稱「原文沒有提出語料門檻」不精確，改述原文以 50 萬／10 萬句為參考門檻並明言非絕對。證據表見 wiki/evidence/2023-low-resource-nmt-survey-ranathunga.md。
 
-### EK-076 | open | papers/2024-formosan-mt-bilingual-lexicon-zheng.md | Card 3 | 原文不符
+### EK-076 | fixed | papers/2024-formosan-mt-bilingual-lexicon-zheng.md | Card 3 | 原文不符
 - **問題**：第 45–68 行稱本文採溫度採樣係數 $\tau$、動態衰減權重 $\beta \in (0, 1]$ 之混合損失函數，並定義交叉注意力香農熵；原文 §4–§5（pp. 11251–11254）全文無任何數學公式，方法一（`+ Lex.`）僅將雙語詞典詞條與平行句直接串接訓練，方法二（`+ PPD`，§5.1）則隨機替換平行句中 20% 族語詞彙合成偽平行資料，方法三為兩者結合。Card 3 完全漏述產生最佳成績（+5.55 BLEU／+10.33 chrF）之方法二 PPD，卻虛構溫度採樣、動態權重與注意力熵公式。
 - **來源**：`raw/my-focus/英文論文/Improving Low-Resource Machine Translation for Formosan Languages _ 2024.findings-acl.670v2.pdf`（§4–§5 pp. 11251–11254）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文 §3–§5 核對後：Card 3 刪除原文未出現之溫度採樣、動態衰減權重 $\beta$ 與注意力熵公式，改述原文三種做法——詞典直接作為平行資料、以詞典替換族語端詞彙產生偽平行資料（多以 20% 替換率最佳）、兩者並用。另修正同頁未登記之問題：Card 4 補列表 2（16 種語言全部提升，平均 +3.37 BLEU）、平行句比詞條更有用、外部詞典增益較小，以及多語言預訓練無明確改善之負面結果；刪除 Card 5「登上 ACL 讓臺灣南島語站上世界舞台」等表述；補列作者自述之限制。證據表見 wiki/evidence/2024-formosan-mt-bilingual-lexicon-zheng.md。
 
-### EK-077 | open | papers/2025-formosanbench-llm-benchmark-lin.md | Card 2、Card 3 與 Card 6 | 原文不符
+### EK-077 | fixed | papers/2025-formosanbench-llm-benchmark-lin.md | Card 2、Card 3 與 Card 6 | 原文不符
 - **問題**：（1）Card 3（第 50 行）將資料點寫為含英語譯文與語音對齊之五元組；原文 §4（pp. 16529–16530，表 1）之三項任務取自三個彼此獨立之資料源（MT 取自原民會線上辭典族華句對且無英語譯文、ASR 取自族語 E 樂園教材音檔、摘要取自族語維基百科條目與首段），並非同源五元組。（2）Card 3 架構圖（第 72 行）列出 `chrF++` 與 `SBERT` 指標；原文 §5.3（p. 16532）僅使用 BLEU、WER、ROUGE-2／ROUGE-L、GPT-4o-mini 評分（1–5 分）與人工評估，未使用 `chrF++` 或 `SBERT`。（3）Card 2（第 37 行）與 Card 6（第 99 行）稱「論文揭示的 4~6 倍 Tokenizer 膨脹問題」；誠如 Card 4（第 81 行）已註明，原文並未測量或報告 Tokenizer 膨脹倍率。
 - **來源**：`raw/my-focus/英文論文/FormosanBench Benchmarking Low-Resource Austronesian Languages in the Era of Large Language Models _ 2025.findings-emnlp.897.pdf`（§4 pp. 16529–16530 表 1、§5.3 p. 16532）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文全文核對後：Card 3 刪除「同源五元組」與 ICL 公式，改列三項任務之獨立資料來源（線上辭典、族語 E 樂園、族語維基百科）；評估指標改為原文之 BLEU、WER、ROUGE-2／L、GPT-4o-mini 評審與人工檢視；Card 2、Card 6 刪除原文未報告之「4~6 倍 Tokenizer 膨脹」。另修正同頁未登記之問題：Card 4 補列表 2–6 主要數值與母語者人工檢視結果；註明原文三處不一致：表 1 切分約 60:10:30 而非文稱 70:10:20、表 2 BLEU 看似 0–1 尺度、§6.1 對 LLM 評審分數方向之解讀與表 3 相反；刪除 Card 5「終結無基準可評」「指明必須開發形態解析外掛」等表述。證據表見 wiki/evidence/2025-formosanbench-llm-benchmark-lin.md。
 
 ### EK-078 | open | papers/2025-indigenous-tek-ai-revitalization-wang.md | Card 1 與 Card 3 | 原文不符
 - **問題**：（1）Card 1（第 29 行）作者姓名寫作「王 reen-cheng」，中英大小寫混雜。（2）Card 3（第 45–53 行）將模型寫為 Nonaka 四階段 SECI 遞迴算子；原文 §3.2（pp. 7–11，圖 3）係將 Nonaka 模型擴展為四層知識矩陣（$K_1$ 個體內隱、$K_2$ 個體外顯、$K_3$ 部落社群、$K_4$ 文化系統）與 12 個知識轉換階段，並搭配五層 LKM 架構（§3.4，圖 5）與 Plan–Act–Observe–Adjust 代理迴圈（§3.5，圖 6）。（3）Card 3（第 56–61 行）列出基於餘弦相似度之禁忌懲罰損失函數；原文為質性系統架構論文，全文無任何數學公式或損失函數（文化禁忌係由第一層部落會議審查、第三層語義標籤與第五層規則權限矩陣控管）。
