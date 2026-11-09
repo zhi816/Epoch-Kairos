@@ -31,7 +31,7 @@ card_line: "預測蛋白質與核酸、藥物結合後的立體結構"
 ---
 
 ## Card 1 ｜ 時代銘文 (The Hook)
-雖然 AlphaFold2 在 2021 年解決了單一蛋白質鏈與同型/異型多聚體的結構預測，但細胞內的真實生理活動與臨床藥物作用，幾乎全部涉及**非蛋白質分子**——包括小分子藥物配體、DNA 雙螺旋、RNA 摺疊、糖基化與磷酸化等轉譯後共價修飾（PTMs）以及金屬離子。過去針對不同分子配對，科學界必須分別使用完全不同的專用軟體（如小分子對接用 Vina/DiffDock、核酸用 RoseTTAFoldNA）。AlphaFold 3（AF3）透過大幅簡化演化特徵主幹並引入直接在三維全原子座標上運作的**生成式擴散模組（Diffusion Module）**，在單一統一模型中全面擊敗所有領域專用工具。
+雖然 AlphaFold2 在 2021 年解決了單一蛋白質鏈與同型/異型多聚體的結構預測，但細胞內的真實生理活動與臨床藥物作用，幾乎全部涉及**非蛋白質分子**——包括小分子藥物配體、DNA 雙螺旋、RNA 摺疊、糖基化與磷酸化等轉譯後共價修飾（PTMs）以及金屬離子。過去的方法幾乎都專精於特定交互作用類型，無法預測一般生物分子複合體（p. 493），例如小分子對接用 Vina、蛋白質—核酸複合體用 RoseTTAFold2NA。AlphaFold 3（AF3）大幅簡化演化特徵主幹，並引入直接在三維全原子座標上運作的**生成式擴散模組（Diffusion Module）**；作者報告除一類外，各類別均顯著優於只處理該任務的專用方法（p. 493；例外為 CASP15 RNA，AF3 之 47.3 不及有人工介入之 AIchemy_RNA2 的 54.5，Extended Data Table 1）。
 
 ---
 
@@ -63,37 +63,42 @@ $$\begin{aligned}
 X_t &= \tilde{X}_0 + \varepsilon, \quad \varepsilon \sim \mathcal{N}\left(0, \sigma_t^2 I_{3N_{\text{atoms}}}\right)
 \end{aligned}$$
 
-擴散網路 $D_\theta\left(X_t, \sigma_t \mid s_{\text{trunk}}, z_{\text{trunk}}\right)$ 以 Pairformer 主幹輸出的單一與成對表徵為條件，直接預測去噪後的原子座標 $\hat{X}_0$。在多個雜訊尺度 $\sigma_t$ 上定義加權均方誤差與局部平滑全原子 LDDT 損失：
+擴散網路 $D_\theta\left(X_t, \sigma_t \mid s_{\text{trunk}}, z_{\text{trunk}}\right)$ 以 Pairformer 主幹輸出的單一與成對表徵為條件，直接預測去噪後的原子座標 $\hat{X}_0$。補充資料（Supplementary Information 式 6，SI p. 28）之擴散模組損失為：
 
-$$\mathcal{L}_{\text{diff}} = \mathbb{E}_{\sigma_t, \varepsilon, \mathcal{T}} \left[ w(\sigma_t) \left\| \hat{X}_0 - \tilde{X}_0^{\text{aligned}} \right\|_W^2 + \alpha_{\text{bond}} \mathcal{L}_{\text{bond}}\left(\hat{X}_0, \tilde{X}_0\right) + \mathcal{L}_{\text{smooth-LDDT}}\left(\hat{X}_0, \tilde{X}_0\right) \right]$$
+$$\begin{aligned}
+\mathcal{L}_{\text{diffusion}} &= \frac{\hat{t}^2 + \sigma_{\text{data}}^2}{(\hat{t} + \sigma_{\text{data}})^2} \cdot \left( \mathcal{L}_{\text{MSE}} + \alpha_{\text{bond}} \mathcal{L}_{\text{bond}} \right) \\
+&\quad + \mathcal{L}_{\text{smooth-LDDT}}
+\end{aligned}$$
 
-其中 $\tilde{X}_0^{\text{aligned}}$ 為經加權剛體 Kabsch 對齊後的真實座標。當 $\sigma_t$ 較大時，模型被迫學習大尺度的蛋白質—配體全局對接拓撲；當 $\sigma_t$ 較小時，模型則聚焦於氫鍵、鹽橋與配位鍵的亞埃級（Sub-Angstrom）局部立體化學精煉。
+其中 $\hat{t}$ 為取樣之雜訊尺度，$\sigma_{\text{data}}$ 為依資料變異數設定之常數（16），$\mathcal{L}_{\text{MSE}}$ 為預測座標與經加權剛體對齊後之真實座標間的加權均方誤差，$\alpha_{\text{bond}}$ 於一般訓練為 0、兩個微調階段為 1。正文指出，雜訊小時的去噪任務著重局部立體化學，雜訊大時則著重系統的大尺度結構（p. 495）。
 
 ### 2. 介面預測模板建模分數（ipTM）與複合體排序 (Interface pTM & Ranking Score)
 
-為評估不同生物分子鏈（如蛋白質靶點與小分子配體或抗體與抗原）之間的結合介面可靠度，AF3 利用預測對齊誤差（PAE）分佈計算介面預測 TM-score（$\text{ipTM}$），並對無序區與原子碰撞施加懲罰，給出綜合排序信心分數：
+為評估不同生物分子鏈（如蛋白質靶點與小分子配體或抗體與抗原）之間的結合介面可靠度，AF3 利用預測對齊誤差（PAE）分佈計算介面預測 TM-score（$\text{ipTM}$），並加入鼓勵無序區呈伸展構型（相對溶劑可及面積較高）的項，以及鏈間嚴重碰撞之懲罰，給出綜合排序分數（SI 式 19，p. 37；正文 p. 498）：
 
-$$\text{Score}_{\text{ranking}} = 0.8 \cdot \text{ipTM} + 0.2 \cdot \text{pTM} + 0.5 \cdot \text{disorder} - 100 \cdot N_{\text{clash}}$$
+$$\text{Score}_{\text{ranking}} = 0.8 \cdot \text{ipTM} + 0.2 \cdot \text{pTM} + 0.5 \cdot \text{disorder} - 100 \cdot \text{has\_clash}$$
+
+其中 $\text{has\_clash}$ 為 0 或 1：任兩條聚合物鏈之間距離小於 1.1 Å 的原子對超過 100 個，或超過較小鏈原子數之一半時記為 1（SI §5.9.2，p. 37）。
 
 ---
 
 ## Card 4 ｜ 決定性數據 (The Evidence)
 
 ### 本篇論文（Abramson et al. 2024）之核心證據
-* **蛋白質—小分子配體盲測（PoseBusters Benchmark）達 $76.4\%$ 成功率**：在完全不輸入已知蛋白質結合口袋結構（Blind Docking，僅給定蛋白質序列與配體 SMILES 化學式）的嚴苛設定下，AF3 在 PoseBusters V1 基準（428 個 2021 年後新增之 PDB 複合物）上達到 **$76.4\%$**（PoseBusters V2 為 $80.5\%$）的配體重原子 $\text{r.m.s.d.} < 2.0\,\text{\AA}$ 成功率，不僅遠超最佳深度學習盲對接工具 DiffDock-L（約 $38\%$）與 RoseTTAFold All-Atom（$42.0\%$），甚至大幅擊敗已知真實晶體口袋結構的傳統物理對接霸主 AutoDock Vina（$52.3\%$）。
-* **蛋白質—核酸（DNA/RNA）與 RNA 單體結構大幅躍升**：在近期 PDB 評估集上，AF3 對蛋白質—RNA 複合體的介面成功預測率達 **$62.4\%$**（較 RoseTTAFold2NA 的 $28.7\%$ 提升逾一倍），蛋白質—雙股 DNA 複合體成功率達 **$64.8\%$**（RoseTTAFold2NA 為 $28.3\%$）；在 CASP15 RNA 結構預測目標上亦超越所有自動預測伺服器。
-* **抗體—抗原（Antibody-Antigen）交互作用突破**：由於抗體互補決定區（CDR H3 環）缺乏跨物種共演化信號，向來是結構預測的最難關卡。AF3 透過隨機種子多次擴散採樣（例如 1,000 個 Seeds）並以信心分數排序，將抗體—抗原介面成功預測率（$\text{DockQ} \ge 0.23$）推升至超過 **$60\%$**，較 AlphaFold-Multimer v2.3 提升逾一倍。
-* **共價修飾與糖基化高精準建模**：對共價結合配體、磷酸化/甲基化修飾殘基及複雜多醣鏈（Glycans）的結合位點與構型成功預測率分別達 $78.5\%$、$69.9\%$ 與 $72.1\%$。
+* **蛋白質—小分子配體（PoseBusters 基準）達 $76.4\%$ 成功率**：AF3 只輸入蛋白質序列與配體，不給結合口袋資訊，在 PoseBusters V1（428 個 2021 年以後釋出之 PDB 蛋白質—配體結構，p. 496；AF3 使用 2019 年截止之訓練資料）上之配體 $\text{r.m.s.d.} < 2\,\text{\AA}$ 成功率為 **$76.4\%$**（V2 為 $80.5\%$），高於 RoseTTAFold All-Atom 之 $42.0\%$、給定結合態蛋白質結構之 DiffDock 的 $37.9\%$，以及指定口袋殘基之 Vina 的 $52.3\%$（Extended Data Table 1，p. 21）。
+* **蛋白質—核酸複合體**：在近期 PDB 評估集上，以介面 LDDT（iLDDT）衡量，蛋白質—RNA 為 **$39.4$**（RoseTTAFold2NA 為 $19.0$，$N=25$），蛋白質—雙股 DNA 為 **$64.8$**（RoseTTAFold2NA 為 $28.3$，$N=38$）。在 CASP15 的 RNA 目標上，平均表現高於 RoseTTAFold2NA 與 CASP15 最佳 AI 提交 AIchemy_RNA，但不及有人工介入的 AIchemy_RNA2（p. 497；Extended Data Table 1）。
+* **抗體—抗原交互作用**：以 1,000 個隨機種子採樣並取排序最高之預測，抗體—抗原介面成功率（$\text{DockQ} > 0.23$）為 **$62.9\%$**，AlphaFold-Multimer v2.3 為 $29.6\%$（$N=65$ 個聚類；Fig. 1c、Fig. 5a；Extended Data Table 1）。
+* **共價修飾**：成功率（口袋 $\text{r.m.s.d.} < 2\,\text{\AA}$）共價結合配體為 **$78.5\%$**（$N=66$）；高品質單殘基糖基化為 $72.1\%$（$N=28$），全部品質之多殘基多醣鏈為 $42.4\%$（$N=131$，正文記為 $42.1\%$）；修飾殘基整體為 $59.9\%$（蛋白質 $51.0\%$、DNA $68.6\%$、RNA $40.9\%$）（p. 497；Extended Data Table 1）。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
-* **開源模型權重釋出與生態系復現（Chai-1、Boltz-1 與 AF3 開源）**：2024 年 11 月 Google DeepMind 正式向學術界開放 AlphaFold 3 完整原始碼與訓練權重；同時期開源社群亦基於本篇揭示之 Pairformer + 全原子擴散架構復現出 Chai-1 與 MIT Boltz-1 等全生物分子開源基座模型，全面驗證了該架構的可重現性。
+* **程式碼公開與同類模型**：Chai Discovery（2024 年 10 月，bioRxiv，doi:10.1101/2024.10.10.615955）發表分子結構預測模型 Chai-1，並公開模型權重與推論程式供非商業使用；Wohlwend et al.（2024 年 11 月，bioRxiv，doi:10.1101/2024.11.19.624167）發表開源模型 Boltz-1，摘要稱其在預測生物分子複合體結構上達到 AlphaFold 3 等級的準確度，並以 MIT 授權公開訓練與推論程式、權重與資料。2024 年 11 月 27 日，Abramson et al. 於 *Nature* 636:E4 發表附錄（Addendum），宣布 Google DeepMind 已釋出 AlphaFold 3 之推論程式碼。
 
 ---
 
 ## Card 5 ｜ 時代典範轉移 (The Revolution)
-* **終結「一類分子一套算法」的割裂時代**：首次證明蛋白質、核酸、小分子、金屬離子與共價修飾皆可在同一個「原子與殘基混合 Token 空間 ＋ 三維擴散去噪」框架下協同演化與折疊。
-* **實現「柔性誘導契合（Induced Fit）」的原生模擬**：傳統分子對接多假設蛋白質口袋為剛體或僅允許少數側鏈擺動；AF3 從一維序列與配體拓撲直接聯合生成複合物結構，自然捕捉到配體結合引發的蛋白質變構效應（Allostery）與口袋構型重組。
-* **生成式擴散模型取代確定性回歸**：在一個具有多重亞穩態構型的生物物理世界中，確定性回歸模型面對多解時只能輸出模糊的平均座標；而擴散生成模型能透過不同隨機種子採樣出完整的構型分佈系綜（Conformational Ensemble）。
+* **一個模型處理多類分子**：作者的結論是，這些結果顯示在單一深度學習框架內，對整個生物分子空間做高準確度建模是可能的（摘要，p. 493）；蛋白質、核酸、小分子、離子與修飾殘基以殘基或原子為單位放進同一個擴散去噪框架。
+* **從序列與配體直接生成複合體**：AF3 不需事先給定結合口袋即可聯合預測蛋白質與配體之結構（PoseBusters 盲測設定，p. 496）。但作者也指出，在給定的配體與其他輸入下，模型預測的構型狀態可能不正確或不完整，例如 E3 泛素連接酶在無配體時天然呈開放構型，模型卻預測為閉合構型（模型限制，p. 498）。
+* **生成式模型的取捨**：改用擴散生成後，同一輸入可透過不同隨機種子得到多個答案，但作者明言 AF3 仍預測 PDB 中所見的靜態結構，多個隨機種子「並不能近似溶液中的構型系綜」；擴散也帶來無序區被生成為假結構（幻覺）的問題，需以交叉蒸餾與排序項緩解（p. 498）。
 
 ---
 

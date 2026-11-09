@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlphaFold 3｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#8FD5FD;--deep:#204960;--win:#1C252B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.10</span><span>AI</span></div><div class="win"><i style="left:16.1%;top:31.9%;width:1px;height:1px;opacity:0.64"></i><i style="left:68.1%;top:35.7%;width:1px;height:1px;opacity:0.83"></i><i style="left:25.9%;top:45.9%;width:1px;height:1px;opacity:0.34"></i><i style="left:4.7%;top:30.6%;width:1px;height:1px;opacity:0.37"></i><i style="left:65.5%;top:44.2%;width:1.5px;height:1.5px;opacity:0.68"></i><i style="left:72.9%;top:37.0%;width:1px;height:1px;opacity:0.70"></i><i style="left:81.0%;top:36.5%;width:1.5px;height:1.5px;opacity:0.65"></i><i style="left:83.3%;top:9.2%;width:1px;height:1px;opacity:0.44"></i><i style="left:29.5%;top:42.4%;width:1px;height:1px;opacity:0.65"></i><i style="left:41.7%;top:45.2%;width:1.5px;height:1.5px;opacity:0.49"></i><i style="left:49.6%;top:45.4%;width:1px;height:1px;opacity:0.81"></i><i style="left:54.5%;top:36.1%;width:1px;height:1px;opacity:0.71"></i><i style="left:78.1%;top:22.3%;width:1px;height:1px;opacity:0.44"></i><i style="left:92.9%;top:24.2%;width:1px;height:1px;opacity:0.64"></i><span class="rep"></span><span class="line"><span>預測蛋白質與核酸、</span><span>藥物結合後的</span><span>立體結構</span></span></div><div class="tags">人工智慧、計算與數學・#計算生物 #人工智慧 #結構生物學</div><div class="name">AlphaFold 3</div><div class="lead">把蛋白質、核酸、小分子與離子都放進同一個模型，直接在原子座標上去雜訊，預測結合後的形狀。</div><div class="yrs">2024 發表 ｜ Nature</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">一類分子，<br>一套工具</span><div class="rows"><div class="row"><b>剛體框架</b><span>AlphaFold2 只為胺基酸設計</span></div><div class="row"><b>專用方法</b><span>各管一種交互，無法處理一般複合體</span></div><div class="row gap"><b>複合體</b><span>沒有模型能同時處理各類生物分子</span></div></div><span class="ft" style="color:var(--ink)">細胞裡的分子，從不單獨行動。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">隨機轉向，<br>再從雜訊還原原子</span><svg class="dia" viewBox="0 0 300 96" role="img" aria-label="示意：原子座標先經隨機旋轉平移，再加上雜訊，模型逐步去除雜訊，還原出結構。">
+  <rect class="k-ink k-ring" x="4" y="34" width="52" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="64" y="34" width="52" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="124" y="34" width="52" height="30" rx="4"/>
+  <rect class="k-accent k-ring" x="184" y="34" width="52" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="244" y="34" width="52" height="30" rx="4"/>
+  <line class="k-ink" x1="56" y1="49" x2="62" y2="49"/>
+  <polyline class="k-ink" points="58,45 62,49 58,53"/>
+  <line class="k-ink" x1="116" y1="49" x2="122" y2="49"/>
+  <polyline class="k-ink" points="118,45 122,49 118,53"/>
+  <line class="k-ink" x1="176" y1="49" x2="182" y2="49"/>
+  <polyline class="k-ink" points="178,45 182,49 178,53"/>
+  <line class="k-ink" x1="236" y1="49" x2="242" y2="49"/>
+  <polyline class="k-ink" points="238,45 242,49 238,53"/>
+  <path class="k-muted k-dash" d="M198 32 C 198 12, 222 12, 222 32"/>
+  <polyline class="k-muted" points="217,27 222,32 227,27"/>
+  <text class="k-label" x="30" y="53" text-anchor="middle">座標</text>
+  <text class="k-label" x="90" y="53" text-anchor="middle">轉向</text>
+  <text class="k-label" x="150" y="53" text-anchor="middle">加雜訊</text>
+  <text class="k-label-accent" x="210" y="53" text-anchor="middle">去噪</text>
+  <text class="k-label" x="270" y="53" text-anchor="middle">結構</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\tilde{X}_0 = \mathcal{T}(X_0)"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">整個複合體先隨機旋轉平移再加雜訊，模型學著還原，網路不必內建旋轉對稱。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">76.4%</span><span class="l">不給結合口袋，藥物分子位置預測成功率</span></div><div class="stat"><span class="v">62.9%</span><span class="l">抗體與抗原介面成功率</span></div><div class="stat"><span class="v">64.8</span><span class="l">蛋白質－DNA 介面分數</span></div><div class="stat"><span class="v">78.5%</span><span class="l">共價結合配體預測成功率</span></div></div><span class="ft">範圍：Abramson 等 2024，近期結構；DNA 為雙股</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">程式公開，<br>開源模型跟上</span><div class="time"><p><b>2024</b><span>Chai-1 公開模型權重與推論程式</span></p><p><b>2024</b><span>Boltz-1 以 MIT 授權開源同等級模型</span></p><p><b>2024</b><span>DeepMind 釋出 AlphaFold 3 推論程式</span></p></div><span class="ft">三項皆為後續發布，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">拆掉只適合蛋白質的框架，模型反而能處理更多分子。</span><span class="shift"><span>專用框架</span><i aria-hidden="true"></i><b>通用生成</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2024 發表 ｜ Nature</span>
+<h1>AlphaFold 3：以生成式擴散架構統一預測全生物分子交互作用結構</h1>
+<p class="en">Accurate structure prediction of biomolecular interactions with AlphaFold 3</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">生命從不靠孤立的蛋白質運作，而是蛋白質、核酸、小分子配體與金屬離子在三維空間中協同共舞的交響曲；AlphaFold 3 用同一個擴散方程統攝了整座細胞內的分子宇宙。</p>
+<p>雖然 AlphaFold2 在 2021 年解決了單一蛋白質鏈與同型/異型多聚體的結構預測，但細胞內的真實生理活動與臨床藥物作用，幾乎全部涉及<strong>非蛋白質分子</strong>——包括小分子藥物配體、DNA 雙螺旋、RNA 摺疊、糖基化與磷酸化等轉譯後共價修飾（PTMs）以及金屬離子。過去的方法幾乎都專精於特定交互作用類型，無法預測一般生物分子複合體（p. 493），例如小分子對接用 Vina、蛋白質—核酸複合體用 RoseTTAFold2NA。AlphaFold 3（AF3）大幅簡化演化特徵主幹，並引入直接在三維全原子座標上運作的<strong>生成式擴散模組（Diffusion Module）</strong>；作者報告除一類外，各類別均顯著優於只處理該任務的專用方法（p. 493；例外為 CASP15 RNA，AF3 之 47.3 不及有人工介入之 AIchemy_RNA2 的 54.5，Extended Data Table 1）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：胺基酸剛體假設的不可擴展性與多模態碎裂</h2></div>
+<p>將 AlphaFold2 擴展至任意化學分子面臨根本性的架構阻礙：</p>
+<ul><li><strong><span class="m-in" data-tex="\mathrm{SE}(3)"></span> 胺基酸剛體框架無法描述任意小分子與核酸</strong>：AlphaFold2 的結構模組高度依賴「每個胺基酸皆由 <span class="m-in" data-tex="\mathrm{N}-\mathrm{C}_\alpha-\mathrm{C}"></span> 構成標準局部剛體三角形，且側鏈僅有至多 4 個可旋轉扭轉角 <span class="m-in" data-tex="\chi_1 \dots \chi_4"></span>」的生物學先驗。然而，有機小分子藥物包含成千上萬種拓撲環系、手性中心與非標準化學鍵，根本無法用統一的主鏈剛體與固定扭轉角參數化。</li><li><strong>多重序列比對（MSA）在非蛋白模態失效</strong>：小分子配體與特定短鏈 DNA/RNA 並無跨物種演化同源序列可用，若過度依賴深層 MSA 特徵更新，模型既笨重又無法學習通用原子級物理化學互補規律。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>AlphaFold 3 對網路架構進行了大刀闊斧的「減法與重構」，實現了從氨基酸殘基級向<strong>全原子級（All-Atom）生成模型</strong>的跨越：</p>
+<ol><li><strong>從 Evoformer 精簡為 Pairformer（成對表徵成為唯一核心主幹）</strong>：<ul><li>AF3 將 MSA 處理模組大幅縮減為僅 4 個輕量級區塊，提取完共演化信號後即丟棄龐大的 MSA 張量；隨後的 48 層 <strong>Pairformer</strong> 僅在「單一標記表徵（Single Representation）」與「成對標記表徵（Pair Representation）」上運作（標準胺基酸與核苷酸以單一殘基為 1 個 Token，小分子與修飾基團則以<strong>每一個重原子</strong>為 1 個 Token）。</li></ul></li><li><strong>全原子三維座標生成式擴散模組（All-Atom Diffusion Module）</strong>：<ul><li>徹底移除 AF2 的不變點注意力（IPA）、局部剛體框架與扭轉角預測，改用基於擴散轉換器（Diffusion Transformer）的去噪生成模組，直接接受受高斯雜訊污染的三維全原子笛卡兒座標 <span class="m-in" data-tex="\vec{x}_t \in \mathbb{R}^{N_{\text{atoms}} \times 3}"></span>，一步步去噪還原出真實三維原子座標 <span class="m-in" data-tex="\hat{\vec{x}}_0"></span>。</li><li><strong>拋棄硬性 <span class="m-in" data-tex="\mathrm{SE}(3)"></span> 等變層，改採隨機旋轉平移資料增強</strong>：作者發現，不在網路內部強加複雜的 <span class="m-in" data-tex="\mathrm{SE}(3)"></span> 等變約束，而是直接在每次擴散去噪步驟前對輸入座標施加隨機三維剛體旋轉與平移增強（Data Augmentation），不僅大幅提升大核矩陣運算效率，且在全原子尺度上泛化能力更強。</li></ul></li><li><strong>交叉蒸餾（Cross-Distillation）防止無序區幻覺（Hallucination）</strong>：<ul><li>擴散生成模型天性傾向將天然無序蛋白區（IDRs）強行生成為看似合理的假性 <span class="m-in" data-tex="\alpha"></span>-螺旋。AF3 利用 AlphaFold-Multimer v2.3 的預測結構進行交叉蒸餾訓練，教導擴散模型將無序區自然展開為延伸絲狀構型。</li></ul></li></ol>
+<h3>1. 多尺度全原子擴散正向加噪與去噪目標 (Multi-Scale All-Atom Diffusion)</h3>
+<p>設生物分子複合體中全部 <span class="m-in" data-tex="N_{\text{atoms}}"></span> 個重原子的真實三維座標為 <span class="m-in" data-tex="X_0 \in \mathbb{R}^{N_{\text{atoms}} \times 3}"></span>。在擴散雜訊尺度 <span class="m-in" data-tex="\sigma_t \in [\sigma_{\min}, \sigma_{\max}]"></span> 下，經隨機全局剛體變換 <span class="m-in" data-tex="\mathcal{T} \sim \mathrm{SE}(3)"></span>（中心化後隨機旋轉與平移）與各向同性高斯加噪後得到含噪座標 <span class="m-in" data-tex="X_t"></span>：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\tilde{X}_0 &amp;= \mathcal{T}(X_0) \\
+X_t &amp;= \tilde{X}_0 + \varepsilon, \quad \varepsilon \sim \mathcal{N}\left(0, \sigma_t^2 I_{3N_{\text{atoms}}}\right)
+\end{aligned}"></span>
+<p>擴散網路 <span class="m-in" data-tex="D_\theta\left(X_t, \sigma_t \mid s_{\text{trunk}}, z_{\text{trunk}}\right)"></span> 以 Pairformer 主幹輸出的單一與成對表徵為條件，直接預測去噪後的原子座標 <span class="m-in" data-tex="\hat{X}_0"></span>。補充資料（Supplementary Information 式 6，SI p. 28）之擴散模組損失為：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\mathcal{L}_{\text{diffusion}} &amp;= \frac{\hat{t}^2 + \sigma_{\text{data}}^2}{(\hat{t} + \sigma_{\text{data}})^2} \cdot \left( \mathcal{L}_{\text{MSE}} + \alpha_{\text{bond}} \mathcal{L}_{\text{bond}} \right) \\
+&amp;\quad + \mathcal{L}_{\text{smooth-LDDT}}
+\end{aligned}"></span>
+<p>其中 <span class="m-in" data-tex="\hat{t}"></span> 為取樣之雜訊尺度，<span class="m-in" data-tex="\sigma_{\text{data}}"></span> 為依資料變異數設定之常數（16），<span class="m-in" data-tex="\mathcal{L}_{\text{MSE}}"></span> 為預測座標與經加權剛體對齊後之真實座標間的加權均方誤差，<span class="m-in" data-tex="\alpha_{\text{bond}}"></span> 於一般訓練為 0、兩個微調階段為 1。正文指出，雜訊小時的去噪任務著重局部立體化學，雜訊大時則著重系統的大尺度結構（p. 495）。</p>
+<h3>2. 介面預測模板建模分數（ipTM）與複合體排序 (Interface pTM &amp; Ranking Score)</h3>
+<p>為評估不同生物分子鏈（如蛋白質靶點與小分子配體或抗體與抗原）之間的結合介面可靠度，AF3 利用預測對齊誤差（PAE）分佈計算介面預測 TM-score（<span class="m-in" data-tex="\text{ipTM}"></span>），並加入鼓勵無序區呈伸展構型（相對溶劑可及面積較高）的項，以及鏈間嚴重碰撞之懲罰，給出綜合排序分數（SI 式 19，p. 37；正文 p. 498）：</p>
+<span class="m-disp" data-tex="\text{Score}_{\text{ranking}} = 0.8 \cdot \text{ipTM} + 0.2 \cdot \text{pTM} + 0.5 \cdot \text{disorder} - 100 \cdot \text{has\_clash}"></span>
+<p>其中 <span class="m-in" data-tex="\text{has\_clash}"></span> 為 0 或 1：任兩條聚合物鏈之間距離小於 1.1 Å 的原子對超過 100 個，或超過較小鏈原子數之一半時記為 1（SI §5.9.2，p. 37）。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Abramson et al. 2024）之核心證據</h3>
+<ul><li><strong>蛋白質—小分子配體（PoseBusters 基準）達 <span class="m-in" data-tex="76.4\%"></span> 成功率</strong>：AF3 只輸入蛋白質序列與配體，不給結合口袋資訊，在 PoseBusters V1（428 個 2021 年以後釋出之 PDB 蛋白質—配體結構，p. 496；AF3 使用 2019 年截止之訓練資料）上之配體 <span class="m-in" data-tex="\text{r.m.s.d.} &lt; 2\,\text{\AA}"></span> 成功率為 <strong><span class="m-in" data-tex="76.4\%"></span></strong>（V2 為 <span class="m-in" data-tex="80.5\%"></span>），高於 RoseTTAFold All-Atom 之 <span class="m-in" data-tex="42.0\%"></span>、給定結合態蛋白質結構之 DiffDock 的 <span class="m-in" data-tex="37.9\%"></span>，以及指定口袋殘基之 Vina 的 <span class="m-in" data-tex="52.3\%"></span>（Extended Data Table 1，p. 21）。</li><li><strong>蛋白質—核酸複合體</strong>：在近期 PDB 評估集上，以介面 LDDT（iLDDT）衡量，蛋白質—RNA 為 <strong><span class="m-in" data-tex="39.4"></span></strong>（RoseTTAFold2NA 為 <span class="m-in" data-tex="19.0"></span>，<span class="m-in" data-tex="N=25"></span>），蛋白質—雙股 DNA 為 <strong><span class="m-in" data-tex="64.8"></span></strong>（RoseTTAFold2NA 為 <span class="m-in" data-tex="28.3"></span>，<span class="m-in" data-tex="N=38"></span>）。在 CASP15 的 RNA 目標上，平均表現高於 RoseTTAFold2NA 與 CASP15 最佳 AI 提交 AIchemy_RNA，但不及有人工介入的 AIchemy_RNA2（p. 497；Extended Data Table 1）。</li><li><strong>抗體—抗原交互作用</strong>：以 1,000 個隨機種子採樣並取排序最高之預測，抗體—抗原介面成功率（<span class="m-in" data-tex="\text{DockQ} &gt; 0.23"></span>）為 <strong><span class="m-in" data-tex="62.9\%"></span></strong>，AlphaFold-Multimer v2.3 為 <span class="m-in" data-tex="29.6\%"></span>（<span class="m-in" data-tex="N=65"></span> 個聚類；Fig. 1c、Fig. 5a；Extended Data Table 1）。</li><li><strong>共價修飾</strong>：成功率（口袋 <span class="m-in" data-tex="\text{r.m.s.d.} &lt; 2\,\text{\AA}"></span>）共價結合配體為 <strong><span class="m-in" data-tex="78.5\%"></span></strong>（<span class="m-in" data-tex="N=66"></span>）；高品質單殘基糖基化為 <span class="m-in" data-tex="72.1\%"></span>（<span class="m-in" data-tex="N=28"></span>），全部品質之多殘基多醣鏈為 <span class="m-in" data-tex="42.4\%"></span>（<span class="m-in" data-tex="N=131"></span>，正文記為 <span class="m-in" data-tex="42.1\%"></span>）；修飾殘基整體為 <span class="m-in" data-tex="59.9\%"></span>（蛋白質 <span class="m-in" data-tex="51.0\%"></span>、DNA <span class="m-in" data-tex="68.6\%"></span>、RNA <span class="m-in" data-tex="40.9\%"></span>）（p. 497；Extended Data Table 1）。</li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>程式碼公開與同類模型</strong>：Chai Discovery（2024 年 10 月，bioRxiv，doi:10.1101/2024.10.10.615955）發表分子結構預測模型 Chai-1，並公開模型權重與推論程式供非商業使用；Wohlwend et al.（2024 年 11 月，bioRxiv，doi:10.1101/2024.11.19.624167）發表開源模型 Boltz-1，摘要稱其在預測生物分子複合體結構上達到 AlphaFold 3 等級的準確度，並以 MIT 授權公開訓練與推論程式、權重與資料。2024 年 11 月 27 日，Abramson et al. 於 <em>Nature</em> 636:E4 發表附錄（Addendum），宣布 Google DeepMind 已釋出 AlphaFold 3 之推論程式碼。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>一個模型處理多類分子</strong>：作者的結論是，這些結果顯示在單一深度學習框架內，對整個生物分子空間做高準確度建模是可能的（摘要，p. 493）；蛋白質、核酸、小分子、離子與修飾殘基以殘基或原子為單位放進同一個擴散去噪框架。</li><li><strong>從序列與配體直接生成複合體</strong>：AF3 不需事先給定結合口袋即可聯合預測蛋白質與配體之結構（PoseBusters 盲測設定，p. 496）。但作者也指出，在給定的配體與其他輸入下，模型預測的構型狀態可能不正確或不完整，例如 E3 泛素連接酶在無配體時天然呈開放構型，模型卻預測為閉合構型（模型限制，p. 498）。</li><li><strong>生成式模型的取捨</strong>：改用擴散生成後，同一輸入可透過不同隨機種子得到多個答案，但作者明言 AF3 仍預測 PDB 中所見的靜態結構，多個隨機種子「並不能近似溶液中的構型系綜」；擴散也帶來無序區被生成為假結構（幻覺）的問題，需以交叉蒸餾與排序項緩解（p. 498）。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>從 AlphaFold 2 到 AlphaFold 3 的演進，是深度學習<strong>「苦澀的教訓（The Bitter Lesson）」</strong>在自然科學領域的又一次深刻印證：</p>
+<ol><li><strong>當通用生成架構足夠強大時，過度精巧的手工幾何約束反而成為枷鎖</strong>：AF2 為了遷就胺基酸剛體幾何而設計了極為複雜的 <span class="m-in" data-tex="\mathrm{SE}(3)"></span> 等變 IPA 與扭轉角層，卻因此困死在蛋白質單一領域；AF3 勇敢拆掉這套專用鷹架，讓標準擴散 Transformer 直接在最基礎的 <span class="m-in" data-tex="(x, y, z)"></span> 笛卡兒座標上學習，反而一舉通吃了整個元素週期表的生物分子。</li><li><strong>從「讀懂演化（MSA）」到「習得物理化學（Atomistic Diffusion）」</strong>：當 MSA 被壓縮至僅 4 層、模型被迫同時處理沒有演化歷史的小分子與抗體時，網路的注意力表徵真正從「查演化字典」昇華為「內化分子間的立體化學與靜電互補法則」。</li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2024</b><span>發表・Nature</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Josh Abramson<br>Jonas Adler<br>Jack Dunger<br>Richard Evans<br>Tim Green<br>Alexander Pritzel<br>Olaf Ronneberger<br>Lindsay Willmore et al.<br>Demis Hassabis<br>John M. Jumper</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Nature, 630(8016), 493-500</span><a href="https://doi.org/10.1038/s41586-024-07487-w">doi:10.1038/s41586-024-07487-w</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#計算生物</span><span class="chip">#人工智慧</span><span class="chip">#結構生物學</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>AI 驅動之結構生物學與分子設計</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>生成式世界模型與擴展定律</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>可編程細胞與基因工程</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1038/s41586-021-03819-2" title="Jumper, J. et al. (2021) Highly accurate protein structure prediction with AlphaFold. Nature 596(7873):583-589.">Jumper 等（2021）</a><a href="https://doi.org/10.1038/s41586-024-07487-w" title="Abramson, J. et al. (2024) Accurate structure prediction of biomolecular interactions with AlphaFold 3. Nature 630(8016):493-500.">Abramson 等（2024）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">本頁對應 <code>raw/2024-alphafold3.pdf</code>（Abramson et al. 2024, <em>Nature</em> 630:493-500），為 Google DeepMind 與 Isomorphic Labs 繼 2021 年 AlphaFold2（2024 諾貝爾化學獎獲獎依據）之後，將結構預測範疇推進至全生物分子交互作用之新一代生成式架構。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

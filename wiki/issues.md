@@ -654,3 +654,45 @@
 - **問題**：後續研究第一點列出快手 Kling、智譜 CogVideoX、騰訊 HunyuanVideo、阿里 Wan2.1 與 Meta Movie Gen，稱其遵循「3D-VAE ＋ 時空圖塊 ＋ DiT ＋ 3D-RoPE ＋ 流匹配」範式並「全面驗證時空 DiT 架構作為視覺基座模型的普適性」，未附任何出處。
 - **來源**：無（待補各模型之技術報告，例如 CogVideoX、HunyuanVideo、Wan、Movie Gen 之 arXiv 技術報告，逐一核對架構）。
 - **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+
+### EK-101 | fixed | papers/2024-alphafold3.md | Card 1 | 過度表述
+- **問題**：Card 1 寫 AF3「在單一統一模型中全面擊敗所有領域專用工具」，並稱核酸用「RoseTTAFoldNA」。原文為「In all but one category, it achieves a substantially higher performance than strong methods that specialize in just the given task」；例外為 CASP15 RNA（AF3 47.3，有人工介入之 AIchemy_RNA2 54.5）。證據表 Card 1 列早已記為「核實更正」，但頁面未改。
+- **來源**：`raw/2024-alphafold3.pdf`（Abramson et al. 2024, Nature 630:493–500），正文 p. 493；Extended Data Table 1（PDF p. 21）。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改寫為「除一類外，各類別均顯著優於只處理該任務的專用方法」並註明例外，工具名改為 RoseTTAFold2NA。
+
+### EK-102 | fixed | papers/2024-alphafold3.md | Card 4 | 原文不符
+- **問題**：Card 4 第一點稱 AF3 遠超「最佳深度學習盲對接工具 DiffDock-L（約 38%）」。Extended Data Table 1 所列為 DiffDock（非 DiffDock-L），其 37.9% 是在給定結合態蛋白質結構（Holo protein struct. given）之設定下，並非盲對接。
+- **來源**：`raw/2024-alphafold3.pdf`（Abramson et al. 2024, Nature 630:493–500），Extended Data Table 1（PDF p. 21）；正文 p. 496。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改寫為「給定結合態蛋白質結構之 DiffDock 的 37.9%」，並補 PoseBusters V1 之組成（428 個 2021 年以後釋出之結構）與 2019 年訓練截止。
+
+### EK-103 | fixed | papers/2024-alphafold3.md | Card 4 | 原文不符
+- **問題**：Card 4 第二點寫蛋白質—RNA「介面成功預測率達 62.4%（RoseTTAFold2NA 28.7%）」、雙股 DNA「成功率達 64.8%」，並稱 CASP15 RNA「超越所有自動預測伺服器」。Extended Data Table 1 之核酸指標為 iLDDT 分數，蛋白質—RNA 為 39.4（RoseTTAFold2NA 19.0），雙股 DNA 為 64.8（28.3）；62.4 與 28.7 不見於原文。CASP15 部分原文只與 RoseTTAFold2NA 及 AIchemy_RNA 比較，且不及 AIchemy_RNA2。證據表已記為更正，但頁面未改。
+- **來源**：`raw/2024-alphafold3.pdf`（Abramson et al. 2024, Nature 630:493–500），正文 p. 497；Extended Data Table 1（PDF p. 21）。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改為 iLDDT 數值與 N，CASP15 依原文改寫。
+
+### EK-104 | fixed | papers/2024-alphafold3.md | Card 4 | 原文不符
+- **問題**：Card 4 第四點寫共價結合配體、「磷酸化/甲基化修飾殘基」及「複雜多醣鏈」之成功率「分別達 78.5%、69.9% 與 72.1%」。原文無 69.9%（修飾殘基整體為 59.9%）；72.1% 為高品質單殘基糖基化，多殘基多醣鏈為 42.4%（正文 42.1%）。證據表已記為更正，但頁面未改。
+- **來源**：`raw/2024-alphafold3.pdf`（Abramson et al. 2024, Nature 630:493–500），正文 p. 497；Extended Data Table 1（PDF p. 21）。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依 Extended Data Table 1 逐項改寫並附 N。
+
+### EK-105 | fixed | papers/2024-alphafold3.md | Card 3 | 原文不符
+- **問題**：Card 3 之擴散損失寫成權重 $w(\sigma_t)$ 只乘均方誤差項；排序公式末項寫 $N_{\text{clash}}$（碰撞數），並稱「對無序區與原子碰撞施加懲罰」。補充資料式 6 之權重乘在 $(\mathcal{L}_{\text{MSE}} + \alpha_{\text{bond}} \mathcal{L}_{\text{bond}})$ 上；式 19 末項為 0 或 1 之 has_clash；disorder 項係鼓勵溶劑可及面積較高之伸展構型（正文 p. 498），並非懲罰無序區。
+- **來源**：Abramson et al. (2024) Supplementary Information，式 6（SI p. 28）、§5.9.2 與式 19（SI p. 37）；正文 p. 498。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。兩條區塊公式依補充資料原式改寫，並說明各符號。
+
+### EK-106 | fixed | papers/2024-alphafold3.md | Card 4 後續 | 過度表述
+- **問題**：後續研究寫「2024 年 11 月 Google DeepMind 正式向學術界開放 AlphaFold 3 完整原始碼與訓練權重」，並稱開源社群「基於本篇揭示之 Pairformer + 全原子擴散架構復現出 Chai-1 與 MIT Boltz-1」「全面驗證了該架構的可重現性」，未附出處。Nature 附錄（636:E4，2024-11-27）只宣布釋出推論程式碼；Chai-1 與 Boltz-1 之摘要未稱復現 AF3 架構。
+- **來源**：Abramson et al. (2024) Addendum, Nature 636:E4, doi:10.1038/s41586-024-08416-7；Chai Discovery (2024) bioRxiv doi:10.1101/2024.10.10.615955；Wohlwend et al. (2024) bioRxiv doi:10.1101/2024.11.19.624167（Crossref 元資料與摘要）。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依三份來源改寫並附 DOI。
+
+### EK-107 | fixed | papers/2024-alphafold3.md | Card 5 | 原文不符
+- **問題**：Card 5 稱 AF3「自然捕捉到配體結合引發的蛋白質變構效應與口袋構型重組」，以及「擴散生成模型能透過不同隨機種子採樣出完整的構型分佈系綜」；第一點並稱「首次證明」。原文模型限制明言多個隨機種子「do not produce an approximation of the solution ensemble」，且 E3 泛素連接酶在無配體時也被預測為閉合構型；原文未稱「首次」。
+- **來源**：`raw/2024-alphafold3.pdf`（Abramson et al. 2024, Nature 630:493–500），摘要 p. 493；模型限制 pp. 497–498、Fig. 5c。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。三點改寫為作者結論與所述限制。

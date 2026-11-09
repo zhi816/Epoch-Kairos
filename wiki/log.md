@@ -1665,3 +1665,12 @@
   - 撰寫前回第一手來源核對：封存原文 Liu et al. (2024) 綜述（paper-pdf-parser 抽取）、OpenAI 技術報告頁面（瀏覽器讀取文字與影片標籤）、Peebles & Xie (2023) arXiv:2212.09748v2、Kang et al. arXiv:2411.02385 摘要。論文頁雖標 verified，查出六處問題並修正：DiT 相關係數應為模型 Gflops 與 FID 之 -0.93（EK-094）；OpenAI 算力對照只有基礎、4 倍、32 倍且無逐級描述（EK-095）；構圖比較為質性（EK-096）；Kang et al. 為 arXiv 2024 年 11 月、ICML 2025，內容依摘要改寫（EK-097）；Card 1 點名 Runway、Pika 無出處（EK-098）；Card 3 冪律公式兩來源皆無，刪除並改寫（EK-099）。開源影片模型清單無出處，登記 EK-100（open），論文頁 verification 改為 issues。證據表增列七列。
   - 卡片：Card 3 公式取論文頁之圖塊數 N；Card 4 結論模式（樣本展示無量化指標），取 OpenAI 算力對照、Liu 圖 6（p. 7）與 §5.1（p. 23）；Card 5 新論文模式，兩筆取本篇 §5.1 限制，另列後續研究 Kang et al. 2024。封面標題填「Sora 與世界模型」（自 title_zh 刪減），避免論文名第二行只剩一字。
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 37 項 PASS；無頭截圖目視，修正 Card 2、3、4 拆字折行。`lint_wiki.py` ERROR 0。
+
+## [2026-11-10 00:52] update | 新增 AlphaFold 3 之卡片文字檔並修正論文頁七處與原文不符 | #計算生物 #人工智慧 #結構生物學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第二批 A 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2024-alphafold3.md](cards/2024-alphafold3.md) 並建置 `web/prototypes/paper-v1/2024-alphafold3.html`。
+  - 撰寫前回第一手來源核對：封存原文（paper-pdf-parser 抽取，Extended Data Table 1 以頁面影像判讀）、補充資料（Supplementary Information，下載後檢索式 6 與式 19 並以頁面影像核對）、Nature 附錄 636:E4、Chai-1 與 Boltz-1 之 Crossref 元資料與摘要。論文頁標 verified，且證據表已記載多處「核實更正」，但頁面實際未改；本次登記並修正 EK-101 至 EK-107：Card 1「全面擊敗所有」改為作者所述「除一類外」；DiffDock 37.9% 為給定結合態蛋白質結構而非盲對接；核酸改為 iLDDT 39.4 與 64.8（原寫成功率 62.4%、28.7% 無出處）；共價修飾刪除不存在之 69.9%、72.1% 改歸高品質單殘基糖基化；擴散損失與排序公式依補充資料原式改寫（has_clash 為 0 或 1）；後續發布依附錄與兩份 bioRxiv 摘要改寫並附 DOI；Card 5 原稱可採樣構型系綜、自然捕捉變構，與作者所述模型限制（p. 498）相反，已改寫。證據表增列九列。
+  - 卡片：Card 3 公式取論文頁之隨機剛體變換一式（依 Fig. 2b 與正文 pp. 495–496）；Card 4 四個數字取 Extended Data Table 1（76.4%、62.9%、64.8、78.5%）；Card 5 一般模式三筆後續發布（Chai-1、Boltz-1、附錄釋出推論程式）。
+  - 撰寫中以 shell 寫入時反斜線被吃掉，EK-105 一行與論文頁損失公式曾出現控制字元，已以檔案腳本重寫並掃描相關檔案確認無殘留。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 37 項 PASS（首次 Card 2 名稱「AlphaFold2」超出欄寬，已改）；無頭截圖目視，修正導語落單、示意圖標籤過擠與 Card 3、4 拆字折行。`lint_wiki.py` ERROR 0。
