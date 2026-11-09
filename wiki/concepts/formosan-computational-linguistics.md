@@ -10,7 +10,6 @@ papers:
   - "2023-atayalic-multilingual-mt-liao"
   - "2024-formosan-temporal-words-lim"
   - "2024-formosan-mt-bilingual-lexicon-zheng"
-  - "2024-taiwanese-mt-resegmentation-tang"
   - "2025-atayalic-affix-mt-jin"
   - "2025-atayalic-oov-enumeration-yang"
   - "2025-formosanbench-llm-benchmark-lin"
@@ -40,13 +39,13 @@ verification: "issues"
 ## 關鍵突破支柱與理論範式
 
 * **構詞解析與深層原形還原（Deep Root Reconstruction）**：
-  * 泛泰雅語群（泰雅語、賽德克語、太魯閣語）及排灣語、布農語中，詞綴附加常伴隨母音音變（Vowel Shift）、詞尾弱化脫落（Deletion）與中綴插入（Infixation）。
-  * 透過構詞律匹配、二元音韻轉移轉移機率以及候選詞根排名，使未知表面形能準確逆向對映回深層原形：
-    $$\text{Surface Form} \xrightarrow{\mathcal{T}_{\text{morph}}^{-1}} \langle \text{Prefixes}, \text{Infixes}, \text{Root}, \text{Suffixes} \rangle$$
+  * 泛泰雅語群（泰雅語、賽德克語、太魯閣語）及排灣語、布農語中，詞根加後綴時結尾常改變（深層原形），書寫時元音會被刪略，並有中綴與重疊。
+  * 海大實驗室的解析流程以「已知詞根」為輸入：先產生詞根的深層原形候選，窮舉中綴與後綴組合，比對目標詞的後半段，剩餘部分再以一元或二元機率模型判斷前綴組合（Lin et al., 2020；游景勝 2021；戴晟哲 2023）。各語言須另補專屬規則，例如泰雅語、太魯閣語改用三條書寫比對規則，排灣語另處理「重複詞根最後兩音節」的重疊（吳維中 2025）。概念上可寫成（Wiki 整理，非任一篇原文公式）：
+    $$\langle \text{Word}, \text{Root} \rangle \;\longmapsto\; \langle \text{Prefixes}, \text{Infixes}, \text{Root}, \text{Suffixes} \rangle$$
   * 詳見核心研究：[賽德克語－中文機器翻譯之研究（游景勝 2021）](../papers/2021-seediq-chinese-mt-you.md)、[泰雅語與太魯閣語構詞結構之自動解析（戴晟哲 2023）](../papers/2023-atayal-truku-morphology-dai.md)、[排灣語、布農語構詞結構解析與機器翻譯（吳維中 2025）](../papers/2025-paiwan-bunun-morphology-mt-wu.md)。
 
 * **構詞規則窮舉與未知詞消解（Morphological Enumeration for OOV）**：
-  * 針對辭典未收錄之未知詞（OOV），利用音韻變化規則與構詞律正向窮舉所有合法衍生形，結合詞根頻率、字串編輯距離與隨機森林排名器進行逆向溯源，突破極端低資源語境下的辭典覆蓋限制。
+  * 針對辭典未收錄之未知詞（OOV），為每個已知詞根窮舉其深層原形、音韻變化與加中綴後的字串，與未知詞比對並檢查前後綴是否合法，挑出候選詞根；再以 44 個特徵的成對比較隨機森林分類器兩兩投票選出詞根。原規劃的書寫形式篩選因濾掉過多正解而未採用。已知詞驗證資料正確率逾九成，賽德克語真實未知詞為 63.88%（族語 E 樂園）與 72.12%（臺大語料庫）。
   * 詳見核心研究：[以構詞規則窮舉解決泛泰雅語未知詞問題（楊鈞凱 2025）](../papers/2025-atayalic-oov-enumeration-yang.md)。
 
 * **類型學考察與語法化路徑（Typology & Grammaticalization）**：

@@ -675,3 +675,18 @@
   - `2003-nagel-channelrhodopsin2.pdf` → `2003-channelrhodopsin2.pdf`
   - `2025-li-qt12-rice-thermotolerance.pdf` → `2025-rice-qt12-thermotolerance.pdf`
   - `2025-musunuru-in-vivo-base-editing.pdf` → `2025-in-vivo-base-editing.pdf`
+
+## [2026-11-09 09:21] fix | 依原文重寫 6 篇學長姐碩士論文頁並修正兩個概念頁之重述 | #計算語言學 #自然語言處理 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：
+  - **論文頁**：逐篇回 `raw/my-focus/學長姐論文/.md/` 之原文文字檔（非譯本）核對後重寫 Card 1–6 與 hook，各建證據表，`verification` 改為 `verified`：
+    - [戴晟哲 2023](papers/2023-atayal-truku-morphology-dai.md)（EK-063）：改述四模組、十個詞根還原條件與三條書寫比對規則；Card 4 補列表 14–23，註明不考慮邊界之二元模型（泰雅語 100%）與一元模型（太魯閣語 91.84%）之測試正確率高於摘要所稱最佳系統。
+    - [廖恒慶 2023](papers/2023-atayalic-multilingual-mt-liao.md)（EK-064）：標籤改為原文 `<X2Y>`，補述馬來語、印尼語遷移式學習；補述外部測試因叢書例句被辭典例句覆蓋而偏高，作者以交叉驗證為準。
+    - [湯景閔 2024](papers/2024-taiwanese-mt-resegmentation-tang.md)（EK-065）：改述最大二分匹配四步驟與 BI 標籤；註明摘要「+7.56」為不同評估欄位之差值（同欄 +9.19 或 +1.36）；`concepts` 移除臺灣南島語概念頁（台語屬漢語族）。
+    - [金柏毅 2025](papers/2025-atayalic-affix-mt-jin.md)（EK-066）：改述三種文本形式、詞綴組合 ID 與 FC_ftr_jnt 雙 encoder；拆分中文翻族語提升中 BERT（6.6–7.9 分）與詞綴字串（0.9–3.7 分）之貢獻。
+    - [楊鈞凱 2025](papers/2025-atayalic-oov-enumeration-yang.md)（EK-067）：94%–96% 改歸候選挑選階段；寫明書寫形式篩選未採用；隨機森林改述為 44 特徵之成對比較投票；補列真實未知詞 63.88%／72.12% 與詞根集合上限。
+    - [吳維中 2025](papers/2025-paiwan-bunun-morphology-mt-wu.md)（EK-068）：寫明翻譯實驗未使用構詞資訊；重疊改述為原文字串規則；補列各技術疊加之 BLEU，註明表 22 與表 24 數值不一致。
+  - **概念頁**：[formosan-computational-linguistics](concepts/formosan-computational-linguistics.md) 改寫構詞解析與未知詞兩段（EK-086 第 1、2 點；第 3 點 Gagnier 未處理，維持 open）；[low-resource-machine-translation](concepts/low-resource-machine-translation.md) 改寫構詞特徵與跨語言遷移兩段（EK-087 fixed），`verification` 改為 `partial`。
+  - **證據表**：新增 6 份於 [wiki/evidence/](evidence/)。問題清單 open 由 85 降至 78。
+  - **未處理**：其他論文頁 Card 6 中對學長姐研究之引用（如 Xia、Ranathunga、Zheng、Tulun 頁）屬各自之 open 問題，本次未改；raw/ 另 10 篇里程碑 PDF 已由 Antigravity 更名，舊日誌條目之 raw 連結因此失效（lint 僅列 WARN）。

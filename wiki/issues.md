@@ -356,35 +356,41 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文 §3.3、§4.1–4.3、§5.1–5.4 逐項確認後重寫 Card 3：前綴公式改為原文式 (2)(3)，刪除無來源之 MAP 式；明確區分預訓練（fastText skip-gram）與自訓練（one-hot 加 embedding layer）詞嵌入。另修正同頁未登記之問題：Card 4 改以表 8 為準並註明摘要 99.52%／85.34% 與結論 99.83%／82.01% 互不一致；補列表 11 完整結果；Card 1、Card 5 與 hook 刪除「首創」「最行之有效」等過度表述；Card 6 標明為個人研究詮釋並刪除「100% 精確」。證據表見 wiki/evidence/2021-seediq-chinese-mt-you.md。
 
-### EK-063 | open | papers/2023-atayal-truku-morphology-dai.md | Card 3–4 | 原文不符
+### EK-063 | fixed | papers/2023-atayal-truku-morphology-dai.md | Card 3–4 | 原文不符
 - **問題**：（1）Card 3（第 45–60 行）寫出正向書寫轉換函數 $\Phi_{\text{ortho}}(\sigma) = w$ 並稱「雙唇音弱化（$p \to b$ 或 $p \to v$）」；原文 §3.4（pp. 27–28）明確指出無法歸納出泰雅語與太魯閣語的書寫形式轉換規則，故不再產生真正的書寫形式，而是對「詞根＋中綴＋後綴」制定三條比對規則（直接比對、保留最後兩母音、刪去全部母音）後，再以一元／二元模型挑選前綴；且 §3.1.2（p. 21）僅列泰雅語 $p \to b$ 及太魯閣語 $k \to b$、$t \to d$，無 $p \to v$。（2）Card 4（第 82 行）僅引結論章稱考慮邊界的二元模型在太魯閣語獲最佳 85.71%，漏未交代 §4.2.2（p. 36，表 21 對照表 22）中太魯閣語測試集上考慮邊界之一元模型（91.84%）實高於二元模型（85.71%），以及泰雅語測試集不考慮邊界之二元模型達 100.00%（表 20）。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
 - **來源**：`raw/my-focus/學長姐論文/.md/泰雅語與太魯閣語構詞結構之自動解析_戴晟哲.md`（§3.1.2 p. 21、§3.4 pp. 27–28、§4.2.2 p. 36 表 20–22）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文 §3.1–3.5、§4.1–4.2 逐項確認後重寫 Card 3：刪除無來源之 $\Phi_{\text{ortho}}$、音韻交替算子與 argmax 目標式，改述原文四模組、十個詞根還原條件與三條書寫比對規則；結尾規則改列原文之 `p`→`b`、`k`→`b`、`t`→`d`。Card 4 改列表 14–23 完整結果，並註明泰雅語不考慮邊界之二元模型（100.00%）與太魯閣語一元模型（91.84%）測試正確率高於摘要所稱之最佳系統。另修正同頁未登記之 Card 5「僅需替換音變規則矩陣」與 Card 6「深層原形還原準確率可達 90%」等無來源表述。證據表見 wiki/evidence/2023-atayal-truku-morphology-dai.md。
 
-### EK-064 | open | papers/2023-atayalic-multilingual-mt-liao.md | Card 2–4 | 原文不符
+### EK-064 | fixed | papers/2023-atayalic-multilingual-mt-liao.md | Card 2–4 | 原文不符
 - **問題**：（1）Card 2（第 36 行）稱「泰雅語的 m-qaniq（吃）、賽德克語的 m-ekan 與太魯閣語的 m-ekan 在傳統詞級切分下被視為三個完全無關的獨立詞彙 ID」；泰雅語「吃」之主事焦點形為 `maniq`（詞根 `qaniq`），且賽德克語與太魯閣語同形詞 `mekan` 合併時字串完全相同。（2）Card 3（第 59–65 行）稱句首僅加目標語標籤 `<2zh>`、`<2tay>`、`<2trv>`、`<2sdq>`；原文 §4.1（p. 16）與 §4.3.2（p. 21）定義之標籤格式為同時編碼來源語與目標語之 `<X2Y>`（以單字母 `A`、`S`、`T`、`C`、`M`、`I` 表示，如 `<S2C>`、`<M2C>`）。（3）Card 1–3 僅描述泛泰雅三語聯合訓練（`|V|=10,000`，對應表 15 之 18.97／17.61／19.92 BLEU），完全漏述 §4.3 與 §5.4 之馬來語／印尼語遷移式學習（`|V|=15,000` 或 `20,000`），致與 Card 4 所列最佳分數（表 21–22 之 20.81／19.38／20.84 與 21.98／21.97／26.69）脫節。（4）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
 - **來源**：`raw/my-focus/學長姐論文/.md/泛泰雅語群與中文之多語言機器翻譯研究_廖恒慶.md`（§4.1 p. 16、§4.3 p. 21、§5.2 p. 27 表 15、§5.4 pp. 31–32 表 21–22）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文 §2.1、§4.1–4.3、§5.2–5.5 逐項確認後重寫 Card 1–4：刪除原文未出現之 `m-qaniq`／`m-ekan` 例子，改用原文表 2 之三語例句；語言別標籤改為原文之 `<X2Y>`（如 `<S2C>`）；補述馬來語、印尼語遷移式學習（BPE 15,000／20,000），使 Card 4 最佳分數與方法對應，並標明各最佳值之父語言與單一或多語言系統。另修正同頁未登記之問題：刪除無來源之 BPE 與損失函數公式及「首次」「一加一加一大於三」「通用工程標準」等表述；補述原文 §5.5.2 外部測試因叢書例句被辭典例句覆蓋而偏高、作者以交叉驗證為準。證據表見 wiki/evidence/2023-atayalic-multilingual-mt-liao.md。
 
-### EK-065 | open | papers/2024-taiwanese-mt-resegmentation-tang.md | Card 3 | 原文不符
+### EK-065 | fixed | papers/2024-taiwanese-mt-resegmentation-tang.md | Card 3 | 原文不符
 - **問題**：（1）第 43–56 行與架構圖稱使用 `IBM Model`／`fast_align` 統計詞對齊、點互資訊 $\operatorname{PMI}(w_i, t_j)$ 與 BERT 語言模型流暢度先驗進行全局最佳化；原文 §3.3（pp. 26–36）完全未使用統計詞對齊、PMI 或 BERT 流暢度打分，而是以最大二分匹配（Maximum Bipartite Matching，依同字 1.0、台華辭典翻譯 0.8、同義詞詞林 0.6 與最小子詞分數設定權重）執行四階段規則重斷詞（連續未對齊詞連接、部分對齊切分與同義詞重斷詞）。（2）第 59–62 行稱 BERT 台語斷詞器採用四分類 `B-I-E-S` 標籤；原文 §3.2（pp. 24–25，圖 14）明言「斷詞標記工作採用 BI 標籤模式」，僅有 `B` 與 `I` 二類標籤。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061），且 `concepts` 誤掛入 `formosan-computational-linguistics`（台語屬漢藏語系閩南語，非臺灣南島語）。
 - **來源**：`raw/my-focus/學長姐論文/.md/利用重斷詞改善台語機器翻譯系統_湯景閔.md`（§3.2 pp. 24–25 圖 14、§3.3 pp. 26–36）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文 §3.1–3.3、§4.1、§4.3 逐項確認後重寫 Card 3：刪除無來源之 IBM Model／fast_align、PMI 與 BERT 流暢度目標式，改述原文之最大二分匹配（1／0.8／0.6 與子詞最小分）與四步驟重斷詞；BERT 斷詞改為原文之 BI 兩類標籤。`concepts` 移除 `formosan-computational-linguistics`，並同步自該概念頁 `papers` 移除本頁。另修正同頁未登記之問題：Card 4 註明摘要「+7.56」為不同評估欄位之差值（同欄為 +9.19 或 +1.36），並補列字級 BLEU 與作者「不太能直接相比較」之說明；刪除 Card 1「首創」與 Card 5 無來源之概括。證據表見 wiki/evidence/2024-taiwanese-mt-resegmentation-tang.md。
 
-### EK-066 | open | papers/2025-atayalic-affix-mt-jin.md | Card 3 | 原文不符
+### EK-066 | fixed | papers/2025-atayalic-affix-mt-jin.md | Card 3 | 原文不符
 - **問題**：（1）第 48–49 行稱輸入序列轉為中括號語素標籤 `[PRE:m] [ROOT:qaniq] [SUF:un]`；原文 §2.2–2.3（pp. 11–16）定義之三種格式為「原文形式」、「詞根形式」（搭配 `F1`、`FM002` 等詞綴組合編號）及「詞綴字串形式」（前綴加 `-`、中綴以 `<...>` 標記並移至詞根前、後綴加 `-`，如 `m- osa <m> dayang <n> tatak -an`），無 `[PRE:...]` 等標籤。（2）第 52–68 行與架構圖將模型寫為單一編碼器內執行 LayerNorm 加法融合；原文 §3.1.1（pp. 22–25，圖 5）之最佳架構 `FC_ftr_jnt` 係採用**兩個獨立並聯之 Transformer Encoder**（其一編碼子詞嵌入，其二編碼 26／29／49／62 維布林詞綴特徵向量），再將兩編碼器輸出串接（Concatenate）送入解碼器；且未提及華翻族最佳架構 `CF_bert_base`（§3.2.2，pp. 30–31，圖 14）係以 `bert-base-chinese` 取代華語端編碼器。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
 - **來源**：`raw/my-focus/學長姐論文/.md/使用詞綴資訊提升泛泰雅語機器翻譯效能_金柏毅.md`（§2.2–2.3 pp. 11–16、§3.1–3.2 pp. 22–31 圖 5、14）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文 §2.1–2.4、第三章、§4.1–4.3 與第五章逐項確認後重寫 Card 1–4：刪除原文未出現之 `[PRE:m]` 標籤，改列原文三種文本形式與詞綴組合 ID；最佳架構改述為 FC_ftr_jnt 之雙 encoder 串接（布林特徵 49／26／29／62 維），刪除無來源之 LayerNorm 加法式與注意力公式；補述中文翻族語最佳系統 CF_bert_base 以 BERT 取代中文 encoder。另修正同頁未登記之問題：Card 4 補列基線並拆分 BERT 與詞綴字串之貢獻，註明外部測試以原文形式最佳；Card 2 補述詞綴資訊多為解析器預測；刪除 Card 5「推翻高資源偏見」「標準架構管線」等無來源表述。證據表見 wiki/evidence/2025-atayalic-affix-mt-jin.md。
 
-### EK-067 | open | papers/2025-atayalic-oov-enumeration-yang.md | Card 3 | 原文不符
+### EK-067 | fixed | papers/2025-atayalic-oov-enumeration-yang.md | Card 3 | 原文不符
 - **問題**：（1）第 45–52 行與第 66 行架構圖稱系統以音韻轉換函數 $\Phi_{\text{phon}}(p \oplus \text{Infix}(i, r) \oplus s) = w_{\text{unk}}$ 正向生成表面形，並將「第二階段：候選詞根篩選」標為「保留率 > 94%」。原文 §3.2、§3.3、§4.2、§4.3（pp. 29–35、47–57、73）中，94.08%／94.33%／95.74% 召回率屬「第一階段：候選詞根挑選」（直接檢查詞根或其刪母音／中綴變體是否為未知詞子字串，且前後剩餘子串為合法前後綴）；而利用書寫形式轉換規則比對之「第二階段：候選詞根篩選」因過濾掉過多正解詞根、對猜測有害，作者於 p. 73 明言**最終系統決定不執行該步驟**。（2）第 57–64 行將隨機森林寫為對單一候選詞根獨立打分之單點分類器；原文 §3.5（pp. 42–45）實為**成對比較（Pairwise）二元分類器**，對任意兩候選詞根 $(x, y)$ 抽取 44 維特徵（$x$ 13 維、$y$ 13 維、差值 13 維、比值 5 維）進行 $\binom{n}{2}$ 循環賽投票選出最高票詞根。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
 - **來源**：`raw/my-focus/學長姐論文/.md/以構詞規則窮舉來解決泛泰雅語未知詞問題_楊鈞凱.md`（§3.2–3.5 pp. 29–45、§4.2–4.3 pp. 47–57、§5 p. 73）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文第三至五章逐項確認後重寫 Card 3：刪除無來源之 $\Phi_{\text{phon}}$ 與集合式；94.08%／94.33%／95.74% 改歸「候選詞根挑選」階段；明確寫出原規劃之書寫形式篩選因濾掉過多正解而不執行；隨機森林改述為 44 個特徵之成對比較分類器，以兩兩配對投票選出詞根。另修正同頁未登記之問題：Card 4 補列表 38 之規則策略與隨機森林答對數及表 15 之詞根集合上限；Card 3、Card 5 註明中文語意特徵依賴含未知詞句子之中文翻譯；刪除「首創」「徹底扭轉」等過度表述。證據表見 wiki/evidence/2025-atayalic-oov-enumeration-yang.md。
 
-### EK-068 | open | papers/2025-paiwan-bunun-morphology-mt-wu.md | Card 1–3 | 原文不符
+### EK-068 | fixed | papers/2025-paiwan-bunun-morphology-mt-wu.md | Card 1–3 | 原文不符
 - **問題**：（1）Card 1（第 29 行）、Card 2（第 36 行）與 Card 3（第 47–52、65 行）稱本文建立環綴算子、音節週期性自相關檢測，並將「構詞解析器提取之深層詞根與詞綴特徵注入預訓練多語言遷移模型」。原文第 3–6 章（pp. 9–33）中，重疊詞僅以複製詞根末 1–2 個 CV 音節為 `<RED>` 之四步驟字串規則處理；且第 4–5 章之機器翻譯實驗**完全未使用任何詞綴或構詞解析資訊**，第 6 章結論（p. 33）明確將「針對詞綴資訊並將資訊導入模型訓練中」列為未來工作。（2）Card 3（第 58–62 行）列出含 KL 散度正則化項之損失函數；原文 §4.3（pp. 23–24）僅為馬來語／印尼語預訓練後直接微調之兩階段訓練，無 KL 散度正則化項。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
 - **來源**：`raw/my-focus/學長姐論文/.md/排灣語、布農語的構詞結構自動分析與機器翻譯_吳維中.md`（§3.1–3.2 pp. 9–15、§4.3 pp. 23–24、§6 p. 33）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文第二至六章逐項確認後重寫 Card 1–3 與 hook：刪除原文未出現之環綴、音節週期性自相關檢測與 KL 正則化式；排灣語重疊改述為原文之「重複詞根最後兩音節」字串規則；明確寫出翻譯實驗未使用構詞資訊，作者將其列為未來工作。另修正同頁未登記之問題：Card 4 補列各技術疊加之 BLEU 與前綴組合正確率，註明表 22 與表 24 數值不一致、中文翻族語最終分數含 BERT 之貢獻；刪除「跨語系普適性」「首套開源基礎設施」等無來源表述。證據表見 wiki/evidence/2025-paiwan-bunun-morphology-mt-wu.md。
 
 ### EK-069 | open | papers/2022-formosan-say-verbs-hsieh.md | Frontmatter 與 Card 3 | 原文不符
 - **問題**：（1）Frontmatter `title`（第 2 行）與主標題（第 20 行）將英文標題寫為 `"Semantic Phenomena of Verbs of Saying in Formosan Languages: A Typological Investigation"`；原文末頁（PDF p. 46，期刊 p. 92）之正式英文標題為 `"On the Semantics of SAY Verbs in Formosan Languages"`。（2）Card 3（第 46–63 行）之集合聯集式與連續向量空間線性插值式未見於原文（原文圖 4，p. 83 係以 `X[述說]、[動作]` 語義特徵標記描述語法化鏈），未標明為 Wiki 自行形式化推導。
@@ -475,8 +481,10 @@
 - **問題**：（1）Frontmatter `papers`（第 13 行）將研究臺灣閩南語（漢藏語系漢語族）之 `2024-taiwanese-mt-resegmentation-tang` 列入「臺灣南島語計算語言學」概念頁。（2）第 48–50 行重述 `2025-atayalic-oov-enumeration-yang.md` 之錯誤，稱楊鈞凱（2025）「利用音韻變化規則與構詞律正向窮舉所有合法衍生形」（實為子字串候選詞根挑選搭配成對隨機森林循環賽投票，且正向書寫形式比對篩選因有害而未執行，見 EK-067）。（3）第 57 行稱 Gagnier（2026）「利用正規化 Levenshtein 編輯距離與多維度對齊，量化臺灣南島語 16 族 42 方言」（漏述 TF-IDF 餘弦與 Jaccard 相似度且原文無多維尺度對齊，見 EK-079）。
 - **來源**：同 EK-065、EK-067、EK-079
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理（部分）**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。第 (1) 點：已自 `papers` 移除 `2024-taiwanese-mt-resegmentation-tang`，論文頁 `concepts` 同步移除。第 (2) 點：依 EK-067 回原文確認之結果改寫楊鈞凱（2025）段；同時改寫「構詞解析與深層原形還原」段，刪除「未知表面形能準確逆向對映」之過度表述，註明解析需已知詞根。第 (3) 點（Gagnier 2026）尚未處理，本筆維持 open。
 
-### EK-087 | open | concepts/low-resource-machine-translation.md | 關鍵技術路徑 | 原文不符
+### EK-087 | fixed | concepts/low-resource-machine-translation.md | 關鍵技術路徑 | 原文不符
 - **問題**：第 49–52 行將構詞特徵增強寫為詞根嵌入與詞綴嵌入拼接投影 $e(w) = W_{\text{proj}}[e_{\text{root}}(w) \,\|\, e_{\text{affix}}(w)]$ 並歸給游景勝（2021）與金柏毅（2025）；惟游景勝（2021）實驗證實詞根嵌入使 BLEU 暴跌、最佳模型係使用表面詞形搭配 52 維詞綴特徵（見 EK-062），而金柏毅（2025）最佳模型 `FC_ftr_jnt` 係使用雙獨立並聯 Transformer Encoder 分別編碼「詞綴字串形式子詞」與「詞綴組合特徵向量」後於編碼器輸出端串接（見 EK-066）。
 - **來源**：同 EK-062、EK-066
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。依 EK-062、EK-066 回原文確認之結果改寫「構詞特徵增強」段：刪除無來源之 $W_{\text{proj}}$ 拼接式，改述游景勝（2021）之布林特徵拼接（含預訓練嵌入下 BLEU 下降之反例）與金柏毅（2025）之 FC_ftr_jnt 雙 encoder；同節「跨語言遷移」段一併依廖恒慶（2023）原文改寫，刪除原文未測量之「降低 OOV 率」「零樣本遷移」。
