@@ -804,3 +804,10 @@
   - **EK-017**：Card 3 更正 $99.999\%$ 為 $6,000\,\text{pe}$ 以上「穿透大氣緲子」之拒斥率，南半球大氣微中子伴隨緲子濾除率為約 $70\%$，並補列兩年預期殘留背景之精確數據（$6.0 \pm 3.4$ 個緲子與 $6.1$ 個大氣微中子），修正過度概括。
   - 新增證據表 [wiki/evidence/2013-icecube-neutrino.md](evidence/2013-icecube-neutrino.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-016 與 EK-017 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 09:43] fix | 依原文重寫 Xia 2019 與 Ranathunga 2023 兩篇國際文獻頁 | #自然語言處理 #深度學習 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：剩餘 17 篇 my-focus 論文頁之第 5–6 篇，逐篇以原文 PDF 全文核對後重寫 Card 1–6 與 hook，各建證據表，`verification` 改為 `verified`：
+  - [Xia et al. 2019](papers/2019-generalized-data-augmentation-xia.md)（EK-074）：改述原文之 Procrustes／SVD＋CSLS 詞典歸納逐詞替換與 M-UMT，以及預訓練後混合微調；刪除「字元級音變轉換」與加權目標式；補列表 2；刪除「被 mBART、NLLB 沿用」。
+  - [Ranathunga et al. 2023](papers/2023-low-resource-nmt-survey-ranathunga.md)（EK-075）：改列原文六類技術與圖 7 選擇流程；刪除原文未提及之 Adapter、PEFT、RAG 與 $ 錨定式；註明綜述資料截至 2021–2022 年；改述 50 萬／10 萬句為原文之參考門檻。

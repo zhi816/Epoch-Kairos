@@ -439,15 +439,17 @@
 - **來源**：`raw/my-focus/報告論文題材/2026.loresmt-1.2.pdf`（§4.6 p. 32、§7 p. 34）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 
-### EK-074 | open | papers/2019-generalized-data-augmentation-xia.md | Card 3 | 原文不符
+### EK-074 | fixed | papers/2019-generalized-data-augmentation-xia.md | Card 3 | 原文不符
 - **問題**：（1）第 49–53 行稱以「字元級音變轉換模型」或構詞映射將高資源語言轉為低資源語言；原文 §3.1–3.2（pp. 5788–5789）實為透過正交 Procrustes SVD 與 CSLS 雙語詞典歸納進行逐詞替換（Word-by-word Substitution），或結合基於去噪自編碼與迭代回譯之改良無監督機器翻譯（M-UMT）。（2）第 56–59 行將 NMT 訓練寫為帶權重衰減係數 $\alpha_k$ 之加權對數似然；原文 §4.4（pp. 5790–5791）係將真實與偽平行語料直接串接預訓練後進行混合微調（mixed fine-tuning），無 $\alpha_k$ 加權目標式。
 - **來源**：`raw/my-focus/英文論文/Generalized Data Augmentation for Low-Resource Translation_P19-1579.pdf`（§3.1–3.2 pp. 5788–5789、§4.4 pp. 5790–5791）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文 §2–§5 核對後：Card 3 刪除「字元級音變轉換」與 $\alpha_k$ 加權目標式，改述原文之 Procrustes／SVD＋CSLS 詞典歸納逐詞替換、M-UMT 修飾，以及預訓練後混合微調；補列原文四種增強情境。另修正同頁未登記之問題：Card 4 補列表 2 主要列；刪除 Card 5「被 mBART、NLLB 沿用」等無來源表述；Card 6 改為有條件之延伸。證據表見 wiki/evidence/2019-generalized-data-augmentation-xia.md。
 
-### EK-075 | open | papers/2023-low-resource-nmt-survey-ranathunga.md | Card 1、Card 3 與 Card 6 | 原文不符
+### EK-075 | fixed | papers/2023-low-resource-nmt-survey-ranathunga.md | Card 1、Card 3 與 Card 6 | 原文不符
 - **問題**：Card 1（第 17 行）與 Card 3（第 43–63 行）稱綜述建立四大支柱（含「語言學先驗融合：詞綴特徵拼接／投影、句法樹與詞典注入」及「輕量化 Adapter、參數高效微調 PEFT」）並列出含 $L_2$ 錨定項之遷移學習公式；Card 6（第 87 行）稱「綜述指出：在資料量小於一萬句的極端低資源語境中……真正的突破口在於構詞感知與外部符號知識庫的在線檢索（RAG）」。原文（ACM CSUR 2023，§3–§11，圖 1、2、7）將低資源 NMT 分為六類技術（資料增強、無監督、半監督、多語言、遷移學習、零樣本／樞紐），全文僅有一條 Google Scholar 離群值檢定公式（p. 229:22，式 1），決策流程圖（圖 7）以 50 萬句為低資源分界，且全文從未提及 RAG、LLM、Adapter 或 PEFT。
 - **來源**：`raw/my-focus/英文論文/Neural Machine Translation for Low-resource Languages A Survey_3567592.pdf`（§3–§11 pp. 229:5–229:22 圖 1、2、7）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文全文核對後：Card 1、3 刪除「四大支柱」（含語言學先驗融合、Adapter、PEFT）與 $L_2$ 錨定遷移式，改列原文六類技術（資料增強、無監督、半監督、多語言、遷移學習、零樣本）與圖 7 選擇流程；Card 6 刪除「綜述指出一萬句以下應以構詞感知與 RAG 為突破口」，註明綜述資料截至 2021–2022 年，未涵蓋 LLM 與 RAG。另修正同頁未登記之問題：原 Card 4 稱「原文沒有提出語料門檻」不精確，改述原文以 50 萬／10 萬句為參考門檻並明言非絕對。證據表見 wiki/evidence/2023-low-resource-nmt-survey-ranathunga.md。
 
 ### EK-076 | open | papers/2024-formosan-mt-bilingual-lexicon-zheng.md | Card 3 | 原文不符
 - **問題**：第 45–68 行稱本文採溫度採樣係數 $\tau$、動態衰減權重 $\beta \in (0, 1]$ 之混合損失函數，並定義交叉注意力香農熵；原文 §4–§5（pp. 11251–11254）全文無任何數學公式，方法一（`+ Lex.`）僅將雙語詞典詞條與平行句直接串接訓練，方法二（`+ PPD`，§5.1）則隨機替換平行句中 20% 族語詞彙合成偽平行資料，方法三為兩者結合。Card 3 完全漏述產生最佳成績（+5.55 BLEU／+10.33 chrF）之方法二 PPD，卻虛構溫度採樣、動態權重與注意力熵公式。
