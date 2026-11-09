@@ -1185,3 +1185,8 @@
   - 新增之 academic-paper-translator/scripts/extract_paper.py 預設將輸出寫入 PDF 所在目錄（即 `raw/`，違反 `raw/` 唯讀）；`auto` 優先 MinerU，與原則一相反；MinerU 失敗即默默改用 PyMuPDF；輸出無「草稿、不得作為證據」提醒；與 parse_pdf.py 功能重複。翻譯 skill 並恢復「完全避免數值辨識誤差」之過度保證。
   - Mine-RAW 遠端未發現抽取結果，無外洩；Windows 機器本機 `raw/` 是否留有 `_extracted` 資料夾無法從本機確認。
 - **具體變更**：[SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md)、[parse_pdf.py](../.agents/skills/paper-pdf-parser/scripts/parse_pdf.py)、[setup_env.py](../.agents/skills/paper-pdf-parser/scripts/setup_env.py) 與 [academic-paper-translator](../.agents/skills/academic-paper-translator/SKILL.md) 還原為提交 97a7633 之版本；刪除 extract_paper.py；SKILL.md 第四章新增「Windows 與 WSL2」段，記錄撤回理由，並訂定日後加入 Windows MinerU 須符合之五項條件（只改 parse_pdf.py、`--pages` 生效、記錄引擎名稱與版本、輸出只寫 `work/parsed/`、無法使用即報錯、依原則二抽樣對照原頁並記錄）。[2026-11-09 15:20] 條目中指向 extract_paper.py 之連結因此失效，日誌 append-only 不回改，lint 列為 WARN。
+
+## [2026-11-09 15:47] design | 記錄首版 web/index.html 實作範圍與暫定事項 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：依使用者決定更新 [DESIGN.md](../DESIGN.md)。第二章新增第 0 節「首版 `web/index.html` 實作範圍」：先做星空背景、左欄、知識星圖、我的星系與手機版，群星檔案卡片牆與論文頁延後；星圖說明框暫不放論文頁連結；頁面由建置腳本自 `wiki/` Frontmatter 產生，腳本置於 `web/` 之外；首頁樣式與程式改名為 `starmap.css`、`starmap.js`，實作時同步修改 AGENTS.md 第四章與 README。暫定事項：懸星索引採 A、直排標題改用迪多體、桌面機關與手機一致採句末之星、預設亮星（群星亮最新收錄、我的星系亮我的碩論）、立案條目不畫暗星。第八章對應項目加註結果，並新增第 12 項（「最新收錄」之判定依據）與第 13 項（「我的碩論」之資料來源）。`theme.css` 與 AGENTS.md 尚未修改。
