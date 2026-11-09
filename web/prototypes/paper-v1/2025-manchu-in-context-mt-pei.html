@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>理解低資源語言之上下文機器翻譯｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#8FD5FD;--deep:#204960;--win:#1C252B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html#my-constellation" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.12</span><span>報告題材</span></div><div class="win"><i style="left:66.1%;top:11.3%;width:1px;height:1px;opacity:0.36"></i><i style="left:44.2%;top:36.5%;width:1px;height:1px;opacity:0.65"></i><i style="left:11.4%;top:16.1%;width:1px;height:1px;opacity:0.41"></i><i style="left:61.9%;top:37.4%;width:1px;height:1px;opacity:0.69"></i><i style="left:71.7%;top:25.8%;width:1px;height:1px;opacity:0.47"></i><i style="left:61.9%;top:9.0%;width:1.5px;height:1.5px;opacity:0.81"></i><i style="left:60.6%;top:6.3%;width:1.5px;height:1.5px;opacity:0.53"></i><i style="left:39.7%;top:28.1%;width:1px;height:1px;opacity:0.59"></i><i style="left:88.1%;top:18.6%;width:1.5px;height:1.5px;opacity:0.80"></i><i style="left:20.0%;top:18.7%;width:1px;height:1px;opacity:0.65"></i><i style="left:14.2%;top:13.2%;width:1px;height:1px;opacity:0.64"></i><i style="left:6.8%;top:44.6%;width:1px;height:1px;opacity:0.38"></i><i style="left:13.2%;top:37.1%;width:1px;height:1px;opacity:0.32"></i><i style="left:16.1%;top:17.8%;width:1px;height:1px;opacity:0.32"></i><span class="lang">滿語</span><span class="rep"></span><span class="line"><span>找出哪些參考資料，</span><span>最能幫大模型</span><span>翻譯滿語</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #計算語言學 #人工智慧</div><div class="name">理解低資源語言之上下文機器翻譯</div><div class="lead">詞典與相似例句最有用，語法書幾乎沒幫助。</div><div class="yrs">2025 發表 ｜ ACL 2025</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">資源不少，<br>卻不知哪個管用</span><div class="rows"><div class="row"><b>平行語料</b><span>資料驅動的翻譯要靠它，這些語言卻很缺乏</span></div><div class="row"><b>既有知識</b><span>模型可能在預訓練時見過滿語，成績未必來自提示</span></div><div class="row gap"><b>相對重要性</b><span>詞典、例句、語法書放進提示後，哪個最有用並不清楚</span></div></div><span class="ft" style="color:var(--ink)">得把每種資源拆開來，一項一項測。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">一次加一樣，<br>再把滿語加密</span><svg class="dia" viewBox="0 0 300 96" role="img" aria-label="示意：構詞分析、詞典、例句、語法、思維鏈依序加入提示，前三項保留，後兩項不納入。">
+  <rect class="k-accent k-ring" x="2" y="24" width="62" height="28" rx="4"/>
+  <rect class="k-accent k-ring" x="79" y="24" width="42" height="28" rx="4"/>
+  <rect class="k-accent k-ring" x="136" y="24" width="42" height="28" rx="4"/>
+  <rect class="k-muted k-ring" x="193" y="24" width="42" height="28" rx="4"/>
+  <rect class="k-muted k-ring" x="250" y="24" width="46" height="28" rx="4"/>
+  <line class="k-ink" x1="65" y1="38" x2="77" y2="38"/>
+  <polyline class="k-ink" points="73,34 77,38 73,42"/>
+  <line class="k-ink" x1="122" y1="38" x2="134" y2="38"/>
+  <polyline class="k-ink" points="130,34 134,38 130,42"/>
+  <line class="k-muted" x1="179" y1="38" x2="191" y2="38"/>
+  <polyline class="k-muted" points="187,34 191,38 187,42"/>
+  <line class="k-muted" x1="236" y1="38" x2="248" y2="38"/>
+  <polyline class="k-muted" points="244,34 248,38 244,42"/>
+  <line class="k-muted k-dash" x1="193" y1="64" x2="296" y2="64"/>
+  <line class="k-muted" x1="193" y1="58" x2="193" y2="64"/>
+  <line class="k-muted" x1="296" y1="58" x2="296" y2="64"/>
+  <text class="k-label-accent" x="33" y="42" text-anchor="middle">構詞分析</text>
+  <text class="k-label-accent" x="100" y="42" text-anchor="middle">詞典</text>
+  <text class="k-label-accent" x="157" y="42" text-anchor="middle">例句</text>
+  <text class="k-label" x="214" y="42" text-anchor="middle">語法</text>
+  <text class="k-label" x="273" y="42" text-anchor="middle">思維鏈</text>
+  <text class="k-label" x="244" y="78" text-anchor="middle">不納入</text>
+</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">逐項加入詞典、例句等，留下最好的再加下一項；字母加密讓模型只能靠提示。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">29.04</span><span class="l">直接提示：專家評分（滿語→英語，0 至 100）</span></div><div class="stat"><span class="v">64.47</span><span class="l">加入詞典與相似例句後的專家評分</span></div><div class="stat"><span class="v">56.12</span><span class="l">同設定改用加密滿語的專家評分</span></div><div class="stat"><span class="v">p = 0.27</span><span class="l">加密版與原版的評分差異不顯著</span></div></div><span class="ft">範圍：Pei 等 2025，GPT-4o 滿譯英，3 位專家評 33 句</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">滿語之外，<br>結論仍待驗證</span><div class="time"><p><b>2025</b><span>上下文翻譯可用來產生合成平行資料</span></p><p><b>2025</b><span>作者指出只以滿語一種語言為例</span></p><p><b>2025</b><span>滿語詞素界線清楚，結論能否外推未明</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">只把滿語切成詞素並不夠，配上詞典說明，構詞分析才派得上用場。</span><span class="shift"><span>只切詞素</span><i aria-hidden="true"></i><b>對上詞典</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2025 發表 ｜ ACL 2025</span>
+<h1>理解低資源語言之上下文機器翻譯：以滿語為例的實證研究</h1>
+<p class="en">Understanding In-Context Machine Translation for Low-Resource Languages: A Case Study on Manchu</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">大語言模型並非通曉萬物的先知，在面對預訓練語料庫中幾近空白的極低資源語言時，它更像一位手握外掛參考書的高速解碼員。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>滿語是原生於中國東北、極度瀕危的<strong>通古斯語</strong>（Tungusic），曾為清代官方語言之一；因歷史地位重要，詞典、語法書與部分平行例句等語言學資源相當豐富，適合作為研究案例（§3, p. 8769）。本文系統檢驗上下文機器翻譯中各類資源——構詞分析、詞典、平行例句、語法書與思維鏈（CoT）提示——對翻譯品質的影響；並以字母替換「加密」滿語，區分大型語言模型對滿語的既有知識與其上下文學習能力（摘要；§1）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：各類資源的相對重要性不明</h2></div>
+<ul><li>田野語言學家已為全球六成以上語言留下語法描述或詞典，但這些語言在資料驅動的機器翻譯中仍屬低資源，因為缺乏平行語料（§1, p. 8767）。</li><li>先前研究把詞典、平行例句、語法書放進提示中，但<strong>各類資源的相對重要性並不清楚</strong>（摘要）；模型的表現也可能部分來自預訓練時見過該語言，而非上下文學習。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：逐一加入組件與字母替換加密</h2></div>
+<h3>1. 提示組件（§4, pp. 8769–8772）</h3>
+<p>以 <span class="m-in" data-tex="\pi(\cdot)"></span> 表示提示，<span class="m-in" data-tex="x"></span> 為待譯滿語句。由於窮舉所有組合在計算上不可行，作者<strong>依序加入</strong>各組件，每一步選出最佳變體作為下一步的新基線，順序為：構詞分析 <span class="m-in" data-tex="\mu(x)"></span> → 詞典 <span class="m-in" data-tex="D"></span> → 平行例句 <span class="m-in" data-tex="P"></span> → 語法 <span class="m-in" data-tex="G"></span> → CoT <span class="m-in" data-tex="C"></span>。</p>
+<ul><li><strong>構詞分析</strong>：滿語只用後綴，作者以規則式分析器從詞尾遞迴剝除後綴，直到剩下已知詞幹；有多種分析時全部放入提示，由模型選擇（§4.1）。</li><li><strong>詞典</strong>：<span class="m-in" data-tex="D_l"></span>（只有詞條）、<span class="m-in" data-tex="D_{l+s}"></span>（加後綴說明）、<span class="m-in" data-tex="D_{l+s+c}"></span>（再加搭配詞）。</li><li><strong>平行例句</strong>：<span class="m-in" data-tex="P_r"></span>（隨機 10 句）、<span class="m-in" data-tex="P_d"></span>（依詞典詞條取例句）、<span class="m-in" data-tex="P_{bm}"></span>（以 BM25 檢索 10 句）。</li><li><strong>語法</strong>：依句中語法特徵，從短版或長版語法書擷取相關段落（<span class="m-in" data-tex="G_s"></span>、<span class="m-in" data-tex="G_l"></span>、<span class="m-in" data-tex="G_{l+p}"></span>）。</li><li><strong>CoT</strong>：<span class="m-in" data-tex="C_a"></span>（先標注每個詞的語法語義特徵）、<span class="m-in" data-tex="C_{a+s}"></span>（再分析句法結構）。</li></ul>
+<p>最終流程為 <span class="m-in" data-tex="\pi(\mu(x), D_{l+s+c}, P_{bm})"></span>，語法與 CoT 未納入（§4.5）。</p>
+<h3>2. 字母替換加密（§5.2, p. 8773）</h3>
+<p>把滿語中每個母音換成序列 (a, e, i, o, u) 中的下一個（如 a → e、u → a），子音也依序列 (b, c, d, …, z) 替換，例如 <code>amban</code> 變成 <code>encep</code>。加密同時套用到輸入句、詞典與例句中的滿語，英文部分不變，使模型只能依賴提示中的資訊。</p>
+<h3>3. 生成設定（附錄 C, pp. 8781–8782）</h3>
+<p>Llama3 以溫度 0.9、top-p 0.9 生成；GPT-4o 與 DeepSeek-V3 使用 API 預設值（溫度 1.0、top-p 1.0）。</p>
+<pre>[滿語句 x] ──► 規則式構詞分析 μ(x) ──► 詞典（詞條＋後綴＋搭配）──┐
+                                └──► BM25 檢索 10 句平行例句 ─┴──► 提示 ──► LLM ──► 英文譯文
+（語法書與 CoT 經測試後不納入）</pre>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>可核實的原文證據</h2></div>
+<h3>逐步加入組件（GPT-4o；BLEU／chrF／SBERT；表 1–4, pp. 8771–8772）</h3>
+<table><thead><tr><th>設定</th><th>BLEU</th><th>chrF</th><th>SBERT</th></tr></thead><tbody><tr><td>直接提示 <span class="m-in" data-tex="\pi(x)"></span></td><td>3.44</td><td>21.86</td><td>34.21</td></tr><tr><td>＋構詞分析</td><td>3.10</td><td>21.68</td><td>33.49</td></tr><tr><td>＋詞典 <span class="m-in" data-tex="D_{l+s+c}"></span></td><td>7.55</td><td>32.71</td><td>61.07</td></tr><tr><td>＋BM25 例句 <span class="m-in" data-tex="P_{bm}"></span></td><td><strong>8.84</strong></td><td>33.72</td><td>61.35</td></tr><tr><td>＋語法 <span class="m-in" data-tex="G_{l+p}"></span></td><td>8.90</td><td>33.77</td><td>60.40</td></tr><tr><td>＋CoT <span class="m-in" data-tex="C_{a+s}"></span></td><td>8.49</td><td>33.43</td><td>59.01</td></tr></tbody></table>
+<ul><li><strong>顯著性</strong>（附錄 G，表 10, p. 8783；bootstrap 1,000 次）：加入詞典的提升在三項指標都顯著（p = 0.0009）；BM25 例句在 BLEU 與 chrF 顯著（p = 0.04、0.03），SBERT 不顯著；<strong>語法</strong>的微幅提升不顯著（BLEU、chrF 皆 p = 0.4），<strong>CoT</strong> 亦不顯著。原文的結論是「語法書幾乎沒有幫助」，CoT「使兩種變體都明顯下降」（§4.4–4.5）。</li><li><strong>不同模型</strong>（表 5）：最佳設定下 DeepSeek-V3 達 <strong>12.35 BLEU／65.64 SBERT</strong>，Llama3 由 1B 到 70B 依序提升（0.27 → 6.31 BLEU）。</li></ul>
+<h3>加密與人工評估（圖 2、表 7, pp. 8773–8775）</h3>
+<ul><li>所有模型在加密後分數都略降，顯示它們預訓練時見過一些滿語；DeepSeek-V3 下降最多，作者推測與其大量中文訓練資料有關。</li><li>三位滿語專家對 33 句進行直接評分（DA）：直接提示 29.04、加密版 56.12、原版 64.47；兩個增強版都顯著優於直接提示（p &lt; 0.001），加密版與原版的差異不顯著（p = 0.27）。作者據此認為模型「主要依賴上下文學習」，但並非完全不依賴既有知識。</li></ul>
+<h3>合成資料訓練 NMT（§6, p. 8775；圖 3）</h3>
+<p>以 DeepSeek-V3 的最佳設定，把 42,240 句滿語單語資料譯成英文，與 3,520 句真實平行語料一起微調 mT5-small（約 3 億參數）。只用真實資料時幾乎無法翻譯（0.15 BLEU）；合成資料為真實資料的 12 倍時達 7.84 BLEU／55.96 SBERT，接近 Llama3-70B 的上下文翻譯結果。</p>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>作者結論</strong>（§7）：高品質詞典與適當檢索的平行例句是最有影響的因素，語法與 CoT 看不出明顯幫助；模型雖有一些滿語知識，但翻譯主要依賴上下文學習；上下文翻譯可用來產生合成平行資料。</li><li><strong>作者自述的限制</strong>：只研究滿語一種語言；滿語是詞素界線清楚的黏著語，結論是否適用於其他類型的語言尚不清楚（Limitations）。另外，平行語料原為滿漢對照，英文是以 Google 翻譯從中文轉譯而來（§3）。</li><li>（Wiki 詮釋）BLEU 與 chrF 可能低估語義正確的譯文（表 6 的例句 BLEU 4.99、SBERT 62.42），作者因此另做人工評估。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<blockquote>以下為使用者個人研究之延伸思考（Wiki 詮釋），非原文主張。</blockquote>
+<h3>對個人碩士論文研究之映射與啟發</h3>
+<ol><li><strong>提示內容的優先順序</strong>：<ul><li>本文顯示詞典（含詞綴說明與搭配）與 BM25 相似例句的貢獻明顯，語法段落與 CoT 則沒有顯著幫助。在臺灣南島語的 RAG 提示中，可以優先投入詞典與例句檢索的品質；但臺灣南島語有前綴、中綴與重疊，構詞比只用後綴的滿語複雜，結論是否適用仍需實驗驗證（作者也提醒此限制）。</li></ul></li><li><strong>構詞分析本身不夠</strong>：<ul><li>只把句子切成詞素並不會提升分數（3.44 → 3.10），要搭配詞典說明才有效。構詞解析在 RAG 中的價值，在於把詞根與詞綴對上詞典條目。</li></ul></li><li><strong>評估方式</strong>：<ul><li>除了 BLEU、chrF，可加入語義相似度指標，並在可行時做小規模人工評估。</li></ul></li><li><strong>合成資料</strong>：<ul><li>第 6 節的做法（以上下文翻譯把單語資料轉為平行資料，再訓練小模型）也可用於臺灣南島語，但需注意合成資料的錯誤會傳遞到小模型。</li></ul></li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2025</b><span>發表・ACL 2025</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Renhao Pei<br>Yihong Liu<br>Peiqin Lin<br>François Yvon<br>Hinrich Schütze</span></div>
+    <div class="blk"><span class="lab">我的關注</span><span>報告題材</span><span class="note">研究語言：滿語</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (ACL 2025), 8767-8788</span><a href="https://doi.org/10.18653/v1/2025.acl-long.429">doi:10.18653/v1/2025.acl-long.429</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#自然語言處理</span><span class="chip">#計算語言學</span><span class="chip">#人工智慧</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>低資源神經機器翻譯與檢索增強生成</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">Pei, Liu, Lin, Yvon &amp; Schütze（LMU Munich、MCML、Sorbonne Université），<em>ACL 2025 (Long Papers)</em>, pp. 8767–8788。除特別註明外，第 4 節數字皆為 GPT-4o 在 337 句滿英測試集上的結果。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

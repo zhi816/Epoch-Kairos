@@ -1563,3 +1563,13 @@
   - Card 5 新論文模式：三筆取原文 §7 Limitations（p. 95）所列限制與建議（單一語言對與領域轉換、驗證新聞與衛生等非宗教文本、改用部分詞典以減少雜訊）。
   - Card 4 四個數字取自證據表（新約 36.17、舊約 27.11，表 1 p. 89；最終系統 35.21，表 2 p. 91；有效例句約 137，表 5 p. 100）。Card 6 未涉碩論內容。
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 35 項 PASS；無頭截圖目視，Card 2 第三列折行落單「低」字，已縮短。`lint_wiki.py` ERROR 0。
+
+## [2026-11-10 00:08] update | 新增滿語上下文翻譯之卡片文字檔 | #自然語言處理 #計算語言學 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第二批 C 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2025-manchu-in-context-mt-pei.md](cards/2025-manchu-in-context-mt-pei.md) 並建置 `web/prototypes/paper-v1/2025-manchu-in-context-mt-pei.html`。
+  - Card 3 無公式模式：以 paper-pdf-parser（PyMuPDF）抽取原文全文 22 頁，確認無編號公式，數學記號僅有表示提示組合之 π(·)（§4），非等式亦非模型、目標函數或計分式；示意圖為依序加入構詞分析、詞典、例句、語法、思維鏈，前三項保留、後兩項不納入（論文頁 Card 3 第 1 節）。
+  - Card 4 四個數字取自證據表第 23 列（人工評估 DA：直接提示 29.04、最佳設定 64.47、加密版 56.12，表 7 p. 8774；加密版與原版差異 p = 0.27，§5.3 p. 8775）。表 1 至 4 之 BLEU 等數值未逐一列於證據表，未採用。
+  - Card 5 新論文模式：三筆取論文頁 Card 5 所載之原文結論（§7, p. 8775）與 Limitations（pp. 8775–8776）。Card 6 取自論文頁 Card 6 第 2 點，未涉碩論內容。
+  - 檢查：`check_cards.py` ERROR 0、WARN 1（範圍欄「GPT-4o」為模型名稱，依 style.md 第二節第 5 條保留）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 35 項）。目視與操作檢查發現三處並修正：封面一句話壓到代表星（導語縮為一行）、示意圖「構詞分析」貼框（重排方框寬度）、Card 5 第一筆折行落單「資料」二字（改寫）。`lint_wiki.py` ERROR 0。
+  - 未決：原文註 1 寫明程式與資料公開於 GitHub，論文頁與證據表未記載，故未列入 Card 5；交由協調者決定是否補入論文頁。
