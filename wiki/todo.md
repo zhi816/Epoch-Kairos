@@ -33,7 +33,7 @@
 - **等待**：使用者確定首頁 `web/index.html`（TD-006）後再發布；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。發布前另請使用者確認：我的星系會公開其研究主題（臺灣南島語計算語言學、低資源機器翻譯）與 24 篇關注論文，旁人可推測碩論方向，是否可接受（2026-11-09 已提醒，使用者尚未回覆）。
 - **來源**：使用者指示（首頁確定後再發布）；2026-11-09 登記，Claude Code by Anthropic。
 
-### TD-006 | open | web | 實作首版 web/index.html（知識星圖首頁）
+### TD-006 | doing | web | 實作首版 web/index.html（知識星圖首頁）
 - **內容**：依 [DESIGN.md](../DESIGN.md) 第二章第 0 節實作首版首頁：星空背景、左欄（直排標題 Bodoni Moda、懸星索引 A、句末之星機關）、知識星圖、我的星系（網址錨點 `#my-constellation`）與手機版；群星檔案卡片牆與論文頁不做，本條亦不含發布（見 TD-005）。動工前先讀 DESIGN.md 第一至四章、第六至七章與第九章否決紀錄，再讀手機原型 `web/prototypes/mobile-v2-src/`：`data.py` 已有學科星光色、形狀路徑、標籤順序與星圖座標算法，`template.html` 已有手機版互動、隱藏機關與我的星系版面，可沿用。工作項目：
   1. 建置腳本置於根目錄 `tools/`，讀取 `wiki/papers/` 與 `wiki/concepts/` 之 Frontmatter 產生 `web/index.html`，頁面不手寫論文資料。群星預設亮星取論文頁在 Git 中首次提交日期最新者（例如 `git log --follow --diff-filter=A --format=%aI -- wiki/papers/<slug>.md`），不修改任何論文頁；「我的碩論」中心星寫在腳本設定，只顯示「我的碩論」與「進行中」，不放題目與內容。
   2. 首頁樣式與程式為 `web/assets/css/starmap.css`、`web/assets/js/starmap.js`；同步修改 AGENTS.md 第四章目錄樹、第五章展示層描述、第六章 Ingest 第 4 步（「在時間線插入卡片」改為重跑建置腳本）與 README.md 之首頁描述，記 `rule` 日誌。
@@ -45,4 +45,5 @@
   * 右側為純黑星圖面板（髮絲細框、四角 `+` 記號）：左上 `CONSTELLATION ｜ 知識星圖`；中央為十字光芒之 `KAIROS` 奇點與淡同心圓星盤；學科中心為形狀圖示、學科名與篇數，周圍有學科色星雲；標籤以「#標籤 N」小字標示；論文為發光白點，諾貝爾獎外加虛線光環；連線為學科色細曲線；左下一行圖例（學科形狀、標籤、論文、諾貝爾獎、概念頁），右下統計「N 顆星・N 個標籤・N 個概念・N 條連線」。
   * 截圖為舊資料（五學科、26 顆星，含 9 個立案條目）。正式版依 Frontmatter 為六學科，群星 17 顆（AI 6、物理 5、生醫 3、經濟 3；化學與人文為 0，比照 DESIGN.md 第二章第 5 節排在最後並調暗），我的關注 24 顆，概念頁 10 個。
 - **完成條件**：執行建置腳本可重現 `web/index.html`；桌面與手機（375px 寬）皆無破版或水平捲動；可用鍵盤操作、動畫受 `prefers-reduced-motion` 控制；`lint_wiki.py` 無 ERROR；記 `design` 與 `rule` 日誌，刪除本條並於日誌寫明「完成 TD-006」。
+- **負責**：Claude Code by Anthropic（Claude Opus 5.5），2026-11-09 接手。
 - **來源**：使用者指示（2026-11-09，討論後交由另一個 Claude Code 工作階段實作）；2026-11-09 登記並改為 open，Claude Code by Anthropic。
