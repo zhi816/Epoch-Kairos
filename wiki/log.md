@@ -660,3 +660,18 @@
   - **[wiki/papers/2021-seediq-chinese-mt-you.md](papers/2021-seediq-chinese-mt-you.md)**：逐項回原文（摘要、§1.3.1、第三至六章、表 8–15）重寫 Card 1–6 與 hook，修正 EK-062（前綴公式改為原文式 (2)(3)；分清預訓練與自訓練詞嵌入），並修正未登記之問題：摘要、結論與表 8 之解析數字互不一致，改以表 8 為準並加註；補列表 11 完整結果；刪除「首創」「最行之有效」「100% 精確」等過度表述，Card 6 標為個人研究詮釋；補列構詞解析之會議版本 ROCLING 2020。新增證據表 [wiki/evidence/2021-seediq-chinese-mt-you.md](evidence/2021-seediq-chinese-mt-you.md)，`verification` 改為 `verified`。
   - **EK-061**：7 篇碩士論文頁刪除失效之臨時查詢網址 `doi_url`（國家圖書館永久連結未能取得，lint 對此僅列 WARN）。
   - **未處理**：其餘 6 篇碩士論文頁之 EK-063 至 EK-068 仍為 open，續修中。
+
+## [2026-11-09 09:18] git | 統一標準化 raw/ 下 10 篇里程碑原始文獻檔名 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：應使用者指示，依學術里程碑主題統一規範，在私有倉庫 `Mine-RAW` 中以 `git mv` 批次更名 10 篇由 ChatGPT 前期移入之里程碑原始文獻 PDF，去除零散命名，對齊 Epoch-Kairos 標準化格式；`Mine-RAW` 提交 `5d6dc17` 並推送至 `origin/main` 完畢。更名清單：
+  - `1985-martinis-quantum-tunneling.pdf` → `1985-macroscopic-quantum-tunneling.pdf`
+  - `1987-drucker-glp1.pdf` → `1987-glp1-receptor-agonist.pdf`
+  - `1993-lee-lin4-microrna.pdf` → `1993-microrna-lin4-ambros.pdf`
+  - `1993-wightman-lin14-microrna.pdf` → `1993-microrna-lin14-ruvkun.pdf`
+  - `1995-sakaguchi-treg.pdf` → `1995-treg-immune-tolerance.pdf`
+  - `1999-li-yaghi-mof.pdf` → `1999-metal-organic-frameworks-mof5.pdf`
+  - `2001-brunkow-foxp3.pdf` → `2001-foxp3-scurfin.pdf`
+  - `2003-nagel-channelrhodopsin2.pdf` → `2003-channelrhodopsin2.pdf`
+  - `2025-li-qt12-rice-thermotolerance.pdf` → `2025-rice-qt12-thermotolerance.pdf`
+  - `2025-musunuru-in-vivo-base-editing.pdf` → `2025-in-vivo-base-editing.pdf`
