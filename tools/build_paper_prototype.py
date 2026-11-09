@@ -425,11 +425,11 @@ def side(fm, concepts, scope=''):
     keys = fm.get('key_papers') or []
     if keys:
         items = []
-        for k in keys:
+        for k, label in zip(keys, key_labels(keys)):
             m = re.search(r'(https?://\S+)', k)
-            label = re.sub(r'\s*https?://\S+', '', k).strip()
-            label = re.split(r'\)\s', label, maxsplit=1)[0] + ')' if ')' in label else label
-            items.append('<a href="%s">%s</a>' % (esc(m.group(1)), esc(label)) if m else '<span>%s</span>' % esc(label))
+            full = re.sub(r'\s*https?://\S+', '', k).strip()
+            items.append('<a href="%s" title="%s">%s</a>' % (esc(m.group(1)), esc(full), esc(label)) if m
+                         else '<span title="%s">%s</span>' % (esc(full), esc(label)))
         parts.append('<div class="blk"><span class="lab">奠基論文</span>%s</div>' % ''.join(items))
     if scope:
         # 論文頁之「本頁範圍說明」：樣稿長文開頭不放，移到此處保留（說明本頁與獎項、奠基論文之關係）
@@ -438,6 +438,42 @@ def side(fm, concepts, scope=''):
     parts.append('<div class="blk"><span class="lab">核實狀態</span><span class="ok">%s%s</span></div>' % (
         '<i aria-hidden="true"></i>' if v == 'verified' else '', esc(VERIFY_TEXT.get(v, '查核狀態：%s（顯示文字待定）' % v))))
     return '\n'.join('    ' + p for p in parts)
+
+
+INITIALS = re.compile(r'^(?:[^\W\d_]\.[\s-]?)+$')   # 名字縮寫：J. J.、W.-Y.、Ł.
+
+
+def key_labels(keys):
+    """資訊欄奠基論文之顯示文字：「姓氏（年份）」，如「Hopfield（1982）」「Ackley、Hinton 與 Sejnowski（1985）」「Nagel 等（2003）」
+    （DESIGN.md 第五章第 1 節，2026-11-09 定案）。不顯示期刊：key_papers 為自由格式，期刊名無法可靠擷取，寧缺勿錯；
+    完整書目放在滑過提示。作者寫法依 paper-card-writer 之 style.md 第二節第 3 條。同頁同名同年者加 a、b。
+    擷取不到年份或姓氏時，退回顯示完整書目。"""
+    out = []
+    for k in keys:
+        text = re.sub(r'\s*https?://\S+', '', k).strip()
+        m = re.search(r'\((\d{4})\)', text)
+        authors = re.sub(r'\([^)]*\)', '', text[:m.start()]) if m else ''
+        etal = bool(re.search(r'\bet al\.?', authors))
+        authors = re.sub(r'\bet al\.?', '', authors).replace('&', ',')
+        names = [p.strip() for p in authors.split(',') if p.strip() and not INITIALS.match(p.strip())]
+        if not (m and names):
+            out.append([text, None])
+            continue
+        if etal or len(names) >= 4:
+            who = names[0] + ' 等'
+        elif len(names) == 3:
+            who = '%s、%s 與 %s' % tuple(names)
+        elif len(names) == 2:
+            who = '%s 與 %s' % tuple(names)
+        else:
+            who = names[0]
+        out.append([who, m.group(1)])
+    orig = [tuple(x) for x in out]
+    for i, (who, year) in enumerate(orig):
+        same = [j for j, wy in enumerate(orig) if year and wy == (who, year)]
+        if len(same) > 1:
+            out[i][1] = year + 'abcdefgh'[same.index(i)]
+    return [who if year is None else '%s（%s）' % (who, year) for who, year in out]
 
 
 # ---------------------------------------------------------------- 主程式

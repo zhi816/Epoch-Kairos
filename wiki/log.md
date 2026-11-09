@@ -1441,3 +1441,8 @@
   - [wiki/papers/1992-creative-destruction-aghion.md](papers/1992-creative-destruction-aghion.md)：Card 4 之 two-cycle 位置由「§3.A, pp. 332–333」更正為「一般存在條件 §3.A, p. 333；Cobb–Douglas 特例 p. 334」，並將「市場力量參數 $\alpha$」改為「競爭程度參數 $\alpha$」，補註 $1-\alpha$ 為 Lerner 壟斷力、$\alpha$ 越小市場力量越大。頁面更正已隨提交 b2528e0 推送，本條補記日誌。
   - [wiki/log.md](log.md)：依使用者指示，將 [2026-11-09 21:15] fix 條目標題第三段之 `#經濟學` 改為白名單內之 `#宏觀經濟學`；Codex by OpenAI 該筆其餘內容未動。此為修改他人已提交之條目，經使用者明示授權；該標籤原不在第八章白名單內，為 `lint_wiki.py` 唯一 ERROR 之來源。
   - 驗證：`lint_wiki.py` ERROR 0。
+
+## [2026-11-09 21:32] design | 論文頁資訊欄奠基論文改顯示姓氏與年份 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者對 DESIGN.md 第八章第 17 項無偏好，交由本代理決定。定案：資訊欄奠基論文顯示「姓氏（年份）」（如「Hopfield（1982）」「Ackley、Hinton 與 Sejnowski（1985）」「Nagel 等（2003）」），作者寫法依 paper-card-writer 之 `style.md` 第二節第 3 條，同頁同名同年加 a、b，完整書目放滑過提示、點擊連到 DOI；不顯示樣稿中的期刊名，因 `key_papers` 為自由格式、期刊名無法可靠擷取。`tools/build_paper_prototype.py` 新增 `key_labels()`，以全庫 51 筆 `key_papers` 測試皆正確（冰立方兩筆為 2013a、2013b），擷取不到年份時退回顯示完整書目；重建原型，僅 Hopfield 頁資訊欄改變，兩頁建置自我檢查 ERROR 0（本次未重跑瀏覽器驗證，改動不涉及卡片）。[DESIGN.md](../DESIGN.md) 第五章第 1 節改為已定、第八章第 17 項與第十章補紀錄；paper-card-writer 之 `references/paper-page.md` 第二節同步。`lint_wiki.py` ERROR 0。
