@@ -46,16 +46,18 @@
 | 反白文字 | `--text-inverted` | 置於亮色底之文字 | `#0B0C0E` |
 
 ### 2. 跨學科專屬色碼微光系統（源自 Shopify Editions）
-各學科分配專屬色碼與微光（Glow），用於卡片標籤、公式光暈與跑道時間線。Frontmatter 之 `domain` 欄位即取下表之鍵值：
+各學科分配專屬色碼與微光（Glow），用於首頁知識星圖、卡片標籤與公式光暈。Frontmatter 之 `domain` 欄位即取下表之鍵值：
 
-| `domain` 鍵值 | 學科範疇 | 色彩意象 | CSS 變數 | 參考色值（以 `theme.css` 為準） |
-|---|---|---|---|---|
-| `bio` | 生醫與生命科技 | 冷翠螢光綠 | `--color-bio` / `--glow-bio` / `--border-bio` | `#00E599` / `rgba(0, 229, 153, 0.16)` / `rgba(0, 229, 153, 0.35)` |
-| `ai` | 人工智慧、計算與數學 | 霓虹電能青 | `--color-ai` / `--glow-ai` / `--border-ai` | `#00F0FF` / `rgba(0, 240, 255, 0.16)` / `rgba(0, 240, 255, 0.35)` |
-| `physics` | 物理、天文與地球科學 | 深邃宇宙紫 | `--color-physics` / `--glow-physics` / `--border-physics` | `#8B5CF6` / `rgba(139, 92, 246, 0.20)` / `rgba(139, 92, 246, 0.40)` |
-| `econ` | 宏觀經濟與治理 | 香檳琥珀金 | `--color-econ` / `--glow-econ` / `--border-econ` | `#FFB800` / `rgba(255, 184, 0, 0.16)` / `rgba(255, 184, 0, 0.35)` |
-| `chem` | 化學、材料與能源 | 等離子珊瑚橙 | `--color-chem` / `--glow-chem` / `--border-chem` | `#FF5722` / `rgba(255, 87, 34, 0.16)` / `rgba(255, 87, 34, 0.35)` |
-| `human` | 語言、心理與社會 | 霓虹玫瑰粉 | `--color-human` / `--glow-human` / `--border-human` | `#FF4FD8` / `rgba(255, 79, 216, 0.16)` / `rgba(255, 79, 216, 0.35)` |
+> **2026-11-09 起改用柔和「星光色」**（經使用者確認，見 [`DESIGN.md`](./DESIGN.md) 第七章）：`--color-*`、`--glow-*`、`--border-*` 取星光色；原霓虹色保留於 `theme.css` 之備用變數 `--neon-color-*`、`--neon-glow-*`、`--neon-border-*`，切回時將前者改指向後者即可。`human` 之星光色與十字形為暫定。
+
+| `domain` 鍵值 | 學科範疇 | 色彩意象 | CSS 變數 | 參考色值：星光色，現行（以 `theme.css` 為準） | 霓虹色（備用 `--neon-*`） |
+|---|---|---|---|---|---|
+| `bio` | 生醫與生命科技 | 冷翠綠 | `--color-bio` / `--glow-bio` / `--border-bio` | `#9BDCB1` / `rgba(155, 220, 177, 0.16)` / `rgba(155, 220, 177, 0.35)` | `#00E599` / `rgba(0, 229, 153, 0.16)` / `rgba(0, 229, 153, 0.35)` |
+| `ai` | 人工智慧、計算與數學 | 電能青 | `--color-ai` / `--glow-ai` / `--border-ai` | `#8FD5FD` / `rgba(143, 213, 253, 0.16)` / `rgba(143, 213, 253, 0.35)` | `#00F0FF` / `rgba(0, 240, 255, 0.16)` / `rgba(0, 240, 255, 0.35)` |
+| `physics` | 物理、天文與地球科學 | 宇宙紫 | `--color-physics` / `--glow-physics` / `--border-physics` | `#D3BEFD` / `rgba(211, 190, 253, 0.20)` / `rgba(211, 190, 253, 0.40)` | `#8B5CF6` / `rgba(139, 92, 246, 0.20)` / `rgba(139, 92, 246, 0.40)` |
+| `econ` | 宏觀經濟與治理 | 香檳金 | `--color-econ` / `--glow-econ` / `--border-econ` | `#E6C686` / `rgba(230, 198, 134, 0.16)` / `rgba(230, 198, 134, 0.35)` | `#FFB800` / `rgba(255, 184, 0, 0.16)` / `rgba(255, 184, 0, 0.35)` |
+| `chem` | 化學、材料與能源 | 珊瑚橙 | `--color-chem` / `--glow-chem` / `--border-chem` | `#FFB6A3` / `rgba(255, 182, 163, 0.16)` / `rgba(255, 182, 163, 0.35)` | `#FF5722` / `rgba(255, 87, 34, 0.16)` / `rgba(255, 87, 34, 0.35)` |
+| `human` | 語言、心理與社會 | 玫瑰粉 | `--color-human` / `--glow-human` / `--border-human` | `#F2B3D6` / `rgba(242, 179, 214, 0.16)` / `rgba(242, 179, 214, 0.35)` | `#FF4FD8` / `rgba(255, 79, 216, 0.16)` / `rgba(255, 79, 216, 0.35)` |
 
 > **學科邊界**：`ai` 含純數學與計算理論；`physics` 含地球科學與氣候物理（生態與生物多樣性歸 `bio`、氣候政策歸 `econ`、能源技術歸 `chem`）；`human` 收語言學、心理與行為、社會與文化研究（研究大腦機制之神經科學仍歸 `bio`，經濟學、政治與治理仍歸 `econ`）。條目同時涉及多個學科時，`domain` 取其主要研究方法與貢獻所在，其餘以 `domain_tags` 跨色系標註。
 
@@ -92,6 +94,9 @@ Epoch-Kairos/
 ├── DESIGN.md                  # 美術方向紀錄（已定、待決與否決之視覺決策）
 ├── .agents/skills/            # 專屬 Skill 正本（見第六章開頭之 Skill 一覽）
 ├── .claude/skills/            # 供 Claude Code 載入之轉介檔，內容指向 .agents/skills/ 正本
+├── tools/                     # 建置腳本（不隨 GitHub Pages 公開）
+│   ├── build_home.py          # 自 wiki/ Frontmatter 產生 web/index.html（知識星圖首頁）
+│   └── home_template.html     # 首頁 HTML 範本（資料由 build_home.py 內嵌）
 │
 ├── raw/                       # 【第一層：Raw Sources】原始資料層（不可變，Immutable）
 │   ├── my-focus/              # 【使用者專屬關注區】存放個人精選研究、私人筆記與核心關注資料
@@ -107,15 +112,16 @@ Epoch-Kairos/
 │   └── evidence/              # 證據表（每頁一檔，記錄主張與第一手來源之對應，見第七章第 4 節）
 │
 └── web/                       # 【展示層：Web Presentation】供 GitHub Pages 部署之成果
-    ├── index.html             # 人類重大突破時間線（Timeline）總覽頁（含「我的關注」一鍵切換）
+    ├── index.html             # 知識星圖首頁（由 tools/build_home.py 產生，勿手改；含隱藏機關進入「我的星系」#my-constellation）
     ├── assets/                # 前端靜態資源（CSS、JS、字體）
     │   ├── css/
-    │   │   ├── theme.css      # Deimos 與 Shopify 配色體系與全域變數
-    │   │   ├── timeline.css   # 時間線與首頁樣式
-    │   │   └── cards.css      # 3:4 知識圖卡與學術長文雙欄樣式
+    │   │   ├── theme.css      # 配色體系與全域變數（色碼唯一真實來源）
+    │   │   ├── starmap.css    # 首頁樣式：星空、左欄懸星索引、知識星圖與手機版
+    │   │   └── cards.css      # 3:4 知識圖卡與學術長文雙欄樣式（尚未建立）
     │   └── js/
-    │       ├── timeline.js    # 篩選、過濾與時間線動畫
-    │       └── cards.js       # 3:4 卡片左右切換與 KaTeX 連動引擎
+    │       ├── starmap.js     # 首頁互動：星圖篩選、說明框、我的星系與星空背景
+    │       └── cards.js       # 3:4 卡片左右切換與 KaTeX 連動引擎（尚未建立）
+    ├── prototypes/            # 樣稿與手機原型（非正式頁面）
     └── papers/                # 每篇論文之專屬雙欄互動頁（HTML 格式）
 ```
 
@@ -141,7 +147,8 @@ Epoch-Kairos/
    * **更新機制**：由使用者與 AI 共同隨需求演進與調整。
 
 4. **展示層：Web Presentation (`web/`)**
-   * **性質**：將 `wiki/` 的知識編譯為可在 GitHub Pages 上流暢瀏覽的跑道時間線與 3:4 豎版知識圖卡＋深度學術長文。
+   * **性質**：將 `wiki/` 的知識編譯為可在 GitHub Pages 上流暢瀏覽的知識星圖首頁與 3:4 豎版知識圖卡＋深度學術長文。
+   * **首頁由資料產生**：`web/index.html` 一律由 `python tools/build_home.py` 讀取 `wiki/papers/`、`wiki/concepts/` 之 Frontmatter 產生，頁面不手寫任何論文資料；版面改 `tools/home_template.html`，樣式與互動改 `web/assets/css/starmap.css`、`web/assets/js/starmap.js`，不得直接修改 `web/index.html`。`python tools/build_home.py --check` 可確認現有首頁與資料一致。美術方向見 [`DESIGN.md`](./DESIGN.md) 第二至四章。
 
 ---
 
@@ -170,7 +177,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 3. **萃取/關聯概念**：檢查是否觸及跨領域概念（如同時涉及 AI 與結構生物學），同步更新或建立 `wiki/concepts/<concept>.md`（Frontmatter 依第七章第 2 節），並將本篇檔名登記於該概念頁之 `papers` 欄位。
 4. **編譯網頁成果**：
    * 在 `web/papers/YYYY-<slug>/index.html` 產生對應之雙欄互動頁（左側 3:4 知識圖卡，右側 KaTeX 長文）。
-   * 在 `web/index.html` 的時間線上插入卡片，正確標註領域標籤與 `data-focus` 屬性。
+   * 執行 `python tools/build_home.py` 重建首頁 `web/index.html`，新論文即依 Frontmatter（`domain`、`domain_tags`、`concepts`、`card_line`、雙年份與 `my_focus` 等欄位）出現在知識星圖或我的星系；不得手改 `web/index.html`。
 5. **更新索引與日誌**：
    * 在 `wiki/index.md` 登記該論文之摘要與連結。
    * 寫日誌前執行 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`，錯誤（ERROR）須全數排除後才可提交。
@@ -255,7 +262,7 @@ doi_url: "https://doi.org/10.1038/nn1525"
 ```
 
 > **雙年份呈現原則**：
-> 在前台時間線總覽與每篇論文的封面卡片上，必須同時清晰並列標記 **「2005 發表 ｜ 2026 諾貝爾獎」**（以光遺傳學為例），兼顧科學史發表真實性與當代獲獎影響力。
+> 在前台首頁（知識星圖之說明框）與每篇論文的封面卡片上，必須同時清晰並列標記 **「2005 發表 ｜ 2026 諾貝爾獎」**（以光遺傳學為例），兼顧科學史發表真實性與當代獲獎影響力。
 
 > **單篇頁容納多篇工作之原則**：
 > 諾貝爾獎常表彰橫跨數年的一系列論文。此時以最具代表性之單篇為主軸建立頁面，其餘奠基論文一律列入 `key_papers`，並於頁首加註本頁範圍說明，嚴禁將多篇成果混記為單篇之貢獻。
@@ -400,7 +407,7 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
 標籤採**兩層制**，以兼顧色彩一致性與檢索彈性：
 
 1. **`domain`（單選，必填）**：決定該條目在前台的配色，僅能取 `bio`、`ai`、`physics`、`econ`、`chem`、`human` 六值之一（見第二章對應表與學科邊界說明）。
-2. **`domain_tags`（多選，必填）**：供時間線篩選之細分標籤，一律取自下方白名單。
+2. **`domain_tags`（多選，必填）**：供知識星圖連線與篩選之細分標籤，一律取自下方白名單。
 
 ### 標籤白名單與色系歸屬
 

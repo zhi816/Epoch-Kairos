@@ -1,13 +1,16 @@
 /**
  * Epoch-Kairos Design Tokens (theme.css)
- * 
+ *
  * Design Inspirations:
  * - Deimos Designer Encyclopedia (https://deimos.evilrabbit.com/)
  *   Editorial minimalism, deep obsidian canvas, hairline borders, serif hierarchy.
  * - Shopify Editions Fall '26 - Expo Mode (https://www.shopify.com/editions/fall2026)
  *   Color-coded cross-disciplinary glow sections, runway timeline.
- * 
+ *
  * Strict Constraint: Emoji-Free design. All badges and indicators use text/geometry.
+ *
+ * 2026-11-09：學科色改用柔和「星光色」（DESIGN.md 第七章），原霓虹值保留為 --neon-* 備用變數，
+ * 切回時把 --color-* / --glow-* / --border-* 改指向 --neon-* 即可。
  */
 
 :root {
@@ -28,41 +31,63 @@
   --border-strong: rgba(255, 255, 255, 0.16);
   --border-hover: rgba(255, 255, 255, 0.28);
 
-  /* Typography Families */
-  --font-serif: "Newsreader", "Geist Serif", "Playfair Display", "Georgia", "Songti TC", serif;
-  --font-sans: "Geist Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", "ui-monospace", monospace;
+  /* Typography Families（皆由 Google Fonts 載入，見 DESIGN.md 第六章） */
+  --font-serif: "Newsreader", "Noto Serif TC", "Songti TC", "Georgia", serif;
+  --font-serif-zh: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --font-sans: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, Menlo, monospace;
+  --font-display: "Bodoni Moda", "Bodoni 72", "Didot", "Noto Serif TC", serif; /* 僅用於標題「Epoch Kairos」 */
 
-  /* Discipline Accent Glows (Shopify Color-Coded Sections) */
+  /* Discipline Accent Glows：星光色（現行） */
   /* 1. Biotech & Medicine */
-  --color-bio: #00E599;
-  --glow-bio: rgba(0, 229, 153, 0.16);
-  --border-bio: rgba(0, 229, 153, 0.35);
+  --color-bio: #9BDCB1;
+  --glow-bio: rgba(155, 220, 177, 0.16);
+  --border-bio: rgba(155, 220, 177, 0.35);
 
   /* 2. AI, Computation & Mathematics */
-  --color-ai: #00F0FF;
-  --glow-ai: rgba(0, 240, 255, 0.16);
-  --border-ai: rgba(0, 240, 255, 0.35);
+  --color-ai: #8FD5FD;
+  --glow-ai: rgba(143, 213, 253, 0.16);
+  --border-ai: rgba(143, 213, 253, 0.35);
 
   /* 3. Physics, Astronomy & Earth Science */
-  --color-physics: #8B5CF6;
-  --glow-physics: rgba(139, 92, 246, 0.20);
-  --border-physics: rgba(139, 92, 246, 0.40);
+  --color-physics: #D3BEFD;
+  --glow-physics: rgba(211, 190, 253, 0.20);
+  --border-physics: rgba(211, 190, 253, 0.40);
 
   /* 4. Macroeconomics & Governance */
-  --color-econ: #FFB800;
-  --glow-econ: rgba(255, 184, 0, 0.16);
-  --border-econ: rgba(255, 184, 0, 0.35);
+  --color-econ: #E6C686;
+  --glow-econ: rgba(230, 198, 134, 0.16);
+  --border-econ: rgba(230, 198, 134, 0.35);
 
   /* 5. Chemistry, Materials & Energy */
-  --color-chem: #FF5722;
-  --glow-chem: rgba(255, 87, 34, 0.16);
-  --border-chem: rgba(255, 87, 34, 0.35);
+  --color-chem: #FFB6A3;
+  --glow-chem: rgba(255, 182, 163, 0.16);
+  --border-chem: rgba(255, 182, 163, 0.35);
 
-  /* 6. Language, Mind & Society */
-  --color-human: #FF4FD8;
-  --glow-human: rgba(255, 79, 216, 0.16);
-  --border-human: rgba(255, 79, 216, 0.35);
+  /* 6. Language, Mind & Society（暫定，見 DESIGN.md 第七章） */
+  --color-human: #F2B3D6;
+  --glow-human: rgba(242, 179, 214, 0.16);
+  --border-human: rgba(242, 179, 214, 0.35);
+
+  /* Discipline Accent Glows：霓虹色（備用，未使用） */
+  --neon-color-bio: #00E599;
+  --neon-glow-bio: rgba(0, 229, 153, 0.16);
+  --neon-border-bio: rgba(0, 229, 153, 0.35);
+  --neon-color-ai: #00F0FF;
+  --neon-glow-ai: rgba(0, 240, 255, 0.16);
+  --neon-border-ai: rgba(0, 240, 255, 0.35);
+  --neon-color-physics: #8B5CF6;
+  --neon-glow-physics: rgba(139, 92, 246, 0.20);
+  --neon-border-physics: rgba(139, 92, 246, 0.40);
+  --neon-color-econ: #FFB800;
+  --neon-glow-econ: rgba(255, 184, 0, 0.16);
+  --neon-border-econ: rgba(255, 184, 0, 0.35);
+  --neon-color-chem: #FF5722;
+  --neon-glow-chem: rgba(255, 87, 34, 0.16);
+  --neon-border-chem: rgba(255, 87, 34, 0.35);
+  --neon-color-human: #FF4FD8;
+  --neon-glow-human: rgba(255, 79, 216, 0.16);
+  --neon-border-human: rgba(255, 79, 216, 0.35);
 
   /* Global Transitions & Radius */
   --radius-card: 16px;
