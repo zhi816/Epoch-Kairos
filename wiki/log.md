@@ -927,3 +927,15 @@
   - Frontmatter 更新正式 Nature 出處（Volume 645, pp. 633–638, 2025）與官方 DOI（10.1038/s41586-025-09422-z）。
   - 新增證據表 [wiki/evidence/2025-deepseek-r1.md](evidence/2025-deepseek-r1.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-037 與 EK-038 標記為 `fixed` 並追加處理紀錄。
+
+
+## [2026-11-09 10:57] fix | 神經元粒線體轉移 2025 依原文核實定序方法與數理假說並建立證據表 | #神經科學 #生物科技 #分子生物
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 Nature 2025 原文（*Nature* 644:252-262）全面核實修訂 [wiki/papers/2025-nerve-mito-cancer.md](papers/2025-nerve-mito-cancer.md)。
+  - **EK-039**：Card 4 對照 §Mitochondrial genome tracking 精確更正測序方法為共培養後經 FACS 螢光活化分選純化人類癌細胞，隨後進行體外 Nanopore 長讀長定序與物種特異性 qPCR，糾正原先誤植為「單細胞長讀長定序」之錯誤。
+  - **EK-040**：Card 3 質子動力勢、OCR 線性增益與轉移富集模型前新增數理說明，明確界定其為基於 Mitchell 化學滲透假說與群體選擇概率建立之教學唯象推導（Didactic Models），非原文直接擬合之實驗方程。
+  - **EK-041**：Card 6 將「癌細胞偽裝受損組織誘使神經救濟」明確標註為【演化假說與機制隱喻】，強調本文已嚴格證實轉移與富集現象，但觸發神經供能之上游精確分子信號仍為假說；Card 5 將靶向隧道奈米管之聯合療法明確標記為轉化醫學前景展望，非本文臨床已驗證之療法。
+  - 新增證據表 [wiki/evidence/2025-nerve-mito-cancer.md](evidence/2025-nerve-mito-cancer.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-039、EK-040 與 EK-041 標記為 `fixed` 並追加處理紀錄。
