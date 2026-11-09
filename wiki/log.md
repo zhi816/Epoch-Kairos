@@ -1479,3 +1479,12 @@
   - 檢查：`check_cards.py` ERROR 0、WARN 0（初稿缺口名稱「工具」不在論文頁之 WARN 已改為「探測器」）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 1440 x 900 與 375 x 812 共 37 項 PASS。
   - 複核修正：Card 4 原用「1.14 PeV」「99.999%」，桌面折行與超出右欄，改用 6.1 與 2；導語原寫「微中子撞上冰時發出藍紫光」與「來自太陽系外」，前者發光者實為次級帶電粒子、後者強於原文（原文為排除純大氣背景），改為「撞擊後產生的微光」「不全來自大氣」，並縮短以免星窗被擠小壓到代表星；Card 2 結語「穿得過一切」誇大，改為「不轉彎、不被吸收」。
   - 驗證限制：瀏覽器窗格未繪製畫面，目視檢查改以 Chrome 無頭截圖逐張檢視；桌面切卡時長文平滑捲動無法實測（模板未改，先前已實測）。
+
+## [2026-11-09 23:04] update | 新增比較發展的殖民起源之卡片文字檔 | #制度經濟學 #宏觀經濟學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第一批 B 組第 1 篇完成（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2001-colonial-origins-acemoglu.md](cards/2001-colonial-origins-acemoglu.md) 並建置 `web/prototypes/paper-v1/2001-colonial-origins-acemoglu.html`。
+  - 來源：導語改寫自 hook 與論文頁 Card 1；Card 2 取論文頁 Card 2 反向因果、地理決定論兩點與「OLS 只是一紙相關性」；Card 3 公式取論文頁結構方程第一式（與封存 NBER WP 7771 第 3.2 節式 (1) 相同），說明取同節 $\alpha$ 定義與 Card 3 第 3 點排他性限制，示意圖為流程圖（死亡率、定居、早期制度、當代制度、所得，打叉虛線表示假設死亡率不直接影響所得）；Card 4 四個數字取自證據表 Card 4 第 1 至 3 列（0.94、0.52、−0.61 為 Table 4 p. 1386；2.24 與至多約 7 倍為 §IV.A p. 1387）；Card 5 兩筆後續研究取自論文頁 Card 4 後續證據（Acemoglu 等 2002 QJE、Dell 2010 Econometrica），獎項取自 `honor`；Card 6 取論文頁 Card 6 第 1 點。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（058518f 版）1440 x 900 與 375 x 812 結果 PASS。
+  - 複核修正：Card 3 初稿用因果鏈式，桌面公式寬 448px 超出框寬 390px，改用結構方程第一式；Card 2 名稱「地理決定論」5 字在兩種尺寸皆折行，改用論文頁 Card 1 之「地理環境」。
+  - 未決事項：手機 375 x 812 點「下一張」箭頭後，`.stage`（overflow-x hidden）被捲動 96px，卡片列左移、卡片局部移出畫面，Hopfield 範例頁同樣可重現；原因為畫面外卡片內 KaTeX 隱藏之 MathML 把 `.stage` 撐寬至 899px。屬模板問題，依第一批協調規則交由協調者登記，未修改模板與 `wiki/todo.md`。滑鼠滾輪與拖曳無法在模擬視窗捲動長文與卡片列，該兩項同步改以程式捲動驗證。

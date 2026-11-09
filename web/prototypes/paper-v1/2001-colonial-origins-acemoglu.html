@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>比較發展的殖民起源｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:17cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#E6C686;--deep:#53401C;--win:#24231F;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.08</span><span>經濟</span></div><div class="win"><i style="left:79.2%;top:45.7%;width:1.5px;height:1.5px;opacity:0.51"></i><i style="left:48.3%;top:17.2%;width:1px;height:1px;opacity:0.66"></i><i style="left:52.2%;top:35.5%;width:1px;height:1px;opacity:0.70"></i><i style="left:43.0%;top:37.7%;width:1.5px;height:1.5px;opacity:0.84"></i><i style="left:87.3%;top:20.1%;width:1px;height:1px;opacity:0.71"></i><i style="left:32.3%;top:41.8%;width:1px;height:1px;opacity:0.31"></i><i style="left:77.7%;top:9.3%;width:1px;height:1px;opacity:0.65"></i><i style="left:17.1%;top:40.9%;width:1px;height:1px;opacity:0.33"></i><i style="left:39.3%;top:32.0%;width:1px;height:1px;opacity:0.50"></i><i style="left:74.7%;top:25.4%;width:1px;height:1px;opacity:0.52"></i><i style="left:93.8%;top:24.8%;width:1px;height:1px;opacity:0.71"></i><i style="left:40.2%;top:6.5%;width:1.5px;height:1.5px;opacity:0.60"></i><i style="left:84.0%;top:33.3%;width:1px;height:1px;opacity:0.84"></i><i style="left:62.6%;top:35.9%;width:1px;height:1px;opacity:0.59"></i><span class="rep award"></span><span class="line"><span>從殖民者死亡率，</span><span>找出制度</span><span>決定國家貧富</span></span></div><div class="tags">宏觀經濟與治理・#制度經濟學 #宏觀經濟學</div><div class="name">比較發展的殖民起源</div><div class="lead">用數百年前歐洲殖民者在各地的死亡率，把制度與地理的影響分開，顯示保護產權的制度是貧富差距的重要原因。</div><div class="yrs">2001 發表 ｜ 2024 諾貝爾經濟學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">先有好制度，還是先變富？</span><div class="rows"><div class="row"><b>反向因果</b><span>也可能是國家先富裕，才負擔得起法院與產權保護</span></div><div class="row"><b>地理環境</b><span>緯度、氣候、土壤與疾病負擔，本身就直接影響產出</span></div><div class="row gap"><b>方法</b><span>普通迴歸無法把制度從地理、文化中剝離，只看得到相關</span></div></div><span class="ft" style="color:var(--ink)">得找到一個只經由制度影響所得的變因。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">從殖民者的死亡率，追到今日所得</span><svg class="dia" viewBox="0 0 300 92" role="img" aria-label="示意：殖民者死亡率經定居、早期制度、當代制度傳到所得；假設不直接影響所得。">
+  <path class="k-muted k-dash" d="M30 48 C 30 8, 270 8, 270 48"/>
+  <line class="k-muted" x1="145" y1="13" x2="155" y2="23"/>
+  <line class="k-muted" x1="145" y1="23" x2="155" y2="13"/>
+  <circle class="k-accent" cx="30" cy="56" r="5"/>
+  <circle class="k-ink" cx="90" cy="56" r="5"/>
+  <circle class="k-ink" cx="150" cy="56" r="5"/>
+  <circle class="k-ink" cx="210" cy="56" r="5"/>
+  <circle class="k-ink" cx="270" cy="56" r="5"/>
+  <line class="k-line" x1="38" y1="56" x2="82" y2="56"/>
+  <polyline class="k-line" points="77,51 82,56 77,61"/>
+  <line class="k-line" x1="98" y1="56" x2="142" y2="56"/>
+  <polyline class="k-line" points="137,51 142,56 137,61"/>
+  <line class="k-line" x1="158" y1="56" x2="202" y2="56"/>
+  <polyline class="k-line" points="197,51 202,56 197,61"/>
+  <line class="k-line" x1="218" y1="56" x2="262" y2="56"/>
+  <polyline class="k-line" points="257,51 262,56 257,61"/>
+  <text class="k-label" x="150" y="38" text-anchor="middle">不直接影響所得</text>
+  <text class="k-label-accent" x="30" y="80" text-anchor="middle">死亡率</text>
+  <text class="k-label" x="90" y="80" text-anchor="middle">定居</text>
+  <text class="k-label" x="150" y="80" text-anchor="middle">早期制度</text>
+  <text class="k-label" x="210" y="80" text-anchor="middle">當代制度</text>
+  <text class="k-label" x="270" y="80" text-anchor="middle">所得</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\log y_i = \mu + \alpha R_i + X_i&#x27; \gamma + \epsilon_i"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)"><span class="m-in" data-tex="\alpha"></span> 為制度對人均所得的影響；以死亡率為工具估計，前提是它只經由制度起作用。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">0.94</span><span class="l">以死亡率為工具估計，制度指數對對數人均所得之係數</span></div><div class="stat"><span class="v">0.52</span><span class="l">未用工具的普通迴歸估計，比 0.94 小</span></div><div class="stat"><span class="v">−0.61</span><span class="l">第一階段：對數殖民者死亡率每增 1，制度指數變化</span></div><div class="stat"><span class="v">2.24</span><span class="l">奈及利亞與智利制度指數差，預測所得差至多約 7 倍</span></div></div><span class="ft">範圍：Acemoglu 等 2001，64 個前殖民地；制度指數為免於徵收風險評分</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">把自然實驗帶進宏觀歷史研究</span><div class="time"><p><b>2002</b><span>Acemoglu 等指出 1500 年富庶區日後相對變窮</span></p><p><b>2010</b><span>Dell 比較安地斯殖民礦業勞役邊界兩側的差異</span></p><p><b>2024</b><span>Acemoglu、Johnson 與 Robinson 獲諾貝爾獎</span></p></div><span class="ft">前兩項為本篇之後的研究，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">國家層級做不了隨機實驗時，數百年前的疾病環境差異，就成了拆解因果的探針。</span><span class="shift"><span>隨機實驗</span><i aria-hidden="true"></i><b>歷史分岔</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2001 發表 ｜ 2024 諾貝爾經濟學獎</span>
+<h1>比較發展的殖民起源：制度形成與國家長期繁榮成因</h1>
+<p class="en">The Colonial Origins of Comparative Development: An Empirical Investigation</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">歷史並非宿命，但數百年前為掠奪資源或定居繁衍而設下的制度基因，卻透過強大的路徑依賴，決定了當代數十億人的富裕與貧窮。</p>
+<p>為何世界上最富裕國家與最貧窮國家的人均所得差距超過 30 倍？究竟是熱帶地理環境限制了生產力，還是制度決定了成敗？Acemoglu、Johnson 與 Robinson (2001) 巧妙利用 17 至 19 世紀歐洲派駐全球殖民地之士兵、主教與水手的歷史死亡率作為外生工具變數（Instrumental Variable），一舉破解了制度與經濟成長之間的雙向因果死結，奠定了現代發展經濟學與政治經濟學的實證基石。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：制度與繁榮的「內生性死結」</h2></div>
+<p>長久以來，經濟學家觀察到「產權保護越完善的國家越富裕」，但始終無法確立因果方向：</p>
+<ul><li><strong>反向因果（Reverse Causality）</strong>：究竟是因為擁有包容性好制度才帶來富裕，還是因為國家變得富裕之後，才負擔得起高品質的法院、廉潔官僚與產權保護？</li><li><strong>遺漏變數偏誤（Omitted Variable Bias）与地理決定論</strong>：Jeffrey Sachs 與 Jared Diamond 等學者指出，緯度、氣候、土壤與疾病負擔直接影響經濟產出。若不將制度從地理、文化等混雜因素中剝離，任何普通最小平方法（OLS）迴歸都只是一紙相關性，無法作為因果證據。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>作者建構了一條跨越數百年的歷史因果鏈，並以兩階段最小平方法（2SLS）實現因果識別：</p>
+<span class="m-disp" data-tex="\ln M_i \implies S_i \implies C_i \implies R_i \implies \log y_i"></span>
+<p>其中 <span class="m-in" data-tex="\ln M_i"></span> 為歷史潛在殖民者死亡率，<span class="m-in" data-tex="S_i"></span> 為早期歐洲定居人數比例，<span class="m-in" data-tex="C_i"></span> 為早期殖民制度，<span class="m-in" data-tex="R_i"></span> 為當代制度品質，<span class="m-in" data-tex="\log y_i"></span> 為當代人均對數產出。</p>
+<ol><li><strong>雙軌殖民策略（Extractive vs. Inclusive Institutions）</strong>：<ul><li>在瘧疾與黃熱病肆虐、歐洲人死亡率極高的地區（如剛果、黃金海岸），殖民強權無法大規模移民定居，遂建立以榨取金礦、象牙與奴隸為目的的「掠奪型制度（Extractive State）」，不設行政制衡與私人產權保護。</li><li>在疾病環境溫和、死亡率極低的地區（如美國、加拿大、澳洲、紐西蘭），歐洲移民大量定居並要求享有與母國同等的法治與代議制，建立起保護財產與鼓勵投資的「新歐洲（Neo-Europes）」包容型制度。</li></ul></li><li><strong>制度的歷史持續性（Institutional Persistence）</strong>：<ul><li>建立包容型制度需要高昂的沉沒成本；反之，一旦掠奪型國家機器成型，獨立後的本土新統治菁英同樣有強烈誘因繼承這套便於尋租與徵收的體制，使早期制度延續至今。</li></ul></li><li><strong>排他性限制（Exclusion Restriction）</strong>：<ul><li>工具變數法之核心識別假設為 <span class="m-in" data-tex="\operatorname{Cov}(\ln M_i, \epsilon_i \mid X_i) = 0"></span>，即數百年前殖民者死亡率僅能透過影響「早期制度形成」來決定當代產出，不存在直接影響當代生產力的殘差路徑。對此識別假設的最大疑慮是：高歷史死亡率的熱帶疾病環境可能直接延續至今，造成當代人口的健康劣勢。作者對此提出流行病學與歷史證據論證假設之合理性：導致 18、19 世紀歐洲軍人極高死亡率的瘧疾與黃熱病，對當地已具備自然免疫力與抗性之成年原住民勞動力的致命威脅遠低於歐洲人（例如 Philip Curtin 統計顯示在印度孟加拉與馬德拉斯服役之本地士兵年死亡率與英國本土部隊相當，而當地英國士兵死亡率則數倍於此）。因此，歷史殖民者死亡率反映的是歐洲殖民定居環境的阻力，而非當地原住民勞動力受不可抗拒地理宿命限制的證明。</li></ul></li></ol>
+<h3>1. 結構方程與歷史制度演化鏈 (Structural Causal Chain)</h3>
+<p>當代第 <span class="m-in" data-tex="i"></span> 個前殖民地國家的人均對數所得 <span class="m-in" data-tex="\log y_i"></span> 由當代制度品質 <span class="m-in" data-tex="R_i"></span>（以「免於政府徵收風險指數」衡量）與其他協變數向量 <span class="m-in" data-tex="X_i&#x27;"></span> 決定：</p>
+<span class="m-disp" data-tex="\log y_i = \mu + \alpha R_i + X_i&#x27; \gamma + \epsilon_i"></span>
+<p>而當代制度 <span class="m-in" data-tex="R_i"></span> 則由早期制度 <span class="m-in" data-tex="C_i"></span>、早期歐洲定居人口比例 <span class="m-in" data-tex="S_i"></span> 及歷史殖民者死亡率 <span class="m-in" data-tex="\ln M_i"></span> 依序傳遞：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+R_i &amp;= \lambda_R + \beta_R C_i + X_i&#x27; \gamma_R + \nu_{Ri} \\
+C_i &amp;= \lambda_C + \beta_C S_i + X_i&#x27; \gamma_C + \nu_{Ci} \\
+S_i &amp;= \lambda_S + \beta_S \ln M_i + X_i&#x27; \gamma_S + \nu_{Si}
+\end{aligned}"></span>
+<h3>2. 兩階段最小平方法（2SLS）識別方程 (Two-Stage Least Squares Estimation)</h3>
+<p>由於結構誤差項 <span class="m-in" data-tex="\operatorname{Cov}(R_i, \epsilon_i) \neq 0"></span>，直接估計 <span class="m-in" data-tex="\alpha"></span> 會產生偏誤。作者將上述歷史傳遞鏈收斂為以對數殖民者死亡率 <span class="m-in" data-tex="\ln M_i"></span> 為工具變數的第一階段（First-Stage）迴歸：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\text{First Stage:} \quad R_i &amp;= \zeta + \beta \ln M_i + X_i&#x27; \delta + v_i \\
+\text{Second Stage:} \quad \log y_i &amp;= \mu + \alpha \hat{R}_i + X_i&#x27; \gamma + \epsilon_i
+\end{aligned}"></span>
+<p>其中兩階段最小平方法估計量 <span class="m-in" data-tex="\hat{\alpha}_{\text{2SLS}}"></span> 在排他性條件 <span class="m-in" data-tex="\operatorname{Cov}(\ln M_i, \epsilon_i \mid X_i) = 0"></span> 與強相關條件 <span class="m-in" data-tex="\beta \neq 0"></span> 下，具有統計一致性（Consistency）：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\operatorname{plim} \hat{\alpha}_{\text{2SLS}} &amp;= \frac{\operatorname{Cov}(\log y_i, \ln M_i \mid X_i)}{\operatorname{Cov}(R_i, \ln M_i \mid X_i)} \\
+&amp;= \alpha
+\end{aligned}"></span>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Acemoglu, Johnson &amp; Robinson 2001）之核心證據</h3>
+<ul><li><strong>64 個前殖民地國家基礎樣本與強第一階段關聯</strong>：在 64 個前歐洲殖民地基礎樣本中，歷史殖民者對數死亡率 <span class="m-in" data-tex="\ln M_i"></span> 與 1985–1995 年平均「免於徵收風險指數」（Protection Against Expropriation Risk，PRS 計分範圍 0–10，分數越高代表產權保護越完善）呈現負相關。第一階段係數為 <span class="m-in" data-tex="\hat{\beta}=-0.61"></span>（標準誤 <span class="m-in" data-tex="0.13"></span>，<span class="m-in" data-tex="R^2=0.27"></span>）；對數死亡率增加 1 個單位，指數平均下降約 0.61 分。</li><li><strong>制度效果的 2SLS 估計（<span class="m-in" data-tex="\hat{\alpha}_{\text{2SLS}}=0.94"></span>）</strong>：基準 2SLS 估計出制度指數對 1995 年 PPP 人均對數 GDP 的係數為 <span class="m-in" data-tex="0.94"></span>（標準誤 <span class="m-in" data-tex="0.16"></span>），高於同一表 OLS 估計值 <span class="m-in" data-tex="0.52"></span>。作者指出，測量誤差造成的衰減偏誤可能比反向因果與遺漏變數偏誤更重要。</li><li><strong>奈及利亞與智利的制度差距解釋力</strong>：作者以兩國作為 IV 迴歸中的典型比較，報告制度風險指數相差 <span class="m-in" data-tex="2.24"></span> 分，按基準 2SLS 估計對應約 206 對數點、約 7 倍的人均所得差距；作者提醒測量誤差可能解釋部分指數差，因此將 7 倍視為上限。論文另指出，1995 年智利人均所得實際上超過奈及利亞 11 倍。若僅以文中四捨五入的 <span class="m-in" data-tex="0.94"></span> 與 <span class="m-in" data-tex="2.24"></span> 重算，<span class="m-in" data-tex="\exp(0.94\times2.24)\approx8.2"></span>；這是依四捨五入值推算，並非作者報告的 206 對數點結果。</li><li><strong>穩健性與替代規格</strong>：<ul><li><strong>樣本與洲別規格（Table 4）</strong>：排除新歐洲國家後，係數為 <span class="m-in" data-tex="1.21"></span>–<span class="m-in" data-tex="1.28"></span>；排除非洲樣本後為 <span class="m-in" data-tex="0.58"></span>；加入洲別虛擬變數後為 <span class="m-in" data-tex="0.98"></span>–<span class="m-in" data-tex="1.10"></span>（基準為 <span class="m-in" data-tex="0.94"></span>）。</li><li><strong>殖民來源、法律來源與宗教控制（Table 5）</strong>：2SLS 係數範圍為 <span class="m-in" data-tex="0.92"></span>–<span class="m-in" data-tex="1.20"></span>。</li><li><strong>地理、環境與族群控制（Table 6）</strong>：納入溫濕度、歐洲裔人口比例、土壤與自然資源、內陸與族群破碎度等變數，係數範圍為 <span class="m-in" data-tex="0.71"></span>–<span class="m-in" data-tex="1.30"></span>。</li><li><strong>當代疾病、健康與替代工具變數（Table 7）</strong>：納入瘧疾、壽命、嬰兒死亡率等控制，並另以黃熱病作工具變數，係數範圍為 <span class="m-in" data-tex="0.55"></span>–<span class="m-in" data-tex="0.91"></span>。 不同規格下估計值與顯著性並不完全相同；作者特別提醒健康變數可能內生，直接控制可能低估制度效果。這些結果仍顯示其制度估計對多種控制組合保持正向。</li></ul></li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>命運逆轉（Reversal of Fortune）</strong>：Acemoglu, Johnson &amp; Robinson (2002), <em>Quarterly Journal of Economics</em> 117(4):1231-1294，證明在 1500 年最富裕、城市化與人口密度最高的文明區（如蒙兀兒印度、阿茲特克、印加），因最有利於建立強迫勞動與掠奪型稅收制度，反而在工業化時代淪為相對貧困區，徹底否定「某些地理環境天生不利發展」的靜態地理決定論。</li><li><strong>殖民強迫勞動制度（Mita）的微觀斷點迴歸</strong>：Dell (2010), <em>Econometrica</em> 78(6):1863-1903，以秘魯與玻利維亞安地斯山脈 1573 年西班牙殖民政府劃定的礦業強迫勞役（Mita）地理邊界進行空間斷點迴歸（Spatial RDD），證明邊界兩側海拔與地理完全相同，但曾受掠奪制度統治的一側至今家庭消費仍低約 25%、兒童發育遲緩率高出 6 個百分點。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>引爆經濟學「可信度革命（Credibility Revolution）」的宏觀典範</strong>：將原本侷限於勞動經濟學的自然實驗（Natural Experiments）與工具變數法推向宏觀歷史與制度研究，開啟「歷史持續性研究（Persistence Studies）」的全新領域。</li><li><strong>重塑國際發展援助與世界銀行政策思維</strong>：促使國際發展政策從單純的「資本注入與硬體基建」轉向「治理、法治與制度改革」。後續制度經濟學文獻進一步推論指出：若在掠奪型體制下單純輸送外援，援助資金容易遭尋租菁英截留攫取，難以轉化為普惠的長期繁榮（此屬文獻與政策延伸觀點，非 AJR 2001 本文直接檢驗之經驗結果）。</li><li><strong>政治權力與技術走向的合流</strong>：Acemoglu 與 Johnson 後續將此框架延伸至技術史（《Power and Progress》，2023），指出人工智慧與自動化究竟是「賦能勞工、創造新職位」還是「純粹監控並取代勞工」，同樣取決於社會制度的權力分配結構。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>AJR (2001) 帶給科學方法論與人類文明史的雙重啟示：</p>
+<ol><li><strong>歷史是天然的因果實驗室</strong>：當我們無法在宏觀國家層級進行隨機對照實驗（RCT）時，歷史長河中的偶然分岔（如微生物免疫差異），提供了拆解社會複雜系統因果迴路的天然探針。</li><li><strong>繁榮的本質是「對普遍創造力的制度承諾」</strong>：唯有當一個社會的規則能確保一般人的勞動、知識與創新成果不會被強權任意剝奪時，技術進步與資本積累的飛輪才會真正啟動。</li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2001</b><span>發表・AER</span></div>
+    <div class="yr award"><b>2024</b><span>諾貝爾經濟學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Daron Acemoglu<br>Simon Johnson<br>James A. Robinson</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>American Economic Review, 91(5), 1369-1401</span><a href="https://doi.org/10.1257/aer.91.5.1369">doi:10.1257/aer.91.5.1369</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#制度經濟學</span><span class="chip">#宏觀經濟學</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>制度演化與宏觀經濟動態</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1257/aer.91.5.1369" title="Acemoglu, D., Johnson, S., &amp; Robinson, J. A. (2001) The Colonial Origins of Comparative Development: An Empirical Investigation. American Economic Review 91(5):1369-1401.">Acemoglu、Johnson 與 Robinson（2001）</a><a href="https://doi.org/10.1162/003355302320935025" title="Acemoglu, D., Johnson, S., &amp; Robinson, J. A. (2002) Reversal of Fortune: Geography and Institutions in the Making of the Modern World Income Distribution. Quarterly Journal of Economics 117(4):1231-1294.">Acemoglu、Johnson 與 Robinson（2002）</a><a href="https://doi.org/10.1016/S1574-0684(05)01006-3" title="Acemoglu, D., Johnson, S., &amp; Robinson, J. A. (2005) Institutions as a Fundamental Cause of Long-Run Growth. Handbook of Economic Growth 1A:385-472.">Acemoglu、Johnson 與 Robinson（2005）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2024 年諾貝爾經濟學獎頒予 Daron Acemoglu、Simon Johnson 與 James A. Robinson 三位學者，表彰其對「制度如何形成並影響國家長期繁榮」之開創性貢獻。本頁以三人於 2001 年發表於《American Economic Review》之代表作（AJR 2001）為主軸，並於 <code>key_papers</code> 列出 2002 年「命運逆轉（Reversal of Fortune）」與 2005 年政治制度動態理論之奠基文獻。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
