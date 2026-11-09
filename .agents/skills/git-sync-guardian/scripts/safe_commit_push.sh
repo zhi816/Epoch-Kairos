@@ -74,12 +74,47 @@ echo "=================================================="
 [ -d "$REPO_PATH/.git" ] || { echo "ERROR: Git directory not found at $REPO_PATH."; exit 1; }
 cd "$REPO_PATH"
 
+BRANCH=$(git branch --show-current)
+if [ "$BRANCH" != "main" ]; then
+  echo "ERROR: target '$TARGET' only pushes origin/main, but current branch is '${BRANCH:- (detached HEAD)}'. Switch to main and retry."
+  exit 1
+fi
+
+reset_paths() {
+  local P
+  local -a LITERAL_PATHS=()
+  for P in "$@"; do LITERAL_PATHS+=(":(literal)${P//\\//}"); done
+  git reset -q -- "${LITERAL_PATHS[@]}"
+}
+
+# Validate the complete list before staging anything. Git treats directory
+# arguments recursively, so only explicit relative file paths are accepted.
+for I in "${!PATHS[@]}"; do PATHS[$I]="${PATHS[$I]//\\//}"; done
+for P in "${PATHS[@]}"; do
+  if [[ -z "$P" || "$P" == "." || "$P" == "./" || "$P" == "-A" || "$P" == "--all" || "$P" == "*" || "$P" == /* || "$P" == ".." || "$P" == ../* || "$P" == */.. || "$P" == */../* || "$P" == *":("* ]]; then
+    echo "ERROR: 不接受路徑 '$P'；請列出倉庫內單一檔案的相對路徑。"
+    exit 1
+  fi
+  if [[ "$P" =~ ^[A-Za-z]: ]] || [[ -d "$REPO_PATH/$P" ]]; then
+    echo "ERROR: '$P' 是絕對路徑或資料夾；為避免遞迴暫存他人檔案，請逐一列出倉庫內檔案。"
+    exit 1
+  fi
+done
+
 # 0. 索引必須是乾淨的：若已有別人暫存的檔案，提交會把它們一起帶走。
 PRESTAGED=$(git diff --cached --name-only)
 if [ -n "$PRESTAGED" ]; then
   echo "ERROR: 暫存區已有檔案（可能是其他代理暫存的），為避免誤提交，已中止："
   echo "$PRESTAGED" | sed 's/^/    /'
   echo "請確認這些檔案的歸屬；若確定是自己的，請把它們加入 -- 之後的清單並先執行 git reset 清空暫存區。"
+  exit 1
+fi
+
+# Fetch before staging or creating a local commit. If .git/FETCH_HEAD or the
+# network is unavailable, stop before leaving a new unpushed commit behind.
+echo "    提交前先更新 origin/main..."
+if ! git fetch origin main --quiet; then
+  echo "ERROR: 提交前更新 origin/main 失敗；尚未建立本次提交。" >&2
   exit 1
 fi
 
@@ -96,34 +131,34 @@ for P in "${PATHS[@]}"; do
     if [ -n "$ALLOW_STALE" ]; then STAGE_ARGS+=("$ALLOW_STALE"); fi
     if ! PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/stage_log.py" "${STAGE_ARGS[@]}"; then
       # 暫存區在步驟 0 已確認為乾淨，這裡把本次已暫存的路徑還原，避免留給下一位代理。
-      git reset -q -- "${PATHS[@]}" 2>/dev/null || true
+      reset_paths "${PATHS[@]}" 2>/dev/null || true
       echo "ERROR: 日誌暫存失敗（見上方訊息），已還原本次暫存，未提交任何內容。"
       exit 1
     fi
   elif [ "$P" = "wiki/issues.md" ] && [ "$TARGET" = "main" ]; then
     if [ ${#ISSUES[@]} -eq 0 ]; then
-      git reset -q -- "${PATHS[@]}" 2>/dev/null || true
+      reset_paths "${PATHS[@]}" 2>/dev/null || true
       echo "ERROR: 提交 wiki/issues.md 時必須以 --issue EK-NNN 列出自己修改的問題編號（可重複），已還原本次暫存。"
       exit 1
     fi
     if ! PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/stage_issues.py" "${ISSUES[@]}"; then
-      git reset -q -- "${PATHS[@]}" 2>/dev/null || true
+      reset_paths "${PATHS[@]}" 2>/dev/null || true
       echo "ERROR: 問題清單暫存失敗（見上方訊息），已還原本次暫存，未提交任何內容。"
       exit 1
     fi
   elif [ "$P" = "wiki/todo.md" ] && [ "$TARGET" = "main" ]; then
     if [ ${#TODOS[@]} -eq 0 ]; then
-      git reset -q -- "${PATHS[@]}" 2>/dev/null || true
+      reset_paths "${PATHS[@]}" 2>/dev/null || true
       echo "ERROR: 提交 wiki/todo.md 時必須以 --todo TD-NNN 列出自己新增、修改或刪除的待辦編號（可重複），已還原本次暫存。"
       exit 1
     fi
     if ! PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/stage_todo.py" "${TODOS[@]}"; then
-      git reset -q -- "${PATHS[@]}" 2>/dev/null || true
+      reset_paths "${PATHS[@]}" 2>/dev/null || true
       echo "ERROR: 待辦清單暫存失敗（見上方訊息），已還原本次暫存，未提交任何內容。"
       exit 1
     fi
   else
-    git add -- "$P"
+    git add -- ":(literal)$P"
   fi
 done
 
@@ -139,7 +174,6 @@ else
 fi
 
 # 3. 再與遠端合流。--autostash 會暫時收起工作目錄中其他代理尚未提交的修改，合流後放回。
-git fetch origin main --quiet
 BEHIND=$(git rev-list --count HEAD..origin/main)
 only_log_conflict() { [ "$(git diff --name-only --diff-filter=U)" = "wiki/log.md" ]; }
 if [ "$BEHIND" -gt 0 ]; then
@@ -149,7 +183,10 @@ if [ "$BEHIND" -gt 0 ]; then
       echo "    只有 wiki/log.md 衝突，依 append-only 原則自動合併（保留所有條目、依時間排序）..."
       PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/merge_log.py"
       git add wiki/log.md
-      git commit -q --no-edit || true   # 結束合併；Git 會在此嘗試放回 autostash
+      if ! git commit -q --no-edit; then
+        echo "ERROR: 日誌衝突已整理，但合併提交失敗；請保留現況並人工處理。" >&2
+        exit 1
+      fi
     else
       echo "ERROR: 合併衝突。請依 SKILL.md SOP-3 人工排解並完成合併提交後再執行 git push origin main。"
       echo "       若有 autostash，請以 git stash list 確認並還原。"

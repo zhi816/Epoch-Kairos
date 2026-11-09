@@ -1221,3 +1221,12 @@
   - 修正 [status.sh](../.agents/skills/git-sync-guardian/scripts/status.sh) 與 [status.py](../.agents/skills/git-sync-guardian/scripts/status.py) 過去以 `2>/dev/null || true` 靜默吞掉 `git fetch` 錯誤的問題：當網路中斷或沙盒封鎖 `.git/FETCH_HEAD` 寫入權限時，立即印出 Git 錯誤訊息、標記 `STALE - fetch failed` 警告並回傳非零退出碼（`exit 1`，離線檢視可加 `--allow-offline`），防止代理誤將本機快取當成最新遠端狀態。
   - 為 [stage_log.py](../.agents/skills/git-sync-guardian/scripts/stage_log.py)、[stage_issues.py](../.agents/skills/git-sync-guardian/scripts/stage_issues.py) 與 [merge_log.py](../.agents/skills/git-sync-guardian/scripts/merge_log.py) 補齊 `sys.stdout` / `sys.stderr` 之 UTF-8 編碼重設（`reconfigure(encoding='utf-8')`），避免於 Windows PowerShell 單獨執行時因系統預設碼頁（cp950）引發編碼錯誤。
   - 同步更新 [SKILL.md](../.agents/skills/git-sync-guardian/SKILL.md) 與 [AGENTS.md](../AGENTS.md) 第十章工具鏈說明。
+
+## [2026-11-09 16:58] config | 修補 git-sync-guardian 安全暫存與錯誤狀態處理 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：
+  - 修正 Python 與 Bash 版 `safe_commit_push`：只接受倉庫內單一相對檔案路徑，拒絕資料夾、絕對路徑、路徑跳脫及 pathspec magic，使用 literal pathspec；限定目前分支為 `main`，並將 fetch 移至暫存與建立提交之前，避免 fetch 權限或網路錯誤留下新本機提交。
+  - 修正 Python 與 Bash 版狀態檢查：branch、commit、ahead/behind 或 `git status` 查詢失敗時明確顯示未知狀態並回傳非零碼，不再將查詢錯誤顯示為 `0` 或 `Clean`。
+  - 修正 Python 與 Bash 版同步及提交腳本：日誌衝突整理後的 `git commit` 失敗會中止並回報；autostash 清理失敗也會明確提示。
+  - 更新 `AGENTS.md` 與 `SKILL.md`，記錄新增的路徑、分支、前置 fetch 與錯誤處理規則。`git diff --check` 通過；未執行整合測試。

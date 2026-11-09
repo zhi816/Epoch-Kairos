@@ -17,14 +17,23 @@ merge_remote() {
   local only_log='[ "$(git diff --name-only --diff-filter=U)" = "wiki/log.md" ]'
   if ! git merge $MODE --autostash --no-edit origin/main; then
     if [ -n "$PY" ] && eval "$only_log"; then
-      PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/merge_log.py" && git add wiki/log.md && { git commit -q --no-edit || true; }
+      if ! PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/merge_log.py" || ! git add wiki/log.md; then
+        return 1
+      fi
+      if ! git commit -q --no-edit; then
+        echo "    ERROR: 日誌衝突已整理，但合併提交失敗；請保留現況並人工處理。" >&2
+        return 1
+      fi
     else
       return 1
     fi
   fi
   if [ -n "$(git diff --name-only --diff-filter=U)" ]; then
     if [ -n "$PY" ] && eval "$only_log" && git stash list | head -1 | grep -q 'autostash'; then
-      PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/merge_log.py" && git reset -q && git stash drop -q
+      if ! PYTHONIOENCODING=utf-8 "$PY" "$SCRIPT_DIR/merge_log.py" || ! git reset -q || ! git stash drop -q; then
+        echo "    ERROR: 無法安全還原或清理 autostash；請檢查 git stash list。" >&2
+        return 1
+      fi
     else
       echo "    ERROR: 放回未提交修改時發生衝突，修改仍保存在 git stash 中，請人工處理。"
       return 1

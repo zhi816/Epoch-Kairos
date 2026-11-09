@@ -9,6 +9,7 @@ Rule 5: Commit ONLY your own changes. Several AIs share one working tree, so thi
         wiki/log.md, wiki/issues.md, wiki/todo.md are staged entry by entry.
 Zero emoji constraint strictly enforced.
 """
+import ntpath
 import os
 import subprocess
 import sys
@@ -70,7 +71,33 @@ def run_helper(cwd, script_name, args):
 
 
 def reset_paths(cwd, paths):
-    run_git(cwd, 'reset', '-q', '--', *paths)
+    literal_paths = [f':(literal){p.replace(chr(92), "/")}' for p in paths]
+    run_git(cwd, 'reset', '-q', '--', *literal_paths)
+
+
+def validate_paths(repo_path, paths):
+    """Require explicit relative file paths, never directory/pathspec expansion."""
+    normalized = []
+    for path in paths:
+        norm_path = path.replace('\\', '/')
+        parts = norm_path.split('/')
+        if (
+            not norm_path
+            or norm_path in ('.', './', '-A', '--all', '*')
+            or os.path.isabs(path)
+            or ntpath.isabs(path)
+            or bool(ntpath.splitdrive(path)[0])
+            or norm_path.startswith(':(')
+            or any(part in ('.', '..') for part in parts)
+        ):
+            print(f"ERROR: 不接受路徑 '{path}'；請列出倉庫內單一檔案的相對路徑。")
+            return None
+        disk_path = os.path.join(repo_path, *parts)
+        if os.path.isdir(disk_path):
+            print(f"ERROR: '{path}' 是資料夾；為避免遞迴暫存他人檔案，請逐一列出檔案。")
+            return None
+        normalized.append(norm_path)
+    return normalized
 
 
 def only_log_conflict(cwd):
@@ -163,6 +190,11 @@ def main():
         print(f'ERROR: Git directory not found at {repo_path}.')
         sys.exit(1)
 
+    branch = git_out(repo_path, 'branch', '--show-current', default='')
+    if branch != 'main':
+        print(f"ERROR: target '{target}' only pushes origin/main, but current branch is '{branch or '(detached HEAD)'}'. Switch to main and retry.")
+        sys.exit(1)
+
     # 0. 索引必須是乾淨的：若已有別人暫存的檔案，提交會把它們一起帶走。
     prestaged = git_out(repo_path, 'diff', '--cached', '--name-only')
     if prestaged:
@@ -171,6 +203,15 @@ def main():
             print(f'    {line}')
         print('請確認這些檔案的歸屬；若確定是自己的，請把它們加入 -- 之後的清單並先執行 git reset 清空暫存區。')
         sys.exit(1)
+
+    paths = validate_paths(repo_path, paths)
+    if paths is None:
+        sys.exit(1)
+
+    # Fetch before creating a local commit so a denied .git/FETCH_HEAD write or
+    # network failure cannot leave a new commit stranded locally.
+    print('    提交前先更新 origin/main...')
+    run_git(repo_path, 'fetch', 'origin', 'main', '--quiet', check=True)
 
     # 1. 只暫存明確列出的路徑；共用檔案逐條暫存。
     for p in paths:
@@ -212,7 +253,7 @@ def main():
                 print('ERROR: 待辦清單暫存失敗（見上方訊息），已還原本次暫存，未提交任何內容。')
                 sys.exit(1)
         else:
-            r = run_git(repo_path, 'add', '--', p)
+            r = run_git(repo_path, 'add', '--', f':(literal){norm_p}')
             if r.returncode != 0:
                 reset_paths(repo_path, paths)
                 if r.stderr:
@@ -233,7 +274,6 @@ def main():
         print(f"    已建立提交：{git_out(repo_path, 'log', '--oneline', '-1')}")
 
     # 3. 再與遠端合流。--autostash 會暫時收起工作目錄中其他代理尚未提交的修改，合流後放回。
-    run_git(repo_path, 'fetch', 'origin', 'main', '--quiet', check=True)
     behind = int(git_out(repo_path, 'rev-list', '--count', 'HEAD..origin/main', default='0') or '0')
     if behind > 0:
         print(f'    遠端領先 {behind} 個提交，進行三方合併...')
@@ -244,7 +284,12 @@ def main():
                 if not run_helper(repo_path, 'merge_log.py', []):
                     sys.exit(1)
                 run_git(repo_path, 'add', 'wiki/log.md', check=True)
-                subprocess.run(['git', '-C', repo_path, 'commit', '-q', '--no-edit'])
+                commit_res = run_git(repo_path, 'commit', '-q', '--no-edit')
+                if commit_res.returncode != 0:
+                    if commit_res.stderr:
+                        sys.stderr.write(commit_res.stderr)
+                    print('ERROR: 日誌衝突已整理，但合併提交失敗；請保留現況並人工處理。')
+                    sys.exit(commit_res.returncode)
             else:
                 print('ERROR: 合併衝突。請依 SKILL.md SOP-3 人工排解並完成合併提交後再執行 git push origin main。')
                 print('       若有 autostash，請以 git stash list 確認並還原。')
