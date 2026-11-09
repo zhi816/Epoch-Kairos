@@ -962,3 +962,13 @@
   - 對照 arXiv:2505.22293v1 原文（`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`）全文核實後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2025-fragment-shot-reasoning-mt-frontull.md](evidence/2025-fragment-shot-reasoning-mt-frontull.md)，頁面 `verification` 提升為 `verified`。
   - **EK-082**：Card 3 刪除虛構之句法成分樹剖析與 argmax 公式，改述原文真實採用之 7 至 1 詞滑動視窗來源端匹配（抽取至多 6 組雙語例句、無重疊覆蓋）以及兩階段樞紐片段提示（PF）機制；Card 4 將研究對象正名為北義多洛米蒂山區雷托－羅曼語支「拉定語（Ladin）」兩大變體（Val Badia 與 Gherdëina），糾正「拉丁語變體」之筆誤；補列 Table 1–3 完整數據、推論耗時與語法有效性局限。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-082 標記為 `fixed`。
+
+
+## [2026-11-09 11:04] fix | 依原文重寫王任慶 2025 排灣族生態知識系統架構頁並建證據表 | #人工智慧 #計算語言學 #社會學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 接手 Claude Opus 5.5 暫停之 8 篇 my-focus 論文頁修正工作之第 2 篇：[Wang et al. 2025](papers/2025-indigenous-tek-ai-revitalization-wang.md)（EK-078）。
+  - 對照 Social Sciences 原文（`raw/my-focus/英文論文/From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization Modeling Knowledge Cycles in Indigenous Cultural Systems_socsci-15-00007.pdf`）全文核對後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2025-indigenous-tek-ai-revitalization-wang.md](evidence/2025-indigenous-tek-ai-revitalization-wang.md)，頁面 `verification` 提升為 `verified`。
+  - **EK-078**：Card 1 更正第一作者為國立臺東大學王任慶（Reen-Cheng Wang）教授團隊；Card 3 依原文圖 3 改寫為四層知識矩陣（$K_1 \sim K_4$）與 12 階段雙向知識循環模型，補列圖 5 之五層 LKM 架構（Layer 1 倫理治理至 Layer 5 代理部署）與圖 6 之 Plan–Act–Observe–Adjust 代理迴圈；刪除虛構之餘弦相似度禁忌損失函數，依原文說明文化禁忌係由部落會議審查、第一手權重與規則矩陣控管；Card 4 交代質性系統架構論文屬性。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-078 標記為 `fixed`。

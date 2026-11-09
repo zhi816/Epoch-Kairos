@@ -490,10 +490,11 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文全文核對後：Card 3 刪除「同源五元組」與 ICL 公式，改列三項任務之獨立資料來源（線上辭典、族語 E 樂園、族語維基百科）；評估指標改為原文之 BLEU、WER、ROUGE-2／L、GPT-4o-mini 評審與人工檢視；Card 2、Card 6 刪除原文未報告之「4~6 倍 Tokenizer 膨脹」。另修正同頁未登記之問題：Card 4 補列表 2–6 主要數值與母語者人工檢視結果；註明原文三處不一致：表 1 切分約 60:10:30 而非文稱 70:10:20、表 2 BLEU 看似 0–1 尺度、§6.1 對 LLM 評審分數方向之解讀與表 3 相反；刪除 Card 5「終結無基準可評」「指明必須開發形態解析外掛」等表述。證據表見 wiki/evidence/2025-formosanbench-llm-benchmark-lin.md。
 
-### EK-078 | open | papers/2025-indigenous-tek-ai-revitalization-wang.md | Card 1 與 Card 3 | 原文不符
+### EK-078 | fixed | papers/2025-indigenous-tek-ai-revitalization-wang.md | Card 1 與 Card 3 | 原文不符
 - **問題**：（1）Card 1（第 29 行）作者姓名寫作「王 reen-cheng」，中英大小寫混雜。（2）Card 3（第 45–53 行）將模型寫為 Nonaka 四階段 SECI 遞迴算子；原文 §3.2（pp. 7–11，圖 3）係將 Nonaka 模型擴展為四層知識矩陣（$K_1$ 個體內隱、$K_2$ 個體外顯、$K_3$ 部落社群、$K_4$ 文化系統）與 12 個知識轉換階段，並搭配五層 LKM 架構（§3.4，圖 5）與 Plan–Act–Observe–Adjust 代理迴圈（§3.5，圖 6）。（3）Card 3（第 56–61 行）列出基於餘弦相似度之禁忌懲罰損失函數；原文為質性系統架構論文，全文無任何數學公式或損失函數（文化禁忌係由第一層部落會議審查、第三層語義標籤與第五層規則權限矩陣控管）。
 - **來源**：`raw/my-focus/英文論文/From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization Modeling Knowledge Cycles in Indigenous Cultural Systems_socsci-15-00007.pdf`（§3.2–3.5 pp. 7–15 圖 3–6）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 1 將作者更正為國立臺東大學王任慶（Reen-Cheng Wang）教授團隊；Card 3 依原文圖 3 改寫為四層知識矩陣（$K_1 \sim K_4$）與 12 階段雙向知識循環模型，補列圖 5 之五層 LKM 架構（Layer 1 倫理治理至 Layer 5 代理部署）與圖 6 之 Plan–Act–Observe–Adjust 代理迴圈；刪除虛構之餘弦相似度禁忌損失函數，依原文說明文化禁忌係由部落會議審查、第一手權重與規則矩陣控管；Card 4 交代質性系統架構論文屬性。建立證據表 wiki/evidence/2025-indigenous-tek-ai-revitalization-wang.md，頁面 verification 改為 verified。
 
 ### EK-079 | open | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 3 | 原文不符
 - **問題**：第 43–62 行與架構圖稱方言距離係「對共享同一個語義概念的詞彙集合 $\mathcal{V}_{AB}$」計算編輯距離並執行「多維尺度分析（MDS）」。原文 §2.3（p. 125）並未對齊同義概念詞表亦未使用 MDS，而是直接對語料庫表面詞形計算三項指標：（1）詞級 TF-IDF 餘弦相似度（`min_df=2`、`sublinear_tf=True`）、（2）頻率 $\ge 5$ 詞型之未加權 Jaccard 相似度、（3）各方言前 500 高頻詞型雙向平均之字元級正規化 Levenshtein 距離。Card 3 完全漏述前兩項核心指標（TF-IDF 餘弦與 Jaccard），且虛構概念對齊詞表與 MDS。
