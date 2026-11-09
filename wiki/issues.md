@@ -613,3 +613,44 @@
 - **來源**：`raw/my-focus/英文論文/llm 輔助/Context Volume Drives Performance Tackling Domain Shift in Extremely.pdf`（表 5，p. 100；§6 結論，p. 94）
 - **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。`card_line` 改為「讓大模型參考例句，修補跨領域的達豪語翻譯」（19 字，描述本篇做了什麼，不含單調之斷言），重建首頁。
+
+### EK-094 | fixed | papers/2024-sora-world-simulator.md | Card 4 | 原文不符
+- **問題**：Card 4 第一點寫 DiT「在橫跨三個數量級的訓練算力區間內呈現單調緊密的負相關冪律（相關係數逾 $-0.95$）」。原文圖 8 為 12 種設定之「模型 Gflops」（單次前向運算量，0.3 至 118.6 Gflops）與 FID-50K 之相關，係數為 $-0.93$，並非訓練算力，亦未稱冪律。同點「ADM-U 的 3.94」在原文表 3 為 ADM-G、ADM-U 合用之 512 結果。
+- **來源**：Peebles & Xie (2023), arXiv:2212.09748v2，圖 8（p. 8）、§4（p. 5）、§5（p. 8）、表 3（p. 9）。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改寫為模型 Gflops 與 FID-50K 相關係數 $-0.93$（圖 8，p. 8），256 由 LDM 之 3.60 降至 2.27、512 為 3.04（ADM-G、ADM-U 為 3.94），證據表增列。
+
+### EK-095 | fixed | papers/2024-sora-world-simulator.md | Card 4 | 原文不符
+- **問題**：Card 4 第二點寫「1×、4×、16×、32× 訓練算力對照」，並逐級描述「畫面模糊且物體結構瞬間崩解」「初具物體形狀但運動違反物理」「自發湧現逼真的流體力學波浪、光影反射……」。OpenAI 報告之影片標籤只有 Base compute、4x compute、32x compute 三組，文字僅寫「Sample quality improves markedly as training compute increases」；16× 與各級描述皆無出處。證據表原列「$1\times$ 至 $32\times$」亦判為符合。
+- **來源**：Brooks et al. (2024), OpenAI 技術報告 §Scaling transformers for video generation（https://openai.com/index/video-generation-models-as-world-simulators/ ，2026-11-10 讀取頁面文字與影片標籤）。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改寫為基礎、4 倍、32 倍三組樣本與報告原句，註明只有影片樣本、無定量指標；證據表該列改判核實更正。
+
+### EK-096 | fixed | papers/2024-sora-world-simulator.md | Card 4 | 過度表述
+- **問題**：Card 4 第三點寫「對比實驗證明……頻繁出現人物無頭、主體出框」「主體完整居中率與電影級構圖品質顯著躍升」。原文為樣本之質性比較：方形裁切版本「sometimes generates videos where the subject is only partially in view」，Sora「have improved framing」；無「居中率」等量化指標。
+- **來源**：OpenAI 報告 §Improved framing and composition；Liu et al. (2024), arXiv:2402.17177，圖 6 與正文，p. 7。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改寫為「後者有時生成主體只部分入鏡的畫面，Sora 的取景較佳」，註明為質性比較。
+
+### EK-097 | fixed | papers/2024-sora-world-simulator.md | Card 4 後續 | 歸因／版本錯置
+- **問題**：後續研究寫「Kang et al. (2024, *ICML*, ...)」，並稱其發現模型在「牛頓力學碰撞動量守恆、流體質量守恆與複雜剛體因果交互」上發生「穿模或憑空生成」。該文為 arXiv:2411.02385（2024 年 11 月），發表於 ICML 2025；摘要所述為二維物體運動與碰撞模擬之分布內、分布外與組合泛化測試，未提流體質量守恆或穿模。
+- **來源**：arXiv:2411.02385 摘要與 comment 欄（「ICML 2025」），2026-11-10 以 arXiv API 讀取。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改寫出處為 arXiv 2024 年 11 月、ICML 2025，內容依摘要：分布內完美泛化、組合泛化隨規模改善、分布外失敗，模型模仿最相近案例，作者認為單靠擴大規模不足以發現物理定律。
+
+### EK-098 | fixed | papers/2024-sora-world-simulator.md | Card 1 | 原文未支持
+- **問題**：Card 1 寫「早期的影片生成模型（如初代 Runway Gen-2、Pika）大多只能生成 2 至 4 秒、固定正方形裁剪……」並稱 Sora 由 Peebles 與 Brooks「領軍開發」。OpenAI 報告原文為過去做法「typically resize, crop or trim videos to a standard size—e.g., 4 second videos at 256x256 resolution」，未點名任何產品；報告僅列作者，無「領軍」之述。
+- **來源**：OpenAI 報告 §Variable durations, resolutions, aspect ratios；作者列（Tim Brooks, Bill Peebles, ...）。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改依報告原文敘述過去做法與一分鐘影片，作者改寫為「Brooks, Peebles et al., 2024；Peebles 亦為 DiT 之第一作者」。
+
+### EK-099 | fixed | papers/2024-sora-world-simulator.md | Card 3 | 原文未支持
+- **問題**：Card 3 第 3 節稱「Peebles & Xie (2023) 與 OpenAI 實驗共同證實」生成品質「嚴格受……總訓練算力 $C$ 的冪律支配」，並列區塊公式 $\mathcal{L}_{\text{val}}(C) \propto C^{-\alpha}$ 與 $G \propto N \cdot d^2 + N^2 \cdot d$。DiT 原文只報告模型 Gflops 與 FID 之強負相關（圖 8），OpenAI 報告只有三組算力之樣本；兩者皆無此冪律或公式。
+- **來源**：Peebles & Xie (2023) 圖 8，p. 8；OpenAI 報告 §Scaling transformers for video generation。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。第 3 節改題「算力與生成品質」，改寫為兩來源實際所述，刪除冪律公式與運算量估算式。
+
+### EK-100 | open | papers/2024-sora-world-simulator.md | Card 4 後續 | 未能核實
+- **問題**：後續研究第一點列出快手 Kling、智譜 CogVideoX、騰訊 HunyuanVideo、阿里 Wan2.1 與 Meta Movie Gen，稱其遵循「3D-VAE ＋ 時空圖塊 ＋ DiT ＋ 3D-RoPE ＋ 流匹配」範式並「全面驗證時空 DiT 架構作為視覺基座模型的普適性」，未附任何出處。
+- **來源**：無（待補各模型之技術報告，例如 CogVideoX、HunyuanVideo、Wan、Movie Gen 之 arXiv 技術報告，逐一核對架構）。
+- **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）

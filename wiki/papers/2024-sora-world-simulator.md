@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#計算機視覺", "#人工智慧", "#深度學習"]
 concepts: ["generative-world-models"]
 status: "wiki"
-verification: "verified"
+verification: "issues"
 my_focus: false
 doi_url: "https://arxiv.org/abs/2402.17177"
 key_papers:
@@ -32,7 +32,7 @@ card_line: "把影片切成時空小塊，生成連貫的長影片"
 ---
 
 ## Card 1 ｜ 時代銘文 (The Hook)
-早期的影片生成模型（如初代 Runway Gen-2、Pika）大多只能生成 2 至 4 秒、固定正方形裁剪（如 $256 \times 256$）且鏡頭稍微移動就會使物體變形消失的短片段。2024 年 2 月，OpenAI 發布由擴散轉換器（DiT）共同發明人 William Peebles 與 Tim Brooks 領軍開發的 **Sora**，能直接生成長達 60 秒、具備動態攝影機運鏡且常能（但並非總是）維持短暫被遮擋物體時空存在感（Object Permanence）的高畫質影片。其核心突破在於將大語言模型成功的「Token 化 ＋ Transformer 擴展定律（Scaling Laws）」遷移至連續時空視覺領域；同時報告亦客觀列舉其作為世界模擬器在複雜物理交互（如玻璃碎裂、咬痕狀態演化）上的諸多早期局限。
+OpenAI 報告指出，過去的圖像與影片生成做法通常把訓練影片縮放、裁切或截短成標準尺寸，例如 4 秒、$256 \times 256$ 解析度（§Variable durations, resolutions, aspect ratios）。2024 年 2 月，OpenAI 發布 **Sora** 與技術報告（Brooks, Peebles et al., 2024；Peebles 亦為擴散轉換器 DiT 之第一作者），展示可生成長達一分鐘、具動態攝影機運鏡的高畫質影片，且常能（但並非總是）在人物或物體被短暫遮擋後維持其存在（Object Permanence）。其核心做法是把大語言模型「Token 化 ＋ Transformer 擴展」的路線遷移到影片：先壓縮成時空潛在表示、切成時空圖塊，再交給擴散轉換器處理；報告同時列舉其作為世界模擬器的局限，例如無法準確模擬玻璃碎裂，吃東西時物體狀態不一定正確改變（§Discussion）。
 
 ---
 
@@ -77,25 +77,23 @@ $$\begin{aligned}
 
 $$\operatorname{adaLN}(h, \tau, c) = \gamma(\tau, c) \odot \frac{h - \mu(h)}{\sigma(h)} + \beta(\tau, c)$$
 
-### 3. 視覺生成之算力擴展定律 (Compute Scaling Law for Video DiT)
+### 3. 算力與生成品質 (Compute and Sample Quality)
 
-Peebles & Xie (2023) 與 OpenAI 實驗共同證實，DiT 的生成品質（以 Fréchet 影像/影片距離 FID/FVD 及驗證集去噪損失衡量）不取決於特定手工卷積設計，而是嚴格受單次前向傳播浮點運算量 $G$（由模型深度、寬度與圖塊數 $N$ 共同決定，$G \propto N \cdot d^2 + N^2 \cdot d$）及總訓練算力 $C$ 的冪律支配：
-
-$$\mathcal{L}_{\text{val}}(C) \propto C^{-\alpha}$$
+Peebles & Xie (2023) 以 12 種 DiT 設定（0.3 至 118.6 Gflops）測試，發現模型單次前向運算量（Gflops）與 FID-50K 呈強負相關（相關係數 $-0.93$，圖 8，p. 8）：運算量越大，生成品質越好。OpenAI 報告則以固定種子與輸入，比較基礎、4 倍與 32 倍訓練算力下的樣本，指出樣本品質隨訓練算力增加而明顯提升（§Scaling transformers for video generation），但未公布定量的擴展曲線或冪律參數。
 
 ---
 
 ## Card 4 ｜ 決定性數據 (The Evidence)
 
 ### 本篇綜述（Liu et al. 2024）與底層基礎論文（Peebles & Xie 2023; Brooks et al. 2024）之核心證據
-* **DiT 奠基數據（Peebles & Xie 2023）**：在 ImageNet $256 \times 256$ 與 $512 \times 512$ 生成基準上，DiT-XL/2（算力 $118.6\,\text{Gflops}$）將 FID 壓低至 **$2.27$**（$256^2$）與 **$3.04$**（$512^2$），全面擊敗此前所有基於 U-Net 的擴散模型（如 ADM-U 的 $3.94$ 與 LDM-4 的 $3.60$），且在橫跨三個數量級的訓練算力區間內呈現單調緊密的負相關冪律（相關係數逾 $-0.95$）。
-* **1×、4×、16×、32× 訓練算力對照實驗（Brooks et al. 2024）**：OpenAI 展示了完全相同的時空圖塊 DiT 架構在基礎算力（Base Compute）、$4\times$ 算力與 $16\times$ / $32\times$ 算力下的同一提示詞生成演變：在 $1\times$ 算力時畫面模糊且物體結構瞬間崩解；至 $4\times$ 時初具物體形狀但運動違反物理；當算力推進至 $16\times$–$32\times$ 時，模型在未注入任何顯式 3D 渲染引擎或物理公式的前提下，**自發湧現**出逼真的流體力學波浪、光影反射、攝影機三維視差與物體遮擋恆常性。
-* **原生多長寬比構圖優勢對照**：對比實驗證明，經固定正方形裁切訓練的模型生成之畫面頻繁出現「人物無頭、主體出框」；而採用原生長寬比時空圖塊訓練的 Sora，主體完整居中率與電影級構圖品質顯著躍升。
+* **DiT 奠基數據（Peebles & Xie 2023）**：在 ImageNet 類別條件生成基準上，DiT-XL/2（$118.6\,\text{Gflops}$）搭配無分類器引導，於 $256 \times 256$ 將 FID-50K 降至 **$2.27$**（此前最佳為 LDM 的 $3.60$，p. 8），於 $512 \times 512$ 達 **$3.04$**（表 3，p. 9；ADM-G、ADM-U 為 $3.94$），作者稱其優於先前所有擴散模型；12 種設定之模型 Gflops 與 FID-50K 相關係數為 $-0.93$（圖 8，p. 8）。
+* **訓練算力對照（Brooks et al. 2024）**：OpenAI 以固定種子與輸入，展示同一模型在基礎算力、4 倍與 32 倍訓練算力下的樣本，指出樣本品質隨訓練算力增加而明顯提升（§Scaling transformers for video generation）。報告只提供影片樣本，未給定量指標。
+* **原生長寬比的構圖比較**：OpenAI 將 Sora 與一個把所有訓練影片裁成正方形的版本比較，後者有時生成主體只部分入鏡的畫面，Sora 的取景較佳（§Improved framing and composition）；Liu et al. (2024) 亦據此指出以原尺寸訓練改善構圖與取景（圖 6，p. 7）。此為樣本之質性比較，沒有量化指標。
 * **零樣本多任務渲染與物理模擬局限（Brooks et al. 2024）**：無須針對特定下游任務微調，同一模型可直接執行圖片轉影片動畫化、前後時間時空延展、迴圈無縫影片生成與風格編輯；提示詞包含特定名稱時，甚至能以零樣本渲染類似《Minecraft》之玩家視角遊戲動態畫面。然而，OpenAI 報告在討論章節明言其作為世界模擬器存在眾多局限：模型無法準確模擬許多基礎物理交互（例如玻璃碎裂動力學），且涉及實體狀態改變的互動（如吃食物時常未能留下咬痕）往往無法維持因果一致性，並伴隨長影片主體漂移或物件憑空出現等典型失敗模式。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
 * **開源時空 DiT 與流匹配（Rectified Flow）模型的百花齊放**：2024–2025 年間，學界與產業界遵循「3D-VAE ＋ 時空圖塊 ＋ DiT ＋ 3D-RoPE ＋ 流匹配」範式，相繼推出開源與商業級大模型（如快手 Kling、智譜 CogVideoX、騰訊 HunyuanVideo、阿里 Wan2.1 與 Meta Movie Gen），全面驗證時空 DiT 架構作為視覺基座模型的普適性。
-* **因果物理缺陷的定量診斷（Kang et al. 2024）**：Kang et al. (2024, *ICML*, "How Far is Video Generation from World Model: A Physical Law Perspective") 系統性測試發現，純視覺擴散模型雖能極佳地擬合常見材質外觀與局部光流，但在嚴格的牛頓力學碰撞動量守恆、流體質量守恆與複雜剛體因果交互上仍會發生「視覺合理但物理違規」的穿模或憑空生成現象，指明了下一代融合显式物理約束與閉環互動（Interactive World Models）的研究方向。
+* **以物理定律檢驗影片生成模型（Kang et al. 2024）**：Kang et al.（arXiv:2411.02385，2024 年 11 月；ICML 2025，"How Far is Video Generation from World Model: A Physical Law Perspective"）以二維物體運動與碰撞的模擬資料訓練擴散式影片生成模型，發現模型在訓練分布內可完美泛化、組合泛化隨規模改善，但在分布外情境失敗；模型並未抽象出一般物理規律，而是模仿最相近的訓練案例。作者據此認為，單靠擴大規模不足以讓影片生成模型發現基本物理定律（摘要）。
 
 ---
 

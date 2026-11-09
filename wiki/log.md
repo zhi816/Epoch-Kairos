@@ -1657,3 +1657,11 @@
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（3aaaf11 版）1440 x 900 與 375 x 812 結果 PASS。
   - 複核修正：Card 4 初稿用「+6.6–7.9」「+0.9–3.7」兩個依原文計算之區間，大數字在兩種尺寸皆折行，改用單一數字；Card 2 一列與 Card 6 結語末字落單，縮短。
   - 未決事項：建置時 `tools/build_paper_prototype.py` 有協調者未提交之修改；首頁卡片牆依協調規則未重建。
+
+## [2026-11-10 00:40] update | 新增 Sora 綜述之卡片文字檔並修正論文頁六處出處問題 | #計算機視覺 #人工智慧 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第二批 A 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2024-sora-world-simulator.md](cards/2024-sora-world-simulator.md) 並建置 `web/prototypes/paper-v1/2024-sora-world-simulator.html`。
+  - 撰寫前回第一手來源核對：封存原文 Liu et al. (2024) 綜述（paper-pdf-parser 抽取）、OpenAI 技術報告頁面（瀏覽器讀取文字與影片標籤）、Peebles & Xie (2023) arXiv:2212.09748v2、Kang et al. arXiv:2411.02385 摘要。論文頁雖標 verified，查出六處問題並修正：DiT 相關係數應為模型 Gflops 與 FID 之 -0.93（EK-094）；OpenAI 算力對照只有基礎、4 倍、32 倍且無逐級描述（EK-095）；構圖比較為質性（EK-096）；Kang et al. 為 arXiv 2024 年 11 月、ICML 2025，內容依摘要改寫（EK-097）；Card 1 點名 Runway、Pika 無出處（EK-098）；Card 3 冪律公式兩來源皆無，刪除並改寫（EK-099）。開源影片模型清單無出處，登記 EK-100（open），論文頁 verification 改為 issues。證據表增列七列。
+  - 卡片：Card 3 公式取論文頁之圖塊數 N；Card 4 結論模式（樣本展示無量化指標），取 OpenAI 算力對照、Liu 圖 6（p. 7）與 §5.1（p. 23）；Card 5 新論文模式，兩筆取本篇 §5.1 限制，另列後續研究 Kang et al. 2024。封面標題填「Sora 與世界模型」（自 title_zh 刪減），避免論文名第二行只剩一字。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 37 項 PASS；無頭截圖目視，修正 Card 2、3、4 拆字折行。`lint_wiki.py` ERROR 0。
