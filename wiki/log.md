@@ -861,3 +861,13 @@
   - **EK-026**：Card 3 依 Section 3.4 與 Appendix B.1 更正 HomoAug 流程為 Jackhmmer 搜尋 AlphaFold DB 聚類庫、TMalign 結構對齊（TM-score $\ge 0.4$、結合口袋對齊率 $\ge 40\%$）與 $6\,\text{Å}$ 口袋原子擷取，刪除非原文之 Pfam；刪除非原文之推論期多構型最大池化公式，改述原文 Proposition 1（RDKit 構型用於訓練期帶噪聲輸入以消除訓練—測試不一致性，推論期由雙塔向量點積或餘弦直接檢索）。
   - 新增證據表 [wiki/evidence/2023-drugclip.md](evidence/2023-drugclip.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-024、EK-025 與 EK-026 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 09:53] fix | JWST 2023 依原文核實暗物質暈質量函數與轉化效率並建立證據表 | #宇宙學 #天體物理
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 依據 `wiki-content-audit` 規範，對照 Nature Astronomy 2023 原文（`raw/2023-jwst-massive-galaxies.pdf`）全面核實修訂 [wiki/papers/2023-jwst-massive-galaxies.md](papers/2023-jwst-massive-galaxies.md)。
+  - **EK-027**：Card 4 對照 Section 3 與 Figure 2 精確更正數值歸屬：Labbé et al. 中心估計值分別對應 $\epsilon(z \approx 7.5) = 0.84$ 與 $\epsilon(z \approx 9) = 0.99$；在考慮星系質量、泊松噪聲與宇宙樣本方差之 $1\sigma$ 不確定度後，在 $z \approx 9.1$ 處與基準 $\Lambda\text{CDM}$ 邊際一致要求 $\epsilon(z \approx 9) \ge 0.57$，糾正原先錯配至 $z \approx 7.5$ 之問題；刪除超出原文結論之「比理論上限高出 2 至 5 倍」陳述。
+  - **EK-028**：Card 3 明確標註 Boylan-Kolchin 論文之累積暗物質暈數量與質量密度計算係採用 Sheth & Tormen (1999) 橢球坍縮質量函數進行數值積分，並註明互補誤差函數 $\operatorname{erfc}$ 解析解僅為經典 Press-Schechter (1974) 球對稱坍縮近似，修正歸屬混淆。
+  - 新增證據表 [wiki/evidence/2023-jwst-massive-galaxies.md](evidence/2023-jwst-massive-galaxies.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-027 與 EK-028 標記為 `fixed` 並追加處理紀錄。

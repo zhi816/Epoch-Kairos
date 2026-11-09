@@ -182,15 +182,17 @@
 
 ## 2023 JWST 大質量星系
 
-### EK-027 | open | papers/2023-jwst-massive-galaxies.md | Card 4 | 原文不符
+### EK-027 | fixed | papers/2023-jwst-massive-galaxies.md | Card 4 | 原文不符
 - **問題**：將 ε≈0.57 指派至 z≈7.5；原文此值對應 z≈9.1 之 1σ 邊際一致性，z≈7.5 中心估計約 0.84。「觀測密度為理論上限 2–5 倍」亦超出原文結論。
 - **來源**：[原文](https://www.nature.com/articles/s41550-023-01937-7.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 Section 3 與 Figure 2 查核修訂 Card 4：明確標註 Labbé et al. 中心估計值分別對應 $\epsilon(z \approx 7.5) = 0.84$ 與 $\epsilon(z \approx 9) = 0.99$；在考慮星系質量、泊松噪聲與宇宙樣本方差之 $1\sigma$ 不確定度後，在 $z \approx 9.1$ 處與基準 $\Lambda\text{CDM}$ 邊際一致要求 $\epsilon(z \approx 9) \ge 0.57$，糾正原先錯配至 $z \approx 7.5$ 之問題；刪除超出原文結論之「比理論上限高出 2 至 5 倍」陳述。證據表見 wiki/evidence/2023-jwst-massive-galaxies.md。
 
-### EK-028 | open | papers/2023-jwst-massive-galaxies.md | Card 3 | 歸因／版本錯置
+### EK-028 | fixed | papers/2023-jwst-massive-galaxies.md | Card 3 | 歸因／版本錯置
 - **問題**：主計算採 Sheth–Tormen 暈質量函數，後文卻附 Press–Schechter erfc 解析式；須明示 PS 為補充近似，非 Boylan-Kolchin 論文所用之 HMF。
 - **來源**：[封存原文](../raw/2023-jwst-massive-galaxies.pdf)
 - **發現於**：wiki/log.md [2026-11-08 22:00] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 Section 2 查核修訂 Card 3：明確標註 Boylan-Kolchin 論文之累積暗物質暈數量與質量密度計算係採用 Sheth & Tormen (1999) 橢球坍縮質量函數進行數值積分，並註明互補誤差函數 $\operatorname{erfc}$ 解析解僅為經典 Press-Schechter (1974) 球對稱坍縮近似（用於解釋高斯尾部指數衰減先驗），非論文主計算來源。證據表見 wiki/evidence/2023-jwst-massive-galaxies.md。
 
 ## 2024 AlphaFold 3
 

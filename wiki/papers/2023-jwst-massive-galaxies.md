@@ -10,7 +10,7 @@ domain: "physics"
 domain_tags: ["#宇宙學", "#天體物理"]
 concepts: ["multi-messenger-astrophysics"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1038/s41550-023-01937-7"
 key_papers:
@@ -67,13 +67,13 @@ $$n(> M_\star, z) \le \int_{M_\star / (\epsilon f_b)}^{\infty} \frac{dn(M, z)}{d
 
 同理，包含在這些大質量星系中的累積共動恆星質量密度 $\rho_\star(> M_\star, z)$ 必受限於高質量暗物質暈的總重子儲量：
 
-$$\begin{aligned}
-\rho_\star(> M_\star, z) &\le \epsilon f_b \,\rho_m(> M_{\text{halo}}, z) \\
-&= \epsilon f_b \int_{M_\star / (\epsilon f_b)}^{\infty} M \frac{dn(M, z)}{dM}\,dM \\
-&= \epsilon\,\Omega_{b,0}\,\rho_{\text{crit},0}\,\operatorname{erfc}\left( \frac{\delta_c(z)}{\sqrt{2}\,\sigma(M_{\text{halo}})} \right)
-\end{aligned}$$
+$$\rho_\star(> M_\star, z) \le \epsilon f_b \,\rho_m(> M_{\text{halo}}, z) = \epsilon f_b \int_{M_\star / (\epsilon f_b)}^{\infty} M \frac{dn(M, z)}{dM}\,dM$$
 
-其中後一式為 Press-Schechter 球對稱坍縮近似下之解析形式，$\delta_c(z) \approx 1.686 / D(z)$ 為線性臨界過密度，$D(z)$ 為線性生長因子，$\sigma(M_{\text{halo}})$ 為質量尺度 $M_{\text{halo}}$ 上之物質密度漲落均方根。由於在高質量尾部 $\delta_c(z)/\sigma(M) \gg 1$，互補誤差函數 $\operatorname{erfc}(\cdot)$ 呈高斯指數級急劇衰減（$\propto e^{-\nu^2 / 2}$），使高紅移大質量暗物質暈的豐度對質量與紅移極度敏感。
+論文主要數值計算採用 Sheth & Tormen (1999) 橢球坍縮暗物質暈質量函數進行積分。若在經典 Press-Schechter (1974) 球對稱坍縮近似下，該積分可寫為互補誤差函數解析式：
+
+$$\rho_\star(> M_\star, z) \le \epsilon\,\Omega_{b,0}\,\rho_{\text{crit},0}\,\operatorname{erfc}\left( \frac{\delta_c(z)}{\sqrt{2}\,\sigma(M_{\text{halo}})} \right)$$
+
+其中 $\delta_c(z) \approx 1.686 / D(z)$ 為線性臨界過密度，$D(z)$ 為線性生長因子，$\sigma(M_{\text{halo}})$ 為質量尺度 $M_{\text{halo}}$ 上之物質密度漲落均方根。由於在高質量尾部峰高 $\nu \equiv \delta_c(z)/\sigma(M) \gg 1$，互補誤差函數 $\operatorname{erfc}(\cdot)$ 呈高斯指數級急劇衰減（$\propto e^{-\nu^2 / 2}$），使高紅移大質量暗物質暈的豐度對質量與紅移極度敏感。
 
 ---
 
@@ -82,9 +82,9 @@ $$\begin{aligned}
 ### 本篇論文（Boylan-Kolchin 2023）與 Labbé et al. (2023) 之核心證據
 * **Labbé et al. (2023) 之觀測驚奇**：在 JWST CEERS 巡天僅約 $38\,\text{arcmin}^2$ 的視場中，發現 6 個紅移介於 $7.4 \le z \le 9.1$、具有明顯「雙重斷裂（Lyman Break + Balmer Break）」特徵的候選星系，其光譜能量分佈（SED）擬合出的恆星質量高達 $M_\star > 10^{10}\,M_\odot$，其中最重的一個候選者（ID 38094，光度紅移 $z \approx 7.48$，與另一 $z \approx 9.1$ 候選者）估計恆星質量甚至接近 $10^{10.9}$–$10^{11}\,M_\odot$。
 * **最重單體突破巡天體積之理論極限（$\epsilon > 1$ 悖論）**：Boylan-Kolchin 計算證明，在 CEERS 巡天於 $z \approx 7.5$–$9.1$ 所涵蓋的共動體積（約 $10^5\,\text{Mpc}^3$）內，$\Lambda\text{CDM}$ 預期存在的最重單一暗物質暈質量在 $z=7.5$ 處僅為 $M_{\text{halo}}^{\max} \approx 4 \times 10^{11}\,M_\odot$（對應 $100\%$ 重子極限質量 $f_b M_{\text{halo}}^{\max} \approx 6.5 \times 10^{10}\,M_\odot$），在 $z=9.1$ 處更僅有 $f_b M_{\text{halo}}^{\max} \approx 1.2 \times 10^{10}\,M_\odot$。这意味着在標準經驗效率 $\epsilon = 0.1$–$0.32$ 下，觀測視場中根本不應出現此等質量之星系。
-* **累積恆星質量密度要求 $\epsilon \ge 0.57$ 至 $\epsilon > 1.0$**：
-  * 在 $z \approx 7.5$（$7 < z < 8.5$）區間，Labbé et al. 推估 $M_\star > 10^{10}\,M_\odot$ 星系的累積恆星質量密度為 $\rho_\star \approx 2 \times 10^5\,M_\odot\,\text{Mpc}^{-3}$，這要求該質量區間內所有暗物質暈的平均恆星形成效率高達 **$\epsilon \approx 0.57$**（遠超低紅移宇宙極限 $\epsilon_{\max} \approx 0.2$–$0.3$）。
-  * 在 $z \approx 9.1$（$8.5 < z < 10$）區間，觀測推估之 $\rho_\star(> 10^{10.5}\,M_\odot) \approx 10^5\,M_\odot\,\text{Mpc}^{-3}$ 更比 $\Lambda\text{CDM}$ 在 **$\epsilon = 1.0$（100% 重子完全變恆星）** 下的絕對物理上限還要高出 **2 至 5 倍**。
+* **累積恆星質量密度要求極端重子轉化效率（$\epsilon \approx 0.84$–$0.99$）**：
+  * 在 $z \approx 7.5$ 與 $z \approx 9.1$ 兩處紅移區間，Labbé et al. 的中心測量值皆逼近 $\Lambda\text{CDM}$ 在 $\epsilon = 1.0$ 下的理論極限曲線 $\rho_\star(> M_\star) = f_b \rho_m(> M_\star / f_b)$，對應中心轉化效率分別為 **$\epsilon(z \approx 7.5) = 0.84$** 與 **$\epsilon(z \approx 9) = 0.99$**（Figure 2）。
+  * 納入星系質量估算、泊松噪聲與樣本方差之 $1\sigma$ 不確定度後，在 $z \approx 9.1$ 處該數據仍要求 **$\epsilon(z \approx 9) \ge 0.57$** 才能與標準 $\Lambda\text{CDM}$ 邊際一致。而在當代低紅移宇宙中所有星系的效率均滿足 $\epsilon \lesssim 0.2$。若假設較符合物理預期的 $\epsilon = 0.1$ 或 $0.32$，觀測數據與理論預測在兩個紅移處均存在巨大張力。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
 * **JWST NIRSpec 光譜認證與部分「小紅點（Little Red Dots）」AGN 揭秘**：Arrabal Haro et al. (2023), *Nature* 622:707-711 與 Kocevski et al. (2023), *Astrophysical Journal Letters* 954:L4，透過 JWST 近紅外光譜儀（NIRSpec）對上述候選星系進行直接光譜觀測，發現原先光度紅移 $z \sim 16$ 的極端候選者實為 $z = 4.9$ 的塵埃遮蔽星暴星系，而 Labbé 樣本中質量最大的候選者之一實為紅移 $z = 5.62$ 的遮蔽型活躍星系核（AGN / Little Red Dot），其紅外光度部分來自超大質量黑洞吸積盤而非純老年恆星，將其所需恆星質量下修約一個數量級，緩解了 $\epsilon > 1$ 的直接違背。
@@ -114,3 +114,4 @@ $$\begin{aligned}
   * 官方學術出處：Boylan-Kolchin, M. (2023). Nature Astronomy, 7(6), 731-735. DOI: [10.1038/s41550-023-01937-7](https://doi.org/10.1038/s41550-023-01937-7)
   * 原始觀測文獻：Labbé, I. et al. (2023). Nature, 616(7956), 266-269. DOI: [10.1038/s41586-023-05786-2](https://doi.org/10.1038/s41586-023-05786-2)
   * 原始檔典藏：`raw/2023-jwst-massive-galaxies.pdf`（不納入本倉庫，由私有倉庫 Mine-RAW 版控）
+  * 證據表：[evidence/2023-jwst-massive-galaxies.md](../evidence/2023-jwst-massive-galaxies.md)
