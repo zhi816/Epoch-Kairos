@@ -43,7 +43,7 @@ DEEP = {'bio': '#1A4F2C', 'ai': '#204960', 'physics': '#4D2E8B', 'econ': '#53401
 FOCUS = {'human': '#F2B3D6'}            # 我的關注封面之重點色：藍，human 用玫瑰粉（DESIGN.md 第二章第 3 節）
 FOCUS_DEFAULT = '#8FD5FD'
 CARD_NAMES = ['時代銘文', '世紀瓶頸', '突破原理', '決定性數據', '典範轉移', 'Kairos']
-VERIFY_TEXT = {'verified': '已逐項對照原文查核'}   # 其餘狀態之文字待定（DESIGN.md 第八章第 15 項）
+VERIFY_TEXT = '已逐項對照原文查核'   # 只在 verification 為 verified 時顯示（DESIGN.md 第八章第 15 項）
 
 
 def star_colors():
@@ -340,6 +340,10 @@ def article(fm, body):
             '<h1>%s</h1>' % esc(fm['title_zh']), '<p class="en">%s</p>' % esc(fm['title'])]
     if rest:
         head.append(markdown(rest))
+    # 手機版長文顯示方式（DESIGN.md 第五章第 5 節）：「隨卡片」只顯示目前卡片之段落，「全文」顯示全部且不與卡片連動；桌面隱藏
+    head.append('<div class="mode" role="group" aria-label="長文顯示方式">'
+                '<button type="button" id="m-card" aria-pressed="true">隨卡片</button>'
+                '<button type="button" id="m-full" aria-pressed="false">全文</button></div>')
     head.append('</header>')
     out = ['\n'.join(head)]
     for k, (num, name, body_lines) in enumerate(sections):
@@ -434,9 +438,10 @@ def side(fm, concepts, scope=''):
     if scope:
         # 論文頁之「本頁範圍說明」：樣稿長文開頭不放，移到此處保留（說明本頁與獎項、奠基論文之關係）
         parts.append('<div class="blk"><span class="lab">本頁範圍</span><span class="note">%s</span></div>' % inline(scope))
-    v = fm.get('verification', '')
-    parts.append('<div class="blk"><span class="lab">核實狀態</span><span class="ok">%s%s</span></div>' % (
-        '<i aria-hidden="true"></i>' if v == 'verified' else '', esc(VERIFY_TEXT.get(v, '查核狀態：%s（顯示文字待定）' % v))))
+    if fm.get('verification') == 'verified':
+        # 核實狀態只在 verified 時顯示，其餘狀態整塊不出現（DESIGN.md 第八章第 15 項，2026-11-09 使用者決定）
+        parts.append('<div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>%s</span></div>'
+                     % VERIFY_TEXT)
     return '\n'.join('    ' + p for p in parts)
 
 

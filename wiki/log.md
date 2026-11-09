@@ -1446,3 +1446,12 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：使用者對 DESIGN.md 第八章第 17 項無偏好，交由本代理決定。定案：資訊欄奠基論文顯示「姓氏（年份）」（如「Hopfield（1982）」「Ackley、Hinton 與 Sejnowski（1985）」「Nagel 等（2003）」），作者寫法依 paper-card-writer 之 `style.md` 第二節第 3 條，同頁同名同年加 a、b，完整書目放滑過提示、點擊連到 DOI；不顯示樣稿中的期刊名，因 `key_papers` 為自由格式、期刊名無法可靠擷取。`tools/build_paper_prototype.py` 新增 `key_labels()`，以全庫 51 筆 `key_papers` 測試皆正確（冰立方兩筆為 2013a、2013b），擷取不到年份時退回顯示完整書目；重建原型，僅 Hopfield 頁資訊欄改變，兩頁建置自我檢查 ERROR 0（本次未重跑瀏覽器驗證，改動不涉及卡片）。[DESIGN.md](../DESIGN.md) 第五章第 1 節改為已定、第八章第 17 項與第十章補紀錄；paper-card-writer 之 `references/paper-page.md` 第二節同步。`lint_wiki.py` ERROR 0。
+
+## [2026-11-09 22:33] design | 論文頁手機版改為卡片滑動加隨卡片與全文開關，核實狀態只在 verified 顯示 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依使用者決定：
+  - 核實狀態只在 `verified` 時顯示，其餘狀態整塊不出現（DESIGN.md 第八章第 15 項定案）；`tools/build_paper_prototype.py` 之 `side()` 改寫，四種狀態逐一測試。
+  - 手機版論文頁（窄於 900px）：卡片並排、手指左右滑動並停在整張（Scroll-Snap）；長文標題下加「隨卡片｜全文」開關，預設隨卡片只顯示目前卡片之段落、滑卡片即換段，全文則顯示六段且與卡片互不連動，切回時回到目前段落；桌面不顯示開關、雙向同步不變。改 `tools/paper_template.html`（樣式與程式）與 `build_paper_prototype.py`（開關按鈕），重建兩頁原型，自我檢查 ERROR 0。
+  - `verify_page.js` 新增手機行為檢查（可滑動、隨卡片換段、全文不連動、切回），兩頁各 35 項 PASS；另以真實水平滾動於 375 x 812 確認每次停在整張、段落跟著換，桌面以滾輪確認長文捲動帶動卡片。驗證時發現預覽環境會延遲程式捲動之 scroll 事件，腳本改為捲動後主動送出事件。
+  - [DESIGN.md](../DESIGN.md) 第五章第 1 節（手機版、核實狀態改為已定）、第八章第 15 項、第十章；[AGENTS.md](../AGENTS.md) 第七章第 3 節手機端佈局；paper-card-writer 之 `references/paper-page.md`（資料來源表、驗證項目、目視檢查改為九項）與 SKILL.md 交付格式同步。`lint_wiki.py` ERROR 0。

@@ -110,6 +110,30 @@
     const noScroll = disp.filter(e => !['auto', 'scroll'].includes(W.getComputedStyle(e).overflowX));
     out(noScroll.length === 0, size, '長文區塊公式 ' + disp.length + ' 條皆可水平捲動');
 
+    // 9. 手機（寬度 900px 以下）：卡片可左右滑動並停在整張；長文「隨卡片」時只顯示目前段落，「全文」時全部顯示且不隨卡片變動
+    if (w <= 900) {
+      const deck = d.querySelector('.deck'), cs = [...d.querySelectorAll('.card')];
+      const shown = () => [...d.querySelectorAll('.art section[data-card]')].filter(s => W.getComputedStyle(s).display !== 'none').map(s => s.dataset.card);
+      out(/x/.test(W.getComputedStyle(deck).scrollSnapType) && W.getComputedStyle(deck).overflowX === 'auto', size, '卡片列可左右滑動且停在整張（scroll-snap）');
+      const lab = () => d.getElementById('label').textContent.slice(0, 2);
+      // 以程式捲動卡片列時，部分環境（隱藏 iframe、背景分頁）會把 scroll 事件延遲一秒以上，故捲動後主動送出一次 scroll 事件
+      const slide = async k => { deck.scrollLeft = cs[k].offsetLeft - cs[0].offsetLeft; deck.dispatchEvent(new W.Event('scroll')); await wait(400); };
+      out(shown().join() === '1', size, '隨卡片：開頁只顯示 01 段（實際：' + shown().join() + '）');
+      await slide(2);
+      out(lab() === '03' && shown().join() === '3', size, '隨卡片：滑到第 3 張，標示 ' + lab() + '，長文顯示 ' + shown().join() + ' 段');
+      const fullBtn = d.getElementById('m-full'), cardBtn = d.getElementById('m-card');
+      if (fullBtn && cardBtn) {
+        fullBtn.click(); await wait(200);
+        const all = shown().join();
+        await slide(4);
+        out(all === '1,2,3,4,5,6' && shown().join() === '1,2,3,4,5,6', size, '全文：顯示全部 6 段，滑動卡片不改變長文（實際：' + all + ' → ' + shown().join() + '）');
+        cardBtn.click(); await wait(200);
+        out(shown().join() === lab().replace(/^0/, ''), size, '切回隨卡片：長文回到目前卡片之段落（第 ' + lab() + ' 張，顯示 ' + shown().join() + ' 段）');
+      } else {
+        out(false, size, '找不到長文顯示方式按鈕（#m-card、#m-full）');
+      }
+    }
+
     f.remove();
   }
   const summary = (fails === 0 ? '結果：PASS' : '結果：FAIL ' + fails + ' 項') + (warns ? '，WARN ' + warns + ' 項' : '') + '（' + location.pathname.split('/').pop() + '）';

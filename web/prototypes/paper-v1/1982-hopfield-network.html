@@ -117,6 +117,9 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
 .art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
 .art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
 .art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
 .art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
 .art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
@@ -164,7 +167,13 @@ button:disabled{cursor:default;opacity:.3}
   .root{display:block;height:auto;overflow:visible}
   .rail{display:none}
   .stage{container-type:normal;padding:24px 16px;border-right:0}
-  .deck{width:min(100%,420px)}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
   .pane{overflow:visible}
   .art{padding:32px 16px 64px}
   .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
@@ -220,6 +229,7 @@ button:disabled{cursor:default;opacity:.3}
 <h1>Hopfield 神經網絡：人工神經網絡與聯想記憶的統計物理基礎</h1>
 <p class="en">Neural networks and physical systems with emergent collective computational abilities</p>
 
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
 </header>
 <section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
 <p class="epigraph">當大量簡單的非線性單元相互連接時，計算不再依賴中央處理器的逐行指令，而是系統沿著能量地形自發滑向穩定吸引子的物理演化過程。</p>
@@ -290,7 +300,14 @@ T_{ii} &amp;= 0
   var dots = document.getElementById('dots'), label = document.getElementById('label');
   var prev = document.getElementById('prev'), next = document.getElementById('next');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var cur = -1, lock = 0;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
   cards.forEach(function (c, i) {
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'dot';
@@ -316,13 +333,22 @@ T_{ii} &amp;= 0
   function go(i, scroll) {
     i = Math.max(0, Math.min(cards.length - 1, i));
     show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
     if (scroll && secs[i] && paneScrolls()) {
       lock = Date.now() + 1000;
       pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
     }
   }
   function spy() {
-    if (Date.now() < lock || !secs.length) return;
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
     var inPane = paneScrolls();
     var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
     var n = -1;
@@ -340,7 +366,28 @@ T_{ii} &amp;= 0
     else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
   });
   pane.addEventListener('scroll', spy, { passive: true });
-  window.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
   go(0, false);
   window.addEventListener('load', function () {
     if (!window.katex) return;
