@@ -1573,3 +1573,12 @@
   - Card 5 新論文模式：三筆取論文頁 Card 5 所載之原文結論（§7, p. 8775）與 Limitations（pp. 8775–8776）。Card 6 取自論文頁 Card 6 第 2 點，未涉碩論內容。
   - 檢查：`check_cards.py` ERROR 0、WARN 1（範圍欄「GPT-4o」為模型名稱，依 style.md 第二節第 5 條保留）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 35 項）。目視與操作檢查發現三處並修正：封面一句話壓到代表星（導語縮為一行）、示意圖「構詞分析」貼框（重排方框寬度）、Card 5 第一筆折行落單「資料」二字（改寫）。`lint_wiki.py` ERROR 0。
   - 未決：原文註 1 寫明程式與資料公開於 GitHub，論文頁與證據表未記載，故未列入 Card 5；交由協調者決定是否補入論文頁。
+
+## [2026-11-10 00:13] update | 新增從默會知識蒸餾到 AI 賦能文化復振之卡片文字檔 | #人工智慧 #計算語言學 #社會學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：卡片回填第一批 B 組（TD-008），依新規則重試。依 paper-card-writer 撰寫 [wiki/cards/2025-indigenous-tek-ai-revitalization-wang.md](cards/2025-indigenous-tek-ai-revitalization-wang.md) 並建置 `web/prototypes/paper-v1/2025-indigenous-tek-ai-revitalization-wang.html`。
+  - 來源：Card 3 採無公式模式，經 paper-pdf-parser 全文搜尋，原文無編號公式亦無等號，模型以圖 3、5、6 呈現；說明與示意圖取論文頁 Card 3 第 1 節（$K_1$ 至 $K_4$ 四層、12 階段雙向循環）。Card 4 採結論模式，三條取自證據表 Card 4 列與論文頁 Card 4 第 2 節，位置回原文核對為 §3.1 p. 7（部落會議議決、撤回權）與 §3.4.1 p. 14（長老認證紀錄權重較高）。Card 5 採新論文模式，兩筆取自論文頁 Card 3 第 2、3 節（§3.4 五層系統、§3.5 代理迴圈）。Card 6 取論文頁 Card 6 第 1 點，未涉碩論內容；未採論文頁 Card 1「首創」之說法。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（3aaaf11 版）1440 x 900 與 375 x 812 結果 PASS。
+  - 複核修正：示意圖兩條弧與標籤距離原僅約 2.7 單位，拉開至約 9；Card 4 兩條結論與 Card 5 一筆里程碑末字落單，縮短；Card 6 轉變原寫「一律公開」強於論文頁「常未經授權」，改「未經授權」。
+  - 未決事項：原文 §6 列有未來工作（共同開發文化評估指標、代理協商協議、長期治理）與 §4 原型測試案例，論文頁未記載，Card 5 依硬規則第 2 條未採用，交協調者決定是否補入論文頁。
