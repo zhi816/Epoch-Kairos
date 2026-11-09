@@ -24,6 +24,10 @@ STATUSES = {'planned', 'wiki', 'published'}
 VERIFICATIONS = {'unverified', 'partial', 'issues', 'verified'}
 ISSUE_STATES = {'open', 'fixed', 'wontfix'}
 VERDICTS = {'符合來源', '原文不符', '原文未支持', '過度表述', '歸因／版本錯置', '未能核實'}
+# 待辦清單 wiki/todo.md（AGENTS.md 第七章第 5 節）：完成或放棄之條目直接刪除，故無 done 狀態。
+TODO_STATES = {'open', 'waiting', 'doing'}
+TODO_SCOPES = {'wiki', 'web', 'raw', 'rule', 'skill'}
+TODO_FIELDS = ['內容', '完成條件', '來源']
 PAPER_REQUIRED = ['title', 'title_zh', 'paper_year', 'award_year', 'timeline_year', 'authors',
                   'venue', 'domain', 'domain_tags', 'concepts', 'status', 'verification', 'hook',
                   'card_line', 'my_focus']
@@ -272,6 +276,47 @@ def load_issues(root):
     return issues
 
 
+def load_todo(root):
+    """檢查 wiki/todo.md 之條目格式，回傳 [(編號, 狀態)]。"""
+    path = os.path.join(root, 'wiki', 'todo.md')
+    todos = []
+    if not os.path.exists(path):
+        return todos
+    text = read(path)
+    rel = 'wiki/todo.md'
+    seen = set()
+    heads = list(re.finditer(r'(?m)^##+ .*$', text))
+    for i, m in enumerate(heads):
+        line = m.group(0)
+        ln = line_of(text, m.start())
+        if not line.startswith('### '):
+            report('ERROR', rel, ln, '待辦清單不分節；條目一律以「### TD-編號」為標題')
+            continue
+        parts = [p.strip() for p in line[4:].split('|')]
+        if len(parts) != 4 or not re.fullmatch(r'TD-\d{3,}', parts[0]) or not parts[3]:
+            report('ERROR', rel, ln, '待辦標題格式應為「TD-編號 | 狀態 | 範圍 | 標題」')
+            continue
+        tid, state, scope, _ = parts
+        if tid in seen:
+            report('ERROR', rel, ln, '待辦編號重複：' + tid)
+        seen.add(tid)
+        if state not in TODO_STATES:
+            report('ERROR', rel, ln, '狀態須為 open / waiting / doing（完成或放棄者直接刪除）：' + state)
+        if scope not in TODO_SCOPES:
+            report('ERROR', rel, ln, '範圍須為 wiki / web / raw / rule / skill：' + scope)
+        body = text[m.end(): heads[i + 1].start() if i + 1 < len(heads) else len(text)]
+        need = list(TODO_FIELDS)
+        if state == 'waiting':
+            need.append('等待')
+        if state == 'doing':
+            need.append('負責')
+        for field in need:
+            if '- **%s**：' % field not in body:
+                report('ERROR', rel, ln, '%s 缺少「%s」行' % (tid, field))
+        todos.append((tid, state))
+    return todos
+
+
 # ---------------------------------------------------------------- main
 
 def main():
@@ -293,6 +338,7 @@ def main():
     papers = {f[:-3]: os.path.join(papers_dir, f) for f in sorted(os.listdir(papers_dir)) if f.endswith('.md')}
     concepts = {f[:-3]: os.path.join(concepts_dir, f) for f in sorted(os.listdir(concepts_dir)) if f.endswith('.md')}
     issues = load_issues(root)
+    todos = load_todo(root)
     open_by_target = {}
     for iid, state, target in issues:
         if state == 'open':
@@ -416,7 +462,8 @@ def main():
         for slug in pages:
             own = 'wiki/%s/%s.md' % (kind, slug)
             linked = any(slug in t for r, t in wiki_texts.items()
-                         if r != own and r not in ('wiki/log.md', 'wiki/issues.md') and not r.startswith('wiki/evidence/'))
+                         if r != own and r not in ('wiki/log.md', 'wiki/issues.md', 'wiki/todo.md')
+                         and not r.startswith('wiki/evidence/'))
             if not linked:
                 report('WARN', own, 1, '孤島頁：索引與其他頁面均未連結本頁')
 
@@ -476,8 +523,9 @@ def main():
     n_err = sum(1 for r in results if r[0] == 'ERROR')
     n_warn = len(results) - n_err
     print('---')
-    print('論文頁 %d、概念頁 %d、問題清單 %d 筆（open %d）；ERROR %d、WARN %d'
-          % (len(papers), len(concepts), len(issues), sum(len(v) for v in open_by_target.values()), n_err, n_warn))
+    print('論文頁 %d、概念頁 %d、問題清單 %d 筆（open %d）、待辦 %d 筆（waiting %d）；ERROR %d、WARN %d'
+          % (len(papers), len(concepts), len(issues), sum(len(v) for v in open_by_target.values()),
+             len(todos), sum(1 for _, s in todos if s == 'waiting'), n_err, n_warn))
     sys.exit(1 if n_err else 0)
 
 

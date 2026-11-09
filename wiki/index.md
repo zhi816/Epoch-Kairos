@@ -157,7 +157,4 @@
 
 ## 待辦與已知問題
 
-* `raw/` 與 `wiki/papers/` 100% 對齊：目前 `raw/` 根目錄下全部 17 份全球里程碑 PDF 與 `raw/my-focus/` 下 24 篇個人核心研究文獻均已全數建立對應之 `wiki/papers/YYYY-<slug>.md` 知識頁（全庫共 41 篇，`status: "wiki"`）與 10 篇跨領域概念頁（`wiki/concepts/*.md`），雙向反向連結與實體參照 100% 對齊。
-* 下列條目之原始文獻受出版社付費牆或反自動化關卡（NCBI PMC proof-of-work、Cloudflare）限制，`raw/` 暫無原始檔，一律依第九章以 DOI 連結留存並維持 `[planned]` 狀態：Soai (1995) 不對稱自催化、Yaghi (1999) MOFs、Martinis (1985) 巨觀量子穿隧、Sakaguchi (1995) Treg、Brunkow (2001)、Ambros (1993) microRNA、Drucker (1987) GLP-1、Li (2025) 水稻 QT12、Fu (2025) 哈爾濱頭骨、Musunuru (2025) 鹼基編輯療法（NEJM）。
-* 光遺傳學頁 `key_papers` 之 Nagel et al. (2002) *Science*（https://doi.org/10.1126/science.1072068）與 Nagel et al. (2003) *PNAS*（https://doi.org/10.1073/pnas.1936192100）亦受上述關卡限制，`raw/` 暫無原始檔。
-* `web/` 展示層尚未產出：目前 41 篇論文頁皆標記為 `status: "wiki"`，待後續編譯 `web/papers/` 與 `web/index.html` 後再升級為 `published`。
+* 待辦事項統一登記於 [todo.md](todo.md)（交接、未完成任務、待使用者確認之工作）；Wiki 內容問題見 [issues.md](issues.md)。
