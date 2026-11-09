@@ -238,34 +238,32 @@
     return { x: Math.max(-60, Math.min(1060 - size, cx - size / 2)), y: Math.max(-60, Math.min(1060 - size, cy - size / 2)), w: size, h: size };
   }
 
+  /* 群星座標：桌面用樣稿 v5 之分團版面（欄位 dk，1000 x 920），手機用同心圓版面（x、y，1000 x 1000） */
+  function at(o) { return mobile ? (o.hub || [o.x, o.y]) : o.dk; }
+  function centre() { return mobile ? [500, 500] : D.desk.c; }
   function buildStars() {
-    stage = { w: 1000, h: 1000 };
-    setAR(1);
+    stage = mobile ? { w: 1000, h: 1000 } : { w: D.desk.w, h: D.desk.h };
+    setAR(stage.w / stage.h);
     nodes = [];
-    var h = '<svg class="bg" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs>';
+    var O = centre(), cx = O[0], cy = O[1];
+    /* 星盤：手機外圈貼齊方框；桌面依樣稿 v4／v5 之半徑，星團可越出外圈 */
+    var R = mobile ? { mid: 210, out: 490, out2: 498, t1: 474, t2: 482, m2: 204 } : { mid: 250, out: 400, out2: 408, t1: 386, t2: 393, m2: 244 };
+    var h = '<svg class="bg" viewBox="0 0 ' + stage.w + ' ' + stage.h + '" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs>';
     D.domains.forEach(function (d) {
       h += '<radialGradient id="nb-' + d.key + '"><stop offset="0" stop-color="rgba(' + d.rgb + ',0.10)"/><stop offset="0.5" stop-color="rgba(' + d.rgb + ',0.04)"/><stop offset="1" stop-color="rgba(' + d.rgb + ',0)"/></radialGradient>';
     });
     h += '</defs><g class="nebs">';
-    D.domains.forEach(function (d) { h += '<circle data-k="' + d.key + '" cx="' + d.hub[0] + '" cy="' + d.hub[1] + '" r="' + (d.count ? 280 : 160) + '" fill="url(#nb-' + d.key + ')"/>'; });
+    D.domains.forEach(function (d) { var q = at(d); h += '<circle data-k="' + d.key + '" cx="' + q[0] + '" cy="' + q[1] + '" r="' + (d.count ? 280 : 160) + '" fill="url(#nb-' + d.key + ')"/>'; });
     var ticks = '';
-    for (var i = 0; i < 72; i++) {
-      var an = i * 5 * Math.PI / 180, r2 = i % 6 === 0 ? 474 : 482;
-      ticks += 'M' + (500 + 490 * Math.cos(an)).toFixed(1) + ' ' + (500 + 490 * Math.sin(an)).toFixed(1) + ' L' + (500 + r2 * Math.cos(an)).toFixed(1) + ' ' + (500 + r2 * Math.sin(an)).toFixed(1) + ' ';
-    }
-    for (var j = 0; j < 24; j++) {
-      var a2 = j * 15 * Math.PI / 180;
-      ticks += 'M' + (500 + 210 * Math.cos(a2)).toFixed(1) + ' ' + (500 + 210 * Math.sin(a2)).toFixed(1) + ' L' + (500 + 204 * Math.cos(a2)).toFixed(1) + ' ' + (500 + 204 * Math.sin(a2)).toFixed(1) + ' ';
-    }
+    function tick(a, r1, r2) { return 'M' + (cx + r1 * Math.cos(a)).toFixed(1) + ' ' + (cy + r1 * Math.sin(a)).toFixed(1) + ' L' + (cx + r2 * Math.cos(a)).toFixed(1) + ' ' + (cy + r2 * Math.sin(a)).toFixed(1) + ' '; }
+    for (var i = 0; i < 72; i++) ticks += tick(i * 5 * Math.PI / 180, R.out, i % 6 === 0 ? R.t1 : R.t2);
+    for (var j = 0; j < 24; j++) ticks += tick(j * 15 * Math.PI / 180, R.mid, R.m2);
+    function ring(r, extra) { return '<circle cx="' + cx + '" cy="' + cy + '" r="' + r + '"' + (extra || '') + ' vector-effect="non-scaling-stroke"/>'; }
     h += '</g><g fill="none" stroke="rgba(232,228,218,0.07)" stroke-width="1">' +
-      '<circle cx="500" cy="500" r="120" stroke-dasharray="2 6" vector-effect="non-scaling-stroke"/>' +
-      '<circle cx="500" cy="500" r="210" stroke-dasharray="1 7" vector-effect="non-scaling-stroke"/>' +
-      '<circle cx="500" cy="500" r="490" vector-effect="non-scaling-stroke"/>' +
-      '<circle cx="500" cy="500" r="498" stroke="rgba(232,228,218,0.04)" vector-effect="non-scaling-stroke"/>' +
+      ring(120, ' stroke-dasharray="2 6"') + ring(R.mid, ' stroke-dasharray="1 7"') + ring(R.out) + ring(R.out2, ' stroke="rgba(232,228,218,0.04)"') +
       '<path d="' + ticks + '" stroke="rgba(232,228,218,0.10)" vector-effect="non-scaling-stroke"/>' +
-      '<path d="M500 10 V990 M10 500 H990" stroke="rgba(232,228,218,0.035)" vector-effect="non-scaling-stroke"/>' +
-      '<circle cx="500" cy="500" r="24" stroke="rgba(232,228,218,0.22)" vector-effect="non-scaling-stroke"/>' +
-      '<circle cx="500" cy="500" r="33" stroke="rgba(232,228,218,0.12)" stroke-dasharray="1 3" vector-effect="non-scaling-stroke"/>' +
+      '<path d="M' + cx + ' ' + (cy - R.out - 20) + ' V' + (cy + R.out + 20) + ' M' + (cx - R.out - 20) + ' ' + cy + ' H' + (cx + R.out + 20) + '" stroke="rgba(232,228,218,0.035)" vector-effect="non-scaling-stroke"/>' +
+      ring(24, ' stroke="rgba(232,228,218,0.22)"') + ring(33, ' stroke="rgba(232,228,218,0.12)" stroke-dasharray="1 3"') +
       '</g><g class="edges"></g></svg>';
     map.innerHTML = h;
 
@@ -276,13 +274,14 @@
         return '<span class="flare" aria-hidden="true" style="width:' + f[0] + 'px;transform:rotate(' + f[1] + 'deg) translate(-50%,-0.5px);opacity:' + (f[2] / 0.8) + '"></span>';
       }).join('') + k + '<span class="klbl" aria-hidden="true">KAIROS</span>';
     }
-    addNode(mk(k), 500, 500);
+    addNode(mk(k), cx, cy);
 
     Object.keys(D.tags).forEach(function (t) {
-      var tg = D.tags[t], d = DOM[tg.d];
+      var tg = D.tags[t], d = DOM[tg.d], q = at(tg), hq = at(d);
       var w = mk('<span class="dot" aria-hidden="true" style="width:3px;height:3px;box-shadow:0 0 5px 1.5px rgba(' + d.rgb + ',.75)"></span><span class="lbl r" aria-hidden="true">' + esc(t) + (mobile ? '' : '<sup>' + tg.count + '</sup>') + '</span>');
       w.dataset.t = t;
-      addNode(w, tg.x, tg.y, w.querySelector('.lbl'), 3);
+      /* 桌面：標籤名稱放在遠離學科中心的一側 */
+      addNode(w, q[0], q[1], w.querySelector('.lbl'), 3, mobile ? null : (q[0] >= hq[0] ? 'r' : 'l'));
     });
     D.domains.forEach(function (d) {
       var lab = mobile ? esc(d.name) + ' <span style="font-family:var(--font-serif);color:var(--muted)">' + d.count + '</span>' : esc(d.name) + '<sup>' + d.count + '</sup>';
@@ -292,7 +291,7 @@
       w.dataset.k = d.key;
       var b = w.querySelector('button');
       if (!mobile) hoverable(b, function () { setHoverD(d.key); }, function () { setHoverD(null); });
-      addNode(w, d.hub[0], d.hub[1], w.querySelector('.hublbl'), 1, 'r');
+      addNode(w, at(d)[0], at(d)[1], w.querySelector('.hublbl'), 1, 'r');
     });
     var fr = rndFrom(1263);
     paperOrder.forEach(function (p) {
@@ -302,7 +301,7 @@
         (mobile ? '<span class="lbl plbl r" aria-hidden="true">' + esc(p.name) + '</span>' : ''));
       w.dataset.p = p.slug;
       if (!mobile) hoverable(w.querySelector('button'), function () { setHover(p.slug); }, scheduleHoverClear);
-      addNode(w, p.x, p.y, w.querySelector('.lbl'), 2);
+      addNode(w, at(p)[0], at(p)[1], w.querySelector('.lbl'), 2);
     });
     /* 概念頁菱形：名稱預設隱藏，滑過、聚焦或點選菱形，或選中／滑過之論文屬於該概念時才顯示（DESIGN.md 第二章第 2 節）。
        排在星點之後，鍵盤先經過學科與星點；名稱另以 aria-label 提供給螢幕閱讀器。 */
@@ -311,7 +310,7 @@
         '<span class="lbl cptlbl r" aria-hidden="true">' + esc(c.name) + '</span>');
       w.dataset.c = c.slug;
       if (!mobile) hoverable(w.querySelector('button'), function () { setHoverC(c.slug); }, function () { setHoverC(null); });
-      addNode(w, c.x, c.y, w.querySelector('.lbl'), 4, c.x >= 500 ? 'r' : 'l');
+      addNode(w, at(c)[0], at(c)[1], w.querySelector('.lbl'), 4, at(c)[0] >= cx ? 'r' : 'l');
     });
     if (!mobile) addTip();
   }
@@ -371,25 +370,28 @@
 
   function starsEdges(fx, sel, selTags, selDom) {
     gid = 0;
-    var s = '', inF = function (k) { return !fx || fx === k; };
+    var s = '', inF = function (k) { return !fx || fx === k; }, O = centre();
     D.domains.forEach(function (d) {
-      s += edge({ x1: 500, y1: 500, x2: d.hub[0], y2: d.hub[1], c1: IV, c2: d.rgb, a: selDom[d.key] ? 0.55 : (inF(d.key) ? (d.count ? 0.3 : 0.12) : 0.05), fade: 0.7 });
+      var h = at(d);
+      s += edge({ x1: O[0], y1: O[1], x2: h[0], y2: h[1], c1: IV, c2: d.rgb, a: selDom[d.key] ? 0.55 : (inF(d.key) ? (d.count ? 0.3 : 0.12) : 0.05), fade: 0.7 });
     });
     Object.keys(D.tags).forEach(function (t) {
-      var tg = D.tags[t], d = DOM[tg.d], lit = !!selTags[t];
-      s += edge({ x1: d.hub[0], y1: d.hub[1], x2: tg.x, y2: tg.y, c1: d.rgb, c2: d.rgb, a: lit ? 0.9 : (inF(tg.d) ? 0.55 : 0.08), fade: 0.35, w: lit ? 1.7 : 1.1, flow: lit });
+      var tg = D.tags[t], d = DOM[tg.d], lit = !!selTags[t], h = at(d), q = at(tg);
+      s += edge({ x1: h[0], y1: h[1], x2: q[0], y2: q[1], c1: d.rgb, c2: d.rgb, a: lit ? 0.9 : (inF(tg.d) ? 0.55 : 0.08), fade: 0.35, w: lit ? 1.7 : 1.1, flow: lit });
     });
     D.papers.forEach(function (p) {
+      var pp = at(p);
       p.tags.forEach(function (t) {
-        var tg = D.tags[t], lit = !!(sel && sel.slug === p.slug);
-        s += edge({ x1: tg.x, y1: tg.y, x2: p.x, y2: p.y, c1: DOM[tg.d].rgb, c2: IV, a: lit ? 0.95 : ((inF(tg.d) || inF(p.d)) ? 0.42 : 0.06), fade: 0.25, w: lit ? 1.7 : 1.1, flow: lit });
+        var tg = D.tags[t], lit = !!(sel && sel.slug === p.slug), q = at(tg);
+        s += edge({ x1: q[0], y1: q[1], x2: pp[0], y2: pp[1], c1: DOM[tg.d].rgb, c2: IV, a: lit ? 0.95 : ((inF(tg.d) || inF(p.d)) ? 0.42 : 0.06), fade: 0.25, w: lit ? 1.7 : 1.1, flow: lit });
       });
     });
     D.concepts.forEach(function (c) {
+      var cq = at(c);
       c.papers.forEach(function (slug) {
-        var p = byP[slug], lit = !!(sel && sel.slug === slug);
-        if (lit) s += edge({ x1: c.x, y1: c.y, x2: p.x, y2: p.y, c1: IV, c2: IV, a: 0.7, fade: 0.4, dash: '2 5' });
-        else if (!mobile) s += edge({ x1: c.x, y1: c.y, x2: p.x, y2: p.y, c1: IV, c2: IV, a: (inF(p.d) || inF(c.d)) ? 0.1 : 0.03, fade: 0.5, dash: '1 6' });
+        var p = byP[slug], lit = !!(sel && sel.slug === slug), pp = at(p);
+        if (lit) s += edge({ x1: cq[0], y1: cq[1], x2: pp[0], y2: pp[1], c1: IV, c2: IV, a: 0.7, fade: 0.4, dash: '2 5' });
+        else if (!mobile) s += edge({ x1: cq[0], y1: cq[1], x2: pp[0], y2: pp[1], c1: IV, c2: IV, a: (inF(p.d) || inF(c.d)) ? 0.1 : 0.03, fade: 0.5, dash: '1 6' });
       });
     });
     map.querySelector('.edges').innerHTML = s;

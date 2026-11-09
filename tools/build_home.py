@@ -40,6 +40,12 @@ DOMAINS = [
     ('chem', '化學', '化學、材料與能源', 30, 'M5 0.4 L9.2 2.8 L9.2 7.2 L5 9.6 L0.8 7.2 L0.8 2.8 Z'),
     ('human', '人文', '語言、心理與社會', 90, 'M3.6 0.6 H6.4 V3.6 H9.4 V6.4 H6.4 V9.4 H3.6 V6.4 H0.6 V3.6 H3.6 Z'),
 ]
+# 桌面星圖（1000 x 920，中心 500,460）之學科中心，取自畫布樣稿「首頁 v5」：各學科自成一團，
+# 標籤繞著學科中心向外展開、論文在標籤外側，不擠成同心圓（圓形為手機版之折衷，見 DESIGN.md 第二章第 2 節）。
+DESK = {'w': 1000, 'h': 920, 'c': (500, 460)}
+DESK_HUB = {'bio': (285, 300), 'ai': (725, 290), 'physics': (730, 620), 'econ': (235, 610), 'chem': (470, 720), 'human': (620, 185)}
+TBOX = (60, 60, 940, 860)   # 桌面標籤可用範圍
+PBOX = (50, 50, 950, 870)   # 桌面論文星可用範圍
 # 同一學科內標籤沿圓周排列的順序（減少連線交錯）；未列出的標籤依白名單順序接在後面。
 TAG_ORDER = {
     'bio': ['#分子生物', '#基因工程', '#生物科技', '#神經科學', '#結構生物學'],
@@ -200,6 +206,57 @@ def relax(pos, keys, mind, rmin, rmax, iters, step=0.5, rfix=None):
             pos[s][1] = min(max(pos[s][1], 40), 960)
 
 
+def rel(a, base):
+    """角度 a 相對於 base 之差，落在 (-180, 180]。"""
+    return (a - base + 180) % 360 - 180
+
+
+def reach(h, a, box):
+    """自 h 沿角度 a 前進、仍留在 box 內之最遠距離。"""
+    t = math.radians(a)
+    dx, dy = math.cos(t), math.sin(t)
+    lim = []
+    if dx > 1e-9:
+        lim.append((box[2] - h[0]) / dx)
+    if dx < -1e-9:
+        lim.append((box[0] - h[0]) / dx)
+    if dy > 1e-9:
+        lim.append((box[3] - h[1]) / dy)
+    if dy < -1e-9:
+        lim.append((box[1] - h[1]) / dy)
+    return min(lim) if lim else 1e9
+
+
+def relax_free(pos, keys, fixed, mind, mfix, box, iters, step=0.5, keep=None):
+    """桌面星圖：可動點互相推開（距離小於 mind），並避開固定點（距離小於 mfix），最後限制在 box 內；
+    keep(key, xy) 可再加約束（例如標籤與學科中心之距離）。"""
+    x0, y0, x1, y1 = box
+    for _ in range(iters):
+        for i, a in enumerate(keys):
+            for b in keys[i + 1:]:
+                dx = pos[a][0] - pos[b][0]
+                dy = pos[a][1] - pos[b][1]
+                d = math.hypot(dx, dy) or 1
+                if d < mind:
+                    m = (mind - d) / 2 * step
+                    pos[a][0] += dx / d * m
+                    pos[a][1] += dy / d * m
+                    pos[b][0] -= dx / d * m
+                    pos[b][1] -= dy / d * m
+            for q in fixed:
+                dx = pos[a][0] - q[0]
+                dy = pos[a][1] - q[1]
+                d = math.hypot(dx, dy) or 1
+                if d < mfix:
+                    pos[a][0] += dx / d * (mfix - d) * step
+                    pos[a][1] += dy / d * (mfix - d) * step
+        for s in keys:
+            if keep:
+                pos[s] = keep(s, pos[s])
+            pos[s][0] = min(max(pos[s][0], x0), x1)
+            pos[s][1] = min(max(pos[s][1], y0), y1)
+
+
 def spread(n, center, gap, lo, hi):
     """一列 n 顆星在 [lo, hi] 內以 center 為中心等距排開；放不下時縮小間距。"""
     if n > 1:
@@ -272,7 +329,89 @@ def build_stars(P, C, tag_dom):
         tag_out[t] = dict(d=tags[t]['d'], x=round(tags[t]['xy'][0]), y=round(tags[t]['xy'][1]),
                           count=sum(1 for f in ms.values() if t in f['domain_tags']))
     assert set(dom_keys) >= {p['d'] for p in papers}
-    return dict(domains=domains, tags=tag_out, papers=papers, concepts=concepts)
+    out = dict(domains=domains, tags=tag_out, papers=papers, concepts=concepts)
+    build_desk(out, ms)
+    return out
+
+
+def build_desk(S, ms):
+    """桌面星圖座標（欄位 dk）：學科中心取樣稿 v5；標籤在中心外側展開，跨學科標籤偏向所連論文之學科；
+    論文在所屬學科標籤之外側；概念頁在半徑 120 之內圈。"""
+    C = DESK['c']
+    hub = {d['key']: DESK_HUB[d['key']] for d in S['domains']}
+    # 星團開口：介於「背離中心」與「朝左右兩側」之間，讓寬版面的左右空間被用上（同樣稿 v4 之生醫、AI 兩團）
+    theta = {k: cmean([ang(*hub[k], c=C), 0 if hub[k][0] >= C[0] else 180]) for k in hub}
+    tdk, towner = {}, {}
+    for d in S['domains']:
+        k, order = d['key'], d['tags']
+        if not order:
+            continue
+        want = {}
+        for t in order:
+            dirs = [theta[k]] * 2 + [ang(*hub[f['domain']], c=hub[k]) for f in ms.values()
+                                     if t in f['domain_tags'] and f['domain'] != k]
+            want[t] = rel(cmean(dirs), theta[k])
+        srt = sorted(order, key=lambda t: (round(want[t] / 10), order.index(t)))
+        n = len(srt)
+        center = sum(want.values()) / n
+        offs = spread(n, center, 44, -100, 100)
+        for i, t in enumerate(srt):
+            a = theta[k] + offs[i]
+            tdk[t] = pol(a, min(115 if i % 2 == 0 else 150, reach(hub[k], a, TBOX) - 70), hub[k])
+            towner[t] = k
+
+    def near_hub(t, xy):
+        h = hub[towner[t]]
+        a, r = ang(*xy, c=h), math.hypot(xy[0] - h[0], xy[1] - h[1])
+        return pol(a, min(max(r, 100), 175), h)
+    # 標籤互相推開、避開中心與其他學科中心，但留在自己學科中心 100 至 175 之間
+    relax_free(tdk, sorted(tdk), [C] + list(hub.values()), 66, 84, TBOX, 300, keep=near_hub)
+    # 論文：在所屬學科標籤之間、略往外（只有一個所屬標籤者放在該標籤外側）
+    pos = {}
+    for p in S['papers']:
+        k = p['d']
+        own = [t for t in p['tags'] if S['tags'][t]['d'] == k] or p['tags']
+        mx = sum(tdk[t][0] for t in own) / len(own)
+        my = sum(tdk[t][1] for t in own) / len(own)
+        a = ang(mx, my, c=hub[k])
+        r = math.hypot(mx - hub[k][0], my - hub[k][1]) + (65 if len(own) == 1 else 50)
+        pos[p['slug']] = pol(a, min(r, reach(hub[k], a, PBOX)), hub[k])
+    # 標籤相同的論文會落在同一點：沿垂直於學科中心方向的方向等距排開，再交給 relax_free
+    same = {}
+    for p in S['papers']:
+        same.setdefault((p['d'], round(pos[p['slug']][0]), round(pos[p['slug']][1])), []).append(p['slug'])
+    for (k, x, y), group in same.items():
+        n = len(group)
+        if n < 2:
+            continue
+        a = math.radians(ang(x, y, c=hub[k]) + 90)
+        for i, s in enumerate(group):
+            off = (i - (n - 1) / 2) * 48
+            pos[s] = [x + off * math.cos(a), y + off * math.sin(a)]
+    fixed = [C] + list(hub.values()) + list(tdk.values())
+    relax_free(pos, sorted(pos), fixed, 58, 40, PBOX, 400)
+    cpos = {}
+    for c in S['concepts']:
+        cpos[c['slug']] = pol(cmean([ang(*pos[s], c=C) for s in c['papers']]), 120, C)
+    for _ in range(300):
+        keys = sorted(cpos)
+        for i, a in enumerate(keys):
+            for b in keys[i + 1:]:
+                da, db = ang(*cpos[a], c=C), ang(*cpos[b], c=C)
+                gap = rel(db, da)
+                if abs(gap) < 30:
+                    push = (30 - abs(gap)) / 4 * (1 if gap >= 0 else -1)
+                    cpos[a] = pol(da - push, 120, C)
+                    cpos[b] = pol(db + push, 120, C)
+    for d in S['domains']:
+        d['dk'] = list(hub[d['key']])
+    for t, v in S['tags'].items():
+        v['dk'] = [round(tdk[t][0]), round(tdk[t][1])]
+    for p in S['papers']:
+        p['dk'] = [round(pos[p['slug']][0]), round(pos[p['slug']][1])]
+    for c in S['concepts']:
+        c['dk'] = [round(cpos[c['slug']][0]), round(cpos[c['slug']][1])]
+    S['desk'] = dict(w=DESK['w'], h=DESK['h'], c=list(C))
 
 
 # ---------------------------------------------------------------- 我的星系
