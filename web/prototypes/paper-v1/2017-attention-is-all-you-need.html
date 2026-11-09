@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Attention Is All You Need｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#8FD5FD;--deep:#204960;--win:#1C252B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.15</span><span>AI</span></div><div class="win"><i style="left:9.9%;top:42.1%;width:1px;height:1px;opacity:0.66"></i><i style="left:50.6%;top:18.1%;width:1px;height:1px;opacity:0.79"></i><i style="left:75.3%;top:44.2%;width:1px;height:1px;opacity:0.74"></i><i style="left:27.5%;top:34.5%;width:1px;height:1px;opacity:0.33"></i><i style="left:20.2%;top:6.8%;width:1px;height:1px;opacity:0.68"></i><i style="left:45.4%;top:42.7%;width:1px;height:1px;opacity:0.80"></i><i style="left:57.8%;top:18.9%;width:1px;height:1px;opacity:0.74"></i><i style="left:58.9%;top:38.7%;width:1px;height:1px;opacity:0.68"></i><i style="left:4.7%;top:28.6%;width:1px;height:1px;opacity:0.79"></i><i style="left:35.6%;top:33.0%;width:1px;height:1px;opacity:0.56"></i><i style="left:59.3%;top:45.7%;width:1px;height:1px;opacity:0.48"></i><i style="left:30.9%;top:26.0%;width:1px;height:1px;opacity:0.64"></i><i style="left:45.7%;top:20.4%;width:1px;height:1px;opacity:0.80"></i><i style="left:36.9%;top:17.5%;width:1px;height:1px;opacity:0.58"></i><span class="rep"></span><span class="line"><span>不再逐字讀句子，</span><span>讓每個字</span><span>同時看見整句</span></span></div><div class="tags">人工智慧、計算與數學・#人工智慧 #深度學習</div><div class="name">Attention Is All You Need</div><div class="lead">只用注意力計算字與字的關係，不必逐字等待，訓練因此能大量並行。</div><div class="yrs">2017 發表 ｜ NeurIPS</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">逐字計算，<br>快不起也記不遠</span><div class="rows"><div class="row"><b>循環層</b><span>每一步都要等上一步算完，並行硬體派不上用場</span></div><div class="row"><b>卷積網路</b><span>相距遠的兩個字，要經過好幾層才能交換資訊</span></div><div class="row gap"><b>架構</b><span>沒有既能整句並行計算、又讓任兩字直接相連的結構</span></div></div><span class="ft" style="color:var(--ink)">需要一種不必排隊、一步就能看全句的計算。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">用內積算出誰該關注誰</span><svg class="dia" viewBox="0 0 300 110" role="img" aria-label="示意：循環層逐字傳遞（左）；自注意力直接相連，一個字連到句中其他每個字（右）。">
+  <line class="k-muted k-thin" x1="150" y1="8" x2="150" y2="102"/>
+  <circle class="k-muted" cx="18" cy="66" r="4"/>
+  <circle class="k-muted" cx="46" cy="66" r="4"/>
+  <circle class="k-muted" cx="74" cy="66" r="4"/>
+  <circle class="k-muted" cx="102" cy="66" r="4"/>
+  <circle class="k-muted" cx="130" cy="66" r="4"/>
+  <line class="k-muted" x1="24" y1="66" x2="40" y2="66"/>
+  <polyline class="k-muted" points="36,62 40,66 36,70"/>
+  <line class="k-muted" x1="52" y1="66" x2="68" y2="66"/>
+  <polyline class="k-muted" points="64,62 68,66 64,70"/>
+  <line class="k-muted" x1="80" y1="66" x2="96" y2="66"/>
+  <polyline class="k-muted" points="92,62 96,66 92,70"/>
+  <line class="k-muted" x1="108" y1="66" x2="124" y2="66"/>
+  <polyline class="k-muted" points="120,62 124,66 120,70"/>
+  <path class="k-line" d="M224 81 Q 197 36 170 82"/>
+  <path class="k-line" d="M224 81 Q 210 58 197 82"/>
+  <path class="k-line" d="M224 81 Q 238 58 251 82"/>
+  <path class="k-line" d="M224 81 Q 251 36 278 82"/>
+  <circle class="k-ink" cx="170" cy="86" r="4"/>
+  <circle class="k-ink" cx="197" cy="86" r="4"/>
+  <circle class="k-accent" cx="224" cy="86" r="5"/>
+  <circle class="k-ink" cx="251" cy="86" r="4"/>
+  <circle class="k-ink" cx="278" cy="86" r="4"/>
+  <text class="k-label" x="74" y="50" text-anchor="middle">循環層逐字傳遞</text>
+  <text class="k-label-accent" x="224" y="104" text-anchor="middle">自注意力直接相連</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\operatorname{Var}(q \cdot k) = d_k"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)"><span class="m-in" data-tex="q"></span>、<span class="m-in" data-tex="k"></span> 分量獨立、均值 0、變異數 1 時，內積變異數為 <span class="m-in" data-tex="d_k"></span>，故注意力除以 <span class="m-in" data-tex="\sqrt{d_k}"></span>。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">28.4</span><span class="l">WMT 2014 英譯德 BLEU（大型版本）</span></div><div class="stat"><span class="v">41.8</span><span class="l">WMT 2014 英譯法 BLEU，正文作 41.0</span></div><div class="stat"><span class="v">3.5 天</span><span class="l">大型版本以 8 張 P100 GPU 訓練的時間</span></div><div class="stat"><span class="v">91.3</span><span class="l">WSJ 英語句法剖析 F1，只用 WSJ 訓練</span></div></div><span class="ft">範圍：Vaswani 等 2017，WMT 2014 翻譯、WSJ 句法剖析，8 張 P100</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">從翻譯模型，<br>到各種模態的通用骨幹</span><div class="time"><p><b>2019</b><span>Devlin 等取編碼器提出 BERT</span></p><p><b>2020</b><span>Brown 等取解碼器擴展到 1,750 億參數</span></p><p><b>2020</b><span>Kaplan 等觀察到損失隨規模呈冪律下降</span></p><p><b>2021</b><span>Jumper 等以注意力預測蛋白質結構</span></p><p><b>2023</b><span>Peebles 與 Xie 結合注意力與擴散模型</span></p></div><span class="ft">以上皆為後續他人成果，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">拿掉逐字遞推的結構，只留位置編碼等少數先驗，字與字的關聯交給資料學。</span><span class="shift"><span>強結構偏置</span><i aria-hidden="true"></i><b>資料驅動</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2017 發表 ｜ NeurIPS</span>
+<h1>Attention Is All You Need：開啟生成式 AI 時代的 Transformer 架構</h1>
+<p class="en">Attention Is All You Need</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">當模型不再被迫一個字一個字地順著時間軸緩慢爬行，而是能在一瞬間用矩陣乘法看清全局脈絡中每一處幽微的張力時，人工智慧的規模化奇點便真正降臨了。</p>
+<p>在 2017 年之前，自然語言處理與序列建模完全由循環神經網路（RNN、LSTM、GRU）主導。RNN 必須按時間順序從左到右逐字計算隱藏狀態 <span class="m-in" data-tex="h_t = f(h_{t-1}, x_t)"></span>，既無法在現代 GPU 叢集上大規模並行訓練，又會在長序列中遺忘早期資訊。Google Brain 與 Google Research 的八位作者在《Attention Is All You Need》中做出了一個激進的斷捨離：<strong>完全拋棄循環與卷積結構</strong>，提出純基於自注意力機制（Self-Attention）的 <strong>Transformer</strong> 架構，一舉刷新機器翻譯紀錄並將訓練成本降低一個數量級，成為日後 GPT、BERT、AlphaFold2、Sora 與 DeepSeek 等一切現代基礎模型的共同母體。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：序列計算的時間鎖鏈與長程梯度衰減</h2></div>
+<p>傳統序列神經網路受困於兩個根本性的結構瓶頸：</p>
+<ul><li><strong>順序依賴阻斷硬體並行化（Sequential Bottleneck）</strong>：在長度為 <span class="m-in" data-tex="n"></span> 的序列中，LSTM 計算第 <span class="m-in" data-tex="t"></span> 個時間步必須等待第 <span class="m-in" data-tex="t-1"></span> 步完成，順序操作複雜度為 <span class="m-in" data-tex="O(n)"></span>。這使得 GPU 強大的巨量矩陣並行算力無法在時間維度展開，嚴重限制了訓練資料規模的上限。</li><li><strong>長程依賴的路徑長度衰減（Long-Range Dependency Path Length）</strong>：在 RNN 中，相距為 <span class="m-in" data-tex="n"></span> 的兩個語詞要交換資訊，信號必須穿越 <span class="m-in" data-tex="O(n)"></span> 個非線性時間步；在卷積網路（如 ByteNet）中亦需 <span class="m-in" data-tex="O(\log_k n)"></span> 層。路徑越長，梯度消失與資訊壓縮失真越嚴重，難以捕捉跨段落的語法與語義關聯。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>Transformer 將序列中任意兩個位置之間的交互距離直接壓縮為常數級 <strong><span class="m-in" data-tex="O(1)"></span></strong>，並透過三大核心設計兼顧表達力與訓練穩定性：</p>
+<ol><li><strong>縮放點積注意力（Scaled Dot-Product Attention）</strong>：<ul><li>將輸入序列映射為查詢（Query, <span class="m-in" data-tex="Q"></span>）、鍵（Key, <span class="m-in" data-tex="K"></span>）與值（Value, <span class="m-in" data-tex="V"></span>）三個矩陣，透過全序列成對內積直接計算任意兩位置的相關性權重。除以縮放因子 <span class="m-in" data-tex="\sqrt{d_k}"></span> 則防止高維度內積過大導致 Softmax 進入梯度趨近於零的飽和區。</li></ul></li><li><strong>多頭注意力機制（Multi-Head Attention）</strong>：<ul><li>將 <span class="m-in" data-tex="d_{\text{model}} = 512"></span> 維空間投影至 <span class="m-in" data-tex="h = 8"></span> 個獨立的 <span class="m-in" data-tex="d_k = d_v = 64"></span> 維子空間並行計算注意力，使模型能同時從句法結構、指代消解、語義修飾等不同表徵子空間捕捉上下文關聯。</li></ul></li><li><strong>正弦位置編碼（Sinusoidal Positional Encoding）與殘差層正規化</strong>：<ul><li>由於純自注意力對序列排列具有置換等變性（Permutation Equivariance），作者注入不同頻率之正弦與餘弦波長編碼，使位置偏移 <span class="m-in" data-tex="k"></span> 可表示為任意位置 <span class="m-in" data-tex="pos"></span> 的線性變換矩陣，並搭配殘差連接（Residual Connection）與層正規化（LayerNorm）確保深層網路梯度暢通。</li></ul></li></ol>
+<h3>1. 縮放點積注意力矩陣方程 (Scaled Dot-Product Attention)</h3>
+<p>給定查詢矩陣 <span class="m-in" data-tex="Q \in \mathbb{R}^{n \times d_k}"></span>、鍵矩陣 <span class="m-in" data-tex="K \in \mathbb{R}^{m \times d_k}"></span> 與值矩陣 <span class="m-in" data-tex="V \in \mathbb{R}^{m \times d_v}"></span>，縮放點積注意力輸出定義為：</p>
+<span class="m-disp" data-tex="\operatorname{Attention}(Q, K, V) = \operatorname{softmax}\left( \frac{QK^\top}{\sqrt{d_k}} \right) V"></span>
+<p>為什麼必須除以 <span class="m-in" data-tex="\sqrt{d_k}"></span>？假設 <span class="m-in" data-tex="q, k \in \mathbb{R}^{d_k}"></span> 之各分量為獨立同分佈、均值為 <span class="m-in" data-tex="0"></span>、方差為 <span class="m-in" data-tex="1"></span> 的隨機變數，則其內積 <span class="m-in" data-tex="q \cdot k = \sum_{i=1}^{d_k} q_i k_i"></span> 之均值與方差為：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\mathbb{E}[q \cdot k] &amp;= 0 \\
+\operatorname{Var}(q \cdot k) &amp;= d_k
+\end{aligned}"></span>
+<p>因此除以標準差 <span class="m-in" data-tex="\sqrt{d_k}"></span> 可將內積方差嚴格標準化回 <span class="m-in" data-tex="1"></span>，防止當 <span class="m-in" data-tex="d_k"></span> 較大時 Softmax 分佈退化為單點極端值（One-Hot）而切斷反向傳播梯度。</p>
+<h3>2. 多頭子空間並行注意力 (Multi-Head Attention)</h3>
+<p>通過 <span class="m-in" data-tex="h"></span> 組可學習投影矩陣 <span class="m-in" data-tex="W_i^Q \in \mathbb{R}^{d_{\text{model}} \times d_k}"></span>、<span class="m-in" data-tex="W_i^K \in \mathbb{R}^{d_{\text{model}} \times d_k}"></span>、<span class="m-in" data-tex="W_i^V \in \mathbb{R}^{d_{\text{model}} \times d_v}"></span> 及輸出融合矩陣 <span class="m-in" data-tex="W^O \in \mathbb{R}^{h d_v \times d_{\text{model}}}"></span>，多頭注意力表示為：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\operatorname{MultiHead}(Q, K, V) &amp;= \operatorname{Concat}\left( \text{head}_1, \text{head}_2, \dots, \text{head}_h \right) W^O \\
+\text{where} \quad \text{head}_i &amp;= \operatorname{Attention}\left( Q W_i^Q, K W_i^K, V W_i^V \right)
+\end{aligned}"></span>
+<h3>3. 幾何級數波長之正弦位置編碼 (Sinusoidal Positional Encoding)</h3>
+<p>在位置 <span class="m-in" data-tex="pos"></span> 與維度分量 <span class="m-in" data-tex="2i, 2i+1"></span> 處，位置編碼定義為波長從 <span class="m-in" data-tex="2\pi"></span> 到 <span class="m-in" data-tex="10000 \cdot 2\pi"></span> 成幾何級數分佈的三角函數：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+PE_{(pos, 2i)} &amp;= \sin\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \right) \\
+PE_{(pos, 2i+1)} &amp;= \cos\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \right)
+\end{aligned}"></span>
+<p>根據三角和角公式，對任意固定相對距離 <span class="m-in" data-tex="k"></span>，<span class="m-in" data-tex="[PE_{(pos+k, 2i)}, PE_{(pos+k, 2i+1)}]^\top"></span> 恆為 <span class="m-in" data-tex="[PE_{(pos, 2i)}, PE_{(pos, 2i+1)}]^\top"></span> 的正交旋轉線性變換，使模型能輕鬆學習相對位置關係。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Vaswani et al. 2017）之核心證據</h3>
+<ul><li><strong>路徑長度與計算複雜度對比</strong>：自注意力層的最大交互路徑長度為 <span class="m-in" data-tex="O(1)"></span>、順序操作數為 <span class="m-in" data-tex="O(1)"></span>，每層計算複雜度為 <span class="m-in" data-tex="O(n^2 \cdot d)"></span>；相比之下，循環層（Recurrent Layer）的最大路徑長度與順序操作數皆高達 <span class="m-in" data-tex="O(n)"></span>，每層計算複雜度為 <span class="m-in" data-tex="O(n \cdot d^2)"></span>。在自然語言常見之序列長度 <span class="m-in" data-tex="n &lt; d"></span>（例如 <span class="m-in" data-tex="n \ll 512"></span>）區間，自注意力不僅完全可並行，且單層浮點運算量更低。</li><li><strong>WMT 2014 英德與英法機器翻譯雙破紀錄</strong>：<ul><li><strong>英譯德（EN-DE）</strong>：Transformer (big) 達到 <strong><span class="m-in" data-tex="28.4"></span> BLEU</strong>，超越當時包括集成模型（Ensembles）在內的所有既有最佳系統超過 <span class="m-in" data-tex="2.0"></span> BLEU。</li><li><strong>英譯法（EN-FR）</strong>：Transformer (big) 在 NeurIPS 定稿正文第 8 頁報告達到 <strong><span class="m-in" data-tex="41.0"></span> BLEU</strong>（而在 Table 2 及 arXiv 版中標註為 <strong><span class="m-in" data-tex="41.8"></span> BLEU</strong>，NeurIPS 官方摘要頁載為 41.1），超越先前所有既有最佳單一模型與集成系統，且訓練成本不到先前最佳系統的四分之一。</li></ul></li><li><strong>訓練算力與時間大幅下降</strong>：基礎模型（Base Model）在 8 顆 NVIDIA P100 GPU 上僅需訓練 <strong>12 小時</strong>（10 萬步），大型模型（Big Model）僅需訓練 <strong>3.5 天</strong>（30 萬步，總算力 <span class="m-in" data-tex="2.3 \times 10^{19}"></span> FLOPs），僅為當時頂尖競爭模型（如 ConvS2S Ensemble、GNMT+RL Ensemble）訓練算力成本的四分之一至數十分之一。</li><li><strong>英語句法成分剖析（Constituency Parsing）遷移能力</strong>：在 WSJ 測試集上，僅用 WSJ 訓練集達到 <span class="m-in" data-tex="91.3"></span> F1，半監督設置下達到 <span class="m-in" data-tex="92.7"></span> F1，證明自注意力機制無須專門針對句法樹設計即可自動習得深層語法結構。</li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>雙向編碼與自迴歸解碼的雙雄分流（BERT 與 GPT）</strong>：Devlin et al. (2019), <em>NAACL</em> (arXiv:1810.04805) 取 Transformer 編碼器開創遮罩語言模型 BERT；Radford et al. (2018–2019) 與 Brown et al. (2020), <em>NeurIPS</em> 33:1877-1901 (GPT-3) 取 Transformer 解碼器並擴展至 1,750 億參數，驗證上下文少樣本學習（In-Context Learning）之湧現。</li><li><strong>神經擴展定律（Scaling Laws）</strong>：Kaplan et al. (2020), arXiv:2001.08361 與 Hoffmann et al. (2022, Chinchilla), arXiv:2203.15556，證明 Transformer 的交叉熵測試損失隨模型參數規模 <span class="m-in" data-tex="N"></span>、資料量 <span class="m-in" data-tex="D"></span> 與訓練算力 <span class="m-in" data-tex="C"></span> 跨越七個數量級呈現精確的冪律下降關係。</li><li><strong>跨模態大一統（ViT、AlphaFold2、DiT）</strong>：Dosovitskiy et al. (2021, <em>ICLR</em>, Vision Transformer) 將影像切分為 <span class="m-in" data-tex="16 \times 16"></span> 圖塊直接輸入 Transformer；Jumper et al. (2021, <em>Nature</em>, AlphaFold2) 以 Evoformer 注意力解開蛋白質摺疊；Peebles &amp; Xie (2023, <em>ICCV</em>, Diffusion Transformer) 將注意力與擴散模型結合，成為 Sora 物理世界模擬器的骨幹。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>演算法與硬體架構的深度共振（Hardware Lottery Winner）</strong>：Transformer 將原本細碎的遞迴時序操作全部轉化為高密度的通用矩陣乘法（GEMM）。雖然 2017 年原文係在 8 張 NVIDIA P100（Pascal 架構）上完成訓練，但其高度並行的矩陣運算特性，隨後與 NVIDIA 於同年底推出之 Volta 架構（首代搭載 Tensor Cores）乃至現代萬卡 GPU 叢集形成完美的硬體共振，奠定了大模型擴展的算力底座。</li><li><strong>模態壁壘的消融（Universal Modality Agnosticism）</strong>：只要能將資訊離散化或投影為向量序列（Tokens）——無論是文字、程式碼、影像圖塊、音訊頻譜、胺基酸序列、DNA 鹼基或機器人關節動作——皆可由同一套 Transformer 架構統一建模。</li><li><strong>動態路由與可解釋表徵</strong>：注意力權重矩陣 <span class="m-in" data-tex="\operatorname{softmax}(QK^\top/\sqrt{d_k})"></span> 相當於根據每次輸入內容即時生成的「動態軟性連線（Dynamic Soft Wiring）」，突破了傳統神經網路推論時權重固定不變的限制。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>《Attention Is All You Need》是科學與工程史上<strong>「減法哲學」</strong>的巔峰之作：</p>
+<ol><li><strong>大幅放寬結構性歸納偏置（Inductive Bias），讓資料與規模說話</strong>：相較於 RNN 強制時間步嚴格相鄰遞推、CNN 強制局部空間平移不變性等強結構偏置，Transformer 屏棄了局部鄰域限制，僅保留必要的位置編碼（Positional Encoding）與因果遮罩（Causal Mask）等基礎結構先驗，將兩兩交互的關聯權重完全交由數據驅動的自注意力矩陣自發學習，為後續擴展定律（Scaling Laws）的規模化通用性鋪平了道路。</li><li><strong>與統計物理 Hopfield 網路的跨時空閉環</strong>：1982 年 Hopfield 用二次能量函數定義聯想記憶，35 年後 Transformer 的縮放點積注意力被證明正是「指數型能量函數之現代連續 Hopfield 網路」的單步自由能極小化更新，完成了物理學與深度學習的完美閉環。</li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2017</b><span>發表・NeurIPS</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Ashish Vaswani<br>Noam Shazeer<br>Niki Parmar<br>Jakob Uszkoreit<br>Llion Jones<br>Aidan N. Gomez<br>Łukasz Kaiser<br>Illia Polosukhin</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Advances in Neural Information Processing Systems (NeurIPS), 30, 5998-6008</span><a href="https://arxiv.org/abs/1706.03762">https://arxiv.org/abs/1706.03762</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#人工智慧</span><span class="chip">#深度學習</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>生成式世界模型與擴展定律</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>AI 驅動之結構生物學與分子設計</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>神經迴路因果解耦</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://arxiv.org/abs/1409.0473" title="Bahdanau, D., Cho, K., &amp; Bengio, Y. (2015) Neural Machine Translation by Jointly Learning to Align and Translate. ICLR 2015.">Bahdanau、Cho 與 Bengio（2015）</a><a href="https://arxiv.org/abs/1706.03762" title="Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., &amp; Polosukhin, I. (2017) Attention Is All You Need. NeurIPS 30:5998-6008.">Vaswani 等（2017）</a></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

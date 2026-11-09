@@ -1637,3 +1637,14 @@
   - Card 4 結論模式（質性比較，無量化指標）：依天數分組為多數、卑南與阿美等依前後分組（表九，p. 11）、雙標類型最常見（§4.1 表十一，p. 12）。
   - Card 5 新論文模式：三筆皆取作者自述之範圍與待解問題：標記為詞綴或依附詞不在本文範圍（註 13，p. 12）、臺灣以外南島語「仍有待未來進一步比較」（§5.1，p. 15）、原始南島語三階段推測有待更有力證據（§5.2.2，p. 18），均回原 PDF 頁面核對。論文頁 Card 5 第二點補上 §5.1 之菲律賓 43 種語言比較與上述引文，證據表加兩列。Card 6 未涉碩論內容、無第一人稱。
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 35 項 PASS；無頭截圖目視，修正 Card 2、3、4、6 拆字折行與示意圖「天數」標籤壓線。`lint_wiki.py` ERROR 0。
+
+## [2026-11-10 00:30] update | 新增 Attention Is All You Need 之卡片文字檔 | #人工智慧 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第二批 C 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2017-attention-is-all-you-need.md](cards/2017-attention-is-all-you-need.md) 並建置 `web/prototypes/paper-v1/2017-attention-is-all-you-need.html`。
+  - Card 3 公式：初取論文頁原文式 (1) 縮放點積注意力，`verify_page.js` 實測公式框需捲動（桌面 444／390px、手機 306／269px），依 card-03-secret.md 第四節第 2 條改取論文頁 `aligned` 之 $\operatorname{Var}(q \cdot k) = d_k$（原文 §3.2.1 註 4），說明補足分量獨立、均值 0、變異數 1 之條件；示意圖為循環層逐字傳遞對照自注意力一字連到全句。
+  - Card 4 四個數字取自證據表第 11、12 列（英譯德 28.4、英譯法 41.8 並註明正文作 41.0，Table 2；大型版本 8 張 P100 訓練 3.5 天，§5.2；WSJ 句法剖析 91.3 F1，Table 4）。
+  - Card 5 五筆取論文頁 Card 4「後續領域關鍵證據」（Devlin 2019、Brown 2020、Kaplan 2020、Jumper 2021、Peebles 與 Xie 2023），皆為後續他人成果。Card 6 取自論文頁 Card 6 第 1 點。
+  - 檢查：`check_cards.py` ERROR 0、WARN 1（WMT 為評測資料集名稱，保留）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 37 項）。目視與操作檢查修正三處：Card 4 範圍末行落單、Card 5 兩筆里程碑折行（BERT 落單、蛋白質跨行）。`lint_wiki.py` ERROR 0。
+  - 首頁卡片牆依本批協調規則未重建，由協調者處理。建置時工作目錄之 `tools/build_paper_prototype.py` 有協調者尚未提交之修改，本篇原型以該版本產生。
+  - 未決：證據表第 11、12 列之節號寫作 §5.1–§5.3，原文翻譯與句法剖析結果實在 §6.1、§6.3；論文頁開頭引言未註明為 Wiki 撰寫。交由協調者處理。
