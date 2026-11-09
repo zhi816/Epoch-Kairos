@@ -307,10 +307,11 @@
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit、[2026-11-08 22:44] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂生成式世界模型概念頁：分開標註 Hopfield (1982) 李亞普諾夫能量函數與 Ackley、Hinton、Sejnowski (1985) 波茲曼機學習演算法之年代；將擴散模型、分數匹配與 Transformer 注意力之聯繫明確界定為統計物理能量景觀與連續狀態空間之深層理論類比與現代聯想記憶等價性，刪除直接線性奠基之過度概括。
 
-### EK-046 | open | concepts/generative-world-models.md | DeepSeek-R1 段 | 歸因／版本錯置
+### EK-046 | fixed | concepts/generative-world-models.md | DeepSeek-R1 段 | 歸因／版本錯置
 - **問題**：將「無須人工示範」歸給 DeepSeek-R1（實為 R1-Zero），並把可驗證獎勵從原文之數學與程式任務推廣到任意驗證器與科學探索代理，應標為展望。
 - **來源**：[DeepSeek-R1 封存原文](../raw/2025-deepseek-r1.pdf)
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂生成式世界模型概念頁 DeepSeek 段落：明確將「無須人工示範」限定於 R1-Zero 純 RL 模型，說明完整版 R1 結合冷啟動、多階段 SFT 與二次 RL，並將可驗證獎勵（RLVR）向任意領域驗證器與自主科學探索代理之推廣標明為重大未來展望。證據表見 wiki/evidence/2025-deepseek-r1.md。
 
 ### EK-047 | open | concepts/quantum-error-correction.md | 支柱 | 歸因／版本錯置
 - **問題**：把 Hopfield 1982 列為表面碼／色碼隨機鍵 Ising 映射之直接來源；映射可追溯至 Dennis et al. 2002，其原文未引用 Hopfield，須分開數學類比與歷史來源。
