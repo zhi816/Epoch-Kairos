@@ -21,7 +21,7 @@ papers:
   - "2026-tao-filipino-nmt-macayan"
 related_concepts:
   - "low-resource-machine-translation"
-verification: "issues"
+verification: "verified"
 ---
 
 # 概念：臺灣南島語計算語言學與構詞解析 (Formosan Computational Linguistics & Morphological Analysis)
@@ -53,7 +53,7 @@ verification: "issues"
   * 詳見核心文獻：[台灣南島語「說」動詞語義現象初探（謝富惠 2022）](../papers/2022-formosan-say-verbs-hsieh.md)、[台灣南島語言時間詞之跨語言比較初探（林鴻瑞 2024）](../papers/2024-formosan-temporal-words-lim.md)。
 
 * **方言計量學與語料庫基礎設施（Dialectometry & Corpus Infrastructure）**：
-  * 利用正規化 Levenshtein 編輯距離與多維度對齊，量化臺灣南島語 16 族 42 方言間的詞彙相似度與分支演化；建立涵蓋 15 種語言的標準化平行語料庫 FormosanMT 與多任務評測基準 FormosanBench。
+  * 利用詞級 TF-IDF 餘弦相似度、頻率 $\ge 5$ 詞型 Jaccard 相似度與前 500 高頻詞之字元級正規化 Levenshtein 距離，量化評估族語 E 樂園（ePark）16 族 42 方言間的詞彙重疊與親緣關係；建立涵蓋 15 種語言的標準化平行語料庫 FormosanMT 與多任務評測基準 FormosanBench。
   * 詳見核心研究：[ePark 語料庫方言計量學評估（Gagnier 2026）](../papers/2026-epark-formosan-dialectometry-gagnier.md)、[FormosanMT 多語言平行語料庫（Scheppat et al. 2026）](../papers/2026-formosanmt-parallel-corpus-scheppat.md)、[FormosanBench 大模型基準（Lin et al. 2025）](../papers/2025-formosanbench-llm-benchmark-lin.md)。
 
 ---

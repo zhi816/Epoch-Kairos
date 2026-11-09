@@ -1004,3 +1004,15 @@
   - **EK-057**：更正 Frontmatter `doi_url` 為 `https://doi.org/10.18653/v1/2025.acl-demo.13`（卷號為單數 `acl-demo`，原誤記為 `acl-demos`），經 Crossref 與 ACL Anthology 核驗無誤。
   - **EK-083**：Card 3 補齊系統具體技術實作，包含 Django 後端、Docker 容器化、初譯模型支援（MADLAD-400-10B、OPUS-MT、NLLB-54B）、spaCy en_core_web_sm 之 {1,2}-gram 詞彙表動態比對、Rust Tantivy 函式庫之 Top-N BM25 翻譯記憶庫檢索，以及 LiteLLM 代理之 Gemini 2.0 Flash CoT 後編輯提示；標明流程公式為示意式；Card 4 補齊德頓語醫療（+16.90 chrF++ / +13.51 BLEU）、比斯拉馬語救災（+22.41 chrF++ / +17.69 BLEU）、SUS 81.25 分與 FLORES 六語基準對比。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-057 與 EK-083 標記為 `fixed`。
+
+
+## [2026-11-09 11:11] fix | 依原文重寫 Gagnier 2026 方言計量學頁更正 DOI 並核實南島語概念頁 | #計算語言學 #自然語言處理
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 接手 Claude Opus 5.5 暫停之 8 篇 my-focus 論文頁修正工作之第 6 篇：[Gagnier 2026](papers/2026-epark-formosan-dialectometry-gagnier.md)（EK-059、EK-079），並閉合關聯概念頁 [concepts/formosan-computational-linguistics.md](concepts/formosan-computational-linguistics.md)（EK-086）。
+  - 對照 DialRes 2026 原文（`raw/my-focus/英文論文/Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13.pdf`）全文核對後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2026-epark-formosan-dialectometry-gagnier.md](evidence/2026-epark-formosan-dialectometry-gagnier.md)，頁面 `verification` 提升為 `verified`。
+  - **EK-059**：更正 Frontmatter `doi_url` 為 ELRA 正式註冊之 `https://doi.org/10.63317/4scoopyavtvi`。
+  - **EK-079**：Card 3 刪除虛構之語義概念對齊詞表與 MDS 分析，改述原文真實採用之三項詞彙相似度指標（詞級 TF-IDF 餘弦、詞頻 $\ge 5$ 詞型 Jaccard 相似度、前 500 高頻詞之字元級正規化 Levenshtein 距離）與 Bootstrap 500 次抽樣信心區間檢驗；Card 4 補齊 Table 1–3 全語料特徵（Hapax 率 72%–79%）、多方言語言核心共有詞比例與分群發現（賽德克語 0.820 最緊密、布農語重現經典三分群、泰雅語 0.605 與魯凱語 0.648 分化最深）。
+  - **EK-086**：同步修正 [concepts/formosan-computational-linguistics.md](concepts/formosan-computational-linguistics.md) 方言計量學支柱描述，刪除多維度對齊，補齊三項指標；建證據表 [wiki/evidence/formosan-computational-linguistics.md](evidence/formosan-computational-linguistics.md)，概念頁 `verification` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-059、EK-079 與 EK-086 標記為 `fixed`。

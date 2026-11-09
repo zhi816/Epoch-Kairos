@@ -378,10 +378,11 @@
 - **發現於**：本檔建立時以 crossref_check.py 查得（Claude Code by Anthropic）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回 ACL Anthology 核對：該篇位於 LoResMT 2026 論文集第 225–230 頁，正確 DOI 為 `10.18653/v1/2026.loresmt-1.22`（原誤記為 `.25`），經 Crossref 與 doi.org 解析確認無誤並更新頁面。
 
-### EK-059 | open | papers/2026-epark-formosan-dialectometry-gagnier.md | Frontmatter doi_url | 未能核實
+### EK-059 | fixed | papers/2026-epark-formosan-dialectometry-gagnier.md | Frontmatter doi_url | 未能核實
 - **問題**：`10.18653/v1/2026.dialres-1.13` 在 Crossref 與 doi.org 均查無此號；可能尚未註冊或 DOI 有誤。
 - **來源**：須回 ACL Anthology 原文首頁核對
 - **發現於**：同 EK-057
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回 DialRes 2026 原文首頁與 ELRA 核對：本篇由 ELRA 出版，正式註冊之 DOI 為 `10.63317/4scoopyavtvi`，經 Crossref 與 doi.org 解析確認無誤並更新頁面。
 
 ### EK-060 | open | papers/2026-formosanmt-parallel-corpus-scheppat.md | Frontmatter doi_url | 未能核實
 - **問題**：`10.18653/v1/2026.lrec-1.273` 在 Crossref 與 doi.org 均查無此號；可能尚未註冊或 DOI 有誤。
@@ -498,10 +499,11 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 1 將作者更正為國立臺東大學王任慶（Reen-Cheng Wang）教授團隊；Card 3 依原文圖 3 改寫為四層知識矩陣（$K_1 \sim K_4$）與 12 階段雙向知識循環模型，補列圖 5 之五層 LKM 架構（Layer 1 倫理治理至 Layer 5 代理部署）與圖 6 之 Plan–Act–Observe–Adjust 代理迴圈；刪除虛構之餘弦相似度禁忌損失函數，依原文說明文化禁忌係由部落會議審查、第一手權重與規則矩陣控管；Card 4 交代質性系統架構論文屬性。建立證據表 wiki/evidence/2025-indigenous-tek-ai-revitalization-wang.md，頁面 verification 改為 verified。
 
-### EK-079 | open | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 3 | 原文不符
+### EK-079 | fixed | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 3 | 原文不符
 - **問題**：第 43–62 行與架構圖稱方言距離係「對共享同一個語義概念的詞彙集合 $\mathcal{V}_{AB}$」計算編輯距離並執行「多維尺度分析（MDS）」。原文 §2.3（p. 125）並未對齊同義概念詞表亦未使用 MDS，而是直接對語料庫表面詞形計算三項指標：（1）詞級 TF-IDF 餘弦相似度（`min_df=2`、`sublinear_tf=True`）、（2）頻率 $\ge 5$ 詞型之未加權 Jaccard 相似度、（3）各方言前 500 高頻詞型雙向平均之字元級正規化 Levenshtein 距離。Card 3 完全漏述前兩項核心指標（TF-IDF 餘弦與 Jaccard），且虛構概念對齊詞表與 MDS。
 - **來源**：`raw/my-focus/英文論文/Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13.pdf`（§2.3 p. 125）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 3 刪除虛構之語義概念對齊詞表與 MDS 分析，改述原文真實採用之三項詞彙相似度指標（詞級 TF-IDF 餘弦、詞頻 $\ge 5$ 詞型 Jaccard 相似度、前 500 高頻詞之字元級正規化 Levenshtein 距離）與 Bootstrap 500 次抽樣信心區間檢驗；Card 4 補齊 Table 1–3 全語料特徵（Hapax 率 72%–79%）、多方言語言核心共有詞比例與分群發現（賽德克語 0.820 最緊密、布農語重現經典三分群、泰雅語 0.605 與魯凱語 0.648 分化最深）。建立證據表 wiki/evidence/2026-epark-formosan-dialectometry-gagnier.md，頁面 verification 改為 verified。
 
 ### EK-080 | open | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 3 與 Card 6 | 原文不符
 - **問題**：（1）Card 3（第 47 行與第 62 行架構圖）稱資料清洗採語言識別器与語義對齊過濾 $\operatorname{AlignScore}(x_i, y_i) \ge \tau$；原文 §3.3（p. 3448）係使用正則表達式與詞／字元長度比門檻（2 詞以上剔除 $r \le 0.2$ 或 $r > 8.0$；少於 2 詞剔除字元比 $r \le 0.05$ 或 $r > 20.0$），無語義對齊模型或語言識別器。（2）Card 3（第 49 行）所列 15 語言代碼含錯誤代碼 `puy`、`ruk`、`cou`、`sai`、`kan`、`sed` 且同時列出 `sed` 與 `trv`（漏列噶瑪蘭語 `ckv` 與撒奇萊雅語 `szy`）；原文表 1（p. 3447）之 ISO 639-3 代碼為 `ami, bun, ckv, dru, pwn, pyu, ssf, sxr, szy, tao, tay, trv, tsu, xnb, xsy`。（3）Card 3（第 53–59 行）稱對 NLLB-200 進行 15 語多語言聯合微調；原文 §4.2（p. 3450）明言係針對各族語－華語及 4 個族語－英語**分別訓練獨立之雙向雙語模型**，並於 §6（p. 3453）將多語言聯合預訓練列為未來工作。（4）Card 6（第 90 行）寫「30 萬高品質句對」，與 Card 4 之總量 493,519 句不一致。
@@ -537,11 +539,11 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 3 更正 SONAR 評分為 `blaser_2.0` 跨語言語義相似度預測模型（1–5 分制，非餘弦相似度）；糾正四階段課程學習倒置錯誤，改述真實順序（階段 1：OPUS 標準 8.2M $\to$ 階段 2：OPUS 高品質 7.1M $\to$ 階段 3：FineWeb-2 回譯 3.1M $\to$ 階段 4：合成對話 113K）；補列烏茲別克與塔吉克雙語輔助遷移、以及 mt0-large 詞表剪枝由 1.23B 壓縮至 800M 架構；Card 4 補齊 Table 1–3 與官方競賽測試集（49.1 chrF++ / 69.7 xCOMET 奪冠）詳細數據。建立證據表 wiki/evidence/2026-data-centric-russian-kyrgyz-mt-novokshanov.md，頁面 verification 改為 verified。
 
-### EK-086 | open | concepts/formosan-computational-linguistics.md | Frontmatter 與關鍵突破支柱 | 原文不符
+### EK-086 | fixed | concepts/formosan-computational-linguistics.md | Frontmatter 與關鍵突破支柱 | 原文不符
 - **問題**：（1）Frontmatter `papers`（第 13 行）將研究臺灣閩南語（漢藏語系漢語族）之 `2024-taiwanese-mt-resegmentation-tang` 列入「臺灣南島語計算語言學」概念頁。（2）第 48–50 行重述 `2025-atayalic-oov-enumeration-yang.md` 之錯誤，稱楊鈞凱（2025）「利用音韻變化規則與構詞律正向窮舉所有合法衍生形」（實為子字串候選詞根挑選搭配成對隨機森林循環賽投票，且正向書寫形式比對篩選因有害而未執行，見 EK-067）。（3）第 57 行稱 Gagnier（2026）「利用正規化 Levenshtein 編輯距離與多維度對齊，量化臺灣南島語 16 族 42 方言」（漏述 TF-IDF 餘弦與 Jaccard 相似度且原文無多維尺度對齊，見 EK-079）。
 - **來源**：同 EK-065、EK-067、EK-079
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
-- **處理（部分）**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。第 (1) 點：已自 `papers` 移除 `2024-taiwanese-mt-resegmentation-tang`，論文頁 `concepts` 同步移除。第 (2) 點：依 EK-067 回原文確認之結果改寫楊鈞凱（2025）段；同時改寫「構詞解析與深層原形還原」段，刪除「未知表面形能準確逆向對映」之過度表述，註明解析需已知詞根。第 (3) 點（Gagnier 2026）尚未處理，本筆維持 open。
+- **處理**：2026-11-09，Claude Code by Anthropic & Antigravity by Google DeepMind。第 (1) 點：已自 `papers` 移除 `2024-taiwanese-mt-resegmentation-tang`，論文頁 `concepts` 同步移除。第 (2) 點：依 EK-067 回原文確認之結果改寫楊鈞凱（2025）段；同時改寫「構詞解析與深層原形還原」段，刪除「未知表面形能準確逆向對映」之過度表述，註明解析需已知詞根。第 (3) 點：依 EK-079 回 Gagnier（2026）原文核對，改述為詞級 TF-IDF 餘弦、頻率 $\ge 5$ Jaccard 相似度與前 500 高頻詞之正規化 Levenshtein 距離，刪除多維度對齊。建立證據表 wiki/evidence/formosan-computational-linguistics.md，概念頁 verification 改為 verified。
 
 ### EK-087 | fixed | concepts/low-resource-machine-translation.md | 關鍵技術路徑 | 原文不符
 - **問題**：第 49–52 行將構詞特徵增強寫為詞根嵌入與詞綴嵌入拼接投影 $e(w) = W_{\text{proj}}[e_{\text{root}}(w) \,\|\, e_{\text{affix}}(w)]$ 並歸給游景勝（2021）與金柏毅（2025）；惟游景勝（2021）實驗證實詞根嵌入使 BLEU 暴跌、最佳模型係使用表面詞形搭配 52 維詞綴特徵（見 EK-062），而金柏毅（2025）最佳模型 `FC_ftr_jnt` 係使用雙獨立並聯 Transformer Encoder 分別編碼「詞綴字串形式子詞」與「詞綴組合特徵向量」後於編碼器輸出端串接（見 EK-066）。
