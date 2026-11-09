@@ -43,7 +43,8 @@
     const cards = [...d.querySelectorAll('.card')];
     cards.forEach((c, i) => {
       const bad = [];
-      [...c.querySelectorAll('*')].filter(e => !e.closest('.katex-mathml')).forEach(e => {
+      // KaTeX 隱藏之 MathML 與 KaTeX 自己畫根號、括號用的 SVG（其路徑本來就超出所屬 svg）不列入
+      [...c.querySelectorAll('*')].filter(e => !e.closest('.katex-mathml') && !(e.closest('.katex') && e.closest('svg'))).forEach(e => {
         const b = e.getBoundingClientRect();
         if (!(b.width > 0 && b.height > 0)) return;
         for (let a = e.parentElement; a; a = a.parentElement) {

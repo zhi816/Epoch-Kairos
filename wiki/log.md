@@ -1488,3 +1488,8 @@
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js`（058518f 版）1440 x 900 與 375 x 812 結果 PASS。
   - 複核修正：Card 3 初稿用因果鏈式，桌面公式寬 448px 超出框寬 390px，改用結構方程第一式；Card 2 名稱「地理決定論」5 字在兩種尺寸皆折行，改用論文頁 Card 1 之「地理環境」。
   - 未決事項：手機 375 x 812 點「下一張」箭頭後，`.stage`（overflow-x hidden）被捲動 96px，卡片列左移、卡片局部移出畫面，Hopfield 範例頁同樣可重現；原因為畫面外卡片內 KaTeX 隱藏之 MathML 把 `.stage` 撐寬至 899px。屬模板問題，依第一批協調規則交由協調者登記，未修改模板與 `wiki/todo.md`。滑鼠滾輪與拖曳無法在模擬視窗捲動長文與卡片列，該兩項同步改以程式捲動驗證。
+
+## [2026-11-09 23:15] update | 論文頁原型 Card 2 名稱欄放寬，驗證腳本排除 KaTeX 內部圖形 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：撰寫 A 組 AlphaFold2 卡片時發現：(1) paper-card-writer 規定 Card 2 對照名稱 5 字以內，但 `tools/paper_template.html` 名稱欄 17cqw 只放得下約 4.4 字，「分子動力學」折成兩行；名稱欄放寬為 20cqw，使 5 字名稱單行，重建 Hopfield、賽德克語、IceCube 三頁原型（自我檢查皆 ERROR 0，`verify_page.js` 皆 PASS）。(2) `verify_page.js` 將 KaTeX 繪製根號用之 SVG 路徑誤判為「超出卡片」，改為排除 KaTeX 內部 SVG；公式寬度另由公式框檢查把關。(3) `references/paper-page.md` 目視檢查新增「折行時不得有只剩一兩個字落單的一行」，SKILL.md 交付格式改為十項。
