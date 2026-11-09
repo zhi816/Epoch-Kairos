@@ -1493,3 +1493,12 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：撰寫 A 組 AlphaFold2 卡片時發現：(1) paper-card-writer 規定 Card 2 對照名稱 5 字以內，但 `tools/paper_template.html` 名稱欄 17cqw 只放得下約 4.4 字，「分子動力學」折成兩行；名稱欄放寬為 20cqw，使 5 字名稱單行，重建 Hopfield、賽德克語、IceCube 三頁原型（自我檢查皆 ERROR 0，`verify_page.js` 皆 PASS）。(2) `verify_page.js` 將 KaTeX 繪製根號用之 SVG 路徑誤判為「超出卡片」，改為排除 KaTeX 內部 SVG；公式寬度另由公式框檢查把關。(3) `references/paper-page.md` 目視檢查新增「折行時不得有只剩一兩個字落單的一行」，SKILL.md 交付格式改為十項。
+
+## [2026-11-09 23:16] update | 新增 AlphaFold2 蛋白質結構預測之卡片文字檔 | #計算生物 #人工智慧 #結構生物學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第一批 A 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2021-alphafold2.md](cards/2021-alphafold2.md) 並建置 `web/prototypes/paper-v1/2021-alphafold2.html`。
+  - 來源：封面斷行依 `card_line`，封面標題取 `title_zh` 刪減為「AlphaFold2」（原短名兩行使星窗被擠小）；導語改寫自 hook 與論文頁 Card 1；Card 2 取論文頁 Card 2 兩點（分子動力學構型空間爆炸、共演化接觸圖缺乏三維一致性）；Card 3 公式取論文頁三角形自注意力式，示意圖為節點連線（胺基酸 i、j 與多個第三胺基酸 k）；Card 4 四個數字取自證據表 Card 4 列（0.96 Å、2.8 Å、1.5 Å 與第二名 3.5 Å，Figure 1 p. 584；pLDDT 相關係數 0.76，Figure 2c p. 585）；Card 5 三筆後續研究取自論文頁 Card 4 後續證據（Tunyasuvunakool 2021、Varadi 2022、Watson 2023），獎項取自 `honor` 與 `laureates`。
+  - 檢查：`check_cards.py` ERROR 0、WARN 1（Card 3 公式原始碼 102 字元：論文頁各區塊公式皆超過 70 字元，已取最短一條；`verify_page.js` 實測手機公式框 269px、公式 269px，不需捲動，保留）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 1440 x 900 與 375 x 812 共 37 項 PASS。
+  - 複核修正：Card 3 標題原「讓演化線索與幾何互相校正」折行剩「正」一字，改「演化與幾何，互相校正」；Card 5 兩個里程碑折行落單，縮短；Card 6「模型就不必從頭學」過度概括論文頁「不必學轉個角度仍是同一蛋白質」，改「不必再學旋轉」；Card 3 說明「讓三者距離彼此相容」改「引導……趨於一致」，貼合論文頁「受三角不等式啟發而非硬性約束」。
+  - 驗證限制：目視檢查以 Chrome 無頭截圖進行；封面標籤列「#結構生物學」最後一字落單屬模板自動產生之學科與標籤列，未處理。
