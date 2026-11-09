@@ -10,7 +10,7 @@
 - **來源**：wiki/log.md [2026-11-09 09:18] git（raw/ 檔名標準化）與 index.md 原「待辦與已知問題」一節；2026-11-09 登記，Claude Code by Anthropic。
 
 ### TD-002 | waiting | web | 產出 web/ 展示層並將論文頁升級為 published
-- **內容**：`web/` 目前只有 `prototypes/` 樣稿（mobile-v1、mobile-v2）與空的 `papers/`，尚無 `web/index.html` 與任何 `web/papers/<slug>/index.html`；41 篇論文頁皆為 `status: "wiki"`，Lint 第 3 條三層對齊因而未通過。依第六章 Ingest 第 4 步與第七章第 3 節產出首頁時間線與各論文雙欄頁後，將對應論文頁改為 `published`。
+- **內容**：`web/` 目前只有 `prototypes/` 樣稿（mobile-v1、mobile-v2）與空的 `papers/`，尚無 `web/index.html` 與任何 `web/papers/<slug>/index.html`；41 篇論文頁皆為 `status: "wiki"`，Lint 第 3 條三層對齊因而未通過。依第六章 Ingest 第 4 步與第七章第 3 節產出首頁時間線與各論文雙欄頁後，將對應論文頁改為 `published`。首頁首版（知識星圖）另立 TD-006 處理，本條以論文頁為主。
 - **完成條件**：`web/index.html` 與各論文之 `web/papers/<slug>/index.html` 產出，對應論文頁 `status` 改為 `published`，`lint_wiki.py` 無 ERROR。
 - **等待**：[DESIGN.md](../DESIGN.md) 第八章待決事項定案，至少第 1 項（首頁主案 v4 定稿）、第 9 項（論文頁視覺）與第 10 項（樣稿移植至 `web/`）。
 - **來源**：wiki/log.md [2026-11-07 22:47] audit「延後處理」與 index.md 原「待辦與已知問題」一節；2026-11-09 登記，Claude Code by Anthropic。
@@ -30,5 +30,15 @@
 ### TD-005 | waiting | web | 以 GitHub Actions 將 web/ 發布至 GitHub Pages
 - **內容**：GitHub Pages 之「Deploy from a branch」只接受倉庫根目錄或 `/docs`，無法直接發布 `web/`，且主倉庫目前尚無 `.github/` 目錄。新增 `.github/workflows/pages.yml`：推送至 `main` 且 `web/**` 有變動時觸發（另加 `workflow_dispatch` 供手動重新發布），依序以 `actions/checkout`、`actions/configure-pages`、`actions/upload-pages-artifact`（`path: web`）、`actions/deploy-pages` 發布，只公開 `web/` 之內容，`wiki/`、`AGENTS.md` 等不上站；寫入前先確認各 action 之最新主版本號。首頁檔名維持 `web/index.html`、論文頁維持 `web/papers/<slug>/index.html`，網址即 `https://zhi816.github.io/Epoch-Kairos/` 與 `https://zhi816.github.io/Epoch-Kairos/papers/<slug>/`。發布後將 README.md「GitHub Pages 成果展示」一行之暫定連結改為正式連結。
 - **完成條件**：工作流程首次執行成功（倉庫 Actions 分頁顯示成功），首頁網址可正常開啟，`assets/` 與 KaTeX 資源載入無誤，README 連結已更新。
-- **等待**：使用者確定首頁 `web/index.html`（TD-002 之首頁部分）後再發布；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。
+- **等待**：使用者確定首頁 `web/index.html`（TD-006）後再發布；屆時由使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）。
 - **來源**：使用者指示（首頁確定後再發布）；2026-11-09 登記，Claude Code by Anthropic。
+
+### TD-006 | waiting | web | 實作首版 web/index.html（知識星圖首頁）
+- **內容**：依 [DESIGN.md](../DESIGN.md) 第二章第 0 節實作首版首頁：星空背景、左欄（直排標題 Bodoni Moda、懸星索引 A、句末之星機關）、知識星圖、我的星系（網址錨點 `#my-constellation`）與手機版；群星檔案卡片牆與論文頁不做。工作項目：
+  1. 建置腳本置於根目錄 `tools/`，讀取 `wiki/papers/` 與 `wiki/concepts/` 之 Frontmatter 產生 `web/index.html`，頁面不手寫論文資料（做法參考 `web/prototypes/mobile-v2-src/`）。群星預設亮星取論文頁在 Git 中首次提交日期最新者，不修改任何論文頁；「我的碩論」中心星寫在腳本設定，只顯示「我的碩論」與「進行中」。
+  2. 首頁樣式與程式為 `web/assets/css/starmap.css`、`web/assets/js/starmap.js`；同步修改 AGENTS.md 第四章目錄樹、第五章展示層描述、第六章 Ingest 第 4 步（「在時間線插入卡片」改為重跑建置腳本）與 README.md 之首頁描述，記 `rule` 日誌。
+  3. `theme.css` 學科色改用星光色（`human` 暫用 `#F2B3D6`），霓虹值另存為備用變數；AGENTS.md 第二章色表同步並保留霓虹欄位。
+  4. 樣稿（v4 桌面截圖）為五學科、26 顆星（含立案條目）；正式版依 Frontmatter 為六學科、群星 17 顆，立案條目與祖先星連線不畫。樣稿右上「往下看群星檔案」連結首版移除；星圖說明框依 DESIGN.md 第二章第 0 節，並避免與概念名稱標籤重疊（截圖中「光遺傳學」提示框蓋住「神經迴路因果解耦」）。
+- **完成條件**：執行建置腳本可重現 `web/index.html`；桌面與手機（375px 寬）皆無破版或水平捲動；可用鍵盤操作、動畫受 `prefers-reduced-motion` 控制；`lint_wiki.py` 無 ERROR；記 `design` 日誌。
+- **等待**：使用者說可以動工。
+- **來源**：使用者指示（2026-11-09，先討論、確認後再動工）；2026-11-09 登記，Claude Code by Anthropic。
