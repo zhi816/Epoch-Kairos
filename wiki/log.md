@@ -1412,3 +1412,13 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：與樣稿畫布「論文頁 F」對照時發現 Hopfield 頁長文第 04 節露出 `**`：[tools/build_paper_prototype.py](../tools/build_paper_prototype.py) 之 `inline()` 先依公式切段再逐段轉粗體，「**容量（$0.15N$ 近似上限）**」之粗體頭尾分落公式兩側而配不起來。改為公式先換成佔位符、整段轉換後再放回。重建兩頁原型：僅 Hopfield 頁兩處粗體改變，賽德克語頁不變；瀏覽器確認 59 個公式無錯誤、長文無殘留 `**`。與樣稿之其餘差異（資訊欄期刊全名、長文開頭之 hook 引言與範圍說明、獎項簡稱）均有規範依據，待使用者決定是否調整，未修改。
+
+
+## [2026-11-09 21:15] fix | 重核 EK-088/089 第一手來源並修正 Aghion 論文頁 | #經濟學
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：
+  - [wiki/evidence/1992-creative-destruction-aghion.md](evidence/1992-creative-destruction-aghion.md) 與 [wiki/papers/1992-creative-destruction-aghion.md](papers/1992-creative-destruction-aghion.md)：以 Econometrica 正式版全文（University of Copenhagen 提供之 JSTOR 掃描複本）逐列重核；一般生產函數與 Cobb–Douglas 特例分開標示，修正專利價值及研發條件、two-cycle 頁碼（一般條件 p. 333、Cobb–Douglas 特例 p. 334）、福利效果方向與創新幅度結論，補回勞動資源出清式。Card 2 改為論文實際定位，移除無原文根據的 Solow residual 歷史敘述。
+  - [wiki/evidence/2001-colonial-origins-acemoglu.md](evidence/2001-colonial-origins-acemoglu.md) 與 [wiki/papers/2001-colonial-origins-acemoglu.md](papers/2001-colonial-origins-acemoglu.md)：以 MIT Economics 提供之 AER 正式版全文逐列核對；修正 Table 3–7 頁碼、估計範圍與 206 log points／約 7 倍之作者報告，將以四捨五入係數重算的約 8.2 倍標明為 Wiki 計算。移除與 authors 重複的 laureates 欄，長公式改用 aligned。
+  - [wiki/issues.md](issues.md)：EK-088、EK-089 改為 fixed 並記錄所採正式版來源；EK-090 明確分列一般 two-cycle 條件與 Cobb–Douglas 特例頁碼。raw/ 內兩個版本錯置檔案依唯讀規範保留，未作為正式版頁碼證據；TD-007 證據類型白名單待辦未變更。
+  - 驗證：`lint_wiki.py` ERROR 0、WARN 28（均為其他既有日誌連結或論文頁警告）。

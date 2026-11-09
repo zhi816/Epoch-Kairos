@@ -35,16 +35,18 @@
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit、[2026-11-08 23:36] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 5 反壟斷政策段落：明確將科技巨頭併購審查與扼殺式收購（Killer Acquisitions，引 Cunningham et al., 2021 JPE）標記為創造性破壞架構在後續產業組織文獻與政策實踐之延伸應用，非 1992 奠基論文之直接檢驗結果。證據表見 wiki/evidence/1992-creative-destruction-aghion.md。
 
-### EK-088 | open | papers/1992-creative-destruction-aghion.md | 證據表採用版本 | 未能核實
+### EK-088 | fixed | papers/1992-creative-destruction-aghion.md | 證據表採用版本 | 未能核實
 - **問題**：[證據表](evidence/1992-creative-destruction-aghion.md) 第 2 行寫「封存版本見 `raw/1992-creative-destruction-aghion.pdf`」，並據以將各列標為「符合來源」（引用 *Econometrica* pp. 323–351 之式 (2.1)–(2.17) 等位置）。但該封存檔實為 Giuseppe Bertola, "Factor Shares and Savings in Endogenous Growth", NBER Working Paper No. 3851（1991 年 9 月，31 頁，純圖片、無文字層），並非 Aghion and Howitt (1992)；全檔僅參考文獻提及 Aghion 一次。證據表各列之頁碼與公式位置無法以封存檔核實，頁面 `verified` 狀態缺乏可追溯之來源。須由使用者將封存檔換為 *Econometrica* 正式版後，依原文重新核對證據表各列。
 - **來源**：封存檔 `raw/1992-creative-destruction-aghion.pdf` 第 1–2 頁（標題頁與摘要）及第 16、30–31 頁（以 MinerU 本機 OCR 確認內容）；正式版 *Econometrica* 60(2): 323–351，https://doi.org/10.2307/2951599
 - **發現於**：wiki/log.md [2026-11-09 15:13] fix（Claude Code by Anthropic）
+- **處理**：2026-11-09，Codex by OpenAI（GPT-6）。改採 Econometrica 正式版全文（JSTOR 掃描複本，由 University of Copenhagen 網站提供：https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf；DOI: https://doi.org/10.2307/2951599），逐列重核證據表並更正公式與頁碼。raw/1992-creative-destruction-aghion.pdf 仍是 Bertola 的 NBER WP 3851，依 raw 唯讀規範保留、不作為證據來源；此條改以正式版可追溯來源解決，不再要求該檔作為核實前提。
 
 ### EK-090 | fixed | papers/1992-creative-destruction-aghion.md | Card 3–4 與證據表 | 原文不符
-- **問題**：EK-003 之處理行與證據表列「§2.4, p. 333, 式 (2.16)–(2.17)」，並稱 2 階循環為「Proposition 2」、於跨期映射導數 $\psi'(\hat{n}) < -1$ 時湧現。惟 *Econometrica* 正式版全文僅有 Proposition 1（p. 334），無式 (2.16)–(2.17)；平均成長率與方差實為 §3.C 之式 (3.11)（p. 336），原文寫作 $AGR=\lambda\phi(\hat{n})\ln\gamma$、$VGR=\lambda\phi(\hat{n})(\ln\gamma)^2$，$\lambda\hat{n}\ln\gamma$ 僅為線性研發 $\phi(n)=n$ 之特例。2 階循環（two-cycle）之存在條件為無成長陷阱存在且 $c'(\hat{n})+b'(\hat{n})>0$，Cobb–Douglas 線性研發下約化為 $a$ 與 $r$ 足夠小（§3.A, pp. 332–333）；原文未以 $\psi'(\hat{n})<-1$ 表述，亦未使用「極限環（limit cycle）」一詞。
-- **來源**：*Econometrica* 60(2): 323–351 正式版掃描本（JSTOR stable 2951599），pp. 332–333、336；https://doi.org/10.2307/2951599
+- **問題**：EK-003 之處理行與證據表列「§2.4, p. 333, 式 (2.16)–(2.17)」，並稱 2 階循環為「Proposition 2」、於跨期映射導數 $\psi'(\hat{n}) < -1$ 時湧現。惟 *Econometrica* 正式版全文僅有 Proposition 1（p. 334），無式 (2.16)–(2.17)；平均成長率與方差實為 §3.C 之式 (3.11)（p. 336），原文寫作 $AGR=\lambda\phi(\hat{n})\ln\gamma$、$VGR=\lambda\phi(\hat{n})(\ln\gamma)^2$，$\lambda\hat{n}\ln\gamma$ 僅為線性研發 $\phi(n)=n$ 之特例。2 階循環（two-cycle）之存在條件為無成長陷阱存在且 $c'(\hat{n})+b'(\hat{n})>0$（§3.A, p. 333）；Cobb–Douglas 線性研發下，$\alpha$ 與 $r$ 足夠小時可出現實質 two-cycle（§3.A, p. 334）；原文未以 $\psi'(\hat{n})<-1$ 表述，亦未使用「極限環（limit cycle）」一詞。
+- **來源**：*Econometrica* 60(2): 323–351 正式版掃描本（JSTOR stable 2951599），p. 333、p. 334、p. 336；https://doi.org/10.2307/2951599
 - **發現於**：wiki/log.md [2026-11-09 20:12] fix（DeepSeek Harness）
 - **處理**：2026-11-09，DeepSeek Harness（DeepSeek-V4.1-Flash）。回正式版掃描本核對後修正：論文頁 Card 3 改引式 (3.11)（§3.C, p. 336），成長率與方差改以 $\lambda\phi(\hat{n})$ 通式表述並註明線性研發特例；Card 4 刪除「Proposition 2」與 $\psi'(\hat{n})<-1$ 之無來源條件，改述 two-cycle 之實際存在條件。證據表同步更正兩列之位置與敘述。EK-003 原處理行之錯誤引用由本條更正。
+- **處理**：2026-11-09，Codex by OpenAI（GPT-6）。再核對期刊全文後明確拆分頁碼：一般 two-cycle 條件在 p. 333；Cobb–Douglas 線性研發下「$\alpha$ 與 $r$ 足夠小」的特例在 p. 334。論文頁與證據表均同步更正，避免把特例錯標為 p. 332–333。
 
 ## 2001 Acemoglu–Johnson–Robinson 殖民起源
 
@@ -66,10 +68,11 @@
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit、[2026-11-08 23:36] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 5 發展援助段落：明確將「單純外援易遭掠奪型菁英攫取」標註為後續制度經濟學文獻與政策延伸觀點，非 AJR 2001 本文直接檢驗之經驗結果。證據表見 wiki/evidence/2001-colonial-origins-acemoglu.md。
 
-### EK-089 | open | papers/2001-colonial-origins-acemoglu.md | 證據表採用版本 | 歸因／版本錯置
+### EK-089 | fixed | papers/2001-colonial-origins-acemoglu.md | 證據表採用版本 | 歸因／版本錯置
 - **問題**：[證據表](evidence/2001-colonial-origins-acemoglu.md) 第 2 行寫採用 *American Economic Review* 91(5): 1369–1401（2001 年 12 月），並稱「封存版本見 `raw/2001-colonial-origins-acemoglu.pdf`」，各列以 AER 頁碼標示位置。但封存檔實為工作論文版 NBER Working Paper No. 7771（2000 年 6 月，69 頁），頁碼體系不同，工作論文與正式版之表格數值與措辭亦可能有差異；證據表所列 AER 頁碼無法以封存檔核實。須取得 AER 正式版逐列重核，或將證據表改為引用工作論文版並註明頁碼與版本差異。
 - **來源**：封存檔 `raw/2001-colonial-origins-acemoglu.pdf` 第 1–2 頁（NBER WP 7771 標題頁與摘要；此兩頁文字層為字型編碼亂碼，以 MinerU 本機 OCR 判讀，正文自第 3 頁起文字層正常）；AER 正式版 https://doi.org/10.1257/aer.91.5.1369
 - **發現於**：wiki/log.md [2026-11-09 15:13] fix（Claude Code by Anthropic）
+- **處理**：2026-11-09，Codex by OpenAI（GPT-6）。採用 MIT Economics 提供的正式 AER 全文 PDF，逐列核對本文數值與頁碼；封存之 NBER WP 7771 維持工作論文版本並明確註記未用作 AER 頁碼依據。修正 Table 3 p. 1385、Table 4 Panel A/C Column (1)、Tables 5–7 數值範圍與頁碼；論文頁同步更正穩健性分類及作者報告的 206 log points／約 7 倍上限，並將 8.2 倍標為從四捨五入數字重算。證據表與論文頁 verification 改為 verified。
 
 ## 2007 Woodford 通膨動態
 
