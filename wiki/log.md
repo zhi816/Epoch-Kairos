@@ -1528,3 +1528,10 @@
   - EK-092：[2026-epark-formosan-dialectometry-gagnier](papers/2026-epark-formosan-dialectometry-gagnier.md) Card 5 第 1 點加回原文「多數語言」之限定與排灣語、萬山魯凱語之例外（摘要 p. 124、p. 128、§5 p. 130，印刷頁＝PDF 頁序＋123，依首頁 pages 124–134 換算）；第 35 行刪「開創性」，「首次」改為作者自述。
   - 兩份證據表各增列一列，兩頁 verification 改回 verified，[issues.md](issues.md) 兩筆標為 fixed。
   - [todo.md](todo.md) TD-008 記錄第二批分配（A 組 8 篇含指定之 Sora、B 組 7 篇、C 組 7 篇），暫不分配 8 篇（2 篇無證據表、5 篇發表早於 2024 年且無後續研究、Ranathunga 2023 後續研究僅 2 筆）與神經粒線體一篇待使用者決定。`lint_wiki.py` ERROR 0、問題清單 open 0。
+
+## [2026-11-09 23:58] update | 新增 Aghion–Howitt 創造性破壞成長模型之卡片文字檔 | #宏觀經濟學 #制度經濟學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第二批 A 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/1992-creative-destruction-aghion.md](cards/1992-creative-destruction-aghion.md) 並建置 `web/prototypes/paper-v1/1992-creative-destruction-aghion.html`。
+  - 來源：導語改寫自 hook 與論文頁 Card 1、Card 4 福利段；Card 2 取論文頁 Card 2 兩點（知識累積、Judd 與 Romer 之水平多樣化不淘汰舊品）；Card 3 公式取論文頁專利價值式（§2.C 式 2.12），示意圖為生產率階梯（每次創新上一階、到來時間不固定）；Card 4 為理論論文採結論模式，三條取自證據表 Card 4 列（§4 pp. 338–339 福利方向不定；§3.A p. 333 與 p. 334 二階循環；§6 pp. 342–343 創新幅度偏小）；Card 5 三筆後續研究取自論文頁 Card 4 後續證據（Klette & Kortum 2004、Aghion et al. 2005、Akcigit & Kerr 2018），獎項取自 `honor` 與 `laureates`。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0（初稿結論用原文術語譯名「顛覆性創新」觸犯禁用詞，改寫為不帶該詞之說法）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 37 項 PASS；Chrome 無頭截圖逐張目視，Card 4 三條結論原折行落單一兩字，縮為單行。

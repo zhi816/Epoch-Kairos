@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>創造性破壞與內生經濟成長模型｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#E6C686;--deep:#53401C;--win:#24231F;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.04</span><span>經濟</span></div><div class="win"><i style="left:38.6%;top:23.2%;width:1px;height:1px;opacity:0.84"></i><i style="left:57.0%;top:40.5%;width:1.5px;height:1.5px;opacity:0.53"></i><i style="left:45.3%;top:45.0%;width:1px;height:1px;opacity:0.77"></i><i style="left:91.0%;top:34.2%;width:1px;height:1px;opacity:0.65"></i><i style="left:54.3%;top:23.3%;width:1px;height:1px;opacity:0.62"></i><i style="left:32.6%;top:8.5%;width:1px;height:1px;opacity:0.63"></i><i style="left:66.4%;top:29.1%;width:1px;height:1px;opacity:0.52"></i><i style="left:89.4%;top:26.9%;width:1px;height:1px;opacity:0.56"></i><i style="left:24.9%;top:16.1%;width:1px;height:1px;opacity:0.58"></i><i style="left:24.4%;top:38.8%;width:1px;height:1px;opacity:0.76"></i><i style="left:35.3%;top:12.3%;width:1px;height:1px;opacity:0.72"></i><i style="left:52.2%;top:44.4%;width:1px;height:1px;opacity:0.71"></i><i style="left:85.6%;top:14.4%;width:1px;height:1px;opacity:0.51"></i><i style="left:28.1%;top:38.3%;width:1px;height:1px;opacity:0.81"></i><span class="rep award"></span><span class="line"><span>新技術淘汰舊技術，</span><span>經濟才能長期成長</span></span></div><div class="tags">宏觀經濟與治理・#宏觀經濟學 #制度經濟學</div><div class="name">創造性破壞與內生經濟成長模型</div><div class="lead">把「新產品讓舊產品過時」寫成數學模型，說明研發如何推動長期成長，又為何可能過多或過少。</div><div class="yrs">1992 發表 ｜ 2025 諾貝爾經濟學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">模型裡的新產品，<br>從不淘汰舊產品</span><div class="rows"><div class="row"><b>知識累積</b><span>既有內生成長研究著重知識累積，未處理產品品質的改善</span></div><div class="row"><b>水平多樣化</b><span>Judd 與 Romer 的新產品只是並列增加，不會淘汰舊品</span></div><div class="row gap"><b>模型</b><span>沒有把產品淘汰與獨占租金消失寫進成長的均衡模型</span></div></div><span class="ft" style="color:var(--ink)">成長的另一面，是舊技術的退場。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">每次創新，<br>都終結上一代的獨占</span><svg class="dia" viewBox="0 0 300 120" role="img" aria-label="示意：生產率隨每次創新上一階，創新到來的時間不固定，每一階都取代上一代。">
+  <line class="k-muted k-thin" x1="16" y1="100" x2="292" y2="100"/>
+  <line class="k-muted k-thin" x1="16" y1="100" x2="16" y2="22"/>
+  <polyline class="k-line" points="16,90 70,90 70,74 128,74 128,58 166,58 166,42 250,42 250,26 292,26"/>
+  <circle class="k-accent" cx="70" cy="74" r="3"/>
+  <circle class="k-accent" cx="128" cy="58" r="3"/>
+  <circle class="k-accent" cx="166" cy="42" r="3"/>
+  <circle class="k-accent" cx="250" cy="26" r="3"/>
+  <text class="k-label" x="22" y="16">生產率</text>
+  <text class="k-label" x="292" y="114" text-anchor="end">時間</text>
+  <text class="k-label" x="99" y="88" text-anchor="middle">上一代</text>
+  <text class="k-label-accent" x="166" y="32" text-anchor="middle">創新</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="V_{t+1} = \frac{\pi_{t+1}}{r + \lambda \phi(n_{t+1})}"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">專利的價值，取決於多快被下一次創新取代；後人越努力研發，今天的專利越短命。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="concl"><p>放任市場的成長，可高於或低於最適</p><p>特定條件下，研發會高低交替循環</p><p>私人選的創新幅度，傾向低於最適</p></div><span class="ft">範圍：Aghion 與 Howitt 1992，理論模型推導，未含實證資料</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">成長理論，<br>走進企業資料</span><div class="time"><p><b>2004</b><span>Klette 與 Kortum 用企業資料量化創新</span></p><p><b>2005</b><span>Aghion 等發現競爭與創新呈倒 U 型</span></p><p><b>2018</b><span>Akcigit 與 Kerr 拆分新創與既有企業的貢獻</span></p><p><b>2025</b><span>Mokyr、Aghion、Howitt 獲諾貝爾獎</span></p></div><span class="ft">前三項為後續他人成果，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">沒有退場機制的系統終會僵化；舊技術的淘汰，正是長期成長的代價。</span><span class="shift"><span>累積資本</span><i aria-hidden="true"></i><b>汰舊換新</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">1992 發表 ｜ 2025 諾貝爾經濟學獎</span>
+<h1>創造性破壞與內生經濟成長模型（Aghion-Howitt 熊彼特成長理論）</h1>
+<p class="en">A Model of Growth Through Creative Destruction</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">經濟成長並非平靜的資本累積，而是一場永不停歇的工業新陳代謝：每一次技術飛躍，都必然伴隨著既有技術租金的毀滅。</p>
+<p>Aghion 與 Howitt (1992) 建立一個由垂直產品創新推動的內生成長模型：研發以泊松過程產生新中間財，每次創新提高生產率並使前一代產品過時、摧毀既有創新者的壟斷租金。這把熊彼特式創造性破壞寫入一個可分析的均衡模型。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>理論瓶頸：產品創新與過時</h2></div>
+<p>本文引言將研究問題定位為：把工業產品創新（改善產品品質並使舊品過時）納入內生成長模型。</p>
+<ul><li><strong>從知識累積到產品創新</strong>：作者指出，既有內生成長文獻已研究知識累積，而本文聚焦於改善產品品質的工業創新。</li><li><strong>水平多樣化模型不含產品淘汰</strong>：作者指出，Judd (1985) 與 Romer (1990) 以水平產品創新建模，新產品並不優於既有產品，因此不會使舊品過時。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>Aghion 與 Howitt 將經濟體建模為一連串由研發（R&amp;D）驅動的垂直品質躍遷過程，每一代新中間財都會完全取代上一代，摧毀前任創新者的獨占租金。</p>
+<ol><li><strong>泊松創新到達過程（Poisson Arrival of Innovations）</strong>：<ul><li>當研發部門投入數量為 <span class="m-in" data-tex="n_t"></span> 的高技術研究勞動力時，下一次技術突破以泊松抵達率 <span class="m-in" data-tex="\lambda \phi(n_t)"></span> 發生。每次突破使中間財生產率提升固定倍數 <span class="m-in" data-tex="\gamma &gt; 1"></span>。</li></ul></li><li><strong>跨期前瞻性研發套利均衡（Forward-Looking R&amp;D Arbitrage）</strong>：<ul><li>當前第 <span class="m-in" data-tex="t"></span> 代創新者的獨占利潤，取決於<strong>下一代第 <span class="m-in" data-tex="t+1"></span> 次創新何時到來</strong>。若未來預期的研發強度 <span class="m-in" data-tex="n_{t+1}"></span> 越高，當前專利的預期存活壽命就越短，從而抑制當前的研發意願。這構成了跨期負向回饋關係：<span class="m-in" data-tex="n_t = \psi(n_{t+1})"></span>。</li></ul></li><li><strong>租金竊取效應與社會最優偏離（Business-Stealing vs. Intertemporal Spillover）</strong>：<ul><li>私人創新者在決策時，一方面忽略了自身創新對未來所有世代知識基底的永久墊高（跨期正外部性，使私人研發不足），另一方面卻將奪取前人獨占租金視為自身淨收益（業務竊取負外部性，使私人研發過度）。因此，自由市場的均衡成長率可能高於或低於社會福利最優成長率。</li></ul></li></ol>
+<h3>1. 最終財生產函數與垂直品質階梯 (Production &amp; Quality Ladder)</h3>
+<p>一般基準模型的最終財生產函數為 <span class="m-in" data-tex="y_t=A_tF(x_t)"></span>（式 2.1）；作者另以 Cobb–Douglas 作為特例，令 <span class="m-in" data-tex="F(x)=x^\alpha"></span>、<span class="m-in" data-tex="0&lt;\alpha&lt;1"></span>（式 2.8）。每次成功創新使技術水準 <span class="m-in" data-tex="A_t"></span> 提高固定倍數 <span class="m-in" data-tex="\gamma&gt;1"></span>，因此（式 2.3）：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+y_t &amp;= A_t F(x_t) \\
+A_t &amp;= A_0 \gamma^t
+\end{aligned}"></span>
+<p>其中 <span class="m-in" data-tex="t \in \{0, 1, 2, \dots\}"></span> 代表迄今已發生的累計成功創新次數。總勞動力 <span class="m-in" data-tex="N"></span> 在製造部門 <span class="m-in" data-tex="x_t"></span> 與研發部門 <span class="m-in" data-tex="n_t"></span> 之間滿足資源出清條件：</p>
+<span class="m-disp" data-tex="N = x_t + n_t"></span>
+<h3>2. 創新價值泛函與跨期研發套利方程 (Bellman Value &amp; R&amp;D Arbitrage)</h3>
+<p>令 <span class="m-in" data-tex="V_{t+1}"></span> 為第 <span class="m-in" data-tex="t+1"></span> 次創新成功者所能獲得的期望貼現獨占價值。在利率為 <span class="m-in" data-tex="r"></span>、下一期研發投入為 <span class="m-in" data-tex="n_{t+1}"></span> 的條件下，該專利以泊松速率 <span class="m-in" data-tex="\lambda \phi(n_{t+1})"></span> 被下一次創新摧毀。原文的專利價值式為（§2.C，式 2.12）：</p>
+<span class="m-disp" data-tex="V_{t+1} = \frac{\pi_{t+1}}{r + \lambda \phi(n_{t+1})}"></span>
+<p>其中 <span class="m-in" data-tex="\pi_{t+1}"></span> 為第 <span class="m-in" data-tex="t+1"></span> 代獨占者的利潤流。自由進入下的研發條件為 <span class="m-in" data-tex="w_t \geq \lambda\phi&#x27;(n_t)V_{t+1}"></span>，且正研發投入時取等號（式 2.10）；在線性研發技術 <span class="m-in" data-tex="\phi(n)=n"></span> 下簡化為：</p>
+<span class="m-disp" data-tex="w_t = \lambda V_{t+1}"></span>
+<h3>3. 穩態內生經濟成長率與方差 (Steady-State Growth Rate)</h3>
+<p>在平穩均衡（Stationary Equilibrium，<span class="m-in" data-tex="n_t = \hat{n}"></span>）下，對數產出 <span class="m-in" data-tex="\ln y(\tau)"></span> 在連續時間長度為 <span class="m-in" data-tex="1"></span> 的區間內服從複合泊松過程，其長期平均對數成長率（Average Growth Rate，<span class="m-in" data-tex="g"></span>）與成長波動方差（Variance，<span class="m-in" data-tex="\sigma^2"></span>）皆由研發投入 <span class="m-in" data-tex="\hat{n}"></span> 內生決定（式 3.11，§3.C，p. 336）：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+g &amp;= \mathbb{E}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \phi(\hat{n}) \ln \gamma \\
+\sigma^2 &amp;= \operatorname{Var}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \phi(\hat{n}) (\ln \gamma)^2
+\end{aligned}"></span>
+<p>在線性研發技術 <span class="m-in" data-tex="\phi(n) = n"></span> 之特例下，兩式化為 <span class="m-in" data-tex="g = \lambda \hat{n} \ln \gamma"></span> 與 <span class="m-in" data-tex="\sigma^2 = \lambda \hat{n} (\ln \gamma)^2"></span>；原文以此通式推導，線性特例僅用於後續 Cobb–Douglas 比較靜態分析。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Aghion &amp; Howitt 1992）之核心理論證明</h3>
+<ul><li><strong>穩態均衡與內生 2 階循環（Two-Cycle）條件</strong>：作者分析跨期研發套利映射 <span class="m-in" data-tex="n_t = \psi(n_{t+1})"></span>。基準模型存在唯一平穩穩態 <span class="m-in" data-tex="\hat{n}"></span>；當無成長陷阱（No-Growth Trap）存在且 <span class="m-in" data-tex="c&#x27;(\hat{n}) + b&#x27;(\hat{n}) &gt; 0"></span> 時，可出現高研發與低研發交替之實質 2 階循環（一般存在條件 §3.A, p. 333；Cobb–Douglas 特例 p. 334）。在 Cobb–Douglas 生產函數與線性研發技術 <span class="m-in" data-tex="\phi(n) = n"></span> 之特例下，該條件約化為競爭程度參數 <span class="m-in" data-tex="\alpha"></span> 與利率 <span class="m-in" data-tex="r"></span> 足夠小（<span class="m-in" data-tex="1-\alpha"></span> 為 Lerner 壟斷力，故 <span class="m-in" data-tex="\alpha"></span> 越小表市場力量越大）。原文將此循環定位為創造性破壞導致內生波動之理論展示，並未宣稱可直接解釋現實商業週期；全文僅有 Proposition 1（p. 334），未以 <span class="m-in" data-tex="\psi&#x27;(\hat{n}) &lt; -1"></span> 表述穩定條件，亦未使用「極限環（limit cycle）」一詞。</li><li><strong>福利效果的方向取決於多種扭曲</strong>：社會計畫者的折現率為 <span class="m-in" data-tex="r-\lambda\phi(n)(\gamma-1)"></span>，而私人專利估值的折現率為 <span class="m-in" data-tex="r+\lambda\phi(n)"></span>。業務竊取、壟斷扭曲、可占有性與跨期外溢的效果彼此牴觸，因此自由放任下的成長可能高於或低於社會最適；在線性 Cobb–Douglas 例中，當市場力量較大（<span class="m-in" data-tex="\alpha"></span> 接近 0）且創新幅度不大時，業務竊取效應可主導並導致過度研發。</li><li><strong>自由放任下的創新幅度偏小</strong>：第 6 節讓研究企業同時選擇創新頻率與幅度；在顛覆性創新情形下，私人企業選擇的創新幅度低於社會最適。非顛覆性創新下，利潤率誘因會部分抵銷這一傾向；總體成長效果方向仍不確定。</li></ul>
+<h3>後續領域關鍵實證（非本篇成果，標註出處）</h3>
+<ul><li><strong>競爭與創新的倒 U 型曲線（Inverted-U Relationship）</strong>：Aghion, Bloom, Blundell, Griffith &amp; Howitt (2005), <em>Quarterly Journal of Economics</em> 120(2):701-728，結合英國面板專利數據與熊彼特模型，實證發現在頸部競爭（Neck-and-Neck）產業中，適度競爭會激發「逃離競爭效應（Escape-Competition Effect）」，而過度競爭則抑制落後者的創新回報，整體呈顯著倒 U 型。</li><li><strong>企業動態與創造性破壞的微觀量化</strong>：Klette &amp; Kortum (2004), <em>Journal of Political Economy</em> 112(5):986-1018 與 Akcigit &amp; Kerr (2018), <em>Journal of Political Economy</em> 126(4):1374-1443，利用美國人口普查局微觀企業數據，量化驗證新創企業的激進創新（External Creative Destruction）與既有大企業的內部改良對總體 TFP 成長的貢獻比例。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>啟發動態反壟斷與產業競爭政策框架</strong>：為產業組織學提供分析動態市場進入與技術取代的微觀基礎。隨後的政策與文獻將其延伸至現代反壟斷審查（例如 Cunningham, Ederer &amp; Ma (2021, <em>Journal of Political Economy</em>) 針對預防性收購以扼殺潛在創新競爭者的「扼殺式收購 Killer Acquisitions」研究），利用創造性破壞架構評估專利壟斷保護與動態競爭激勵之間的權衡（非 1992 原始論文之直接檢驗結果）。</li><li><strong>微觀企業數據與宏觀成長的統一</strong>：使宏觀經濟學得以直接利用專利引用、企業出生率（Entry Rate）、退出率（Exit Rate）與職位創造/毀滅（Job Reallocation）數據來診斷國家經濟活力。</li><li><strong>制度政治經濟學的延伸</strong>：解釋了為何既得利益集團（Incumbents）在面對通用目的技術（如蒸汽機、電力、人工智慧）時，會遊說政府築起監管高牆以阻止「創造性破壞」，從而導致中等收入陷阱與長期停滯。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>Aghion-Howitt 模型的哲學精髓在於揭示了<strong>「穩定（Stability）」與「演化（Evolution）」的深刻張力</strong>：</p>
+<ol><li><strong>沒有退出機制的系統終將僵化</strong>：無論是生物演化中的物種更替、深度學習中的權重修剪，還是宏觀經濟中的企業破產重整，長期適應力的提升都以局部舊結構的有序淘汰為前提。</li><li><strong>預期壽命決定當下創造力</strong>：創新者不僅看重當下的獎勵，更看重制度能否在「保護創新果實」與「允許後浪推前浪」之間維持精妙的動態平衡。</li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>1992</b><span>發表・Econometrica</span></div>
+    <div class="yr award"><b>2025</b><span>諾貝爾經濟學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Philippe Aghion<br>Peter Howitt</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Joel Mokyr<br>Philippe Aghion<br>Peter Howitt</span><span class="note">Mokyr 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Econometrica, 60(2), 323-351</span><a href="https://doi.org/10.2307/2951599">doi:10.2307/2951599</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#宏觀經濟學</span><span class="chip">#制度經濟學</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>制度演化與宏觀經濟動態</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.2307/2951599" title="Aghion, P., &amp; Howitt, P. (1992) A Model of Growth Through Creative Destruction. Econometrica 60(2):323-351.">Aghion 與 Howitt（1992）</a><a href="https://doi.org/10.1086/261725" title="Romer, P. M. (1990) Endogenous Technological Change. Journal of Political Economy 98(5):S71-S102.">Romer（1990）</a><a href="https://doi.org/10.1093/qje/120.2.701" title="Aghion, P., Bloom, N., Blundell, R., Griffith, R., &amp; Howitt, P. (2005) Competition and Innovation: An Inverted-U Relationship. Quarterly Journal of Economics 120(2):701-728.">Aghion 等（2005）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2025 年諾貝爾經濟學獎由 Joel Mokyr（1/2）與 Philippe Aghion、Peter Howitt（合得 1/2）共享，表彰其對「創新驅動之長期經濟成長」的理論與歷史闡釋。本頁以 Aghion 與 Howitt 於 1992 年發表於《Econometrica》之奠基論文為主軸；Joel Mokyr 以技術史與知識制度之研究獲獎，並非本篇論文之作者。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
