@@ -1063,6 +1063,24 @@
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
 - **具體變更**：依 [2026-11-08 22:06] 交接清單第 3、4 步。[data.py](../web/prototypes/mobile-v2-src/data.py) 輸出 `card_line`；[template.html](../web/prototypes/mobile-v2-src/template.html) 將群星與我的關注卡片、論文頁封面（含光遺傳學手寫頁）之星窗由大年份改為以學科色書寫之一句話，依全形逗號分段換行；底部統一為「發表年 發表 ｜ 獲獎年 諾貝爾獎」或「發表年 發表 ｜ 期刊或會議」；我的關注之研究語言改為星窗左上小標籤，代表星移至右上偏右以避開標籤與一句話。以 `python web/prototypes/mobile-v2-src/build.py` 重建 [mobile-v2.html](../web/prototypes/mobile-v2.html)，於 375px 寬檢查 41 張卡片之一句話、標籤與代表星均不重疊。[DESIGN.md](../DESIGN.md) 將一句話欄位、論文名最多兩行、研究語言小標籤改為已定，第八章第 8 項只留「卡片是否匯出為圖片」，版本歷程補記。
 
+## [2026-11-09 12:11] fix | 依原文與定理修訂神經迴路、腦機介面與細胞工程概念頁 | #神經科學 #生物科技 #基因工程
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 執行未結概念頁問題第一批次（生醫神經與細胞工程概念，共 5 筆 Issues across 3 篇概念頁）。
+  - **[neural-circuits.md](concepts/neural-circuits.md)**（EK-042、EK-055）：
+    - **EK-042**：關鍵突破支柱明確將縮放點積注意力與現代連續型 Hopfield 網路之數學等價性歸因於 Ramsauer et al. (2020/2021)，糾正原先混入 2017 Vaswani et al. 原始論文之歸因錯置。
+    - **EK-055**：Hopfield 支柱明確定界其為二值自旋玻璃李亞普諾夫能量函數，容量上限約 0.15N，係為海馬體 CA3 自聯想迴路提供經典物理抽象原型；跨學科對偶段落客觀劃分生物化學突觸調控、經典循環吸引子與現代張量注意力機制之異同，消除將離散吸引子泛化為後續多領域直接歷史基礎之過度表述。
+    - 建立證據表 [wiki/evidence/neural-circuits.md](evidence/neural-circuits.md)，Frontmatter `verification` 提升為 `verified`。
+  - **[brain-machine-interface.md](concepts/brain-machine-interface.md)**（EK-043、EK-044）：
+    - **EK-043**：關鍵突破支柱釐清 Hopfield (1982) 為群體狀態空間吸引子提供物理啟發，而現代 BCI 之神經流形解碼源自運動皮質實證降維建模脈絡（如 Churchland et al. 2012），兩者在群體狀態空間幾何上深層呼應而非直接數學繼承。
+    - **EK-044**：全光學 BCI 段落將實驗規模客觀限定為在動物模型中記錄數千神經元並全息光刺激數十至數百個特定細胞之單細胞級閉環調控，刪除「萬級神經元無損閉環互動」之過度表述，交代光散射深度與光熱耐受等客觀物理瓶頸。
+    - 建立證據表 [wiki/evidence/brain-machine-interface.md](evidence/brain-machine-interface.md)，Frontmatter `verification` 提升為 `verified`。
+  - **[programmable-cellular-engineering.md](concepts/programmable-cellular-engineering.md)**（EK-054）：
+    - **EK-054**：關鍵突破支柱補列化膿性鏈球菌 Cas9 靶向必備之 5'-NGG-3' PAM 基序約束，並將 dCas9 調控底盤與鹼基/先導編輯標明為後續生態之重大延伸；跨學科延伸嚴格劃分體外改造回輸（Casgevy 造血幹細胞自體回輸）與體內局部/系統性靶向遞送（AAV 視網膜試驗與 LNP 肝臟探索性個案），消除已能在各器官普遍體內修正之過度表述。
+    - 建立證據表 [wiki/evidence/programmable-cellular-engineering.md](evidence/programmable-cellular-engineering.md)，Frontmatter `verification` 提升為 `verified`。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-042、EK-043、EK-044、EK-054、EK-055 全數標記為 `fixed`。
+
 ## [2026-11-09 12:12] rule | 新增待辦清單 wiki/todo.md，日誌改為只寫不讀 | 全域
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
