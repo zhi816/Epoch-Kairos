@@ -110,7 +110,8 @@ Epoch-Kairos/
 │   ├── todo.md                # 待辦清單（交接事項、未完成任務、待使用者確認之工作，見第七章第 5 節）
 │   ├── papers/                # 結構化論文知識頁（Markdown）
 │   ├── concepts/              # 跨領域核心概念與實體頁（Markdown）
-│   └── evidence/              # 證據表（每頁一檔，記錄主張與第一手來源之對應，見第七章第 4 節）
+│   ├── evidence/              # 證據表（每頁一檔，記錄主張與第一手來源之對應，見第七章第 4 節）
+│   └── cards/                 # 卡片文字檔（每篇一檔：封面斷行、導語、Card 2–6 與 Card 3 示意圖，見 paper-card-writer）
 │
 └── web/                       # 【展示層：Web Presentation】供 GitHub Pages 部署之成果
     ├── index.html             # 知識星圖首頁（由 tools/build_home.py 產生，勿手改；含隱藏機關進入「我的星系」#my-constellation）
@@ -165,6 +166,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 > | [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 將論文譯為繁體中文或重建 PDF 時 |
 > | [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | Ingest 第 1 步與查核時，將 `raw/` 論文 PDF 抽成附頁碼標記之文字，以搜尋主張出處；預設用 PyMuPDF，MinerU 僅用於純圖片、亂碼 PDF 或抄寫長公式；輸出一律只當草稿，須回原 PDF 核對，且只可在本機解析 |
 > | [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 任何 Git 同步、提交與推送（見第十章） |
+> | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | Ingest 第 4 步、回填或修訂卡片時：撰寫 `wiki/cards/<slug>.md`（首頁封面卡與論文頁 Card 1–6 之文字、Card 3 示意圖）；`references/` 須逐份讀完，附 `check_cards.py` 檢查腳本 |
 
 ### 1. Ingest（收錄新來源）
 當使用者在 `raw/` 放入新文件或指令收錄一篇論文時，AI 必須依序執行以下 5 個步驟：
@@ -177,6 +179,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 2. **撰寫論文頁**：檔案命名一律以論文實際發表年份（`paper_year`）為前綴：`wiki/papers/YYYY-<slug>.md`（例如 2005 年發表、2026 年獲獎之光遺傳學，檔名為 `2005-optogenetics.md`）。若獲獎年份不同，則在 Frontmatter 中以 `award_year` 與 `honor` 完整標註，並由 `timeline_year` 決定其在前台時間線之位置。
 3. **萃取/關聯概念**：檢查是否觸及跨領域概念（如同時涉及 AI 與結構生物學），同步更新或建立 `wiki/concepts/<concept>.md`（Frontmatter 依第七章第 2 節），並將本篇檔名登記於該概念頁之 `papers` 欄位。
 4. **編譯網頁成果**：
+   * **先寫卡片文字**：依 `paper-card-writer` 撰寫 `wiki/cards/<slug>.md`（封面斷行、導語、Card 2–6 與 Card 3 示意圖），執行 `python .agents/skills/paper-card-writer/scripts/check_cards.py <slug>`，ERROR 須為 0。卡片上的數字只能取自證據表，公式只能取自論文頁。
    * 在 `web/papers/YYYY-<slug>/index.html` 產生對應之雙欄互動頁（左側 3:4 知識圖卡，右側 KaTeX 長文）。
    * 執行 `python tools/build_home.py` 重建首頁 `web/index.html`，新論文即依 Frontmatter（`domain`、`domain_tags`、`concepts`、`card_line`、雙年份與 `my_focus` 等欄位）出現在知識星圖或我的星系；不得手改 `web/index.html`。
 5. **更新索引與日誌**：
@@ -214,8 +217,9 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 8. **檢查連結有效性**：確認所有相對路徑連結指向實際存在之檔案，且全庫無 `file:///` 本機絕對路徑與殘留之 `[[...]]` 語法。
 9. **檢查核實狀態一致性**：論文頁與概念頁之 `verification` 須與 `wiki/issues.md` 及 `wiki/evidence/` 一致（規則見第七章第 4 節）。
 10. **檢查待辦清單格式**：`wiki/todo.md` 之標題、狀態、範圍與必填欄位合規，且編號不重複（規則見第七章第 5 節）。
+11. **檢查卡片文字檔**：`wiki/cards/` 各檔之欄位、字數、封面斷行、禁用詞、公式出處、示意圖規格、Card 4 數字與證據表、Card 5 出處，均符合 `paper-card-writer`。
 
-> **工具分工**：第 1、3、4、5、7、8、9、10 條之可機械判斷部分由 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 執行（公式、化學式與長公式為啟發式檢查，警告須人工判斷）；第 6 條由 `crossref_check.py` 執行（需網路）；第 2 條與內容事實查核依 `wiki-content-audit` 查核模式人工進行，發現之問題一律登記於 `wiki/issues.md`，不得只寫在日誌。
+> **工具分工**：第 1、3、4、5、7、8、9、10 條之可機械判斷部分由 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 執行（公式、化學式與長公式為啟發式檢查，警告須人工判斷）；第 6 條由 `crossref_check.py` 執行（需網路）；第 11 條由 `python .agents/skills/paper-card-writer/scripts/check_cards.py` 執行（`--missing` 另列出尚無卡片檔之論文）；第 2 條與內容事實查核依 `wiki-content-audit` 查核模式人工進行，發現之問題一律登記於 `wiki/issues.md`，不得只寫在日誌。
 
 ### 4. Handoff（接手與交接）
 多個 AI 輪流接手同一專案。交接脈絡一律從下列來源取得，不從日誌整份讀取：
@@ -253,7 +257,7 @@ domain_tags: ["#神經科學", "#生物科技"]            # 多選，須取自�
 concepts: ["neural-circuits"] # 關聯之 wiki/concepts/ 頁，供 Lint 檢查反向連結
 status: "wiki"                # planned（僅立案）/ wiki（已有 Wiki 頁）/ published（已產出網頁）
 verification: "unverified"    # 內容核實狀態：unverified / partial / issues / verified（見第七章第 4 節）
-hook: "一句話白話直擊，供 Card 1 使用"
+hook: "一句話白話直擊，供論文頁長文開頭使用（Card 1 改用卡片檔之導語）"
 card_line: "用一道藍光，開關大腦裡特定的神經元"     # 首頁卡片星窗內之短句，20 字以內（規則見下方說明）
 key_papers:                   # 獎項表彰多篇工作時，逐筆列出奠基論文與 DOI
   - "Nagel et al. (2003) ... PNAS 100:13940-13945. https://doi.org/10.1073/pnas.1936192100"
@@ -269,7 +273,7 @@ doi_url: "https://doi.org/10.1038/nn1525"
 > 諾貝爾獎常表彰橫跨數年的一系列論文。此時以最具代表性之單篇為主軸建立頁面，其餘奠基論文一律列入 `key_papers`，並於頁首加註本頁範圍說明，嚴禁將多篇成果混記為單篇之貢獻。
 
 > **卡片一句話（`card_line`，論文頁必填）**：
-> 首頁卡片牆採 F 版型「星窗＋一句話」（見 [`DESIGN.md`](./DESIGN.md) 第二章第 3 節），星窗內以學科色顯示 `card_line`。`hook` 保留給論文頁 Card 1 之長版說明，兩者不得互相代用。撰寫規則：
+> 首頁卡片牆採 F 版型「星窗＋一句話」（見 [`DESIGN.md`](./DESIGN.md) 第二章第 3 節），星窗內以學科色顯示 `card_line`，分行位置寫在卡片檔之「封面斷行」。`hook` 保留給論文頁長文開頭；論文頁 Card 1 改用卡片檔中 60 字以內之「導語」（`hook` 多半過長且多術語，2026-11-09 起），三者不得互相代用。補充細則、斷行規則與範例見 `paper-card-writer` 之 `references/cover.md`，不得與下列規則衝突。撰寫規則：
 > * 20 字以內，全形標點計入字數。
 > * 主詞是「這篇做了什麼」，寫出具體的動作與對象，讓非本領域讀者一眼看懂。
 > * 不用「開創性」、「顛覆性」、「革命性」等評價形容詞，不用縮寫與術語（如 NMT、RAG、Transformer）；研究對象之語言名、物質名可保留。
@@ -332,6 +336,8 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
 ---
 
 #### 3:4 豎版知識圖卡之 6 張節奏規範：
+> 各卡之欄位、字數上限、內容來源與 Card 3 示意圖規格，以 `paper-card-writer` 為準；卡片文字存於 `wiki/cards/<slug>.md`。
+
 * **Card 1｜時代銘文（The Hook）**：論文大標題、發表/獲獎雙年份、領域標籤、一句話白話直擊（「這項研究到底幫全人類解決了什麼？」）。
 * **Card 2｜世紀瓶頸（The Dilemma）**：視覺化痛點對比（Before vs. Problem），呈現過去科學家為什麼集體卡關。
 * **Card 3｜突破架構與原理（The Secret）**：核心突破原理與理論機制，**強制採用標準 LaTeX 渲染數學/物理/生醫公式**（如矩陣、衰減常數、能量泛函）。

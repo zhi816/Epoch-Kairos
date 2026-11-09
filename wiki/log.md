@@ -1346,3 +1346,14 @@
   - [wiki/todo.md](todo.md)：新增 TD-007，清點證據表「類型」欄不符五類白名單之列，待使用者確認處置方式。
   - 未決：EK-088（Aghion 封存檔為 Bertola NBER WP 3851）、EK-089（Acemoglu 封存檔為 NBER WP 7771，AER 頁碼無法以封存檔核實）維持 open，待使用者更換封存檔或指示改採工作論文版；未逐列重核該兩表其餘各列。
   - 驗證：`lint_wiki.py` 無 ERROR。
+
+## [2026-11-09 20:16] rule | 新增 paper-card-writer Skill 規範論文卡片之文字與示意圖 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：
+  - 依使用者指示（一個 Skill、內部分檔；卡片文字存獨立檔；Card 3 每篇都要有示意圖），新增 [paper-card-writer](../.agents/skills/paper-card-writer/SKILL.md)：SKILL.md 寫硬規則、開工必讀、作業流程、卡片專屬吸引子、批次規則與交付要求；`references/` 九份分檔（檔案格式、用字標點與字數計法、封面卡、Card 2 至 6、示意圖 SVG 規格）；`scripts/check_cards.py` 機械檢查欄位、字數、封面斷行、禁用詞、Card 3 公式是否出自論文頁、SVG 元素與屬性白名單、Card 4 數字是否出自證據表、Card 5 出處作者是否在論文頁等。另加 Claude Code 轉介檔 `.claude/skills/paper-card-writer/SKILL.md`。
+  - 以故意寫錯的卡片檔測試檢查腳本：17 項問題中，除「封面斷行拆開詞語」須人工判斷外皆被抓到。
+  - 新增範例 [wiki/cards/1982-hopfield-network.md](cards/1982-hopfield-network.md)，內容取自論文頁與證據表；`check_cards.py` ERROR 0、WARN 0。
+  - [AGENTS.md](../AGENTS.md)：第四章目錄樹加入 `wiki/cards/`；第六章 Skill 一覽登記本 Skill；Ingest 第 4 步加「先寫卡片文字」；Lint 新增第 11 條；`hook` 改為供長文開頭，Card 1 改用卡片檔 60 字內之「導語」；`card_line` 細則與六張卡規範指向本 Skill。
+  - [DESIGN.md](../DESIGN.md)：Card 1 改放導語、封面斷行改人工指定；第五章新增第 4 節「卡片文字」，Card 3 每篇示意圖標為已定，Card 4 結論模式標為暫定；新增待決第 16 項（我的關注內頁配色，待樣稿比較）；第十章補版本歷程。
+  - [todo.md](todo.md) 新增 TD-008：回填其餘 40 篇卡片文字檔（光遺傳學與 LIGO 須先建證據表）。Lint ERROR 0、WARN 30（皆為既有警告）。

@@ -37,3 +37,8 @@
 - **內容**：`wiki/evidence/` 各表之「類型」欄目前混用組合值與白名單外描述，例如 [1992-creative-destruction-aghion.md](evidence/1992-creative-destruction-aghion.md) 之「本篇研究結果 / 官方事實」、[2001-colonial-origins-acemoglu.md](evidence/2001-colonial-origins-acemoglu.md) 之「本篇研究結果 / 作者解釋」與「後續研究 / 政策推論」，不符 AGENTS.md 第七章第 4 節所定五類（本篇研究結果、後續研究、作者解釋、依原文數據計算、Wiki 詮釋）。應先全庫清點所有不合規列並列出清單與建議類型，再決定處置方式；每一列須回原文判斷主張歸屬，不得機械拆解組合值或批次改寫。
 - **完成條件**：清單列畢且經使用者確認處置方式（逐列修正，或於 AGENTS.md 明訂組合值之使用規則），必要時 `lint_wiki.py` 增列檢查；未經確認前不動任何證據表。
 - **來源**：使用者指示（2026-11-09 交接，承接 EK-090 之證據表類型觀察）；2026-11-09 登記，DeepSeek Harness（DeepSeek-V4.1-Flash）。
+
+### TD-008 | open | wiki | 依 paper-card-writer 回填其餘 40 篇論文之卡片文字檔
+- **內容**：目前只有 [1982-hopfield-network](cards/1982-hopfield-network.md) 有卡片文字檔。其餘 40 篇依 [`paper-card-writer`](../.agents/skills/paper-card-writer/SKILL.md) 逐篇撰寫 `wiki/cards/<slug>.md`（封面斷行、導語、Card 2 至 6、Card 3 示意圖），每篇完成即跑 `check_cards.py <slug>`。須遵守該 Skill 第七節批次規則：一次一篇、每篇重開論文頁與證據表、每五篇重讀硬規則。`2005-optogenetics` 與 `2016-ligo-gravitational-waves` 尚無證據表，須先依 `wiki-content-audit` 建立證據表才能寫卡片；論文頁 `verification` 為 `issues` 者，先確認問題是否影響卡片內容。我的關注論文之內頁配色待定（DESIGN.md 第八章第 16 項），不影響文字撰寫。另：`tools/build_home.py` 之 `STUDY_TYPE` 對照表日後改讀卡片檔「研究類型」，論文頁建置（TD-002）改讀 `wiki/cards/`。
+- **完成條件**：41 篇論文皆有卡片文字檔，`python .agents/skills/paper-card-writer/scripts/check_cards.py --missing` 無 ERROR、無 INFO（缺檔）列，WARN 逐條處理或於日誌交代。可分批進行，每批於日誌列出完成篇目。
+- **來源**：使用者指示（2026-11-09，建立卡片撰寫 Skill）；2026-11-09 登記，Claude Code by Anthropic。
