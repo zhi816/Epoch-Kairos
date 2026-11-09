@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#人工智慧", "#深度學習"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: true
 focus_role: "llm-assisted"
 focus_languages: ["達豪語"]
@@ -74,7 +74,7 @@ card_line: "參考例句給得越多，達豪語翻譯得越好"
   * 採用 `RapidFuzz` 計算字元級正規化 Levenshtein 相似度 $\ge 0.5$；針對輸入句的每個詞彙，自檢索庫抽取 $N$ 句相關雙語例句並去重。
   * **容量與雜訊權衡**：詞級策略成功打破了句級檢索的早飽和現象，當 $N=10$（有效句數 $K \approx 137$）時達到全場最高的 **35.28 chrF++**；但當進一步推升至 $N=15$（$K \approx 205$）與 $N=20$（$K \approx 272$）時，過多破碎的背景語境引入雜訊，分數回落至 35.16 與 34.22 chrF++（表 5），證實語境容量並非單調無限上升。
 * **詞典檢索（Lexicon Retrieval）**：
-  * 與例句檢索不同，詞典檢索展現嚴格的單調遞增特性；直接注入包含 2,377 條詞彙的完整詞典（Full Dictionary）取得最佳效果（31.32 chrF++ / 16.27 spBLEU），有效壓制 25.9% 的 OOV 衝擊。
+  * 詞典檢索隨容量增加呈單調提升。論文對全量詞典筆數有內部差異：§3.1（p. 89）與附錄表 6（p. 100）列 2,377 條，§4.3.2（p. 90）則稱 2,375 條；表 6 的全量詞典結果為 31.32 chrF++ / 16.27 spBLEU。原文未解釋這項差異。
 
 ---
 
@@ -93,7 +93,7 @@ card_line: "參考例句給得越多，達豪語翻譯得越好"
 ### 2. 核心系統實驗成果（表 2, p. 91）
 * **組件貢獻分解（舊約測試集）**：
   * Baseline (NMT Only)：$7.66 \text{ spBLEU} \;/\; 27.11 \text{ chrF++}$
-  * + Lexicon (Full, 2,377 條)：$16.27 \text{ spBLEU} \;(\uparrow 8.61) \;/\; 31.32 \text{ chrF++} \;(\uparrow 4.21)$
+  * + Lexicon (Full; 表 6 列 2,377 條、§4.3.2 列 2,375 條)：$16.27 \text{ spBLEU} \;(\uparrow 8.61) \;/\; 31.32 \text{ chrF++} \;(\uparrow 4.21)$
   * + Sentences (Word-Level, $N=10$, eff. $K \approx 137$)：$18.93 \text{ spBLEU} \;(\uparrow 11.27) \;/\; 35.28 \text{ chrF++} \;(\uparrow 8.17)$
   * **+ Combined (最終系統：詞級例句 ＋ 完整詞典)**：**$19.88 \text{ spBLEU} \;(\uparrow 12.22) \;/\; 35.21 \text{ chrF++} \;(\uparrow 8.10)$**，幾乎完全收復因領域偏移遺失之表現（域內基準為 36.17 chrF++）。
 

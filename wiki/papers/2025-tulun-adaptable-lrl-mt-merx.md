@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#人工智慧", "#計算語言學"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: true
 focus_role: "llm-assisted"
 focus_languages: ["德頓語", "比斯拉馬語"]
@@ -79,15 +79,15 @@ card_line: "讓大模型參考詞彙表與舊譯文，修潤譯稿"
 
 ## Card 4 ｜ 可核實的原文證據 (The Evidence)
 
-### 1. 真實世界領域任務評估（§4.1.1, 表 1, p. 133）
-* **德頓語醫療翻譯（Tetun, en-tdt）**：
-  * 測試集：Maluk Timor 提供的 244 段實地醫護培訓教材；術語庫含 439 條醫療專有名詞。
-  * 基線 MADLAD-400-10B：**26.96 ChrF++ / 4.45 BLEU**。
-  * **TULUN（MADLAD + Gemini + 術語 + TM）**：**43.86 ChrF++ / 17.96 BLEU**（ChrF++ 巨幅提升 **+16.90**，BLEU 提升 **+13.51**）。
-* **比斯拉馬語救災翻譯（Bislama, en-bis）**：
-  * 測試集：萬那杜紅十字會 250 段真實救災評估文本；術語庫含 50 條救災專詞，321 組翻譯記憶。
-  * 基線 OPUS-MT：**28.51 ChrF++ / 10.63 BLEU**。
-  * **TULUN（OPUS-MT + Gemini + 術語 + TM）**：**50.92 ChrF++ / 28.32 BLEU**（ChrF++ 提升 **+22.41**，BLEU 提升 **+17.69**）。
+### 1. 真實世界領域任務評估（§4.1.1, pp. 132–133；表 1, p. 133）
+* **德頓語醫療翻譯（Tetun, TDT）**：
+  * Maluk Timor 提供醫療詞彙表 2,698 條、翻譯記憶 1,018 句；其中保留 451 句作評估。
+  * 表 1 的 ChrF++：MADLAD-400-10B 基線 35.78，TULUN 47.87（+12.09）；OPUS-MT 基線 16.01，TULUN 34.27（+18.26）。
+* **比斯拉馬語救災翻譯（Bislama, BIS）**：
+  * Pacific Creoles 合作方提供字典 5,769 條、翻譯記憶 3,353 段；其中保留 841 段作評估。
+  * 表 1 的 ChrF++：MADLAD-400-10B 基線 15.22，TULUN 47.94（+32.72）；OPUS-MT 基線 32.60，TULUN 48.14（+15.54）。
+* **跨語言平均增益**：表 1 報告相對 MADLAD 的平均增益為 +22.41 ChrF++，相對 OPUS-MT 為 +16.90 ChrF++；這兩個數字是各自基線下跨 TDT、BIS 的平均增益，不是單一語言的增益。
+* **指標範圍**：表 1 僅報告 ChrF++，未列 BLEU 分數。
 
 ### 2. 系統易用性與接受度（§4.1.2, p. 134）
 * **系統可用性量表（SUS）**：平均得分 **81.25 分**（對應 Grade A 優異等級）。

@@ -5,7 +5,7 @@
 | 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |
 |---|---|---|---|---|
 | Frontmatter | 標題、作者 Reen-Cheng Wang、Cheng-Kai Yang、Tun-Chieh Yang、Yi-Xuan Tseng；國立臺東大學；*Eng. Proc.* 120(1), 52 | 本篇研究基本資訊 | 首頁標題與署名；Crossref | 符合來源 |
-| Card 1 | 修正作者為「王任慶（Reen-Cheng Wang）教授團隊」 | 書目校正 | 首頁署名 | 符合來源（糾正中英大小寫混雜問題，關閉 EK-081 (1)） |
+| Card 1 | 作者團隊與通訊作者 Reen-Cheng Wang（不列未見於首頁的教授職稱） | 書目校正 | 首頁署名與通訊作者註記 | 符合來源（修正 EK-081） |
 | Card 1 & Card 2 | 極低資源排灣語（小於 10 萬句）通用 LLM 直接翻譯 BLEU 僅 1.7–4.4，幻覺頻繁 | 本篇研究背景與動機 | §1–§2, pp. 1–3；Figure 5 | 符合來源 |
 | Card 3 | 刪除虛構之 BM25 結合語意餘弦相似度線性加權公式；說明原文無數學公式與 BM25 | 系統方法更正 | §3.1–§3.2, pp. 4–5；Figure 1–3 | 符合來源（確認原文無數學公式，關閉 EK-081 (2)） |
 | Card 3 | 串聯條件分支（If-Else Fallback）：逐詞先查記憶體 JSON 雜湊表字典，命中則 Word Merge；未命中才查詢 Qdrant 向量庫 | 本篇核心管線 | §3.1–§3.2, pp. 4–5；Figure 3 (Data flow) | 符合來源（關閉 EK-081 (2)） |

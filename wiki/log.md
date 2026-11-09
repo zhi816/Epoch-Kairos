@@ -1263,3 +1263,15 @@
 - **具體變更**：
   - [2026-11-09 16:23] audit 重開 EK-081 至 EK-084、EK-086 後，相關頁面 `verification` 未同步，造成 Lint 5 筆 ERROR。已將 [2026-hybrid-dictionary-rag-llm-paiwan-wang](papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)、[2025-fragment-shot-reasoning-mt-frontull](papers/2025-fragment-shot-reasoning-mt-frontull.md)、[2025-tulun-adaptable-lrl-mt-merx](papers/2025-tulun-adaptable-lrl-mt-merx.md)、[2026-context-volume-rag-domain-shift-setiawan](papers/2026-context-volume-rag-domain-shift-setiawan.md) 與概念頁 [formosan-computational-linguistics](concepts/formosan-computational-linguistics.md) 之 `verification` 由 `verified` 改為 `issues`。
   - 驗證：Lint 全庫 ERROR 0、WARN 30。
+
+## [2026-11-09 19:15] fix | 修正 Gemini 復核後重開的五項 Wiki 問題 | #人工智慧 #自然語言處理 #計算語言學
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：
+  - EK-081：移除 Hybrid Dictionary 論文與證據表中原文首頁未標示的「教授」職稱；保留此前已核實的串聯式字典與 Qdrant fallback 方法。
+  - EK-082：將 Fragment-Shot 的絕對「無重疊」改為原文所述盡量避免重疊、理想上完整且不冗餘，並註明非零重疊保證。
+  - EK-083：重寫 TULUN 評估數據，列出 TDT、BIS 各基線與 ChrF++ 分數及增益、資料規模與評估保留數；移除表 1 未報告的 BLEU。
+  - EK-084：記錄 Context Volume 論文對詞典筆數的內部差異（§3.1／附錄表 6 為 2,377，§4.3.2 為 2,375），並移除無來源支持的線性增長描述。
+  - EK-086：更正 OOV 候選詞根方法，補上三種子字串條件、合法前後綴檢查、44 維成對隨機森林投票，以及書寫形式篩選未納入最終流程的原因。
+  - 同步更新五個相關論文／概念頁與證據表的核實狀態；五項 issue 均改為 fixed。
+- **依據與驗證**：回查各研究原文對應頁面；wiki-content-audit lint 全庫 ERROR 0、WARN 30（既有警告）；git diff --check 通過。

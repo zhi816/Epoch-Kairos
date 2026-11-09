@@ -524,33 +524,37 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 3 刪除虛構之語言識別器與 AlignScore 模型，改述原文真實採用之正則清洗與詞/字元長度比例過濾門檻；校正 15 個 ISO 639-3 語言代碼並補齊 ckv 與 szy；澄清模型訓練為獨立之雙向雙語基準，而非 15 語聯合多語言預訓練；Card 6 校正語料總量為 49.3 萬句對（含 39.7 萬族語－華語句對），消除數據矛盾。建立證據表 wiki/evidence/2026-formosanmt-parallel-corpus-scheppat.md，頁面 verification 改為 verified。
 
-### EK-081 | open | papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md | Card 1 與 Card 3 | 原文不符
+### EK-081 | fixed | papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md | Card 1 與 Card 3 | 原文不符
 - **問題**：（1）Card 1（第 30 行）將作者寫作「王 reen-cheng 教授」，中英大小寫混雜。（2）Card 3（第 44–53 行）列出雙軌混合檢索線性加權公式（結合餘弦相似度與 BM25），並於第 62 行與架構圖（第 65–69 行）稱辭典模組解析出「詞根＋詞綴焦點＋中文詞條」且與向量庫並聯檢索。原文 §3.1–3.2（pp. 4–5，圖 1–3）全文無任何數學公式、未使用 BM25，亦未由辭典解析詞根與焦點；實際流程（圖 3）為**串聯式條件分支（if-else fallback）**：逐詞先查記憶體內 JSON 雜湊表（`Is it in the hash map? YES -> Word Merge`），僅當詞典未命中（`NO`）時才查詢 Qdrant 向量資料庫。
 - **來源**：`raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（§3.1–3.2 pp. 4–5 圖 1–3）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核實後重寫：Card 1 將作者校正為「王任慶（Reen-Cheng Wang）教授團隊」；Card 3 刪除虛構之餘弦相似度結合 BM25 線性加權公式，改述原文真實採用之串聯條件分支（If-Else Fallback）管線（逐詞查詢記憶體 JSON 雜湊表，命中則 Word Merge，未命中才查詢 Qdrant 向量庫），並澄明詞典模組僅做表面詞字面匹配；Card 4 補齊 250 句評估測試集之 Cosine、BLEU 與 ROUGE-L 對比數據及語法複雜句局限。建立證據表 wiki/evidence/2026-hybrid-dictionary-rag-llm-paiwan-wang.md，頁面 verification 改為 verified。
 - **處理**：2026-11-09，Codex by OpenAI（GPT-6）。覆核發現論文首頁僅列 Reen-Cheng Wang 為通訊作者並列系所，未標示「教授」職稱；本頁與先前處理記錄使用「教授團隊」，若保留須補校方職稱來源，否則改為「作者團隊／通訊作者王任慶」。方法與測試指標本次抽查符合原文；因作者職稱來源尚未補足，狀態重開。
+- **處理**：2026-11-09，Codex by OpenAI（GPT-6）。回原文首頁（p. 1）核對作者署名與通訊作者註記，移除頁面與證據表中原文未列出的「教授」職稱，改以作者團隊及通訊作者王任慶呈現。狀態改為 fixed。
 
-### EK-082 | open | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 3 與 Card 4 | 原文不符
-- **問題**：（1）Card 3（第 44–53 行）稱依據「句法成分樹（Constituency Tree）」拆解來源句，並檢索包含片段及其「對應目標語譯文子串的最小對齊例句對」。原文 §3（p. 3，圖 1）完全未使用句法成分樹剖析器或子串級目標語對齊，而是以**由 7 個連續詞遞減至 1 個詞之滑動視窗（sliding window）**在檢索庫來源端進行精確子字串匹配，為每個不重疊片段隨機抽取至多 6 組完整雙語句對；且 Card 3 漏述 Pivoted Fragment-Shot（§3，pp. 3–4，圖 2）經由義大利語樞紐進行兩階段巢狀片段檢索（排除整句完全重疊）之機制。（2）Card 4（第 83–84 行）兩度將研究對象 **Ladin（拉定語，北義多洛米蒂山區雷托－羅曼語支少數民族語言：Val Badia 與 Gherdëina）**誤寫為「**拉丁語**變體」。
+### EK-082 | fixed | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 3 與 Card 4 | 原文不符
+- **問題**：（1）Card 3（第 44–53 行）稱依據「句法成分樹（Constituency Tree）」拆解來源句，並檢索包含片段及其「對應目標語譯文子串的最小對齊例句對」。原文 §3（p. 3，圖 1）完全未使用句法成分樹剖析器或子串級目標語對齊，而是以**由 7 個連續詞遞減至 1 個詞之滑動視窗（sliding window）**在檢索庫來源端進行精確子字串匹配，為每個片段隨機抽取至多 6 組完整雙語句對；原文只說片段選取會盡量避免重疊，理想上完整且不冗餘，並未保證零重疊；且 Card 3 漏述 Pivoted Fragment-Shot（§3，pp. 3–4，圖 2）經由義大利語樞紐進行兩階段巢狀片段檢索（排除整句完全重疊）之機制。（2）Card 4（第 83–84 行）兩度將研究對象 **Ladin（拉定語，北義多洛米蒂山區雷托－羅曼語支少數民族語言：Val Badia 與 Gherdëina）**誤寫為「**拉丁語**變體」。
 - **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`（§1 p. 1、§3–§4 pp. 3–4 圖 1–2）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核實後重寫：Card 3 刪除虛構之句法成分樹剖析與 argmax 公式，改述原文真實採用之 7 至 1 詞滑動視窗來源端匹配（抽取至多 6 組雙語例句、無重疊覆蓋）以及兩階段樞紐片段提示（PF）機制；Card 4 將研究對象正名為北義多洛米蒂山區雷托－羅曼語支「拉定語（Ladin）」兩大變體（Val Badia 與 Gherdëina），糾正「拉丁語變體」之筆誤；補列 Table 1–3 完整數據、推論耗時與語法有效性局限。建立證據表 wiki/evidence/2025-fragment-shot-reasoning-mt-frontull.md，頁面 verification 改為 verified。
 - **處理**：2026-11-09，Codex by OpenAI（GPT-6）。覆核發現先前處理記錄及證據表把原文「片段選擇會盡量避免重疊，理想上完整且不冗餘」寫成「無重疊覆蓋」，語氣過度絕對。方法本身修正符合原文；須將記錄與證據表改為「盡量避免重疊，力求完整且不冗餘覆蓋」後再關閉，本條重開。
+- **處理**：2026-11-09，Codex by OpenAI（GPT-6）。回原文 §3（p. 3）核對，將引言、Card 3、Card 5 與證據表中的「不重疊／無重疊」絕對表述改為「盡量避免重疊，理想上完整且不冗餘」，並註明原文不保證零重疊；同步修正本問題對方法的描述，保留先前處理記錄以供追溯。狀態改為 fixed。
 
-### EK-083 | open | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 3 與 Card 4 | 原文不符
+### EK-083 | fixed | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 3 與 Card 4 | 原文不符
 - **問題**：Card 3（第 46–62 行）僅以抽象算子描述檢索，未交代原文 §3.2（p. 132）之具體檢索設計：詞彙表（Glossary）係以 spaCy `en_core_web_sm` 斷詞後進行 `{1,2}`-gram 重疊匹配，翻譯記憶庫（Translation Memory）係以 `Tantivy` 函式庫執行 Top-$N$ BM25 檢索，並以 `MADLAD-400-10B`／`OPUS-MT`／`NLLB-54B` 搭配 `Gemini 2.0 Flash` 進行少樣本思維鏈（CoT）後編輯；且原文全文無數學公式（式 52、56 應標明為依原文流程整理之示意式）。
 - **來源**：`raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`（§3.2 p. 132、§4.1–4.2 pp. 132–133）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 3 補齊系統具體技術實作，包含 Django 後端、Docker 容器化、初譯模型支援（MADLAD-400-10B、OPUS-MT、NLLB-54B）、spaCy en_core_web_sm 之 {1,2}-gram 詞彙表動態比對、Rust Tantivy 函式庫之 Top-N BM25 翻譯記憶庫檢索，以及 LiteLLM 代理之 Gemini 2.0 Flash CoT 後編輯提示；標明流程公式為示意式；Card 4 補齊德頓語醫療（+16.90 chrF++ / +13.51 BLEU）、比斯拉馬語救災（+22.41 chrF++ / +17.69 BLEU）、SUS 81.25 分與 FLORES 六語基準對比。建立證據表 wiki/evidence/2025-tulun-adaptable-lrl-mt-merx.md，頁面 verification 改為 verified。
 - **處理**：2026-11-09，Codex by OpenAI（GPT-6）。覆核原文表 1（印刷頁 133）發現先前處理記錄把平均增益誤寫成各語言增益，且加入原文未報告的 BLEU。原文僅報 chrF++：MADLAD 基線下 TDT 為 35.78→47.87（+12.09）、BIS 為 15.22→47.94（+32.72），平均增益 +22.41；OPUS-MT 基線下 TDT 為 16.01→34.27（+18.26）、BIS 為 32.60→48.14（+15.54），平均增益 +16.90。先前寫入的 +13.51／+17.69 BLEU 以及 26.96、43.86、28.51、50.92 等數值均無原文表格依據；論文頁與證據表也含不符原文數值。須一併更正處理記錄、Card 4 與證據表後再關閉，本條重開。
+- **處理**：2026-11-09，Codex by OpenAI（GPT-6）。回原文 §4.1.1（pp. 132–133）與表 1 核對並重寫 Card 4、證據表：更正詞彙表與翻譯記憶數量（Tetun 2,698／1,018，Bislama 5,769／3,353；評估保留 451／841），列明兩個基線下各語言的 ChrF++ 分數與增益，將 +22.41、+16.90 標為跨語言平均增益，移除未報告的 BLEU 及其數值。狀態改為 fixed。
 
-### EK-084 | open | papers/2026-context-volume-rag-domain-shift-setiawan.md | Card 3 | 原文不符
+### EK-084 | fixed | papers/2026-context-volume-rag-domain-shift-setiawan.md | Card 3 | 原文不符
 - **問題**：第 54–60 行稱論文證明 $\operatorname{chrF++}$ 與語境容量呈精確對數線性公式，且第 48 行稱使用「稠密檢索器」召回上下文。原文 §4.3 與 §5.2–5.3（pp. 90–93，表 2、4、5、6）全文無此對數線性公式；表現最佳之平行句檢索策略並非稠密向量檢索，而是基於 `rapidfuzz` 字元級正規化 Levenshtein 相似度 $\ge 0.5$ 之**詞級模糊匹配（Word-Level Fuzzy Matching）**；且句級檢索（BM25、BGE、ChrF-RAG）於 $K \approx 60$ 即飽和，詞級檢索於每詞 $n = 10$（有效句數 $K \approx 137$，35.28 chrF++）達峰值後，於 $n = 15, 20$（$K \approx 205, 272$）因語境雜訊回落至 35.16 與 34.22 chrF++（表 5），並非單調無限上升。
 - **來源**：`raw/my-focus/英文論文/llm 輔助/Context Volume Drives Performance Tackling Domain Shift in Extremely.pdf`（§4.3 p. 90、§5.2–5.3 pp. 91–93、附錄 E p. 100 表 4–6）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 3 刪除虛構之對數線性公式與單一稠密檢索器表述，改述真實之四種檢索策略（BM25、BGE、ChrF-RAG 以及基於 RapidFuzz 之詞級模糊匹配）；交代句級檢索在 $K \approx 60 \sim 80$ 飽和與詞級檢索在 $N=10$（eff. $K \approx 137$）達峰值 35.28 chrF++ 後因語境雜訊回落之實證消融數據；補列詞典檢索單調線性增長特性與完整詞典取得 31.32 chrF++；Card 4 補齊 Table 1、2、4、5、6 詳細數據與 Table 7 三大定性失敗修復案例。建立證據表 wiki/evidence/2026-context-volume-rag-domain-shift-setiawan.md，頁面 verification 改為 verified。
 - **處理**：2026-11-09，Codex by OpenAI（GPT-6）。覆核發現原文 §4.3.2（印刷頁 90）稱詞典共 2,375 條，附錄表 6（印刷頁 100）則列 2,377 條；證據表只採 2,377 並判為完全符合，未記錄原文內部差異。其餘檢索策略與容量結果本次抽查符合原文；須在證據表註明筆數差異後再關閉，本條重開。
+- **處理**：2026-11-09，Codex by OpenAI（GPT-6）。回原文 §3.1（p. 89）、§4.3.2（p. 90）與附錄表 6（p. 100）核對，確認文內分別列 2,377 與 2,375 條詞典，未解釋該差異；已在論文頁與證據表並列兩個數值，並將表述限定為單調提升，移除線性增長之無來源描述。狀態改為 fixed。
 
 ### EK-085 | fixed | papers/2026-data-centric-russian-kyrgyz-mt-novokshanov.md | Card 3 | 原文不符
 - **問題**：（1）第 46–48 行將 SONAR 評分寫為餘弦相似度；原文 §2.1.1（p. 226）明言使用 `blaser_2.0` 跨語言語義相似度預測模型（輸出 1–5 分段，故門檻為 3.0 與 3.7，餘弦相似度不可能大於 1）。（2）第 61–72 行與架構圖將四階段課程學習順序與資料集完全寫反：頁面寫作「階段 1：FineWeb-2 合成回譯 50 萬句 -> 階段 2：SONAR 標準品質 -> 階段 3：SONAR 高品質 -> 階段 4：官方驗證集收斂」。原文 §2.3.3（pp. 227–228）與表 1（p. 226）之真實順序為：**階段 1：OPUS 標準品質多語資料**（$3.0 \le \text{SONAR} < 3.7$，含俄、吉、烏茲別克、塔吉克四語全方向共 8,207,314 句）-> **階段 2：OPUS 高品質多語資料**（$\text{SONAR} \ge 3.7$，7,069,840 句）-> **階段 3：FineWeb-2 開源合成回譯資料**（由 50 萬篇吉爾吉斯語文件切出 1,849,234 段，經 Gemma-3-27B 與 Qwen3-235B 回譯及 MADLAD-400-7B-MT 交叉熵 $(0.1, 4.5)$ 過濾後保留 1,566,927 句對、雙向 3,133,854 句）-> **階段 4：SiberianPersonaChat 高品質合成對話資料**（由 GPT-4o 翻譯之 56,529 段俄吉對話、雙向 113,058 句，絕非在官方驗證集上訓練）。另漏述烏茲別克語／塔吉克語輔助遷移（§2.3.1）與 `mt0-large` 詞表剪枝（1.23B 至 800M，§2.3.2）。
@@ -558,12 +562,13 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文全文核對後重寫：Card 3 更正 SONAR 評分為 `blaser_2.0` 跨語言語義相似度預測模型（1–5 分制，非餘弦相似度）；糾正四階段課程學習倒置錯誤，改述真實順序（階段 1：OPUS 標準 8.2M $\to$ 階段 2：OPUS 高品質 7.1M $\to$ 階段 3：FineWeb-2 回譯 3.1M $\to$ 階段 4：合成對話 113K）；補列烏茲別克與塔吉克雙語輔助遷移、以及 mt0-large 詞表剪枝由 1.23B 壓縮至 800M 架構；Card 4 補齊 Table 1–3 與官方競賽測試集（49.1 chrF++ / 69.7 xCOMET 奪冠）詳細數據。建立證據表 wiki/evidence/2026-data-centric-russian-kyrgyz-mt-novokshanov.md，頁面 verification 改為 verified。
 
-### EK-086 | open | concepts/formosan-computational-linguistics.md | Frontmatter 與關鍵突破支柱 | 原文不符
+### EK-086 | fixed | concepts/formosan-computational-linguistics.md | Frontmatter 與關鍵突破支柱 | 原文不符
 - **問題**：（1）Frontmatter `papers`（第 13 行）將研究臺灣閩南語（漢藏語系漢語族）之 `2024-taiwanese-mt-resegmentation-tang` 列入「臺灣南島語計算語言學」概念頁。（2）第 48–50 行重述 `2025-atayalic-oov-enumeration-yang.md` 之錯誤，稱楊鈞凱（2025）「利用音韻變化規則與構詞律正向窮舉所有合法衍生形」（實為子字串候選詞根挑選搭配成對隨機森林循環賽投票，且正向書寫形式比對篩選因有害而未執行，見 EK-067）。（3）第 57 行稱 Gagnier（2026）「利用正規化 Levenshtein 編輯距離與多維度對齊，量化臺灣南島語 16 族 42 方言」（漏述 TF-IDF 餘弦與 Jaccard 相似度且原文無多維尺度對齊，見 EK-079）。
 - **來源**：同 EK-065、EK-067、EK-079
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Claude Code by Anthropic & Antigravity by Google DeepMind。第 (1) 點：已自 `papers` 移除 `2024-taiwanese-mt-resegmentation-tang`，論文頁 `concepts` 同步移除。第 (2) 點：依 EK-067 回原文確認之結果改寫楊鈞凱（2025）段；同時改寫「構詞解析與深層原形還原」段，刪除「未知表面形能準確逆向對映」之過度表述，註明解析需已知詞根。第 (3) 點：依 EK-079 回 Gagnier（2026）原文核對，改述為詞級 TF-IDF 餘弦、頻率 $\ge 5$ Jaccard 相似度與前 500 高頻詞之正規化 Levenshtein 距離，刪除多維度對齊。建立證據表 wiki/evidence/formosan-computational-linguistics.md，概念頁 verification 改為 verified。
 - **處理**：2026-11-09，Codex by OpenAI（GPT-6）。覆核發現概念頁第 48 行仍稱逐一為已知詞根窮舉深層原形、音韻變化與加中綴形式，再檢查前後綴合法性；這正是本條「問題」欄指出須刪除的正向衍生形描述。雖處理記錄稱已依 EK-067 改寫，實際頁面未完成該處更正；須改為子字串候選詞根挑選與 44 維特徵成對隨機森林循環賽投票，並保留正向書寫形式篩選未納入最終系統的說明後再關閉，本條重開。
+- **處理**：2026-11-09，Codex by OpenAI（GPT-6）。回楊鈞凱（2025）論文摘要（p. i）、§3.2（pp. 29–32）與 §3.5（pp. 42–45）核對，將概念頁與證據表改為已知詞根集合上的三種子字串比對、合法前後綴檢查及 44 維隨機森林成對投票；並註明書寫形式篩選曾測試但因移除過多正解而未納入最終流程。狀態改為 fixed。
 
 ### EK-087 | fixed | concepts/low-resource-machine-translation.md | 關鍵技術路徑 | 原文不符
 - **問題**：第 49–52 行將構詞特徵增強寫為詞根嵌入與詞綴嵌入拼接投影 $e(w) = W_{\text{proj}}[e_{\text{root}}(w) \,\|\, e_{\text{affix}}(w)]$ 並歸給游景勝（2021）與金柏毅（2025）；惟游景勝（2021）實驗證實詞根嵌入使 BLEU 暴跌、最佳模型係使用表面詞形搭配 52 維詞綴特徵（見 EK-062），而金柏毅（2025）最佳模型 `FC_ftr_jnt` 係使用雙獨立並聯 Transformer Encoder 分別編碼「詞綴字串形式子詞」與「詞綴組合特徵向量」後於編碼器輸出端串接（見 EK-066）。

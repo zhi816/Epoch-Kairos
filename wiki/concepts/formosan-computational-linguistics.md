@@ -21,7 +21,7 @@ papers:
   - "2026-tao-filipino-nmt-macayan"
 related_concepts:
   - "low-resource-machine-translation"
-verification: "issues"
+verification: "verified"
 ---
 
 # 概念：臺灣南島語計算語言學與構詞解析 (Formosan Computational Linguistics & Morphological Analysis)
@@ -45,7 +45,7 @@ verification: "issues"
   * 詳見核心研究：[賽德克語－中文機器翻譯之研究（游景勝 2021）](../papers/2021-seediq-chinese-mt-you.md)、[泰雅語與太魯閣語構詞結構之自動解析（戴晟哲 2023）](../papers/2023-atayal-truku-morphology-dai.md)、[排灣語、布農語構詞結構解析與機器翻譯（吳維中 2025）](../papers/2025-paiwan-bunun-morphology-mt-wu.md)。
 
 * **構詞規則窮舉與未知詞消解（Morphological Enumeration for OOV）**：
-  * 針對辭典未收錄之未知詞（OOV），為每個已知詞根窮舉其深層原形、音韻變化與加中綴後的字串，與未知詞比對並檢查前後綴是否合法，挑出候選詞根；再以 44 個特徵的成對比較隨機森林分類器兩兩投票選出詞根。原規劃的書寫形式篩選因濾掉過多正解而未採用。已知詞驗證資料正確率逾九成，賽德克語真實未知詞為 63.88%（族語 E 樂園）與 72.12%（臺大語料庫）。
+  * 針對辭典未收錄之未知詞（OOV），系統先從已知詞根集合挑選候選：以預先整理的原形比對字串，測試原形直接出現、刪除原形比對字串最前端母音後出現，或同時刪除目標詞與原形比對字串母音後相匹配等三種子字串條件，再確認命中區段前後為合法前綴與後綴。排序時以 44 維成對特徵訓練隨機森林二元分類器，將候選詞根兩兩比較並依累計票數決定排名。作者曾測試書寫形式轉換篩選，但因會過濾過多正解而未納入最終系統。已知詞驗證資料正確率逾九成，賽德克語真實未知詞為 63.88%（族語 E 樂園）與 72.12%（臺大語料庫）。
   * 詳見核心研究：[以構詞規則窮舉解決泛泰雅語未知詞問題（楊鈞凱 2025）](../papers/2025-atayalic-oov-enumeration-yang.md)。
 
 * **類型學考察與語法化路徑（Typology & Grammaticalization）**：

@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#人工智慧", "#計算語言學"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "wiki"
-verification: "issues"
+verification: "verified"
 my_focus: true
 focus_role: "international"
 focus_languages: ["排灣語"]
@@ -25,14 +25,14 @@ card_line: "先查辭典再交給大模型，翻譯排灣語與華語"
 
 **2026 發表 ｜ 個人核心研究關注**
 
-> **本頁範圍**：國立臺東大學王任慶（Reen-Cheng Wang）教授團隊（共同作者楊承凱 Cheng-Kai Yang、楊惇傑 Tun-Chieh Yang、曾奕軒 Yi-Xuan Tseng），*Engineering Proceedings*, 120(1), 52, pp. 1–9（線上發表：2026 年 2 月 5 日；發表於 ICKII 2025 國際研討會）。以臺灣原住民族排灣語至華語（Paiwan $\to$ Mandarin）為實驗對象。
+> **本頁範圍**：國立臺東大學資訊工程學系作者團隊（通訊作者：王任慶 Reen-Cheng Wang；共同作者：楊承凱 Cheng-Kai Yang、楊惇傑 Tun-Chieh Yang、曾奕軒 Yi-Xuan Tseng），*Engineering Proceedings*, 120(1), 52, pp. 1–9（線上發表：2026 年 2 月 5 日；發表於 ICKII 2025 國際研討會）。以臺灣原住民族排灣語至華語（Paiwan $\to$ Mandarin）為實驗對象。
 
 ---
 
 ## Card 1 ｜ 時代銘文 (The Hook)
 排灣語（Paiwan）是臺灣南部最具歷史深度的南島語言之一，但受限於數位語料極端稀缺與講者高齡化，常規神經機器翻譯（NMT）模型在小於 10 萬句的條件下表現低迷，而通用大語言模型（LLM）因缺乏排灣語預訓練數據，直接翻譯時幻覺頻繁（BLEU 僅 1.7–4.4，§1–§2, pp. 1–3）。
 
-國立臺東大學資訊工程學系王任慶（Reen-Cheng Wang）教授團隊於 2026 年初在 MDPI《Engineering Proceedings》發表研究，提出「混合辭典預翻譯 ＋ 向量 RAG 檢索 ＋ LLM 後編輯重構（Hybrid Dictionary–RAG–LLM）」三位一體管線。該方案以記憶體雜湊表提供確定性詞彙對齊，僅在詞典未命中時透過條件分支 Fallback 至 Qdrant 向量資料庫檢索平行例句，最後交由指令微調大模型進行南島語語法重構，在 250 句測試集上實現了 BLEU 由 1.7–4.4 躍升至 **40.8–51.9** 的顯著突破。
+該研究由王任慶（Reen-Cheng Wang）等作者撰寫，於 2026 年 2 月 5 日在線上發表於 MDPI《Engineering Proceedings》，提出「混合辭典預翻譯 ＋ 向量 RAG 檢索 ＋ LLM 後編輯重構（Hybrid Dictionary–RAG–LLM）」三位一體管線。該方案以記憶體雜湊表提供確定性詞彙對齊，僅在詞典未命中時透過條件分支 Fallback 至 Qdrant 向量資料庫檢索平行例句，最後交由指令微調大模型進行南島語語法重構，在 250 句測試集上實現了 BLEU 由 1.7–4.4 躍升至 **40.8–51.9** 的顯著突破。
 
 ---
 
