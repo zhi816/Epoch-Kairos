@@ -840,3 +840,13 @@
   - **EK-023**：Card 5 明確將核孔複合體（NPC）等超大複合體結構解析標記為 AlphaFold 預測模型與低解析度冷凍電鏡（cryo-EM/ET）數據結合之「整合建模（Integrative Modeling）」應用，非單純直接預測之結果。
   - 新增證據表 [wiki/evidence/2021-alphafold2.md](evidence/2021-alphafold2.md)，頁面 `verification` 狀態由 `issues` 提升為 `verified`。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-021、EK-022 與 EK-023 標記為 `fixed` 並追加處理紀錄。
+
+## [2026-11-09 09:49] fix | 依原文重寫 Macayan 2026 頁並記錄 my-focus 修正暫停時之進度 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5 (claude-opus-5-5)
+- **具體變更**：
+  - [Macayan et al. 2026](papers/2026-tao-filipino-nmt-macayan.md)（EK-073）：以原文全文核對後重寫，建證據表，`verification` 改為 `verified`。刪除無來源之 $ 懲罰項與構詞感知 BPE（原文明言使用 NLLB 預設分詞器）；改述三個模型；依原文寫明達悟語屬巴丹語群而非臺灣南島語；註明原文四處內部不一致（含對 FormosanBench 之錯誤引述）。
+  - **使用者指示暫停**：剩餘 17 篇 my-focus 論文頁已完成 9 篇（謝富惠、林鴻瑞、Saleva、Pei、Xia、Ranathunga、Zheng、FormosanBench、Macayan），暫停於此。
+  - **尚未處理（8 篇）**：Frontull 2025（EK-082）、TEK Wang 2025（EK-078）、Setiawan 2026（EK-084）、Novokshanov 2026（EK-058、EK-085）、Tulun Merx 2025（EK-057、EK-083）、Gagnier 2026（EK-059、EK-079；另 EK-086 第 3 點概念頁）、Hybrid Wang 2026（EK-081）、Scheppat 2026（EK-060、EK-080）。
+  - **已查得之正確書目（供接手者使用，尚未寫入頁面）**：經 ACL Anthology BibTeX 與 doi.org 解析確認——Tulun 為 `10.18653/v1/2025.acl-demo.13`（頁面誤作 `acl-demos`）；Novokshanov 為 `10.18653/v1/2026.loresmt-1.22`，pp. 225–230（頁面誤作 `.25`）；Gagnier 為 `10.63317/4scoopyavtvi`（ELRA，Anthology `2026.dialres-1.13`，pp. 124–134）；Scheppat 為 `10.63317/3ut33xim33nt`（ELRA，Anthology `2026.lrec-1.273`，pp. 3445–3455）。
+  - **接手方式**：17 篇原文 PDF 之抽取文字可依 `wiki-content-audit` 寫作模式重新抽取；每頁回原文核對後重寫、建證據表，提交時以 `--issue` 指定編號。

@@ -440,10 +440,11 @@
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文全文核對後：hook 與 Card 1、5、6 改述原文結論「語法書幾乎沒有幫助」（微幅提升且不顯著，附錄 G 表 10 p = 0.4），下降者為 CoT；Card 3 刪除「笛卡爾積」與 argmax 式，改述依序加入組件之流程與溫度 0.9／1.0 採樣；加密改述為原文之字母位移替換（`amban`→`encep`）。另修正同頁未登記之問題：Card 4 補列各步驟數值、顯著性、人工評估與 §6 合成資料訓練 mT5 之結果；顯著性所在之附錄為 G（非 E）；註明英文平行語料由 Google 翻譯自中文。證據表見 wiki/evidence/2025-manchu-in-context-mt-pei.md。
 
-### EK-073 | open | papers/2026-tao-filipino-nmt-macayan.md | Card 3 與 Card 6 | 原文不符
+### EK-073 | fixed | papers/2026-tao-filipino-nmt-macayan.md | Card 3 與 Card 6 | 原文不符
 - **問題**：（1）Card 3（第 45–51 行與第 60 行架構圖）稱在菲律賓語（Tagalog）大規模預訓練並加上參數距離懲罰項；原文 §4.6（p. 32）中，Tagalog（Filipino）即為目標語言，Model 3 係先將 `NLLB-200 (600M)` 於巴丹語群親屬語 **Ivatan-to-Tagalog（伊巴丹語－菲律賓語）**平行語料微調，再於 Yami-to-Tagalog（達悟語－菲律賓語）微調，且無任何 $L_2$ 參數距離懲罰項。（2）Card 3（第 53–57 行與第 63 行架構圖）與 Card 6（第 90 行）稱本文訓練「構詞感知子詞正則化（Morphology-Aware Subword BPE），將語言學詞綴字典注入分詞優先級，確保 `mi-`、`ma-`、`om-` 不被截斷」；原文 §7（p. 34）明確指出**受限於研究時程，本文直接使用 NLLB-200 預設分詞器**，並將子詞／構詞分詞列為未來工作建議。
 - **來源**：`raw/my-focus/報告論文題材/2026.loresmt-1.2.pdf`（§4.6 p. 32、§7 p. 34）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
+- **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文全文核對後：Card 3 刪除「於菲律賓語大規模預訓練」與 $L_2$ 參數距離懲罰項，改述原文三個模型（Model 3 為伊巴丹語→他加祿語預訓練後再微調）；刪除「構詞感知子詞 BPE」，改述原文明言因時間限制使用 NLLB-200 預設分詞器、子詞處理列為未來工作。另修正同頁未登記之問題：Card 1 改依原文寫明達悟語屬巴丹語群「而非臺灣南島語」；補列合成資料之產生方式與表 3 完整數值；註明原文四處內部不一致（達悟語－英語／他加祿語混用、少於 5,000 句與 10,498 句、6.61 與 6.67、對 FormosanBench 之錯誤引述）。證據表見 wiki/evidence/2026-tao-filipino-nmt-macayan.md。
 
 ### EK-074 | fixed | papers/2019-generalized-data-augmentation-xia.md | Card 3 | 原文不符
 - **問題**：（1）第 49–53 行稱以「字元級音變轉換模型」或構詞映射將高資源語言轉為低資源語言；原文 §3.1–3.2（pp. 5788–5789）實為透過正交 Procrustes SVD 與 CSLS 雙語詞典歸納進行逐詞替換（Word-by-word Substitution），或結合基於去噪自編碼與迭代回譯之改良無監督機器翻譯（M-UMT）。（2）第 56–59 行將 NMT 訓練寫為帶權重衰減係數 $\alpha_k$ 之加權對數似然；原文 §4.4（pp. 5790–5791）係將真實與偽平行語料直接串接預訓練後進行混合微調（mixed fine-tuning），無 $\alpha_k$ 加權目標式。
