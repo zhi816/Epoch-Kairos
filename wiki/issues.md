@@ -595,3 +595,13 @@
 - **來源**：同 EK-062、EK-066
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。依 EK-062、EK-066 回原文確認之結果改寫「構詞特徵增強」段：刪除無來源之 $W_{\text{proj}}$ 拼接式，改述游景勝（2021）之布林特徵拼接（含預訓練嵌入下 BLEU 下降之反例）與金柏毅（2025）之 FC_ftr_jnt 雙 encoder；同節「跨語言遷移」段一併依廖恒慶（2023）原文改寫，刪除原文未測量之「降低 OOV 率」「零樣本遷移」。
+
+### EK-091 | open | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 5 | 原文未支持
+- **問題**：Card 5 第 1 點（第 135 行）寫 Fragment-Shot「顛覆整句 RAG 定式」，並稱「能遠比整句語意檢索更有效」。原文沒有整句語意檢索的對照實驗：表 1 的比較對象只有零樣本（ZS）與隨機例句（RS，隨機選 16 組句對，§3, p. 3），作者並說明因缺乏合適模型，無法以詞嵌入計算語意相似度（§2, p. 3）；與以句子相似度選例之前人作法僅作定性對照（§7, p. 6）。「顛覆」亦屬評價用詞。建議改為「在無法建立可靠語意檢索模型的情況下，以片段覆蓋選例比零樣本與隨機例句有效」。
+- **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`（§2 與 §3 Random-Shot 定義，PDF p. 3；表 1 與 §7，PDF p. 6）
+- **發現於**：wiki/log.md [2026-11-09 23:33] audit（Claude Code by Anthropic；第一批卡片回填 C 組只讀論文頁時提出，本代理回原文核對）
+
+### EK-092 | open | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 5 | 過度表述
+- **問題**：Card 5 第 1 點（第 122 行）寫「證實簡單的詞彙相似度指標即可自動重現語言學家耗時數十年構擬的分群假說」，未保留原文限定。原文結論為「Among most groups, our results are extremely close to prior scholarship」（PDF p. 7），並明言排灣語「unable to make conclusions regarding the subgrouping」（PDF p. 5），萬山魯凱語兩種指標結果分歧（摘要，PDF p. 1）；同頁 Card 4 第 112–113 行亦已列出這些例外。建議改為「在多數語言中重現既有分群，排灣語無法判定、萬山方言指標分歧」。另第 35 行「開創性研究」屬評價用詞（「首次」為作者自述 first evaluation／first large-scale analysis，可保留並標明為作者主張）。
+- **來源**：`raw/my-focus/英文論文/Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13.pdf`（摘要，PDF p. 1；§4.1 Paiwan，PDF p. 5；§5 結論，PDF p. 7）
+- **發現於**：wiki/log.md [2026-11-09 23:33] audit（Claude Code by Anthropic；第一批卡片回填 C 組只讀論文頁時提出，本代理回原文核對）
