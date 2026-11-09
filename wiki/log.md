@@ -1422,3 +1422,14 @@
   - [wiki/evidence/2001-colonial-origins-acemoglu.md](evidence/2001-colonial-origins-acemoglu.md) 與 [wiki/papers/2001-colonial-origins-acemoglu.md](papers/2001-colonial-origins-acemoglu.md)：以 MIT Economics 提供之 AER 正式版全文逐列核對；修正 Table 3–7 頁碼、估計範圍與 206 log points／約 7 倍之作者報告，將以四捨五入係數重算的約 8.2 倍標明為 Wiki 計算。移除與 authors 重複的 laureates 欄，長公式改用 aligned。
   - [wiki/issues.md](issues.md)：EK-088、EK-089 改為 fixed 並記錄所採正式版來源；EK-090 明確分列一般 two-cycle 條件與 Cobb–Douglas 特例頁碼。raw/ 內兩個版本錯置檔案依唯讀規範保留，未作為正式版頁碼證據；TD-007 證據類型白名單待辦未變更。
   - 驗證：`lint_wiki.py` ERROR 0、WARN 28（均為其他既有日誌連結或論文頁警告）。
+
+## [2026-11-09 21:27] design | 論文頁原型對齊樣稿 F，卡片 Skill 補建置驗證與防偷工規範 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：
+  - 依使用者指示（三處都改成與畫布樣稿「論文頁 F」一致）：(1) 新增選填 Frontmatter `venue_short`，填入 [1982-hopfield-network](papers/1982-hopfield-network.md)（PNAS）、[2001-colonial-origins-acemoglu](papers/2001-colonial-origins-acemoglu.md)（AER）、[2016-ligo-gravitational-waves](papers/2016-ligo-gravitational-waves.md)（PRL）；`tools/build_home.py` 新增 `venue_of()`，首頁說明框與論文頁資訊欄皆用簡稱，重建 `web/index.html`（僅此三處期刊名改變，`--check` 一致）。(2) 論文頁長文標題下直接接 01 段，開頭引言改為 01 段第一段（去引號，引號後出處註記以小字保留），本頁範圍說明移至資訊欄「本頁範圍」。(3) 論文頁 Card 1 底部與長文頂部之獎項寫全名（「2024 諾貝爾物理學獎」），首頁仍簡稱。奠基論文顯示格式（樣稿「Hopfield（1982）PNAS」）因 `key_papers` 為自由格式未改，列 DESIGN.md 第八章第 17 項待決。
+  - `tools/build_paper_prototype.py` 新增產生後自我檢查（露出 `**`／`$`／`](`、公式含中文、卡片與段落數、引言與範圍說明是否帶到網頁、雙年份一致、期刊名超過兩行），ERROR 時結束代碼 1；以 79f8426 之舊版網頁與人為破壞之網頁測試，均正確報錯。
+  - 新增 `.agents/skills/paper-card-writer/scripts/verify_page.js`：以隱藏 iframe 同時量測 1440 x 900 與 375 x 812，檢查公式渲染、六張卡及卡內裁切容器（封面星窗）是否溢出、論文名截斷、Card 3 公式框捲動、封面一句話行數與重疊、星窗壓縮、橫向捲動、控制列、露出記號。以超長導語與超寬公式之測試頁驗證會報 FAIL（導語過長時星窗被擠小、一句話上緣被切，卡片外框檢查原本抓不到），兩頁正式原型各 30 項 PASS。
+  - 依使用者要求（較弱模型會偷懶，規範越詳細越好）補充 [paper-card-writer](../.agents/skills/paper-card-writer/SKILL.md)：新增 `references/paper-page.md`（網頁各位置資料來源、`venue_short` 規則、獎項寫法、論文頁格式要求、建置與瀏覽器驗證步驟、錯誤處理對照與禁止事項）；SKILL.md 硬規則增第 14 至 16 條（必須建置驗證、不得改工具遷就內容、不得改來源遷就卡片），作業流程增第 7 步「建置論文頁並驗證」，第 2、3 步之對照基準與素材對照改為必須寫進交付說明，批次規則增一篇一提交、不得參考他篇卡片檔、用量不足不開新篇，第八節改為逐項必填之交付格式，新增第十一節偷工自查表；`cover.md` 第六節、`diagram.md` 同步。
+  - [AGENTS.md](../AGENTS.md) 第四章目錄樹補 `build_paper_prototype.py` 與 `paper_template.html`、第六章 Skill 一覽與 Ingest 第 4 步加建置驗證、第七章第 1 節加 `venue_short` 與論文頁獎項全名；[DESIGN.md](../DESIGN.md) 第五章第 1 節、第八章第 17 項與第十章同步；[todo.md](todo.md) TD-008 改為每篇須建置驗證、一篇一提交。
+  - 驗證：兩頁原型建置自我檢查 ERROR 0、`verify_page.js` 兩種尺寸全 PASS；`check_cards.py` ERROR 0；`lint_wiki.py` ERROR 1 為 Codex [2026-11-09 21:15] 條目標題第三段 `#經濟學` 不在白名單，屬他人條目，未改動。

@@ -97,7 +97,9 @@ Epoch-Kairos/
 ├── .claude/skills/            # 供 Claude Code 載入之轉介檔，內容指向 .agents/skills/ 正本
 ├── tools/                     # 建置腳本（不隨 GitHub Pages 公開）
 │   ├── build_home.py          # 自 wiki/ Frontmatter 產生 web/index.html（知識星圖首頁）
-│   └── home_template.html     # 首頁 HTML 範本（資料由 build_home.py 內嵌）
+│   ├── home_template.html     # 首頁 HTML 範本（資料由 build_home.py 內嵌）
+│   ├── build_paper_prototype.py # 自 wiki/cards/ 與 wiki/papers/ 產生論文頁參考原型 web/prototypes/paper-v1/<slug>.html，附自我檢查
+│   └── paper_template.html    # 論文頁 HTML 範本（樣稿「論文頁 F」）
 │
 ├── raw/                       # 【第一層：Raw Sources】原始資料層（不可變，Immutable）
 │   ├── my-focus/              # 【使用者專屬關注區】存放個人精選研究、私人筆記與核心關注資料
@@ -166,7 +168,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 > | [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 將論文譯為繁體中文或重建 PDF 時 |
 > | [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | Ingest 第 1 步與查核時，將 `raw/` 論文 PDF 抽成附頁碼標記之文字，以搜尋主張出處；預設用 PyMuPDF，MinerU 僅用於純圖片、亂碼 PDF 或抄寫長公式；輸出一律只當草稿，須回原 PDF 核對，且只可在本機解析 |
 > | [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 任何 Git 同步、提交與推送（見第十章） |
-> | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | Ingest 第 4 步、回填或修訂卡片時：撰寫 `wiki/cards/<slug>.md`（首頁封面卡與論文頁 Card 1–6 之文字、Card 3 示意圖）；`references/` 須逐份讀完，附 `check_cards.py` 檢查腳本 |
+> | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | Ingest 第 4 步、回填或修訂卡片時：撰寫 `wiki/cards/<slug>.md`（首頁封面卡與論文頁 Card 1–6 之文字、Card 3 示意圖），並建置論文頁原型驗證；`references/` 須逐份讀完，附 `check_cards.py` 檢查腳本與 `verify_page.js` 瀏覽器驗證腳本 |
 
 ### 1. Ingest（收錄新來源）
 當使用者在 `raw/` 放入新文件或指令收錄一篇論文時，AI 必須依序執行以下 5 個步驟：
@@ -180,6 +182,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 3. **萃取/關聯概念**：檢查是否觸及跨領域概念（如同時涉及 AI 與結構生物學），同步更新或建立 `wiki/concepts/<concept>.md`（Frontmatter 依第七章第 2 節），並將本篇檔名登記於該概念頁之 `papers` 欄位。
 4. **編譯網頁成果**：
    * **先寫卡片文字**：依 `paper-card-writer` 撰寫 `wiki/cards/<slug>.md`（封面斷行、導語、Card 2–6 與 Card 3 示意圖），執行 `python .agents/skills/paper-card-writer/scripts/check_cards.py <slug>`，ERROR 須為 0。卡片上的數字只能取自證據表，公式只能取自論文頁。
+   * **建置論文頁原型並驗證**：執行 `python tools/build_paper_prototype.py <slug>`，自我檢查 ERROR 須為 0；有瀏覽器工具者再以 `verify_page.js` 驗證桌面與手機版面（`paper-card-writer` 第五節第 7 步）。正式論文頁產出前（`wiki/todo.md` TD-002），以此原型代替。
    * 在 `web/papers/YYYY-<slug>/index.html` 產生對應之雙欄互動頁（左側 3:4 知識圖卡，右側 KaTeX 長文）。
    * 執行 `python tools/build_home.py` 重建首頁 `web/index.html`，新論文即依 Frontmatter（`domain`、`domain_tags`、`concepts`、`card_line`、雙年份與 `my_focus` 等欄位）出現在知識星圖或我的星系；不得手改 `web/index.html`。
 5. **更新索引與日誌**：
@@ -251,6 +254,7 @@ timeline_year: 2026           # 時間線歸檔節點（預設依重大影響/�
 authors: "該篇論文之實際作者名單（依期刊署名順序）"
 laureates: "獎項得獎者名單（若與作者不同；無獎項則省略此欄）"
 venue: "Nature Neuroscience, 8(9), 1263-1268"   # 僅記期刊與卷期，不混入獎項
+venue_short: "PNAS"           # 選填：期刊或會議簡稱，供論文頁資訊欄與首頁顯示；僅限通用縮寫或 Crossref short-container-title（規則見下方說明）
 honor: "2026 諾貝爾生理學或醫學獎（表彰事由）"      # 不加顯示層前綴，呈現樣式由前端決定
 domain: "bio"                 # 單選，對應 theme.css 六大色系：bio / ai / physics / econ / chem / human
 domain_tags: ["#神經科學", "#生物科技"]            # 多選，須取自第八章標籤白名單
@@ -267,7 +271,10 @@ doi_url: "https://doi.org/10.1038/nn1525"
 ```
 
 > **雙年份呈現原則**：
-> 在前台首頁（知識星圖之說明框）與每篇論文的封面卡片上，必須同時清晰並列標記 **「2005 發表 ｜ 2026 諾貝爾獎」**（以光遺傳學為例），兼顧科學史發表真實性與當代獲獎影響力。
+> 在前台首頁（知識星圖之說明框）與每篇論文的封面卡片上，必須同時清晰並列標記 **「2005 發表 ｜ 2026 諾貝爾獎」**（以光遺傳學為例），兼顧科學史發表真實性與當代獲獎影響力。首頁一律簡稱「諾貝爾獎」；論文頁（Card 1 底部與長文頂部）寫 `honor` 括號前之獎項全名，如「2005 發表 ｜ 2026 諾貝爾生理學或醫學獎」（2026-11-09 使用者確認，依樣稿「論文頁 F」）。
+
+> **期刊簡稱（`venue_short`，選填）**：
+> 論文頁資訊欄與首頁顯示期刊或會議簡稱；未填時由 `venue` 自動縮短（取括號內縮寫或第一個逗號前之全名）。自動結果在論文頁資訊欄超過兩行時（建置自我檢查會提示），依序填期刊或學會自己通用的縮寫（`PNAS`、`AER`、`PRL`）或 Crossref 之 `short-container-title`；兩者皆無則不填。不得自創縮寫或以中文意譯。修改後須重建首頁（`python tools/build_home.py`）。細則見 `paper-card-writer` 之 `references/paper-page.md` 第三節。
 
 > **單篇頁容納多篇工作之原則**：
 > 諾貝爾獎常表彰橫跨數年的一系列論文。此時以最具代表性之單篇為主軸建立頁面，其餘奠基論文一律列入 `key_papers`，並於頁首加註本頁範圍說明，嚴禁將多篇成果混記為單篇之貢獻。

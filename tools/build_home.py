@@ -154,6 +154,11 @@ def venue_short(venue, year):
     return re.split(r',|;| \(', v)[0].strip()
 
 
+def venue_of(f):
+    """期刊或會議簡稱：Frontmatter 有 venue_short（AGENTS.md 第七章第 1 節，選填）時用之，否則由 venue 自動縮短。"""
+    return str(f.get('venue_short') or '').strip() or venue_short(f['venue'], int(f['paper_year']))
+
+
 def award_line(f):
     honor = f.get('honor') or ''
     if not honor:
@@ -316,7 +321,7 @@ def build_stars(P, C, tag_dom):
 
     papers = []
     for s, f in sorted(ms.items(), key=lambda kv: (-int(kv[1]['timeline_year']), kv[0])):
-        venue = venue_short(f['venue'], int(f['paper_year']))
+        venue = venue_of(f)
         papers.append(dict(
             slug=s, name=short_name(f['title_zh']), titleZh=f['title_zh'], title=f['title'], d=f['domain'],
             tags=f['domain_tags'], p=int(f['paper_year']), a=int(f['award_year']), award=award_line(f),
@@ -483,7 +488,7 @@ def build_focus(P, C):
     for s, f in sorted(fp.items(), key=lambda kv: (int(kv[1]['paper_year']), kv[0])):
         if f.get('focus_role') not in roles:
             raise SystemExit('%s 之 focus_role 不在五個鍵值內' % s)
-        venue = venue_short(f['venue'], int(f['paper_year']))
+        venue = venue_of(f)
         papers.append(dict(
             slug=s, name=short_name(f['title_zh']), titleZh=f['title_zh'], title=f['title'], d=f['domain'],
             year=int(f['paper_year']), role=f['focus_role'], langs=f.get('focus_languages') or [],
