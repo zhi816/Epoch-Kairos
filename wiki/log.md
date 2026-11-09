@@ -982,3 +982,14 @@
   - 對照 LoResMT 2026 原文（`raw/my-focus/英文論文/llm 輔助/Context Volume Drives Performance Tackling Domain Shift in Extremely.pdf`）全文核對後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2026-context-volume-rag-domain-shift-setiawan.md](evidence/2026-context-volume-rag-domain-shift-setiawan.md)，頁面 `verification` 提升為 `verified`。
   - **EK-084**：Card 3 刪除虛構之對數線性公式與單一稠密檢索器表述，改述真實之四種檢索策略（BM25、BGE、ChrF-RAG 以及基於 RapidFuzz 之詞級模糊匹配）；交代句級檢索在 $K \approx 60 \sim 80$ 飽和與詞級檢索在 $N=10$（eff. $K \approx 137$）達峰值 35.28 chrF++ 後因語境雜訊回落之實證消融數據；補列詞典檢索單調線性增長特性與完整詞典取得 31.32 chrF++；Card 4 補齊 Table 1、2、4、5、6 詳細數據與 Table 7 三大定性失敗修復案例。
   - 同步更新 [wiki/issues.md](issues.md)，將 EK-084 標記為 `fixed`。
+
+
+## [2026-11-09 11:07] fix | 依原文重寫 Novokshanov 2026 俄吉翻譯冠軍頁並更正 DOI 與課程學習排程 | #自然語言處理 #深度學習 #人工智慧
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 接手 Claude Opus 5.5 暫停之 8 篇 my-focus 論文頁修正工作之第 4 篇：[Novokshanov 2026](papers/2026-data-centric-russian-kyrgyz-mt-novokshanov.md)（EK-058、EK-085）。
+  - 對照 LoResMT 2026 原文（`raw/my-focus/英文論文/llm 輔助/Data-Centric Approach at the LoResMT 2026 Turkic Translation.pdf`）全文核對後重寫 Card 1–6 與 hook，建證據表 [wiki/evidence/2026-data-centric-russian-kyrgyz-mt-novokshanov.md](evidence/2026-data-centric-russian-kyrgyz-mt-novokshanov.md)，頁面 `verification` 提升為 `verified`。
+  - **EK-058**：更正 Frontmatter `doi_url` 為 `https://doi.org/10.18653/v1/2026.loresmt-1.22`（原誤記為 `.25`），經 Crossref 與 ACL Anthology 核驗無誤。
+  - **EK-085**：Card 3 更正 SONAR 評分為 `blaser_2.0` 跨語言語義相似度預測模型（1–5 分制，非餘弦相似度）；糾正四階段課程學習倒置錯誤，改述真實順序（階段 1：OPUS 標準 8.2M $\to$ 階段 2：OPUS 高品質 7.1M $\to$ 階段 3：FineWeb-2 回譯 3.1M $\to$ 階段 4：合成對話 113K）；補列烏茲別克與塔吉克雙語輔助遷移、以及 mt0-large 詞表剪枝由 1.23B 壓縮至 800M 架構；Card 4 補齊 Table 1–3 與官方競賽測試集（49.1 chrF++ / 69.7 xCOMET 奪冠）詳細數據。
+  - 同步更新 [wiki/issues.md](issues.md)，將 EK-058 與 EK-085 標記為 `fixed`。
