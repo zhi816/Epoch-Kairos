@@ -24,6 +24,8 @@
   * 得獎者：Francis Halzen。原始文獻：`raw/2013-icecube-neutrino.pdf`（Aartsen et al. (2013) *Science* 342(6161):1242856，https://doi.org/10.1126/science.1242856）。
 * `2026` ｜ [宏觀經濟穩定政策的微觀基礎：通膨動態、預期錨定與貨幣控制](papers/2007-woodford-inflation-dynamics.md) ｜ `#宏觀經濟學` ｜ *2007 發表 ｜ 2026 諾貝爾經濟學獎* ｜ `[wiki]`
   * 得獎者：Robert E. Hall, Michael Woodford。原始文獻：`raw/2007-woodford-inflation-dynamics.pdf`（Woodford (2007) NBER Working Paper No. 13329，https://doi.org/10.3386/w13329）。
+* `2026` ｜ 勞動市場波動與均衡工資僵固性（Robert E. Hall） ｜ `#宏觀經濟學` ｜ *2005 發表 ｜ 2026 諾貝爾經濟學獎* ｜ `[planned]`
+  * 得獎者：Robert E. Hall, Michael Woodford。原始文獻：`raw/2005-hall-wage-stickiness.pdf`（Hall (2005) *American Economic Review* 95(1):50-65，https://doi.org/10.1257/0002828053828482）。
 * `2026` ｜ GLP-1 受體促效劑奠基性研究 ｜ `#生物科技` ｜ `[2026 引文桂冠獎]` ｜ `[planned]`
   * 奠基文獻：Drucker et al. (1987) *PNAS* 84:3434-3438，https://doi.org/10.1073/pnas.84.10.3434（PMC 對 PDF 下載設有 proof-of-work 關卡，`raw/` 暫無原始檔）。
 
