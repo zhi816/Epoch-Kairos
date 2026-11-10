@@ -60,6 +60,11 @@
 - **進度**：已逐一補記滿語表 1–4、臺華翻譯表 15、FormosanBench 表格數值與人工檢視對象，以及滿語、族語雙語詞典和排灣族知識論文的公開資源或限制；原列 10 篇之公式已回原文核對或移除未有依據者，並登記證據表。另已補量子穿隧、重力波、Woodford、Hopfield、泰雅語、JWST、AlphaFold 3、芬蘭語、DeepSeek 與量子容錯之公式出處，修正 Hopfield 與 AlphaFold 3 公式及卡片（EK-201、EK-202）。瀏覽器連線服務不可用，相關頁面補驗見 TD-021。
 - **來源**：第二批卡片回填 B、C 組最後回報（使用者轉貼，2026-11-10）；TD-017 全庫重檢（2026-11-10，Codex by OpenAI）。
 
+### TD-018 | open | wiki | 在光遺傳學頁補寫奠基論文之原始檔路徑
+- **內容**：`raw/2003-channelrhodopsin2.pdf`（Nagel et al. 2003, PNAS）是 [2005-optogenetics](papers/2005-optogenetics.md) 之奠基論文，論文頁 `key_papers` 只寫 DOI，「知識網絡與文獻出處」沒有寫此原始檔路徑，`pipeline_status.py --new` 因而把它歸為「已列待辦」（TD-003 順帶提到它）而非「已引用」。依 `paper-pipeline` 之 `references/intake.md` 第三節，在該頁「原始權威文獻」另起一行寫明奠基論文原始檔路徑（不得改動「原始檔典藏」一行，S1 以第一個「原始檔典藏」判斷主軸原始檔）。此頁之卡片撰寫尚待使用者決定由誰處理（TD-008），本項只補一行路徑，不涉及內容撰寫。
+- **完成條件**：`pipeline_status.py --new` 將 `raw/2003-channelrhodopsin2.pdf` 列為「已引用」；`lint_wiki.py` ERROR 0。
+- **來源**：TD-014 試跑（2026-11-10）發現；2026-11-10 登記，Claude Code by Anthropic。
+
 ### TD-019 | waiting | wiki | 決定已公開論文頁正文中之 raw/ 原始檔路徑是否改寫
 - **內容**：GitHub Pages 已上線（2026-11-10），下列 6 篇論文頁之正文或資訊欄以文字寫有私有倉庫之原始檔路徑（如 `raw/2025-deepseek-r1.pdf`），公開網頁上讀者看得到檔名但無法開啟：`2025-deepseek-r1`、`2007-woodford-inflation-dynamics`、`2023-jwst-massive-galaxies`、`2024-fault-tolerant-quantum`（2 處）、`2024-alphafold3`、`2024-sora-world-simulator`。路徑多為說明「本頁採用哪一版本」（正式版、arXiv 版、補充資料），改寫時須保留版本資訊，改以 DOI 或 arXiv 版號表述。論文頁「知識網絡與文獻出處」之「原始檔典藏」一行為 `paper-pipeline` S1 所需，是否同樣出現在網頁上須一併確認。
 - **完成條件**：使用者決定保留或改寫；改寫者依 `wiki-content-audit` 修改論文頁，重建論文頁並推送，網頁正文不再出現 `raw/`。
