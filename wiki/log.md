@@ -1969,3 +1969,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：使用者認為桌面首頁卡片太大、間距太擠，先以 1920 x 1080 截圖比較三版（A 三欄卡寬上限 400px、欄距 40 列距 48；B 三欄卡寬上限 340px、欄距 64 列距 72；C 四欄滿版、欄距 36 列距 44），使用者選 C。`web/assets/css/starmap.css` 卡片牆改為四欄、欄距 36、列距 44，右欄 1000px 以下改三欄（欄距 32、列距 40）、760px 以下改兩欄（欄距 24、列距 30），手機版不變；1920 寬時卡寬由 434px 降為約 309px。使用者另指出直排標題「Epoch Kairos」應依早先樣貌對齊左下角：`tools/home_template.html` 之標題 SVG 寬由 151 縮為 141、基線 `y` 由 112 改為 102、起點 `x` 由 -852 改為 -862（CSS `aspect-ratio` 同步），字形左緣由距邊界約 10px 改為貼齊 16px 邊界，底端與左欄英文小字底端同高，懸星索引隨之左移約 10px。重建 `web/index.html`（`build_home.py --check` 一致）。桌面端 Skill 同步：`paper-card-writer` 之 `scripts/verify_wall.js` 增加 1920 x 1080 量測並依尺寸檢查欄數（1920 為 4 欄、1440 為 3 欄、手機 2 欄），`SKILL.md`、`references/card-wall.md` 與 `paper-pipeline` 之 `SKILL.md` 改寫欄數與組數；以新版 `verify_wall.js` 驗證全部卡片，結果 PASS（WARN 27 項皆為既有之語言標籤與期刊名截斷，三種尺寸相同）。`DESIGN.md` 第二章第 1、3 節與第十章同步記錄。
+
+## [2026-11-10 16:58] update | 同步問題清單前言說明、待辦進度與索引已發布標記 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：響應使用者查核，修正全庫數處過時之描述與標籤：（1）[wiki/issues.md](issues.md)：更新檔頭前言，補齊 EK-091 至 EK-175 之來源與全庫 153 筆問題皆已修復（fixed）之說明。（2）[.agents/skills/git-sync-guardian/scripts/stage_issues.py](../.agents/skills/git-sync-guardian/scripts/stage_issues.py)：支援 `PREAMBLE` 虛擬 ID 暫存檔頭說明，使前言更新可獨立暫存提交。（3）[wiki/todo.md](todo.md)：更新 TD-008 標題與內容，將「其餘 39 篇」修正為「剩餘 4 篇」（41 篇中 37 篇已完成上架）。（4）[wiki/index.md](index.md)：將 38 篇已建立正式網頁之論文條目標記由 `[wiki]` 同步為 `[published]`。

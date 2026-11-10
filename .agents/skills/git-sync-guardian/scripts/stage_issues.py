@@ -53,7 +53,7 @@ def main():
         except Exception:
             pass
     ap = argparse.ArgumentParser(description='只暫存 wiki/issues.md 中指定編號的條目')
-    ap.add_argument('ids', nargs='+', help='要提交的問題編號，例如 EK-069')
+    ap.add_argument('ids', nargs='+', help='要提交的問題編號（例如 EK-069，或 PREAMBLE 代表檔頭前言）')
     ap.add_argument('--dry-run', action='store_true', help='只列出結果，不寫入暫存區')
     a = ap.parse_args()
 
@@ -63,17 +63,20 @@ def main():
     work = open(f'{root}/{PATH}', 'rb').read().decode('utf-8').replace('\r\n', '\n')
     bb, wb = blocks(base), blocks(work)
 
+    want_preamble = 'PREAMBLE' in a.ids
+    raw_ids = [k for k in a.ids if k != 'PREAMBLE']
+
     gone = [k for k in bb if k not in wb]
     if gone:
         sys.stderr.write('錯誤：工作目錄刪除了已提交的問題條目（問題清單不得刪除條目）：%s\n' % '、'.join(gone))
         sys.exit(1)
-    missing = [k for k in a.ids if k not in wb]
+    missing = [k for k in raw_ids if k not in wb]
     if missing:
         sys.stderr.write('錯誤：工作目錄中找不到指定的問題編號：%s\n' % '、'.join(missing))
         sys.exit(1)
 
     staged = base
-    wanted = set(a.ids)
+    wanted = set(raw_ids)
     # 先處理既有條目的修改（由後往前替換，位置才不會位移）
     for k in sorted((k for k in wanted if k in bb), key=lambda k: bb[k][0], reverse=True):
         s, e = bb[k]
@@ -103,8 +106,16 @@ def main():
             pos = len(staged)
         staged = staged[:pos] + chunk + staged[pos:]
 
+    if want_preamble:
+        first_b_base = BOUNDARY.search(base)
+        first_b_work = BOUNDARY.search(work)
+        pos_b = first_b_base.start() if first_b_base else len(base)
+        pos_w = first_b_work.start() if first_b_work else len(work)
+        staged = work[:pos_w] + staged[pos_b:]
+        print('暫存：檔頭說明（PREAMBLE）')
+
     others = [k for k in wb if k not in wanted and (k not in bb or norm(work[slice(*wb[k])]) != norm(base[slice(*bb[k])]))]
-    for k in a.ids:
+    for k in raw_ids:
         print(('暫存（新條目）：' if k not in bb else '暫存：') + k)
     for k in others:
         print('略過（未指定，留在工作目錄）：' + k)
