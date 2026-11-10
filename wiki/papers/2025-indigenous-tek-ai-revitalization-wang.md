@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#計算語言學", "#社會學"]
 concepts: ["formosan-computational-linguistics"]
 status: "published"
-verification: "issues"
+verification: "partial"
 my_focus: true
 focus_role: "international"
 focus_languages: ["排灣語"]
@@ -32,7 +32,7 @@ card_line: "為排灣族傳統知識，設計人工智慧復振架構"
 ## Card 1 ｜ 時代銘文 (The Hook)
 原住民族傳統生態知識（Traditional Ecological Knowledge, TEK）與儀式智慧，多以口述傳承、跨世代農耕與身體實踐形式存在（例如排灣族五年祭 Maljeveq 中的刺球競賽、設防辟邪與祭儀古謠，§1–§2, pp. 1–2）。當這些無價的文化遺產面臨講者高齡化與數位落差時，傳統的純文字數位典藏往往遺失了最關鍵的情境脈絡與關係權威。
 
-國立臺東大學王任慶（Reen-Cheng Wang）教授團隊（共同作者謝明哲、賴亮郡）於 2025 年末發表於《Social Sciences》的這篇長篇系統架構論文，以質性民族誌與系統工程方法，首創將知識管理之野中郁次郎（Nonaka）SECI 模型擴展為涵蓋個體與社群的**四層知識矩陣（$K_1 \sim K_4$）與 12 階段雙向知識循環模型**，並提出**五層分層知識管理系統（LKM）**與自主代理（Agentic AI）迴圈，在計算本體論、生成式大模型與排灣族部落默會知識之間建立了兼顧部落數據主權（Indigenous Data Sovereignty）的數位治理架構。
+國立臺東大學王任慶（Reen-Cheng Wang）、謝明哲與賴亮郡於 2025 年末發表於《Social Sciences》的這篇系統架構論文，以質性民族誌與系統工程方法，將知識管理之野中郁次郎（Nonaka）SECI 模型擴展為涵蓋個體與社群的**四層知識矩陣（$K_1 \sim K_4$）與 12 階段雙向知識循環模型**，並提出**五層分層知識管理系統（LKM）**與自主代理（Agentic AI）迴圈，在計算本體論、生成式大模型與排灣族部落默會知識之間建立了兼顧部落數據主權（Indigenous Data Sovereignty）的數位治理架構。
 
 ---
 

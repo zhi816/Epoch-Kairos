@@ -1028,10 +1028,11 @@
 - **發現於**：2026-11-10，使用者提供之分組複核，Codex by OpenAI 再查原文。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6）。回看原文 §3.1 p. 5788 頁面影像，修正證據表約束為 $W^\top W = I$ 並補齊公式分隔符；論文頁與卡片原已一致。此頁僅修正已登記問題，verification 改為 partial。
 
-### EK-192 | open | papers/2025-indigenous-tek-ai-revitalization-wang.md | Card 1 與證據表 | 原文未支持
+### EK-192 | fixed | papers/2025-indigenous-tek-ai-revitalization-wang.md | Card 1 與證據表 | 原文未支持
 - **問題**：Card 1 稱作者為「教授」並稱研究「首創」，證據表將教授職稱歸給原文首頁；原文首頁僅列作者與機構，所查全文的 first 包括研究目標排序等用法，未支持該首創斷言。教授職稱目前未由所列來源核實，不應僅因首頁未列就判定職稱為假。此為 EK-078 原先姓名與架構問題以外的新缺口。
 - **來源**：[原始論文](https://doi.org/10.3390/socsci15010007) 首頁與全文；[證據表](evidence/2025-indigenous-tek-ai-revitalization-wang.md)。
 - **發現於**：2026-11-10，使用者提供之分組複核，Codex by OpenAI 再查原文。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。依原文首頁作者與機構移除論文頁未有列示來源支持的教授職稱，以及全文未支持的「首創」主張；證據表同步更正，不推斷作者實際職稱。頁面 verification 改為 partial。
 
 ### EK-193 | fixed | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 4 模型參數與證據表 | 未能核實
 - **問題**：論文頁列 GPT-3.5 175B、GPT-4o 200B、o1-mini 50B、Llama 3.3 70B、DeepSeek-R1 658B，與本篇原文 §5 所列數字一致，但證據表僅記模型名稱。DeepSeek 官方資料為原始 R1 列出 671B 總參數與 37B 啟用參數，與本篇的 658B 不一致；所查 OpenAI 資料的 175B 是 GPT-3 的數字，不能據此確定 GPT-3.5 的參數量，所查 GPT-4o 與 o1 系統卡亦未核實頁面列出的 200B 與 50B。Meta 的 Llama 3.3 70B 模型卡支持 70B 規模。原研究使用 API，未明確記載服務實例的具體快照；修訂時須保留論文與官方來源的差異，不把未證實直接視為證偽，也不能僅憑官方權重推定當時 API 版本。
