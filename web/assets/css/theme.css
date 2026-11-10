@@ -36,7 +36,7 @@
   --font-serif-zh: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
   --font-sans: "Noto Sans TC", -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, Menlo, monospace;
-  --font-display: "Bodoni Moda", "Bodoni 72", "Didot", "Noto Serif TC", serif; /* 僅用於標題「Epoch Kairos」 */
+  --font-display: "Playfair Display", "Noto Serif TC", serif; /* 僅用於標題「Epoch Kairos」 */
 
   /* Discipline Accent Glows：星光色（現行） */
   /* 1. Biotech & Medicine */

@@ -38,8 +38,8 @@ button:focus-visible, a:focus-visible, .panel:focus-visible { outline: 1px solid
 .rail { position: sticky; top: 16px; z-index: 2; flex: 0 0 auto; display: flex; gap: 26px; height: var(--panel-h); }
 .title-v { height: 100%; flex: 0 0 auto; display: flex; }
 .title-v svg { height: 100%; width: auto; aspect-ratio: 151 / 860; overflow: visible; display: block; }
-/* Bodoni Moda 之「Epoch Kairos」自然寬度約 5.97em；字級取略小於 textLength 可容納者，讓 textLength 只微調字距、不擠壓字形 */
-.title-text { font-family: var(--font-display); font-weight: 400; font-size: 132px; font-optical-sizing: auto; }
+/* Playfair Display 之「Epoch Kairos」自然寬度約 5.93em；字級取略小於 textLength 可容納者，讓 textLength 只微調字距、不擠壓字形 */
+.title-text { font-family: var(--font-display); font-weight: 400; font-size: 133px; }
 .title-h .title-text { font-size: 58px; }
 .tf0 { transition: stop-color 0.8s ease; }
 .col { display: flex; flex-direction: column; justify-content: space-between; width: clamp(230px, 17.5vw, 340px); padding: 6px 6px 4px 0; }

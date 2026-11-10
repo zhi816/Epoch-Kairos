@@ -1954,3 +1954,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：GitHub Pages 讓瀏覽器快取 `assets/` 檔案 10 分鐘（max-age=600），前次修正 `starmap.js` 上線後瀏覽器仍沿用舊腳本。`tools/build_home.py` 新增 `version_assets()`，於首頁之 `theme.css`、`starmap.css`、`starmap.js` 連結加上 `?v=<sha256 前 10 碼>`，檔案內容一變網址即變；AGENTS.md 第五章第 4 條註明改 `web/assets/` 之 CSS 或 JS 後須重建首頁。論文頁樣式內嵌於頁面，無需處理。驗證：`build_home.py --check` 一致；本機預覽三檔皆以版本網址載入，星圖正常、無主控台錯誤。
+
+## [2026-11-10 14:02] design | 標題字體由 Bodoni Moda 改為 Playfair Display | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者認為標題「Epoch Kairos」過細，比較 Bodoni Moda 400 至 800 五種字重後，決定改用字體樣稿第 05 號 Playfair Display。`web/assets/css/theme.css` 之 `--font-display`、`tools/home_template.html` 與 `tools/paper_template.html` 之 Google Fonts 載入（只載 400）與論文頁 `--display` 改為 Playfair Display；`starmap.css` 直排字級 132px 改 133px（自然寬度 5.93em，於 1440 x 900 量得 788，未超過 `textLength` 800），手機橫排維持 58px。重建首頁與 38 篇論文頁，自我檢查皆 ERROR 0；本機預覽桌面直排、手機橫排與論文頁窄導軌皆正確載入 Playfair Display，`verify_page.js`（`2017-attention-is-all-you-need`）PASS。DESIGN.md 第二章第 1 節、第六章與第八章第 3 項改記為已定。

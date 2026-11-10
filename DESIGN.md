@@ -44,7 +44,7 @@
 ### 1. 左欄（固定不捲動）
 
 * 寬度約佔畫面四分之一（使用者要求比 v3 寬，接近參考圖比例）。桌面版黏性固定；手機版改為頂部橫排。
-* **直排大標題**：「Epoch Kairos」逆時針轉 90 度、由下往上讀，下段略淡的漸層。字體 `[暫定]` 改為迪多體 Bodoni Moda（樣稿為 Newsreader Light，見第六章）。以 SVG `textLength` 固定撐滿欄高，避免不同字型寬度造成跑版（曾發生過）。
+* **直排大標題**：「Epoch Kairos」逆時針轉 90 度、由下往上讀，下段略淡的漸層。字體 `[已定]` Playfair Display 400（2026-11-10 使用者決定，取代 Bodoni Moda；樣稿為 Newsreader Light，見第六章）。以 SVG `textLength` 固定撐滿欄高，避免不同字型寬度造成跑版（曾發生過）。
 * **懸星索引**：見第三章。
 * **底部**：英文小字 `THE KAIROS OF HUMAN THOUGHT`（直排）＋直排宋體「人類群星閃耀時」。
 * `[否決]` 左欄堆疊多個資訊區塊（SELECTED 選取面板、LEGEND 圖例）：佔太大、沒有設計感。圖例已縮成一行，放進星圖左下角。
@@ -203,7 +203,7 @@
 ## 六、字體
 
 * 目前使用：Noto Serif TC（中文標題）、Noto Sans TC（內文）、Newsreader（英文標題與數字）、JetBrains Mono（後設資料小字）。皆由 Google Fonts 載入。`theme.css` 原本列出的 Geist 已於 2026-11-09 移除，字體變數改為 `--font-serif`（Newsreader）、`--font-serif-zh`（Noto Serif TC）、`--font-sans`（Noto Sans TC）、`--font-mono`、`--font-display`（Bodoni Moda）。
-* `[暫定]` 直排大標題字體：迪多體 Bodoni Moda（Didone 高對比襯線，Google Fonts 可調粗細；2026-11-09 使用者確認），僅用於直排「Epoch Kairos」，其餘英文標題與數字維持 Newsreader。樣稿「字體實驗」比較過八種襯線：Newsreader Light（樣稿現行）、Cormorant Garamond、EB Garamond、Bodoni Moda、Playfair Display、Instrument Serif、Fraunces、Cinzel。
+* `[已定]` 直排大標題字體：Playfair Display，字重 400（高對比展示體；2026-11-10 使用者決定）。用於首頁直排與手機橫排之「Epoch Kairos」及論文頁窄導軌之直排標題，其餘英文標題與數字維持 Newsreader。原用迪多體 Bodoni Moda（2026-11-09 暫定），使用者認為 400 字重過細，比較 400 至 800 五種字重後改選 Playfair Display。首頁直排字級 133px（自然寬度約 5.93em，`textLength` 800 只微調字距），手機橫排 58px。樣稿「字體實驗」比較過八種襯線：Newsreader Light（樣稿現行）、Cormorant Garamond、EB Garamond、Bodoni Moda、Playfair Display、Instrument Serif、Fraunces、Cinzel。
 
 ---
 
@@ -232,7 +232,7 @@
 
 1. 首頁主案 v4 的細節定稿（目前「其實還不錯」，左欄已加寬）。2026-11-09 使用者表示首頁目前已暫定，剩下方群星檔案卡片牆待卡片文字檔完成後加入（`wiki/todo.md` TD-009）；發布至 GitHub Pages 等卡片完成後再進行（TD-005）。2026-11-10 卡片牆已先以已提交之卡片檔加入（第二章第 3 節），其餘卡片隨回填陸續上牆。
 2. 懸星索引樣式（六選一）。2026-11-09 暫定 A 懸星（見第三章）。
-3. 直排大標題字體（八選一）。2026-11-09 暫定 Bodoni Moda，僅用於直排標題，其餘英文標題與數字維持 Newsreader（見第六章）。
+3. 直排大標題字體（八選一）。2026-11-09 暫定 Bodoni Moda；2026-11-10 定案改為 Playfair Display，僅用於標題「Epoch Kairos」，其餘英文標題與數字維持 Newsreader（見第六章）。
 4. 我的星系的切換機關，桌面版兩個候選留一個或都留（手機版已定為句末之星點兩下）。2026-11-09 暫定桌面與手機一致採句末之星（見第四章）。
 5. 預設亮星：群星模式建議「亮最新收錄的那篇」，我的星系建議「亮我的碩論」，或兩者都不預設。2026-11-09 先暫定照建議；同日使用者決定群星模式不預設亮星（流光動畫干擾操作感），我的星系維持亮「我的碩論」（見第二章第 2 節、第四章）。群星部分已定，我的星系部分仍為暫定。
 6. `human` 的星光色與形狀。2026-11-09 暫用 `#F2B3D6` 與十字形（見第七章）。
