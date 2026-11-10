@@ -1889,3 +1889,8 @@
   - `references/card-wall.md` 第六節「bot 被截斷」列改為先跑查詢腳本；第四節第 3 步補 macOS 受保護資料夾無法啟動本機伺服器之替代做法。`SKILL.md` 第九節登記新腳本。
   - `AGENTS.md` 第七章第 1 節期刊簡稱說明補「首頁卡片牆雙年份被截斷時」與「未查證之學會縮寫須經使用者確認」；第六章 Skill 一覽補登新腳本。
   - `lint_wiki.py` 之 2 項 ERROR 屬他人進行中之 `1985-macroscopic-quantum-tunneling`（TD-014，未追蹤檔案），未納入本次提交。
+
+## [2026-11-10 12:11] fix | 更正前一筆日誌標題時間 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：[2026-11-10 12:12] rule「期刊簡稱 venue_short 處理流程整理入 paper-card-writer」一筆之標題時間係預先填寫，未照 `log_time.py` 之輸出；實際應為 2026-11-10 12:10（提交 b2464d9 時間 12:10:57）。依 append-only 原則不改原條目，以本筆更正。
