@@ -1860,3 +1860,11 @@
   - 概念頁：依 B 組回報與 A 組 LIGO 修正，改寫 4 個概念頁中沿用已修正說法之條目，登記 EK-139 至 EK-142（皆 fixed）：generative-world-models（DeepSeek-R1「證明」與舊名）、multi-messenger-astrophysics（LIGO 把峰值應變寫成靈敏度；JWST「發現」大質量星系與小紅點）、quantum-error-correction（「首次」48 邏輯位元）、institutions-and-macro-dynamics（Woodford「證明……牢牢控制」）；4 頁 `verification` 由 verified 改為 partial。
   - 待辦：TD-008 改為 waiting（剩 4 篇待使用者決定由誰撰寫），進度補第三批 B、C 組結果與協調者判定；TD-009 補本批上架結果；新增 TD-012（論文頁封面研究語言標籤過長，Xia 之標籤折行壓到代表星，以截圖確認）、TD-013（Card 3 原文公式只用於資料處理時之寫法，Ranathunga 與 Wu 兩例），皆待使用者決定。
   - 檢查：`lint_wiki.py` ERROR 0；`pipeline_status.py` 待提交後確認。
+
+## [2026-11-10 11:24] rule | 封面研究語言標籤改為一行截斷、Card 3 新增資料處理公式一類 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者同意第三批 C 組提出之兩項建議，完成 TD-012、TD-013（條目已刪除）。
+  - TD-012 論文頁封面研究語言標籤：`tools/paper_template.html` 之 `.cover .lang` 比照卡片牆改為固定一行、`max-width: 58cqw`、超出以省略號截斷；`tools/build_paper_prototype.py` 為標籤加上 `title`，滑過顯示完整語言。`verify_page.js` 新增「研究語言標籤 1 行且未壓到代表星」一項（以文字範圍量行數；把 Xia 頁樣式暫改回舊樣式時量得 2 行、壓到代表星，會判 FAIL）。`DESIGN.md` 第四章記錄此決定。重建全部 37 個論文頁原型，自我檢查皆 ERROR 0；以 `verify_page.js` 抽驗 Xia（截斷）、Liao、FormosanBench、LIGO，皆 PASS，Xia 封面截圖確認標籤一行、代表星未被壓到。
+  - TD-013 Card 3 無公式模式新增第四類「原文僅有資料處理公式」（篩選、切分、抽樣、統計用）：更新 `card-03-secret.md` 第四節第 5 條（新增一列、理由前綴、評估與資料處理公式不寫成區塊公式、判斷是否為核心機制之問法）、`file-format.md`、`SKILL.md` 第二節第 4 條、`check_cards.py`（理由前綴與提示）、`paper-pipeline` 之 `intake.md`、`AGENTS.md` 第七章第 3 節 Card 3 例外與 `DESIGN.md` 第五章。`2023-low-resource-nmt-survey-ranathunga` 回原文確認式 (1)（p. 229:22）只用於以四分位距篩選離群語言，無公式理由改為新前綴；`2025-paiwan-bunun-morphology-mt-wu` 之理由已同時寫明 BLEU 與 Dice 係數，符合新規則，不改。
+  - 檢查：`check_cards.py` 全部 37 個卡片檔 ERROR 0；`build_home.py --check` 一致；`lint_wiki.py` ERROR 0。

@@ -97,6 +97,17 @@
         const hit = [...win.querySelectorAll('.lang, .rep')].filter(e => e.getBoundingClientRect().bottom > lt + 1).map(name);
         out(hit.length === 0, size, '封面一句話未壓到星窗內之標籤或代表星' + (hit.length ? '；重疊：' + hit.join(', ') : ''));
       }
+      // 研究語言標籤（我的關注）須為一行，且不得壓到代表星（wiki/todo.md TD-012，2026-11-10）
+      const lang = win.querySelector('.lang'), rep = win.querySelector('.rep');
+      if (lang && rep) {
+        const a = lang.getBoundingClientRect(), b = rep.getBoundingClientRect();
+        const hitRep = !(a.right <= b.left || b.right <= a.left || a.bottom <= b.top || b.bottom <= a.top);
+        // 絕對定位之標籤是區塊，getClientRects() 只有一個框；以文字範圍量實際行數
+        const rgl = d.createRange(); rgl.selectNodeContents(lang);
+        const lines = new Set([...rgl.getClientRects()].filter(q => q.width > 0).map(q => Math.round(q.top))).size;
+        const cut = lang.scrollWidth > lang.clientWidth + 1;
+        out(!hitRep && lines === 1, size, '研究語言標籤 ' + lines + ' 行' + (hitRep ? '，壓到代表星' : '，未壓到代表星') + (cut ? '（過長，已以省略號截斷，完整語言見資訊欄）' : ''));
+      }
       // 星窗被壓縮：導語或論文名太長時星窗變小（正常約為卡片高度之 0.33 至 0.49）
       const ratio = wr.height / win.closest('.card').getBoundingClientRect().height;
       if (ratio < 0.3) warn(size, '星窗只佔卡片高度 ' + ratio.toFixed(2) + '，導語或論文名可能太長，請縮短後重驗');

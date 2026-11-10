@@ -36,7 +36,7 @@ NO_TEXT_CHECK = {('Card 3｜突破原理', '公式')}
 SOURCE_FIELDS = {('Card 5｜典範轉移', '里程碑'), ('Card 4｜決定性數據', '數字'), ('Card 4｜決定性數據', '結論'), ('Card 3｜突破原理', '圖來源'),
                  ('Card 3｜突破原理', '無公式理由')}
 # Card 3 無公式模式：「公式」填「無」，「無公式理由」以下列其一開頭（card-03-secret.md 第四節）
-NO_FORMULA_REASONS = ('原文無公式：', '原文僅有評估指標公式：')
+NO_FORMULA_REASONS = ('原文無公式：', '原文僅有評估指標公式：', '原文僅有資料處理公式：')  # card-03-secret.md 第四節第 5 條
 # Card 5 新論文模式只適用於發表兩年內之論文（card-05-revolution.md 第六節）
 NEW_PAPER_YEARS = 2
 
@@ -577,7 +577,7 @@ def check_card(path, slug, all_cards):
             if not reason.startswith(NO_FORMULA_REASONS):
                 report('ERROR', path, rln, '「無公式理由」須以「%s」開頭' % '」或「'.join(NO_FORMULA_REASONS))
             elif not SRC_MARK.search(reason) and '全文' not in reason:
-                report('ERROR', path, rln, '「無公式理由」須寫出如何確認（如「全文無編號公式」或評估指標公式所在之節、頁）')
+                report('ERROR', path, rln, '「無公式理由」須寫出如何確認（如「全文無編號公式」，或評估指標、資料處理公式所在之節、頁）')
     elif reason:
         report('ERROR', path, rln, '有公式時不得填「無公式理由」')
     if f and f != '無':

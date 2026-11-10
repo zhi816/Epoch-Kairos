@@ -240,7 +240,7 @@ def cover(fm, f, no, colors):
     if focus:
         langs = fm.get('focus_languages') or []
         tag = '、'.join(langs) if langs else one(f, '封面', '研究類型')
-        win_extra = '<span class="lang">%s</span>' % esc(tag)
+        win_extra = '<span class="lang" title="%s">%s</span>' % (esc(tag), esc(tag))
         rep = '<span class="rep"></span>'
     else:
         win_extra = ''
