@@ -19,13 +19,13 @@
 
 ## Card 3｜突破原理
 - 標題：演化與幾何，互相校正
-- 公式：\alpha_{ijk} = \operatorname{softmax}_{k}\left( \frac{1}{\sqrt{c}} q_{ij}^\top k_{ik} + b_{jk} \right)
-- 說明：更新胺基酸 i 與胺基酸 j 的關係時，一併參考第三個胺基酸 k，引導三者距離趨於一致。
+- 公式：\mathbf o_{ij}^h=\mathbf g_{ij}^h\odot\sum_k a_{ijk}^h\mathbf v_{ik}^h
+- 說明：更新胺基酸 i 與 j 的成對表徵時，一併參考第三個胺基酸 k 的關係。
 - 圖類型：示意圖
-- 圖說：示意：更新胺基酸 i 與 j 的關係時，同時參考每個第三個胺基酸 k 與兩者的關係。
+- 圖說：示意：更新胺基酸 i 與胺基酸 j 的關係時，同時參考每個第三個胺基酸 k 與兩者的關係。
 
 ```svg
-<svg viewBox="0 0 300 120" role="img" aria-label="示意：更新胺基酸 i 與 j 的關係時，同時參考每個第三個胺基酸 k 與兩者的關係。">
+<svg viewBox="0 0 300 120" role="img" aria-label="示意：更新胺基酸 i 與胺基酸 j 的關係時，同時參考每個第三個胺基酸 k 與兩者的關係。">
   <line class="k-muted k-thin" x1="64" y1="86" x2="110" y2="36"/>
   <line class="k-muted k-thin" x1="64" y1="86" x2="190" y2="36"/>
   <line class="k-muted k-thin" x1="236" y1="86" x2="110" y2="36"/>
@@ -55,11 +55,11 @@
 ## Card 5｜典範轉移
 - 標題：結構生物學，改為計算先行
 - 里程碑：2021｜Tunyasuvunakool 等預測人類蛋白質組｜Tunyasuvunakool et al. 2021, Nature 596:590-596
-- 里程碑：2022｜Varadi 等的資料庫收錄逾兩億個預測結構｜Varadi et al. 2022, Nucleic Acids Research 50:D439-D444
+- 里程碑：2022｜EMBL-EBI 擴充資料庫至逾兩億個預測結構｜EMBL-EBI 2022, AlphaFold DB
 - 里程碑：2023｜Watson 等以 RFdiffusion 從頭設計蛋白質｜Watson et al. 2023, Nature 620:1089-1100
 - 里程碑：2024｜Baker、Hassabis、Jumper 獲諾貝爾獎｜獎項
 - 註記：前三項為後續他人成果，出處見長文
 
 ## Card 6｜Kairos
-- 結語：三十億年演化留下的序列就是現成的訓練資料；把對稱性寫進架構，模型就不必再學旋轉。
+- 結語：演化留下的相似序列為預測提供線索；把對稱性寫進架構，旋轉或平移不改變幾何判斷。
 - 轉變：拼湊管線→端到端

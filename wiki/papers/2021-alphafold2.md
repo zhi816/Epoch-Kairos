@@ -1,6 +1,6 @@
 ---
 title: "Highly accurate protein structure prediction with AlphaFold"
-title_zh: "AlphaFold2 與蛋白質結構預測：破解五十年蛋白質摺疊難題"
+title_zh: "AlphaFold2 與蛋白質結構預測：以演化資訊推算立體結構"
 paper_year: 2021
 award_year: 2024
 timeline_year: 2024
@@ -12,18 +12,18 @@ domain: "ai"
 domain_tags: ["#計算生物", "#人工智慧", "#結構生物學"]
 concepts: ["ai-for-structural-biology", "generative-world-models", "programmable-cellular-engineering"]
 status: "published"
-verification: "issues"
+verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.1038/s41586-021-03819-2"
 key_papers:
   - "Kuhlman, B., Dantas, G., Ireton, G. C., Varani, G., Stoddard, B. L., & Baker, D. (2003) Design of a Novel Globular Protein Fold with Atomic-Level Accuracy. Science 302(5649):1364-1368. https://doi.org/10.1126/science.1089427"
   - "Jumper, J. et al. (2021) Highly accurate protein structure prediction with AlphaFold. Nature 596(7873):583-589. https://doi.org/10.1038/s41586-021-03819-2"
   - "Varadi, M. et al. (2022) AlphaFold Protein Structure Database: massively expanding the structural coverage of protein-sequence space with high-accuracy models. Nucleic Acids Research 50(D1):D439-D444. https://doi.org/10.1093/nar/gkab1061"
-hook: "將演化共變資訊與三維幾何三角形不等式直接嵌入深度注意力架構，在 CASP14 競賽將蛋白質結構預測中位數誤差壓低至單一原子尺度的 0.96 Å，終結了困擾生物學半世紀的蛋白質摺疊問題。"
+hook: "以演化序列資訊與受三維幾何啟發的注意力架構預測蛋白質結構，在 CASP14 評估中達到 0.96 Å 的主鏈誤差中位數。"
 card_line: "從胺基酸序列，準確預測蛋白質的立體結構"
 ---
 
-# AlphaFold2 與蛋白質結構預測：破解五十年蛋白質摺疊難題
+# AlphaFold2 與蛋白質結構預測：以演化資訊推算立體結構
 
 > 「一維的胺基酸序列是生命寫下的密碼，三維的空間摺疊則是它執行功能的機械實體；AlphaFold2 為這兩座世界之間架起了原子級精度的計算橋樑。」
 
@@ -34,7 +34,7 @@ card_line: "從胺基酸序列，準確預測蛋白質的立體結構"
 ---
 
 ## Card 1 ｜ 時代銘文 (The Hook)
-1972 年，Christian Anfinsen 在諾貝爾獎演講中提出著名的「安芬森法則（Anfinsen's Dogma）」：蛋白質的一維胺基酸序列應該完全決定其三維立體結構。然而，一條含 200 個胺基酸的多肽鏈在理論上擁有超過 $10^{100}$ 種可能構型（Levinthal 悖論），若靠冷凍電鏡（Cryo-EM）或 X 光晶體繞射實驗解析單一蛋白質結構，往往需耗費數個月至數年及數十萬美元。DeepMind 團隊由 John Jumper 與 Demis Hassabis 領軍開發的 **AlphaFold2**，在第 14 屆蛋白質結構預測雙年賽（CASP14）中達到與實驗測量幾乎無法區分的原子級精度（中位數主鏈誤差 $0.96\,\text{\AA}$），一舉解決了長達 50 年的蛋白質摺疊大挑戰。
+1972 年，Christian Anfinsen 在諾貝爾獎演講中提出著名的「安芬森法則（Anfinsen's Dogma）」：蛋白質的一維胺基酸序列應該完全決定其三維立體結構。然而，一條含 200 個胺基酸的多肽鏈在理論上擁有超過 $10^{100}$ 種可能構型（Levinthal 悖論），若靠冷凍電鏡（Cryo-EM）或 X 光晶體繞射實驗解析單一蛋白質結構，往往需耗費數個月至數年及數十萬美元。DeepMind 團隊由 John Jumper 與 Demis Hassabis 領軍開發的 **AlphaFold2**，在第 14 屆蛋白質結構預測雙年賽（CASP14）的評測中達到 $0.96\,\text{\AA}$ 的主鏈誤差中位數，為長期困難的蛋白質結構預測帶來顯著進展；這項結果不代表所有蛋白質或摺疊過程都已被解決。
 
 ---
 
@@ -59,39 +59,46 @@ AlphaFold2 徹底屏棄了傳統拼湊式管線，設計出端到端可微分的
 
 ### 1. Evoformer 三角形自注意力與乘法更新方程 (Triangular Updates on Pair Representation)
 
-為使殘基成對表徵 $z_{ij} \in \mathbb{R}^{c_z}$ 滿足三維空間幾何一致性，邊 $(i, j)$ 的更新必須整合所有第三節點 $k$ 構成的三角形 $(i, k)$ 與 $(k, j)$。三角形乘法更新（以 Outgoing Edges 為例）定義為：
+成對表徵的更新受距離三角不等式啟發，但不以硬性條件保證各項距離滿足它。原文補充資料 Algorithm 11（p. 18）中，向外邊的三角形乘法更新包括正規化、投影與閘控：
 
 $$\begin{aligned}
-\tilde{z}_{ij} &= \operatorname{LayerNorm}\left( \sum_{k=1}^{N_{\text{res}}} a_{ik} \odot b_{jk} \right) \\
-a_{ik} &= \sigma\left( W_a' z_{ik} \right) \odot \left( W_a z_{ik} \right), \quad b_{jk} = \sigma\left( W_b' z_{jk} \right) \odot \left( W_b z_{jk} \right)
+\mathbf{z}_{ij} &\leftarrow \operatorname{LayerNorm}(\mathbf{z}_{ij}) \\
+\mathbf{a}_{ij},\mathbf{b}_{ij} &= \operatorname{sigmoid}(\operatorname{Linear}(\mathbf{z}_{ij})) \odot \operatorname{Linear}(\mathbf{z}_{ij}) \\
+\mathbf{g}_{ij} &= \operatorname{sigmoid}(\operatorname{Linear}(\mathbf{z}_{ij})) \\
+\tilde{\mathbf{z}}_{ij} &= \mathbf{g}_{ij} \odot \operatorname{Linear}\left(\operatorname{LayerNorm}\left(\sum_k \mathbf{a}_{ik} \odot \mathbf{b}_{jk}\right)\right)
 \end{aligned}$$
 
-而圍繞起始節點之三角形自注意力（Triangular Self-Attention around Starting Node）則將第 $k$ 個節點對邊 $(i, j)$ 的幾何偏置 $b_{jk}$ 直接加入注意力對數機率：
+原文以相同的 `Linear` 名稱表示不同投影。圍繞起始節點的三角形自注意力，則在每個注意力頭 $h$ 使用第三條邊的偏置；其權重為（補充資料 Algorithm 13 第 5 行，p. 19）：
 
-$$\alpha_{ijk} = \operatorname{softmax}_{k}\left( \frac{1}{\sqrt{c}} q_{ij}^\top k_{ik} + b_{jk} \right)$$
+$$a_{ijk}^{h} = \operatorname{softmax}_{k}\left( \frac{1}{\sqrt{c}} (\mathbf{q}_{ij}^{h})^\top \mathbf{k}_{ik}^{h} + b_{jk}^{h} \right)$$
+
+同一注意力頭將各位置的值依權重加總，並以閘門調節輸出（Algorithm 13 第 6 行）：
+
+$$\mathbf o_{ij}^h=\mathbf g_{ij}^h\odot\sum_k a_{ijk}^h\mathbf v_{ik}^h$$
 
 ### 2. 不變點注意力（IPA）與 $\mathrm{SE}(3)$ 剛體運動不變性 (Invariant Point Attention)
 
-設每個殘基 $i$ 擁有局部剛體變換 $T_i(\vec{x}) = R_i \vec{x} + \vec{t}_i$（其中 $R_i \in \mathrm{SO}(3), \vec{t}_i \in \mathbb{R}^3$）。IPA 在局部座標系生成三維查詢點 $\vec{q}_i^p, \vec{k}_j^p, \vec{v}_j^p \in \mathbb{R}^3$，並先經由剛體變換映射至全局座標系後計算歐氏距離平方：
+IPA 在局部座標系生成查詢與鍵，再映到全局座標系計算點距離。原文補充資料 Algorithm 22 第 5–7 行（p. 28）的注意力權重為：
 
-$$a_{ij}^{\text{IPA}} = \operatorname{softmax}_{j} \left( \frac{1}{\sqrt{c}} q_i^\top k_j + b_{ij} - \frac{\gamma_h w_C}{2} \sum_{p=1}^{N_{\text{query points}}} \left\| T_i(\vec{q}_i^p) - T_j(\vec{k}_j^p) \right\|_2^2 \right)$$
+$$\begin{aligned}
+w_C &= \sqrt{\frac{2}{9N_{\text{query points}}}}, \qquad w_L = \sqrt{\frac{1}{3}} \\
+a_{ij}^{h} &= \operatorname{softmax}_{j}\!\left(w_L\left(\frac{1}{\sqrt{c}}(\mathbf{q}_i^{h})^\top \mathbf{k}_j^{h} + b_{ij}^{h} \\
+&\quad - \frac{\gamma^{h}w_C}{2}\sum_p \left\|T_i \circ \vec{\mathbf{q}}_i^{hp} - T_j \circ \vec{\mathbf{k}}_j^{hp}\right\|^2\right)\right)
+\end{aligned}$$
 
-由於對全系統施加任意全局剛體變換 $T_{\text{global}} \in \mathrm{SE}(3)$ 時，由歐氏範數的保距性（Isometry）恆有：
-
-$$\left\| T_{\text{global}} T_i(\vec{q}_i^p) - T_{\text{global}} T_j(\vec{k}_j^p) \right\|_2 = \left\| T_i(\vec{q}_i^p) - T_j(\vec{k}_j^p) \right\|_2$$
-
-因此注意力權重 $a_{ij}^{\text{IPA}}$ 對任意全局旋轉與平移嚴格不變。
+全局剛體旋轉與平移不改變上述點距離，因此 IPA 輸出對全局參考座標系不變；後續以局部框架更新座標時，整體結構隨相同剛體運動等變（補充資料 §1.8.2，pp. 26–28）。
 
 ### 3. 框架對齊點誤差損失函數 (Frame Aligned Point Error, FAPE)
 
-給定預測之殘基局部座標系 $T_i$ 與原子座標 $\vec{x}_j \in \mathbb{R}^3$，以及實驗真實座標系 $T_i^{\text{true}}$ 與真實原子座標 $\vec{x}_j^{\text{true}}$，FAPE 測量每個原子 $j$ 在每個殘基局部框架 $i$ 下的相對位置偏差：
+FAPE 比較預測與真實原子在各自局部框架中的位置；補充資料 Algorithm 28（p. 34）包含長度尺度 $Z$ 與截斷值：
 
 $$\begin{aligned}
-d_{ij} &= \sqrt{ \left\| T_i^{-1}(\vec{x}_j) - \left(T_i^{\text{true}}\right)^{-1}\left(\vec{x}_j^{\text{true}}\right) \right\|_2^2 + \epsilon } \\
-\mathcal{L}_{\text{FAPE}} &= \frac{1}{N_{\text{frames}} N_{\text{atoms}}} \sum_{i, j} \min\left( d_{\text{clamp}},\, d_{ij} \right)
+\vec{x}_{ij} &= T_i^{-1} \circ \vec{x}_j, \quad \vec{x}_{ij}^{\text{true}} = (T_i^{\text{true}})^{-1} \circ \vec{x}_j^{\text{true}} \\
+d_{ij} &= \sqrt{\left\|\vec{x}_{ij} - \vec{x}_{ij}^{\text{true}}\right\|^2 + \epsilon} \\
+\mathcal{L}_{\text{FAPE}} &= \frac{1}{Z}\operatorname{mean}_{i,j}\!\left(\min(d_{\text{clamp}}, d_{ij})\right)
 \end{aligned}$$
 
-由於對鏡像反演（Reflection）變換而言，$T_i \notin \mathrm{SE}(3)$，FAPE 能自然區分 L-胺基酸與 D-胺基酸之手性（Chirality），徹底消除了傳統距離矩陣損失無法分辨鏡像異構物的缺陷。
+此處原文給定 $Z=10\,\text{\AA}$、$d_{\text{clamp}}=10\,\text{\AA}$。反射不屬於 $\mathrm{SE}(3)$；由於局部框架的構造，FAPE 對鏡像反射並不不變，因而可區分手性（補充資料 §1.9.3）。
 
 ---
 
@@ -104,15 +111,15 @@ d_{ij} &= \sqrt{ \left\| T_i^{-1}(\vec{x}_j) - \left(T_i^{\text{true}}\right)^{-
 * **消融實驗（Ablation Study）證實幾何與演化耦合缺一不可**：移除不變點注意力（IPA）或移除三角形更新、或僅使用預訓練語言模型取代 MSA，在無同源模板目標（Free-Modeling Category）上均導致顯著精度下降。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
-* **人類蛋白質組與兩億結構資料庫公開（AlphaFold DB）**：Tunyasuvunakool et al. (2021), *Nature* 596:590-596 與 Varadi et al. (2022), *Nucleic Acids Research* 50:D439-D444，DeepMind 與 EMBL-EBI 合作將人類 $98.5\%$ 蛋白質及已知科學界超過 2.14 億個蛋白質結構免費向全球開放。
+* **人類蛋白質組與 AlphaFold DB**：Tunyasuvunakool et al.（2021）報告人類蛋白質組預測；Varadi et al.（2022）介紹資料庫初版逾 36 萬個預測結構。其後 [EMBL-EBI 於 2022 年 7 月宣布](https://www.ebi.ac.uk/about/news/technology-and-innovation/alphafold-200-million/)資料庫擴充至逾兩億個預測結構；這是較晚的資料庫更新，不是 Varadi 等初版論文的初始數字。
 * **蛋白質複合體與從頭設計的雙向飛躍（AlphaFold-Multimer 與 RFdiffusion）**：Evans et al. (2021, bioRxiv) 擴展至多鏈蛋白質交互作用；共同得獎者 David Baker 團隊（Watson et al. 2023, *Nature* 620:1089-1100, RFdiffusion；Dauparas et al. 2022, *Science* 378:49-56, ProteinMPNN）將結構生成擴散模型與逆向摺疊結合，實現自然界從未存在之功能性蛋白質（如新型蛇毒中和蛋白、受體促效劑）的從頭定制。
 
 ---
 
 ## Card 5 ｜ 時代典範轉移 (The Revolution)
-* **結構生物學從「實驗測定為主」進入「計算先行、整合建模」時代**：冷凍電鏡與 X 光晶體學家不再需要從零手動搭建原子模型，而是將 AlphaFold 預測結構作為高精度初始模型，與冷凍電鏡／冷凍電子斷層掃描（cryo-EM/ET）實驗數據進行**整合建模（Integrative Modeling）**，成功攻克了困擾結構生物學逾十年、由逾千個蛋白質亞基組裝而成的核孔複合體（Nuclear Pore Complex, NPC）巨型結構。
-* **AI for Science 的第一座聖盃**：證明深度學習不僅能處理人類語言與像素，當把領域物理對稱性（如 $\mathrm{SE}(3)$ 等變性與三角不等式）精確編碼進網路架構時，AI 能攻克基礎自然科學的核心難題。
-* **蛋白質工程與合成生物學的加速引擎**：透過「序列生成（ProteinMPNN）$\to$ 結構驗證（AlphaFold2）$\to$ 濕實驗篩選」的閉環，將新型酵素、疫苗抗原與基因編輯工具的開發成功率提升數個數量級。
+* **核孔複合體的整合建模**：[Fontana 等（2022）](https://doi.org/10.1126/science.abm9326) 結合冷凍電鏡與 AlphaFold，研究非洲爪蟾核孔的細胞質環；[Mosalaganti 等（2022）](https://doi.org/10.1126/science.abm9506) 則結合結構預測與實驗資訊，建立涵蓋超過九成人類核孔骨架的模型。兩篇研究的物種、構造範圍與結果不同，均不是單靠 AlphaFold 直接預測完整核孔。
+* **幾何先驗與可檢驗的預測**：三角形更新受距離幾何一致性啟發；IPA 的全局剛體運動不變性與後續座標更新的等變性則有明確的架構設計。這些性質與結構預測結果應分別評估。
+* **蛋白質設計的後續研究**：RFdiffusion 與 ProteinMPNN 分別研究結構生成及由結構設計序列；它們與結構預測及實驗驗證可以形成研究流程，但不同任務的成功率仍須各自檢驗。
 
 ---
 
@@ -120,7 +127,7 @@ d_{ij} &= \sqrt{ \left\| T_i^{-1}(\vec{x}_j) - \left(T_i^{\text{true}}\right)^{-
 AlphaFold2 的成功是**「生命演化史（MSA）」與「歐氏空間幾何學（$\mathrm{SE}(3)$）」在深度學習張量空間中的偉大交會**：
 
 1. **三十億年的自然選擇就是最強大的訓練集**：多重序列比對（MSA）並非單純的字串比對，而是地球生命在三十億年演化過程中已經替我們做過的數十億次突變存活實驗；Evoformer 則是讀懂這部演化史詩的解碼器。
-2. **對稱性即先驗（Symmetry as Inductive Bias）**：物理世界沒有絕對座標原點。將三維旋轉平移等變性直接寫進注意力機制（IPA 與 FAPE），讓模型不必浪費算力去學習「轉個角度還是同一個蛋白質」，而是把全部算力集中於破解摺疊能量地形。
+2. **對稱性即先驗（Symmetry as Inductive Bias）**：三維整體旋轉或平移不應改變局部幾何關係；IPA 的不變表示與結構更新的等變性將此要求納入架構，但不保證預測結構必然正確。
 
 ---
 

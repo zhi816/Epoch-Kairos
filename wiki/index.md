@@ -56,7 +56,7 @@
 
 ## 三、2024 年諾貝爾獎與重大突破
 
-* `2024` ｜ [AlphaFold2 與蛋白質結構預測：破解五十年蛋白質摺疊難題](papers/2021-alphafold2.md) ｜ `#計算生物` `#人工智慧` `#結構生物學` ｜ *2021 發表 ｜ 2024 諾貝爾化學獎* ｜ `[published]`
+* `2024` ｜ [AlphaFold2 與蛋白質結構預測：以演化資訊推算立體結構](papers/2021-alphafold2.md) ｜ `#計算生物` `#人工智慧` `#結構生物學` ｜ *2021 發表 ｜ 2024 諾貝爾化學獎* ｜ `[published]`
   * 得獎者：David Baker（蛋白質設計）、Demis Hassabis 與 John M. Jumper（AlphaFold2, *Nature* 2021）。獲獎依據原始文獻：`raw/2021-alphafold2.pdf`（Jumper et al. (2021) "Highly accurate protein structure prediction with AlphaFold", *Nature* 596(7873):583-589，https://doi.org/10.1038/s41586-021-03819-2，CC-BY）。
 * `2024` ｜ [AlphaFold 3：以生成式擴散架構統一預測全生物分子交互作用結構](papers/2024-alphafold3.md) ｜ `#計算生物` `#人工智慧` `#結構生物學` ｜ `[published]`
   * 原始文獻：`raw/2024-alphafold3.pdf`（Abramson et al. (2024) "Accurate structure prediction of biomolecular interactions with AlphaFold 3", *Nature* 630(8016):493-500，https://doi.org/10.1038/s41586-024-07487-w）。
