@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>可重構中性原子陣列之邏輯量子處理器｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#D3BEFD;--deep:#4D2E8B;--win:#23222B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.11</span><span>物理</span></div><div class="win"><i style="left:22.9%;top:13.3%;width:1px;height:1px;opacity:0.60"></i><i style="left:77.5%;top:44.6%;width:1px;height:1px;opacity:0.54"></i><i style="left:48.0%;top:13.2%;width:1px;height:1px;opacity:0.39"></i><i style="left:18.3%;top:8.2%;width:1px;height:1px;opacity:0.55"></i><i style="left:53.9%;top:17.0%;width:1px;height:1px;opacity:0.51"></i><i style="left:79.9%;top:40.1%;width:1px;height:1px;opacity:0.65"></i><i style="left:26.5%;top:31.5%;width:1px;height:1px;opacity:0.36"></i><i style="left:77.7%;top:30.6%;width:1px;height:1px;opacity:0.73"></i><i style="left:46.7%;top:12.1%;width:1px;height:1px;opacity:0.53"></i><i style="left:92.7%;top:21.6%;width:1px;height:1px;opacity:0.83"></i><i style="left:17.1%;top:16.1%;width:1px;height:1px;opacity:0.79"></i><i style="left:54.6%;top:26.6%;width:1.5px;height:1.5px;opacity:0.72"></i><i style="left:61.5%;top:35.3%;width:1px;height:1px;opacity:0.56"></i><i style="left:50.0%;top:17.4%;width:1.5px;height:1.5px;opacity:0.72"></i><span class="rep"></span><span class="line"><span>用雷射搬動原子，</span><span>在受糾錯保護的</span><span>位元上運算</span></span></div><div class="tags">物理、天文與地球科學・#量子物理 #統計物理</div><div class="name">可重構中性原子陣列之邏輯量子處理器</div><div class="lead">搬動原子做邏輯閘，糾纏隨碼距增大而改善。</div><div class="yrs">2024 發表 ｜ Nature</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">加了糾錯，<br>錯誤反而變多？</span><div class="rows"><div class="row"><b>糾錯電路</b><span>要大量雙位元閘與量測，閘不夠準時反而引入更多錯</span></div><div class="row"><b>平面近鄰</b><span>只能與相鄰位元互動，兩個邏輯位元間的閘要繞道多步</span></div><div class="row"><b>中途讀取</b><span>讀取輔助位元時，須避免干擾仍在運算的位元</span></div><div class="row gap"><b>架構</b><span>缺少能在邏輯位元層級直接編程運算的處理器</span></div></div><span class="ft" style="color:var(--ink)">得讓邏輯位元本身能被直接編程。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">搬原子成對打閘，<br>再一起解碼</span><svg class="dia" viewBox="0 0 300 110" role="img" aria-label="示意：兩個邏輯區塊被搬到一起交錯排列，一道全域雷射同時對每對原子打閘，之後兩區塊一起解碼。">
+  <rect class="k-soft" x="126" y="36" width="78" height="46" rx="4"/>
+  <circle class="k-ink" cx="14" cy="22" r="3.5"/>
+  <circle class="k-ink" cx="28" cy="22" r="3.5"/>
+  <circle class="k-ink" cx="42" cy="22" r="3.5"/>
+  <circle class="k-ink" cx="14" cy="36" r="3.5"/>
+  <circle class="k-ink" cx="28" cy="36" r="3.5"/>
+  <circle class="k-ink" cx="42" cy="36" r="3.5"/>
+  <circle class="k-ink k-ring" cx="14" cy="78" r="3.5"/>
+  <circle class="k-ink k-ring" cx="28" cy="78" r="3.5"/>
+  <circle class="k-ink k-ring" cx="42" cy="78" r="3.5"/>
+  <circle class="k-ink k-ring" cx="14" cy="92" r="3.5"/>
+  <circle class="k-ink k-ring" cx="28" cy="92" r="3.5"/>
+  <circle class="k-ink k-ring" cx="42" cy="92" r="3.5"/>
+  <line class="k-ink" x1="92" y1="58" x2="116" y2="58"/>
+  <polyline class="k-ink" points="111,53 116,58 111,63"/>
+  <circle class="k-ink" cx="134" cy="48" r="3.5"/>
+  <circle class="k-ink" cx="160" cy="48" r="3.5"/>
+  <circle class="k-ink" cx="186" cy="48" r="3.5"/>
+  <circle class="k-ink" cx="134" cy="70" r="3.5"/>
+  <circle class="k-ink" cx="160" cy="70" r="3.5"/>
+  <circle class="k-ink" cx="186" cy="70" r="3.5"/>
+  <circle class="k-ink k-ring" cx="144" cy="48" r="3.5"/>
+  <circle class="k-ink k-ring" cx="170" cy="48" r="3.5"/>
+  <circle class="k-ink k-ring" cx="196" cy="48" r="3.5"/>
+  <circle class="k-ink k-ring" cx="144" cy="70" r="3.5"/>
+  <circle class="k-ink k-ring" cx="170" cy="70" r="3.5"/>
+  <circle class="k-ink k-ring" cx="196" cy="70" r="3.5"/>
+  <line class="k-line" x1="208" y1="59" x2="226" y2="59"/>
+  <polyline class="k-line" points="221,54 226,59 221,64"/>
+  <rect class="k-accent k-ring" x="230" y="45" width="62" height="28" rx="4"/>
+  <text class="k-label" x="54" y="33">區塊 A</text>
+  <text class="k-label" x="54" y="89">區塊 B</text>
+  <text class="k-label" x="165" y="28" text-anchor="middle">全域雷射</text>
+  <text class="k-label" x="165" y="98" text-anchor="middle">交錯排列</text>
+  <text class="k-label-accent" x="261" y="63" text-anchor="middle">一起解碼</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\sum_{j=1}^{M} \log(p_j) E_j + \log(1 - p_j)(1 - E_j)"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">以各錯誤機率 p_j 計分，在與偵測結果相符的錯誤組合中找最可能的一組。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">146</span><span class="l">d=7 時每個邏輯貝爾對使用的物理位元</span></div><div class="stat"><span class="v">72(2)%</span><span class="l">容錯製備四邏輯位元 GHZ 態的保真度</span></div><div class="stat"><span class="v">40</span><span class="l">280 個物理位元上製備的色碼邏輯位元</span></div><div class="stat"><span class="v">≈0.1</span><span class="l">48 邏輯位元電路經錯誤偵測後的 XEB</span></div></div><span class="ft">範圍：Bluvstein 等 2024，最多 280 個原子；糾纏改善需相關解碼</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">原子陣列，<br>朝更大規模推進</span><div class="time"><p><b>2024</b><span>Xu 等提出原子陣列上的高編碼率糾錯碼</span></p><p><b>2024</b><span>Google 團隊的表面碼錯誤率低於閾值</span></p><p><b>2025</b><span>Zhou 等以相關解碼減少量測輪數</span></p><p><b>2025</b><span>Chiu 等讓逾三千原子陣列連續運作</span></p></div><span class="ft">以上皆為後續研究，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">把兩排原子搬到一起再打一道雷射，搬運本身就成了對整個區塊的運算。</span><span class="shift"><span>搬資料是負擔</span><i aria-hidden="true"></i><b>搬動即運算</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2024 發表 ｜ Nature</span>
+<h1>可重構中性原子陣列之邏輯量子處理器</h1>
+<p class="en">Logical quantum processor based on reconfigurable atom arrays</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">過去量子位元像被焊死在棋盤上的棋子，只能與隔壁鄰居緩慢交換資訊；光學鑷子讓中性原子在保持量子相干的同時凌空起舞，將三維高維度量子糾錯碼化為現實。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>物理量子位元（Physical Qubits）極度脆弱，環境熱擾動、雷射相位雜訊與自發輻射會在毫秒內摧毀量子疊加態（退相干）。自 Peter Shor (1995) 與 Alexei Kitaev（1997 年預印本，2003 年刊於 Annals of Physics）等人提出量子糾錯碼（Quantum Error Correction, QEC）以來，把資訊冗餘編碼到多個物理量子位元上，構成「邏輯量子位元（Logical Qubits）」並在其上執行邏輯閘，一直是大規模量子計算的必經之路；但邏輯位元所需的額外開銷，使大規模邏輯量子計算面臨重大挑戰（摘要）。哈佛大學 Lukin 團隊以二維聲光偏轉器（AOD）在計算途中<strong>搬運光學鑷子中的中性銣原子（<span class="m-in" data-tex="\mathrm{^{87}Rb}"></span>）</strong>，結合分區架構，在最多 280 個物理位元的處理器上操作 <strong>40 個色碼邏輯位元</strong>，並以三維 <span class="m-in" data-tex="[[8,3,2]]"></span> 碼執行含 <strong>48 個邏輯位元</strong>、228 個邏輯雙位元閘與 48 個邏輯 CCZ 閘的取樣電路（摘要；Fig. 4–5）。作者認為這些結果預示早期糾錯量子計算的來臨（摘要）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：平面近鄰連線枷鎖與糾錯開銷的指數深淵</h2></div>
+<p>在邁向實用容錯量子計算的道路上，硬體架構長期受制於三大物理瓶頸（以下為一般背景說明，第 2 點之晶格手術成本與編碼率為 Wiki 補充，非本篇內容）：</p>
+<ul><li><strong>「愈糾愈錯」的閾值困境</strong>：量子糾錯本身需要額外施加大量的雙量子位元閘（如 CNOT / CZ 閘）與輔助位元測量來提取錯誤症候群（Error Syndrome）。若物理閘保真度不夠高或線路過深，糾錯電路自身引入的錯誤反而比原本單一物理位元還多。</li><li><strong>二維平面近鄰拓撲（2D Nearest-Neighbor）的巨額空間開銷</strong>：在平面表面碼（2D Surface Code）上執行兩個邏輯量子位元之間的邏輯 CNOT 閘，傳統上需要透過複雜的「晶格手術（Lattice Surgery）」或「編織（Braiding）」，不僅需要 <span class="m-in" data-tex="O(d)"></span> 個時間步的重複症候群測量，且編碼率極低（<span class="m-in" data-tex="k/n \to 0"></span>）。</li><li><strong>中途讀取會干擾鄰近位元</strong>：在中性原子系統中，演算法中途以成像讀取輔助位元時，需避免干擾仍在運算中的資料位元；本篇因此另設讀取區，使中途讀取不破壞其餘位元之相干性（Logical processor based on atom arrays 節）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>本篇以<strong>分區架構（Zoned Architecture）</strong>結合可移動的光學鑷子，在邏輯層級控制整個處理器：</p>
+<ol><li><strong>儲存區、糾纏區與讀取區之空間分離（Storage, Entangling &amp; Readout Zones）</strong>：<ul><li>物理位元編碼於 <span class="m-in" data-tex="\mathrm{^{87}Rb}"></span> 原子基態超精細能階中 <span class="m-in" data-tex="m_F = 0"></span> 的鐘態，<span class="m-in" data-tex="T_2 &gt; 1\,\text{s}"></span>（Logical processor based on atom arrays 節；Methods, System overview）。</li><li>儲存區供高密度、長相干的存放，不受糾纏閘誤差影響；糾纏區進行平行的邏輯位元編碼、穩定子量測與邏輯閘；讀取區可中途讀取所需的邏輯或物理位元，而不干擾仍在運算中之位元的相干性（同節，Fig. 1a）。雙位元閘利用里德堡阻塞，保真度 99.5%（ref. 8），任意連接則靠二維聲光偏轉器（AOD）搬運原子。</li></ul></li><li><strong>以搬運原子實現橫向邏輯閘（Transversal Entangling Gates）</strong>：<ul><li>以 AOD 產生的網格同時拾起兩個邏輯位元區塊，在糾纏區交錯排列，再打一道全域里德堡激發雷射，對兩區塊中每一對對應原子同時施加物理糾纏閘（Fig. 2a）；施加閘時同一閘位中原子相距 <span class="m-in" data-tex="\lesssim 2\,\mu\text{m}"></span>，不同閘位相距至少 <span class="m-in" data-tex="10\,\mu\text{m}"></span>（Extended Data Fig. 1 圖說）。這種逐對施加的橫向閘本身具容錯性：錯誤不會在同一邏輯區塊內擴散成多位元錯誤（同節；Methods, Fault tolerance and transversal gates）。</li></ul></li><li><strong>相關解碼（Correlated Decoding）</strong>：<ul><li>橫向 CNOT 會把物理錯誤在兩個區塊之間傳遞，使兩區塊的穩定子產生相關。本篇把兩個邏輯位元放進同一張解碼超圖，以邊與超邊連接兩區塊的穩定子，聯合解碼；以傳統方式各自解碼時，表面碼糾纏閘的保真度反而隨碼距下降（Improving entangling gates with code distance 節；Fig. 2b）。</li></ul></li><li><strong>三維 <span class="m-in" data-tex="[[8,3,2]]"></span> 碼與超立方體連接</strong>：<ul><li>每個 <span class="m-in" data-tex="[[8,3,2]]"></span> 碼塊以 8 個物理位元編碼 3 個邏輯位元；邏輯三元組在 4D 超立方體上糾纏，物理連接相當於 7D 超立方體（Fig. 5；Extended Data Fig. 6）。</li></ul></li></ol>
+<h3>相關解碼之混合整數規劃 (Correlated Decoding as a Mixed-Integer Program)</h3>
+<p>本篇以 Stim 依近似實驗誤差率之 Pauli 通道雜訊模型，求出電路中每個錯誤機制 <span class="m-in" data-tex="E_j"></span>（<span class="m-in" data-tex="j = 1, \ldots, M"></span>）的機率 <span class="m-in" data-tex="p_j"></span> 及其影響的偵測器 <span class="m-in" data-tex="D_i \in \{0, 1\}"></span>（<span class="m-in" data-tex="i = 1, \ldots, N"></span>）；<span class="m-in" data-tex="f(D_i)"></span> 為會翻轉偵測器 <span class="m-in" data-tex="D_i"></span> 奇偶的錯誤機制集合。最可能的物理錯誤即下列混合整數規劃的最佳解（Methods, Correlated decoding，未編號式；原文把目標與限制寫在同一個展示式中，此處分成兩式，符號與條件不變）。在 <span class="m-in" data-tex="E_j \in \{0, 1\}"></span>（<span class="m-in" data-tex="j = 1, \ldots, M"></span>）、<span class="m-in" data-tex="K_i \in \mathbb{Z}_{\ge 0}"></span>（<span class="m-in" data-tex="i = 1, \ldots, N"></span>）之下，最大化（maximize）：</p>
+<span class="m-disp" data-tex="\sum_{j=1}^{M} \log(p_j) E_j + \log(1 - p_j)(1 - E_j)"></span>
+<p>並使每個偵測器 <span class="m-in" data-tex="i = 1, \ldots, N"></span> 都滿足（subject to）：</p>
+<span class="m-disp" data-tex="\sum_{E_j \in f(D_i)} E_j - 2K_i = D_i"></span>
+<p>目標函數為所指派錯誤組態之對數機率；每個 <span class="m-in" data-tex="K_i"></span> 使 <span class="m-in" data-tex="f(D_i)"></span> 中錯誤變數之和與 <span class="m-in" data-tex="D_i"></span> 模 2 相符。作者以 Gurobi 求得最佳解，再套用 <span class="m-in" data-tex="E_j = 1"></span> 之錯誤所對應的校正（同節）。</p>
+<p>理論上，造成一個邏輯錯誤需要 <span class="m-in" data-tex="(d+1)/2"></span> 個錯誤，故在錯誤率夠低時，邏輯錯誤率依 <span class="m-in" data-tex="\propto (p/p_{\text{th}})^{(d+1)/2}"></span> 指數壓低（Methods, Code distance, decoding and thresholds，引 ref. 24；原文為行文中之式子）。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Bluvstein et al. 2024）之核心證據</h3>
+<p>（本頁以 <code>doi_url</code> 指向之 Nature 正式版為準，全文以開放取用之 PMC10830422 核對；<code>raw/2024-fault-tolerant-quantum.pdf</code> 為 arXiv:2312.03982v1，所引數字兩版相同。）</p>
+<ul><li><strong>表面碼碼距 <span class="m-in" data-tex="d = 3 \to 5 \to 7"></span>，邏輯糾纏閘改善</strong>：以兩個表面碼邏輯位元做橫向 CNOT，再投影量測邏輯貝爾態之穩定子；每個邏輯貝爾對使用之物理位元數，<span class="m-in" data-tex="d = 3"></span>、5、7 依序為 26、74、146（Fig. 2d 橫軸）。使用相關解碼時，<span class="m-in" data-tex="d = 7"></span> 在 <span class="m-in" data-tex="X_L X_L"></span> 與 <span class="m-in" data-tex="Z_L Z_L"></span> 基底量得約 0.95 的布居，邏輯貝爾對錯誤隨碼距增大而下降；改用傳統各自解碼時，保真度反而隨碼距下降（Improving entangling gates with code distance 節；Fig. 2c–d）。限制：<span class="m-in" data-tex="d &gt; 3"></span> 之初態製備並非容錯；作者強調此處超越的是整個電路（含投影讀取）的有效閾值，與多輪雜訊症候群量測下的閾值不同，後者是未來目標（同節）。</li><li><strong>容錯 GHZ 態、中途讀取與 40 個色碼邏輯位元</strong>：以 <span class="m-in" data-tex="d = 3"></span> 色碼容錯製備 4 個邏輯位元之 GHZ 態，使用相關解碼之保真度為 72(2)%；若後選擇所有穩定子皆正確，提升至 <span class="m-in" data-tex="99.85^{+0.1}_{-1.0}\%"></span>，代價是捨棄資料；只捨棄 50% 資料時約 90%（Fault-tolerant logical algorithms 節；Fig. 3）。另以分區架構分批編碼，在 280 個物理位元上製備 40 個色碼邏輯位元，並以 20 個橫向 CNOT 容錯製備其中 20 個；每多一個編碼步驟約有 1% 的邏輯退相干（Fig. 4a–c）。</li><li><strong>48 個邏輯位元之三維 <span class="m-in" data-tex="[[8,3,2]]"></span> 碼取樣電路</strong>：以 <span class="m-in" data-tex="[[8,3,2]]"></span> 碼塊在 4D 超立方體連接上糾纏邏輯三元組，執行含 48 個邏輯位元、228 個邏輯雙位元閘與 48 個邏輯 CCZ 閘的電路；在錯誤偵測下，48 個邏輯位元之交叉熵基準（XEB）約為 0.1，作者稱比先前同等複雜度之物理位元數位電路實作最多高約一個數量級（Complex logical circuits using 3D codes 節；Fig. 5）。</li></ul>
+<h3>後續與相關研究（非本篇成果，標註出處）</h3>
+<ul><li><strong>原子陣列上的高編碼率糾錯碼</strong>：Xu et al. (2024), <em>Nature Physics</em> 20:1084-1090, doi:10.1038/s41567-024-02479-z，提出以重新排列原子實作量子低密度奇偶校驗（qLDPC）碼的非局域症候群萃取，模擬顯示在物理錯誤率 <span class="m-in" data-tex="10^{-3}"></span> 下，數百個物理位元即開始優於表面碼（摘要依 arXiv:2308.08648）。</li><li><strong>超導表面碼低於閾值</strong>：Google Quantum AI and Collaborators (Acharya et al. 2024), <em>Nature</em> 638:920-926, doi:10.1038/s41586-024-08449-y，在超導處理器 Willow 上以 101 個位元之 <span class="m-in" data-tex="d = 7"></span> 表面碼記憶，碼距每增加 2，邏輯錯誤率降為 <span class="m-in" data-tex="1/\Lambda"></span>，<span class="m-in" data-tex="\Lambda = 2.14 \pm 0.02"></span>，並以 <span class="m-in" data-tex="2.4 \pm 0.3"></span> 倍超越最佳物理位元之壽命（摘要）。</li><li><strong>常數輪之橫向容錯</strong>：Zhou et al. (2025), <em>Nature</em> 646:303-308, doi:10.1038/s41586-025-09543-5（共同作者含本篇作者），結合橫向操作與新的相關解碼策略，說明多種糾錯碼只需常數輪症候群萃取即可容錯執行邏輯操作（摘要依 arXiv:2406.17653）。</li><li><strong>連續運作的大型原子陣列</strong>：Chiu et al. (2025), <em>Nature</em> 646:1075-1080, doi:10.1038/s41586-025-09596-6，以光晶格輸送帶持續補充原子，組成並維持超過 3,000 個原子之陣列超過兩小時，且補充時不破壞已存位元之量子態（摘要）。</li><li><strong>相關研究（未引用本篇）</strong>：Bravyi et al. (2024), <em>Nature</em> 627:778-782, doi:10.1038/s41586-024-07107-7（IBM），提出以低密度奇偶校驗碼實作之容錯量子記憶，在 0.1% 物理錯誤率下以 288 個物理位元保存 12 個邏輯位元近一百萬個週期，表面碼則需近 3,000 個；所需連接為兩個平面子圖構成之 6 度圖（摘要）。原文 Outlook 亦把 qLDPC 碼列為提高編碼效率之方向。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>邏輯層級的演算法表現</strong>：作者認為，在錯誤偵測下，邏輯編碼使交叉熵基準與快速擾亂之量子模擬都優於物理位元保真度，這些結果預示早期糾錯量子計算的來臨（摘要）。此為作者之評價。</li><li><strong>可重構連線之後續</strong>：本篇以搬運原子實現任意連接與橫向閘；後續研究在此基礎上提出於原子陣列實作 qLDPC 碼（Xu et al. 2024）、以常數輪萃取達成橫向容錯（Zhou et al. 2025），並把原子陣列擴大為可連續補充、超過 3,000 個原子之系統（Chiu et al. 2025）；超導平台同年亦實現低於閾值之表面碼記憶（Google Quantum AI 2024）。出處見 Card 4 後續段。</li><li><strong>作者所述之未來方向</strong>（Outlook）：在擴大規模時提高編碼效率，例如採用量子低密度奇偶校驗碼、擦除轉換或雜訊偏置，並最佳化原子種類與光學控制；作者也指出多輪雜訊症候群量測下之閾值是重要的未來目標（Improving entangling gates with code distance 節）。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>可重構中性原子邏輯處理器帶來了兩個跨越物理與計算機工程的深刻洞見：</p>
+<ol><li><strong>將「空間移動」化為「代數運算」</strong>：在傳統電腦中，資料搬運是消耗能量的額外負擔；但在光學鑷子陣列中，把一整排原子平移交錯並同時點亮一道雷射，本身就是對數十個量子位元同步執行高維度拓撲張量運算。</li><li><strong>把資訊分散到許多原子上</strong>：單一原子的量子相干性終究會受環境干擾，但當資訊被冗餘地編碼在一整個邏輯區塊中，局部錯誤可以被偵測與校正，而不會直接破壞所存的資訊。</li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2024</b><span>發表・Nature</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Dolev Bluvstein<br>Simon J. Evered<br>Alexandra A. Geim<br>Sophie H. Li<br>Hengyun Zhou<br>Tom Manovitz<br>Sepehr Ebadi<br>Madelyn Cain<br>Marcin Kalinowski<br>Dominik Hangleiter et al.<br>Markus Greiner<br>Vladan Vuletić<br>Mikhail D. Lukin</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Nature, 626(7997), 58-65</span><a href="https://doi.org/10.1038/s41586-023-06927-3">doi:10.1038/s41586-023-06927-3</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#量子物理</span><span class="chip">#統計物理</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>容錯量子計算與量子糾錯碼</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1103/PhysRevA.52.R2493" title="Shor, P. W. (1995) Scheme for reducing decoherence in quantum computer memory. Physical Review A 52(4):R2493-R2496.">Shor（1995）</a><a href="https://doi.org/10.1016/S0003-4916(02)00018-0" title="Kitaev, A. Y. (2003) Fault-tolerant quantum computation by anyons. Annals of Physics 303(1):2-30 (preprint 1997).">Kitaev（2003）</a><a href="https://doi.org/10.1038/s41586-023-06927-3" title="Bluvstein, D. et al. (2024) Logical quantum processor based on reconfigurable atom arrays. Nature 626(7997):58-65.">Bluvstein 等（2024）</a><a href="https://doi.org/10.1038/s41586-024-08449-y" title="Google Quantum AI and Collaborators (2024) Quantum error correction below the surface code threshold. Nature 638:920-926.">Google Quantum AI and Collaborators（2024）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">本條目對應 <code>raw/2024-fault-tolerant-quantum.pdf</code>，為哈佛大學 Mikhail D. Lukin 團隊聯合 QuEra、MIT 與馬里蘭大學發表於《Nature》第 626 卷第 7997 期（頁 58–65）之里程碑論文。經 Crossref 核驗（DOI: <code>10.1038/s41586-023-06927-3</code>），該文於 2023 年 12 月 6 日先行線上刊出（Online First），正式紙本卷期出版日期為 <strong>2024 年 2 月 1 日</strong>，故依正式期刊卷期年份定 <code>paper_year: 2024</code>。<code>key_papers</code> 一併列出 Google Quantum AI 於 2024 年底在超導表面碼實現低於閾值指數糾錯（Willow 處理器）之互補里程碑。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

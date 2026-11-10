@@ -1829,3 +1829,8 @@
   - `card_line` 由「借相近語言的語料，替小語種擴充翻譯資料」改為「借相近語言的語料，擴充小語種翻譯資料」：原句第二段 10 字須切三行，三行時封面一句話壓到星窗內四種語言之標籤與代表星（verify_page.js FAIL 2 項）；改後兩行、PASS。首頁星圖說明框與卡片牆須由協調者重建。
   - 卡片：Card 3 取論文頁之 Procrustes 目標式（回原文 §3.1 核對相同）；Card 4 四個數字（16.34、15.72、24.51 取表 2，1.5–8 取 §1 貢獻 3）回原文抽查相符；Card 5 一般模式三筆後續研究；封面標題「低資源翻譯之泛化資料增強」。`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` PASS（37 項）；目視修正封面論文名、Card 2 缺口、Card 4 兩則說明、Card 5 標題與一筆里程碑之落單行，Card 6 改照論文頁「前提是兩語相似」之說法。`lint_wiki.py` 本篇無 ERROR、WARN（唯一 ERROR 在他人未提交之 2024-fault-tolerant-quantum.md）。
   - 首頁卡片牆依本批協調規則未重建，由協調者處理。
+
+## [2026-11-10 10:44] update | 2024-fault-tolerant-quantum 卡片回填與論文頁原文修正 | #量子物理 #統計物理
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：TD-008 第三批 B 組。以 `doi_url` 指向之 Nature 正式版（開放取用全文 PMC10830422；封存原文為 arXiv v1）修正 [論文頁](papers/2024-fault-tolerant-quantum.md) 並重建 [證據表](evidence/2024-fault-tolerant-quantum.md)：完成 EK-120（$T_2 > 1$ s；每個邏輯貝爾對 26、74、146 個物理位元）與 EK-121（刪除原文沒有之里德堡哈密頓量、穩定子碼空間、橫向 CNOT 張量積與含 Λ 之標度式，改補 Methods「Correlated decoding」之混合整數規劃，分為目標與限制兩式）；新登記並修正 EK-158（「首次」「歷史跨越」「超越所有物理位元對」「XEB 歸零」、原子間距 3 μm 等過度表述或原文不符，補上相關解碼與傳統解碼之差異）與 EK-159（後續段與 Card 5 無出處敘述，改列 Xu 2024、Google Quantum AI 2024、Zhou 2025、Chiu 2025 四篇引用本篇之後續研究，Bravyi 2024 改標相關研究）；`title_zh` 刪去副題；`verification` 改為 `partial`。新增 [卡片檔](cards/2024-fault-tolerant-quantum.md) 與論文頁原型 `web/prototypes/paper-v1/2024-fault-tolerant-quantum.html`。check_cards：ERROR 0、WARN 0；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（37 項）。來源：Card 3 公式取自 Methods 相關解碼之目標函數；Card 4 四個數字取自證據表 Fig. 2d、Fig. 3c、Fig. 4、Fig. 5 各列；Card 5 四筆取自證據表後續研究列。複核：Card 3 原取含「maximize」之整行，實測寬 495px 超出 390px 公式框，改把原文展示式分成兩式並取目標函數；說明之「最大」改為「最可能」。首頁卡片牆：依協調規則未重建，由協調者處理；`title_zh` 已改，首頁待協調者重建後更新。

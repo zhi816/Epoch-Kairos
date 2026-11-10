@@ -769,15 +769,17 @@
 - **發現於**：第二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。Card 5 第二點改照原文：共有核心詞高者「是跨方言模型遷移的好候選」「應測試遷移學習」，獨有詞高者建議方言專屬模型或微調，並註明原文未做遷移實驗、未談負遷移（§3.1, p. 126；§4.1, p. 130）。另依新論文需求補記公開程式碼、作者明列之限制、四點建議與 §5 未來方向，各附位置。
 
-### EK-120 | open | papers/2024-fault-tolerant-quantum.md | Card 3 與 Card 4 | 原文不符
+### EK-120 | fixed | papers/2024-fault-tolerant-quantum.md | Card 3 與 Card 4 | 原文不符
 - **問題**：Card 3 第 53 行寫相干時間 $T_2 > 1.5\,\text{s}$，原文為 T2 > 1 s。Card 4 第 96 行稱 d = 7 時「總計動用約 200 個物理原子」，原文圖 2 標示每個邏輯貝爾對所用物理量子位元數，d = 3、5、7 依序為 26、74、146。
 - **來源**：`raw/2024-fault-tolerant-quantum.pdf`（Bluvstein et al. 2024），PDF 第 2、12 頁（T2 > 1 s）、第 3 頁圖 2（146）。
 - **發現於**：第一、二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。以正式版（PMC10830422）與 arXiv v1 核對後，$T_2$ 改為 $> 1$ s；Card 4 改寫為每個邏輯貝爾對使用 26、74、146 個物理位元（Fig. 2d），並補上相關解碼與傳統解碼之差異、初態製備非容錯等限制。證據表登記。
 
-### EK-121 | open | papers/2024-fault-tolerant-quantum.md | Card 3 | 原文未支持
+### EK-121 | fixed | papers/2024-fault-tolerant-quantum.md | Card 3 | 原文未支持
 - **問題**：Card 3 四組區塊公式（第 64–67 行里德堡哈密頓量、第 75 行穩定子碼空間、第 79 行橫向 CNOT、第 87 行邏輯錯誤率標度）皆未登記於證據表（證據表 Card 3 只有三區架構一列）；B 組回報其中三組原文找不到。原文以文字描述橫向 CNOT 與穩定子，未見以這些形式寫出之公式。
 - **來源**：同 EK-120 之 PDF；修正時逐式回原文正文與 Methods 確認，找不到者刪除或標明為教科書式背景。
 - **發現於**：第二批卡片回填 B 組回報，協調者核對證據表（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。逐式回原文正文與 Methods 核對：里德堡哈密頓量、穩定子碼空間、橫向 CNOT 張量積三式原文沒有，刪除；邏輯錯誤率標度在 Methods 只是行文中之 $\propto (p/p_{\text{th}})^{(d+1)/2}$（引 ref. 24），改為行內並刪去原文沒有之 $\Lambda$ 等式。另補入 Methods「Correlated decoding」之混合整數規劃（未編號式），為本篇相關解碼之原文公式，證據表登記位置。同時改正閘時原子間距為 $\lesssim 2\,\mu$m（Extended Data Fig. 1 圖說）。
 
 ### EK-122 | fixed | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 3 | 原文未支持
 - **問題**：Card 3 第 53–58 行之 $\mathcal{D}_{\text{clean}} = \{ (x_i, y_i) \mid \operatorname{ValidText} \land \operatorname{RatioFilter} \}$ 為 Wiki 自擬，原文沒有編號公式；且拆成兩行 aligned 片段，各行都不完整。原文過濾規則為文字敘述：兩側皆有兩個以上詞元時計算目標對來源之詞元比 r，r ≤ 0.2 或 r > 8.0 者捨棄。
@@ -928,3 +930,15 @@
 - **來源**：`raw/my-focus/英文論文/Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13.pdf`，摘要與 §1（p. 124）、§2.1–§2.3（p. 125）、§3.1–§3.2（pp. 125–128）、表 1–3（pp. 127–128）。
 - **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依原文改寫上述各句；Card 6 該句改標為 Wiki 推測並改為「可能」；證據表重建，表 1 至表 3 數值逐一寫出列與欄。
+
+### EK-158 | fixed | papers/2024-fault-tolerant-quantum.md | Frontmatter、Card 1、Card 3 與 Card 4 | 過度表述
+- **問題**：（1）`hook` 與 Card 1 稱「首次」在單一處理器上編碼 48 個邏輯位元、「打破超導固定晶格限制」、製造一個高碼距邏輯位元「需消耗上千個物理位元」、「正式揭開」早期容錯時代序幕；原文未稱首次、未作這些比較，摘要為「herald the advent of early error-corrected quantum computation」。`title_zh` 冠以「邁向容錯量子計算的歷史跨越」；開頭引言為 Wiki 撰寫卻未註明。（2）Card 3 稱閘時原子間距 $\lesssim 3\,\mu$m，原文為 $\lesssim 2\,\mu$m；稱直接實作「三維與四維拓撲碼」，原文為三維 $[[8,3,2]]$ 碼塊在 4D 超立方體上糾纏。（3）Card 4 稱 $d = 3 \to 7$ 之邏輯貝爾態「超越所有單一物理位元對之成對糾纏保真度」，原文無此說，且未交代改善只在相關解碼下成立、傳統解碼反而變差；稱物理電路「因相干誤差累積導致 XEB 歸零」、48 位元希爾伯特空間「遠超古典模擬極限」，原文沒有；GHZ 段把中途讀取前饋與 GHZ 保真度混寫，未列 72(2)% 之容錯結果。
+- **來源**：Bluvstein et al. 2024 正式版全文（PMC10830422）：Abstract；Logical processor based on atom arrays、Improving entangling gates with code distance、Fault-tolerant logical algorithms、Complex logical circuits using 3D codes 各節；Extended Data Fig. 1 圖說；Fig. 2–5。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依原文改寫上述各句；`title_zh` 與內文標題刪去副題；引言加註；Card 2 註明晶格手術成本等為 Wiki 補充背景；Card 6 第 2 點改為不誇飾之寫法。證據表逐項登記。
+
+### EK-159 | fixed | papers/2024-fault-tolerant-quantum.md | Card 4 後續與 Card 5 | 原文未支持
+- **問題**：Card 4 後續段稱 Google Willow 為 105 位元、「首次……無後選擇」，摘要為 101 位元之 $d = 7$ 碼、未提後選擇；稱 Bravyi et al. 2024 證明 $[[144,12,12]]$ 碼降低開銷近 10 倍，且「本篇……正是實作此類 qLDPC 碼的最理想物理平台」，後者無出處，Bravyi 一文亦未引用本篇。Card 5 三點（「正式跨入 EFTQC」、「打破平面拓撲死局」、「定制解碼將容錯門檻再放寬數倍」）皆無出處。本篇發表於 2024 年，頁面也未記載原文所述之未來方向。
+- **來源**：doi:10.1038/s41586-024-08449-y、doi:10.1038/s41586-024-07107-7、doi:10.1038/s41567-024-02479-z（arXiv:2308.08648）、doi:10.1038/s41586-025-09543-5（arXiv:2406.17653）、doi:10.1038/s41586-025-09596-6，皆以 Crossref 與摘要核對，OpenAlex 顯示前四者中除 Bravyi 外皆引用本篇；本篇 Outlook。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。後續段改列四篇引用本篇之後續研究（Xu 2024、Google Quantum AI 2024、Zhou 2025、Chiu 2025）並依摘要描述，Bravyi 2024 改標為未引用本篇之相關研究；Card 5 改為作者評價、後續發展與 Outlook 所列方向，各附出處。證據表登記各列。
