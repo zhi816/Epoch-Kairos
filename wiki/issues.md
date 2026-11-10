@@ -716,10 +716,11 @@
 - **發現於**：第二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改正模型名與節次。
 
-### EK-111 | open | papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md | Card 5 | 原文未支持
+### EK-111 | fixed | papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md | Card 5 | 原文未支持
 - **問題**：Card 5 第一點（第 115 行）稱「以高精確的靜態詞典解決 80% 的關鍵詞錨定，以向量庫處理 20%」，並稱「向極低資源 NLP 界證實」。原文未見 80%、20% 之分配數字。
 - **來源**：同 EK-110 之 PDF，全文搜尋「80%」「20%」無結果。修正時改用原文結果節之實際數據，或刪去比例。
 - **發現於**：第二批卡片回填 B 組回報，協調者以全文搜尋確認（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。再次全文搜尋確認無 80%、20% 後，刪去比例、「證實」與第二點「徹底克服」；Card 5 改寫為作者結論（§4–§5, p. 7，並註明原文未報告各模組使用比例）、資料取得條件（p. 8）、作者明列之限制與未來方向（§5, p. 7）。證據表登記。
 
 ### EK-112 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 3 | 原文不符
 - **問題**：Card 3 第 75 行把開放經濟菲利浦曲線寫成國內通膨對「產出缺口」$y_t - y_t^n$、$y_t^* - y_t^{*n}$ 之關係，並標「式 3.11 / 3.19」；原文式 (3.19) 之產出項為相對穩態之對數偏離 $\hat{Y}_t$、$\hat{Y}^*_t$，且另有衝擊項 $-\xi \omega q_t$。第 83 行利率規則寫成 $\phi_y (y_t - y_t^n)$；原文式 (1.23) 為 $\hat{\imath}_t = \bar{\imath}_t + \phi_\pi \pi_t + \phi_y \hat{Y}_t$。
@@ -942,3 +943,9 @@
 - **來源**：doi:10.1038/s41586-024-08449-y、doi:10.1038/s41586-024-07107-7、doi:10.1038/s41567-024-02479-z（arXiv:2308.08648）、doi:10.1038/s41586-025-09543-5（arXiv:2406.17653）、doi:10.1038/s41586-025-09596-6，皆以 Crossref 與摘要核對，OpenAlex 顯示前四者中除 Bravyi 外皆引用本篇；本篇 Outlook。
 - **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。後續段改列四篇引用本篇之後續研究（Xu 2024、Google Quantum AI 2024、Zhou 2025、Chiu 2025）並依摘要描述，Bravyi 2024 改標為未引用本篇之相關研究；Card 5 改為作者評價、後續發展與 Outlook 所列方向，各附出處。證據表登記各列。
+
+### EK-160 | fixed | papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md | Frontmatter、Card 1、Card 2 與 Card 6 | 過度表述
+- **問題**：（1）`card_line`「翻譯排灣語與華語」暗示雙向，原文只評估排灣語譯華語；`hook` 用「暴升」。（2）Card 1 稱排灣語是「臺灣南部最具歷史深度的南島語言之一」，原文沒有；把文獻中「平行語料少於 10 萬句」之一般說法寫成排灣語之條件，證據表亦然；稱大模型「幻覺頻繁（BLEU 僅 1.7–4.4，§1–§2）」，BLEU 為 §4 之實驗結果，原文未說幻覺頻繁。（3）Card 2 稱純向量檢索會「召回表面詞根相似但焦點語義完全相反的例句，誤導大模型生成顛倒施受關係的幻覺」，原文只說例句稀疏時向量檢索可能失效；稱大模型「根本無法單獨承擔翻譯任務」。（4）Card 6 稱接上構詞解析器後「詞典命中率可由 60% 躍升至 85% 以上」、直接採用辭典譯名「能百分之百防止大模型幻覺」、「論文證實詞典命中時直接 Word Merge 最為穩健」，原文沒有命中率數據，也未做此比較。
+- **來源**：`raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`，摘要（p. 1）、§1–§2（pp. 2–3）、§3.4–§3.5（p. 5）、§4（pp. 6–7）。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。`card_line` 改為「先查辭典再交給大模型，把排灣語譯成華語」，依原文改寫上述各句；Card 6 之推測改標為 Wiki 推測並刪去無出處之數字；Card 4 補記評估範圍之 Wiki 註記（只有自動指標、測試句與辭典語料同源未說明是否排除）；證據表重建。
