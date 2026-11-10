@@ -2162,3 +2162,13 @@
   - 更新內容目錄索引 [wiki/index.md](index.md)，將 1995-soai 由 `[planned]` 晉升為 `[wiki]`，並同步概念頁目錄。
   - 更新證據表 [wiki/evidence/1995-soai-asymmetric-autocatalysis.md](evidence/1995-soai-asymmetric-autocatalysis.md) 5 條區塊公式出處對應。
 - **驗證**：`pipeline_status.py 1995-soai-asymmetric-autocatalysis` 之 S1–S6 全數為 OK；`crossref_check.py` 通過；`lint_wiki.py` 為 ERROR 0。
+
+
+## [2026-11-11 02:34] design | Soai 不對稱自催化 Card 3 向量示意圖與六卡文字檔建置 | #化學合成
+- **執行代理**：OpenCode by SST
+- **模型版本**：GLM-5.3-Flash Free
+- **具體變更**：
+  - 多 AI 協同第三階段（S7）：由 GLM-5.3 Flash 依 `diagram.md` 規範設計 Card 3 自催化循環 SVG 向量圖（採用黑曜石底與白名單樣式 class，展示手性嘧啶醇、活性鋅烷氧化物、富集產物與閉環反饋）。
+  - 由 Claude Haiku 5.5 (Ultracode) 執行高強度字數與結構審查，完成 [wiki/cards/1995-soai-asymmetric-autocatalysis.md](cards/1995-soai-asymmetric-autocatalysis.md) 六張圖卡文字編排（Cover、Card 2–6）。
+  - 同步微調 [wiki/papers/1995-soai-asymmetric-autocatalysis.md](papers/1995-soai-asymmetric-autocatalysis.md) 之 `card_line` 與用詞，達到逐字嚴格匹配。
+- **驗證**：`check_cards.py 1995-soai-asymmetric-autocatalysis` 檢查結果為 ERROR 0、WARN 0；`pipeline_status.py` S7 檢查為 OK。
