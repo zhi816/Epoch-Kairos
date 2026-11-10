@@ -5,7 +5,7 @@ domain: "bio"
 domain_tags: ["#神經科學", "#生物科技", "#人工智慧"]
 papers: ["1982-hopfield-network", "2005-optogenetics"]
 related_concepts: ["neural-circuits", "programmable-cellular-engineering"]
-verification: "issues"
+verification: "partial"
 ---
 
 # 概念：腦機介面與神經編碼 (Brain-Machine Interfaces & Neural Coding)
@@ -29,7 +29,7 @@ verification: "issues"
 
 ## 跨學科交會與延伸
 1. **從微電極陣列到全息光學腦機介面（All-Optical BCI）**：
-   * 傳統侵入式 BCI 依賴金屬微電極陣列（如猶他陣列）或柔性神經探針記錄細胞外電位並以電流脈衝刺激；次世代全光學腦機介面結合基因編碼指示劑（如 GCaMP，雙光子螢光讀取）與雙光子全息光遺傳學（Holographic Optogenetics，以空間光調製器 SLM 引導多焦點雷射寫入），在動物模型中實現記錄數千神經元並對數十至數百個特定細胞進行單細胞級閉環調控。但受限於大腦組織散射深度、光熱沉積耐受極限與外源基因遞送，目前距萬級神經元規模或無損人體臨床實用仍存在客觀物理瓶頸。
+   * 傳統侵入式 BCI 可用微電極記錄與刺激；全光學方法則結合鈣訊號讀取及光遺傳刺激。[Zhang 等（2018）](https://doi.org/10.1038/s41592-018-0183-z) 在小鼠皮質示範依神經元即時鈣訊號觸發光刺激的閉環實驗，包括以單一細胞活動控制選定細胞群的刺激。這項動物研究不能直接證明數千細胞讀取與數百細胞刺激同時構成單一閉環實驗，也不能據此推定無損人體臨床應用。
 2. **臨床神經義肢與感官重建**：
    * 在視網膜色素變性失明患者之光遺傳學臨床試驗（如 AAV 介導之 ChrimsonR 配合光刺激眼鏡）以及高位脊髓損傷、肌萎縮性脊髓側索硬化症（ALS）患者之微電極皮質植入（如 BrainGate 結合低維流形投影與循環網路解碼手寫/語音）中，群體神經解碼與細胞級調控正持續邁向臨床驗證。
 
