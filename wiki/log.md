@@ -1924,3 +1924,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：（本工作階段之平台規範不允許將模型型號寫入版控檔案，請使用者自行補填，見 TD-004）
 - **具體變更**：完成 TD-014（以 `1985-macroscopic-quantum-tunneling` 從 S0 做到 S10，見 [2026-11-10 12:23] ingest 與 [2026-11-10 12:25] fix）。試跑發現之缺口與處理：（1）S3 完成條件要求 `pipeline_status.py` 之 S3 為 OK，但論文頁未建立時腳本拒絕執行：改為論文頁不存在而證據表存在時只檢查證據表。（2）S4 要求 lint 本頁無 ERROR，但 `concepts` 指向之概念頁要到 S5 才建立，必然報錯：概念頁相關之 lint ERROR 改歸 S5（腳本與 SKILL.md、`paper-page-template.md` 同步）。（3）收錄新論文使其後論文之卡片編號後移，他篇原型 Card 1 編號過時而無任何檢查：`pipeline_status.py` 之 S8 比對原型與首頁卡片牆編號；SKILL.md S9 第 4 步與 `publish.md` 第二節第 4 點規定重建、同一提交，範本有他人未提交修改時以 HEAD 之暫時 worktree 重建；偷工自查表加一列。（4）macOS 受保護資料夾內預覽伺服器無法啟動：SKILL.md S0、`publish.md` 第三節、`paper-page.md` 第六節補複製 `web/` 至暫存資料夾之做法（`card-wall.md` 已由他人先補）。（5）S2 要求抽取結果放 scratchpad，與 `paper-pdf-parser` 預設之 `work/parsed/` 不一致：改為兩者皆可、不得進 `wiki/`、`web/`、`raw/`，並補掃描版轉頁面影像閱讀之做法。（6）`intake.md` 之分類表缺「已立案」且未說明判定順序：補齊四類與順序，`--new` 改為已被論文頁引用者優先歸「已引用」；並說明只比對檔名（`2003-channelrhodopsin2.pdf` 因光遺傳學頁未寫原始檔路徑而顯示為「已列待辦」，登記 TD-018）。（7）`paper-page-template.md` 建議之佔位符 grep 會誤抓公式中之 `<`：改由 S4 檢查。（8）`card-05-revolution.md` 未說明得獎者即作者、`laureates` 不填時之獎項列寫法：補充。（9）`diagram.md` 作業步驟重複編號 6：改為 7，並補曲線上水平線端點須先算交點。（10）各指令之 `python` 於 macOS 須改用 `python3`：SKILL.md 第九節註明。改不了的：證據表公式列計數過鬆（含數值之 LaTeX 列也算公式列，S3 公式登記檢查形同虛設），收緊會使 9 篇新報 WARN，登記 TD-017。觀察未改：卡片牆論文名折行時末行可能只剩兩字（`card-wall.md` 目視清單無此項，牆上已有他篇同樣情形）。刪除 TD-014，新增 TD-017、TD-018，TD-004 補記本工作階段之佔位條目。
+
+## [2026-11-10 12:35] design | DESIGN.md 窄導軌返回箭頭之標示隨目的地 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本工作階段之平台規範不允許將模型型號寫入版控檔案，請使用者自行補填，見 TD-004）
+- **具體變更**：經使用者確認，`DESIGN.md` 第五章「窄導軌」一行由固定之「回到群星」改為標示隨目的地：群星論文「回到群星」，我的關注論文「回到我的星系」，與 `tools/build_paper_prototype.py` 之 `BACK_STARS`、`BACK_FOCUS` 一致（承接上一筆 TD-010 日誌所列之未處理事項）。
