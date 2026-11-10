@@ -1696,3 +1696,8 @@
   - `AGENTS.md` 第七章第 1、4 節各補一行，與上述 Skill 規則一致。TD-008 第三批協調規則第 3 項註明已寫入 Skill。
   - 既有論文頁中以區塊公式呈現之 Wiki 推導式，未全面清查；依新規則由撰寫卡片或修訂該頁者於回原文抽查時處理。
   - 檢查：`lint_wiki.py` ERROR 0；`check_cards.py` 全部 20 個卡片檔 ERROR 0。
+
+## [2026-11-10 09:39] fix | 修正 Sora 論文頁後續影片模型一段之出處（EK-100） | #計算機視覺 #人工智慧 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 A 組（TD-008）。[wiki/papers/2024-sora-world-simulator.md](papers/2024-sora-world-simulator.md) Card 4 後續第一點原列快手 Kling、CogVideoX、HunyuanVideo、Wan2.1、Movie Gen 並稱其「遵循同一範式」「全面驗證」普適性，未附出處。以 arXiv API 取得四份技術報告摘要（arXiv:2408.06072、2410.13720、2412.03603、2503.20314），改寫為各報告自述之設計並附編號；刪除無技術報告之 Kling 與「同一範式」等說法，註明不據此推論與 Sora 之承接關係。證據表該列改寫；[wiki/issues.md](issues.md) EK-100 改為 fixed；本頁已無 open 問題，`verification` 由 issues 改為 partial（未整頁重新逐項核對）。卡片檔未受影響（Card 5 未用此段），重建論文頁原型：自我檢查 ERROR 0、WARN 0，`verify_page.js` 結果 PASS。`lint_wiki.py` ERROR 0。

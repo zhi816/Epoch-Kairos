@@ -23,5 +23,5 @@
 | Card 4 | DiT-XL/2 於 256 將 FID-50K 由 LDM 之 3.60 降至 2.27；512 為 3.04（ADM-G、ADM-U 為 3.94） | Peebles & Xie (2023) §5，p. 8；表 3，p. 9 | 核實符合 |
 | Card 4 | 原生長寬比之構圖比較：方形裁切版本有時主體只部分入鏡，Sora 取景較佳；質性比較 | OpenAI 報告 §Improved framing and composition；Liu et al. (2024) 圖 6，p. 7 | 核實更正（2026-11-10，EK-096）。原頁「主體完整居中率」「顯著躍升」無量化依據，已改寫。 |
 | Card 4 後續 | Kang et al. 為 arXiv:2411.02385（2024 年 11 月），ICML 2025；二維運動與碰撞模擬，分布內完美泛化、分布外失敗、模仿最相近案例 | arXiv 2411.02385 摘要與 comment 欄（「ICML 2025」） | 核實更正（2026-11-10，EK-097）。原頁「2024, ICML」與「動量守恆、流體質量守恆、穿模」不見於摘要，已依摘要改寫。 |
-| Card 4 後續 | 開源與商業影片模型（Kling、CogVideoX、HunyuanVideo、Wan2.1、Movie Gen）遵循同一範式並「全面驗證」普適性 | 未附出處 | 未能核實（EK-100，open）。 |
+| Card 4 後續 | 後續影片模型技術報告：CogVideoX 以擴散 Transformer 為基礎、3D VAE 壓縮時空並公開權重；Movie Gen 最大模型 300 億參數 Transformer、上下文 73K 影片詞元、16 fps 16 秒；HunyuanVideo 逾 130 億參數、開源程式碼；Wan 建立於擴散 Transformer 範式、開源 1.3B 與 14B | Yang et al. (2024) arXiv:2408.06072；Polyak et al. (2024) arXiv:2410.13720；Kong et al. (2024) arXiv:2412.03603；Wan Team (2025) arXiv:2503.20314（皆為 arXiv 摘要） | 後續研究；符合來源（EK-100 修正：刪除無技術報告之 Kling、「同一範式」「全面驗證」等原頁說法） |
 | 卡片 Card 4、5 | 本篇限制：吃餅乾未留咬痕等物理因果、混淆左右、最長一分鐘且多為數十秒；以原尺寸訓練改善取景 | Liu et al. (2024) §5.1，p. 23；圖 6，p. 7 | 核實符合（2026-11-10，卡片文字檔用） |

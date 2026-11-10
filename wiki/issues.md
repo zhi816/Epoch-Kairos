@@ -650,10 +650,11 @@
 - **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。第 3 節改題「算力與生成品質」，改寫為兩來源實際所述，刪除冪律公式與運算量估算式。
 
-### EK-100 | open | papers/2024-sora-world-simulator.md | Card 4 後續 | 未能核實
+### EK-100 | fixed | papers/2024-sora-world-simulator.md | Card 4 後續 | 未能核實
 - **問題**：後續研究第一點列出快手 Kling、智譜 CogVideoX、騰訊 HunyuanVideo、阿里 Wan2.1 與 Meta Movie Gen，稱其遵循「3D-VAE ＋ 時空圖塊 ＋ DiT ＋ 3D-RoPE ＋ 流匹配」範式並「全面驗證時空 DiT 架構作為視覺基座模型的普適性」，未附任何出處。
-- **來源**：無（待補各模型之技術報告，例如 CogVideoX、HunyuanVideo、Wan、Movie Gen 之 arXiv 技術報告，逐一核對架構）。
+- **來源**：Yang et al. (2024) arXiv:2408.06072；Polyak et al. (2024) arXiv:2410.13720；Kong et al. (2024) arXiv:2412.03603；Wan Team (2025) arXiv:2503.20314（arXiv 摘要）。快手 Kling 無公開技術報告。
 - **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。以 arXiv API 取得 CogVideoX、Movie Gen、HunyuanVideo、Wan 四份技術報告之摘要，改寫為各報告自述之設計並附 arXiv 編號；刪除無技術報告之 Kling，以及「遵循同一範式」「全面驗證」等原頁說法，註明不據此推論與 Sora 之承接關係。
 
 ### EK-101 | fixed | papers/2024-alphafold3.md | Card 1 | 過度表述
 - **問題**：Card 1 寫 AF3「在單一統一模型中全面擊敗所有領域專用工具」，並稱核酸用「RoseTTAFoldNA」。原文為「In all but one category, it achieves a substantially higher performance than strong methods that specialize in just the given task」；例外為 CASP15 RNA（AF3 47.3，有人工介入之 AIchemy_RNA2 54.5）。證據表 Card 1 列早已記為「核實更正」，但頁面未改。

@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#計算機視覺", "#人工智慧", "#深度學習"]
 concepts: ["generative-world-models"]
 status: "wiki"
-verification: "issues"
+verification: "partial"
 my_focus: false
 doi_url: "https://arxiv.org/abs/2402.17177"
 key_papers:
@@ -92,7 +92,7 @@ Peebles & Xie (2023) 以 12 種 DiT 設定（0.3 至 118.6 Gflops）測試，發
 * **零樣本多任務渲染與物理模擬局限（Brooks et al. 2024）**：無須針對特定下游任務微調，同一模型可直接執行圖片轉影片動畫化、前後時間時空延展、迴圈無縫影片生成與風格編輯；提示詞包含特定名稱時，甚至能以零樣本渲染類似《Minecraft》之玩家視角遊戲動態畫面。然而，OpenAI 報告在討論章節明言其作為世界模擬器存在眾多局限：模型無法準確模擬許多基礎物理交互（例如玻璃碎裂動力學），且涉及實體狀態改變的互動（如吃食物時常未能留下咬痕）往往無法維持因果一致性，並伴隨長影片主體漂移或物件憑空出現等典型失敗模式。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
-* **開源時空 DiT 與流匹配（Rectified Flow）模型的百花齊放**：2024–2025 年間，學界與產業界遵循「3D-VAE ＋ 時空圖塊 ＋ DiT ＋ 3D-RoPE ＋ 流匹配」範式，相繼推出開源與商業級大模型（如快手 Kling、智譜 CogVideoX、騰訊 HunyuanVideo、阿里 Wan2.1 與 Meta Movie Gen），全面驗證時空 DiT 架構作為視覺基座模型的普適性。
+* **後續公開技術報告之大型影片生成模型**：2024–2025 年間，數個團隊發表影片生成模型之技術報告。CogVideoX 以擴散 Transformer 為基礎，以 3D VAE 在空間與時間兩個維度壓縮影片，並公開模型權重（Yang et al. 2024, arXiv:2408.06072）；Meta 之 Movie Gen 最大影片模型為 300 億參數之 Transformer，上下文長度 73K 個影片詞元，對應每秒 16 幀、長 16 秒之影片（Polyak et al. 2024, arXiv:2410.13720）；騰訊 HunyuanVideo 為逾 130 億參數之開源影片模型，並公開程式碼（Kong et al. 2024, arXiv:2412.03603）；阿里 Wan 建立於主流之擴散 Transformer 範式，開源 1.3B 與 14B 兩種規模（Wan Team 2025, arXiv:2503.20314）。以上僅依各報告摘要所述；各摘要未稱沿用 Sora 之架構，Sora 之技術細節亦未公開，故不據此推論兩者之承接關係。
 * **以物理定律檢驗影片生成模型（Kang et al. 2024）**：Kang et al.（arXiv:2411.02385，2024 年 11 月；ICML 2025，"How Far is Video Generation from World Model: A Physical Law Perspective"）以二維物體運動與碰撞的模擬資料訓練擴散式影片生成模型，發現模型在訓練分布內可完美泛化、組合泛化隨規模改善，但在分布外情境失敗；模型並未抽象出一般物理規律，而是模仿最相近的訓練案例。作者據此認為，單靠擴大規模不足以讓影片生成模型發現基本物理定律（摘要）。
 
 ---
