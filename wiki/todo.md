@@ -69,3 +69,8 @@
 - **完成條件**：該篇 `pipeline_status.py <slug>` 九步皆 OK，結束碼 0；交付說明依 SKILL.md 第七節逐項填寫；試跑中發現之缺口皆已修正或登記；該篇從 TD-001 移除。
 - **負責**：Claude Code by Anthropic（2026-11-10 起，試跑 `raw/1985-macroscopic-quantum-tunneling.pdf`，預覽埠 8781）。
 - **來源**：使用者指示（2026-11-10：新流程先建立待辦，之後試跑）；2026-11-10 登記，Claude Code by Anthropic。
+
+### TD-016 | open | wiki | 為四篇論文查期刊或會議簡稱 venue_short
+- **內容**：首頁卡片牆雙年份仍被截斷（`verify_wall.js` WARN「bot 被截斷」）之四篇：`2022-formosan-say-verbs-hsieh`（Journal of Taiwanese Languages and Literature，論文頁資訊欄亦折為三行，照規則必須處理）、`2024-finnish-northern-sami-mt-saleva` 與 `2024-formosan-mt-bilingual-lexicon-zheng`（Findings of ACL 2024）、`2025-formosanbench-llm-benchmark-lin`（Findings of EMNLP 2025）。依 `paper-card-writer` 之 `references/paper-page.md` 第三節五步流程處理：先執行 `python .agents/skills/paper-card-writer/scripts/venue_short_lookup.py <slug>` 查候選，再查原文 PDF 之引用格式或期刊、學會官網；查不到第一手出處之縮寫須經使用者確認才可填。Findings 系列會議名由 `tools/build_home.py` 之 `venue_short()` 自動縮短，若無更短之通用寫法則保留截斷。
+- **完成條件**：四篇各自已填 `venue_short`，或於日誌註明無通用縮寫而保留截斷；有填者重建論文頁原型與首頁，`build_home.py --check` 一致，`verify_wall.js` 不再對已填者報雙年份截斷，並將已填者補入 `paper-page.md` 第三節之已填清單。
+- **來源**：TD-015 完成後 `venue_short_lookup.py --long` 與 `verify_wall.js` 結果；2026-11-10 使用者指示先列入待辦，Claude Code by Anthropic 登記。
