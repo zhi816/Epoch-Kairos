@@ -1093,3 +1093,9 @@
 - **來源**：[官方補充資料](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-024-07487-w/MediaObjects/41586_2024_7487_MOESM1_ESM.pdf) Algorithm 19、§3.7.1、§5.9.3；[原文](../raw/2024-alphafold3.pdf) p. 494 Fig. 1 圖說、PDF p. 21 Extended Data Table 1。
 - **發現於**：2026-11-10，處理 TD-011 公式出處及抽查卡片，Codex by OpenAI。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6）。改以原文 Algorithm 19 座標變換步驟及作者文字說明呈現機制，排序公式保留原文表達；逐式登記來源，卡片補上指標與取樣條件，更新示意圖。
+
+### EK-203 | fixed | papers/2005-optogenetics.md | Card 3 展示公式未見於原文 | 原文未支持
+- **問題**：原論文頁 Card 3 列出光電流方程、三態連續馬可夫動力學與 Hodgkin-Huxley 整合微分方程等三組區塊展示公式，皆非 Boyden et al. (2005) 本文所載之公式；原文為實驗技術報告，全篇無編號數學展示式，上述公式實為後續生物物理學文獻之理論模型。
+- **來源**：[Boyden 等原文](../raw/2005-optogenetics.pdf) Nature Neuroscience 8(9):1263–1268 全文；[論文頁](papers/2005-optogenetics.md) Card 3。
+- **發現於**：2026-11-10，依 TD-017 / 2026-11-10 規則建立證據表與卡片檔，Antigravity by Google DeepMind。
+- **處理**：2026-11-10，Antigravity by Google DeepMind（Gemini 3.8 Flash）。移除論文頁未見於原文之三組展示公式，改以作者對光電流動力學（峰值 $496\text{ pA}$、穩態 $193\text{ pA}$、上升率 $160\text{ pA/ms}$、恢復 $\tau = 5.1\text{ s}$）之實驗數據與測量說明呈現；建立證據表登記 24 列主張，卡片 Card 3 採無公式模式。頁面核實狀態改為 verified。

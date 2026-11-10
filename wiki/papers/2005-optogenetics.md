@@ -11,8 +11,8 @@ honor: "2026 諾貝爾生理學或醫學獎（表彰光控離子通道與光遺�
 domain: "bio"
 domain_tags: ["#神經科學", "#生物科技"]
 concepts: ["neural-circuits", "brain-machine-interface", "programmable-cellular-engineering"]
-status: "wiki"
-verification: "unverified"
+status: "published"
+verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1038/nn1525"
 key_papers:
@@ -39,10 +39,10 @@ card_line: "用一道藍光，開關大腦裡特定的神經元"
 ---
 
 ## Card 2 ｜ 世紀瓶頸：神經科學的兩難死局 (The Dilemma)
-在探索「意識、情感與腦部疾病」的大腦迴路時，神經科學界長期受困於時空尺度的不可調和矛盾：
+在探索「意識、情感與腦部疾病」的大腦迴路時，神經科學界長期受困於時空尺度的不可調和矛盾，既有研究工具無法同時兼顧細胞類型專一性與毫秒級時間解析度：
 
 * **電刺激的空間混亂（無專一性）**：微電極刺激能達到毫秒級速度，但電流在腦組織擴散時，會無差別地激活電極周圍所有的興奮性、抑制性神經元及過路軸突，導致因果關係完全無法拆解。
-* **化學藥物的時間遲緩（無即時性）**：藥理學能透過專一受體精確作用於特定神經元，但藥物擴散與代謝需耗時數秒至數十分鐘，根本無法捕捉大腦以千分之一秒（毫秒）進行的思考與神經電訊號。
+* **化學藥物的時間遲緩（無即時性）**：化學藥物能透過專一受體精確作用於特定神經元，但藥物擴散與代謝需耗時數秒至數十分鐘，根本無法捕捉大腦以千分之一秒（毫秒）進行的思考與神經電訊號。
 
 ---
 
@@ -50,51 +50,24 @@ card_line: "用一道藍光，開關大腦裡特定的神經元"
 Nagel 與 Hegemann 在 2002 與 2003 年證明，綠藻的光敏感通道蛋白（Channelrhodopsin）本身就是一個直接受光閘控的離子通道；Boyden、Zhang 與 Deisseroth 在 2005 年將其表達於哺乳動物神經元，造出兼具「細胞專一」與「毫秒響應」的光控開關。
 
 1. **光敏感通道蛋白-2（Channelrhodopsin-2, ChR2）**
-   * 源自單細胞綠藻 *Chlamydomonas reinhardtii*，兼具「感光色素」與「離子通道」雙重功能，無需額外補充輔因子即可在神經元中作用。
-   * **藍光（約 470 nm）激發**：光照瞬間觸發通道構型翻轉，陽離子（$\mathrm{Na}^+$、$\mathrm{Ca}^{2+}$、$\mathrm{H}^+$）內流，細胞去極化，誘發動作電位（Action Potential）。
+   * 源自單細胞綠藻 *Chlamydomonas reinhardtii*，兼具「感光色素」與「離子通道」雙重功能，由 N 端 315 個胺基酸組成七次跨膜通道，無需外加輔因子即可在哺乳動物神經元中作用。
+   * **藍光（450–490 nm）激發**：光照觸發全反式視黃醛光異構化，促使孔道構象改變，陽離子（$\mathrm{Na}^+$、$\mathrm{Ca}^{2+}$、$\mathrm{H}^+$）順濃度梯度內流，細胞去極化，誘發動作電位（Action Potential）。
 2. **嗜鹽菌紫紅質（Halorhodopsin, NpHR）的配對抑制**
    * **黃光（約 580 nm）抑制**：光驅動氯離子（$\mathrm{Cl}^-$）泵入引發超極化，將過度活躍的神經元「靜音」。此雙向配對由 Zhang et al. (2007) 建立，非 2005 年該篇成果。
-3. **病毒載體基因靶向（AAV Targeting）**
-   * 透過細胞類型特異性啟動子，確保僅有特定腦區、特定細胞群表達光控蛋白，這是「專一性」的真正來源。
+3. **病毒載體基因靶向（Lentivirus Targeting）**
+   * 透過 VSVg 假型慢病毒攜帶 ChR2-YFP 融合基因感染海馬體神經元，實現質膜定位與長達數週的穩定安全表現，這是「細胞專一性」的真正來源。
 
-### 1. 光敏感通道之光電流方程 (Photocurrent Equation)
+### 光電流動力學與離子通道特性 (Photocurrent Kinetics)
 
-$$I_{\text{ChR2}}(t, V_m) = g_{\text{ChR2}} \cdot O(t) \cdot G(V_m) \cdot (V_m - E_{\text{ChR2}})$$
+本篇為開創性實驗技術報告（全篇無編號數學展示公式），作者以全細胞膜片鉗深入測量了 ChR2 在神經元中的電生理動力學參數：
 
-其中各項物理與生物參數定義如下：
+* **超快激活速率**：以 450–490 nm 藍光照射，內向光電流在脈衝開始後 $2.3 \pm 1.1\text{ ms}$ 內即達到最大上升率 $160 \pm 111\text{ pA/ms}$（$n=18$）。
+* **雙相光電流幅度**：全細胞光電流呈雙相響應，峰值內向電流達 $496 \pm 336\text{ pA}$，隨後衰減至平穩的穩態電流 $193 \pm 177\text{ pA}$（$n=18$）。
+* **光譜選擇性**：YFP 光譜（490–510 nm）誘發之光電流比 GFP 濾光片藍光小 $42\% \pm 20\%$。
+* **暗反應快速恢復**：持續光照使通道失活後，暗處光電流迅速復原，恢復時間常數 $\tau = 5.1 \pm 1.4\text{ s}$（$n=9$，Levenberg-Marquardt 算法擬合）。此特性源於微生物紫紅質中希夫鹼（Schiff base）的穩定性與視黃醛在暗處無酶自發再異構化。
+* **電生理無毒性**：ChR2 表現在無光照下對神經元靜息膜電位（$-60.6 \pm 9.0\text{ mV}$ vs $-59.4 \pm 6.0\text{ mV}$）與膜電阻（$239.3 \pm 113\text{ M}\Omega$ vs $218.4 \pm 75\text{ M}\Omega$）無統計顯著影響，不損害細胞基礎生理機能。
 
-* $g_{\text{ChR2}}$：通道之最大膜電導係數（Maximal Conductance）。
-* $O(t)$：光敏感通道處於開放態（Open State）的分數比率。
-* $G(V_m)$：內向整流之無因次跨膜電壓依賴函數（Voltage Rectification Factor）：
-  $$G(V_m) = \frac{1 - e^{-(V_m - E_{\text{ChR2}})/V_0}}{(V_m - E_{\text{ChR2}})/V_1}$$
-  其中 $V_0$ 與 $V_1$ 為整流尺度參數（單位 mV），使 $G(V_m)$ 保持無因次，確保 $I_{\text{ChR2}}$ 之單位為電流。
-* $(V_m - E_{\text{ChR2}})$：跨膜電化學驅動力，逆轉電位 $E_{\text{ChR2}} \approx 0\,\text{mV}$。
-
-### 2. 三態光循環動力學 (Three-State Photocycle)
-
-ChR2 的光循環遵循「關閉態 $C$ 到開放態 $O$ 到去敏化態 $D$」之循環，三態分數滿足守恆條件：
-
-$$\begin{aligned}
-\frac{dC(t)}{dt} &= k_r\,D(t) - k_a(I)\,C(t) \\
-\frac{dO(t)}{dt} &= k_a(I)\,C(t) - k_d\,O(t) \\
-\frac{dD(t)}{dt} &= k_d\,O(t) - k_r\,D(t) \\
-C(t) + O(t) + D(t) &= 1
-\end{aligned}$$
-
-其中 $k_a(I)$ 為受光照強度 $I$ 支配的激活速率，$k_d$ 為通道關閉速率，$k_r$ 為由去敏化態回復至可激活態之速率。$k_r \ll k_d$ 正是高頻連續光刺激下光電流衰減（Desensitization）的成因。
-
-### 3. 膜電位動態演化整合方程 (Hodgkin-Huxley Optogenetic Model)
-
-將光敏通道整合至神經元全膜電位微分方程，並以 `aligned` 對齊斷行，避免行動端溢出：
-
-$$\begin{aligned}
-C_m \frac{dV_m}{dt} = &- \bar{g}_{\text{Na}}\, m^3 h\,(V_m - E_{\text{Na}}) \\
-&- \bar{g}_{\text{K}}\, n^4\,(V_m - E_{\text{K}}) \\
-&- g_L\,(V_m - E_L) \\
-&- I_{\text{ChR2}}(t, V_m) + I_{\text{ext}}
-\end{aligned}$$
-
-當藍光脈衝入射時，$I_{\text{ChR2}}$ 快速提供跨膜去極化內向電流，使膜電位在毫秒內突破激發閾值，即 $V_m(t) \ge V_{\text{threshold}}$，觸發毫秒級單一動作電位（Spike）。
+> **註**：後續文獻（如 Nagel et al. 2003、Grossman et al. 2010、Foutz et al. 2012）根據上述動力學進一步建立了三態/四態馬可夫光循環及 Hodgkin-Huxley 整合微分模型，本頁維持忠於 2005 年實驗報告本體。
 
 ---
 
@@ -145,4 +118,5 @@ C_m \frac{dV_m}{dt} = &- \bar{g}_{\text{Na}}\, m^3 h\,(V_m - E_{\text{Na}}) \\
 * **原始權威文獻**：
   * 官方學術出處：Boyden, E. S., Zhang, F., Bamberg, E., Nagel, G., & Deisseroth, K. (2005). Nature Neuroscience, 8(9), 1263-1268. DOI: [10.1038/nn1525](https://doi.org/10.1038/nn1525)
   * 原始檔典藏：`raw/2005-optogenetics.pdf`（不納入本倉庫，由私有倉庫 Mine-RAW 版控）
+  * 奠基論文典藏：`raw/2003-channelrhodopsin2.pdf`（Nagel et al. 2003 PNAS，不納入本倉庫）
   * 獎項通告：[Nobel Prize in Physiology or Medicine 2026](https://www.nobelprize.org/prizes/medicine/2026/)
