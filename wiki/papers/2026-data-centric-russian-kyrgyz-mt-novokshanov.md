@@ -9,7 +9,7 @@ venue: "Proceedings for the Ninth Workshop on Technologies for Machine Translati
 domain: "ai"
 domain_tags: ["#自然語言處理", "#深度學習", "#人工智慧"]
 concepts: ["low-resource-machine-translation"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "llm-assisted"

@@ -9,7 +9,7 @@ venue: "Advances in Neural Information Processing Systems (NeurIPS), 30, 5998-60
 domain: "ai"
 domain_tags: ["#人工智慧", "#深度學習"]
 concepts: ["generative-world-models", "ai-for-structural-biology", "neural-circuits"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: false
 doi_url: "https://arxiv.org/abs/1706.03762"

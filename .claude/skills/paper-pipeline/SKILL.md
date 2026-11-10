@@ -1,7 +1,7 @@
 ---
 name: paper-pipeline
 description: >-
-  End-to-end pipeline that turns a new raw/ source into a paper published on the Epoch-Kairos homepage: intake and bibliography check, reading the PDF, evidence table, wiki paper page, concept pages and index, two-stage verification, card file, paper-page prototype, homepage star map or my-constellation plus card wall, log and commit. Use it first whenever a new file appears in raw/, the user asks to ingest or "上架" a paper, or a paper must be brought to completion. For every step it names the skill to follow, the files to produce and the command that proves the step is done; pipeline_status.py shows where each paper stands.
+  End-to-end pipeline that turns a new raw/ source into a paper published on the Epoch-Kairos homepage: intake and bibliography check, reading the PDF, evidence table, wiki paper page, concept pages and index, two-stage verification, card file, paper page, homepage star map or my-constellation plus card wall, log and commit. Use it first whenever a new file appears in raw/, the user asks to ingest or "上架" a paper, or a paper must be brought to completion. For every step it names the skill to follow, the files to produce and the command that proves the step is done; pipeline_status.py shows where each paper stands.
 ---
 
 # paper-pipeline（轉介檔）

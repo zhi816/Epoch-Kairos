@@ -10,7 +10,7 @@ honor: "2025 諾貝爾物理學獎（表彰發現電路中的巨觀量子力學�
 domain: "physics"
 domain_tags: ["#量子物理"]
 concepts: ["macroscopic-quantum-circuits"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1103/PhysRevLett.55.1543"

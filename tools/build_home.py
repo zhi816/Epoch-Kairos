@@ -10,8 +10,8 @@
     * AGENTS.md 第八章標籤白名單（標籤所屬學科）。
     * 卡片牆：wiki/cards/<slug>.md 之「封面」區段（封面斷行、封面標題、研究類型），只取 **Git 已提交**
       （精確說是 Git 索引中）的版本，工作目錄中他人尚未提交的卡片檔不會被帶上首頁；自己這篇尚未提交時以
-      --card <slug> 帶入工作目錄之版本（paper-card-writer 之 references/card-wall.md）。每張卡連到
-      web/prototypes/paper-v1/<slug>.html，該檔須同樣已提交（或與 --card 一起存在於工作目錄）。
+      --card <slug> 帶入工作目錄之版本（paper-card-writer 之 references/card-wall.md）。每張卡連到論文頁
+      web/papers/<slug>/index.html，該檔須同樣已提交（或與 --card 一起存在於工作目錄）。
 
 群星模式開場不預選任何論文（DESIGN.md 第二章第 2 節），故本腳本不決定預設亮星。
 
@@ -37,8 +37,10 @@ WIKI = os.path.join(ROOT, 'wiki')
 TEMPLATE = os.path.join(ROOT, 'tools', 'home_template.html')
 OUT = os.path.join(ROOT, 'web', 'index.html')
 CHECK_CARDS = os.path.join(ROOT, '.agents', 'skills', 'paper-card-writer', 'scripts', 'check_cards.py')
-# 卡片牆每張卡連到的論文頁（相對於 web/）。正式論文頁（wiki/todo.md TD-002）產出前連到論文頁原型（2026-11-10 使用者決定）。
-PAPER_HREF = 'prototypes/paper-v1/%s.html'
+# 卡片牆每張卡連到的論文頁（相對於 web/）：連結寫目錄網址，存在與否以 PAPER_FILE 判斷。
+# 2026-11-10 起論文頁原型即正式論文頁，由 web/prototypes/paper-v1/<slug>.html 移至此處（使用者決定）。
+PAPER_HREF = 'papers/%s/'
+PAPER_FILE = 'papers/%s/index.html'
 # 封面卡之硬上限（paper-card-writer 之 references/cover.md 第三、四節）
 LINE_MAX, LINES_MAX, TITLE_MAX = 9, 3, 22
 
@@ -633,7 +635,7 @@ def wall_sources(P, extra):
     if idx is None:
         notes.append(('WARN', '不在 Git 工作區：卡片牆改讀工作目錄之全部卡片檔，無法排除他人尚未提交之檔案'))
         cards = {s: open(p, encoding='utf-8').read() for s, p in disk.items()}
-        protos = {s for s in P if os.path.exists(os.path.join(ROOT, 'web', PAPER_HREF % s))}
+        protos = {s for s in P if os.path.exists(os.path.join(ROOT, 'web', PAPER_FILE % s))}
         source = '工作目錄'
     else:
         files, conflicts = idx
@@ -643,8 +645,9 @@ def wall_sources(P, extra):
                     if p.endswith('.md') and os.path.dirname(p) == 'wiki/cards'}
         blobs = read_blobs(sorted(set(slug_sha.values())))
         cards = {s: blobs[sha] for s, sha in slug_sha.items()}
-        pidx = indexed('web/prototypes/paper-v1/')
-        protos = {os.path.basename(p)[:-5] for p in (pidx[0] if pidx else {}) if p.endswith('.html')}
+        pidx = indexed('web/papers/')
+        protos = {p.split('/')[2] for p in (pidx[0] if pidx else {})
+                  if re.fullmatch(r'web/papers/[^/]+/index\.html', p)}
         source = 'Git 已提交版本'
         for s, p in sorted(disk.items()):
             if s in extra:
@@ -670,7 +673,7 @@ def wall_sources(P, extra):
             if bad:
                 continue
             cards[s] = open(path, encoding='utf-8').read()
-            if os.path.exists(os.path.join(ROOT, 'web', PAPER_HREF % s)):
+            if os.path.exists(os.path.join(ROOT, 'web', PAPER_FILE % s)):
                 protos.add(s)
             else:
                 protos.discard(s)
@@ -708,8 +711,8 @@ def build_wall(P, tag_dom, cards, protos, nums):
             if not tag:
                 errors.append('%s：我的關注論文之 focus_languages 為空，須填「研究類型」（cover.md 第七節）' % where)
         if slug not in protos:
-            errors.append('%s 尚無論文頁原型 web/%s（未提交或未建置）：先執行 python tools/build_paper_prototype.py %s，'
-                          '並與卡片檔一起提交' % (slug, PAPER_HREF % slug, slug))
+            errors.append('%s 尚無論文頁 web/%s（未提交或未建置）：先執行 python tools/build_paper_prototype.py %s，'
+                          '並與卡片檔一起提交' % (slug, PAPER_FILE % slug, slug))
         no = nums[slug]
         d = f['domain']
         venue = venue_of(f)

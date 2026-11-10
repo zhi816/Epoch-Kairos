@@ -98,7 +98,7 @@ Epoch-Kairos/
 ├── tools/                     # 建置腳本（不隨 GitHub Pages 公開）
 │   ├── build_home.py          # 自 wiki/ Frontmatter 與已提交之卡片檔產生 web/index.html（知識星圖與卡片牆首頁）
 │   ├── home_template.html     # 首頁 HTML 範本（資料由 build_home.py 內嵌）
-│   ├── build_paper_prototype.py # 自 wiki/cards/ 與 wiki/papers/ 產生論文頁參考原型 web/prototypes/paper-v1/<slug>.html，附自我檢查
+│   ├── build_paper_prototype.py # 自 wiki/cards/ 與 wiki/papers/ 產生論文頁 web/papers/<slug>/index.html，附自我檢查
 │   └── paper_template.html    # 論文頁 HTML 範本（樣稿「論文頁 F」）
 │
 ├── raw/                       # 【第一層：Raw Sources】原始資料層（不可變，Immutable）
@@ -169,7 +169,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 > | [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 將論文譯為繁體中文或重建 PDF 時 |
 > | [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | Ingest 第 1 步與查核時，將 `raw/` 論文 PDF 抽成附頁碼標記之文字，以搜尋主張出處；預設用 PyMuPDF，MinerU 僅用於純圖片、亂碼 PDF 或抄寫長公式；輸出一律只當草稿，須回原 PDF 核對，且只可在本機解析 |
 > | [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 任何 Git 同步、提交與推送（見第十章） |
-> | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | Ingest 第 4 步、回填或修訂卡片時：撰寫 `wiki/cards/<slug>.md`（首頁封面卡與論文頁 Card 1–6 之文字、Card 3 示意圖），並建置論文頁原型、放上首頁卡片牆且兩者皆驗證；`references/` 須逐份讀完，附 `check_cards.py` 檢查腳本、`venue_short_lookup.py` 期刊簡稱查詢腳本與 `verify_page.js`、`verify_wall.js` 瀏覽器驗證腳本 |
+> | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | Ingest 第 4 步、回填或修訂卡片時：撰寫 `wiki/cards/<slug>.md`（首頁封面卡與論文頁 Card 1–6 之文字、Card 3 示意圖），並建置論文頁、放上首頁卡片牆且兩者皆驗證；`references/` 須逐份讀完，附 `check_cards.py` 檢查腳本、`venue_short_lookup.py` 期刊簡稱查詢腳本與 `verify_page.js`、`verify_wall.js` 瀏覽器驗證腳本 |
 
 ### 1. Ingest（收錄新來源）
 當使用者在 `raw/` 放入新文件或指令收錄一篇論文時，AI 必須依 [`paper-pipeline`](./.agents/skills/paper-pipeline/SKILL.md) 之 S0 至 S10 逐步執行，每一步以其完成條件之指令確認後才進下一步；`python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug>` 九步皆 OK 才算收錄完成。以下 5 個步驟為該流程之摘要：
@@ -183,8 +183,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 3. **萃取/關聯概念**：檢查是否觸及跨領域概念（如同時涉及 AI 與結構生物學），同步更新或建立 `wiki/concepts/<concept>.md`（Frontmatter 依第七章第 2 節），並將本篇檔名登記於該概念頁之 `papers` 欄位。
 4. **編譯網頁成果**：
    * **先寫卡片文字**：依 `paper-card-writer` 撰寫 `wiki/cards/<slug>.md`（封面斷行、導語、Card 2–6 與 Card 3 示意圖），執行 `python .agents/skills/paper-card-writer/scripts/check_cards.py <slug>`，ERROR 須為 0。卡片上的數字只能取自證據表，公式只能取自論文頁。
-   * **建置論文頁原型並驗證**：執行 `python tools/build_paper_prototype.py <slug>`，自我檢查 ERROR 須為 0；有瀏覽器工具者再以 `verify_page.js` 驗證桌面與手機版面（`paper-card-writer` 第五節第 7 步）。正式論文頁產出前（`wiki/todo.md` TD-002），以此原型代替。
-   * 在 `web/papers/YYYY-<slug>/index.html` 產生對應之雙欄互動頁（左側 3:4 知識圖卡，右側 KaTeX 長文）。
+   * **建置論文頁並驗證**：執行 `python tools/build_paper_prototype.py <slug>`，產生 `web/papers/<slug>/index.html`（`<slug>` 即含年份前綴之論文頁檔名；左側 3:4 知識圖卡，右側 KaTeX 長文），自我檢查 ERROR 須為 0；有瀏覽器工具者再以 `verify_page.js` 驗證桌面與手機版面（`paper-card-writer` 第五節第 7 步）。產生後將論文頁 `status` 改為 `published`。2026-11-10 起原型即正式論文頁，輸出由 `web/prototypes/paper-v1/` 移至 `web/papers/`（使用者決定）。
    * 執行 `python tools/build_home.py --card <slug>` 重建首頁 `web/index.html`，新論文即依 Frontmatter（`domain`、`domain_tags`、`concepts`、`card_line`、雙年份與 `my_focus` 等欄位）出現在知識星圖或我的星系，其封面卡出現在卡片牆；卡片牆只收已提交之卡片檔，`--card` 帶入自己這篇尚未提交之卡片檔。有瀏覽器工具者以 `verify_wall.js` 驗證（`paper-card-writer` 第五節第 7-2 步）。不得手改 `web/index.html`。
 5. **更新索引與日誌**：
    * 在 `wiki/index.md` 登記該論文之摘要與連結。

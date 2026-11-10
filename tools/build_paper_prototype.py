@@ -1,4 +1,7 @@
-"""建置論文頁參考原型 web/prototypes/paper-v1/<slug>.html。
+"""建置論文頁 web/papers/<slug>/index.html（網址 papers/<slug>/）。
+
+2026-11-10 起原型即正式論文頁（使用者決定），輸出由 web/prototypes/paper-v1/<slug>.html 移至此處；
+目錄深度相同（web/ 下兩層），返回鍵 ../../index.html 不變。產生後須把論文頁 status 改為 published。
 
 用法（於倉庫根目錄執行）：
     python tools/build_paper_prototype.py               # 為所有已有卡片檔的論文建置
@@ -10,7 +13,7 @@
     * 內容：卡片取自 wiki/cards/<slug>.md（paper-card-writer），長文取自 wiki/papers/<slug>.md 之 Card 1 至 6 段落，
       資訊欄取自 Frontmatter 與概念頁。公式以 KaTeX 渲染。
 建置前先以 paper-card-writer 之 check_cards.py 檢查卡片檔，有 ERROR 即不產生。
-正式之論文頁建置見 wiki/todo.md TD-002；本腳本只用 Python 標準函式庫。
+本腳本只用 Python 標準函式庫。
 """
 import glob
 import html
@@ -22,7 +25,7 @@ import sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 WIKI = os.path.join(ROOT, 'wiki')
 TEMPLATE = os.path.join(ROOT, 'tools', 'paper_template.html')
-OUTDIR = os.path.join(ROOT, 'web', 'prototypes', 'paper-v1')
+OUTDIR = os.path.join(ROOT, 'web', 'papers')   # 每篇輸出 <OUTDIR>/<slug>/index.html
 
 
 def load(name, path):
@@ -510,8 +513,8 @@ def build(slug, papers, concepts_zh, colors, tpl, nums):
             .replace('{{CARDS}}', cards)
             .replace('{{ARTICLE}}', art)
             .replace('{{SIDE}}', side(fm, [concepts_zh[c] for c in fm.get('concepts') or [] if c in concepts_zh], scope)))
-    os.makedirs(OUTDIR, exist_ok=True)
-    out = os.path.join(OUTDIR, slug + '.html')
+    os.makedirs(os.path.join(OUTDIR, slug), exist_ok=True)
+    out = os.path.join(OUTDIR, slug, 'index.html')
     with open(out, 'w', encoding='utf-8', newline='\n') as fh:
         fh.write(page)
     print('已產生 %s' % os.path.relpath(out, ROOT))

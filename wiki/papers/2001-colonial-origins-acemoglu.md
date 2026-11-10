@@ -11,7 +11,7 @@ honor: "2024 諾貝爾經濟學獎（表彰對制度如何形成並影響國家�
 domain: "econ"
 domain_tags: ["#制度經濟學", "#宏觀經濟學"]
 concepts: ["institutions-and-macro-dynamics"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1257/aer.91.5.1369"

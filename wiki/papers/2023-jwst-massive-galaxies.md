@@ -10,7 +10,7 @@ venue_short: "Nat Astron"
 domain: "physics"
 domain_tags: ["#宇宙學", "#天體物理"]
 concepts: ["multi-messenger-astrophysics"]
-status: "wiki"
+status: "published"
 verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.1038/s41550-023-01937-7"

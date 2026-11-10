@@ -11,7 +11,7 @@ honor: "2026 諾貝爾經濟學獎（表彰建立宏觀經濟穩定政策之微�
 domain: "econ"
 domain_tags: ["#宏觀經濟學"]
 concepts: ["institutions-and-macro-dynamics"]
-status: "wiki"
+status: "published"
 verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.3386/w13329"

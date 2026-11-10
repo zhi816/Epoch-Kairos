@@ -9,7 +9,7 @@ venue: "arXiv preprint arXiv:2505.22293"
 domain: "ai"
 domain_tags: ["#自然語言處理", "#人工智慧", "#深度學習"]
 concepts: ["low-resource-machine-translation"]
-status: "wiki"
+status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "llm-assisted"

@@ -1,5 +1,5 @@
 # 將 web/ 發布至 GitHub Pages（見 wiki/todo.md TD-005）。
-# 只上傳 web/ 之內容，wiki/、raw/、AGENTS.md 等不上站。
+# 只上傳 web/ 之內容，wiki/、raw/、AGENTS.md 等不上站；web/prototypes/（樣稿與手機原型，非正式頁面）亦排除。
 # 倉庫 Settings -> Pages 之 Source 須設為「GitHub Actions」。
 name: Deploy web/ to GitHub Pages
 
@@ -33,10 +33,15 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v6
 
-      - name: Upload web/ as Pages artifact
+      - name: Assemble site from web/ (without prototypes/)
+        run: |
+          rsync -a --exclude '/prototypes/' web/ _site/
+          test -f _site/index.html
+
+      - name: Upload site as Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: web
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment

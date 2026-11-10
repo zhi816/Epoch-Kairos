@@ -1934,3 +1934,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：（本工作階段之平台規範不允許將模型型號寫入版控檔案，請使用者自行補填，見 TD-004）
 - **具體變更**：承接 TD-010 與前兩筆日誌。`paper-card-writer/SKILL.md` 之交付說明第 8 項由「十項」改為「十二項」（`paper-page.md` 第六節第 3 步已增兩項），偷工自查表新增「返回鍵標示與目的地不符卻手改單篇網頁或自行改模板」一列；`references/card-wall.md` 與 `paper-pipeline/SKILL.md` 之「按返回回到首頁」改為群星論文回首頁星圖、我的關注論文回首頁我的星系。返回鍵規範本文仍以 `paper-page.md` 第二節為準。
+
+## [2026-11-10 13:20] update | 論文頁轉為正式頁並移至 web/papers/ | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依使用者決定，論文頁原型即正式論文頁。`tools/build_paper_prototype.py` 改輸出 `web/papers/<slug>/index.html`（與原 `web/prototypes/paper-v1/<slug>.html` 同為兩層深，產出內容逐檔相同），`tools/build_home.py` 卡片牆改連 `papers/<slug>/`；刪除 `web/prototypes/paper-v1/` 38 檔；已有卡片檔之 38 篇論文頁 `status` 改為 `published`，其餘 4 篇維持 `wiki`。`pipeline_status.py` 之 S8 改查 `web/papers/` 並要求 `status: published`；`verify_page.js`、`paper-card-writer`、`paper-pipeline`、AGENTS.md 第四、六章與 DESIGN.md 第二章第 3 節、第五章同步改路徑與規則。`.github/workflows/pages.yml` 改以 rsync 組出 `_site/`，排除 `web/prototypes/`。驗證：`lint_wiki.py` ERROR 0；38 篇論文頁自我檢查 ERROR 0、WARN 0；`build_home.py --check` 一致；本機以發布內容（排除 prototypes）預覽，`verify_wall.js` 全牆 PASS、全部卡片連結 200，`verify_page.js` 抽 `1982-hopfield-network`、`2021-seediq-chinese-mt-you` 皆 PASS。TD-002 改寫為剩餘工作（深色重點色寫入 theme.css、其餘 4 篇），TD-005、TD-008、TD-009 更新路徑與進度。

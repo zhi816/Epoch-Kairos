@@ -123,7 +123,7 @@ focus_languages: ["<研究對象之低資源語言>"]
 | `domain` | 是 | 六值擇一，依本篇主要研究方法與貢獻所在；學科邊界依 `AGENTS.md` 第二章第 2 節 | 依主題字面歸類（語言學論文用了機器翻譯，主要貢獻是系統時歸 `ai`） |
 | `domain_tags` | 是 | 一至四個，**只能取 `AGENTS.md` 第八章白名單**；跨學科者可加其他色系之標籤 | 自創標籤；使用已收斂之舊標籤 |
 | `concepts` | 是 | 一至三個既有或新建之概念頁 slug，依 `concepts-and-index.md` 第一節 | 列了概念頁卻沒在概念頁 `papers` 反向登記 |
-| `status` | 是 | 一律 `"wiki"`；`published` 只在 `web/papers/<slug>/index.html` 正式頁產出後使用（`wiki/todo.md` TD-002） | 建了原型就改 `published` |
+| `status` | 是 | 撰寫時一律 `"wiki"`；S8 產生 `web/papers/<slug>/index.html` 後改為 `"published"`（2026-11-10 起，`pipeline_status.py` 之 S8 會檢查） | 網頁尚未產生就先標 `published`（`lint_wiki.py` 報 ERROR）；網頁已產生卻仍為 `wiki` |
 | `verification` | 是 | 寫作時先填 `"unverified"`，S6 核對後依結果改為 `verified` 或 `partial` | 一寫完就標 `verified` |
 | `my_focus` | 是 | 依 `intake.md` 第四節第 3 點 | 依主題判斷 |
 | `focus_role` | 我的關注必填 | 依資料夾對照，五值擇一 | 依內容自行判斷 |

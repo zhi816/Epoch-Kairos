@@ -9,7 +9,7 @@ venue: "Findings of the Association for Computational Linguistics: ACL 2024, 129
 domain: "ai"
 domain_tags: ["#自然語言處理", "#深度學習"]
 concepts: ["low-resource-machine-translation"]
-status: "wiki"
+status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "report"

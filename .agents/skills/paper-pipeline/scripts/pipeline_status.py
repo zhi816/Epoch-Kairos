@@ -13,7 +13,7 @@
     S5 概念索引  concepts 非空且概念頁雙向列出本篇；wiki/index.md 有本篇連結；lint_wiki.py 對本頁無概念頁相關之 ERROR
     S6 核實      verification 為 partial 或 verified；wiki/issues.md 無本頁 open 問題
     S7 卡片      wiki/cards/<slug>.md 存在且 check_cards.py 對本篇無 ERROR
-    S8 網頁      web/prototypes/paper-v1/<slug>.html 存在，且不舊於卡片檔與論文頁；Card 1 編號與首頁卡片牆相同
+    S8 網頁      web/papers/<slug>/index.html 存在，且不舊於卡片檔與論文頁；Card 1 編號與首頁卡片牆相同；論文頁 status 為 published
     S9 上架      卡片檔已提交；web/index.html 之星圖（或我的星系）與卡片牆都有本篇；首頁與資料一致
     S10 提交     本篇之論文頁、證據表、卡片檔、網頁皆無未提交之修改，且 wiki/log.md 有本篇之日誌
 本腳本只檢查「做了沒有」與可機械判斷之形式，不判斷內容是否忠於原文（那是 wiki-content-audit 之人工核對）。
@@ -233,7 +233,7 @@ def check(slug, ctx):
     page_rel = 'wiki/papers/%s.md' % slug
     ev_rel = 'wiki/evidence/%s.md' % slug
     card_rel = 'wiki/cards/%s.md' % slug
-    proto_rel = 'web/prototypes/paper-v1/%s.html' % slug
+    proto_rel = 'web/papers/%s/index.html' % slug
     page_path = os.path.join(ROOT, page_rel)
     page = read(page_path)
     fm = frontmatter(page)
@@ -332,7 +332,9 @@ def check(slug, ctx):
         pn, hn = proto_number(proto_path), numbers.get(slug)
         if pn and hn and pn != hn:
             why.append('網頁 Card 1 編號 %s 與首頁卡片牆 %s 不同（收錄新論文會使其後之編號後移），須以 build_paper_prototype.py 重建' % (pn, hn))
-        r['S8'] = ('NG', why) if why else ('OK', ['網頁存在且不舊於卡片檔與論文頁，編號與首頁一致（瀏覽器驗證須另行執行 verify_page.js）'])
+        if fm.get('status') != 'published':
+            why.append('網頁已產生，論文頁 status 須改為 published（目前為 %s）' % fm.get('status'))
+        r['S8'] = ('NG', why) if why else ('OK', ['網頁存在且不舊於卡片檔與論文頁，編號與首頁一致，status 為 published（瀏覽器驗證須另行執行 verify_page.js）'])
 
     # S9 上架
     why = []

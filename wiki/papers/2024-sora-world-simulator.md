@@ -9,7 +9,7 @@ venue: "arXiv preprint, arXiv:2402.17177"
 domain: "ai"
 domain_tags: ["#計算機視覺", "#人工智慧", "#深度學習"]
 concepts: ["generative-world-models"]
-status: "wiki"
+status: "published"
 verification: "partial"
 my_focus: false
 doi_url: "https://arxiv.org/abs/2402.17177"

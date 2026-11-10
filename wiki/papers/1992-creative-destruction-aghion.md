@@ -11,7 +11,7 @@ honor: "2025 諾貝爾經濟學獎（表彰對創新驅動經濟成長與創造�
 domain: "econ"
 domain_tags: ["#宏觀經濟學", "#制度經濟學"]
 concepts: ["institutions-and-macro-dynamics"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.2307/2951599"

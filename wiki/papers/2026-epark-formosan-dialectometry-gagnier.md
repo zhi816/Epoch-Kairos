@@ -9,7 +9,7 @@ venue: "Proceedings of Workshop on Dialects in NLP — A Resource Perspective (D
 domain: "ai"
 domain_tags: ["#計算語言學", "#自然語言處理"]
 concepts: ["formosan-computational-linguistics"]
-status: "wiki"
+status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "international"

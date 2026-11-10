@@ -11,7 +11,7 @@ honor: "2024 諾貝爾化學獎（表彰蛋白質結構預測與計算蛋白質�
 domain: "ai"
 domain_tags: ["#計算生物", "#人工智慧", "#結構生物學"]
 concepts: ["ai-for-structural-biology", "generative-world-models", "programmable-cellular-engineering"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1038/s41586-021-03819-2"

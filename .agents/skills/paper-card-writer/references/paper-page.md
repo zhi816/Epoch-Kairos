@@ -1,6 +1,6 @@
 # 論文頁：卡片檔與論文頁如何變成網頁，以及如何驗證
 
-本檔規範 SKILL.md 第五節第 7 步「建置論文頁並驗證」。每寫完或修訂一篇卡片檔，都要建出該篇的論文頁參考原型，並通過兩道檢查；**不得以「卡片檔已通過 `check_cards.py`」代替本步驟**。
+本檔規範 SKILL.md 第五節第 7 步「建置論文頁並驗證」。每寫完或修訂一篇卡片檔，都要建出該篇的論文頁，並通過兩道檢查；**不得以「卡片檔已通過 `check_cards.py`」代替本步驟**。
 
 ## 一、為什麼一定要建網頁驗證
 
@@ -39,7 +39,7 @@
 | 左上返回鍵（導軌頂端箭頭） | 群星論文：連到 `../../index.html`，`aria-label`「回到群星」；`my_focus: true` 之論文：連到 `../../index.html#my-constellation`，`aria-label`「回到我的星系」。標示一律與目的地一致，不得寫死 | `my_focus`；由 `build_paper_prototype.py` 之 `BACK_STARS`、`BACK_FOCUS` 決定（窄於 900px 導軌隱藏，連結與標示仍在） |
 | 手機（窄於 900px） | 卡片左右滑動、停在整張；長文上方「隨卡片｜全文」開關，預設只顯示目前卡片之段落，「全文」時顯示六段且不與卡片連動 | 模板，不需撰寫（`DESIGN.md` 第五章第 1 節） |
 
-**你不寫網頁。** 網頁只由 `python tools/build_paper_prototype.py <slug>` 產生；`web/prototypes/paper-v1/*.html` 是產生檔，不得手改（下次建置就會被覆蓋，而且會讓網頁與卡片檔不一致）。
+**你不寫網頁。** 網頁只由 `python tools/build_paper_prototype.py <slug>` 產生；`web/papers/*/index.html` 是產生檔，不得手改（下次建置就會被覆蓋，而且會讓網頁與卡片檔不一致）。
 
 ## 三、期刊簡稱與 `venue_short`
 
@@ -65,7 +65,7 @@
    * 第 1 類之縮寫查不到第一手出處（例如官網拒絕自動讀取）時，不得自行採用；在交付說明列出候選與查證結果，**經使用者確認後**才可填，並於日誌寫明「經使用者確認」。
 3. **兩者都沒有時不填**，保留 WARN，在交付說明寫明「期刊無通用縮寫，資訊欄折為三行以上」或「卡片牆雙年份以省略號截斷」。兩者都有、但都仍會截斷時，填最短者，並在交付說明寫明仍截斷。
 4. **填寫**：寫在 `venue` 的下一行，例如 `venue_short: "PNAS"`。論文頁若為 CRLF 換行，插入之行也用 CRLF（以 shell 取 `doi_url` 時須先去掉 `\r`）。
-5. **重建與驗證**：重建該篇論文頁原型（`python tools/build_paper_prototype.py <slug>`）與首頁（`python tools/build_home.py`），以 `python tools/build_home.py --check` 確認一致，再以 `verify_wall.js` 確認該篇不再報「bot 被截斷」。論文頁原型、首頁與論文頁一併提交（首頁說明框也顯示簡稱）。
+5. **重建與驗證**：重建該篇論文頁（`python tools/build_paper_prototype.py <slug>`）與首頁（`python tools/build_home.py`），以 `python tools/build_home.py --check` 確認一致，再以 `verify_wall.js` 確認該篇不再報「bot 被截斷」。論文頁、首頁與論文頁一併提交（首頁說明框也顯示簡稱）。
 
 * 不得自創縮寫、不得以中文意譯期刊名、不得放卷期頁、不得把會議年份寫錯（照 `venue` 原文）。
 * MDPI 會議論文集（如 `Engineering Proceedings`）之 Crossref `container-title` 是會議名稱、不是刊名，也沒有 `short-container-title`；刊名縮寫以原文 PDF 之引用格式為準。
@@ -113,7 +113,7 @@ python tools/build_paper_prototype.py <slug>
 ```
 
 * 腳本先跑 `check_cards.py`，卡片檔有 ERROR 即中止、不產生網頁。
-* 產生 `web/prototypes/paper-v1/<slug>.html` 後自動做靜態自我檢查，最後一行為「自我檢查 <slug>：ERROR n、WARN m」。
+* 產生 `web/papers/<slug>/index.html` 後自動做靜態自我檢查，最後一行為「自我檢查 <slug>：ERROR n、WARN m」。
 * **ERROR 必須為 0**（結束代碼非 0 即失敗）。WARN 逐條處理，見本檔第七節。
 * 自我檢查項目：網頁露出 `**`、`$`、`](`、反引號；公式含中文；卡片不是 6 張；長文段落不是 Card 1 至 6；論文頁有開頭引言而網頁 01 段沒有；論文頁有本頁範圍而資訊欄沒有；長文頂部與 Card 1 雙年份不一致；返回鍵之連結與標示不符第二節規定；資訊欄期刊名超過兩行。
 
@@ -123,15 +123,15 @@ python tools/build_paper_prototype.py <slug>
    ```bash
    python -m http.server 8781 --bind 127.0.0.1 --directory web
    ```
-   macOS 上倉庫位於受保護資料夾而伺服器無法啟動時，依 [`card-wall.md`](card-wall.md) 第四節第 3 步第 1 點把 `web/` 複製到暫存資料夾再啟動；每次重建原型後都要重新複製。
-2. 開 `http://127.0.0.1:8781/prototypes/paper-v1/<slug>.html`。
+   macOS 上倉庫位於受保護資料夾而伺服器無法啟動時，依 [`card-wall.md`](card-wall.md) 第四節第 3 步第 1 點把 `web/` 複製到暫存資料夾再啟動；每次重建論文頁後都要重新複製。
+2. 開 `http://127.0.0.1:8781/papers/<slug>/`。
 3. 把 `.agents/skills/paper-card-writer/scripts/verify_page.js` **全文**貼進開發者工具 Console 執行（或以代理的瀏覽器 JavaScript 工具執行），約 10 秒後輸出報告。腳本以兩個隱藏 iframe 同時量測 1440 x 900 與 375 x 812，不必調整視窗。瀏覽器分頁須在前景，背景分頁的計時器會被節流而逾時。
 4. 最後一行必須是「結果：PASS」。任何 FAIL 都不得交付；WARN 逐條處理。
 5. **報告全文原樣貼進交付說明**，不得改寫成「全部通過」。
 
 量測項目：公式全部渲染且無 KaTeX 錯誤；六張卡的每個元素都沒有超出卡片或卡片內任何會裁切內容的容器（例如封面星窗）；封面論文名未被截斷；Card 2 對照名稱、Card 4 大數字、Card 5 年份都是單行且未超出自己的格子（例如「1.14 PeV」會被擠成兩行、「99.999%」會超出右欄，這時要換數字，不得改字級）；Card 3 公式框不需水平捲動；封面一句話最多三行、沒有自動折行、沒有壓到星窗內標籤或代表星；星窗未被壓縮到卡片高度三成以下；頁面沒有橫向捲動；控制列在卡片欄之內；沒有露出 `**` 或 `$`；長文區塊公式可水平捲動；返回鍵標示與目的地一致；手機寬度下連點下一張再連點上一張各五次，`.stage` 位置與頁面捲動量不變；手機寬度下卡片列可左右滑動並停在整張、「隨卡片」時長文只顯示目前段落且隨卡片換段、「全文」時顯示六段且不隨卡片變動、切回後回到目前段落。
 
-**沒有瀏覽器工具時**：不得宣稱已驗證。在交付說明與日誌寫明「未以瀏覽器驗證（無瀏覽器工具）」，並在 `wiki/todo.md` 之「待瀏覽器驗證之論文頁原型」條目追加此 slug（沒有該條目時新增一條，範圍 `web`），交由有瀏覽器的代理補驗。
+**沒有瀏覽器工具時**：不得宣稱已驗證。在交付說明與日誌寫明「未以瀏覽器驗證（無瀏覽器工具）」，並在 `wiki/todo.md` 之「待瀏覽器驗證之論文頁」條目追加此 slug（沒有該條目時新增一條，範圍 `web`），交由有瀏覽器的代理補驗。
 
 ### 第 3 步：目視與操作檢查（有瀏覽器工具者必做）
 
@@ -153,9 +153,9 @@ python tools/build_paper_prototype.py <slug>
 ### 第 4 步：提交
 
 * 論文頁驗證通過後，接著依 [`card-wall.md`](card-wall.md) 把這篇放上首頁卡片牆並驗證（SKILL.md 第五節第 7-2 步）；不得只做論文頁就提交。
-* `web/prototypes/paper-v1/<slug>.html` 與卡片檔、`web/index.html`、日誌一起提交，讓使用者能直接打開檢視。
+* `web/papers/<slug>/index.html` 與卡片檔、`web/index.html`、日誌一起提交，讓使用者能直接打開檢視。
 * 修改了 `venue_short` 時，連同論文頁與 `web/index.html` 一起提交。
-* 修改 `tools/paper_template.html` 或 `tools/build_paper_prototype.py` 的人（不屬於撰寫卡片的工作，須另經使用者同意），必須重建全部原型（不帶參數執行），並一併提交全部產生檔。
+* 修改 `tools/paper_template.html` 或 `tools/build_paper_prototype.py` 的人（不屬於撰寫卡片的工作，須另經使用者同意），必須重建全部論文頁（不帶參數執行），並一併提交全部產生檔。
 
 ## 七、看到 ERROR、FAIL 或 WARN 時怎麼處理
 
@@ -183,7 +183,7 @@ python tools/build_paper_prototype.py <slug>
 ## 八、禁止事項
 
 1. 不得為了讓檢查通過而修改 `check_cards.py`、`tools/build_paper_prototype.py`、`tools/paper_template.html`、`verify_page.js`，或調高任何門檻、加例外。認為腳本誤判時，登記 `wiki/todo.md`（範圍 `skill`）並告知使用者，該篇維持未交付。
-2. 不得手改 `web/prototypes/paper-v1/*.html`。
+2. 不得手改 `web/papers/*/index.html`。
 3. 不得只驗桌面或只驗手機；不得只跑自我檢查而略過瀏覽器驗證（有瀏覽器工具時）。
 4. 不得在沒有實際執行的情況下宣稱「已建置」「已驗證」「全部通過」；交付說明必須貼出建置輸出的最後兩行與 `verify_page.js` 報告全文。
 5. 不得為了讓網頁好看而修改論文頁的事實內容；論文頁只能依 `wiki-content-audit` 修改，且須有證據表支持。

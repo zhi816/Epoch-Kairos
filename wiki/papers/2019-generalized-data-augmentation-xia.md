@@ -9,7 +9,7 @@ venue: "Proceedings of the 57th Annual Meeting of the Association for Computatio
 domain: "ai"
 domain_tags: ["#自然語言處理", "#深度學習", "#人工智慧"]
 concepts: ["low-resource-machine-translation"]
-status: "wiki"
+status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "international"

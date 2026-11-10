@@ -9,7 +9,7 @@ venue: "Social Sciences, 15(1), 7:1-7:21"
 domain: "ai"
 domain_tags: ["#人工智慧", "#計算語言學", "#社會學"]
 concepts: ["formosan-computational-linguistics"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "international"

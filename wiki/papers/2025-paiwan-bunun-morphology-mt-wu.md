@@ -9,7 +9,7 @@ venue: "Master's Thesis, Department of Computer Science and Engineering, Nationa
 domain: "ai"
 domain_tags: ["#計算語言學", "#自然語言處理", "#深度學習"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "senior-thesis"

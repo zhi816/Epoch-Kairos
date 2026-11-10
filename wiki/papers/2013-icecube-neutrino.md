@@ -11,7 +11,7 @@ honor: "2026 諾貝爾物理學獎（表彰南極冰立方天文台對高能系�
 domain: "physics"
 domain_tags: ["#天體物理", "#宇宙學"]
 concepts: ["multi-messenger-astrophysics"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1126/science.1242856"

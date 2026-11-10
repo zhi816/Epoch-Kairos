@@ -12,7 +12,7 @@ honor: "2017 諾貝爾物理學獎（表彰對 LIGO 探測器及重力波直接�
 domain: "physics"
 domain_tags: ["#天體物理", "#宇宙學"]
 concepts: ["multi-messenger-astrophysics"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1103/PhysRevLett.116.061102"

@@ -9,7 +9,7 @@ venue: "Proceedings of the 63rd Annual Meeting of the Association for Computatio
 domain: "ai"
 domain_tags: ["#自然語言處理", "#計算語言學", "#人工智慧"]
 concepts: ["low-resource-machine-translation"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "report"

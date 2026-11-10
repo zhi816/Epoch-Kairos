@@ -10,7 +10,7 @@ venue_short: "Eng. Proc."
 domain: "ai"
 domain_tags: ["#自然語言處理", "#人工智慧", "#計算語言學"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
-status: "wiki"
+status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "international"

@@ -12,7 +12,7 @@ honor: "2024 諾貝爾物理學獎（表彰以人工神經網絡實現機器學�
 domain: "physics"
 domain_tags: ["#統計物理", "#人工智慧"]
 concepts: ["neural-circuits", "brain-machine-interface", "generative-world-models", "quantum-error-correction"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1073/pnas.79.8.2554"

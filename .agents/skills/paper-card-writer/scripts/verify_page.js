@@ -1,9 +1,9 @@
-// 論文頁參考原型之瀏覽器驗證（paper-card-writer 第五節第 7 步）。
+// 論文頁之瀏覽器驗證（paper-card-writer 第五節第 7 步）。
 //
 // 用法：
 //   1. 於倉庫根目錄啟動本機伺服器：python -m http.server 8781 --bind 127.0.0.1 --directory web
 //      （不可用 file:// 直接開檔：瀏覽器會擋下讀取 iframe 內容）
-//   2. 在瀏覽器開 http://127.0.0.1:8781/prototypes/paper-v1/<slug>.html
+//   2. 在瀏覽器開 http://127.0.0.1:8781/papers/<slug>/
 //   3. 把本檔全部內容貼進開發者工具 Console 執行（或以代理之瀏覽器 JavaScript 工具執行），等待約 10 秒。
 //   4. 把輸出的整段文字原樣貼進交付說明。任何一行 FAIL 都不得交付。
 //
@@ -192,7 +192,7 @@
 
     f.remove();
   }
-  const summary = (fails === 0 ? '結果：PASS' : '結果：FAIL ' + fails + ' 項') + (warns ? '，WARN ' + warns + ' 項' : '') + '（' + location.pathname.split('/').pop() + '）';
+  const summary = (fails === 0 ? '結果：PASS' : '結果：FAIL ' + fails + ' 項') + (warns ? '，WARN ' + warns + ' 項' : '') + '（' + location.pathname.replace(/\/(index\.html)?$/, '').split('/').pop() + '）';
   const report = lines.join('\n') + '\n' + summary;
   console.log(report);
   return report;

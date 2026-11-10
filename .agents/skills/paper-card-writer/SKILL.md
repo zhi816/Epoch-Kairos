@@ -1,12 +1,12 @@
 ---
 name: paper-card-writer
 description: >-
-  Write the text and diagram for every Epoch-Kairos paper card: the homepage cover card (card wall and paper-page Card 1) and the paper-page Cards 2-6, stored as wiki/cards/<slug>.md, then build and browser-verify both the paper-page prototype and the homepage card wall. Use whenever a paper is ingested, when backfilling or revising card files, or when card_line, hook-derived lead text or Card 3 diagrams change. Every field has hard length limits, source rules and mandatory check scripts; do not skip steps.
+  Write the text and diagram for every Epoch-Kairos paper card: the homepage cover card (card wall and paper-page Card 1) and the paper-page Cards 2-6, stored as wiki/cards/<slug>.md, then build and browser-verify both the paper page and the homepage card wall. Use whenever a paper is ingested, when backfilling or revising card files, or when card_line, hook-derived lead text or Card 3 diagrams change. Every field has hard length limits, source rules and mandatory check scripts; do not skip steps.
 ---
 
 # Paper Card Writer（論文卡片撰寫規範）
 
-本 Skill 規範一篇論文在網站上所有「卡片」的文字與示意圖：首頁卡片牆的封面卡、論文頁 Card 1（封面）與 Card 2 至 6（內頁）。卡片的版面、配色與字體由 [`DESIGN.md`](../../../DESIGN.md) 決定，本 Skill 只管**卡片上寫什麼、從哪裡來、寫多長、怎麼檢查**，以及寫完後如何把它建成論文頁、放上首頁卡片牆並驗證。**一篇卡片的完整流程，是卡片檔、論文頁原型與首頁卡片牆三者都完成、驗證並提交**；只完成其中一部分不算完成。
+本 Skill 規範一篇論文在網站上所有「卡片」的文字與示意圖：首頁卡片牆的封面卡、論文頁 Card 1（封面）與 Card 2 至 6（內頁）。卡片的版面、配色與字體由 [`DESIGN.md`](../../../DESIGN.md) 決定，本 Skill 只管**卡片上寫什麼、從哪裡來、寫多長、怎麼檢查**，以及寫完後如何把它建成論文頁、放上首頁卡片牆並驗證。**一篇卡片的完整流程，是卡片檔、論文頁與首頁卡片牆三者都完成、驗證並提交**；只完成其中一部分不算完成。
 
 > 寫這份規範的原因：卡片是讀者最先看到、也最常被截圖分享的內容，又是 41 篇以上逐篇手寫的工作，最容易被偷工。過去已出現的問題包括：為了填滿版面硬湊數字、把後續他人成果寫成本篇成果、整段照抄長文塞不進卡片、批次作業時把前一篇的語言名或數字帶進下一篇。本 Skill 的每一條規則都對應這類問題，**不得以「大致符合」為由省略任何一步**。
 
@@ -48,7 +48,7 @@ description: >-
 | `wiki/evidence/<slug>.md` 全文 | 數字與強斷言的唯一依據 |
 | `wiki/issues.md` 中本頁條目 | 是否有尚未修正的問題影響卡片 |
 | 範例 `wiki/cards/1982-hopfield-network.md`（群星）、`wiki/cards/2021-seediq-chinese-mt-you.md`（我的關注） | 完整格式範例；只看格式，**內容不得套用到其他論文** |
-| 參考網頁 `web/prototypes/paper-v1/1982-hopfield-network.html`、`2021-seediq-chinese-mt-you.html` | 上述兩份卡片檔實際做成論文頁的樣子（`python tools/build_paper_prototype.py <slug>` 產生）。開工前在瀏覽器打開看過，知道每個欄位最後出現在哪裡、多大；寫完自己那篇**必須**用同一指令建置並驗證（第五節第 7 步） |
+| 參考網頁 `web/papers/1982-hopfield-network/index.html`、`2021-seediq-chinese-mt-you/index.html` | 上述兩份卡片檔實際做成論文頁的樣子（`python tools/build_paper_prototype.py <slug>` 產生）。開工前在瀏覽器打開看過，知道每個欄位最後出現在哪裡、多大；寫完自己那篇**必須**用同一指令建置並驗證（第五節第 7 步） |
 | 首頁 `web/index.html` 下方「群星檔案」與 `#my-constellation`「我的星系檔案」 | 封面卡在首頁卡片牆上的樣子（桌面 3 欄、手機 2 欄，比論文頁 Card 1 小）。開工前以本機伺服器打開看過；寫完自己那篇**必須**以 `python tools/build_home.py --card <slug>` 放上牆並驗證（第五節第 7 步） |
 
 ## 四、卡片總覽
@@ -95,7 +95,7 @@ description: >-
 8. **兩階段複核**（沿用 `wiki-content-audit` 的「先宏觀、再微觀」）：
    * **宏觀**：只看建好的網頁上的六張卡，問自己：讀者看完得到的印象，是否和論文摘要與結論一致？有沒有哪張卡比原文更誇張？Card 4 與 Card 5 的歸屬是否分清？
    * **微觀**：每個欄位對回素材對照，確認數字、方向、指標、條件逐字正確；再做吸引子檢查（本 Skill 第六節）與偷工自查（本 Skill 第十一節）。
-9. **交付與提交**：依本 Skill 第八節交代結果，依 `AGENTS.md` 第六章寫日誌，依 `git-sync-guardian` 以 `safe_commit_push.py`（Windows）或 `safe_commit_push.sh` 提交卡片檔、該篇原型網頁、`web/index.html` 與日誌（略過 7-2 者不列 `web/index.html`）；一篇一個提交。推送後不加 `--card` 執行 `python tools/build_home.py --check`，須為「一致」（`card-wall.md` 第四節第 5 步，含 `web/index.html` 衝突時之處理）。
+9. **交付與提交**：依本 Skill 第八節交代結果，依 `AGENTS.md` 第六章寫日誌，依 `git-sync-guardian` 以 `safe_commit_push.py`（Windows）或 `safe_commit_push.sh` 提交卡片檔、該篇論文頁、`web/index.html` 與日誌（略過 7-2 者不列 `web/index.html`）；一篇一個提交。推送後不加 `--card` 執行 `python tools/build_home.py --check`，須為「一致」（`card-wall.md` 第四節第 5 步，含 `web/index.html` 衝突時之處理）。
 
 ## 六、卡片專屬的吸引子檢查
 
@@ -129,7 +129,7 @@ description: >-
 ```markdown
 ### <slug> 卡片交付
 
-1. 檔案：wiki/cards/<slug>.md、web/prototypes/paper-v1/<slug>.html、web/index.html（提交 <commit>；略過 7-2 者寫明原因）
+1. 檔案：wiki/cards/<slug>.md、web/papers/<slug>/index.html、web/index.html（提交 <commit>；略過 7-2 者寫明原因）
 2. 四句對照基準（第五節第 2 步）：
    - 做了什麼：……（論文頁 Card 1 第 1 段）
    - 怎麼做：……（論文頁 Card 3 第 2 點）
@@ -176,12 +176,12 @@ description: >-
 
 `python tools/build_paper_prototype.py [slug ...]`（倉庫根目錄執行）：
 
-* 先跑 `check_cards.py`（ERROR 即中止），再產生 `web/prototypes/paper-v1/<slug>.html`，最後做靜態自我檢查並印出「自我檢查 <slug>：ERROR n、WARN m」；有 ERROR 時結束代碼為 1。不帶參數時建置全部已有卡片檔的論文。
+* 先跑 `check_cards.py`（ERROR 即中止），再產生 `web/papers/<slug>/index.html`，最後做靜態自我檢查並印出「自我檢查 <slug>：ERROR n、WARN m」；有 ERROR 時結束代碼為 1。不帶參數時建置全部已有卡片檔的論文。
 * 自我檢查項目與處理方式見 `references/paper-page.md` 第六、七節。
 
 `scripts/verify_page.js`（瀏覽器執行）：
 
-* 以本機伺服器開啟論文頁原型後，在 Console 執行全文；以隱藏 iframe 同時量測 1440 x 900 與 375 x 812，輸出逐項 PASS／FAIL／WARN 與「結果：PASS」或「結果：FAIL n 項」。量測項目見 `references/paper-page.md` 第六節第 2 步。
+* 以本機伺服器開啟論文頁後，在 Console 執行全文；以隱藏 iframe 同時量測 1440 x 900 與 375 x 812，輸出逐項 PASS／FAIL／WARN 與「結果：PASS」或「結果：FAIL n 項」。量測項目見 `references/paper-page.md` 第六節第 2 步。
 * 只量版面，不判斷內容對錯；PASS 不代表卡片內容正確。
 
 `python tools/build_home.py [--check] [--card <slug> ...]`（倉庫根目錄執行）：
@@ -232,7 +232,7 @@ description: >-
 | 只跑 `check_cards.py`，沒建網頁或沒用瀏覽器驗證 | 版面問題只有建出網頁才看得到 | 第五節第 7 步 |
 | 論文頁驗證完就提交，沒有放上首頁卡片牆 | 封面卡在首頁比 Card 1 小，斷行與論文名可能放不下；首頁也不會自己出現這張卡 | 第五節第 7-2 步 |
 | 執行 `build_home.py` 沒加 `--card`，卻宣稱已上牆 | 未提交之卡片檔不會上牆；輸出清單裡沒有自己的 slug | `card-wall.md` 第三節 |
-| 用 `--card` 帶入別人的卡片檔，或把別人的卡片檔、原型一起提交 | 等於替別人交出未完成的工作 | `card-wall.md` 第三節、第七節 |
+| 用 `--card` 帶入別人的卡片檔，或把別人的卡片檔、論文頁一起提交 | 等於替別人交出未完成的工作 | `card-wall.md` 第三節、第七節 |
 | 手改 `web/index.html`，或手動合併它的衝突標記 | 首頁是產生檔；衝突時重跑建置即可 | `card-wall.md` 第四節第 5 步 |
 | `verify_wall.js` 沒設 `EK_SLUG`，或只驗群星沒驗我的星系 | 無法證明自己的卡片在牆上；腳本一次驗四組，報告要原樣貼上 | `card-wall.md` 第四節第 3 步 |
 | 提交時漏了 `web/index.html`，或推送後沒跑 `--check` | 首頁與已提交內容不一致，別人重建時才發現 | 第五節第 9 步 |
