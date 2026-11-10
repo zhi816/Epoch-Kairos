@@ -757,15 +757,17 @@
 - **發現於**：第二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。刪去 Card 5 兩點無出處之「打破壁壘」「證明……超越 54B」敘述，改寫為：FLORES 以 NLLB-54B 本身為初譯再後編輯、平均高 2.83（表 2）；並依新論文需求補記原文公開之程式與系統、作者明列之限制（含易用性研究僅兩位共同作者）與 §6 之未來方向（提示最佳化、離線部署等），各附位置。
 
-### EK-118 | open | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 3 | 原文未支持
+### EK-118 | fixed | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 3 | 原文未支持
 - **問題**：Card 3 第 64 行之 $D_{\text{norm}}(s_1, s_2) = \operatorname{LD}(s_1, s_2) / \max(|s_1|, |s_2|)$ 寫明除以較長字串之長度。原文只說「normalized by word length」，未指明取較長者，也未寫出公式；證據表第 12 列未登記此式。
 - **來源**：`raw/my-focus/英文論文/Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13.pdf`，§2.3（PDF 第 2 頁，論文集 p. 125）。
 - **發現於**：第二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。回原文確認全文無編號公式後，刪除該區塊公式，改以文字照原文寫「以詞長正規化，原文未指明以哪一個詞的長度」；行內之 Jaccard 與 sublinear_tf 式改為文字並註明原文未列式。頁面已無區塊公式，卡片改用無公式模式。證據表登記。
 
-### EK-119 | open | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 5 | 過度表述
+### EK-119 | fixed | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 5 | 過度表述
 - **問題**：Card 5 第二點（第 123 行）稱「證明南島語各語族不能一概而論」，排灣語與賽德克語「極適合進行多方言聯合訓練與跨方言遷移」，泰雅語與魯凱語「跨方言遷移容易引發負遷移」。原文為共有核心詞比例高者是「good candidates for cross-dialect model transfer」、「transfer learning should be tested」，獨有詞比例高者建議方言專屬模型或微調；未稱證明，也未談負遷移。
 - **來源**：同 EK-118 之 PDF，PDF 第 3 頁（§3.1）、第 7 頁（§4）。
 - **發現於**：第二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。Card 5 第二點改照原文：共有核心詞高者「是跨方言模型遷移的好候選」「應測試遷移學習」，獨有詞高者建議方言專屬模型或微調，並註明原文未做遷移實驗、未談負遷移（§3.1, p. 126；§4.1, p. 130）。另依新論文需求補記公開程式碼、作者明列之限制、四點建議與 §5 未來方向，各附位置。
 
 ### EK-120 | open | papers/2024-fault-tolerant-quantum.md | Card 3 與 Card 4 | 原文不符
 - **問題**：Card 3 第 53 行寫相干時間 $T_2 > 1.5\,\text{s}$，原文為 T2 > 1 s。Card 4 第 96 行稱 d = 7 時「總計動用約 200 個物理原子」，原文圖 2 標示每個邏輯貝爾對所用物理量子位元數，d = 3、5、7 依序為 26、74、146。
@@ -920,3 +922,9 @@
 - **來源**：`raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`，§1–§3（pp. 129–132）、§4.1.1–§4.1.2（pp. 132–133）、§5（p. 134）、倫理聲明（p. 135）。
 - **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依原文改寫上述各句，補記易用性研究之樣本與共同作者關係、表 1 之 LLM-only 對照值與資料取得條件；`hook` 補上 FLORES 平均增益；證據表重建，表 1、表 2 數值逐一寫出列與欄。
+
+### EK-157 | fixed | papers/2026-epark-formosan-dialectometry-gagnier.md | hook、Card 1、Card 2、Card 4 與 Card 6 | 過度表述
+- **問題**：（1）`hook` 稱「首度」分析並「客觀量化 16 族南島語親緣分支」，原文為作者自述首次，且成對比較只做 7 個多方言族語。（2）Card 1 稱臺灣南島語是南島語系「發源樞紐」、ePark 是「全球規模最完整」的資源庫、作者為「美國學者」；原文為 primary branch、high-quality comprehensive resource，作者單位為高中。（3）Card 2 稱過去分類「多依賴定性音變構擬與有限詞彙調查」、布農語次方言「存在長期爭論」，原文未如此描述，且本篇結果與布農語既有三分群相符。（4）Card 3 前處理寫保留 `^`，原文該字元在 PDF 文字層無法顯示，無法核實。（5）Card 4 稱最少詞元之 46,177 為「泰雅語四季」，表 1 為 Plngawan；稱主題差異「會壓過方言語言學差異」，原文只說須以相同篇章比較；未說明 ± 為標準差。（6）Card 6 稱直接混合訓練「必然遭遇」71% 獨有詞 OOV 衝擊，為 Wiki 推測卻寫成必然。
+- **來源**：`raw/my-focus/英文論文/Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13.pdf`，摘要與 §1（p. 124）、§2.1–§2.3（p. 125）、§3.1–§3.2（pp. 125–128）、表 1–3（pp. 127–128）。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依原文改寫上述各句；Card 6 該句改標為 Wiki 推測並改為「可能」；證據表重建，表 1 至表 3 數值逐一寫出列與欄。

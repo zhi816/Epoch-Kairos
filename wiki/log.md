@@ -1814,3 +1814,8 @@
   - Card 3 補記全文唯一編號式為 §12.1 式 (1)（篩選離群語言之統計判準，p. 229:22），與翻譯技術無關；證據表 Card 4 趨勢與建議列逐一寫出年份與三項建議。`verification` 由 `verified` 改為 `partial`（本次只抽查卡片用到之主張，未整頁重核）。
   - 卡片：研究類型「綜述」（與 `tools/build_home.py` 之 STUDY_TYPE 一致）；Card 3 無公式模式，理由寫明式 (1) 之位置與用途；Card 4 結論模式三條回原文 §10、§14 抽查相符；Card 5 一般模式三筆後續研究；封面標題「低資源神經機器翻譯綜述」。`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` PASS（35 項）；目視修正封面論文名與 Card 5 標題、兩筆里程碑之落單行。`lint_wiki.py` ERROR 0。
   - 首頁卡片牆依本批協調規則未重建，由協調者處理。
+
+## [2026-11-10 10:33] update | 2026-epark-formosan-dialectometry-gagnier 卡片回填與論文頁原文修正 | #計算語言學 #自然語言處理
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：TD-008 第三批 B 組。依 `wiki-content-audit` 回原文修正 [論文頁](papers/2026-epark-formosan-dialectometry-gagnier.md) 並重建 [證據表](evidence/2026-epark-formosan-dialectometry-gagnier.md)（表 1 至表 3 數值逐一寫出列與欄）：完成 EK-118（刪除 Wiki 自擬之 Levenshtein 正規化區塊公式，改照原文文字）與 EK-119（跨方言遷移改照原文之「好候選」「應測試」，註明原文未做遷移實驗、未談負遷移；補記公開程式碼、限制、四點建議與未來方向）；新登記並修正 EK-157（「首度」「發源樞紐」「全球規模最完整」「美國學者」、布農語爭議、`^` 字元、最少詞元之方言誤植為四季、Card 6「必然」等）；`verification` 改為 `partial`。新增 [卡片檔](cards/2026-epark-formosan-dialectometry-gagnier.md) 與論文頁原型 `web/prototypes/paper-v1/2026-epark-formosan-dialectometry-gagnier.html`。check_cards：ERROR 0、WARN 0；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（35 項）。來源：Card 3 採無公式模式（原文無編號公式）；Card 4 四個數字取自證據表表 2 賽德克語與泰雅語列之餘弦 Mean、表 1 排灣語 Core% 與魯凱語 Uniq%；Card 5 採新論文模式，四筆取自 §2.3 p. 125、§4.1 p. 130、§5 p. 131。複核：Card 2 一列與 Card 4 範圍折行落單，縮短；封面標題依 `title_zh` 刪減。首頁卡片牆：依協調規則未重建，由協調者處理。

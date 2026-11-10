@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>族語 E 樂園語料庫之方言計量學分析與低資源臺灣南島語方言評估｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#8FD5FD;--deep:#204960;--win:#1C252B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html#my-constellation" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.03</span><span>國際文獻</span></div><div class="win"><i style="left:82.6%;top:37.5%;width:1.5px;height:1.5px;opacity:0.31"></i><i style="left:39.8%;top:24.6%;width:1px;height:1px;opacity:0.68"></i><i style="left:71.8%;top:35.0%;width:1.5px;height:1.5px;opacity:0.43"></i><i style="left:69.4%;top:40.7%;width:1px;height:1px;opacity:0.82"></i><i style="left:7.7%;top:14.7%;width:1px;height:1px;opacity:0.43"></i><i style="left:46.2%;top:18.4%;width:1px;height:1px;opacity:0.34"></i><i style="left:42.5%;top:16.9%;width:1px;height:1px;opacity:0.72"></i><i style="left:11.0%;top:35.6%;width:1px;height:1px;opacity:0.32"></i><i style="left:21.1%;top:30.5%;width:1px;height:1px;opacity:0.62"></i><i style="left:12.7%;top:31.3%;width:1px;height:1px;opacity:0.58"></i><i style="left:28.9%;top:32.8%;width:1px;height:1px;opacity:0.55"></i><i style="left:73.6%;top:15.7%;width:1px;height:1px;opacity:0.84"></i><i style="left:72.4%;top:39.3%;width:1px;height:1px;opacity:0.59"></i><i style="left:51.1%;top:17.3%;width:1px;height:1px;opacity:0.34"></i><span class="lang">臺灣南島諸語</span><span class="rep"></span><span class="line"><span>用族語E樂園語料，</span><span>量出各族方言</span><span>有多接近</span></span></div><div class="tags">人工智慧、計算與數學・#計算語言學 #自然語言處理</div><div class="name">族語 E 樂園方言計量學分析</div><div class="lead">七個多方言族語中，多數結果與既有分群相符。</div><div class="yrs">2026 發表 ｜ DialRes 2026</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">方言怎麼分群，<br>至今仍有爭議？</span><div class="rows"><div class="row"><b>既有分群</b><span>萬山魯凱語的歸屬、排灣語內部關係仍未定論</span></div><div class="row"><b>E 樂園</b><span>為教學而建，未曾作為方言語料評估</span></div><div class="row"><b>構詞分析</b><span>多數族語沒有可靠的分析器，只能以詞為單位</span></div><div class="row gap"><b>量化</b><span>沒有以語料庫計算方言相似度的研究</span></div></div><span class="ft" style="color:var(--ink)">方言關係，得先有可重複的量尺。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">三把詞彙量尺，<br>同時比方言</span><svg class="dia" viewBox="0 0 300 110" role="img" aria-label="示意：兩個方言的語料分別算出詞頻餘弦、共有詞重疊與拼寫距離三項指標，三者互相對照。">
+  <rect class="k-ink k-ring" x="8" y="14" width="56" height="26" rx="4"/>
+  <rect class="k-ink k-ring" x="8" y="70" width="56" height="26" rx="4"/>
+  <rect class="k-accent k-ring" x="140" y="6" width="78" height="24" rx="4"/>
+  <rect class="k-accent k-ring" x="140" y="43" width="78" height="24" rx="4"/>
+  <rect class="k-accent k-ring" x="140" y="80" width="78" height="24" rx="4"/>
+  <line class="k-muted k-thin" x1="64" y1="27" x2="138" y2="18"/>
+  <line class="k-muted k-thin" x1="64" y1="27" x2="138" y2="55"/>
+  <line class="k-muted k-thin" x1="64" y1="27" x2="138" y2="92"/>
+  <line class="k-muted k-thin" x1="64" y1="83" x2="138" y2="18"/>
+  <line class="k-muted k-thin" x1="64" y1="83" x2="138" y2="55"/>
+  <line class="k-muted k-thin" x1="64" y1="83" x2="138" y2="92"/>
+  <polyline class="k-line" points="222,18 236,18 236,92 222,92"/>
+  <line class="k-line" x1="222" y1="55" x2="250" y2="55"/>
+  <text class="k-label" x="36" y="31" text-anchor="middle">方言 A</text>
+  <text class="k-label" x="36" y="87" text-anchor="middle">方言 B</text>
+  <text class="k-label-accent" x="179" y="22" text-anchor="middle">詞頻餘弦</text>
+  <text class="k-label-accent" x="179" y="59" text-anchor="middle">共有詞重疊</text>
+  <text class="k-label-accent" x="179" y="96" text-anchor="middle">拼寫距離</text>
+  <text class="k-label" x="272" y="59" text-anchor="middle">對照</text>
+</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">分別比較加權詞頻、共有詞彙與高頻詞拼寫差異，再以重複抽樣檢查估計是否穩定。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">0.820</span><span class="l">賽德克語三方言平均餘弦相似度，七族最高</span></div><div class="stat"><span class="v">0.605</span><span class="l">泰雅語六方言的同一指標，七族最低</span></div><div class="stat"><span class="v">24.5%</span><span class="l">排灣語在各方言都常見的共有詞型比例</span></div><div class="stat"><span class="v">79.2%</span><span class="l">魯凱語只出現在單一方言的詞型比例</span></div></div><span class="ft">範圍：Gagnier 2026，E 樂園教學語料，僅比詞彙</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">給語料使用者的四點建議</span><div class="time"><p><b>2026</b><span>公開方言計量分析程式碼</span></p><p><b>2026</b><span>作者建議共有詞多的族語先試跨方言遷移</span></p><p><b>2026</b><span>作者指出多數詞型僅出現一次</span></p><p><b>2026</b><span>作者計畫加入音韻與構詞特徵</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">拿族語 E 樂園當評測集時，各篇章要均衡，否則分數反映的是主題而非方言。</span><span class="shift"><span>混在一起</span><i aria-hidden="true"></i><b>分篇比較</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2026 發表 ｜ DialRes 2026</span>
+<h1>族語 E 樂園語料庫之方言計量學分析與低資源臺灣南島語方言評估</h1>
+<p class="en">Dialectometry and Evaluation of the ePark Corpus for Low-Resource Formosan Language Dialects</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">方言不是語言演化的碎屑，而是歷史在地理山川間刻下的活體等高線。透過計算方言學的多維度量，我們得以穿透教材編寫的表面同質化，看見四十二種南島鄉音真實的親疏密碼。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>臺灣南島語是南島語系的主要分支，多數語言資源匱乏且瀕危，內部方言在詞彙、音韻與構詞句法上常有差異；方言之間的分群關係常有爭議，在自然語言處理（NLP）中也尚未被研究（摘要；§1, p. 124）。原住民族語言研究發展基金會建置的「族語 E 樂園（ePark）」涵蓋 16 族 42 種官方方言，全庫 2,680,175 詞元，並有 587 小時音檔與華語翻譯（§2.1, p. 125）。</p>
+<p>Henry Gagnier（美國紐約州 Pittsford Sutherland High School）於 DialRes 2026 發表此研究，作者自述為首次以語料庫計算涵蓋全體官方臺灣南島語之方言相似度，也是首次把 ePark 當作方言 NLP 資源來評估（摘要，p. 124）。論文以<strong>詞級 TF-IDF 餘弦相似度</strong>、<strong>詞型 Jaccard 相似度</strong>與<strong>字元級 Levenshtein 距離</strong>三項指標，對阿美語、泰雅語、賽德克語、布農語、排灣語、魯凱語與卑南語 7 個多方言族語做成對比較，並把結果與既有分群研究對照。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：次方言劃分的實證爭議與語料庫特徵未知</h2></div>
+<p>在利用臺灣南島語進行計算建模與資源評估時，研究者面臨兩大核心困境（§1–§2.1, pp. 124–125）：</p>
+<ul><li><strong>方言分群仍有爭議，尚無語料庫層級的計算研究</strong>：既有分群多來自傳統語言學研究（如 Ogawa &amp; Asai 1935、Ho 1978、Li 1999），部分歸屬至今未定，例如萬山魯凱語（Mantauran）有三種不同假說，排灣語內部關係仍不清楚（§3.2, p. 128；§4.2, p. 131）；而臺灣南島語方言及其關係尚未在 NLP 中被研究（§1, p. 124）。</li><li><strong>ePark 作為方言 NLP 語料尚未被評估</strong>：ePark 為教學與復振而建，作者稱本篇是首次評估其作為方言 NLP 資源；其詞彙稀疏度（孤詞率 0.721 至 0.793）、六個教學篇章間的差異與方言間詞彙共享比例，是本篇才首次量出（摘要；§3.1, pp. 125–126）。多數臺灣南島語也沒有可靠的構詞分析器（§2.2, p. 125）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：三項詞彙相似度指標與 Bootstrap 評估</h2></div>
+<p>原文並未執行多維尺度分析（MDS）或語義概念對齊，而是直接在預處理後的語料表面詞形上計算三項詞彙相似度指標；全文無編號公式，三項指標僅以文字定義（§2.2–§2.3, p. 125）：</p>
+<h3>1. 前處理流程（§2.2, p. 125）</h3>
+<ul><li>全文轉小寫，以空白取代非英數字元以移除標點，但保留多種臺灣南島語使用的 <code>’</code> 與另一個符號（PDF 文字層中該字元無法顯示），再正規化多餘空白。</li><li>由於多數南島語缺乏可靠的構詞分析器，分詞直接以空白為邊界切分為詞級詞元（Word-Level Tokenization），不進行形態切分。</li></ul>
+<h3>2. 三項詞彙相似度指標（§2.3, p. 125）</h3>
+<ol><li><strong>詞級 TF-IDF 餘弦相似度（Word-Level TF-IDF Cosine Similarity）</strong>：<ul><li>使用 <code>scikit-learn</code> 構建向量，設定 <code>min_df=2</code> 排除僅出現一次的噪聲詞；</li><li>設定 <code>sublinear_tf=True</code>，以降低高頻詞的影響，因高頻詞對方言分析多半缺乏區辨力（scikit-learn 之次線性詞頻即 <span class="m-in" data-tex="1 + \log(\text{tf})"></span>，此為函式庫定義，原文未列式）。</li></ul></li><li><strong>詞型 Jaccard 相似度（Jaccard Similarity over Shared Vocabulary）</strong>：<ul><li>依詞型之有無，度量兩方言未加權之詞彙重疊（Jaccard 之標準定義為交集大小除以聯集大小，原文未列式）；</li><li>為降低低頻詞噪聲，詞彙只納入在各方言中語料頻率至少 5 次的詞型（§2.3；§3.1 另寫作「大於 5」）。</li></ul></li><li><strong>字元級 Levenshtein 距離（Levenshtein Distance）</strong>：<ul><li>取各方言前 500 個最高頻詞型計算字元級 Levenshtein 距離，雙向對稱平均並以詞長正規化；原文未寫出公式，也未指明以哪一個詞的長度正規化（§2.3, p. 125）。</li><li>用以捕捉 Jaccard 只看有無所無法呈現之詞形相似性。</li></ul></li></ol>
+<h3>3. Bootstrap 穩定性檢驗（§2.3, p. 125）</h3>
+<ul><li>每組方言對從各方言之詞元列表放回抽樣 10,000 個詞元、共 500 次，重新計算三項指標；以各語言群內所有方言對之 95% 信賴區間平均寬度，作為估計穩定性之量度，並藉固定樣本大小控制各方言語料規模之差異。</li></ul>
+<pre>[ePark 42 種方言原始語料庫]
+         │ (保留喉塞音、空白切詞、詞頻統計)
+         ▼
+ ┌────────────────────────────────────────────────────────────────────────┐
+ │                                                                        │
+ ▼                                  ▼                                     ▼
+[指標 1: TF-IDF 餘弦相似度]     [指標 2: 詞型 Jaccard 相似度]     [指標 3: 500 高頻詞 Levenshtein]
+ (min_df=2, sublinear_tf)       (僅取頻率 &gt;= 5 之詞型)            (雙向對稱、以詞長正規化)
+ │                                  │                                     │
+ └──────────────────────────────────┼─────────────────────────────────────┘
+                                    ▼
+           [Bootstrap 500 次抽樣 95% 信心區間檢驗估計穩定性]
+                                    │
+                                    ▼
+       [產出 7 個多方言族語內部之成對相似度，並與既有分群對照]</pre>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>可核實的原文證據</h2></div>
+<h3>1. 語料庫統計與評估特徵（表 1, p. 127）</h3>
+<ul><li><strong>語料規模</strong>：42 方言中，每方言詞元數介於 46,177（泰雅語 Plngawan）至 67,968（卑南語 Nanwang）；詞型數介於 9,530 至 13,390；型元比（TTR）介於 0.184 至 0.240。</li><li><strong>詞彙稀疏性</strong>：所有方言的孤詞率（Hapax legomena rate）均高達 <strong>0.721 至 0.793</strong>，顯示 ePark 語料大部分詞彙僅出現一次，印證了限制 Jaccard 詞頻 <span class="m-in" data-tex="\ge 5"></span> 的必要性。</li><li><strong>詞彙板塊佔比</strong>：詞彙教學板塊佔各方言詞元的 21.9% 至 32.6%，分佈高度一致。</li></ul>
+<h3>2. 多方言語言之核心詞與方言相似度總覽（表 1 &amp; 表 2, pp. 127–128）</h3>
+<p>核心共有詞為在該語言所有方言中頻率皆大於 5 的詞型比例，方言獨有詞為只出現在單一方言的詞型比例（§3.1, p. 126）；表中 <span class="m-in" data-tex="\pm"></span> 後為各方言對數值之標準差（表 2 之 SD 欄）。</p>
+<table><thead><tr><th>語言</th><th>方言數 <span class="m-in" data-tex="N"></span></th><th>核心共有詞 (Core%)</th><th>方言獨有詞 (Uniq%)</th><th>平均餘弦相似度</th><th>平均 Jaccard</th><th>平均 Levenshtein</th></tr></thead><tbody><tr><td><strong>賽德克語 (Seediq)</strong></td><td>3</td><td>23.8%</td><td>61.5%</td><td><strong>0.820</strong> <span class="m-in" data-tex="\pm"></span> 0.055</td><td>0.362</td><td>0.848</td></tr><tr><td><strong>排灣語 (Paiwan)</strong></td><td>4</td><td><strong>24.5%</strong></td><td>56.7%</td><td><strong>0.781</strong> <span class="m-in" data-tex="\pm"></span> 0.015</td><td>0.434</td><td>0.861</td></tr><tr><td><strong>阿美語 (Amis)</strong></td><td>5</td><td>19.6%</td><td>53.8%</td><td>0.728 <span class="m-in" data-tex="\pm"></span> 0.064</td><td><strong>0.447</strong></td><td>0.862</td></tr><tr><td><strong>卑南語 (Puyuma)</strong></td><td>4</td><td>14.8%</td><td>63.9%</td><td>0.726 <span class="m-in" data-tex="\pm"></span> 0.068</td><td>0.333</td><td>0.830</td></tr><tr><td><strong>布農語 (Bunun)</strong></td><td>5</td><td>15.2%</td><td>61.0%</td><td>0.676 <span class="m-in" data-tex="\pm"></span> 0.051</td><td>0.366</td><td>0.844</td></tr><tr><td><strong>魯凱語 (Rukai)</strong></td><td>6</td><td>9.3%</td><td><strong>79.2%</strong></td><td>0.648 <span class="m-in" data-tex="\pm"></span> 0.063</td><td><strong>0.265</strong></td><td>0.761</td></tr><tr><td><strong>泰雅語 (Atayal)</strong></td><td>6</td><td><strong>8.8%</strong></td><td>71.0%</td><td><strong>0.605</strong> <span class="m-in" data-tex="\pm"></span> 0.062</td><td>0.270</td><td>0.792</td></tr></tbody></table>
+<h3>3. 計算方言學分群重要發現（§3.2–§3.3, pp. 126–129）</h3>
+<ul><li><strong>賽德克語高度緊密</strong>：餘弦達 0.820，全語系最高；Toda 與 Truku 兩方言極度相似，Tgdaya 則相對分立。</li><li><strong>布農語精確重現經典三分支</strong>：計算指標精準重現歷史語言學確立的三分群——中部方言對（Takivatan-Takbunuaz，餘弦 0.774）與北部方言對（Takituduh-Takibaka，餘弦 0.767）各自高度聚集，而巒群（Isbukun）獨立構成南部群。</li><li><strong>排灣語高度均質</strong>：各方言對間餘弦標準差僅 0.015（介於 0.765 至 0.802），計算上難以明確切分出歷史文獻主張的西北與東南群。</li><li><strong>泰雅語與魯凱語分化最深</strong>：泰雅語平均餘弦僅 0.605、核心共有詞僅 8.8%（71.0% 詞型為方言獨有）；魯凱語獨有詞達 79.2%、Jaccard 僅 0.265。霧台（Budai）與大武（Labuan）高度相似（0.802），而萬山（Mantauran）在餘弦與 Jaccard 上展現分歧信號。</li></ul>
+<h3>4. 主題板塊對相似度之劇烈干擾（表 3, p. 128）</h3>
+<ul><li>詞彙板塊在所有語言中相似度最高（餘弦 0.811 至 0.930，平均 0.863）；</li><li>文化篇（0.412 至 0.672，平均 0.537）與閱讀書寫（0.425 至 0.708，平均 0.537）相似度最低。作者據此指出，方言相似度與距離只能與使用相同主題篇章計算之分數比較，NLP 研究也須考慮這些差異（§3.2, p. 126）。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<p>本篇發表於 2026 年，本頁尚未收錄附出處之後續研究。以下為原文之主要結論、公開資源、限制與未來方向：</p>
+<ul><li><strong>臺灣原住民族語方言的大規模計算量化</strong>：作者自述首次對 ePark 的 42 個方言進行大規模語料計算分析；在多數語言中，簡單的詞彙相似度指標與既有分群研究結果相當接近（如布農語三分群），但排灣語無法據以判定分群，萬山魯凱語之兩種指標結果分歧（摘要，p. 124；排灣語，p. 128；§4.2，pp. 130–131）。</li><li><strong>對跨方言遷移之建議（作者解釋，未做遷移實驗）</strong>：作者認為共有核心詞比例較高的排灣語與賽德克語「是跨方言模型遷移的好候選」（§3.1, p. 126），建議這類語言「應測試遷移學習」；方言獨有詞比例高的語言（如泰雅語、魯凱語）則建議用方言專屬模型或微調，而非跨方言遷移（§4.1, p. 130）。原文沒有實際做遷移實驗，也未談負遷移。</li><li><strong>公開資源</strong>：分析程式碼公開於 GitHub <code>henrygagnier/formosan-dialectometry</code>（§2.3, p. 125）；所用 ePark 語料為公開資源（§4.1, p. 130）。</li><li><strong>作者明列之限制</strong>（§4.1, p. 130）：孤詞率高，表示語料只涵蓋各方言較淺的詞彙，頻率型指標可靠度受限，構詞分析尤其困難；詞彙篇章佔比高且相似度最高，可能高估共有核心詞；教學用之編選文本可能少收地區性詞彙；只含官方方言與語言，未涵蓋所有社群；本篇未使用 ePark 的音檔。</li><li><strong>作者給語料使用者的四點建議</strong>（§4.1, p. 130）：做方言相似度與方言辨識時使用全部語料，或情境對話與短文篇章；計算詞彙型指標時設最低頻率門檻；獨有詞比例高者用方言專屬模型或微調，共有核心詞比例高者測試遷移學習；善用尚未被充分利用的音檔做音韻與語音辨識研究。</li><li><strong>作者所述之未來方向</strong>（§5, p. 131）：加入音韻與構詞特徵；開發臺灣南島語構詞分析工具；探究餘弦與 Jaccard 結果分歧之原因；納入句法或語用特徵；延伸至方言辨識、跨方言遷移學習與語音辨識等下游任務；與多語言語言模型表示等神經方法比較；持續建立方言語料。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<blockquote>以下為使用者個人研究之延伸思考（Wiki 詮釋），非原文主張。</blockquote>
+<h3>對個人碩士論文研究之映射與啟發</h3>
+<ol><li><strong>泛泰雅語群（Atayalic）跨方言遷移之具體指導</strong>：<ul><li>Gagnier 的數據明確指出：賽德克語三方言平均餘弦高達 0.820，遷移潛力極大；但泰雅語六大方言平均餘弦僅 0.605，方言獨有詞高達 71.0%！</li><li><strong>啟發</strong>：廖恒慶（2023）嘗試做泛泰雅多語言翻譯時，泰雅語組表現相對掙扎。Gagnier 的數據提供一個可能的解釋（Wiki 推測，原文未做翻譯實驗）：泰雅語 71.0% 的詞型只出現在單一方言，若未對各方言做專屬詞彙處理就直接混合訓練，可能遇到大量未知詞。</li></ul></li><li><strong>遷移權重矩陣之數學化</strong>：<ul><li>論文提供的 Table 2 矩陣可直接轉化為神經翻譯模型之先驗：在多工微調時，可將成對餘弦相似度設為損失函數的對齊增益權重。</li></ul></li><li><strong>ePark 語料的領域偏差控制</strong>：<ul><li>Table 3 警告我們：ePark 的文化篇與生活會話板塊在方言間詞彙漂移劇烈。若抽取 ePark 作為機器翻譯評測集，必須保持各方言在六大板塊的均勻分佈，避免評測分數被單一文化篇的孤立專名扭曲。</li></ul></li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2026</b><span>發表・DialRes 2026</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Henry Gagnier</span></div>
+    <div class="blk"><span class="lab">我的關注</span><span>國際文獻</span><span class="note">研究語言：臺灣南島諸語</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Proceedings of Workshop on Dialects in NLP — A Resource Perspective (DialRes 2026), 124-134</span><a href="https://doi.org/10.63317/4scoopyavtvi">doi:10.63317/4scoopyavtvi</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#計算語言學</span><span class="chip">#自然語言處理</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>臺灣南島語計算語言學與構詞解析</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">Henry Gagnier（美國紐約州 Pittsford Sutherland High School），<em>DialRes 2026</em>, pp. 124–134（ELRA，2026 年 5 月 16 日）。以臺灣原住民族語言研究發展基金會建置之「族語 E 樂園（ePark）」42 種官方方言為分析語料。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
