@@ -149,7 +149,7 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 
 1. 同步遠端後執行 `python tools/build_home.py --card <slug>`：輸出清單須有本篇一行、斷行與卡片檔相同，「卡片牆自我檢查：ERROR 0」；再以 `--check --card <slug>` 確認一致。
 2. 開 `http://127.0.0.1:8781/index.html`，依序執行 `verify_wall.js`（`var EK_SLUG = '<slug>';`）與本 Skill 之 `scripts/verify_star.js`（同樣先設 `EK_SLUG`），兩份報告最後一行都須為「結果：PASS」。
-3. 截圖目視：群星論文在星圖上看得到這顆星、點了說明框顯示雙年份與一句話；我的關注論文在 `#my-constellation` 看得到；卡片牆上的封面卡斷行、論文名、雙年份正常；點卡片開到本篇論文頁、按返回回到首頁。
+3. 截圖目視：群星論文在星圖上看得到這顆星、點了說明框顯示雙年份與一句話；我的關注論文在 `#my-constellation` 看得到；卡片牆上的封面卡斷行、論文名、雙年份正常；點卡片開到本篇論文頁、按返回：群星論文回到首頁星圖、我的關注論文回到首頁我的星系。
 4. **重建編號後移之他篇原型**：卡片編號依 `timeline_year` 由新到舊排（`tools/build_home.py` 之 `card_numbers()`），新收錄的論文會使排在它之後的論文編號各加一，那些論文之原型 Card 1 左上就和首頁卡片牆對不上。執行 `pipeline_status.py`（全庫總表），S8 報「編號與首頁卡片牆不同」者，逐篇以 `python tools/build_paper_prototype.py <slug>` 重建（自我檢查 ERROR 0，`git diff` 應只有編號一行改變），與本篇同一提交（`references/publish.md` 第二節第 4 點）。工作目錄裡 `tools/paper_template.html` 或 `tools/build_paper_prototype.py` 有他人未提交之修改時，不得在工作目錄重建，改依同節以 HEAD 之暫時 worktree 重建。
 5. 平行批次的協調規則禁止組員重建首頁時，略過本步，交付說明寫明「首頁：依協調規則未重建，由協調者處理」；協調者在該批結束時依 `references/publish.md` 第四節統一上架，第 4 點之他篇原型亦由協調者重建。
 6. 完成條件：上述各項達成。卡片檔提交前 `pipeline_status.py` 之 S9 會顯示「卡片檔尚未提交」，提交後才會轉為 OK（S10 第 4 步確認）。
