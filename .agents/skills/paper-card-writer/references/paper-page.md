@@ -45,17 +45,38 @@
 1. 論文頁 Frontmatter 有 `venue_short` 時，一律用它。
 2. 否則由 `tools/build_home.py` 之 `venue_short()` 自動縮短 `venue`：學位論文顯示「碩士論文」；`Findings of the ACL: EMNLP 2025` 顯示「Findings of EMNLP 2025」；`venue` 內有括號縮寫（如 `(LREC 2026)`）時取括號內；ACL 年會顯示「ACL 年份」；arXiv 顯示「arXiv」；其餘取第一個逗號前的期刊全名。
 
-資訊欄年份旁一行約可放 8.5 個中文字寬（1440 x 900 實測），期刊名折成兩行可以接受。**建置自我檢查報 WARN「超過兩行」時，必須處理**：
+簡稱出現在兩個寬度不同的地方，兩處的警告都要處理：
 
-* 填 `venue_short`，寫在 `venue` 的下一行：`venue_short: "PNAS"`。
-* 只能填下列之一，依序優先：
-  1. 期刊或其學會自己廣為使用的縮寫（`PNAS`、`AER`、`PRL`）。
-  2. Crossref 之 `short-container-title`（`https://api.crossref.org/works/<DOI>` 回傳之欄位，例如 `Phys. Rev. Lett.`）。
-* 兩者都沒有時不填，保留 WARN，在交付說明寫明「期刊無通用縮寫，資訊欄折為三行以上」。
+| 位置 | 寬度（實測） | 警告來源 |
+|---|---|---|
+| 論文頁資訊欄年份旁 | 一行約 8.5 個中文字寬（約 17 個半形字元，1440 x 900），折成兩行可以接受 | 建置自我檢查 WARN「超過兩行」 |
+| 首頁卡片牆雙年份「YYYY 發表 ｜ 簡稱」（只有未獲獎論文顯示期刊） | 約 10 個半形字元放得下（`Nat Astron`、`Eng. Proc.`），17 個被截斷（`ACM Comput. Surv.`、`Findings of ACL 2024`），中間長度以 `verify_wall.js` 為準（2026-11-10 實測，桌面與手機相同） | `verify_wall.js` WARN「bot 被截斷」 |
+
+**任一處有警告時，必須依下列步驟處理**：
+
+1. **查候選**：執行 `python .agents/skills/paper-card-writer/scripts/venue_short_lookup.py <slug>`。它列出目前顯示之簡稱、兩處的截斷風險、Crossref 之 `container-title` 與 `short-container-title`，不寫入任何檔案。`--long` 列出全庫可能被截斷者（`--no-net` 不查 Crossref）。Crossref 連線常逾時，腳本會自動重試；仍失敗時稍後再跑，不得憑記憶填。
+2. **只能填下列之一，依序優先**：
+   1. 期刊或其學會自己廣為使用的縮寫（`PNAS`、`AER`、`PRL`）。須有第一手出處：原文 PDF 首頁或頁尾之引用格式（例如 MDPI 印「Eng. Proc. 2025, 120, 52」，以 `paper-pdf-parser` 抽文字後搜尋），或期刊官網。
+   2. Crossref 之 `short-container-title`（例如 `Phys. Rev. Lett.`、`Nat Astron`），照 Crossref 原樣，不自行加減句點。
+   * 第 1 類存在時優先於第 2 類，即使第 2 類也放得下。
+   * 第 1 類之縮寫查不到第一手出處（例如官網拒絕自動讀取）時，不得自行採用；在交付說明列出候選與查證結果，**經使用者確認後**才可填，並於日誌寫明「經使用者確認」。
+3. **兩者都沒有時不填**，保留 WARN，在交付說明寫明「期刊無通用縮寫，資訊欄折為三行以上」或「卡片牆雙年份以省略號截斷」。兩者都有、但都仍會截斷時，填最短者，並在交付說明寫明仍截斷。
+4. **填寫**：寫在 `venue` 的下一行，例如 `venue_short: "PNAS"`。論文頁若為 CRLF 換行，插入之行也用 CRLF（以 shell 取 `doi_url` 時須先去掉 `\r`）。
+5. **重建與驗證**：重建該篇論文頁原型（`python tools/build_paper_prototype.py <slug>`）與首頁（`python tools/build_home.py`），以 `python tools/build_home.py --check` 確認一致，再以 `verify_wall.js` 確認該篇不再報「bot 被截斷」。論文頁原型、首頁與論文頁一併提交（首頁說明框也顯示簡稱）。
+
 * 不得自創縮寫、不得以中文意譯期刊名、不得放卷期頁、不得把會議年份寫錯（照 `venue` 原文）。
-* 填寫或修改 `venue_short` 後，必須執行 `python tools/build_home.py` 重建首頁，並以 `python tools/build_home.py --check` 確認一致，首頁一併提交（首頁說明框也顯示簡稱）。
+* MDPI 會議論文集（如 `Engineering Proceedings`）之 Crossref `container-title` 是會議名稱、不是刊名，也沒有 `short-container-title`；刊名縮寫以原文 PDF 之引用格式為準。
 
-2026-11-09 已填：`1982-hopfield-network`（PNAS）、`2001-colonial-origins-acemoglu`（AER）、`2016-ligo-gravitational-waves`（PRL）。
+已填：
+
+| slug | `venue_short` | 依據 | 日期 |
+|---|---|---|---|
+| `1982-hopfield-network` | `PNAS` | 期刊通用縮寫 | 2026-11-09 |
+| `2001-colonial-origins-acemoglu` | `AER` | 期刊通用縮寫 | 2026-11-09 |
+| `2016-ligo-gravitational-waves` | `PRL` | 期刊通用縮寫 | 2026-11-09 |
+| `2023-jwst-massive-galaxies` | `Nat Astron` | Crossref `short-container-title` | 2026-11-10 |
+| `2026-hybrid-dictionary-rag-llm-paiwan-wang` | `Eng. Proc.` | 原文 PDF 首頁引用格式（MDPI） | 2026-11-10 |
+| `2023-low-resource-nmt-survey-ranathunga` | `CSUR` | ACM 自用之刊名縮寫；ACM 官網拒絕自動讀取，未能查證，經使用者確認採用（Crossref 之 `ACM Comput. Surv.` 在卡片牆仍被截斷） | 2026-11-10 |
 
 ## 四、雙年份的獎項寫法
 

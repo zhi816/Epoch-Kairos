@@ -169,7 +169,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 > | [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 將論文譯為繁體中文或重建 PDF 時 |
 > | [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | Ingest 第 1 步與查核時，將 `raw/` 論文 PDF 抽成附頁碼標記之文字，以搜尋主張出處；預設用 PyMuPDF，MinerU 僅用於純圖片、亂碼 PDF 或抄寫長公式；輸出一律只當草稿，須回原 PDF 核對，且只可在本機解析 |
 > | [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 任何 Git 同步、提交與推送（見第十章） |
-> | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | Ingest 第 4 步、回填或修訂卡片時：撰寫 `wiki/cards/<slug>.md`（首頁封面卡與論文頁 Card 1–6 之文字、Card 3 示意圖），並建置論文頁原型、放上首頁卡片牆且兩者皆驗證；`references/` 須逐份讀完，附 `check_cards.py` 檢查腳本與 `verify_page.js`、`verify_wall.js` 瀏覽器驗證腳本 |
+> | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | Ingest 第 4 步、回填或修訂卡片時：撰寫 `wiki/cards/<slug>.md`（首頁封面卡與論文頁 Card 1–6 之文字、Card 3 示意圖），並建置論文頁原型、放上首頁卡片牆且兩者皆驗證；`references/` 須逐份讀完，附 `check_cards.py` 檢查腳本、`venue_short_lookup.py` 期刊簡稱查詢腳本與 `verify_page.js`、`verify_wall.js` 瀏覽器驗證腳本 |
 
 ### 1. Ingest（收錄新來源）
 當使用者在 `raw/` 放入新文件或指令收錄一篇論文時，AI 必須依 [`paper-pipeline`](./.agents/skills/paper-pipeline/SKILL.md) 之 S0 至 S10 逐步執行，每一步以其完成條件之指令確認後才進下一步；`python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug>` 九步皆 OK 才算收錄完成。以下 5 個步驟為該流程之摘要：
@@ -275,7 +275,7 @@ doi_url: "https://doi.org/10.1038/nn1525"
 > 在前台首頁（知識星圖之說明框）與每篇論文的封面卡片上，必須同時清晰並列標記 **「2005 發表 ｜ 2026 諾貝爾獎」**（以光遺傳學為例），兼顧科學史發表真實性與當代獲獎影響力。首頁一律簡稱「諾貝爾獎」；論文頁（Card 1 底部與長文頂部）寫 `honor` 括號前之獎項全名，如「2005 發表 ｜ 2026 諾貝爾生理學或醫學獎」（2026-11-09 使用者確認，依樣稿「論文頁 F」）。
 
 > **期刊簡稱（`venue_short`，選填）**：
-> 論文頁資訊欄與首頁顯示期刊或會議簡稱；未填時由 `venue` 自動縮短（取括號內縮寫或第一個逗號前之全名）。自動結果在論文頁資訊欄超過兩行時（建置自我檢查會提示），依序填期刊或學會自己通用的縮寫（`PNAS`、`AER`、`PRL`）或 Crossref 之 `short-container-title`；兩者皆無則不填。不得自創縮寫或以中文意譯。修改後須重建首頁（`python tools/build_home.py`）。細則見 `paper-card-writer` 之 `references/paper-page.md` 第三節。
+> 論文頁資訊欄與首頁顯示期刊或會議簡稱；未填時由 `venue` 自動縮短（取括號內縮寫或第一個逗號前之全名）。自動結果在論文頁資訊欄超過兩行（建置自我檢查會提示）或首頁卡片牆雙年份被截斷時（`verify_wall.js` 會提示），依序填期刊或學會自己通用的縮寫（`PNAS`、`AER`、`PRL`）或 Crossref 之 `short-container-title`；兩者皆無則不填；學會縮寫查不到第一手出處者，須經使用者確認才可填。不得自創縮寫或以中文意譯。修改後須重建首頁（`python tools/build_home.py`）。細則見 `paper-card-writer` 之 `references/paper-page.md` 第三節。
 
 > **單篇頁容納多篇工作之原則**：
 > 諾貝爾獎常表彰橫跨數年的一系列論文。此時以最具代表性之單篇為主軸建立頁面，其餘奠基論文一律列入 `key_papers`，並於頁首加註本頁範圍說明，嚴禁將多篇成果混記為單篇之貢獻。

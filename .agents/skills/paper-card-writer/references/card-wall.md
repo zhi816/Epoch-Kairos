@@ -86,6 +86,7 @@ INFO  wiki/cards/xxxx.md 尚未提交，未放上卡片牆。……
    ```bash
    python -m http.server 8781 --bind 127.0.0.1 --directory web
    ```
+   macOS 上若倉庫位於「文件」等受保護資料夾，伺服器可能因 `PermissionError: Operation not permitted`（讀不到目前目錄）而無法啟動：把 `web/` 複製到暫存資料夾再從該處啟動，每次重建後須重新複製；`verify_wall.js` 亦可複製進該資料夾，以 `await eval(await (await fetch('/verify_wall.js')).text())` 執行。
 2. 開 `http://127.0.0.1:8781/index.html`，分頁保持在前景。
 3. 在 Console（或代理的瀏覽器 JavaScript 工具）先執行 `var EK_SLUG = '<slug>';`，再貼上 `.agents/skills/paper-card-writer/scripts/verify_wall.js` **全文**執行，約 25 秒後輸出報告。兩段可放在同一次執行。
 4. 最後一行必須是「結果：PASS（首頁卡片牆，指定 <slug>）」。任何 FAIL 都不得交付；WARN 依本檔第六節逐條處理。
@@ -152,7 +153,7 @@ INFO  wiki/cards/xxxx.md 尚未提交，未放上卡片牆。……
 | FAIL 連結回應 404 | 原型不在 `web/prototypes/paper-v1/` | 建置原型後重驗 | 改連結去指向別篇 |
 | FAIL 張數、欄數、篩選、頁面寬、字級 | 首頁範本或程式之問題，不是卡片問題 | 登記 `wiki/todo.md`（範圍 `web`）並告知使用者；該篇卡片照常交付，交付說明寫明 | 自行修改 `home_template.html`、`starmap.css`、`starmap.js` |
 | WARN 論文名超過兩行，被截斷 | 短名太長 | 卡片檔未填封面標題且短名超過 16 字：依 `cover.md` 第四節填封面標題，重建原型與首頁再驗。否則保留，交付說明寫明截斷位置 | 為了不截斷而改 `title_zh` |
-| WARN bot 被截斷（雙年份） | 期刊或會議名稱太長 | 依 `paper-page.md` 第三節：有期刊自己通用的縮寫或 Crossref `short-container-title` 才填 `venue_short`，填後重建首頁；兩者都沒有就保留，交付說明寫明「期刊無通用縮寫，卡片牆雙年份以省略號截斷」 | 自創縮寫、以中文意譯 |
+| WARN bot 被截斷（雙年份） | 期刊或會議名稱太長 | 依 `paper-page.md` 第三節：先跑 `scripts/venue_short_lookup.py <slug>` 查候選；有期刊自己通用的縮寫（須有第一手出處，查不到出處者經使用者確認）或 Crossref `short-container-title` 才填 `venue_short`，填後重建論文頁原型與首頁再驗；兩者都沒有就保留，交付說明寫明「期刊無通用縮寫，卡片牆雙年份以省略號截斷」 | 自創縮寫、以中文意譯、未查證之縮寫未經使用者確認即填 |
 | WARN tag 被截斷（研究語言） | 研究語言多 | 保留，交付說明寫明；`focus_languages` 只能依 `AGENTS.md` 第七章第 1 節之規則修改 | 為了放得下刪減語言 |
 
 ## 七、禁止事項

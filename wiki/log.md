@@ -1878,3 +1878,14 @@
   - `2023-low-resource-nmt-survey-ranathunga`：`ACM Comput. Surv.`（Crossref `short-container-title`，與 ISO 4 縮寫相同）。ACM 之「CSUR」無法自第一手來源查證（ACM DL 拒絕自動讀取），故未採用；此篇卡片牆雙年份仍以省略號截斷，但截斷較原全名短。
   - 重建三篇論文頁原型（自我檢查皆 ERROR 0、WARN 0）與首頁 `web/index.html`；`build_home.py --check` 一致；`lint_wiki.py` ERROR 0。
   - `verify_wall.js`（全部卡片，桌面 1440 x 900 與手機 375 x 812、群星與我的星系）：結果 PASS，WARN 22 項；JWST 與排灣語兩篇之雙年份截斷 WARN 已消失，Ranathunga 仍有 1 項（每尺寸），其餘 WARN 為他篇研究語言標籤與會議名截斷，未變動。
+
+## [2026-11-10 12:12] rule | 期刊簡稱 venue_short 處理流程整理入 paper-card-writer | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者確認 TD-015 後續，並要求整理入 Skill。
+  - `2023-low-resource-nmt-survey-ranathunga` 之 `venue_short` 由 `ACM Comput. Surv.` 改為 `CSUR`（ACM 自用之刊名縮寫；ACM 官網拒絕自動讀取、未能自第一手來源查證，經使用者確認採用）。重建論文頁原型（ERROR 0、WARN 0）與首頁，`build_home.py --check` 一致；`verify_wall.js`（指定本篇）結果 PASS，WARN 20 項，本篇雙年份截斷已消失，其餘為他篇研究語言標籤與會議名截斷。
+  - 新增 `.agents/skills/paper-card-writer/scripts/venue_short_lookup.py`：列出目前顯示之簡稱、論文頁資訊欄行數與卡片牆截斷風險，以及 Crossref `container-title`／`short-container-title`（逾時自動重試，自動去掉 `doi_url` 之 `\r`）；`--long` 列出全庫可能被截斷者。只提供候選、不寫檔。
+  - `references/paper-page.md` 第三節改寫：兩處寬度（資訊欄約 17 個半形字元一行；卡片牆約 10 個放得下、17 個截斷）、五步處理流程、第一類縮寫須有第一手出處（原文 PDF 引用格式或期刊官網），查不到出處者須經使用者確認、MDPI 會議論文集之 Crossref 刊名陷阱，已填清單改為表格並補三篇。
+  - `references/card-wall.md` 第六節「bot 被截斷」列改為先跑查詢腳本；第四節第 3 步補 macOS 受保護資料夾無法啟動本機伺服器之替代做法。`SKILL.md` 第九節登記新腳本。
+  - `AGENTS.md` 第七章第 1 節期刊簡稱說明補「首頁卡片牆雙年份被截斷時」與「未查證之學會縮寫須經使用者確認」；第六章 Skill 一覽補登新腳本。
+  - `lint_wiki.py` 之 2 項 ERROR 屬他人進行中之 `1985-macroscopic-quantum-tunneling`（TD-014，未追蹤檔案），未納入本次提交。

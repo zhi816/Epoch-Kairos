@@ -189,6 +189,10 @@ description: >-
 * 重建首頁 `web/index.html`（知識星圖與卡片牆）。卡片牆只收 Git 已提交之卡片檔；自己這篇尚未提交時以 `--card <slug>` 帶入（先跑 `check_cards.py`，ERROR 即中止）。
 * 輸出卡片牆清單（編號、slug、封面斷行）、未上牆之卡片檔（INFO）與「卡片牆自我檢查：ERROR n、WARN m」；有 ERROR 時不寫檔、結束代碼為 1。`--check` 只比對不寫檔。細則見 `references/card-wall.md`。
 
+`python .agents/skills/paper-card-writer/scripts/venue_short_lookup.py [slug ...] [--long] [--no-net]`（只用標準函式庫，查 Crossref 需要網路）：
+
+* 列出論文頁目前顯示之期刊簡稱、論文頁資訊欄行數與首頁卡片牆雙年份之截斷風險，以及 Crossref 之 `container-title`、`short-container-title`；`--long` 列出全庫可能被截斷者。只提供候選、不寫檔，採用規則見 `references/paper-page.md` 第三節。
+
 `scripts/verify_wall.js`（瀏覽器執行）：
 
 * 以本機伺服器開啟首頁 `index.html` 後，在 Console 先執行 `var EK_SLUG = '<slug>';` 再執行全文；以隱藏 iframe 量測 1440 x 900 與 375 x 812、群星與我的星系兩種模式，輸出逐項結果與「結果：PASS」或「結果：FAIL n 項」。量測項目見 `references/card-wall.md` 第四節第 3 步。
