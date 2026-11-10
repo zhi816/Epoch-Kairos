@@ -1805,3 +1805,12 @@
   - 卡片：Card 3 公式取論文頁之 $\Delta L(t) = \delta L_x - \delta L_y = h(t)\,L$（原文 p. 3，論文頁改為單行），示意圖為雷射、分光鏡、兩臂共振腔與光偵測器之結構圖；Card 4 四個數字（5.1σ、24、36 與 29、3.0）取自證據表，寫卡前回原文逐一抽查（摘要、p. 3、表 I 與 p. 7）；Card 5 一般模式四筆（GW170817、2017 諾貝爾獎、標準汽笛測哈伯常數、GWTC-3）。
   - 檢查：`check_cards.py` ERROR 0、WARN 0（初稿「第一次」強斷言與縮寫 GW、LIGO 之 WARN 已處理：證據表該列補原文用語，範圍與封面標題改寫）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS；無頭截圖目視，修正 Card 1 論文名落單、Card 2 至 5 共五處拆詞折行。`lint_wiki.py` 本頁無 ERROR。首頁卡片牆於本批結束時統一重建。
   - 依使用者指示，`2005-optogenetics`、`2023-drugclip` 可能觸發安全機制，本批先跳過。
+
+## [2026-11-10 10:32] update | 補列低資源翻譯綜述之後續研究並新增卡片文字檔 | #自然語言處理 #深度學習 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 C 組（TD-008）。先依 wiki-content-audit 補 [wiki/papers/2023-low-resource-nmt-survey-ranathunga.md](papers/2023-low-resource-nmt-survey-ranathunga.md) 與證據表，再依 paper-card-writer 撰寫 [wiki/cards/2023-low-resource-nmt-survey-ranathunga.md](cards/2023-low-resource-nmt-survey-ranathunga.md) 並建置 `web/prototypes/paper-v1/2023-low-resource-nmt-survey-ranathunga.html`。
+  - Card 5 補列三篇引用本篇之後續研究，皆以 Crossref 核對書目、以各篇參考文獻確認引用本篇、以其摘要核對內容：McNamee 與 Duh 2023（Findings of ACL 2023, DOI 10.18653/v1/2023.findings-acl.518）、Pang 等 2024（Computational Linguistics 50(1), DOI 10.1162/coli_a_00496）、Ranathunga 等 2026（ACM TALLIP 25(4), DOI 10.1145/3800681）。搜尋範圍寫入證據表。
+  - Card 3 補記全文唯一編號式為 §12.1 式 (1)（篩選離群語言之統計判準，p. 229:22），與翻譯技術無關；證據表 Card 4 趨勢與建議列逐一寫出年份與三項建議。`verification` 由 `verified` 改為 `partial`（本次只抽查卡片用到之主張，未整頁重核）。
+  - 卡片：研究類型「綜述」（與 `tools/build_home.py` 之 STUDY_TYPE 一致）；Card 3 無公式模式，理由寫明式 (1) 之位置與用途；Card 4 結論模式三條回原文 §10、§14 抽查相符；Card 5 一般模式三筆後續研究；封面標題「低資源神經機器翻譯綜述」。`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` PASS（35 項）；目視修正封面論文名與 Card 5 標題、兩筆里程碑之落單行。`lint_wiki.py` ERROR 0。
+  - 首頁卡片牆依本批協調規則未重建，由協調者處理。

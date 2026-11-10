@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>低資源語言神經機器翻譯綜述｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#8FD5FD;--deep:#204960;--win:#1C252B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html#my-constellation" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.21</span><span>國際文獻</span></div><div class="win"><i style="left:16.6%;top:5.0%;width:1px;height:1px;opacity:0.57"></i><i style="left:91.3%;top:40.4%;width:1px;height:1px;opacity:0.51"></i><i style="left:42.1%;top:16.8%;width:1px;height:1px;opacity:0.77"></i><i style="left:88.7%;top:19.1%;width:1px;height:1px;opacity:0.44"></i><i style="left:22.5%;top:37.3%;width:1px;height:1px;opacity:0.59"></i><i style="left:16.1%;top:33.0%;width:1px;height:1px;opacity:0.41"></i><i style="left:68.4%;top:39.7%;width:1px;height:1px;opacity:0.79"></i><i style="left:22.0%;top:23.0%;width:1px;height:1px;opacity:0.52"></i><i style="left:50.0%;top:41.4%;width:1.5px;height:1.5px;opacity:0.82"></i><i style="left:91.5%;top:27.8%;width:1px;height:1px;opacity:0.35"></i><i style="left:50.9%;top:44.3%;width:1px;height:1px;opacity:0.60"></i><i style="left:63.3%;top:16.8%;width:1px;height:1px;opacity:0.30"></i><i style="left:5.8%;top:17.4%;width:1px;height:1px;opacity:0.67"></i><i style="left:89.6%;top:8.6%;width:1px;height:1px;opacity:0.56"></i><span class="lang">綜述</span><span class="rep"></span><span class="line"><span>盤點資料稀少時，</span><span>機器翻譯的各種做法</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #深度學習 #人工智慧</div><div class="name">低資源神經機器翻譯綜述</div><div class="lead">依平行語料有多少、有無單語語料，替低資源翻譯整理出挑選技術的流程。</div><div class="yrs">2023 發表 ｜ ACM Computing Surveys</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">語料不足，<br>也沒有一致的定義</span><div class="rows"><div class="row"><b>神經翻譯</b><span>需要大量平行語料，世上多數語言都做不到</span></div><div class="row"><b>低資源</b><span>沒有統一定義，作者以少於 50 萬句為參考</span></div><div class="row gap"><b>新研究者</b><span>缺少系統整理，難以依資料條件挑選合適的方法</span></div></div><span class="ft" style="color:var(--ink)">需要一張依資料條件挑技術的地圖。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">依語料多寡，<br>選擇翻譯技術</span><svg class="dia" viewBox="0 0 300 130" role="img" aria-label="示意：有平行語料時依規模選監督式或半監督等方法；沒有時看單語語料，選無監督或人工建立語料。">
+  <rect class="k-accent k-ring" x="4" y="18" width="70" height="28" rx="4"/>
+  <rect class="k-ink k-ring" x="4" y="84" width="70" height="28" rx="4"/>
+  <rect class="k-ink k-ring" x="196" y="2" width="100" height="24" rx="4"/>
+  <rect class="k-ink k-ring" x="196" y="36" width="100" height="24" rx="4"/>
+  <rect class="k-ink k-ring" x="196" y="70" width="100" height="24" rx="4"/>
+  <rect class="k-ink k-ring" x="196" y="104" width="100" height="24" rx="4"/>
+  <line class="k-ink" x1="74" y1="32" x2="194" y2="14"/>
+  <line class="k-ink" x1="74" y1="32" x2="194" y2="48"/>
+  <line class="k-ink k-dash" x1="39" y1="46" x2="39" y2="82"/>
+  <line class="k-ink" x1="74" y1="98" x2="194" y2="82"/>
+  <line class="k-ink k-dash" x1="74" y1="98" x2="194" y2="116"/>
+  <text class="k-label-accent" x="39" y="36" text-anchor="middle">平行語料</text>
+  <text class="k-label" x="39" y="102" text-anchor="middle">單語語料</text>
+  <text class="k-label" x="246" y="18" text-anchor="middle">監督式</text>
+  <text class="k-label" x="246" y="52" text-anchor="middle">半監督等</text>
+  <text class="k-label" x="246" y="86" text-anchor="middle">無監督</text>
+  <text class="k-label" x="246" y="120" text-anchor="middle">人工建立</text>
+</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">先看有無平行語料與規模，再看單語語料與共同語言，決定用哪一類技術。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="concl"><p>多語言翻譯論文到 2019 年最多，其後無監督略為超越</p><p>各語言的神經翻譯論文數，與其可用資料量密切相關</p><p>作者建議建立資源、公開模型與算力，並納入區域社群</p></div><span class="ft">範圍：Ranathunga 等 2023，文獻綜述；檢索至 2021 年 1 月</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">後續細究補資料的方法</span><div class="time"><p><b>2023</b><span>McNamee 等在 60 種語言上實測回譯</span></p><p><b>2024</b><span>Pang 等比較單語資料的各種用法</span></p><p><b>2026</b><span>Ranathunga 等評估以他領域語料調整多語模型</span></p></div><span class="ft">以上皆為引用本篇之後續研究，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">先數清手上的平行與單語語料，再依流程圖挑技術；人工建語料也是一步。</span><span class="shift"><span>無從挑選</span><i aria-hidden="true"></i><b>依料選法</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2023 發表 ｜ ACM Computing Surveys</span>
+<h1>低資源語言神經機器翻譯綜述</h1>
+<p class="en">Neural Machine Translation for Low-resource Languages: A Survey</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">低資源機器翻譯不是單一演算法的修補，而是一場跨越資料合成、語族遷移與資源建置的體系化工作。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>作者指出，神經機器翻譯已是主流，但在低資源語言對上表現仍不理想；而當時沒有文獻系統性檢視專為低資源語言設計的技術，新研究者難以為特定資料條件選擇合適方法（§1, p. 229:2）。本文回答三個研究問題：可用於低資源語言的主要技術與趨勢、如何為特定語言選擇技術、以及未來方向；並以量化分析找出最常用的技術（摘要；§1）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：缺乏平行語料，也缺乏一致定義</h2></div>
+<ul><li><strong>神經翻譯需要大量平行語料</strong>：早期研究即發現，神經翻譯需要大量平行資料才能與統計翻譯相當；這對全球七千多種語言中的大多數並不實際（§1, p. 229:2）。</li><li><strong>「低資源」沒有統一定義</strong>：作者採 Joshi et al. 依網路資料量把 2,485 種語言分成六類（表 1, p. 229:3）；並採用近期文獻的門檻——平行語料少於 50 萬句為低資源、少於 10 萬句為極低資源——但明言「並非絕對或標準值」（§2.1, p. 229:4）。</li><li><strong>資料偏誤</strong>：多數公開資料集來自宗教文本等來源，與現代實際翻譯需求不同（§13.1.1, p. 229:25）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：技術分類與選擇流程</h2></div>
+<h3>1. 技術分類（§3–§9, pp. 229:5–229:19；圖 1–2）</h3>
+<table><thead><tr><th>類別</th><th>說明</th></tr></thead><tbody><tr><td>資料增強（§4）</td><td>以合成方式產生資料，可搭配任何架構，如回譯、詞彙替換</td></tr><tr><td>無監督翻譯（§5）</td><td>完全沒有平行語料時使用</td></tr><tr><td>半監督翻譯（§6）</td><td>結合少量平行語料與單語資料</td></tr><tr><td>多語言翻譯（§7）</td><td>單一模型支援多個語言對，對低資源語言對（尤其零樣本）頗有前景</td></tr><tr><td>遷移學習（§8）</td><td>以高資源語言對訓練的模型初始化低資源子模型</td></tr><tr><td>零樣本翻譯（§9）</td><td>該語言對完全沒有平行語料，可用樞紐、多語言、無監督或遷移學習</td></tr></tbody></table>
+<h3>2. 技術選擇流程（§11，圖 7, pp. 229:20–229:21）</h3>
+<p>以平行語料的有無與規模、單語語料的有無、語言相似度為主要考量（僅針對雙語情境）：</p>
+<ul><li>平行語料<strong>多於 50 萬句</strong>：監督式翻譯即可有不錯表現；</li><li><strong>少於 50 萬句</strong>：可做半監督翻譯；若兩語都與某共同語言（如英語）有平行語料，可用樞紐；否則用遷移學習；任何情況都可再加資料增強；</li><li><strong>沒有平行語料但有單語語料</strong>：無監督翻譯；</li><li><strong>兩者皆無</strong>：只能人工建立語料。</li></ul>
+<p>作者強調流程圖只是建議而非硬性標準，且低資源翻譯應是迭代過程：以人工建立的少量語料訓練模型、產生更多資料、清理後再訓練（p. 229:21）。原文為描述性綜述，沒有提出統一的數學目標式；全文唯一的編號式為 §12.1 式 (1)，以四分位距篩選文獻檢索結果中的離群語言（p. 229:22），與翻譯技術本身無關。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>可核實的原文證據</h2></div>
+<ul><li><strong>技術趨勢</strong>（§10，圖 6a, p. 229:19；Google Scholar 2014–2020 檢索）：多語言翻譯的論文數到 2019 年最多，之後無監督技術略為超過；遷移學習自 2019 年起急遽增加；資料增強在 2020 年受到關注；樞紐方法逐漸失去熱度。作者承認檢索結果有雜訊，只作相對比較。</li><li><strong>研究量與資源相關</strong>（§10，圖 6b, pp. 229:19–229:20）：各語言的神經翻譯論文數與 Joshi 分類高度相關，即與可用資料量相關。</li><li><strong>未來方向</strong>（表 4, p. 229:25）：模型面——納入更多低資源語言、對資料量、領域與語言相關性的穩健性、可解釋性、減少偏誤；公平取得面——建立資料集、開源工具、公開訓練好的模型、提供運算資源。</li><li><strong>結論建議</strong>（§14, p. 229:27）：建立更多低資源語言資源、公開運算資源與模型、促進區域研究社群參與。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>提供選擇技術的入門地圖</strong>：作者的主要貢獻是分類與選擇流程，讓新研究者能依資料條件挑選基線方法（§1、§11、§14）。</li><li><strong>強調資源與社群</strong>：作者把研究量與資料量的相關性，連結到建立資料集、公開模型與區域社群的建議（§12–§14）。</li><li><strong>引用本篇之後續研究</strong>（以下三篇皆在參考文獻中引用本篇，各篇內容依其原文摘要核對；均為他人或本篇作者之後續成果，不是本篇的結果）：<ul><li>McNamee 與 Duh（2023，<em>Findings of the Association for Computational Linguistics: ACL 2023</em>, pp. 8166–8183，DOI: <a href="https://doi.org/10.18653/v1/2023.findings-acl.518">10.18653/v1/2023.findings-acl.518</a>）：以回譯為 60 種語言訓練譯入英語之模型，其中多數為中低資源語言，觀察到一致的改善，罕用詞與常用詞的翻譯也都變好。</li><li>Pang 等（2024，<em>Computational Linguistics</em> 50(1), pp. 25–47，DOI: <a href="https://doi.org/10.1162/coli_a_00496">10.1162/coli_a_00496</a>）：以探測任務系統比較回譯與遮罩語言模型等自監督目標，並在不同規模之平行語料上評估預訓練、回譯與多任務學習等利用單語資料的方式。</li><li>Ranathunga 等（2026，<em>ACM Transactions on Asian and Low-Resource Language Information Processing</em> 25(4), pp. 1–34，DOI: <a href="https://doi.org/10.1145/3800681">10.1145/3800681</a>）：本篇第一作者等人評估以輔助領域之平行資料微調或繼續預訓練多語序列到序列模型，用於低資源語言的特定領域翻譯，並分析領域差異之影響。</li></ul></li><li>（Wiki 詮釋）由於資料截至 2021–2022 年，大型語言模型的上下文翻譯、RAG 與參數高效微調等方法不在本綜述範圍內，需參考其他文獻（如 Pei et al. 2025、Merx et al. 2025）。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<blockquote>以下為使用者個人研究之延伸思考（Wiki 詮釋），非原文主張。</blockquote>
+<h3>對個人碩士論文研究之映射與啟發</h3>
+<ol><li><strong>用流程圖定位臺灣南島語</strong>：<ul><li>臺灣南島語與中文的平行語料多在數千到數萬句（如廖恒慶 2023 的辭典例句），屬於本文定義的極低資源。依圖 7，可考慮半監督、遷移學習（如廖恒慶以馬來語、印尼語為父語言）與資料增強。本綜述沒有討論構詞資訊或 RAG，這兩者需要以其他文獻與實驗支持。</li></ul></li><li><strong>迭代建立資料</strong>：<ul><li>作者建議的「人工建立少量語料 → 訓練 → 產生更多資料 → 清理 → 再訓練」流程，可對應到以模型輔助族語語料整理的工作。</li></ul></li><li><strong>注意資料領域</strong>：<ul><li>作者提醒多數公開資料來自宗教文本等特定領域；臺灣南島語資料多來自辭典例句與教材，也有類似的領域侷限。</li></ul></li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2023</b><span>發表・ACM Computing Surveys</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Surangika Ranathunga<br>En-Shiun Annie Lee<br>Marjana Prifti Skenduli<br>Ravi Shekhar<br>Mehreen Alam<br>Rishemjit Kaur</span></div>
+    <div class="blk"><span class="lab">我的關注</span><span>國際文獻</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>ACM Computing Surveys, 55(11), 229:1-229:37</span><a href="https://doi.org/10.1145/3567592">doi:10.1145/3567592</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#自然語言處理</span><span class="chip">#深度學習</span><span class="chip">#人工智慧</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>低資源神經機器翻譯與檢索增強生成</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">Ranathunga（University of Moratuwa）、Lee（University of Toronto）、Prifti Skenduli、Shekhar、Alam、Kaur，<em>ACM Computing Surveys</em> 55(11), Article 229, 37 pp.（2023 年 2 月）。文獻檢索與趨勢分析資料截至 2021 年 1 月（部分結果補收於 2022 年 6 月），因此<strong>未涵蓋大型語言模型與檢索增強生成</strong>。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
