@@ -1760,3 +1760,8 @@
   - 檢索語料「Gherdëina–Italian 18,485 句」原文無此數，改為 Val Badia–Italian 18,140 句、Gherdëina–Italian 19,971 句、對齊之 Val Badia–Gherdëina 14,953 句（§4, pp. 4–5）；BLEU「平均值 ± 標準差」改為平均值與信賴區間（表 1 標題）。
   - 表 3 刪去原文未載之「p < 0.05」，註明原文僅以星號標示；表 2 補列三種提示之字元數與 DeepSeek-R1 推論秒數；7–9% 無效詞與 Figure 2 一項改標 §7 p. 7，並照原文「可能」之語氣；Card 5 第 3 點刪去「引入干擾」，改照 §6 p. 5 與 Conclusion p. 8。
   - 證據表同步更正並逐一列出數值。卡片檔不受影響；原型重建自我檢查 ERROR 0、WARN 0，`verify_page.js` 結果 PASS（35 項）；`lint_wiki.py` ERROR 0。`verification` 維持 `partial`。本篇因此有第二個提交。
+
+## [2026-11-10 10:09] update | 2025-deepseek-r1 卡片回填與論文頁原文修正 | #人工智慧 #強化學習 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：TD-008 第三批 B 組。依 `wiki-content-audit` 以 `doi_url` 指向之 Nature 版（`raw/2025-deepseek-r1.pdf`）修正 [論文頁](papers/2025-deepseek-r1.md) 並重建 [證據表](evidence/2025-deepseek-r1.md)（改為標準五欄，Table 8、Table 16 數字逐一寫出列與欄）：完成 EK-113（R1-Zero AIME 2024 改為 15.6% → 77.9%、訓練 10,400 步，刪除與 o1-0912、o1-1217 之無據比較）；新登記並修正 EK-152（hook 與 Card 1 至 3、6 之「首次證明」「徹底解決」「翻倍」「一半」等過度表述，KL 式多出之「≥ 0」，三條區塊公式改照原文式 (1)–(3) 並補式 (4)，`title_zh` 刪去「與推理運算擴展定律」）與 EK-153（Card 4 後續段與 Card 5 無出處之影響敘述，改記原文公開之權重與程式、作者明列之限制與未來方向）；`verification` 改為 `partial`。新增 [卡片檔](cards/2025-deepseek-r1.md) 與論文頁原型 `web/prototypes/paper-v1/2025-deepseek-r1.html`。check_cards：ERROR 0、WARN 1（Card 3 公式原始碼 112 字元；原文較短之式 (4) 實測寬 423px 超出 390px 公式框，改用式 (3)，實測 390/390、269/269 不需捲動）；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（37 項）。來源：Card 3 公式取自原文式 (3)，p. 3；Card 4 四個數字取自證據表 R1-Zero AIME 列（§2.3, p. 4）與 Table 16 列（p. 61）；Card 5 採新論文模式，四筆取自 Supplementary I, p. 65 與 §6, pp. 10–11。複核：Card 3 原取式 (4) 寬度超出公式框，改式 (3) 並改寫標題與說明；Card 5 兩筆里程碑折行落單，縮短；Card 4 範圍之縮寫 AIME 改為中文。首頁卡片牆：依協調規則未重建，由協調者處理。`title_zh` 已改，首頁星圖說明框待協調者重建後更新。

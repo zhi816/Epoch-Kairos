@@ -727,10 +727,11 @@
 - **發現於**：第一、二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。逐式回原文核對後：(3.19) 改為原文式，並補 $\kappa_H$、$\kappa_F$ 之原文定義（PDF p. 58 未編號式）；(1.23) 改為原文式；(1.27) 左側原誤寫 $\hat{\pi}_t$，改為原文之 $\pi_t$，期望算子改為原文之 $E_t$。$\kappa_F$ 之說明原寫「透過進口要素或中間財成本溢出」、「等同於可被抵銷的外生衝擊」，改依 PDF p. 57 寫為 $\sigma > 1$ 時 $\kappa_F < 0$、與 global slack 論點方向相反。Card 3 第 3 點「即使菲利浦曲線極為平坦，央行仍可精確錨定通膨」與第 85 行引自 Woodford (2003) 之確定性條件（不在本篇）一併刪除，改寫為原文式 (1.25)–(1.26) 之向前求解條件。證據表逐式登記式號與 PDF 頁碼。
 
-### EK-113 | open | papers/2025-deepseek-r1.md | Card 4 與證據表第 16 列 | 歸因／版本錯置
+### EK-113 | fixed | papers/2025-deepseek-r1.md | Card 4 與證據表第 16 列 | 歸因／版本錯置
 - **問題**：Card 4 第 85 行與證據表第 16 列稱 R1-Zero 之 AIME 2024 pass@1 由 15.6% 升至 71.0%，第 85 行並稱「與 OpenAI o1-0912 持平」；第 86 行稱「8,000 多個強化學習訓練步」。本頁引用之 Nature 版原文為 77.9%，訓練共 10,400 步（8.2k 步出現明顯躍升）。證據表同一列寫 10,400 步而論文頁寫 8,000，二者也不一致。71.0% 與 o1-0912 之比較疑為 arXiv 初版之數字，修正時須一併確認 cons@16 之 86.7% 是否為 Nature 版數字。
 - **來源**：`raw/2025-deepseek-r1.pdf`，PDF 第 3 頁（10,400 steps；8.2k step）、第 4 頁（15.6% → 77.9%）。
 - **發現於**：第一、二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。回原文核對：R1-Zero AIME 2024 pass@1 改為 15.6% → 77.9%（§2.3, p. 4），刪除與 o1-0912 之比較；訓練步數改為共 10,400 步、第 8.2k 步長度上限提高後躍升（§2.1, p. 3）；cons@16 之 86.7% 經確認為正式版數字（p. 5）。另刪除 Card 4「R1 之 cons@64 與 o1-1217 持平」（原文無此比較），Table 8 各數字逐一附上 o1-1217 對照值；章節 §2.2 改為 §2.3。證據表依正式版逐項重建，數字逐一寫出表列與欄位。
 
 ### EK-114 | open | papers/2023-jwst-massive-galaxies.md | hook 與 Card 1 | 過度表述
 - **問題**：`hook` 稱「部分觀測結果甚至要求超過 100% 的重子轉化效率」，Card 1 第 35 行稱即使暗物質暈中 100% 的重子都變成恆星，理論上限「依然低於觀測推估值」。原文為觀測值「lie at the theoretical limit」，對應 ε(z≈9) = 0.99、ε(z≈7.5) = 0.84，作者稱為 physically implausible，計入 1σ 誤差後則為 marginally consistent；並非超過 100%。
@@ -817,6 +818,18 @@
 - **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`，摘要與 §1（p. 1）、§2（pp. 2–3）、註 1（p. 3）、表 1（p. 6）、Conclusion 與 Future Work（p. 8）、Limitations（p. 9）。
 - **發現於**：第三批卡片回填撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。回原文核對後：Card 2 依 §1–§2 改寫為大模型對小語言掌握有限、微調資料不足、拉定語無嵌入模型而無從語意檢索；Card 1「證明」改為摘要之發現；Card 5 第 2 點改述 PF 與 ZS、FS 之數值關係並引結論原句；Card 5 補列公開資源、限制與未來工作；證據表逐一列出表 1 四個方向（另含 Gherdëina→Italian GPT-4o 兩格）之數值與信賴區間，補登上述各項。頁面 `verification` 改為 `partial`。
+
+### EK-152 | fixed | papers/2025-deepseek-r1.md | hook、Card 1 至 Card 3 與 Card 6 | 過度表述
+- **問題**：（1）`hook` 與 Card 1 稱 R1-Zero「首次公開證明」「首次向全球嚴格證明」，正式版原文未稱首次；Card 1 稱 R1「徹底解決」可讀性與中英夾雜、「追平 OpenAI o1 正式版」，原文 §6 仍列語言混雜為限制，Table 8 中 R1 與 o1-1217 互有高低；Card 1 與 Card 4 稱思考長度達「上萬 Token」，原文寫 hundreds to thousands。（2）Card 2 稱 PPO「使訓練顯存與通訊開銷翻倍」、Card 3 稱 GRPO「大幅省去一半顯存」，原文 Supplementary A.3 只說價值模型帶來顯著記憶體與運算負擔；Card 2 稱神經獎勵模型「導致訓練在中途崩潰」，原文只說易遭獎勵駭客利用。（3）Card 3 區塊公式：KL 估計量式末加了原文沒有之「≥ 0」並稱「恆為非負且低方差」；目標函數之期望寫法與原文式 (1) 不同；獎勵寫成 Wiki 自擬之 $r_i = R_{\text{acc}}(q, o_i) + R_{\text{fmt}}(o_i)$，原文為式 (4)。（4）Card 4 稱 Table 2 之頓悟時刻「重新檢驗積分符號」，原文例題為方程式求實根之和；Card 3 稱蒸餾「1.5B 至 70B」皆優於直接強化學習，原文只在 Qwen2.5-32B 上對照。（5）Card 6 稱強化學習「首次在六千億參數規模上穩定釋放威力」，無出處。（6）`title_zh` 冠以「推理運算擴展定律」，原文標題與內文均未提出此定律。
+- **來源**：`raw/2025-deepseek-r1.pdf`（Nature 版全文與補充資料）：§2.1–2.3, pp. 3–5；§6, pp. 10–11；Supplementary A.3, pp. 14–16；Table 8, p. 41；Table 16, p. 61。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依原文改寫上述各句；三條區塊公式改照原文式 (1)–(3) 並補式 (4)，刪去「≥ 0」；`title_zh` 與內文標題刪去「與推理運算擴展定律」。證據表逐式登記式號與頁碼。
+
+### EK-153 | fixed | papers/2025-deepseek-r1.md | Card 4 後續與 Card 5 | 原文未支持
+- **問題**：Card 4「後續領域關鍵證據」稱本篇刊於 Nature 後「成為首篇公開完整強化學習動態與訓練配方的主流推理大模型論文」、GRPO 加可驗證獎勵「迅速成為全球……標準範式」，無出處，且 Nature 刊登是本篇本身而非後續研究。Card 5 三點（「開闢測試時運算擴展定律新維度」「證實……解鎖全新的智慧增長曲線」「開源對閉源護城河的歷史性追平」）皆無出處。本篇發表於 2025 年，依 `wiki-content-audit` 須記載原文公開之資源、作者明列之限制與未來工作，頁面皆未記載。
+- **來源**：頁面第 95、100–102 行；原文 §6, pp. 10–11（限制與未來方向）、Supplementary I, pp. 65–66（公開權重、蒸餾模型與程式）、Supplementary H.3, p. 65（原文自述啟發之後續探索）。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。刪去 Card 4 後續段與 Card 5 三點無出處之敘述；Card 5 改記原文公開之權重、蒸餾模型與程式，作者明列之能力限制、純強化學習之挑戰與未來方向，各附節與頁碼；註明原文自述之後續探索本頁未逐篇查核、不列為後續研究。證據表登記各列。
 
 ### EK-173 | fixed | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 4 與 Card 5 第 3 點 | 原文不符
 - **問題**：（1）Card 4 實驗設定稱檢索語料為「Gherdëina–Italian（18,485 句）」，原文無此數，原文為 Val Badia–Italian 18,140 句、Gherdëina–Italian 19,971 句，另對齊出 Val Badia–Gherdëina 14,953 句；證據表同列亦誤。（2）稱 BLEU 以「平均值 ± 標準差」報告，原文表 1 標題為平均值與信賴區間。（3）表 3 相關係數加註「p < 0.05」，原文僅以星號標示、未註明顯著水準。（4）「原文指出的局限性」7%–9% 一項寫作「無效拼寫或非標準詞」並標 Limitations p. 9，原文為 §7 p. 7「syntactically not valid in the target language」；Figure 2 一項寫成提示偏移「即」使 GPT-4o 找不到例句，原文為「may have caused」。（5）Card 5 第 3 點稱譯入高資源語言時「複雜提示無效甚至引入干擾」，原文為只有些微改善、FS 僅對 o1-mini 與 Llama-3.3 顯著，部分情形零樣本最好，未提干擾。
