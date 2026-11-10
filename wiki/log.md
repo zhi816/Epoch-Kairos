@@ -1949,3 +1949,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：GitHub Pages 首次發布成功（使用者於 Settings 將 Source 設為 GitHub Actions 並執行工作流程），網址 https://zhi816.github.io/Epoch-Kairos/ 。使用者回報桌面 Safari 首頁索引與星圖皆空白；以 Chromium 1677 x 880 重現，原因為 `web/assets/js/starmap.js` 背景星數隨視窗面積放大至 1600 x 1.25 顆，卻只產生 1600 顆，視窗大於 1440 x 900 時讀到不存在之星而拋錯，腳本中止於建星圖之前（與瀏覽器無關，先前驗證皆在 1440 x 900 故未發現）。改為產生上限所需之 2000 顆（固定種子，前 1600 顆位置不變）並以實際星數為上限。驗證：本機 1677 x 880、2560 x 1440 星圖與索引正常、無主控台錯誤，`verify_wall.js` PASS；線上 `papers/2016-ligo-gravitational-waves/` KaTeX 45 處 0 錯誤、無綠點，`prototypes/` 回應 404（未上站）。README 改為正式連結。完成 TD-005；其中尚待決定之 raw/ 路徑事項轉登記 TD-019。
+
+## [2026-11-10 13:55] config | 首頁 CSS 與 JS 連結加上內容雜湊版本參數 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：GitHub Pages 讓瀏覽器快取 `assets/` 檔案 10 分鐘（max-age=600），前次修正 `starmap.js` 上線後瀏覽器仍沿用舊腳本。`tools/build_home.py` 新增 `version_assets()`，於首頁之 `theme.css`、`starmap.css`、`starmap.js` 連結加上 `?v=<sha256 前 10 碼>`，檔案內容一變網址即變；AGENTS.md 第五章第 4 條註明改 `web/assets/` 之 CSS 或 JS 後須重建首頁。論文頁樣式內嵌於頁面，無需處理。驗證：`build_home.py --check` 一致；本機預覽三檔皆以版本網址載入，星圖正常、無主控台錯誤。

@@ -152,7 +152,7 @@ Epoch-Kairos/
 
 4. **展示層：Web Presentation (`web/`)**
    * **性質**：將 `wiki/` 的知識編譯為可在 GitHub Pages 上流暢瀏覽的知識星圖首頁與 3:4 豎版知識圖卡＋深度學術長文。
-   * **首頁由資料產生**：`web/index.html` 一律由 `python tools/build_home.py` 讀取 `wiki/papers/`、`wiki/concepts/` 之 Frontmatter 與 `wiki/cards/` 中**已提交**之卡片檔（卡片牆）產生，頁面不手寫任何論文資料；自己尚未提交之卡片檔以 `--card <slug>` 帶入（`paper-card-writer` 之 `references/card-wall.md`）；版面改 `tools/home_template.html`，樣式與互動改 `web/assets/css/starmap.css`、`web/assets/js/starmap.js`，不得直接修改 `web/index.html`。`python tools/build_home.py --check` 可確認現有首頁與資料一致。美術方向見 [`DESIGN.md`](./DESIGN.md) 第二至四章。
+   * **首頁由資料產生**：`web/index.html` 一律由 `python tools/build_home.py` 讀取 `wiki/papers/`、`wiki/concepts/` 之 Frontmatter 與 `wiki/cards/` 中**已提交**之卡片檔（卡片牆）產生，頁面不手寫任何論文資料；自己尚未提交之卡片檔以 `--card <slug>` 帶入（`paper-card-writer` 之 `references/card-wall.md`）；版面改 `tools/home_template.html`，樣式與互動改 `web/assets/css/starmap.css`、`web/assets/js/starmap.js`，不得直接修改 `web/index.html`。`python tools/build_home.py --check` 可確認現有首頁與資料一致。首頁引用之 `web/assets/` CSS 與 JS 連結帶內容雜湊版本參數（`?v=`），使 GitHub Pages 更新後瀏覽器立即改讀新檔，故修改 `web/assets/` 之 CSS 或 JS 後亦須重建首頁並一併提交。美術方向見 [`DESIGN.md`](./DESIGN.md) 第二至四章。
 
 ---
 

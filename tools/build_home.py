@@ -21,8 +21,10 @@
 本腳本只用 Python 標準函式庫（另呼叫 git 讀取已提交之卡片檔），輸出內容只取決於 wiki/、AGENTS.md 與 Git 索引，
 重跑即可重現。版面與樣式請改 tools/home_template.html、web/assets/css/starmap.css、web/assets/js/starmap.js，
 不要手改 web/index.html。卡片牆自我檢查有 ERROR 時不寫檔、結束碼為 1。
+首頁引用之 assets/ CSS 與 JS 連結帶內容雜湊（version_assets），故改了 web/assets/ 之 CSS 或 JS 也要重建首頁。
 """
 import glob
+import hashlib
 import importlib.util
 import json
 import math
@@ -784,9 +786,24 @@ def build(extra=()):
             raise SystemExit('範本中 %s 必須恰好出現一次' % mark)
     html = (t.replace('/*__DATA__*/', blob).replace('<!--__NOSCRIPT__-->', noscript(stars))
             .replace('<!--__WALL__-->', wall))
+    html = version_assets(html)
     report = dict(rows=rows, errors=errors + wall_errors, notes=notes, source=source, extra=list(extra),
                   stars=sum(1 for r in rows if r[0].startswith('No.')), focus=sum(1 for r in rows if r[0].startswith('F.')))
     return html, data, report
+
+
+def version_assets(html):
+    """把範本中 assets/ 之 CSS 與 JS 連結加上內容雜湊（?v=<sha256 前 10 碼>）。
+    GitHub Pages 讓瀏覽器快取這些檔案 10 分鐘（max-age=600），不加版本時改了 starmap.js 等檔案，
+    讀者可能拿到新首頁配舊腳本；加了版本，檔案內容一變網址就變，瀏覽器即重新下載（2026-11-10）。
+    故改了 web/assets/ 之 CSS 或 JS 後須重建首頁，否則 --check 會報不一致。"""
+    def sub(m):
+        path = os.path.join(ROOT, 'web', m.group(2))
+        if not os.path.exists(path):
+            raise SystemExit('範本引用之 %s 不存在' % os.path.relpath(path, ROOT))
+        data = open(path, 'rb').read().replace(b'\r\n', b'\n')   # core.autocrlf 下工作目錄可能是 CRLF，雜湊須與平台無關
+        return '%s="%s?v=%s"' % (m.group(1), m.group(2), hashlib.sha256(data).hexdigest()[:10])
+    return re.sub(r'\b(href|src)="(assets/[^"?#]+\.(?:css|js))"', sub, html)
 
 
 def print_wall(rep):
