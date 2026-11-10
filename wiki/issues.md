@@ -1081,3 +1081,9 @@
 - **來源**：[NeurIPS 定稿](https://proceedings.neurips.cc/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf) §3.2–3.5，pp. 4–6，p. 4 註 4。
 - **發現於**：2026-11-10，處理 TD-011 公式出處，Codex by OpenAI。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6）。以原文註 4 的內積式取代自擬方差展示式，保留作者以文字給出的均值與方差；縮放及位置編碼的解釋還原為作者推測，卡片同步修正，並逐式登記原文位置。
+
+### EK-201 | fixed | papers/1982-hopfield-network.md | Card 3 能量公式與 Card 4 後續研究 | 原文不符
+- **問題**：頁面及卡片在 Hopfield 原文零閾值的能量式及能量變化式中加入閾值項；此外，頁面把 Amit 等 1985 年以副本對稱理論得到的 0.138 近似值，誤寫為以副本對稱破缺方法得到的嚴格解。
+- **來源**：[Hopfield 原文](../raw/1982-hopfield-network.pdf) p. 2556，式 (7)–(8)；[Amit 等原文](https://doi.org/10.1103/PhysRevLett.55.1530) pp. 1531–1532。
+- **發現於**：2026-11-10，處理 TD-011 公式出處及抽查卡片後續成果，Codex by OpenAI。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。依 Hopfield 原式及零閾值條件修正論文頁與卡片，逐式登記來源；Amit 等之結果標為副本對稱近似，並記下作者對對稱破缺影響的討論。
