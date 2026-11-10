@@ -12,7 +12,7 @@ domain: "econ"
 domain_tags: ["#宏觀經濟學"]
 concepts: ["institutions-and-macro-dynamics"]
 status: "published"
-verification: "issues"
+verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.3386/w13329"
 key_papers:
@@ -21,7 +21,7 @@ key_papers:
   - "Woodford, M. (2007) Globalization and Monetary Control. NBER Working Paper No. 13329 (later in Galí & Gertler eds., International Dimensions of Monetary Policy, 2009, pp. 13-77). https://doi.org/10.3386/w13329"
   - "Hall, R. E. (2005) Employment Fluctuations with Equilibrium Wage Stickiness. American Economic Review 95(1):50-65. https://doi.org/10.1257/0002828053828482"
 hook: "以具備個體跨期最優化基礎的新凱因斯開放經濟框架，系統檢驗金融、商品與要素市場整合，論證全球化不太可能削弱各國央行透過利率規則調控本國通膨動態的能力。"
-card_line: "論證全球化不會讓央行管不住通膨"
+card_line: "全球化不太可能削弱央行的通膨控制力"
 ---
 
 # 宏觀經濟穩定政策的微觀基礎：通膨動態、預期錨定與貨幣控制

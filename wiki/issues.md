@@ -78,12 +78,13 @@
 
 ## 2007 Woodford 通膨動態
 
-### EK-008 | open | papers/2007-woodford-inflation-dynamics.md | Card 1 | 過度表述
+### EK-008 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 1 | 過度表述
 - **問題**：「嚴格證明決定權毫不動搖」強於原文摘要「全球化不太可能削弱央行控制通膨的能力」。
 - **來源**：[原文（NBER WP 13329）](https://www.nber.org/system/files/working_papers/w13329/w13329.pdf)
 - **發現於**：wiki/log.md [2026-11-08 23:36] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文摘要 p. 2 與引言修訂 Frontmatter hook 與 Card 1：將「嚴格證明決定權毫不動搖」改述為貼合原文之「系統檢驗金融、商品與要素全球化對貨幣傳導機制三大環節（LM、IS、AS 方程）之影響，論證全球化不太可能削弱央行控制本國通膨動態的能力」。證據表見 wiki/evidence/2007-woodford-inflation-dynamics.md。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新回核卡片封面與 NBER WP 13329 摘要 p. 2：論文頁 hook／Card 1 保留「不太可能削弱」，但卡片封面仍寫成確定語氣「不會讓央行管不住通膨」；建議重開為 open。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。回看 NBER 原文摘要 p. 2，將論文頁 card_line 與卡片封面改為「全球化不太可能削弱央行的通膨控制力」，保留作者結論的限定語。
 
 ### EK-009 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 3 | 原文未支持
 - **問題**：稱短期利率由準備金付息與供給條件決定，並列出未標號之 IS、NKPC 與廣義確定性公式。原文 p. 36 明說以 Taylor rule 表示政策、未建模央行如何實施操作利率；另行推導之標準式不得標為本文原式。
@@ -835,12 +836,13 @@
 - **發現於**：第二批卡片回填 C 組回報與第三批撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。回原文核對後：公式改照原文作單豎線，拆成兩行 aligned 並註明「§3.2 正文內嵌式，無式號，p. 12950」；Card 5 補列公開資源（§1）與作者所述之未來方向（§5、§4.3），作者自述限制補頁碼；證據表逐一列出表 1、3、4、5 數值並補登上述各項。另依 `cover.md` 第二節第 7 條改寫 `card_line`（原句切不出 3 行以內之封面斷行）。頁面 `verification` 改為 `partial`。
 
-### EK-150 | open | papers/2007-woodford-inflation-dynamics.md | Card 4 | 原文不符
+### EK-150 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 4 | 原文不符
 - **問題**：（1）Card 4 第 94 行標題寫「要素市場全球化（$\tilde{\kappa}_H \to 0$）之極限穩健性證明」，並稱國內產出缺口對邊際成本之影響趨近於零、名目工資與物價須經匯率與利率平價錨定。原文 §3.3 為 $\tilde{\kappa}_H \equiv \kappa(1-\gamma) + \xi\gamma$，不趨近於零；只有 $\nu + \sigma^{-1} > 1$ 時才小於封閉經濟之 $\kappa$，在 Rotemberg & Woodford (1997) 校準下反而較大，作者結論為整合可能使菲利浦曲線變陡；原文未談經匯率與利率平價錨定。（2）第 92 行之 $\beta = 0.99$ 原文未寫；「CPI 通膨初期反應因匯率傳導而更為靈敏」之「因匯率傳導」原文未說，且漏了作者「至少在此校準例中」之限定。（3）第 93 行稱外國衝擊「完全可以被本國貨幣政策有效對沖」，原文結論為本國央行仍可單獨穩定本國通膨、不需國際協調。（4）第 96–99 行把早於本篇之 Eggertsson & Woodford (2003)、Hall (2005) 列為「後續」；Eggertsson & Woodford 頁碼誤為 139-211（Crossref 為 139-233）；Smets & Wouters (2007) 稱成為 FRB/US 等央行標準系統、Eggertsson & Woodford「直接指導」2008 與 2020 年之政策、Hall「解決了 Shimer 謎題」，三者摘要皆無此說。
 - **來源**：`raw/2007-woodford-inflation-dynamics.pdf`，PDF pp. 14、24、60–61、71–73、75；doi:10.1257/aer.97.3.586、doi:10.1353/eca.2003.0010、doi:10.1257/0002828053828482（Crossref 書目與摘要）。
 - **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依原文改寫 Card 4 四點（參數、Figure 6、外溢與結論、全球要素市場之 $\tilde{\kappa}_H$），刪去 $\beta = 0.99$；相關研究改標「相關研究（非本篇成果）」並註明兩篇早於本篇，各附 DOI，描述改依摘要，改正頁碼。證據表逐項重登。
 - **複核**：2026-11-10，Codex by OpenAI（GPT-6）。原問題包括將早於本篇的研究誤列為後續；論文頁已改為相關研究，但[證據表](evidence/2007-woodford-inflation-dynamics.md) Card 4 的同一列仍將 Eggertsson & Woodford (2003)、Hall (2005) 與 Smets & Wouters (2007) 整列標為「後續研究」，與該列的「非後續」說明矛盾。證據表類型的處置依 TD-007 待決，本次未修改證據表。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。證據表將本頁按主題選取三篇相關研究的歸類明示為 Wiki 詮釋，註明 2003 與 2005 兩篇早於本篇、不代表後續或承接關係；各研究仍各引其來源。此頁其他 open 問題亦已處理，verification 改為 partial。
 
 ### EK-151 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 5 | 原文未支持
 - **問題**：Card 5 三點（本篇與 Woodford 系列理論「終結了貨幣主義舊框架」、「直接啟發」聯準會 2012 年點陣圖、「及時化解政策恐慌，證明……」）均無出處；本篇發表於 2007 年，依 `wiki-content-audit` 須有至少 3 筆附出處之後續研究，頁面一筆也沒有（Card 4 所列兩篇早於本篇）。

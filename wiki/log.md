@@ -2035,3 +2035,8 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
 - **具體變更**：完成 EK-193：回看 Frontull 與 Ströhle 原文 §5 p. 5，將五項參數量明確歸為論文所報，與 DeepSeek、OpenAI、Meta 官方資料對照並記錄 R1 規格差異、部分數字在所查資料未核實及 API 快照未明的限制；證據表逐一登記，未猜測實際 API 規模。論文頁核實狀態改為 partial，卡片檔未改；check_cards.py、論文頁建置及首頁建置檢查皆 ERROR 0、WARN 0。瀏覽器服務不可用，論文頁與卡片牆待驗證見 TD-021；lint_wiki.py ERROR 0、WARN 23。
+
+## [2026-11-10 20:23] fix | 修正 Woodford 封面限定語與相關研究歸類 | #宏觀經濟學
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：完成 EK-008 與 EK-150：回看 NBER WP 13329 摘要 p. 2，將論文頁 card_line、卡片封面與首頁同步改為「全球化不太可能削弱央行的通膨控制力」；證據表將 Wiki 依主題選取的相關研究與真正後續研究分開，註明 2003、2005 兩篇早於本篇。核實狀態改為 partial。check_cards.py、論文頁與首頁建置均 ERROR 0、WARN 0；首頁差異僅 Woodford 封面及其 card_line。瀏覽器服務不可用，論文頁及卡片牆待驗證見 TD-021；lint_wiki.py ERROR 0、WARN 23。
