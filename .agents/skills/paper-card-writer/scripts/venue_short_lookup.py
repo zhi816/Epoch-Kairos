@@ -16,6 +16,7 @@ import os
 import re
 import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 
@@ -46,6 +47,11 @@ def crossref(doi):
         try:
             with urllib.request.urlopen(req, timeout=30) as r:
                 return json.load(r)['message'], None
+        except urllib.error.HTTPError as e:
+            if e.code == 404:   # DOI 不在 Crossref（如華藝 10.6710/...），重試無用
+                return None, 'not-crossref'
+            err = e
+            time.sleep(2 * (attempt + 1))
         except Exception as e:  # 網路逾時常見（2026-11-10 曾連續逾時），重試兩次
             err = e
             time.sleep(2 * (attempt + 1))
@@ -97,6 +103,9 @@ def main():
             print('   Crossref       ：無 doi.org 之 doi_url，略過')
             continue
         msg, err = crossref(doi)
+        if err == 'not-crossref':
+            print('   Crossref       ：此 DOI 不在 Crossref（可能由華藝等其他機構註冊），改查原文 PDF 首頁與期刊官網；DOI 代碼不等於刊名縮寫')
+            continue
         if msg is None:
             print('   Crossref       ：查詢失敗（%s），稍後重試' % err)
             continue

@@ -6,6 +6,7 @@ award_year: 2022
 timeline_year: 2022
 authors: "Fuhui Hsieh"
 venue: "Journal of Taiwanese Languages and Literature, 17(1), 47-92"
+venue_short: "JTLL"
 domain: "human"
 domain_tags: ["#語言學"]
 concepts: ["formosan-computational-linguistics"]

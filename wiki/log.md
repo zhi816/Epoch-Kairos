@@ -1909,3 +1909,13 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：（本工作階段之平台規範不允許將模型型號寫入版控檔案，請使用者自行補填，見 TD-004）
 - **具體變更**：[2026-11-10 12:23] ingest 收錄 `1985-macroscopic-quantum-tunneling` 後，其後 11 篇群星論文之卡片編號各加一（首頁已更新），但重建之原型在提交前於共用工作目錄被還原，未進入該提交，致首頁與原型 Card 1 編號不一致。為免帶入他人尚未提交之 `tools/paper_template.html` 與 `tools/build_paper_prototype.py` 修改，改以 HEAD 之暫時 worktree 重建 `1992-creative-destruction-aghion`、`2025-deepseek-r1`、`1982-hopfield-network`、`2001-colonial-origins-acemoglu`、`2021-alphafold2`、`2024-alphafold3`、`2024-fault-tolerant-quantum`、`2024-sora-world-simulator`、`2023-jwst-massive-galaxies`、`2017-attention-is-all-you-need`、`2016-ligo-gravitational-waves` 之原型（自我檢查皆 ERROR 0、WARN 0，每檔僅編號一行改變）後提交。
+
+## [2026-11-10 12:29] update | 四篇論文期刊簡稱 venue_short 查核 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：完成 TD-016（條目已刪除），依 `paper-card-writer` 之 `references/paper-page.md` 第三節處理首頁卡片牆雙年份仍被截斷之四篇：
+  - `2022-formosan-say-verbs-hsieh`：填 `venue_short: "JTLL"`。華藝 DOI `10.6710/JTLL.202204_17(1).0002` 不在 Crossref（404）；原文 PDF 首頁只印「臺灣語文研究 第17卷 第1期, 2022」與該 DOI，期刊徵稿文件亦僅見 DOI 前綴 `10.6710/JTLL`，未見以 JTLL 為刊名縮寫，經使用者確認採用。重建論文頁原型（ERROR 0、WARN 0），資訊欄由三行降為一行。
+  - `2024-finnish-northern-sami-mt-saleva`、`2024-formosan-mt-bilingual-lexicon-zheng`（Findings of ACL 2024）、`2025-formosanbench-llm-benchmark-lin`（Findings of EMNLP 2025）：Crossref 無 `short-container-title`，原文 PDF 只印全名，無更短之正式寫法，不填，卡片牆雙年份保留截斷。
+  - 首頁重建，`build_home.py --check` 一致；`verify_wall.js`（指定 `2022-formosan-say-verbs-hsieh`）結果 PASS，WARN 18 項，本篇截斷已消失，雙年份截斷只剩上列三篇 Findings，其餘為研究語言標籤截斷。
+  - `references/paper-page.md` 第三節：已填清單補 JTLL；新增 ACL Findings 系列保留截斷、不得改寫為主會議名稱，以及 DOI 不在 Crossref 時之查法。`scripts/venue_short_lookup.py`：Crossref 回 404 時不再重試，改提示查原文 PDF 與期刊官網。
+  - `lint_wiki.py` ERROR 0。

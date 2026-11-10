@@ -69,6 +69,8 @@
 
 * 不得自創縮寫、不得以中文意譯期刊名、不得放卷期頁、不得把會議年份寫錯（照 `venue` 原文）。
 * MDPI 會議論文集（如 `Engineering Proceedings`）之 Crossref `container-title` 是會議名稱、不是刊名，也沒有 `short-container-title`；刊名縮寫以原文 PDF 之引用格式為準。
+* ACL Findings 系列（`Findings of ACL 2024`、`Findings of EMNLP 2025`）：Crossref 無簡稱，原文與 ACL Anthology 只用全名，沒有比自動縮短之「Findings of 會議 年份」更短之正式寫法，不填 `venue_short`，卡片牆雙年份保留截斷（2026-11-10 TD-016 判定）。不得改寫為「ACL 2024」等主會議名稱，Findings 不是主會議論文。
+* DOI 不在 Crossref 者（如華藝 `10.6710/...`，查詢回 404）：改查原文 PDF 首頁與期刊官網；期刊之 DOI 代碼不等於刊名縮寫，只能作為候選，須經使用者確認。
 
 已填：
 
@@ -80,6 +82,7 @@
 | `2023-jwst-massive-galaxies` | `Nat Astron` | Crossref `short-container-title` | 2026-11-10 |
 | `2026-hybrid-dictionary-rag-llm-paiwan-wang` | `Eng. Proc.` | 原文 PDF 首頁引用格式（MDPI） | 2026-11-10 |
 | `2023-low-resource-nmt-survey-ranathunga` | `CSUR` | ACM 自用之刊名縮寫；ACM 官網拒絕自動讀取，未能查證，經使用者確認採用（Crossref 之 `ACM Comput. Surv.` 在卡片牆仍被截斷） | 2026-11-10 |
+| `2022-formosan-say-verbs-hsieh` | `JTLL` | 期刊 DOI 代碼 `10.6710/JTLL`（原文 PDF 首頁所印）；期刊文件未見以之為刊名縮寫，經使用者確認採用。華藝 DOI 不在 Crossref（查詢回 404） | 2026-11-10 |
 
 ## 四、雙年份的獎項寫法
 
