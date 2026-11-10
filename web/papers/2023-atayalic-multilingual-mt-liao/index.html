@@ -118,6 +118,7 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
 .art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
 .art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
 .art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
 .art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
 .art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
@@ -163,7 +164,15 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
 @media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
 @media (max-width:900px){
-  .root{display:block;height:auto;overflow:visible}
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
   .rail{display:none}
   .stage{container-type:normal;padding:24px 16px;border-right:0}
   /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
@@ -173,9 +182,7 @@ button:disabled{cursor:default;opacity:.3}
   /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
   .art .mode{display:inline-flex}
   .art.solo section[data-card]:not(.cur){display:none}
-  .pane{overflow:visible}
-  .art{padding:32px 16px 64px}
-  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
 }
 /* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
 @media (max-width:480px){
@@ -237,6 +244,7 @@ button:disabled{cursor:default;opacity:.3}
 
 <div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
 </header>
+<div class="body">
 <section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
 <p class="epigraph">當每一種單一語言的資料量都微弱如風中殘燭，多語言機器翻譯將同源語族的歷史血脈連成一片，讓同源詞素在同一個神經矩陣中彼此借光照明。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
 <p>廖恒慶的碩士論文延續游景勝（2021）的賽德克語－中文翻譯研究，把對象擴大到泛泰雅語群（泰雅語、賽德克語、太魯閣語），嘗試以多語言機器翻譯與遷移式學習改善單一族語與中文的翻譯（摘要，p. i）。系統以 Transformer 為主；訓練資料為原住民族語言線上辭典例句與族語 E 樂園教材例句，外部測試使用臺灣南島語言叢書例句。在所有設計中，最佳系統都是遷移式學習，且多半是多語言系統，只有中文翻太魯閣語的最佳系統是單一族語系統（第六章，p. 40）。</p>
@@ -270,6 +278,7 @@ button:disabled{cursor:default;opacity:.3}
 <h3>對個人碩士論文研究之映射與啟發</h3>
 <ol><li><strong>評估資料的重疊問題</strong>：<ul><li>本文 §5.5.2 的發現對我的研究同樣重要：族語資源常互相轉載例句，測試句可能以子句形式出現在訓練資料中。設計評估時應先做覆蓋度檢查，否則分數會被高估。</li></ul></li><li><strong>親屬語言作為檢索來源</strong>：<ul><li>若某一族語的平行例句極少，或許可以在提示或 RAG 中檢索親屬語言的例句作為參考（例如以太魯閣語例句輔助賽德克語）。此做法本文未實驗，效果需另行驗證。</li></ul></li><li><strong>父語言選擇</strong>：<ul><li>本文選用馬來語、印尼語是因為資料量，而非因為它們與泛泰雅語群最相近。不同父語言對三語的幫助各有高下（表 17–20），引入外部語言時值得逐語言比較。</li></ul></li></ol>
 </section>
+</div>
     </article>
   </main>
 
@@ -347,7 +356,7 @@ button:disabled{cursor:default;opacity:.3}
     var n = -1;
     secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
     if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
-    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
     // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
     if (n < 0 && inPane) n = 0;
     if (n >= 0) show(n);
@@ -369,8 +378,8 @@ button:disabled{cursor:default;opacity:.3}
     mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
     mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
     layout();
-    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
-    var top = art.getBoundingClientRect().top + window.scrollY;
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
     if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
   }
   mCard.addEventListener('click', function () { setFull(false); });

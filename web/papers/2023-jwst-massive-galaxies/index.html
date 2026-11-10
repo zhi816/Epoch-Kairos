@@ -118,6 +118,7 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
 .art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
 .art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
 .art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
 .art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
 .art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
@@ -163,7 +164,15 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
 @media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
 @media (max-width:900px){
-  .root{display:block;height:auto;overflow:visible}
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
   .rail{display:none}
   .stage{container-type:normal;padding:24px 16px;border-right:0}
   /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
@@ -173,9 +182,7 @@ button:disabled{cursor:default;opacity:.3}
   /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
   .art .mode{display:inline-flex}
   .art.solo section[data-card]:not(.cur){display:none}
-  .pane{overflow:visible}
-  .art{padding:32px 16px 64px}
-  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
 }
 /* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
 @media (max-width:480px){
@@ -231,6 +238,7 @@ button:disabled{cursor:default;opacity:.3}
 
 <div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
 </header>
+<div class="body">
 <section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
 <p class="epigraph">當韋伯太空望遠鏡將人類的視線推回大爆炸後僅五億年的宇宙黎明時，我們原本以為只會看到零星的幼年星團，卻震驚地在黑暗中撞見了質量堪比銀河系的龐然大物。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
 <p>根據標準冷暗物質宇宙學模型（<span class="m-in" data-tex="\Lambda\text{CDM}"></span>），宇宙結構是「由下而上（Bottom-Up）」階層式生長的：大爆炸後數億年內，微小的暗物質暈（Dark Matter Halos）才剛開始坍縮併合，第一代星系應該體積微小且質量低微。然而，詹姆斯・韋伯太空望遠鏡（JWST）2022 年傳回的早期觀測資料中，Labbé et al. (2023) 在紅移 <span class="m-in" data-tex="7.4 &lt; z &lt; 9.1"></span>（大爆炸後約 <span class="m-in" data-tex="5"></span> 至 <span class="m-in" data-tex="7"></span> 億年）找到 6 個恆星質量大於 <span class="m-in" data-tex="10^{10}\,M_\odot"></span> 的紅色候選星系，其中一個可能達 <span class="m-in" data-tex="10^{11}\,M_\odot"></span>（Labbé 等摘要）。Boylan-Kolchin (2023) 從暗物質暈質量函數推導出任一時期星系數密度與恆星質量密度之絕對上限，發現最重的候選落在上限邊緣：在 <span class="m-in" data-tex="z \approx 9"></span> 與 <span class="m-in" data-tex="z \approx 7.5"></span>，觀測到的累積恆星質量密度分別需要 <span class="m-in" data-tex="\epsilon = 0.99"></span> 與 <span class="m-in" data-tex="0.84"></span> 的重子轉化效率，作者稱為物理上不太可能；計入 <span class="m-in" data-tex="1\sigma"></span> 誤差後，也需要 <span class="m-in" data-tex="\epsilon(z \approx 9) \ge 0.57"></span> 才勉強相容（Results）。作者據此指出，觀測推得的星系性質、早期星系如何在 <span class="m-in" data-tex="\Lambda\text{CDM}"></span> 中形成，或標準宇宙學本身，存在一個尚未解決的重要問題（Abstract）。</p>
@@ -266,6 +274,7 @@ button:disabled{cursor:default;opacity:.3}
 <p>這場「JWST 觀測 vs. <span class="m-in" data-tex="\Lambda\text{CDM}"></span> 理論」的交鋒，展現了現代科學面對反常現象（Anomaly）時的典範反應：</p>
 <ol><li><strong>用最簡潔的守恆律做最鋒利的審判</strong>：面對極度複雜的星系流體力學，Boylan-Kolchin 沒有陷入數十個自由參數的模擬爭論，而是退回最基本的「重子質量守恆（<span class="m-in" data-tex="\epsilon \le 1"></span>）＋ 暗物質暈統計」，用一張圖表劃定了理論不可退讓的紅線。</li><li><strong>「證偽危機」逼出更好的檢驗</strong>：上限檢驗本身不判定是觀測、星系物理還是宇宙學出錯，只指出三者至少有一處要修正；後續研究因此分頭以光譜、更大樣本與成星理論回應（見 Card 5），問題至今仍在討論。</li></ol>
 </section>
+</div>
     </article>
   </main>
 
@@ -342,7 +351,7 @@ button:disabled{cursor:default;opacity:.3}
     var n = -1;
     secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
     if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
-    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
     // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
     if (n < 0 && inPane) n = 0;
     if (n >= 0) show(n);
@@ -364,8 +373,8 @@ button:disabled{cursor:default;opacity:.3}
     mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
     mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
     layout();
-    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
-    var top = art.getBoundingClientRect().top + window.scrollY;
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
     if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
   }
   mCard.addEventListener('click', function () { setFull(false); });

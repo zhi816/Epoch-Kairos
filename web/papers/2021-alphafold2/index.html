@@ -118,6 +118,7 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
 .art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
 .art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
 .art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
 .art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
 .art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
@@ -163,7 +164,15 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
 @media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
 @media (max-width:900px){
-  .root{display:block;height:auto;overflow:visible}
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
   .rail{display:none}
   .stage{container-type:normal;padding:24px 16px;border-right:0}
   /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
@@ -173,9 +182,7 @@ button:disabled{cursor:default;opacity:.3}
   /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
   .art .mode{display:inline-flex}
   .art.solo section[data-card]:not(.cur){display:none}
-  .pane{overflow:visible}
-  .art{padding:32px 16px 64px}
-  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
 }
 /* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
 @media (max-width:480px){
@@ -235,6 +242,7 @@ button:disabled{cursor:default;opacity:.3}
 
 <div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
 </header>
+<div class="body">
 <section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
 <p class="epigraph">一維的胺基酸序列是生命寫下的密碼，三維的空間摺疊則是它執行功能的機械實體；AlphaFold2 為這兩座世界之間架起了原子級精度的計算橋樑。</p>
 <p>1972 年，Christian Anfinsen 在諾貝爾獎演講中提出著名的「安芬森法則（Anfinsen's Dogma）」：蛋白質的一維胺基酸序列應該完全決定其三維立體結構。然而，一條含 200 個胺基酸的多肽鏈在理論上擁有超過 <span class="m-in" data-tex="10^{100}"></span> 種可能構型（Levinthal 悖論），若靠冷凍電鏡（Cryo-EM）或 X 光晶體繞射實驗解析單一蛋白質結構，往往需耗費數個月至數年及數十萬美元。DeepMind 團隊由 John Jumper 與 Demis Hassabis 領軍開發的 <strong>AlphaFold2</strong>，在第 14 屆蛋白質結構預測雙年賽（CASP14）中達到與實驗測量幾乎無法區分的原子級精度（中位數主鏈誤差 <span class="m-in" data-tex="0.96\,\text{\AA}"></span>），一舉解決了長達 50 年的蛋白質摺疊大挑戰。</p>
@@ -281,6 +289,7 @@ d_{ij} &amp;= \sqrt{ \left\| T_i^{-1}(\vec{x}_j) - \left(T_i^{\text{true}}\right
 <p>AlphaFold2 的成功是<strong>「生命演化史（MSA）」與「歐氏空間幾何學（<span class="m-in" data-tex="\mathrm{SE}(3)"></span>）」在深度學習張量空間中的偉大交會</strong>：</p>
 <ol><li><strong>三十億年的自然選擇就是最強大的訓練集</strong>：多重序列比對（MSA）並非單純的字串比對，而是地球生命在三十億年演化過程中已經替我們做過的數十億次突變存活實驗；Evoformer 則是讀懂這部演化史詩的解碼器。</li><li><strong>對稱性即先驗（Symmetry as Inductive Bias）</strong>：物理世界沒有絕對座標原點。將三維旋轉平移等變性直接寫進注意力機制（IPA 與 FAPE），讓模型不必浪費算力去學習「轉個角度還是同一個蛋白質」，而是把全部算力集中於破解摺疊能量地形。</li></ol>
 </section>
+</div>
     </article>
   </main>
 
@@ -360,7 +369,7 @@ d_{ij} &amp;= \sqrt{ \left\| T_i^{-1}(\vec{x}_j) - \left(T_i^{\text{true}}\right
     var n = -1;
     secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
     if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
-    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
     // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
     if (n < 0 && inPane) n = 0;
     if (n >= 0) show(n);
@@ -382,8 +391,8 @@ d_{ij} &amp;= \sqrt{ \left\| T_i^{-1}(\vec{x}_j) - \left(T_i^{\text{true}}\right
     mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
     mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
     layout();
-    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
-    var top = art.getBoundingClientRect().top + window.scrollY;
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
     if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
   }
   mCard.addEventListener('click', function () { setFull(false); });

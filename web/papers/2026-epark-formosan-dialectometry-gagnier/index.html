@@ -118,6 +118,7 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
 .art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
 .art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
 .art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
 .art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
 .art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
@@ -163,7 +164,15 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
 @media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
 @media (max-width:900px){
-  .root{display:block;height:auto;overflow:visible}
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
   .rail{display:none}
   .stage{container-type:normal;padding:24px 16px;border-right:0}
   /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
@@ -173,9 +182,7 @@ button:disabled{cursor:default;opacity:.3}
   /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
   .art .mode{display:inline-flex}
   .art.solo section[data-card]:not(.cur){display:none}
-  .pane{overflow:visible}
-  .art{padding:32px 16px 64px}
-  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
 }
 /* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
 @media (max-width:480px){
@@ -239,6 +246,7 @@ button:disabled{cursor:default;opacity:.3}
 
 <div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
 </header>
+<div class="body">
 <section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
 <p class="epigraph">方言不是語言演化的碎屑，而是歷史在地理山川間刻下的活體等高線。透過計算方言學的多維度量，我們得以穿透教材編寫的表面同質化，看見四十二種南島鄉音真實的親疏密碼。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
 <p>臺灣南島語是南島語系的主要分支，多數語言資源匱乏且瀕危，內部方言在詞彙、音韻與構詞句法上常有差異；方言之間的分群關係常有爭議，在自然語言處理（NLP）中也尚未被研究（摘要；§1, p. 124）。原住民族語言研究發展基金會建置的「族語 E 樂園（ePark）」涵蓋 16 族 42 種官方方言，全庫 2,680,175 詞元，並有 587 小時音檔與華語翻譯（§2.1, p. 125）。</p>
@@ -292,6 +300,7 @@ button:disabled{cursor:default;opacity:.3}
 <h3>對個人碩士論文研究之映射與啟發</h3>
 <ol><li><strong>泛泰雅語群（Atayalic）跨方言遷移之具體指導</strong>：<ul><li>Gagnier 的數據明確指出：賽德克語三方言平均餘弦高達 0.820，遷移潛力極大；但泰雅語六大方言平均餘弦僅 0.605，方言獨有詞高達 71.0%！</li><li><strong>啟發</strong>：廖恒慶（2023）嘗試做泛泰雅多語言翻譯時，泰雅語組表現相對掙扎。Gagnier 的數據提供一個可能的解釋（Wiki 推測，原文未做翻譯實驗）：泰雅語 71.0% 的詞型只出現在單一方言，若未對各方言做專屬詞彙處理就直接混合訓練，可能遇到大量未知詞。</li></ul></li><li><strong>遷移權重矩陣之數學化</strong>：<ul><li>論文提供的 Table 2 矩陣可直接轉化為神經翻譯模型之先驗：在多工微調時，可將成對餘弦相似度設為損失函數的對齊增益權重。</li></ul></li><li><strong>ePark 語料的領域偏差控制</strong>：<ul><li>Table 3 警告我們：ePark 的文化篇與生活會話板塊在方言間詞彙漂移劇烈。若抽取 ePark 作為機器翻譯評測集，必須保持各方言在六大板塊的均勻分佈，避免評測分數被單一文化篇的孤立專名扭曲。</li></ul></li></ol>
 </section>
+</div>
     </article>
   </main>
 
@@ -368,7 +377,7 @@ button:disabled{cursor:default;opacity:.3}
     var n = -1;
     secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
     if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
-    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
     // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
     if (n < 0 && inPane) n = 0;
     if (n >= 0) show(n);
@@ -390,8 +399,8 @@ button:disabled{cursor:default;opacity:.3}
     mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
     mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
     layout();
-    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
-    var top = art.getBoundingClientRect().top + window.scrollY;
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
     if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
   }
   mCard.addEventListener('click', function () { setFull(false); });

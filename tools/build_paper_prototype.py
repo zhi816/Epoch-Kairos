@@ -338,12 +338,13 @@ def article(fm, body):
             '<h1>%s</h1>' % esc(fm['title_zh']), '<p class="en">%s</p>' % esc(fm['title'])]
     if rest:
         head.append(markdown(rest))
-    # 手機版長文顯示方式（DESIGN.md 第五章第 5 節）：「隨卡片」只顯示目前卡片之段落，「全文」顯示全部且不與卡片連動；桌面隱藏
+    # 手機版長文顯示方式（DESIGN.md 第五章第 1 節）：「隨卡片」只顯示目前卡片之段落，「全文」顯示全部且不與卡片連動；桌面隱藏
     head.append('<div class="mode" role="group" aria-label="長文顯示方式">'
                 '<button type="button" id="m-card" aria-pressed="true">隨卡片</button>'
                 '<button type="button" id="m-full" aria-pressed="false">全文</button></div>')
     head.append('</header>')
-    out = ['\n'.join(head)]
+    # 六段包在 .body 內：手機版把頁首（雙年份、標題、開關）移到卡片上方，.body 留在卡片下方（DESIGN.md 第五章第 1 節）
+    out = ['\n'.join(head), '<div class="body">']
     for k, (num, name, body_lines) in enumerate(sections):
         # 樣稿「論文頁 F」：論文頁開頭之引言（> 「……」）不放在標題下，改為 01 時代銘文之第一段，去掉引號
         lead = ''
@@ -352,6 +353,7 @@ def article(fm, body):
                 inline(epigraph[0]), '<span class="src">%s</span>' % inline(epigraph[1]) if epigraph[1] else '')
         out.append('<section data-card="%d"><div class="sh"><span class="num" aria-hidden="true">%02d</span><h2>%s</h2></div>\n%s%s\n</section>'
                    % (num, num, esc(name), lead, markdown(body_lines)))
+    out.append('</div>')
     return '\n'.join(out), scope
 
 

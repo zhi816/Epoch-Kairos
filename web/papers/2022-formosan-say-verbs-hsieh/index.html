@@ -118,6 +118,7 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
 .art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
 .art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
 .art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
 .art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
 .art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
@@ -163,7 +164,15 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
 @media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
 @media (max-width:900px){
-  .root{display:block;height:auto;overflow:visible}
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
   .rail{display:none}
   .stage{container-type:normal;padding:24px 16px;border-right:0}
   /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
@@ -173,9 +182,7 @@ button:disabled{cursor:default;opacity:.3}
   /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
   .art .mode{display:inline-flex}
   .art.solo section[data-card]:not(.cur){display:none}
-  .pane{overflow:visible}
-  .art{padding:32px 16px 64px}
-  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
 }
 /* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
 @media (max-width:480px){
@@ -232,6 +239,7 @@ button:disabled{cursor:default;opacity:.3}
 
 <div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
 </header>
+<div class="body">
 <section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
 <p class="epigraph">在南島語言的深層演化中，『說』從來不只是被動地傳遞語言符號，它本身就是一種具備模仿性與指示性的施為行動，並在漫長的言談互動中凝結為引導子句與標記語法的骨架結構。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
 <p>本文以雙述說動詞測試，從 16 種台灣南島語中挑出語義最廣泛、最容易語法化的「說」動詞（第 1 節，pp. 48–51，表一），分析其語義現象。作者指出兩個類型學上的獨特之處：其一，所有台灣南島語的「說」動詞都同時有「同一語義場」的延伸，以及從「述說語義場」跨到「認知語義場」的延伸（由「說」延伸為「想」）；其二，除布農語、鄒語、卡那卡那富語與拉阿魯哇語外，其餘 12 種語言的「說」動詞同時具有另一個語義：指參「如此」、比較／模仿「像」、動作「做」或移動「去」（摘要；第 5 節，pp. 84–85）。</p>
@@ -260,6 +268,7 @@ button:disabled{cursor:default;opacity:.3}
 <h3>對個人碩士論文研究之映射與啟發</h3>
 <ol><li><strong>泛泰雅語「說」動詞同時是「做」</strong>：<ul><li>依本文表二、表三，泰雅語 <code>mha</code>、賽德克語 <code>mesa</code>／<code>kesa-un</code>、太魯閣語 <code>mesa</code>／<code>sun</code> 都兼有「說」與「做」。例如太魯閣語 <code>ma=saku sun haya</code> 譯為「你為什麼這樣對我呢？」而非「說」（例 30c，p. 78）。翻譯系統或辭典檢索若一律對應為「說」，可能產生錯譯；可在測試資料中特別檢查這類詞。</li></ul></li><li><strong>構詞解析之外還需要句法資訊</strong>：<ul><li>同一詞形在不同句子中可能是主要動詞或已語法化的標記（例如邵語 <code>mzai</code> 作補語連詞）。只看單詞的構詞解析無法區分，需搭配上下文；具體做法（如序列模型或提示中提供功能說明）須另行實驗。</li></ul></li></ol>
 </section>
+</div>
     </article>
   </main>
 
@@ -336,7 +345,7 @@ button:disabled{cursor:default;opacity:.3}
     var n = -1;
     secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
     if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
-    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
     // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
     if (n < 0 && inPane) n = 0;
     if (n >= 0) show(n);
@@ -358,8 +367,8 @@ button:disabled{cursor:default;opacity:.3}
     mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
     mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
     layout();
-    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
-    var top = art.getBoundingClientRect().top + window.scrollY;
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
     if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
   }
   mCard.addEventListener('click', function () { setFull(false); });

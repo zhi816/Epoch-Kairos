@@ -118,6 +118,7 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
 .art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
 .art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
 .art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
 .art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
 .art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
@@ -163,7 +164,15 @@ button:disabled{cursor:default;opacity:.3}
 /* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
 @media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
 @media (max-width:900px){
-  .root{display:block;height:auto;overflow:visible}
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
   .rail{display:none}
   .stage{container-type:normal;padding:24px 16px;border-right:0}
   /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
@@ -173,9 +182,7 @@ button:disabled{cursor:default;opacity:.3}
   /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
   .art .mode{display:inline-flex}
   .art.solo section[data-card]:not(.cur){display:none}
-  .pane{overflow:visible}
-  .art{padding:32px 16px 64px}
-  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
 }
 /* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
 @media (max-width:480px){
@@ -245,6 +252,7 @@ button:disabled{cursor:default;opacity:.3}
 
 <div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
 </header>
+<div class="body">
 <section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
 <p class="epigraph">當模型不再被迫一個字一個字地順著時間軸緩慢爬行，而是能在一瞬間用矩陣乘法看清全局脈絡中每一處幽微的張力時，人工智慧的規模化奇點便真正降臨了。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
 <p>在 2017 年之前，自然語言處理與序列建模完全由循環神經網路（RNN、LSTM、GRU）主導。RNN 必須按時間順序從左到右逐字計算隱藏狀態 <span class="m-in" data-tex="h_t = f(h_{t-1}, x_t)"></span>，既無法在現代 GPU 叢集上大規模並行訓練，又會在長序列中遺忘早期資訊。Google Brain 與 Google Research 的八位作者在《Attention Is All You Need》中做出了一個激進的斷捨離：<strong>完全拋棄循環與卷積結構</strong>，提出純基於自注意力機制（Self-Attention）的 <strong>Transformer</strong> 架構，一舉刷新機器翻譯紀錄並將訓練成本降低一個數量級，成為日後 GPT、BERT、AlphaFold2、Sora 與 DeepSeek 等一切現代基礎模型的共同母體。</p>
@@ -292,6 +300,7 @@ PE_{(pos, 2i+1)} &amp;= \cos\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \ri
 <p>《Attention Is All You Need》是科學與工程史上<strong>「減法哲學」</strong>的巔峰之作：</p>
 <ol><li><strong>大幅放寬結構性歸納偏置（Inductive Bias），讓資料與規模說話</strong>：相較於 RNN 強制時間步嚴格相鄰遞推、CNN 強制局部空間平移不變性等強結構偏置，Transformer 屏棄了局部鄰域限制，僅保留必要的位置編碼（Positional Encoding）與因果遮罩（Causal Mask）等基礎結構先驗，將兩兩交互的關聯權重完全交由數據驅動的自注意力矩陣自發學習，為後續擴展定律（Scaling Laws）的規模化通用性鋪平了道路。</li><li><strong>與統計物理 Hopfield 網路的跨時空閉環</strong>：1982 年 Hopfield 用二次能量函數定義聯想記憶，35 年後 Transformer 的縮放點積注意力被證明正是「指數型能量函數之現代連續 Hopfield 網路」的單步自由能極小化更新，完成了物理學與深度學習的完美閉環。</li></ol>
 </section>
+</div>
     </article>
   </main>
 
@@ -368,7 +377,7 @@ PE_{(pos, 2i+1)} &amp;= \cos\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \ri
     var n = -1;
     secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
     if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
-    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
     // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
     if (n < 0 && inPane) n = 0;
     if (n >= 0) show(n);
@@ -390,8 +399,8 @@ PE_{(pos, 2i+1)} &amp;= \cos\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \ri
     mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
     mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
     layout();
-    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
-    var top = art.getBoundingClientRect().top + window.scrollY;
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
     if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
   }
   mCard.addEventListener('click', function () { setFull(false); });

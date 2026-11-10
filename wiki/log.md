@@ -1959,3 +1959,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：使用者認為標題「Epoch Kairos」過細，比較 Bodoni Moda 400 至 800 五種字重後，決定改用字體樣稿第 05 號 Playfair Display。`web/assets/css/theme.css` 之 `--font-display`、`tools/home_template.html` 與 `tools/paper_template.html` 之 Google Fonts 載入（只載 400）與論文頁 `--display` 改為 Playfair Display；`starmap.css` 直排字級 132px 改 133px（自然寬度 5.93em，於 1440 x 900 量得 788，未超過 `textLength` 800），手機橫排維持 58px。重建首頁與 38 篇論文頁，自我檢查皆 ERROR 0；本機預覽桌面直排、手機橫排與論文頁窄導軌皆正確載入 Playfair Display，`verify_page.js`（`2017-attention-is-all-you-need`）PASS。DESIGN.md 第二章第 1 節、第六章與第八章第 3 項改記為已定。
+
+## [2026-11-10 15:07] design | 手機論文頁頁首移到卡片上方 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依使用者指示，手機版（窄於 900px）論文頁之長文頁首（雙年份、中英文標題、「隨卡片｜全文」開關）由卡片與段落之間移到頁面最上方，卡片下方直接接目前段落，滑卡片即可看到換段。修改 [`tools/paper_template.html`](../tools/paper_template.html)（`.pane`、`.art` 以 `display:contents` 攤平並以 `order` 排序，手機頁首字級略縮）與 [`tools/build_paper_prototype.py`](../tools/build_paper_prototype.py)（六段包入 `.body`），重建 `web/papers/` 全部 38 頁，自我檢查 ERROR 0。[`verify_page.js`](../.agents/skills/paper-card-writer/scripts/verify_page.js) 新增手機檢查「頁首在卡片上方、段落緊接卡片欄之下」，以 2007-woodford-inflation-dynamics 與 2023-atayal-truku-morphology-dai 驗證皆 PASS。同步更新 [`DESIGN.md`](../DESIGN.md) 第五章第 1 節、否決紀錄與版本歷程、[`AGENTS.md`](../AGENTS.md) 第七章第 3 節手機佈局與 `paper-card-writer` 之 `references/paper-page.md`。

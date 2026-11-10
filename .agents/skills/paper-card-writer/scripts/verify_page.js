@@ -11,7 +11,7 @@
 // 量測項目：公式是否全部渲染且無錯誤、六張卡內容是否溢出卡片、卡片內公式是否需要水平捲動、
 // 封面一句話是否超過三行或溢出星窗、頁面是否有橫向捲動、卡片下方控制列是否超出版面、
 // 頁面是否露出 ** 或 $、長文區塊公式是否可水平捲動、返回鍵標示是否與目的地一致、
-// 手機版連點下一張與上一張時 .stage 位置是否不變。只量版面，不判斷內容對錯。
+// 手機版連點下一張與上一張時 .stage 位置是否不變、手機版頁首是否在卡片上方且段落緊接卡片之下。只量版面，不判斷內容對錯。
 (async () => {
   const SIZES = [[1440, 900], [375, 812]];
   const wait = ms => new Promise(r => setTimeout(r, ms));
@@ -154,6 +154,15 @@
       // 以程式捲動卡片列時，部分環境（隱藏 iframe、背景分頁）會把 scroll 事件延遲一秒以上，故捲動後主動送出一次 scroll 事件
       const slide = async k => { deck.scrollLeft = cs[k].offsetLeft - cs[0].offsetLeft; deck.dispatchEvent(new W.Event('scroll')); await wait(400); };
       out(shown().join() === '1', size, '隨卡片：開頁只顯示 01 段（實際：' + shown().join() + '）');
+      // 9a. 頁首（雙年份、標題、隨卡片｜全文開關）在卡片上方，卡片下方緊接長文段落，滑卡片即可看到換段（DESIGN.md 第五章第 1 節，2026-11-10）
+      const hd = d.querySelector('.art header'), bd = d.querySelector('.art .body'), stg0 = d.getElementById('stage');
+      if (hd && bd && stg0) {
+        const hr = hd.getBoundingClientRect(), sr0 = stg0.getBoundingClientRect(), br = bd.getBoundingClientRect();
+        const gap = Math.round(br.top - sr0.bottom);
+        out(hr.bottom <= sr0.top + 1 && gap >= -1 && gap <= 40, size, '頁首在卡片上方（頁首下緣 ' + Math.round(hr.bottom) + 'px、卡片欄上緣 ' + Math.round(sr0.top) + 'px），長文段落緊接卡片欄之下（間距 ' + gap + 'px）');
+      } else {
+        out(false, size, '找不到頁首（.art header）、長文段落（.art .body）或 #stage');
+      }
       // 9b. 點「下一張」「上一張」時 .stage 不得移動，頁面捲動位置也不得被改（wiki/todo.md TD-010：手機版曾回報偏移 96px）。
       //     先把頁面捲下 60px，讓控制列仍在可視範圍內；以文件座標（視窗座標加頁面捲動量）比較，
       //     因為 .stage 在長文上方，隨卡片換段改變文件高度時，不應推動 .stage。
