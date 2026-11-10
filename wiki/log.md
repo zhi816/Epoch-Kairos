@@ -2172,3 +2172,14 @@
   - 由 Claude Haiku 5.5 (Ultracode) 執行高強度字數與結構審查，完成 [wiki/cards/1995-soai-asymmetric-autocatalysis.md](cards/1995-soai-asymmetric-autocatalysis.md) 六張圖卡文字編排（Cover、Card 2–6）。
   - 同步微調 [wiki/papers/1995-soai-asymmetric-autocatalysis.md](papers/1995-soai-asymmetric-autocatalysis.md) 之 `card_line` 與用詞，達到逐字嚴格匹配。
 - **驗證**：`check_cards.py 1995-soai-asymmetric-autocatalysis` 檢查結果為 ERROR 0、WARN 0；`pipeline_status.py` S7 檢查為 OK。
+
+
+## [2026-11-11 02:36] publish | Soai 不對稱自催化雙欄網頁生成與首頁群星上架 | #化學合成
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 多 AI 協同第四階段（S8–S10）：由 Antigravity (Lead Architect) 統合全流程，完成展示層建置與首頁上架。
+  - 執行 `tools/build_paper_prototype.py 1995-soai-asymmetric-autocatalysis`，產出獨立雙欄學術網頁 [web/papers/1995-soai-asymmetric-autocatalysis/index.html](../web/papers/1995-soai-asymmetric-autocatalysis/index.html)（自我檢查 ERROR 0、WARN 0），並將論文頁與索引狀態轉為 `status: "published"`。
+  - 執行 `tools/build_home.py` 重建首頁知識星圖與卡片牆，將本篇以 No.01 亮星上架於首頁（群星 15 張、我的關注 24 張），自我檢查 ERROR 0，`build_home.py --check` 100% 一致。
+  - 更新 [wiki/todo.md](todo.md) TD-001，結案並移除 Soai 條目。
+- **驗證**：`pipeline_status.py 1995-soai-asymmetric-autocatalysis` 全步驟（S1–S9）全數為 OK；`build_home.py --check` 一致；`lint_wiki.py` 為 ERROR 0。

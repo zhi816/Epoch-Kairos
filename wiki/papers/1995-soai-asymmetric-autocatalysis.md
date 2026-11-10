@@ -11,7 +11,7 @@ honor: "2026 諾貝爾化學獎（分子同手性起源與不對稱自催化合�
 domain: "chem"
 domain_tags: ["#化學合成"]
 concepts: ["chiral-symmetry-breaking"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.1038/378767a0"

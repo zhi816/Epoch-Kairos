@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>分子同手性與 Soai 不對稱自催化｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--focus)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#FFB6A3;--deep:#693123;--win:#272222;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.01</span><span>化學</span></div><div class="win"><i style="left:37.4%;top:15.8%;width:1px;height:1px;opacity:0.47"></i><i style="left:6.3%;top:17.4%;width:1px;height:1px;opacity:0.41"></i><i style="left:4.3%;top:21.5%;width:1px;height:1px;opacity:0.44"></i><i style="left:40.2%;top:4.8%;width:1px;height:1px;opacity:0.32"></i><i style="left:78.8%;top:15.9%;width:1px;height:1px;opacity:0.66"></i><i style="left:90.3%;top:36.4%;width:1.5px;height:1.5px;opacity:0.46"></i><i style="left:88.5%;top:20.6%;width:1px;height:1px;opacity:0.48"></i><i style="left:7.4%;top:17.3%;width:1px;height:1px;opacity:0.55"></i><i style="left:87.2%;top:22.5%;width:1px;height:1px;opacity:0.45"></i><i style="left:5.9%;top:32.0%;width:1.5px;height:1.5px;opacity:0.36"></i><i style="left:46.2%;top:33.8%;width:1.5px;height:1.5px;opacity:0.49"></i><i style="left:94.9%;top:35.4%;width:1.5px;height:1.5px;opacity:0.36"></i><i style="left:30.4%;top:4.9%;width:1px;height:1px;opacity:0.78"></i><i style="left:69.7%;top:4.8%;width:1.5px;height:1.5px;opacity:0.41"></i><span class="rep award"></span><span class="line"><span>不對稱自催化，</span><span>手性放大</span><span>揭示同手性起源</span></span></div><div class="tags">化學、材料與能源・#化學合成</div><div class="name">分子同手性與 Soai 不對稱自催化</div><div class="lead">產物催化自身合成將微弱手性偏差逐級放大為壓倒性優勢，為生命起源同手性提供首個化學實證。</div><div class="yrs">1995 發表 ｜ 2026 諾貝爾化學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">產物純度天花板與理論懸空</span><div class="rows"><div class="row"><b>純度天花板</b><span>先前自催化產物光學純度始終低於催化劑</span></div><div class="row"><b>物理結晶</b><span>先前僅結晶能破缺且屬物理過程而非化學反應</span></div><div class="row gap"><b>反應網路</b><span>缺乏能自發濃縮微小手性偏差之化學反應網路</span></div></div><span class="ft" style="color:var(--ink)">隨機手性漲落無法在化學系統自發湧現單一手性。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">鋅烷氧化物自催化閉環</span><svg class="dia" viewBox="0 0 300 120" role="img" aria-label="示意：手性嘧啶醇與鋅試劑生成活性中間體，催化加成產生更高光學純度的新產物並回饋循環。">
+  <rect class="k-ink k-ring" x="6" y="46" width="76" height="30" rx="4"/>
+  <text class="k-label" x="44" y="58" text-anchor="middle">手性嘧啶醇</text>
+  <text class="k-label" x="44" y="70" text-anchor="middle">起始催化劑</text>
+
+  <rect class="k-accent k-ring" x="102" y="8" width="104" height="28" rx="4"/>
+  <text class="k-label-accent" x="154" y="26" text-anchor="middle">鋅烷氧化物</text>
+
+  <rect class="k-accent k-ring" x="218" y="46" width="76" height="30" rx="4"/>
+  <text class="k-label" x="256" y="58" text-anchor="middle">新生成物</text>
+  <text class="k-label-accent" x="256" y="70" text-anchor="middle">手性產物</text>
+
+  <line class="k-line" x1="50" y1="46" x2="100" y2="23"/>
+  <polyline class="k-line" points="95.8,28.2 100,23 93.3,22.8"/>
+
+  <line class="k-line" x1="202" y1="22" x2="244.6" y2="43.3"/>
+  <polyline class="k-line" points="237.9,43.3 244.6,43.3 240.5,37.9"/>
+
+  <path class="k-line k-dash" d="M256 76 C 256 102, 44 102, 44 80"/>
+  <polyline class="k-line k-dash" points="41,86 44,80 47,86"/>
+  <text class="k-label" x="150" y="112" text-anchor="middle">自催化閉環</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\mathrm{e.e.} = \frac{|[S]-[R]|}{[S]+[R]} \times 100\%"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">手性產物原位生成活性鋅中間體，催化自身合成並回饋下一輪循環。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">88% e.e.</span><span class="l">極低2%起始經5輪放大至近單一手性</span></div><div class="stat"><span class="v">942倍</span><span class="l">Series B終產物(S)-1物質量放大倍數</span></div><div class="stat"><span class="v">89% e.e.</span><span class="l">Series A經5輪放大後混合物光學純度</span></div><div class="stat"><span class="v">1,674倍</span><span class="l">Series A終產物(S)-1物質量放大倍數</span></div></div><span class="ft">範圍：嘧啶醇與二異丙基鋅甲苯體系0°C反應</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">從純粹理論走向實驗室自組織化學</span><div class="time"><p><b>1995</b><span>Soai首次在化學合成中實驗證實非線性手性自放大</span></p><p><b>1996</b><span>示範同骨架高對映選擇性催化性自動增殖</span></p><p><b>2001</b><span>提出同手性與異手性二聚體儲庫動力學模型</span></p><p><b>2009</b><span>證明碳同位素微弱差異亦能觸發手性自催化</span></p><p><b>2026</b><span>Kagan與Soai獲諾貝爾化學獎表彰不對稱自催化</span></p></div><span class="ft">除1995為本篇外其餘為後續發展與獲獎</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">微弱隨機漲落透過自催化反饋湧現宏觀秩序，為生命手性起源指明路徑。</span><span class="shift"><span>稀釋雜訊</span><i aria-hidden="true"></i><b>自發放大</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">1995 發表 ｜ 2026 諾貝爾化學獎</span>
+<h1>分子同手性與 Soai 不對稱自催化</h1>
+<p class="en">Asymmetric autocatalysis and amplification of enantiomeric excess of a chiral molecule</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">在一個由產物自己催化的反應裡，微小的手性偏差不再只是雜訊，而是會被反覆複製、逐級放大的種子。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>1995 年，Soai 團隊把一個看似違反直覺的結果壓縮在兩頁《Nature》通訊裡：以只有 5% e.e. 的 (S)-1 為起始催化劑，讓它與二異丙基鋅及嘧啶-5-甲醛反應，74 小時後催化劑與產物的混合物 e.e. 升至 39%；若把產物與催化劑的混合物再投入下一輪，e.e. 會依序爬升到 76%、85%、89%、89%，五輪後 (S)-1 的總量放大 1,674 倍（Table 1，p.767）。更關鍵的是 Series B：起始只有 2% e.e. 的 (S)-1，經五輪自催化後，混合物 e.e. 達 88%，總量放大 942 倍（Table 1，p.767）。</p>
+<p>作者在引言中明白指出，先前不對稱自催化案例的產物 e.e.「總是低於」催化劑 e.e.；本篇第一次讓產物 e.e. 顯著超過起始催化劑，並以「不對稱自催化」與「對映體過量放大」描述這個現象。反應的產物不是被動的終點，而是下一輪的催化劑；手性訊息因此不是被消耗，而是被複製。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：產物永遠追不上催化劑，與只有物理結晶的對稱破缺</h2></div>
+<p>在 1995 年之前，化學界面對一個尷尬的落差：</p>
+<ul><li><strong>不對稱自催化的產物純度天花板</strong>：作者回顧先前的不對稱自催化反應（refs 19–21），產物 e.e. 始終低於催化劑 e.e.。換句話說，自催化可以加速反應，卻不能把起始的手性偏差放大；每次複製都會稀釋，而不是濃縮手性訊息（p.767 左欄）。</li><li><strong>Frank (1953) 的理論方案缺乏化學實例</strong>：Frank 提出「自催化 ＋ 相互抑制」的動力學方案，認為複製分子間的相互抑制可以讓隨機的手性漲落壓倒另一鏡像，最終走向近乎單一對映體（p.767 左欄，ref. 7）。但這個方案在 1953 年之後長期停留在理論層次，沒有被落實在一個具體的化學反應中。</li><li><strong>唯一接近的實驗是物理結晶，不是化學反應</strong>：作者指出，Kondepudi 等人以自發結晶實現的對稱性破缺帶有間接抑制，是當時唯一可能的實驗實現；但它是物理過程，不是化學反應（p.768 左欄，ref. 27）。對想理解「生命為何偏好單一手性的胺基酸與糖」的人而言，這留下一個巨大的空白：有機分子能否靠自己的反應網路，把微小的手性偏差放大？</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：鋅烷氧化物循環與二聚體儲庫</h2></div>
+<p>1995 年論文的核心不是一個複雜的機器，而是一個極簡的自我複製循環。以下先交代 Frank 模型的概念骨架，再回到本篇的鋅烷氧化物循環，最後說明後續研究為何引入二聚體儲庫模型。三者的證據地位不同：Frank 方程是理論對照，鋅烷氧化物循環是本篇提出的機制，二聚體模型則是後續研究的解釋。</p>
+<p>「放大」的量化基準是對映體過量：</p>
+<span class="m-disp" data-tex="\mathrm{e.e.} = \frac{|[S]-[R]|}{[S]+[R]} \times 100\%"></span>
+<p>其中 <span class="m-in" data-tex="[S]"></span> 與 <span class="m-in" data-tex="[R]"></span> 分別為 1 的兩個對映體濃度。若反應只是等速複製 S 與 R，e.e. 保持不變；要讓 e.e. 上升，複製過程必須對其中一個對映體有淨偏好，或對另一個有抑制作用。</p>
+<h3>1. Frank (1953) 的相互抑制方案：放大為何可能</h3>
+<p>Frank 在 1953 年提出「自催化 ＋ 相互抑制」的動力學方案，作為解釋手性對稱破缺的理論骨架。其標準形式可寫為：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\frac{\mathrm{d}[S]}{\mathrm{d}t} &amp;= k_{\mathrm{a}}[A][S] - k_{\mathrm{i}}[S][R] \\
+\frac{\mathrm{d}[R]}{\mathrm{d}t} &amp;= k_{\mathrm{a}}[A][R] - k_{\mathrm{i}}[S][R]
+\end{aligned}"></span>
+<p>其中 <span class="m-in" data-tex="[A]"></span> 為非手性受質（此處即醛 3），<span class="m-in" data-tex="k_{\mathrm{a}}"></span> 為自催化生成速率常數，<span class="m-in" data-tex="k_{\mathrm{i}}"></span> 為相互抑制速率常數。若 <span class="m-in" data-tex="k_{\mathrm{i}}=0"></span>，S 與 R 各自以相同速率指數成長，e.e. 不變；若 <span class="m-in" data-tex="k_{\mathrm{i}}&gt;0"></span>，交錯項 <span class="m-in" data-tex="-k_{\mathrm{i}}[S][R]"></span> 會同時消耗兩個對映體，但對少數對映體的相對懲罰更大，使外消旋固定點變得不穩定，微小的初始偏差因而可能被放大。</p>
+<p><strong>重要界定</strong>：這段方程式是 Frank 模型的標準形式，不是 1995 年論文中印出的公式。原文只在引言引述 Frank 的方案（ref. 7），並在結論說「本篇反應可能是 Frank 方案的一個例子」，同時明確指出「自催化步驟的詳細機制，特別是系統中是否存在抑制機制，仍有待闡明」（p.768 左欄）。因此，Frank 方程在本頁扮演的是概念骨架，不是已被本篇實驗證實的機制。</p>
+<h3>2. 原位生成的烷氧基鋅中間體 2：本篇的反應循環</h3>
+<p>作者提出的循環只有三個化學步驟（Fig. 2，p.767）：</p>
+<ol><li><strong>原位生成中間體 2</strong>：手性嘧啶醇 1 與等莫耳的二異丙基鋅反應，生成對掌性異丙基鋅烷氧化物 2，同時釋出丙烷（依酸鹼反應計量）。作者以 ¹H NMR 表徵 2（p.767 右欄）。</li><li><strong>2 催化的對映選擇性加成</strong>：2 催化二異丙基鋅對嘧啶-5-甲醛 3 的加成，生成新的一分子 1 之鋅烷氧化物；這一步的對映選擇性決定了新生成 1 的組態與 e.e.。</li><li><strong>水解釋放產物</strong>：酸性水解把鋅烷氧化物轉為 1；新生成的 1 可再與二異丙基鋅生成 2，進入下一輪。這就是「產物即催化劑」的自催化閉環。</li></ol>
+<p>以簡化反應式表示（鋅副產物未配平；依 Fig. 2 改寫）：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\mathrm{1} + \mathrm{i}\text{-}\mathrm{Pr}_2\mathrm{Zn} &amp;\longrightarrow \mathrm{2} + \mathrm{i}\text{-}\mathrm{PrH} \\
+\mathrm{3} + \mathrm{i}\text{-}\mathrm{Pr}_2\mathrm{Zn} &amp;\xrightarrow{\mathrm{2}} \mathrm{2}_{\mathrm{new}} \\
+\mathrm{2}_{\mathrm{new}} + \mathrm{H^+} &amp;\longrightarrow \mathrm{1}_{\mathrm{new}} + \mathrm{Zn(II)}
+\end{aligned}"></span>
+<p>其中 <span class="m-in" data-tex="\mathrm{2}_{\mathrm{new}}"></span> 為新生成 1 的鋅烷氧化物。原文沒有把整條循環配平，Fig. 2 只畫出有機物的轉換與質子化步驟；因此上式只保留決定立體化學的核心，不聲稱完整的鋅物種計量。</p>
+<p>這個循環的關鍵，在於 2 對醛 3 的加成具有對映選擇性：當起始 1 是 (S) 時，2 會偏好生成 (S)-1；當起始 1 是 (R) 時，2 會偏好生成 (R)-1。作者以 Series C 的鏡像實驗確認了這一點（p.767 右欄末段）。但「為什麼產物的 e.e. 會比催化劑的 e.e. 更高」並不能只靠這個循環自動解釋；1995 年論文如實地把這個問題留給後續研究。</p>
+<h3>3. 二聚體儲庫模型：後續研究對「放大」的機制解釋</h3>
+<p>1995 年論文沒有提出二聚體模型；它只提出鋅烷氧化物 2 的循環，並把詳細機制列為未解問題（p.768）。為了說明「為什麼產物 e.e. 會超過催化劑 e.e.」，Blackmond、Brown 等人於 2001 年依反應熱量與動力學提出二聚體催化模型：催化劑以二聚體形式參與催化，同手性二聚體（S-S、R-R）與異手性二聚體（S-R）的生成平衡與催化活性不同（Blackmond et al., 2001, <em>JACS</em> 123:10103-10104，doi:10.1021/ja0165133）。後續文獻常將這個圖像稱為二聚體儲庫模型。</p>
+<p>以二聚體平衡表示：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\mathrm{(S)}\text{-}\mathrm{2} + \mathrm{(S)}\text{-}\mathrm{2} &amp;\rightleftharpoons \mathrm{(S)}\text{-}\mathrm{(S)}\text{-}\mathrm{2}_2, \quad K_{\mathrm{homo}} \\
+\mathrm{(S)}\text{-}\mathrm{2} + \mathrm{(R)}\text{-}\mathrm{2} &amp;\rightleftharpoons \mathrm{(S)}\text{-}\mathrm{(R)}\text{-}\mathrm{2}_2, \quad K_{\mathrm{hetero}}
+\end{aligned}"></span>
+<p>其平衡常數為：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+K_{\mathrm{homo}} &amp;= \frac{[\mathrm{(S)}\text{-}\mathrm{(S)}\text{-}\mathrm{2}_2]}{[\mathrm{(S)}\text{-}\mathrm{2}]^2} \\
+K_{\mathrm{hetero}} &amp;= \frac{[\mathrm{(S)}\text{-}\mathrm{(R)}\text{-}\mathrm{2}_2]}{[\mathrm{(S)}\text{-}\mathrm{2}][\mathrm{(R)}\text{-}\mathrm{2}]}
+\end{aligned}"></span>
+<p>在這個模型中，異手性二聚體 S-R 的生成平衡常數大於同手性二聚體，即 <span class="m-in" data-tex="K_{\mathrm{hetero}} &gt; K_{\mathrm{homo}}"></span>；在相同標準態下以 <span class="m-in" data-tex="\Delta G^{\circ} = -RT \ln K"></span> 表示，異手性二聚體的 <span class="m-in" data-tex="\Delta G^{\circ}"></span> 較負，熱力學上較穩定。但異手性二聚體的催化活性低於同手性二聚體（<span class="m-in" data-tex="k_{\mathrm{cat}}^{\mathrm{homo}} &gt; k_{\mathrm{cat}}^{\mathrm{hetero}}"></span>）。於是，異手性二聚體成為一個「儲庫」：它優先鎖住等量的 S 與 R，把少數對映體從活性池中移除；剩下的多數對映體則以高活性的同手性二聚體形式存在。結果是活性催化劑的 e.e. 高於整體混合物的 e.e.，產物便在一次次的循環中被進一步富集。</p>
+<p>這個模型解釋了正非線性效應的方向，但並非 1995 年原文的結論，也不是最終定論。2003 年 Buono 與 Blackmond 的動力學分析認為過渡態更接近四聚體（<em>JACS</em> 125:8978-8979，doi:10.1021/ja034705n）；2025 年 Möhler 等人的動力學剖析也顯示，吡啶基與嘧啶基底質的機制仍有細節待釐清（<em>Nature Communications</em> 16:7303，doi:10.1038/s41467-025-62591-3）。因此，本頁把二聚體儲庫模型定位為「後續最具影響力的機制假說之一」，而不是已封閉的答案。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Soai et al. 1995）之核心證據</h3>
+<ul><li><strong>Series A：5% 起始，五輪放大</strong>：A1 以 5% e.e. (S)-1 起始，74 h 後催化劑與產物混合物產率 62%、e.e. 39% (S)；新生成之 (S)-1 產率 42%、e.e. 55% (S)。A1–A5 的混合物 e.e. 依序為 39%、76%、85%、89%、89% (S)，(S)-1 總量放大 1,674 倍（Table 1，Runs A1–A5，p.767）。</li><li><strong>Series B：2% 起始，942 倍放大</strong>：B1 以 2% e.e. (S)-1（S : R = 51 : 49）起始，74 h 後混合物 e.e. 10% (S)；B1–B5 的混合物 e.e. 依序為 10%、57%、81%、88%、88% (S)，B5 的 (S)-1 總量放大 942 倍，新生成物 e.e. 達 88%–90%（Table 1，Runs B1–B5，p.767）。</li><li><strong>Series C：換成 (R)-1，選擇性鏡像翻轉</strong>：C1 以 10% e.e. (R)-1 起始，70 h 後混合物 e.e. 53% (R)、新生成 67% (R)；C2 以 30% e.e. (R)-1 起始，65 h 後混合物 e.e. 72% (R)、新生成 86% (R)（Table 1，Runs C1–C2，p.767）。</li><li><strong>Run D：外消旋對照</strong>：以外消旋 1（0% e.e.）為催化劑，55 h 後產率 68%，產物手性選擇性低於檢測極限（BDL）（Table 1，Run D，p.767）。</li><li><strong>產物組態跟隨催化劑組態</strong>：(S)-1 誘導生成 (S)-1，(R)-1 誘導生成 (R)-1；作者據此確認催化劑組態決定產物組態（p.767 右欄末段）。</li></ul>
+<p>以上數字均為本篇 Table 1 與 p.767 的實驗結果；Series C 使用 (R)-1，Run D 使用外消旋體，兩者是同篇的鏡像與對照實驗，不是後續研究。</p>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>1996：高對映選擇性的自動增殖</strong>：Shibata, Morioka, Hayase, Choji &amp; Soai (1996), <em>JACS</em> 118:471-472（doi:10.1021/ja953066g）以同一嘧啶醇骨架示範高對映選擇性的催化性自動增殖，延續 1995 年的自催化概念。</li><li><strong>2001：二聚體催化模型</strong>：Blackmond, McMillan, Ramdeehul, Schormann &amp; Brown (2001), <em>JACS</em> 123:10103-10104（doi:10.1021/ja0165133）以反應熱量與動力學提出二聚體催化模型，指出同手性與異手性二聚體的活性差異是放大的關鍵。</li><li><strong>2003：四聚體過渡態的動力學證據</strong>：Buono &amp; Blackmond (2003), <em>JACS</em> 125:8978-8979（doi:10.1021/ja034705n）以動力學分析支持四聚體過渡態，顯示二聚體圖像之外仍有結構爭議。</li><li><strong>2009：同位素手性也能觸發自催化</strong>：Kawasaki, Matsumura, Tsutsumi, Suzuki, Ito &amp; Soai (2009), <em>Science</em> 324:492-495（doi:10.1126/science.1170322）證明碳同位素 <span class="m-in" data-tex="^{13}\mathrm{C}/^{12}\mathrm{C}"></span> 比例造成的微弱手性差異，也能在反覆自催化中被放大。</li><li><strong>2025：機制仍在更新</strong>：Möhler, Betzenbichler, Huber, Siegle &amp; Trapp (2025), <em>Nature Communications</em> 16:7303（doi:10.1038/s41467-025-62591-3）以動力學剖析比較吡啶基與嘧啶基底質，延續對 Soai 反應機制細節的釐清。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>把「生命起源的手性之謎」變成可操作的實驗問題</strong>：1995 年之前，分子同手性（homochirality）多半是理論與觀察的問題；本篇提供一個可在實驗室重複的化學系統，讓「微小偏差如何被放大」成為可測量的動力學問題。這是概念上的轉移：手性起源不再只能從外在的物理環境或生物體內尋找，也可以從一個設計過的反應循環中研究。</li><li><strong>從單一反應到一個機制家族</strong>：1996 年的自動增殖、2001 年的二聚體模型、2003 年的四聚體動力學、2009 年的同位素手性，以及 2025 年的動力學剖析，構成了一條從「現象」到「機制」的研究鏈。這條鏈尚未抵達終點，但它讓 Soai 反應成為研究不對稱自催化與正非線性效應最常被引用的實驗系統之一。</li><li><strong>2026 年諾貝爾化學獎的意義</strong>：2026 年諾貝爾化學獎由 Henri B. Kagan 與 Kenso Soai 共享，表彰分子同手性起源與不對稱自催化合成。Kagan 在不對稱催化與非線性效應上的研究，與 Soai 的自催化反應實驗，分別從不同側面支撐了「手性如何被放大」這個問題；本篇是 Soai 一側的關鍵實驗起點，但獎項所表彰的範圍不等於這一篇論文。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>以下為 Wiki 詮釋：</p>
+<ol><li><strong>放大的本質不是「製造」手性，而是「選擇」手性</strong>：1995 年的實驗並沒有從無到有創造一個手性偏離；它從 2% e.e. 的種子開始，讓反應循環一次次把多數對映體複製得更多。Run D 的外消旋對照顯示，沒有種子時，產物選擇性低於檢測極限（p.767）。這提醒我們：對稱破缺需要一個初始漲落，而放大機制決定這個漲落能否長成宏觀秩序。</li><li><strong>「惰性」物種可能是功能的必要條件</strong>：二聚體儲庫模型把異手性 S-R 二聚體放在熱力學較穩定、但催化活性較低的位置。它看似是把寶貴的催化劑浪費掉，實際上卻是把少數對映體選擇性地扣住，讓多數對映體在活性池中取得優勢。這種「以穩定化換取純度」的策略，與色層分離、結晶純化，甚至免疫系統的容忍機制有結構上的類比：不是消滅雜訊，而是把雜訊隔離到不干擾放大的地方。</li><li><strong>現象可以先於機制成熟</strong>：1995 年的論文只用了兩頁，卻在結論明說「詳細機制仍有待闡明」。三十年後，二聚體、四聚體、甚至更複雜的團簇仍在競爭解釋權。這是一個關於科學節奏的提醒：一個足夠乾淨的現象，可以在機制尚未封閉時就改變一個領域；但把現象誤讀成機制，則會讓後來的修正付出代價。</li></ol>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>1995</b><span>發表・Nature</span></div>
+    <div class="yr award"><b>2026</b><span>諾貝爾化學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Kenso Soai<br>Takanori Shibata<br>Hiroshi Morioka<br>Kaori Choji</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Henri B. Kagan<br>Kenso Soai</span><span class="note">Kagan 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Nature, 378(6559), 767-768</span><a href="https://doi.org/10.1038/378767a0">doi:10.1038/378767a0</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#化學合成</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>手性對稱破缺與分子同手性</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2026 年諾貝爾化學獎由 Henri B. Kagan 與 Kenso Soai 共享，表彰分子同手性起源與不對稱自催化合成。本頁以 Soai、Shibata、Morioka 與 Choji 於 1995 年發表在《Nature》的兩頁通訊為主軸，處理「不對稱自催化能否讓產物 e.e. 超過起始催化劑」這一問題。Kagan 的不對稱催化與非線性效應工作，以及 Soai 實驗室後續的絕對不對稱合成，均不混記為本篇結果；Kagan 並非本篇作者。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok">已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

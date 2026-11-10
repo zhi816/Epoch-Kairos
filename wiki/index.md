@@ -18,7 +18,7 @@
 
 * `2026` ｜ [光遺傳學（Optogenetics）：以光精準控制大腦神經元](papers/2005-optogenetics.md) ｜ `#神經科學` `#生物科技` ｜ *2005 發表 ｜ 2026 諾貝爾生理學或醫學獎* ｜ `[wiki]`
   * 得獎者：Karl Deisseroth, Peter Hegemann, Georg Nagel。原始文獻：`raw/2005-optogenetics.pdf`（Boyden et al. (2005) *Nature Neuroscience* 8(9):1263-1268，https://doi.org/10.1038/nn1525）。
-* `2026` ｜ [分子同手性與 Soai 不對稱自催化](papers/1995-soai-asymmetric-autocatalysis.md) ｜ `#化學合成` ｜ *1995 發表 ｜ 2026 諾貝爾化學獎* ｜ `[wiki]`
+* `2026` ｜ [分子同手性與 Soai 不對稱自催化](papers/1995-soai-asymmetric-autocatalysis.md) ｜ `#化學合成` ｜ *1995 發表 ｜ 2026 諾貝爾化學獎* ｜ `[published]`
   * 得獎者：Henri B. Kagan, Kenso Soai。代表性文獻：`raw/1995-soai-asymmetric-autocatalysis.pdf`（Soai et al. (1995) *Nature* 378:767-768，https://doi.org/10.1038/378767a0）；Kagan 之不對稱氫化工作可追溯至 1970 年代。
 * `2026` ｜ [南極冰立方（IceCube）高能宇宙微中子探測：開啟高能微中子天文學時代](papers/2013-icecube-neutrino.md) ｜ `#天體物理` `#宇宙學` ｜ *2013 發表 ｜ 2026 諾貝爾物理學獎* ｜ `[published]`
   * 得獎者：Francis Halzen。原始文獻：`raw/2013-icecube-neutrino.pdf`（Aartsen et al. (2013) *Science* 342(6161):1242856，https://doi.org/10.1126/science.1242856）。
