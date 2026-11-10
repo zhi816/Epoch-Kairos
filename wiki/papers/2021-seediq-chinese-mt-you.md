@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#計算語言學", "#深度學習"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
 status: "published"
-verification: "issues"
+verification: "partial"
 my_focus: true
 focus_role: "senior-thesis"
 focus_languages: ["賽德克語"]
@@ -52,21 +52,16 @@ card_line: "讓電腦在賽德克語與中文之間翻譯"
 3. **書寫形式轉換並比對**：依 §2.2.6 之書寫形式轉換規則轉成書寫形式，若與目標詞的後半字串相同，即採用此組合，未比對到的前半段即為前綴字串。例如 `pnsltudan`（原形 `lutuc`）：`lutud-an` 轉為 `ltudan`，前綴字串為 `pns`，最後得到 `p<n>s-lutuc-an`（pp. 25–26）。
 4. **前綴結構判斷**：前綴字串可能有多種斷法（如 `kn` 可為名物化 `kn-`，也可為 `k<n>-`），原文表示文獻不足以寫出判斷規則，因此改用中文斷詞常用的機率模型（§3.3，pp. 26–27）。斷出的每個單元必須是已知 39 種前綴之一，或是後方字串的重疊。設前綴組合為 $x_1 x_2 \cdots x_m$，原文公式 (2)、(3) 為：
 
-$$P_{\text{uni}}(\text{pfx}) = \prod_{i=1}^{m} P(x_i)$$
+$$P(\text{pfx}) = \prod_{i=1}^{m} P(x_i)$$
 
-$$P_{\text{bi}}(\text{pfx}) = P(x_1 \mid \$) \prod_{i=2}^{m} P(x_i \mid x_{i-1})$$
+$$P(\text{pfx}) = P(x_1 \mid \$) \prod_{i=2}^{m} P(x_i \mid x_{i-1})$$
 
 其中 $\$$ 代表字串開頭。前綴機率**不以詞根為條件**。因資料量小，平滑採 Lidstone 法（各 n 元組頻率加上 $\lambda$）；二元模型另採 back-off，當 $P(x_i \mid x_{i-1}) = 0$ 時改用 $\alpha P(x_i)$（§3.3、§5.2）。
 
 ### 2. 翻譯模型與詞綴特徵（第四章）
 
 * **網路架構**：Seq2seq，encoder 為單層 Bi-LSTM，decoder 為單層 LSTM；中文端使用實驗室以中文維基百科、fastText skip-gram 訓練之詞嵌入（第四章開頭，p. 28；§4.2，p. 30）。
-* **詞綴組合特徵**：在 250 維詞嵌入之後加 52 維布林特徵，標記 40 種前綴、2 種中綴、10 種後綴是否出現，共 302 維（§4.1.1，p. 28）。**詞綴單元特徵**則把前綴拆成 10 種基本單元，共 22 維，總計 272 維（§4.1.2，p. 29）。依原文文字描述，可寫成（形式化為 Wiki 整理）：
-
-$$\begin{aligned}
-\mathbf{x}_t &= \big[\, \mathbf{e}(w_t) \,\|\, \mathbf{a}(w_t) \,\big] \in \mathbb{R}^{302} \\
-\mathbf{e}(w_t) &\in \mathbb{R}^{250}, \quad \mathbf{a}(w_t) \in \{0, 1\}^{52}
-\end{aligned}$$
+* **詞綴組合特徵**：在 250 維詞嵌入之後加 52 維布林特徵，標記 40 種前綴、2 種中綴、10 種後綴是否出現，共 302 維（§4.1.1，p. 28）。**詞綴單元特徵**則把前綴拆成 10 種基本單元，共 22 維，總計 272 維（§4.1.2，p. 29）。
 
 * **兩類詞嵌入來源要分清**：
   * **預訓練詞嵌入**：以 fastText skip-gram 在字典 6,069 句上訓練 250 維向量，單位可為詞彙原文、詞根或詞綴獨立單元；另試過借用字典中文語意的詞向量，以及從中文模型微調（§4.2.1–4.2.5，pp. 30–33）。

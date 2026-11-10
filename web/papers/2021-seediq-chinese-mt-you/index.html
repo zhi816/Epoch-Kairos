@@ -221,7 +221,7 @@ button:disabled{cursor:default;opacity:.3}
   <text class="k-label" x="187" y="49" text-anchor="middle">翻譯模型</text>
   <text class="k-label" x="265" y="49" text-anchor="middle">中文</text>
   <text class="k-label-accent" x="111" y="94" text-anchor="middle">前綴、中綴、後綴</text>
-</svg><div class="fbox"><span class="m-disp" data-tex="P_{\text{uni}}(\text{pfx}) = \prod_{i=1}^{m} P(x_i)"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">前綴有多種斷法時，用各單元機率的乘積來評估哪種斷法較可能。</span></div></section>
+</svg><div class="fbox"><span class="m-disp" data-tex="P(\text{pfx}) = \prod_{i=1}^{m} P(x_i)"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">前綴有多種斷法時，用各單元機率的乘積來評估哪種斷法較可能。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">25.10</span><span class="l">賽德克語→中文 BLEU，自訓練詞嵌入加詞綴特徵</span></div><div class="stat"><span class="v">21.03</span><span class="l">同樣設定，但不加詞綴特徵</span></div><div class="stat"><span class="v">12.09</span><span class="l">改用預訓練詞嵌入，加詞綴特徵反而下降</span></div><div class="stat"><span class="v">93.38%</span><span class="l">構詞結構完整解析之精準度（測試資料）</span></div></div><span class="ft">範圍：游景勝 2021，約六千句字典例句訓練之小規模實驗</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">同實驗室的後續論文接棒</span><div class="time"><p><b>2023</b><span>戴晟哲的泰雅語、太魯閣語構詞解析引用本文</span></p><p><b>2025</b><span>楊鈞凱依戴晟哲與本文的技術分析未知詞</span></p><p><b>2025</b><span>金柏毅沿用本文的書寫轉換規則與詞綴特徵</span></p></div><span class="ft">以上皆為後續他人成果，出處見長文</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">同樣的詞綴資訊，換一種表徵方式，結果可以從加分變成大幅扣分。</span><span class="shift"><span>整詞處理</span><i aria-hidden="true"></i><b>拆解詞綴</b></span></div></section>
@@ -255,15 +255,11 @@ button:disabled{cursor:default;opacity:.3}
 <h3>1. 構詞結構自動解析（第三章）</h3>
 <p>輸入為一個賽德克詞<strong>及其字典所附原形詞根</strong>，輸出其前、中、後綴組合（第三章開頭，p. 21）。流程如下（§3.2，pp. 24–25，圖 5）：</p>
 <ol><li><strong>建立深層原形候選列表</strong>：(a) 由字典歸納——蒐集同一詞根、帶單母音後綴的詞，刪去後綴後歸納共同結尾（§3.1.1）；(b) 對無法歸納的詞根，依整理出的 35 條「詞根結尾變化對應規則」代換結尾（§3.1.2）；(c) 原詞根本身，以及母音結尾詞根加 <code>w</code>／<code>y</code> 的變體。</li><li><strong>窮舉中綴與後綴組合</strong>：從深層原形候選、中綴列表與後綴列表各取一項（中綴、後綴可不取），組成不含前綴的構詞結構。</li><li><strong>書寫形式轉換並比對</strong>：依 §2.2.6 之書寫形式轉換規則轉成書寫形式，若與目標詞的後半字串相同，即採用此組合，未比對到的前半段即為前綴字串。例如 <code>pnsltudan</code>（原形 <code>lutuc</code>）：<code>lutud-an</code> 轉為 <code>ltudan</code>，前綴字串為 <code>pns</code>，最後得到 <code>p&lt;n&gt;s-lutuc-an</code>（pp. 25–26）。</li><li><strong>前綴結構判斷</strong>：前綴字串可能有多種斷法（如 <code>kn</code> 可為名物化 <code>kn-</code>，也可為 <code>k&lt;n&gt;-</code>），原文表示文獻不足以寫出判斷規則，因此改用中文斷詞常用的機率模型（§3.3，pp. 26–27）。斷出的每個單元必須是已知 39 種前綴之一，或是後方字串的重疊。設前綴組合為 <span class="m-in" data-tex="x_1 x_2 \cdots x_m"></span>，原文公式 (2)、(3) 為：</li></ol>
-<span class="m-disp" data-tex="P_{\text{uni}}(\text{pfx}) = \prod_{i=1}^{m} P(x_i)"></span>
-<span class="m-disp" data-tex="P_{\text{bi}}(\text{pfx}) = P(x_1 \mid \$) \prod_{i=2}^{m} P(x_i \mid x_{i-1})"></span>
+<span class="m-disp" data-tex="P(\text{pfx}) = \prod_{i=1}^{m} P(x_i)"></span>
+<span class="m-disp" data-tex="P(\text{pfx}) = P(x_1 \mid \$) \prod_{i=2}^{m} P(x_i \mid x_{i-1})"></span>
 <p>其中 <span class="m-in" data-tex="\$"></span> 代表字串開頭。前綴機率<strong>不以詞根為條件</strong>。因資料量小，平滑採 Lidstone 法（各 n 元組頻率加上 <span class="m-in" data-tex="\lambda"></span>）；二元模型另採 back-off，當 <span class="m-in" data-tex="P(x_i \mid x_{i-1}) = 0"></span> 時改用 <span class="m-in" data-tex="\alpha P(x_i)"></span>（§3.3、§5.2）。</p>
 <h3>2. 翻譯模型與詞綴特徵（第四章）</h3>
-<ul><li><strong>網路架構</strong>：Seq2seq，encoder 為單層 Bi-LSTM，decoder 為單層 LSTM；中文端使用實驗室以中文維基百科、fastText skip-gram 訓練之詞嵌入（第四章開頭，p. 28；§4.2，p. 30）。</li><li><strong>詞綴組合特徵</strong>：在 250 維詞嵌入之後加 52 維布林特徵，標記 40 種前綴、2 種中綴、10 種後綴是否出現，共 302 維（§4.1.1，p. 28）。<strong>詞綴單元特徵</strong>則把前綴拆成 10 種基本單元，共 22 維，總計 272 維（§4.1.2，p. 29）。依原文文字描述，可寫成（形式化為 Wiki 整理）：</li></ul>
-<span class="m-disp" data-tex="\begin{aligned}
-\mathbf{x}_t &amp;= \big[\, \mathbf{e}(w_t) \,\|\, \mathbf{a}(w_t) \,\big] \in \mathbb{R}^{302} \\
-\mathbf{e}(w_t) &amp;\in \mathbb{R}^{250}, \quad \mathbf{a}(w_t) \in \{0, 1\}^{52}
-\end{aligned}"></span>
+<ul><li><strong>網路架構</strong>：Seq2seq，encoder 為單層 Bi-LSTM，decoder 為單層 LSTM；中文端使用實驗室以中文維基百科、fastText skip-gram 訓練之詞嵌入（第四章開頭，p. 28；§4.2，p. 30）。</li><li><strong>詞綴組合特徵</strong>：在 250 維詞嵌入之後加 52 維布林特徵，標記 40 種前綴、2 種中綴、10 種後綴是否出現，共 302 維（§4.1.1，p. 28）。<strong>詞綴單元特徵</strong>則把前綴拆成 10 種基本單元，共 22 維，總計 272 維（§4.1.2，p. 29）。</li></ul>
 <ul><li><strong>兩類詞嵌入來源要分清</strong>：<ul><li><strong>預訓練詞嵌入</strong>：以 fastText skip-gram 在字典 6,069 句上訓練 250 維向量，單位可為詞彙原文、詞根或詞綴獨立單元；另試過借用字典中文語意的詞向量，以及從中文模型微調（§4.2.1–4.2.5，pp. 30–33）。</li><li><strong>自訓練詞嵌入</strong>：詞以 one-hot 編碼輸入，在網路前端加 embedding layer，隨翻譯任務端到端學習；此時詞綴特徵直接拼接在 one-hot 向量之後（§1.3.1，p. 4；§4.3，p. 33；§5.3.1，p. 38）。</li></ul></li></ul>
 <pre>[賽德克詞 w_t] ──► one-hot 編碼 ──┐
        └──► 構詞結構（人工標記）──► 52 維詞綴組合布林特徵 ──┴──► [拼接] ──► embedding layer ──► Bi-LSTM encoder ──► LSTM decoder ──► [中文譯文]

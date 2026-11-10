@@ -461,6 +461,7 @@
 - **來源**：`raw/my-focus/學長姐論文/.md/賽德克語－中文機器翻譯之研究_游景勝.md`（§1.3.1 p. 4、§3.3 p. 27、§4.2–4.3 pp. 30–33、§5.3 pp. 37–39 表 11）
 - **發現於**：wiki/log.md [2026-11-09 00:55] audit（Antigravity by Google DeepMind）
 - **處理**：2026-11-09，Claude Code by Anthropic（Claude Opus 5.5）。回原文 §3.3、§4.1–4.3、§5.1–5.4 逐項確認後重寫 Card 3：前綴公式改為原文式 (2)(3)，刪除無來源之 MAP 式；明確區分預訓練（fastText skip-gram）與自訓練（one-hot 加 embedding layer）詞嵌入。另修正同頁未登記之問題：Card 4 改以表 8 為準並註明摘要 99.52%／85.34% 與結論 99.83%／82.01% 互不一致；補列表 11 完整結果；Card 1、Card 5 與 hook 刪除「首創」「最行之有效」等過度表述；Card 6 標明為個人研究詮釋並刪除「100% 精確」。證據表見 wiki/evidence/2021-seediq-chinese-mt-you.md。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。回看原文 p. 27，將一元與二元公式左側的 Wiki 自加下標移除，依原文均寫作 $P(\text{pfx})$；同步修正 Card 3 的公式。
 
 ### EK-063 | fixed | papers/2023-atayal-truku-morphology-dai.md | Card 3–4 | 原文不符
 - **問題**：（1）Card 3（第 45–60 行）寫出正向書寫轉換函數 $\Phi_{\text{ortho}}(\sigma) = w$ 並稱「雙唇音弱化（$p \to b$ 或 $p \to v$）」；原文 §3.4（pp. 27–28）明確指出無法歸納出泰雅語與太魯閣語的書寫形式轉換規則，故不再產生真正的書寫形式，而是對「詞根＋中綴＋後綴」制定三條比對規則（直接比對、保留最後兩母音、刪去全部母音）後，再以一元／二元模型挑選前綴；且 §3.1.2（p. 21）僅列泰雅語 $p \to b$ 及太魯閣語 $k \to b$、$t \to d$，無 $p \to v$。（2）Card 4（第 82 行）僅引結論章稱考慮邊界的二元模型在太魯閣語獲最佳 85.71%，漏未交代 §4.2.2（p. 36，表 21 對照表 22）中太魯閣語測試集上考慮邊界之一元模型（91.84%）實高於二元模型（85.71%），以及泰雅語測試集不考慮邊界之二元模型達 100.00%（表 20）。（3）Frontmatter `doi_url` 為過期 session 網址（同 EK-061）。
@@ -1003,10 +1004,11 @@
 - **發現於**：第三批卡片回填 B 組回報，協調者核對（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依修正後論文頁改寫條目並註明結論之性質；概念頁 `verification` 改為 partial。
 
-### EK-190 | open | papers/2021-seediq-chinese-mt-you.md | Card 3 特徵拼接公式 | 原文未支持
+### EK-190 | fixed | papers/2021-seediq-chinese-mt-you.md | Card 3 特徵拼接公式 | 原文未支持
 - **問題**：Card 3 將詞嵌入與詞綴特徵的 Wiki 自行形式化寫成區塊公式；頁面已標示「形式化為 Wiki 整理」，但現行規則只允許原文或補充資料的公式置於區塊。這是 EK-062 原先二元前綴公式及詞嵌入歸屬問題以外的新缺口。
 - **來源**：[論文頁](papers/2021-seediq-chinese-mt-you.md) Card 3；[原始學位論文](../raw/my-focus/學長姐論文/賽德克語－中文機器翻譯之研究_游景勝.pdf) §4.1、§4.3；[公式規則](../.agents/skills/wiki-content-audit/SKILL.md) 寫作模式第 3 步。
 - **發現於**：2026-11-10，使用者提供之分組複核，Codex by OpenAI 再查原文。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。回看原文 pp. 28–29、33、38，以原文支持的 250、52、302、22、272 維文字敘述保留特徵設計，移除 Wiki 自擬區塊公式與證據表中該公式列；一元模型卡片公式另依原文 p. 27 校正（EK-062）。此頁僅修已登記問題，verification 改為 partial。
 
 ### EK-191 | fixed | papers/2019-generalized-data-augmentation-xia.md | 證據表 Card 3 公式列 | 原文不符
 - **問題**：[證據表](evidence/2019-generalized-data-augmentation-xia.md) Card 3 的 Procrustes 約束漏掉左側 W 並有不成對的公式分隔符；論文頁與卡片目前使用的約束為 $W^\top W = I$，須同步修正證據表。此為 EK-074 原先方法與加權目標式問題以外的新缺口。
