@@ -1008,10 +1008,11 @@
 - **來源**：[論文頁](papers/2021-seediq-chinese-mt-you.md) Card 3；[原始學位論文](../raw/my-focus/學長姐論文/賽德克語－中文機器翻譯之研究_游景勝.pdf) §4.1、§4.3；[公式規則](../.agents/skills/wiki-content-audit/SKILL.md) 寫作模式第 3 步。
 - **發現於**：2026-11-10，使用者提供之分組複核，Codex by OpenAI 再查原文。
 
-### EK-191 | open | papers/2019-generalized-data-augmentation-xia.md | 證據表 Card 3 公式列 | 原文不符
+### EK-191 | fixed | papers/2019-generalized-data-augmentation-xia.md | 證據表 Card 3 公式列 | 原文不符
 - **問題**：[證據表](evidence/2019-generalized-data-augmentation-xia.md) Card 3 的 Procrustes 約束漏掉左側 W 並有不成對的公式分隔符；論文頁與卡片目前使用的約束為 $W^\top W = I$，須同步修正證據表。此為 EK-074 原先方法與加權目標式問題以外的新缺口。
 - **來源**：[Xia 等原文](https://aclanthology.org/P19-1579.pdf) §3.1，p. 5788；[論文頁](papers/2019-generalized-data-augmentation-xia.md) Card 3。
 - **發現於**：2026-11-10，使用者提供之分組複核，Codex by OpenAI 再查原文。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。回看原文 §3.1 p. 5788 頁面影像，修正證據表約束為 $W^\top W = I$ 並補齊公式分隔符；論文頁與卡片原已一致。此頁僅修正已登記問題，verification 改為 partial。
 
 ### EK-192 | open | papers/2025-indigenous-tek-ai-revitalization-wang.md | Card 1 與證據表 | 原文未支持
 - **問題**：Card 1 稱作者為「教授」並稱研究「首創」，證據表將教授職稱歸給原文首頁；原文首頁僅列作者與機構，所查全文的 first 包括研究目標排序等用法，未支持該首創斷言。教授職稱目前未由所列來源核實，不應僅因首頁未列就判定職稱為假。此為 EK-078 原先姓名與架構問題以外的新缺口。
