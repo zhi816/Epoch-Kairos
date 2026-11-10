@@ -438,7 +438,7 @@ def side(fm, concepts, scope=''):
         parts.append('<div class="blk"><span class="lab">本頁範圍</span><span class="note">%s</span></div>' % inline(scope))
     if fm.get('verification') == 'verified':
         # 核實狀態只在 verified 時顯示，其餘狀態整塊不出現（DESIGN.md 第八章第 15 項，2026-11-09 使用者決定）
-        parts.append('<div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>%s</span></div>'
+        parts.append('<div class="blk"><span class="lab">核實狀態</span><span class="ok">%s</span></div>'
                      % VERIFY_TEXT)
     return '\n'.join('    ' + p for p in parts)
 
