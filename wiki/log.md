@@ -2140,3 +2140,13 @@
   - 以 Hopfield 1982（`raw/1982-hopfield-network.pdf`）第 3 頁實測解析，確認 `--pages` 參數實際生效（僅解析 1 頁，耗時約 28 秒）、輸出僅落於 `work/parsed/`、檔頭明確記錄實際引擎名稱與版本 `MinerU 4.2.0（mineru-kit parse --tier basic，本機）` 與單頁 `<!-- pdf-page: 3 -->` 標記、模型缺失時直接退出碼 1 報錯不默默降級。
   - 對照原 PDF 影像抽查核驗，式 (1)–(4) 區塊公式辨識完整，並記錄 OCR 漢字幻覺（$T_{ij} \to T_{ 扩 }$）、行內門檻符號錯誤與括號幻覺等典型瑕疵，回填至 [.agents/skills/paper-pdf-parser/SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md) 第四章與第六章，並刪除「Windows 環境尚未實測」。
 - **驗證**：`setup_env.py` 回報「MinerU basic 模型：齊全」且「MinerU 引擎可用」，硬體加速辨識出 DirectML（ONNX Runtime）；`python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 為 ERROR 0；`stage_todo.py TD-022 --dry-run` 正確辨識為刪除。
+
+
+## [2026-11-11 02:18] ingest | Soai 不對稱自催化原始文獻核驗與證據表建立 | #化學合成
+- **執行代理**：OpenCode by SST
+- **模型版本**：MiniMax M3.1 Flash Free（minimax-m3.1-flash-free）
+- **具體變更**：
+  - 多 AI 協同第一階段（S1–S3）：由 MiniMax M3.1 Flash 深入吞噬與解析 `raw/1995-soai-asymmetric-autocatalysis.pdf`（Nature 378:767–768）。
+  - 對照原 PDF 影像核驗書目（DOI 10.1038/378767a0）與主要實驗數據，校正 Table 1 辨識失真（Run D 雙豎線 BDL 標記、Series C 放大倍數欄位空白）。
+  - 建立專屬證據表 [wiki/evidence/1995-soai-asymmetric-autocatalysis.md](evidence/1995-soai-asymmetric-autocatalysis.md)，完整登記 CL-001 至 CL-015 共 15 項核心主張（涵蓋 Series A、B、C 及 Run D 全部實驗組）與 3 式區塊公式出處對應。
+- **驗證**：`pipeline_status.py 1995-soai-asymmetric-autocatalysis` 之 S3 檢查為 OK；`lint_wiki.py` 為 ERROR 0。
