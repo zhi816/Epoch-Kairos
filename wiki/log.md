@@ -1795,3 +1795,13 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：TD-008 第三批 B 組。依 `wiki-content-audit` 回原文修正 [論文頁](papers/2025-tulun-adaptable-lrl-mt-merx.md) 並重建 [證據表](evidence/2025-tulun-adaptable-lrl-mt-merx.md)（表 1、表 2 數值逐一寫出列與欄）：完成 EK-116（刪除兩條 Wiki 自擬之流程區塊公式，改以文字說明）與 EK-117（刪除「小型 NMT 超越 54B 模型」等無據敘述，Card 5 改記原文公開之程式與系統、作者明列之限制與未來方向）；新登記並修正 EK-156（「首創」「動輒數月」「部落長老」「非飲用水」「預設 5 句」「Grade A」等原文沒有之敘述，補記易用性研究僅兩位共同作者）；`verification` 改為 `partial`。新增 [卡片檔](cards/2025-tulun-adaptable-lrl-mt-merx.md) 與論文頁原型 `web/prototypes/paper-v1/2025-tulun-adaptable-lrl-mt-merx.html`。check_cards：ERROR 0、WARN 0；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（35 項）。來源：Card 3 採無公式模式（原文無編號公式）；Card 4 四個數字取自證據表表 1 MADLAD 與 MADLAD + Gemini 之 TDT 欄、表 2 NLLB 54B 與 NLLB + Gemini APE 之 AVERAGE 欄；Card 5 採新論文模式，四筆取自 p. 130 註 2、倫理聲明 p. 135、§5 p. 134、§6 pp. 134–135。複核：Card 4 範圍之縮寫 FLORES 改為中文；Card 4 範圍、Card 5 標題與一筆里程碑折行落單，改寫。首頁卡片牆：依協調規則未重建，由協調者處理。
+
+## [2026-11-10 10:29] update | 建立 LIGO 證據表、依原文修正論文頁並新增卡片文字檔 | #天體物理 #宇宙學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 A 組（TD-008）。先依 wiki-content-audit 建立 [wiki/evidence/2016-ligo-gravitational-waves.md](evidence/2016-ligo-gravitational-waves.md)，再依 paper-card-writer 撰寫 [wiki/cards/2016-ligo-gravitational-waves.md](cards/2016-ligo-gravitational-waves.md) 並建置 `web/prototypes/paper-v1/2016-ligo-gravitational-waves.html`。
+  - 證據表：以 PyMuPDF 抽取 `raw/2016-ligo-gravitational-waves.pdf`（PRL 116:061102 正式版），逐項回原文核對 Card 1 至 6 之強主張，共 40 列；後續研究五篇以 Crossref 核對卷期、以 arXiv 摘要核對內容；獎項以 NobelPrize.org 核對。
+  - 論文頁回原文查出多處不符，登記並修正 EK-132 至 EK-138：臂內共振腔為「放大 300 倍」而非「往復約 280 次」，750 kW、3,002 km、1,120 km 原文皆無；0.2 秒 8 週期為 35 至 150 Hz，35 至 250 Hz 是整段訊號範圍；真空寫成「1.2 × 10^4 m^3」（原文為直徑 1.2 m 之管道、1 μPa 以下）；啁啾質量公式改回原文寫法，刪除自擬之 $E_{\text{GW}}$ 區塊公式與原文未寫之背景式；刪除無出處之「比全宇宙恆星亮數十倍」、v/c ≈ 0.6、5 至 15 倍太陽質量等說法；後續研究之速度界限改歸 ApJL 848:L13，刪除「確認重元素來源」與 GWTC-3 壓縮光之誤植，改為五筆附 DOI；`hook`、Card 1 與開頭引言改寫並標明引言為 Wiki 撰寫。整頁逐項核對後 `verification` 由 partial 改為 verified。
+  - 卡片：Card 3 公式取論文頁之 $\Delta L(t) = \delta L_x - \delta L_y = h(t)\,L$（原文 p. 3，論文頁改為單行），示意圖為雷射、分光鏡、兩臂共振腔與光偵測器之結構圖；Card 4 四個數字（5.1σ、24、36 與 29、3.0）取自證據表，寫卡前回原文逐一抽查（摘要、p. 3、表 I 與 p. 7）；Card 5 一般模式四筆（GW170817、2017 諾貝爾獎、標準汽笛測哈伯常數、GWTC-3）。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0（初稿「第一次」強斷言與縮寫 GW、LIGO 之 WARN 已處理：證據表該列補原文用語，範圍與封面標題改寫）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS；無頭截圖目視，修正 Card 1 論文名落單、Card 2 至 5 共五處拆詞折行。`lint_wiki.py` 本頁無 ERROR。首頁卡片牆於本批結束時統一重建。
+  - 依使用者指示，`2005-optogenetics`、`2023-drugclip` 可能觸發安全機制，本批先跳過。

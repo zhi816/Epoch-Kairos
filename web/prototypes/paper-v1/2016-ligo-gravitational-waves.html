@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LIGO 雙黑洞重力波直接探測｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#D3BEFD;--deep:#4D2E8B;--win:#23222B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.16</span><span>物理</span></div><div class="win"><i style="left:13.9%;top:35.9%;width:1px;height:1px;opacity:0.73"></i><i style="left:48.0%;top:14.3%;width:1px;height:1px;opacity:0.45"></i><i style="left:28.0%;top:10.8%;width:1px;height:1px;opacity:0.61"></i><i style="left:5.4%;top:41.4%;width:1px;height:1px;opacity:0.44"></i><i style="left:42.3%;top:44.8%;width:1.5px;height:1.5px;opacity:0.79"></i><i style="left:33.8%;top:9.4%;width:1px;height:1px;opacity:0.67"></i><i style="left:8.1%;top:5.7%;width:1.5px;height:1.5px;opacity:0.69"></i><i style="left:66.1%;top:35.3%;width:1.5px;height:1.5px;opacity:0.48"></i><i style="left:12.4%;top:15.6%;width:1px;height:1px;opacity:0.31"></i><i style="left:62.4%;top:22.5%;width:1px;height:1px;opacity:0.32"></i><i style="left:51.6%;top:21.8%;width:1.5px;height:1.5px;opacity:0.33"></i><i style="left:95.9%;top:34.0%;width:1.5px;height:1.5px;opacity:0.57"></i><i style="left:72.2%;top:23.9%;width:1px;height:1px;opacity:0.45"></i><i style="left:33.8%;top:37.7%;width:1.5px;height:1.5px;opacity:0.59"></i><span class="rep award"></span><span class="line"><span>第一次直接測到</span><span>黑洞相撞發出的</span><span>重力波</span></span></div><div class="tags">物理、天文與地球科學・#天體物理 #宇宙學</div><div class="name">雙黑洞重力波直接探測</div><div class="lead">兩座干涉儀先後收到訊號，與廣義相對論預測相符。</div><div class="yrs">2016 發表 ｜ 2017 諾貝爾物理學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">長度差極小，<br>各頻段又各有雜訊</span><div class="rows"><div class="row"><b>地震雜訊</b><span>主導低頻，鏡子吊在四級擺上，再加主動隔震</span></div><div class="row"><b>散粒雜訊</b><span>主導高頻，來自雷射光子本身</span></div><div class="row gap"><b>觀測</b><span>重力波從未被直接偵測，雙黑洞併合也從未被觀測到</span></div></div><span class="ft" style="color:var(--ink)">要從雜訊中認出訊號，還得先知道它的波形。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">兩條臂的長度差，<br>就是訊號</span><svg class="dia" viewBox="0 0 300 140" role="img" aria-label="示意：雷射經分光鏡分到兩條臂，臂內共振腔放大效應；重力波改變臂長（虛線），長度差由光偵測器讀出。">
+  <rect class="k-soft" x="132" y="97" width="132" height="12"/>
+  <rect class="k-soft" x="102" y="20" width="12" height="56"/>
+  <rect class="k-ink k-ring" x="8" y="92" width="44" height="22" rx="4"/>
+  <line class="k-ink" x1="52" y1="103" x2="100" y2="103"/>
+  <line class="k-line" x1="98" y1="113" x2="118" y2="93"/>
+  <line class="k-ink" x1="108" y1="103" x2="264" y2="103"/>
+  <line class="k-ink" x1="108" y1="103" x2="108" y2="20"/>
+  <line class="k-ink" x1="108" y1="103" x2="108" y2="114"/>
+  <line class="k-ink" x1="132" y1="95" x2="132" y2="111"/>
+  <line class="k-ink" x1="100" y1="76" x2="116" y2="76"/>
+  <rect class="k-accent" x="264" y="93" width="6" height="20"/>
+  <rect class="k-accent" x="98" y="14" width="20" height="6"/>
+  <rect class="k-muted k-ring k-dash" x="274" y="93" width="6" height="20"/>
+  <rect class="k-muted k-ring k-dash" x="98" y="6" width="20" height="6"/>
+  <rect class="k-ink" x="100" y="114" width="16" height="7"/>
+  <text class="k-label" x="30" y="107" text-anchor="middle">雷射</text>
+  <text class="k-label" x="78" y="87" text-anchor="middle">分光鏡</text>
+  <text class="k-label" x="198" y="88" text-anchor="middle">共振腔</text>
+  <text class="k-label" x="262" y="128" text-anchor="middle">測試質量鏡</text>
+  <text class="k-label" x="108" y="134" text-anchor="middle">光偵測器</text>
+  <text class="k-label-accent" x="152" y="15" text-anchor="middle">長度差</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\Delta L(t) = \delta L_x - \delta L_y = h(t)\,L"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">重力波讓兩臂長度改變，量到的長度差與應變成正比；臂內共振腔把效應放大 300 倍。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">5.1σ</span><span class="l">顯著性；誤報率低於每 203,000 年 1 次</span></div><div class="stat"><span class="v">24</span><span class="l">兩座探測器合計的訊雜比</span></div><div class="stat"><span class="v">36、29</span><span class="l">兩黑洞初始質量，單位：太陽質量</span></div><div class="stat"><span class="v">3.0</span><span class="l">以重力波輻射的總能量，以太陽質量乘 c² 計</span></div></div><span class="ft">範圍：Abbott 等 2016，單一重力波事件；質量與能量為中位數</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">重力波成了新的觀測工具</span><div class="time"><p><b>2017</b><span>首次觀測雙中子星併合與伽瑪射線暴</span></p><p><b>2017</b><span>Weiss 等三人獲諾貝爾物理學獎</span></p><p><b>2017</b><span>以重力波當標準汽笛，測得哈伯常數</span></p><p><b>2023</b><span>GWTC-3 收錄 90 起緻密雙星併合候選事件</span></p></div><span class="ft">獎項之外皆為後續他人成果，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">量到極小的長度差，靠的是把每一種雜訊分頻段壓低。</span><span class="shift"><span>雜訊混雜</span><i aria-hidden="true"></i><b>分頻壓低</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2016 發表 ｜ 2017 諾貝爾物理學獎</span>
+<h1>LIGO 雙黑洞重力波直接探測：聆聽時空結構的漣漪</h1>
+<p class="en">Observation of Gravitational Waves from a Binary Black Hole Merger</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">2015 年 9 月 14 日，美國兩座干涉儀在 10 毫秒內先後記錄到同一段時空振動，那是約十三億光年外兩個黑洞合而為一時發出的訊號。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>1916 年，愛因斯坦發現線性化的弱場方程有波動解：由波源質量四極矩隨時間變化所產生、以光速傳播的空間應變橫波，即重力波（Gravitational Waves）。他也了解重力波的振幅會非常微小；直到 1957 年 Chapel Hill 會議之前，學界對重力波是否真實存在仍有相當爭論（原文 p. 1）。一百年後，2015 年 9 月 14 日，LIGO 兩座探測器同時記錄到代號 <strong>GW150914</strong> 的瞬變訊號，峰值應變為 <span class="m-in" data-tex="1.0 \times 10^{-21}"></span>。作者指出，這是首次直接偵測到重力波，也是首次觀測到雙黑洞併合；訊號與廣義相對論對雙黑洞旋近、併合，以及併合後單一黑洞振鈴所預測的波形相符（摘要）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：極微小的臂長差、各頻段雜訊與併合波形建模</h2></div>
+<p>直接偵測雙黑洞併合的重力波，須同時克服三個難題：</p>
+<ul><li><strong>極微小的臂長差</strong>：臂長 <span class="m-in" data-tex="L = 4\,\text{km}"></span>（原文 p. 3）的干涉儀上，峰值應變 <span class="m-in" data-tex="h = 1.0 \times 10^{-21}"></span> 造成的臂長差約為 <span class="m-in" data-tex="\Delta L = hL \approx 4 \times 10^{-18}\,\text{m}"></span>（依原文數據計算）。</li><li><strong>三種頻段各有主要雜訊</strong>：原文說明，高頻以光子散粒雜訊（Shot Noise）為主，低頻以地震雜訊為主，中頻以熱雜訊為主（p. 4）。因此每面測試質量鏡吊在四級擺系統的末端，下方再有主動隔震平台，對 10 Hz 以上的地面振動合計提供超過 10 個數量級的隔離；除雷射光源外，所有元件都裝在隔震平台上並置於超高真空中，容納臂腔光束、直徑 1.2 公尺的管道氣壓維持在 1 μPa 以下，以減少瑞利散射造成的光相位擾動（p. 4）。</li><li><strong>併合波形需要數值相對論</strong>：原文指出，1990 年代的高階後牛頓計算、其後的相對論二體動力學解析研究，加上近十年數值相對論（Numerical Relativity）的突破，才使雙黑洞併合得以建模並準確預測波形（p. 1）；在此之前，雙黑洞併合從未被觀測到（p. 1）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>Advanced LIGO 以強化的邁克生干涉儀、隔震與低雜訊設計提高應變靈敏度，並以廣義相對論波形模板之匹配濾波（Matched Filtering）搜尋訊號：</p>
+<ol><li><strong>兩座相距遙遠的探測器（Hanford 與 Livingston）</strong>：<ul><li>美國華盛頓州 Hanford（H1）與路易斯安那州 Livingston（L1）各有一座 Advanced LIGO 探測器。原文說明，重力波天文學利用多座相距遙遠的探測器，區分重力波與局域之儀器或環境雜訊、定位波源並量測偏振（p. 3）；GW150914 落在兩站 10 毫秒的光行時間之內（p. 2），先抵達 L1，約 6.9 毫秒後抵達 H1（圖 1 圖說）。</li></ul></li><li><strong>臂內共振腔與功率循環</strong>：<ul><li>每條臂由兩面測試質量鏡構成共振光學腔，把重力波對光相位的效應放大 300 倍；輸入端的功率循環鏡使雷射光在整台干涉儀中再共振增強：20 W 的雷射輸入在分光鏡上增為 700 W，每條臂腔內的循環功率再增為 100 kW（p. 3）。輸出端的訊號循環鏡加寬臂腔頻寬以利訊號擷取；光源為 1064 nm 之 Nd:YAG 雷射（p. 4）。</li></ul></li><li><strong>旋近、併合與振鈴三階段</strong>：<ul><li>訊號在約 0.2 秒、約 8 個週期內，頻率與振幅由 35 Hz 升至 150 Hz（振幅最大處）；較低頻的演化由啁啾質量（Chirp Mass）<span class="m-in" data-tex="\mathcal{M}"></span> 描述。峰值之後波形的衰減，與黑洞弛豫為最終穩態克爾（Kerr）組態之阻尼振盪一致（p. 3）。</li></ul></li></ol>
+<h3>1. 干涉儀量測的臂長差 (Differential Arm Length)</h3>
+<p>每條臂由兩面相距 <span class="m-in" data-tex="L_x = L_y = L = 4\,\text{km}"></span> 的測試質量鏡構成。通過的重力波等效改變兩臂長度，量到的長度差為（原文 p. 3）：</p>
+<span class="m-disp" data-tex="\Delta L(t) = \delta L_x - \delta L_y = h(t)\,L"></span>
+<p>其中 <span class="m-in" data-tex="h"></span> 為投影到探測器上的重力波應變振幅。這個長度差改變兩道返回分光鏡之光的相位差，使部分光訊號傳到輸出端的光偵測器（p. 3）。</p>
+<h3>2. 啁啾質量 (Chirp Mass)</h3>
+<p>訊號頻率與振幅隨時間上升，最合理的解釋是兩個互繞質量 <span class="m-in" data-tex="m_1"></span>、<span class="m-in" data-tex="m_2"></span> 因輻射重力波而旋近。在較低頻段，這種演化由啁啾質量刻畫（原文 p. 3）：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\mathcal{M} &amp;= \frac{(m_1 m_2)^{3/5}}{(m_1 + m_2)^{1/5}} \\
+&amp;= \frac{c^3}{G} \left[ \frac{5}{96} \pi^{-8/3} f^{-11/3} \dot{f} \right]^{3/5}
+\end{aligned}"></span>
+<p>其中 <span class="m-in" data-tex="f"></span> 與 <span class="m-in" data-tex="\dot{f}"></span> 為觀測到的頻率及其時間導數，<span class="m-in" data-tex="G"></span> 與 <span class="m-in" data-tex="c"></span> 為重力常數與光速。由圖 1 的資料估計 <span class="m-in" data-tex="f"></span> 與 <span class="m-in" data-tex="\dot{f}"></span>，得到啁啾質量 <span class="m-in" data-tex="\mathcal{M} \simeq 30\,M_\odot"></span>，表示偵測器座標系中的總質量 <span class="m-in" data-tex="M = m_1 + m_2 \gtrsim 70\,M_\odot"></span>，兩者史瓦西半徑之和 <span class="m-in" data-tex="2GM/c^2 \gtrsim 210\,\text{km}"></span>。要達到 75 Hz 的軌道頻率（重力波頻率的一半），兩個天體必須非常接近且非常緻密：以等質量牛頓點質量計，相距僅約 350 km。一對中子星質量不足；具有此啁啾質量的黑洞—中子星雙星總質量會很大，因而在低得多的頻率就併合。作者據此指出，黑洞是唯一已知足夠緻密、能在 75 Hz 軌道頻率而不相觸的天體（p. 3）。</p>
+<h3>3. 輻射能量與峰值光度 (Radiated Energy &amp; Peak Luminosity)</h3>
+<p>作者以雙黑洞併合數值模擬之擬合式，估算最終黑洞的質量與自旋、以重力波輻射的總能量，以及重力波峰值光度（原文 p. 7）。以重力波輻射的總能量估計為 <span class="m-in" data-tex="3.0^{+0.5}_{-0.5}\,M_\odot c^2"></span>，與初始兩黑洞質量之和減去最終黑洞質量的差值相當（36 + 29 − 62 = 3，依原文表 I 數據計算；見 Card 4）。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Abbott et al. 2016, GW150914）之核心證據</h3>
+<ul><li><strong>訊雜比 24、顯著性超過 <span class="m-in" data-tex="5.1\sigma"></span></strong>：2015 年 9 月 14 日 09:50:45 UTC，訊號先抵達 Livingston（L1），<span class="m-in" data-tex="6.9^{+0.5}_{-0.4}\,\text{ms}"></span> 後抵達 Hanford（H1）（圖 1 圖說）。約 0.2 秒、約 8 個週期內，頻率與振幅由 35 Hz 升至 150 Hz（p. 3）；整段訊號的頻率由 35 Hz 掃到 250 Hz（摘要）。匹配濾波訊雜比（SNR）為 24，誤報率估計低於每 203,000 年 1 次，相當於顯著性超過 <span class="m-in" data-tex="5.1\sigma"></span>（摘要；p. 7）。</li><li><strong>峰值應變與雙黑洞參數</strong>：峰值重力波應變為 <span class="m-in" data-tex="1.0 \times 10^{-21}"></span>（摘要）。光度距離 <span class="m-in" data-tex="410^{+160}_{-180}\,\text{Mpc}"></span>（約 13 億光年，依原文數據換算），紅移 <span class="m-in" data-tex="z = 0.09^{+0.03}_{-0.04}"></span>；源座標系下初始兩黑洞質量為 <span class="m-in" data-tex="36^{+5}_{-4}\,M_\odot"></span> 與 <span class="m-in" data-tex="29^{+4}_{-4}\,M_\odot"></span>，最終黑洞質量 <span class="m-in" data-tex="62^{+4}_{-4}\,M_\odot"></span>，最終自旋 <span class="m-in" data-tex="0.67^{+0.05}_{-0.07}"></span>（表 I，p. 7）。所有不確定度均為 90% 可信區間（摘要）。</li><li><strong>輻射能量與峰值光度</strong>：以重力波輻射的總能量估計為 <span class="m-in" data-tex="3.0^{+0.5}_{-0.5}\,M_\odot c^2"></span>；峰值重力波光度為 <span class="m-in" data-tex="3.6^{+0.5}_{-0.4} \times 10^{56}\,\text{erg/s}"></span>，相當於每秒 <span class="m-in" data-tex="200^{+30}_{-20}\,M_\odot c^2"></span>（p. 7）。</li><li><strong>重力子質量上限</strong>：假設重力波有修正的色散關係，觀測結果把重力子的康普頓波長限制在 <span class="m-in" data-tex="\lambda_g &gt; 10^{13}\,\text{km}"></span>，可解讀為重力子質量 <span class="m-in" data-tex="m_g &lt; 1.2 \times 10^{-22}\,\text{eV}/c^2"></span>；此界限比太陽系與雙脈衝星的界限分別改善數倍與約千倍，但未優於依賴模型的星系團動力學與弱重力透鏡界限（p. 8）。作者總結，所做的三項檢驗都與廣義相對論在強場區的預測一致（p. 8）。</li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>雙中子星併合 GW170817</strong>：Abbott et al. (2017), <em>Physical Review Letters</em> 119:161101（doi:10.1103/PhysRevLett.119.161101）。Advanced LIGO 與 Advanced Virgo 首次觀測到雙中子星旋近，訊雜比 32.4，光度距離約 <span class="m-in" data-tex="40\,\text{Mpc}"></span>；Fermi-GBM 在併合後 1.7 秒偵測到伽瑪射線暴 GRB 170817A，作者稱這是雙中子星併合與短伽瑪射線暴相關聯的第一個直接證據（摘要）。</li><li><strong>多信使觀測</strong>：Abbott et al. (2017), <em>Astrophysical Journal Letters</em> 848:L12（doi:10.3847/2041-8213/aa91c9）。併合後不到 11 小時，在星系 NGC 4993 發現明亮的光學瞬變源 AT 2017gfo，之後在紫外、光學、紅外、X 射線與無線電波段陸續觀測（摘要）。</li><li><strong>重力與光速之差</strong>：Abbott et al. (2017), <em>Astrophysical Journal Letters</em> 848:L13（doi:10.3847/2041-8213/aa920c）。以 GRB 170817A 與 GW170817 之間 <span class="m-in" data-tex="(+1.74 \pm 0.05)\,\text{s}"></span> 的時間差，把重力傳播速度與光速之差限制在光速的 <span class="m-in" data-tex="-3 \times 10^{-15}"></span> 至 <span class="m-in" data-tex="+7 \times 10^{-16}"></span> 之間（摘要）。</li><li><strong>標準汽笛測量哈伯常數</strong>：Abbott et al. (2017), <em>Nature</em> 551:85–88（doi:10.1038/nature24471）。以重力波訊號直接推得的距離，搭配電磁觀測得到的退行速度，不需宇宙距離階梯，測得哈伯常數 <span class="m-in" data-tex="70.0^{+12.0}_{-8.0}\,\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}"></span>（摘要）。</li><li><strong>第三版重力波瞬變星表 GWTC-3</strong>：Abbott et al. (2023), <em>Physical Review X</em> 13:041039（doi:10.1103/PhysRevX.13.041039）。前三次觀測運行中以 <span class="m-in" data-tex="p_{\text{astro}} &gt; 0.5"></span> 認定的緻密雙星併合候選事件共 90 起，其中包含首批可信的黑洞—中子星雙星觀測（摘要）。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>雙黑洞的存在與形成</strong>：過去已有許多以電磁觀測辨識出的黑洞候選者，但黑洞併合從未被觀測到（原文 p. 1）。作者指出，GW150914 證明存在質量大於約 <span class="m-in" data-tex="25\,M_\odot"></span> 的恆星級黑洞，並確立雙黑洞能在自然界形成、並在哈伯時間內併合；由恆星演化形成這麼重的黑洞需要較弱的大質量恆星風，這在金屬豐度低於太陽約一半的環境中才可能（p. 8）。</li><li><strong>強場區的廣義相對論檢驗</strong>：此前，Hulse 與 Taylor 發現的雙脈衝星 PSR B1913+16 及其後的能量損失觀測，已間接證明重力波存在（原文 p. 1）。GW150914 讓研究者得以在強場、高速區檢驗時空性質，作者的三項檢驗都與廣義相對論在強場區的預測一致（p. 2、p. 8）。</li><li><strong>重力波成為觀測工具</strong>：此後的雙中子星併合 GW170817 結合了重力波與電磁波觀測，並被用作「標準汽笛」，不經宇宙距離階梯測量哈伯常數（Abbott et al. 2017, Nature 551:85–88）；到第三次觀測運行結束，GWTC-3 收錄的緻密雙星併合候選事件已有 90 起（Abbott et al. 2023, PRX 13:041039）。出處與數值見 Card 4 後續。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>以下為 Wiki 詮釋：</p>
+<ol><li><strong>理論預言與工程能力的接力</strong>：原文回顧，干涉式探測器的構想最早見於 1960 年代初與 1970 年代，其後歷經雜訊與性能研究、長基線寬頻雷射干涉儀的提案（p. 1）；1916 年的預言，要等到雷射干涉、隔震、真空與數值相對論都成熟後，才在 2015 年被直接偵測到。</li><li><strong>把雜訊拆成頻段逐一處理</strong>：原文把雜訊依頻段分開說明，高頻的光子散粒雜訊、低頻的地震雜訊、中頻的熱雜訊各有對策（p. 4）。面對約 <span class="m-in" data-tex="4 \times 10^{-18}\,\text{m}"></span> 的臂長差，關鍵不在單一突破，而在把每一種雜訊的來源找出來並分別壓低。</li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2016</b><span>發表・PRL</span></div>
+    <div class="yr award"><b>2017</b><span>諾貝爾物理學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>B. P. Abbott et al. (LIGO Scientific Collaboration and Virgo Collaboration)</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Rainer Weiss<br>Barry C. Barish<br>Kip S. Thorne</span><span class="note">Weiss、Barish、Thorne 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Physical Review Letters, 116(6), 061102</span><a href="https://doi.org/10.1103/PhysRevLett.116.061102">doi:10.1103/PhysRevLett.116.061102</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#天體物理</span><span class="chip">#宇宙學</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>多信使天體物理與極端宇宙學</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><span title="Einstein, A. (1916) Näherungsweise Integration der Feldgleichungen der Gravitation. Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften, 688-696.">Einstein（1916）</span><a href="https://doi.org/10.1103/PhysRevLett.116.061102" title="Abbott, B. P. et al. (LIGO Scientific Collaboration and Virgo Collaboration) (2016) Observation of Gravitational Waves from a Binary Black Hole Merger. Physical Review Letters 116(6):061102.">Abbott 等（2016）</a><a href="https://doi.org/10.1103/PhysRevLett.119.161101" title="Abbott, B. P. et al. (LIGO Scientific Collaboration and Virgo Collaboration) (2017) GW170817: Observation of Gravitational Waves from a Binary Neutron Star Inspiral. Physical Review Letters 119(16):161101.">Abbott 等（2017）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2017 年諾貝爾物理學獎頒予 Rainer Weiss（1/2）、Barry C. Barish（1/4）與 Kip S. Thorne（1/4），表彰三人對雷射干涉儀重力波天文台（LIGO）及重力波直接觀測之決定性貢獻。本頁以 LIGO 與 Virgo 合作組於 2016 年 2 月發表於《Physical Review Letters》之首個重力波事件 GW150914 發現論文為主軸，並於 <code>key_papers</code> 列出 2017 年雙中子星併合多信使事件 GW170817 之代表文獻。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok"><i aria-hidden="true"></i>已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
