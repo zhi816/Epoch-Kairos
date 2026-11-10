@@ -1765,3 +1765,13 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：TD-008 第三批 B 組。依 `wiki-content-audit` 以 `doi_url` 指向之 Nature 版（`raw/2025-deepseek-r1.pdf`）修正 [論文頁](papers/2025-deepseek-r1.md) 並重建 [證據表](evidence/2025-deepseek-r1.md)（改為標準五欄，Table 8、Table 16 數字逐一寫出列與欄）：完成 EK-113（R1-Zero AIME 2024 改為 15.6% → 77.9%、訓練 10,400 步，刪除與 o1-0912、o1-1217 之無據比較）；新登記並修正 EK-152（hook 與 Card 1 至 3、6 之「首次證明」「徹底解決」「翻倍」「一半」等過度表述，KL 式多出之「≥ 0」，三條區塊公式改照原文式 (1)–(3) 並補式 (4)，`title_zh` 刪去「與推理運算擴展定律」）與 EK-153（Card 4 後續段與 Card 5 無出處之影響敘述，改記原文公開之權重與程式、作者明列之限制與未來方向）；`verification` 改為 `partial`。新增 [卡片檔](cards/2025-deepseek-r1.md) 與論文頁原型 `web/prototypes/paper-v1/2025-deepseek-r1.html`。check_cards：ERROR 0、WARN 1（Card 3 公式原始碼 112 字元；原文較短之式 (4) 實測寬 423px 超出 390px 公式框，改用式 (3)，實測 390/390、269/269 不需捲動）；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（37 項）。來源：Card 3 公式取自原文式 (3)，p. 3；Card 4 四個數字取自證據表 R1-Zero AIME 列（§2.3, p. 4）與 Table 16 列（p. 61）；Card 5 採新論文模式，四筆取自 Supplementary I, p. 65 與 §6, pp. 10–11。複核：Card 3 原取式 (4) 寬度超出公式框，改式 (3) 並改寫標題與說明；Card 5 兩筆里程碑折行落單，縮短；Card 4 範圍之縮寫 AIME 改為中文。首頁卡片牆：依協調規則未重建，由協調者處理。`title_zh` 已改，首頁星圖說明框待協調者重建後更新。
+
+
+## [2026-11-10 10:15] update | 新增謝富惠臺灣南島語「說」動詞之卡片文字檔並補後續研究 | #語言學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 A 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2022-formosan-say-verbs-hsieh.md](cards/2022-formosan-say-verbs-hsieh.md) 並建置 `web/prototypes/paper-v1/2022-formosan-say-verbs-hsieh.html`。
+  - 先修頁面：論文頁原無後續研究。`raw/` 其他論文皆未引用本文；Google Scholar 出現機器人驗證，未處理驗證碼即改用 OpenAlex 搜尋 2022–2026 年候選論文（約 240 篇），逐篇以 Crossref 參考文獻比對本文題名，找到兩篇引用：Jheng (2023) *Concentric* 49(2): 175–223（阿美語 `han` 之示證分析）、Hsieh (2026) *Studia Linguistica* 80(2)（作者本人比較「說」動詞語法化為補語連詞之進程）。依兩篇摘要寫入論文頁 Card 5，證據表增列兩列。
+  - 原文抽查：以 PDF 文字核對第 5 節（pp. 84–85）與表二。原文為「所有的台灣南島語」都有「說」→「想」之延伸，論文頁 `card_line` 寫「多半」、`hook` 寫「普遍」，比原文弱，登記 EK-131 並改為「都」（已修正）。`verification` 由 verified 改為 partial。
+  - 卡片：Card 3 無公式模式（原文為語義特徵分析，無編號公式），示意圖為作者推論之施為動詞演化途徑；Card 4 結論模式三條；Card 5 一般模式三筆（本篇自述語法化途徑待探討、Jheng 2023、Hsieh 2026）；Card 6 取論文頁 Card 6 泛泰雅語「說」兼「做」一點，未涉及使用者碩論。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0（初稿導語含數字之 WARN 已改寫）；建置自我檢查 ERROR 0、WARN 1：資訊欄期刊名超過兩行，該刊 DOI 註冊於華藝而非 Crossref，無法確認通用縮寫，依 paper-page.md 第三節不填 `venue_short`；`verify_page.js` 結果 PASS；無頭截圖目視，修正 Card 2、4、5 拆詞折行與範圍欄落單。`lint_wiki.py` ERROR 0。`card_line` 已改，首頁於本批結束時統一重建。

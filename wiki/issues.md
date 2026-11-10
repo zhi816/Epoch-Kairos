@@ -831,6 +831,12 @@
 - **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。刪去 Card 4 後續段與 Card 5 三點無出處之敘述；Card 5 改記原文公開之權重、蒸餾模型與程式，作者明列之能力限制、純強化學習之挑戰與未來方向，各附節與頁碼；註明原文自述之後續探索本頁未逐篇查核、不列為後續研究。證據表登記各列。
 
+### EK-131 | fixed | papers/2022-formosan-say-verbs-hsieh.md | Frontmatter card_line 與 hook | 原文不符
+- **問題**：`card_line` 寫「比較族語的「說」，發現多半也能表示「想」」，`hook` 寫「發現它們普遍從「說」延伸到「想」」。原文結論為所有台灣南島語的「說」動詞都有從述說語義場跨到認知語義場（「說」→「想」）的延伸；「多半」「普遍」比原文弱，與原文不符。
+- **來源**：`raw/my-focus/台灣相關論文/台灣南島語「說」動詞語義現象初探_謝富惠.pdf`，第 5 節，p. 84（「所有的台灣南島語都同時呈現『同一語義場』以及從『述說語義場』跨到『認知語義場』的語義延伸」）。
+- **發現於**：撰寫卡片前回原文抽查時發現（Claude Code by Anthropic，第三批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。`card_line` 改為「比較族語的「說」，發現都能表示「想」」，`hook` 之「普遍」改為「都」；證據表增列一列。
+
 ### EK-173 | fixed | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 4 與 Card 5 第 3 點 | 原文不符
 - **問題**：（1）Card 4 實驗設定稱檢索語料為「Gherdëina–Italian（18,485 句）」，原文無此數，原文為 Val Badia–Italian 18,140 句、Gherdëina–Italian 19,971 句，另對齊出 Val Badia–Gherdëina 14,953 句；證據表同列亦誤。（2）稱 BLEU 以「平均值 ± 標準差」報告，原文表 1 標題為平均值與信賴區間。（3）表 3 相關係數加註「p < 0.05」，原文僅以星號標示、未註明顯著水準。（4）「原文指出的局限性」7%–9% 一項寫作「無效拼寫或非標準詞」並標 Limitations p. 9，原文為 §7 p. 7「syntactically not valid in the target language」；Figure 2 一項寫成提示偏移「即」使 GPT-4o 找不到例句，原文為「may have caused」。（5）Card 5 第 3 點稱譯入高資源語言時「複雜提示無效甚至引入干擾」，原文為只有些微改善、FS 僅對 o1-mini 與 Llama-3.3 顯著，部分情形零樣本最好，未提干擾。
 - **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`，§4（pp. 4–5）、§6（p. 5）、表 1 標題與表 2（p. 6）、表 3（p. 7）、§7（p. 7）、Conclusion（p. 8）。

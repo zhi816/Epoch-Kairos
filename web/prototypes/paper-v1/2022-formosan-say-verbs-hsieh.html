@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>台灣南島語「說」動詞語義現象初探｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#F2B3D6;--deep:#6D244D;--win:#262127;--focus:#F2B3D6">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html#my-constellation" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.22</span><span>臺灣語言學</span></div><div class="win"><i style="left:69.5%;top:18.1%;width:1.5px;height:1.5px;opacity:0.36"></i><i style="left:55.2%;top:19.4%;width:1px;height:1px;opacity:0.30"></i><i style="left:56.8%;top:24.2%;width:1px;height:1px;opacity:0.49"></i><i style="left:7.4%;top:21.3%;width:1px;height:1px;opacity:0.52"></i><i style="left:34.9%;top:41.7%;width:1px;height:1px;opacity:0.79"></i><i style="left:37.3%;top:9.6%;width:1.5px;height:1.5px;opacity:0.32"></i><i style="left:71.8%;top:32.6%;width:1.5px;height:1.5px;opacity:0.33"></i><i style="left:46.4%;top:29.5%;width:1px;height:1px;opacity:0.75"></i><i style="left:35.3%;top:23.6%;width:1px;height:1px;opacity:0.63"></i><i style="left:31.4%;top:6.7%;width:1px;height:1px;opacity:0.72"></i><i style="left:49.0%;top:36.7%;width:1px;height:1px;opacity:0.46"></i><i style="left:49.8%;top:41.8%;width:1px;height:1px;opacity:0.57"></i><i style="left:13.4%;top:25.5%;width:1.5px;height:1.5px;opacity:0.76"></i><i style="left:26.8%;top:24.3%;width:1px;height:1px;opacity:0.71"></i><span class="lang">臺灣南島諸語</span><span class="rep"></span><span class="line"><span>比較族語的「說」，</span><span>發現都能表示「想」</span></span></div><div class="tags">語言、心理與社會・#語言學</div><div class="name">台灣南島語「說」動詞語義現象初探</div><div class="lead">各族語的「說」都延伸為「想」，多數還兼有如此、像、做或去。</div><div class="yrs">2022 發表 ｜ Journal of Taiwanese Languages and Literature</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">一個詞形，<br>同時有好幾種意思</span><div class="rows"><div class="row"><b>既有模式</b><span>Güldemann 主張各種詞先作引述，再逐步語法化為標記</span></div><div class="row"><b>偶然同形</b><span>十多種語言都有這種同一詞形現象，作者認為不太可能是巧合</span></div><div class="row gap"><b>合理解釋</b><span>沒有模式能說明為何同一個「說」也表示如此、像、做或去</span></div></div><span class="ft" style="color:var(--ink)">要解釋同形，得回頭問「說」原本是什麼。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">說話本身就是一種動作</span><svg class="dia" viewBox="0 0 300 96" role="img" aria-label="示意：作者推論的演化途徑，施為動詞常與直接引述共現，演化為各語言的「說」動詞，再依語法化程度成為補語、示證等標記。">
+  <rect class="k-ink k-ring" x="4" y="18" width="84" height="30" rx="4"/>
+  <rect class="k-accent k-ring" x="108" y="18" width="84" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="212" y="18" width="84" height="30" rx="4"/>
+  <line class="k-ink" x1="88" y1="33" x2="106" y2="33"/>
+  <polyline class="k-ink" points="101,28 106,33 101,38"/>
+  <line class="k-ink" x1="192" y1="33" x2="210" y2="33"/>
+  <polyline class="k-ink" points="205,28 210,33 205,38"/>
+  <line class="k-muted k-dash" x1="97" y1="38" x2="97" y2="62"/>
+  <text class="k-label" x="46" y="37" text-anchor="middle">施為動詞</text>
+  <text class="k-label-accent" x="150" y="37" text-anchor="middle">「說」動詞</text>
+  <text class="k-label" x="254" y="37" text-anchor="middle">補語、示證</text>
+  <text class="k-label" x="97" y="78" text-anchor="middle">直接引述</text>
+</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">作者推論這些「說」源自兼具述說與動作的施為動詞，再各自延伸出如此、像、做、去。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="concl"><p>16 種族語的「說」動詞都延伸出「想」的意思</p><p>其中 12 種的「說」兼有如此、像、做或去等語義</p><p>布農、鄒等四語沒有雙重語義</p></div><span class="ft">範圍：謝富惠 2022，16 種語言的質性語料分析</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">從語義延伸，<br>走向語法化程度的比較</span><div class="time"><p><b>2022</b><span>作者指出語法化途徑仍待深入探討</span></p><p><b>2023</b><span>Jheng 主張阿美語 han 的功能用法屬示證</span></p><p><b>2026</b><span>作者比較「說」變成補語連詞的進程</span></p></div><span class="ft">後兩筆為後續研究，參考文獻皆列有本篇</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">泛泰雅語的「說」也表示「做」，翻譯時一律譯成「說」就可能出錯。</span><span class="shift"><span>一詞一義</span><i aria-hidden="true"></i><b>一詞多義</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2022 發表 ｜ Journal of Taiwanese Languages and Literature</span>
+<h1>台灣南島語「說」動詞語義現象初探</h1>
+<p class="en">On the Semantics of SAY Verbs in Formosan Languages</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">在南島語言的深層演化中，『說』從來不只是被動地傳遞語言符號，它本身就是一種具備模仿性與指示性的施為行動，並在漫長的言談互動中凝結為引導子句與標記語法的骨架結構。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>本文以雙述說動詞測試，從 16 種台灣南島語中挑出語義最廣泛、最容易語法化的「說」動詞（第 1 節，pp. 48–51，表一），分析其語義現象。作者指出兩個類型學上的獨特之處：其一，所有台灣南島語的「說」動詞都同時有「同一語義場」的延伸，以及從「述說語義場」跨到「認知語義場」的延伸（由「說」延伸為「想」）；其二，除布農語、鄒語、卡那卡那富語與拉阿魯哇語外，其餘 12 種語言的「說」動詞同時具有另一個語義：指參「如此」、比較／模仿「像」、動作「做」或移動「去」（摘要；第 5 節，pp. 84–85）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：同一個詞形，多種語義與功能</h2></div>
+<ul><li><strong>「說」動詞常已語法化</strong>：例如邵語 <code>mzai</code> 與賽夏語 <code>komoSa’</code> 在例（1a–b）中已失去動詞性，作用類似英語補語連詞 <em>that</em>；卑南語 <code>kema</code> 在例（1c）完全沒有述說語義，而是表示傳聞的示證標記（pp. 48–49）。</li><li><strong>同形現象難以用既有模式解釋</strong>：Güldemann (2002) 主張不同詞彙用於直接引述句後，逐步演化為引述標記，再語法化為補語、示證等標記（圖三，p. 81）。但台灣南島語是<strong>同一個詞形</strong>同時具有「說」與「如此／像／做／去」等語義；作者認為在為數不少的語言中同時出現偶然同形的機率很低，因此既有模式難以合理解釋（pp. 81–82）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：語義延伸機制與施為動詞假說</h2></div>
+<h3>1. 從「說」到「想」的跨語義場延伸（第 3 節）</h3>
+<ul><li>同一語義場的「說」動詞都共有「聲音」與「語言訊息」兩個語義成分，主事者可以是人、其他生物或無生命物體，只要能發出聲音。</li><li>當「說」的主事者是負責思想的器官或部位（如「內心」）時，「內心在說」與「人在說」經由<strong>部分－整體轉喻</strong>與<strong>隱喻映照</strong>連結；「說」的述說語義再經<strong>重新分析</strong>與<strong>語用推論</strong>反覆強化，延伸為「想」（圖一，p. 68；圖二，p. 70；第 5 節，p. 84）。</li></ul>
+<h3>2. 12 種語言的語義分類（表二 p. 73；表三 p. 80）</h3>
+<table><thead><tr><th>類別</th><th>語言與「說」動詞</th></tr></thead><tbody><tr><td>指參「如此」</td><td>排灣語 <code>aya</code>、魯凱語 <code>ia/ya</code>、噶瑪蘭語 <code>zin</code>、達悟語 <code>koan</code>；阿美語 <code>saan/han</code>、撒奇萊雅語 <code>sa/han</code></td></tr><tr><td>指參移動「去」</td><td>賽夏語 <code>Sa’</code>、卑南語 <code>kema/kua-aw</code></td></tr><tr><td>動作「做」</td><td>泰雅語 <code>mha</code>、太魯閣語 <code>mesa/sun</code>、賽德克語 <code>mesa/kesa-un</code>、排灣語 <code>aya</code></td></tr><tr><td>比較／模仿「像」</td><td>邵語 <code>zai</code>、魯凱語 <code>ia/ya</code></td></tr></tbody></table>
+<h3>3. 施為動詞假說（圖四，p. 83）</h3>
+<p>作者推論這 12 種語言的「說」動詞本質上是語義較廣泛的<strong>施為動詞</strong>，以 <span class="m-in" data-tex="X"></span> 表示（依 Austin 1962「說話就是動作行為」）。圖四的演化途徑以語義特徵描述：</p>
+<ul><li>起點：<span class="m-in" data-tex="X"></span> 具有 [述說]、[動作]，並經常與直接引述子句（具 [指參性]、[模仿性]）共現；</li><li>共現使 <span class="m-in" data-tex="X"></span> 增添 [模仿性] 與 [指示性]，各語言的 <span class="m-in" data-tex="X"></span> 再各自演化為具有不同語義成分的「說」動詞，例如排灣語 <code>aya</code>（述說、指參、做）、邵語 <code>zai</code>（說、像、指示；構詞上分別為 <code>m-zai</code>、<code>mia-zai</code>、<code>izai</code>）；</li><li>最後依語法化程度演化為引述標記、補語記號、示證標記或言談標記（p. 84）。</li></ul>
+<p>原文以語義特徵與圖示陳述，未提出數學模型。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>可核實的原文證據</h2></div>
+<ul><li><strong>研究範圍</strong>：表一列出 16 種台灣南島語的目標「說」動詞，含各焦點形式（如泰雅語 <code>mha</code>、賽德克語 <code>mesa</code>／<code>kesa-un</code>、布農語 <code>tupa</code>／<code>tupa-un</code>）（p. 51）。</li><li><strong>雙重語義</strong>：16 種中有 12 種的「說」動詞同時具有述說以外的語義；布農語、鄒語、卡那卡那富語與拉阿魯哇語沒有（表二，p. 73；第 5 節，p. 85）。</li><li>本文為質性語料分析，例句取自臺灣南島語言叢書、原住民族語言線上辭典與已出版文獻；沒有報告量化指標或出現率。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>作者主張的類型學貢獻</strong>：「說」→「想」的跨語義場延伸較少見於其他語言的報導；12 種語言的「說」動詞兼具其他語義，作者以施為動詞假說取代 Güldemann (2002) 的模式來解釋（第 5 節，pp. 84–85）。</li><li><strong>作者自述的限制</strong>：未深入探討語法化途徑（個別語言語法化程度不一）、未深入探討構詞語法行為（如排灣語的環狀引述句型），也未能解釋布農語等四語為何沒有雙重語義，有待更多歷史語料（p. 85）。</li><li><strong>後續研究</strong>（兩篇之 Crossref 參考文獻皆列有本文）：<ul><li>Jheng (2023)，<em>Concentric</em> 49(2): 175–223（doi:<a href="https://doi.org/10.1075/consl.22049.jhe">10.1075/consl.22049.jhe</a>）：分析斯烏寇蘭阿美語的 <code>han</code>（本文表二列為阿美語「說」動詞 <code>saan/han</code>），依其摘要，主張功能性的 <code>han</code> 不能分析為引述動詞，而是編碼非推論示證的功能範疇。</li><li>Hsieh (2026)，<em>Studia Linguistica</em> 80(2)（doi:<a href="https://doi.org/10.1111/stul.70015">10.1111/stul.70015</a>，2026-05-21 線上發表）：作者本人延續本文未深入的語法化途徑，以 Chappell 的五階段架構比較台灣南島語「說」動詞語法化為補語連詞的進程。依其摘要，賽考利克泰雅語、賽夏語、德固達雅賽德克語與邵語的「說」已達第 3 階段（作補語連詞），布農語、卡那卡那富語、魯凱語、拉阿魯哇語與鄒語仍在第 1 階段（引述動詞）。</li></ul></li><li>（Wiki 詮釋）對計算處理而言，本文提示同一詞形可能分屬動詞、補語連詞或示證標記；但本文並未做任何計算實驗，對剖析或翻譯的實際影響仍待驗證。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<blockquote>以下為使用者個人研究之延伸思考（Wiki 詮釋），非原文主張。</blockquote>
+<h3>對個人碩士論文研究之映射與啟發</h3>
+<ol><li><strong>泛泰雅語「說」動詞同時是「做」</strong>：<ul><li>依本文表二、表三，泰雅語 <code>mha</code>、賽德克語 <code>mesa</code>／<code>kesa-un</code>、太魯閣語 <code>mesa</code>／<code>sun</code> 都兼有「說」與「做」。例如太魯閣語 <code>ma=saku sun haya</code> 譯為「你為什麼這樣對我呢？」而非「說」（例 30c，p. 78）。翻譯系統或辭典檢索若一律對應為「說」，可能產生錯譯；可在測試資料中特別檢查這類詞。</li></ul></li><li><strong>構詞解析之外還需要句法資訊</strong>：<ul><li>同一詞形在不同句子中可能是主要動詞或已語法化的標記（例如邵語 <code>mzai</code> 作補語連詞）。只看單詞的構詞解析無法區分，需搭配上下文；具體做法（如序列模型或提示中提供功能說明）須另行實驗。</li></ul></li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2022</b><span>發表・Journal of Taiwanese Languages and Literature</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Fuhui Hsieh</span></div>
+    <div class="blk"><span class="lab">我的關注</span><span>臺灣語言學</span><span class="note">研究語言：臺灣南島諸語</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Journal of Taiwanese Languages and Literature, 17(1), 47-92</span><a href="https://doi.org/10.6710/JTLL.202204_17(1).0002">doi:10.6710/JTLL.202204_17(1).0002</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#語言學</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>臺灣南島語計算語言學與構詞解析</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">謝富惠（大同大學），《臺灣語文研究》17(1): 47–92（2022 年 4 月）。英文題名依原文英文摘要頁（p. 92）。本文以語義分析為主，作者明言未深入探討語法化途徑與構詞語法行為（第 5 節，p. 85）。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
