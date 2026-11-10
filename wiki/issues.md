@@ -775,15 +775,17 @@
 - **來源**：同 EK-120 之 PDF；修正時逐式回原文正文與 Methods 確認，找不到者刪除或標明為教科書式背景。
 - **發現於**：第二批卡片回填 B 組回報，協調者核對證據表（Claude Code by Anthropic，2026-11-10）
 
-### EK-122 | open | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 3 | 原文未支持
+### EK-122 | fixed | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 3 | 原文未支持
 - **問題**：Card 3 第 53–58 行之 $\mathcal{D}_{\text{clean}} = \{ (x_i, y_i) \mid \operatorname{ValidText} \land \operatorname{RatioFilter} \}$ 為 Wiki 自擬，原文沒有編號公式；且拆成兩行 aligned 片段，各行都不完整。原文過濾規則為文字敘述：兩側皆有兩個以上詞元時計算目標對來源之詞元比 r，r ≤ 0.2 或 r > 8.0 者捨棄。
 - **來源**：`raw/my-focus/英文論文/FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273.pdf`，PDF 第 4 頁（LREC 2026 論文集 p. 3448）。
 - **發現於**：第二批卡片回填 C 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。刪除 Card 3 自擬之 $\mathcal{D}_{\text{clean}}$ 集合式，過濾規則依 §3.3（p. 3448）改以文字敘述；同章另一條自擬之語言代碼集合式一併改為文字列表（EK-174）。卡片 Card 3 採無公式模式。證據表登記原文無編號公式。
 
-### EK-123 | open | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 1、Card 5 與 Card 6 | 過度表述
+### EK-123 | fixed | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 1、Card 5 與 Card 6 | 過度表述
 - **問題**：Card 1 第 33 行稱本篇「具有里程碑意義」；Card 5 第 131 行稱「徹底解決了國際研究團隊無法取得標準化臺灣南島語資料的歷史痛點」並稱「首度大規模」；Card 6 第 147 行稱「完美聯動」、將產出「全球第一套」標註語料庫並「直接將研究成果推向頂會高度！」。原文無上述評價，「完美」屬禁用評價詞，驚嘆號亦不合學術語氣。另第 145–147 行寫到使用者之研究規劃，撰寫卡片時須依 `paper-card-writer` 第二節第 13 條，不得透露碩論題目、資料或結果。
 - **來源**：同 EK-122 之 PDF 全文。
 - **發現於**：第二批卡片回填 C 組回報，協調者核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。Card 1 刪去「里程碑意義」，改照摘要與 §1；Card 5 依新論文模式改記原文公開之資源、§7 限制與 §6 未來工作，刪去「徹底解決……歷史痛點」「首度大規模」「標準化工程範本」；Card 6 刪去「完美聯動」「全球第一套」「推向頂會高度！」與第一人稱之研究規劃，改寫為研究方向之延伸思考，不寫碩論題目、資料或結果。卡片 Card 6 不提碩論。
 
 ### EK-130 | fixed | papers/2023-atayal-truku-morphology-dai.md | Card 3 | 原文不符
 - **問題**：Card 3 之前綴機率公式寫作 $P_{\text{uni}}(\text{pfx}) = \prod_{i=1}^{m} P(x_i), \qquad P_{\text{bi}}(\text{pfx}) = \cdots$。原文兩式皆寫作 $P(\mathit{pfx})$，以「一元機率」「二元機率」文字區分；uni、bi 下標為 Wiki 所加，與原文寫法不同。式子內容（上下限與條件機率）與原文相同。
@@ -844,6 +846,18 @@
 - **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`，§4（pp. 4–5）、§6（p. 5）、表 1 標題與表 2（p. 6）、表 3（p. 7）、§7（p. 7）、Conclusion（p. 8）。
 - **發現於**：第三批卡片回填交付稿撰寫時再抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。以原 PDF 頁面影像核對後，依原文改寫上述五處，表 2 補列 ZS、FS、PF 三種字元數與 DeepSeek-R1 推論秒數；證據表同步更正並逐一列出數值。卡片檔不受影響（Card 4 四個數字均取自表 1）。`verification` 維持 `partial`。
+
+### EK-174 | fixed | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 2、Card 3 與 Card 4 | 原文不符
+- **問題**：（1）Card 4 稱族語－英語 95,809 句對「涵蓋 4 種具備英語對齊之語言：阿美語 36,039、布農語 25,627、魯凱語 13,010、泰雅語 21,133 句對」，並稱族語－華語「從阿美語 64,888 句對至邵語 21,795 句對」，原文表 2 無這些數字；表 2 每種語言都列有英語句對，只有四種語言之英語資料足以訓練模型。表 2 位置誤記為 p. 3449（實為 p. 3450）。（2）Card 2 將「宗教文獻」列為來源，原文 §2 明言不收錄聖經；稱各來源「在格式、拼寫標點、檔案編碼上互不相容」「直接訓練會導致大量的錯位幻覺」，稱 NLLB 新增語言之變通寫法「極易引發崩潰」、隨機初始化語言代碼「會嚴重損害預訓練權重的表徵遷移」，原文無這些說法。（3）Card 3 另有一條自擬之語言代碼集合式 $\mathcal{L}_{15}$，原文為表 1；「連續兩個以上之語氣助詞」原文為「more than two characters」；三種假影字串與舞台指示語之中文為 Wiki 回譯，原文僅有英譯描述。（4）Card 4 稱 NLLB「顯著勝過」OpenNMT，原文為「generally outperforms」，未做顯著性檢定；未記作者對譯入英語分數偏高之保留說明。
+- **來源**：`raw/my-focus/英文論文/FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273.pdf`，§2（p. 3446）、表 1 與 §3.2（p. 3447）、§3.3（p. 3448）、§3.4（p. 3449）、表 2（p. 3450）、表 3 與表 4（p. 3451）、§5（p. 3452）。
+- **發現於**：第三批卡片回填 C 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。以表 2、表 3、表 4 之頁面影像核對後：Card 4 改記表 2 合計列與四種英語模型語言之訓練集句數，註明表 2 有兩組標為 xnb；Card 2 依 §1–§3 改寫並註明不收聖經；Card 3 語言代碼改為文字列表，語氣詞條件與假影字串照原文；Card 4 改為「整體優於」並補作者之保留說明。證據表逐一列出數值與位置。
+
+### EK-175 | fixed | papers/2026-formosanmt-parallel-corpus-scheppat.md | hook、Card 1 與證據表 | 過度表述
+- **問題**：`hook` 稱本篇為「首個涵蓋全臺 15 種南島語之標準化平行語料庫」，Card 1 稱「全球首個完整涵蓋臺灣 15 種官方南島語言……之標準化多語言平行語料庫」，證據表 Card 5 列稱「建立全球首個涵蓋全臺 15 種南島語之標準化 MT 基準」並判定符合來源；原文未稱首個，§2 僅說同一語族或地區之多語翻譯資料集較少。開頭引言（Wiki 撰寫）稱語料「高純度」，原文無此評價，且作者自承過濾帶有臨時性。
+- **來源**：`raw/my-focus/英文論文/FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273.pdf`，摘要與 §1（pp. 3445–3446）、§2（p. 3446）、§3.3（p. 3448）。
+- **發現於**：第三批卡片回填 C 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。`hook` 與 Card 1 刪去「首個」，改照摘要；開頭引言改寫，不作品質評價；證據表該列刪除，另立一列註明原文未稱首個。
 
 ### EK-154 | fixed | papers/2023-jwst-massive-galaxies.md | Frontmatter、開頭引言與 Card 3 | 原文不符
 - **問題**：（1）Card 3 四條區塊公式皆非原文式：$M_{\text{halo}} = M_\star/(\epsilon f_b) \ge M_\star/f_b \approx 6.4 M_\star$ 為 Wiki 推算（且 $f_b$ 寫成 0.1564，原文為 0.156）；兩條積分把 $\epsilon$ 併入下限，原文式 (3)、(5) 取 $\epsilon = 1$ 並另以式 (1)、(2) 定義積分；Press–Schechter erfc 解析式與 $\delta_c \approx 1.686/D(z)$、$\propto e^{-\nu^2/2}$ 原文沒有（原文為 $\delta_c \approx 1.7$）。證據表未登記任何式號。（2）`title_zh`「JWST 早期宇宙成熟巨大星系發現」使讀者以為本篇發現了星系；本篇為對 Labbé 等候選之理論檢驗，原題為 Stress testing ΛCDM with high-redshift galaxy candidates。（3）開頭引言為 Wiki 撰寫卻未註明。（4）證據表未記載封存原文為 arXiv v2 預印本，而 `doi_url` 指向正式版。

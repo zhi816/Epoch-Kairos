@@ -1780,3 +1780,13 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：TD-008 第三批 B 組。以 `doi_url` 指向之正式版（Nature Astronomy 開放取用全文，PMC10281863；封存原文為 arXiv v2 預印本，差異已記入證據表）修正 [論文頁](papers/2023-jwst-massive-galaxies.md) 並重建 [證據表](evidence/2023-jwst-massive-galaxies.md)：完成 EK-114（hook 與 Card 1 改為最重候選落在上限邊緣、ε = 0.99 與 0.84、計入誤差需 ε ≥ 0.57）與 EK-115（刪除極值統計與三個原文沒有的質量值，Card 2 效率改為 ε ≲ 0.2）；新登記並修正 EK-154（Card 3 四條區塊公式改為原文式，刪除 Wiki 推算與 erfc 式；`title_zh` 改為「以高紅移星系候選對 ΛCDM 宇宙學進行壓力測試」；引言註明為 Wiki 撰寫）與 EK-155（刪除未經查核之 AGN 下修與小紅點敘述，Card 5 改列五篇經摘要核對之後續研究：Dekel 2023、Arrabal Haro 2023、Glazebrook 2024、Desprez 2024、Chworowsky 2024）；`verification` 改為 `partial`。新增 [卡片檔](cards/2023-jwst-massive-galaxies.md) 與論文頁原型 `web/prototypes/paper-v1/2023-jwst-massive-galaxies.html`。check_cards：ERROR 0、WARN 0；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（37 項）。來源：Card 3 公式取自原文式 (5)；Card 4 四個數字取自證據表 Results 與 Discussion 列（0.99、0.84、≥ 0.57、≲ 0.2）；Card 5 五筆取自證據表後續研究列。複核：Card 4 兩個來源位置原寫節名，補上圖號與節號；封面導語與標題改為不含縮寫；Card 5 標題與 Card 6 結語折行落單，改寫；示意圖標籤壓到上限線，移開。首頁卡片牆：依協調規則未重建，由協調者處理；`title_zh` 已改，首頁待協調者重建後更新。
+
+## [2026-11-10 10:22] update | 依原文重寫 FormosanMT 論文頁並新增卡片文字檔 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 C 組（TD-008）。先依 wiki-content-audit 以原 PDF（表 2、表 3、表 4 以頁面影像核對）全頁重核 [wiki/papers/2026-formosanmt-parallel-corpus-scheppat.md](papers/2026-formosanmt-parallel-corpus-scheppat.md) 與證據表，再依 paper-card-writer 撰寫 [wiki/cards/2026-formosanmt-parallel-corpus-scheppat.md](cards/2026-formosanmt-parallel-corpus-scheppat.md) 並建置 `web/prototypes/paper-v1/2026-formosanmt-parallel-corpus-scheppat.html`。
+  - EK-122（fixed）：刪除 Card 3 自擬之過濾集合式，規則依 §3.3（p. 3448）以文字敘述。EK-123（fixed）：刪去「里程碑意義」「徹底解決歷史痛點」「首度大規模」「完美聯動」「全球第一套」「推向頂會高度！」；Card 6 改寫為研究方向之延伸思考，不用第一人稱、不寫碩論題目、資料或結果。
+  - 新登記並修正 EK-174：表 2 句數（原頁「阿美語 36,039」等原文無之數字改為表 2 合計列與四種英語模型語言之訓練集）、表 2 頁碼、Card 2 誤列「宗教文獻」為來源（原文不收聖經）與數項原文無之說法、自擬之語言代碼集合式、「顯著勝過」改「整體優於」。EK-175：hook、Card 1 與證據表之「全球首個」，開頭引言之「高純度」。
+  - Card 5 依新論文模式補列公開資源（GitHub FormosanBank/FormosanBank-MT）、§7 限制與 §6 未來工作；證據表全表重寫並逐一列出數值。`verification` 由 `issues` 改為 `partial`。
+  - 卡片：Card 3 無公式模式；Card 4 改用兩格（493,519、26.90；四格時七位數折行，verify_page.js FAIL），兩數回原文抽查相符；Card 5 新論文模式；Card 6 不提碩論。`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` PASS（35 項）；桌面箭頭、圓點、方向鍵與手機滑卡實測正常；目視修正 Card 2 落單行與 Card 3 標籤位置。`lint_wiki.py` ERROR 0。
+  - 首頁卡片牆依本批協調規則未重建，由協調者處理。
