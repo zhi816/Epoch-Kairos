@@ -696,3 +696,86 @@
 - **來源**：`raw/2024-alphafold3.pdf`（Abramson et al. 2024, Nature 630:493–500），摘要 p. 493；模型限制 pp. 497–498、Fig. 5c。
 - **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。三點改寫為作者結論與所述限制。
+
+### EK-108 | fixed | papers/2017-attention-is-all-you-need.md | 證據表第 11–12 列 | 原文不符
+- **問題**：證據表第 11 列把 WMT 2014 翻譯結果與路徑長度比較之出處寫作「§5.1, §5.2」，第 12 列把 WSJ 句法剖析寫作「§5.3」。原文 §5 為訓練設定（§5.1 訓練資料、§5.2 硬體與排程、§5.3 最佳化器）；路徑長度比較在 §4 Table 1，翻譯結果在 §6.1 Table 2，句法剖析在 §6.3 Table 4。
+- **來源**：`raw/2017-attention-is-all-you-need.pdf`（Vaswani et al. 2017），§4 p. 6、§5.2 p. 7、§6.1 p. 8、§6.3 p. 9。
+- **發現於**：第二批卡片回填 C 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。兩列改為正確節次與頁碼，數值不變。
+
+### EK-109 | fixed | papers/2017-attention-is-all-you-need.md | 開頭引言 | 歸因／版本錯置
+- **問題**：標題下之開頭引言「當模型不再被迫一個字一個字地順著時間軸緩慢爬行……」加了引號，卻未註明為 Wiki 撰寫，讀者會以為出自原文；原文無此句。`paper-card-writer` 之 `references/paper-page.md` 第四節第 1 條要求加註。
+- **來源**：`raw/2017-attention-is-all-you-need.pdf` 全文無此句（引言為中文修辭，原文為英文）。
+- **發現於**：第二批卡片回填 C 組回報，協調者核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。引言後加「（本頁引言為 Wiki 撰寫，非原文）」，重建論文頁原型。
+
+### EK-110 | fixed | papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md | 證據表第 13 列 | 原文不符
+- **問題**：證據表第 13 列列出之模型為「DeepSeek-R1-Distill-Qwen-14B」，出處寫「§3.3, pp. 5–6」。原文為 DeepSeek-R1-Distill-Llama-70B，以 GPT-4o mini 為基準，另比較 Llama 3.1-70B 與 Gemma 3-27B；模型列於 §3.4，後編輯模組在 §3.2（皆 p. 5），§3.3 為語料收集。論文頁第 63、94 行之模型名正確。
+- **來源**：`raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（Eng. Proc. 2025, 120, 52），§3.2 與 §3.4，p. 5。
+- **發現於**：第二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改正模型名與節次。
+
+### EK-111 | open | papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md | Card 5 | 原文未支持
+- **問題**：Card 5 第一點（第 115 行）稱「以高精確的靜態詞典解決 80% 的關鍵詞錨定，以向量庫處理 20%」，並稱「向極低資源 NLP 界證實」。原文未見 80%、20% 之分配數字。
+- **來源**：同 EK-110 之 PDF，全文搜尋「80%」「20%」無結果。修正時改用原文結果節之實際數據，或刪去比例。
+- **發現於**：第二批卡片回填 B 組回報，協調者以全文搜尋確認（Claude Code by Anthropic，2026-11-10）
+
+### EK-112 | open | papers/2007-woodford-inflation-dynamics.md | Card 3 | 原文不符
+- **問題**：Card 3 第 75 行把開放經濟菲利浦曲線寫成國內通膨對「產出缺口」$y_t - y_t^n$、$y_t^* - y_t^{*n}$ 之關係，並標「式 3.11 / 3.19」；原文式 (3.19) 之產出項為相對穩態之對數偏離 $\hat{Y}_t$、$\hat{Y}^*_t$，且另有衝擊項 $-\xi \omega q_t$。第 83 行利率規則寫成 $\phi_y (y_t - y_t^n)$；原文式 (1.23) 為 $\hat{\imath}_t = \bar{\imath}_t + \phi_\pi \pi_t + \phi_y \hat{Y}_t$。
+- **來源**：`raw/2007-woodford-inflation-dynamics.pdf`，式 (3.19) 於 PDF 第 58 頁，式 (1.23) 於 PDF 第 13 頁。
+- **發現於**：第一、二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+
+### EK-113 | open | papers/2025-deepseek-r1.md | Card 4 與證據表第 16 列 | 歸因／版本錯置
+- **問題**：Card 4 第 85 行與證據表第 16 列稱 R1-Zero 之 AIME 2024 pass@1 由 15.6% 升至 71.0%，第 85 行並稱「與 OpenAI o1-0912 持平」；第 86 行稱「8,000 多個強化學習訓練步」。本頁引用之 Nature 版原文為 77.9%，訓練共 10,400 步（8.2k 步出現明顯躍升）。證據表同一列寫 10,400 步而論文頁寫 8,000，二者也不一致。71.0% 與 o1-0912 之比較疑為 arXiv 初版之數字，修正時須一併確認 cons@16 之 86.7% 是否為 Nature 版數字。
+- **來源**：`raw/2025-deepseek-r1.pdf`，PDF 第 3 頁（10,400 steps；8.2k step）、第 4 頁（15.6% → 77.9%）。
+- **發現於**：第一、二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+
+### EK-114 | open | papers/2023-jwst-massive-galaxies.md | hook 與 Card 1 | 過度表述
+- **問題**：`hook` 稱「部分觀測結果甚至要求超過 100% 的重子轉化效率」，Card 1 第 35 行稱即使暗物質暈中 100% 的重子都變成恆星，理論上限「依然低於觀測推估值」。原文為觀測值「lie at the theoretical limit」，對應 ε(z≈9) = 0.99、ε(z≈7.5) = 0.84，作者稱為 physically implausible，計入 1σ 誤差後則為 marginally consistent；並非超過 100%。
+- **來源**：`raw/2023-jwst-massive-galaxies.pdf`（Boylan-Kolchin 2023），PDF 第 2 頁。
+- **發現於**：第一、二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+
+### EK-115 | open | papers/2023-jwst-massive-galaxies.md | Card 3 與 Card 4 | 原文未支持
+- **問題**：Card 3 第 54–55 行之「極值統計（Extreme Value Statistics）鎖定巡天體積中的最重暗物質暈」，與 Card 4 第 85 行之最重暗物質暈質量 $4 \times 10^{11}$、重子極限 $6.5 \times 10^{10}$ 與 $1.2 \times 10^{10}\,M_\odot$、共動體積約 $10^5\,\text{Mpc}^3$ 等數值，原文全文搜尋皆未見；原文之效率推論來自累積數密度與累積恆星質量密度。
+- **來源**：同 EK-114 之 PDF，全文搜尋「extreme value」「6.5」「1.2」「4 ×」無相符結果。修正時須再看原文圖 1、圖 2 確認無圖中數值。
+- **發現於**：第一、二批卡片回填 B 組回報，協調者以全文搜尋確認（Claude Code by Anthropic，2026-11-10）
+
+### EK-116 | open | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 3 | 原文未支持
+- **問題**：Card 3 第 65–66 行之 $\hat{y}_{\text{base}} = \operatorname{NMT}(x)$ 與 $\hat{y}_{\text{final}} = \operatorname{LLM}_{\text{CoT}}(\ldots)$ 為 Wiki 自擬之流程示意，原文沒有任何公式，頁面也未標明為示意。頁面有區塊公式，卡片因而無法依 Card 3 無公式模式撰寫。
+- **來源**：`raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf` 全文無編號公式。
+- **發現於**：第二批卡片回填 B 組回報，協調者以全文搜尋確認（Claude Code by Anthropic，2026-11-10）
+
+### EK-117 | open | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 5 | 原文不符
+- **問題**：Card 5 第 115 行稱「證明……利用現成小型開源 NMT 模型搭配輕量 API RAG 後編輯即可超越 54B 巨型單體模型」。原文 FLORES 實驗以 NLLB-54B 本身為初譯模型（baseline MT model），再以 LLM 後編輯，平均比 NLLB-54B 高 2.8 ChrF++；並非以小型 NMT 超越 54B 模型。
+- **來源**：同 EK-116 之 PDF，摘要 p. 1、§4.2 p. 5、Table 2 p. 6。
+- **發現於**：第二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+
+### EK-118 | open | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 3 | 原文未支持
+- **問題**：Card 3 第 64 行之 $D_{\text{norm}}(s_1, s_2) = \operatorname{LD}(s_1, s_2) / \max(|s_1|, |s_2|)$ 寫明除以較長字串之長度。原文只說「normalized by word length」，未指明取較長者，也未寫出公式；證據表第 12 列未登記此式。
+- **來源**：`raw/my-focus/英文論文/Dialectometry and Evaluation of the ePark Corpus for_2026.dialres-1.13.pdf`，§2.3（PDF 第 2 頁，論文集 p. 125）。
+- **發現於**：第二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+
+### EK-119 | open | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 5 | 過度表述
+- **問題**：Card 5 第二點（第 123 行）稱「證明南島語各語族不能一概而論」，排灣語與賽德克語「極適合進行多方言聯合訓練與跨方言遷移」，泰雅語與魯凱語「跨方言遷移容易引發負遷移」。原文為共有核心詞比例高者是「good candidates for cross-dialect model transfer」、「transfer learning should be tested」，獨有詞比例高者建議方言專屬模型或微調；未稱證明，也未談負遷移。
+- **來源**：同 EK-118 之 PDF，PDF 第 3 頁（§3.1）、第 7 頁（§4）。
+- **發現於**：第二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+
+### EK-120 | open | papers/2024-fault-tolerant-quantum.md | Card 3 與 Card 4 | 原文不符
+- **問題**：Card 3 第 53 行寫相干時間 $T_2 > 1.5\,\text{s}$，原文為 T2 > 1 s。Card 4 第 96 行稱 d = 7 時「總計動用約 200 個物理原子」，原文圖 2 標示每個邏輯貝爾對所用物理量子位元數，d = 3、5、7 依序為 26、74、146。
+- **來源**：`raw/2024-fault-tolerant-quantum.pdf`（Bluvstein et al. 2024），PDF 第 2、12 頁（T2 > 1 s）、第 3 頁圖 2（146）。
+- **發現於**：第一、二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+
+### EK-121 | open | papers/2024-fault-tolerant-quantum.md | Card 3 | 原文未支持
+- **問題**：Card 3 四組區塊公式（第 64–67 行里德堡哈密頓量、第 75 行穩定子碼空間、第 79 行橫向 CNOT、第 87 行邏輯錯誤率標度）皆未登記於證據表（證據表 Card 3 只有三區架構一列）；B 組回報其中三組原文找不到。原文以文字描述橫向 CNOT 與穩定子，未見以這些形式寫出之公式。
+- **來源**：同 EK-120 之 PDF；修正時逐式回原文正文與 Methods 確認，找不到者刪除或標明為教科書式背景。
+- **發現於**：第二批卡片回填 B 組回報，協調者核對證據表（Claude Code by Anthropic，2026-11-10）
+
+### EK-122 | open | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 3 | 原文未支持
+- **問題**：Card 3 第 53–58 行之 $\mathcal{D}_{\text{clean}} = \{ (x_i, y_i) \mid \operatorname{ValidText} \land \operatorname{RatioFilter} \}$ 為 Wiki 自擬，原文沒有編號公式；且拆成兩行 aligned 片段，各行都不完整。原文過濾規則為文字敘述：兩側皆有兩個以上詞元時計算目標對來源之詞元比 r，r ≤ 0.2 或 r > 8.0 者捨棄。
+- **來源**：`raw/my-focus/英文論文/FormosanMT A Multilingual Parallel Corpus_2026.lrec-1.273.pdf`，PDF 第 4 頁（LREC 2026 論文集 p. 3448）。
+- **發現於**：第二批卡片回填 C 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+
+### EK-123 | open | papers/2026-formosanmt-parallel-corpus-scheppat.md | Card 1、Card 5 與 Card 6 | 過度表述
+- **問題**：Card 1 第 33 行稱本篇「具有里程碑意義」；Card 5 第 131 行稱「徹底解決了國際研究團隊無法取得標準化臺灣南島語資料的歷史痛點」並稱「首度大規模」；Card 6 第 147 行稱「完美聯動」、將產出「全球第一套」標註語料庫並「直接將研究成果推向頂會高度！」。原文無上述評價，「完美」屬禁用評價詞，驚嘆號亦不合學術語氣。另第 145–147 行寫到使用者之研究規劃，撰寫卡片時須依 `paper-card-writer` 第二節第 13 條，不得透露碩論題目、資料或結果。
+- **來源**：同 EK-122 之 PDF 全文。
+- **發現於**：第二批卡片回填 C 組回報，協調者核對（Claude Code by Anthropic，2026-11-10）

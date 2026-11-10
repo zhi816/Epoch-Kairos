@@ -1674,3 +1674,13 @@
   - 卡片：Card 3 公式取論文頁之隨機剛體變換一式（依 Fig. 2b 與正文 pp. 495–496）；Card 4 四個數字取 Extended Data Table 1（76.4%、62.9%、64.8、78.5%）；Card 5 一般模式三筆後續發布（Chai-1、Boltz-1、附錄釋出推論程式）。
   - 撰寫中以 shell 寫入時反斜線被吃掉，EK-105 一行與論文頁損失公式曾出現控制字元，已以檔案腳本重寫並掃描相關檔案確認無殘留。
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 37 項 PASS（首次 Card 2 名稱「AlphaFold2」超出欄寬，已改）；無頭截圖目視，修正導語落單、示意圖標籤過擠與 Card 3、4 拆字折行。`lint_wiki.py` ERROR 0。
+
+## [2026-11-10 09:24] audit | 彙整第二批卡片回填 B、C 組回報，登記來源問題並重建首頁卡片牆 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：TD-008 協調者收尾第二批。
+  - 結果：B 組完成 5 篇、C 組完成 3 篇（皆由組員自行提交）；B 組 7 篇、C 組 4 篇因論文頁或證據表問題停止。41 篇中已有 20 篇有卡片檔。
+  - 來源問題：兩組回報之問題逐一回原文核對（PDF 全文搜尋並看上下文），皆屬實，登記於 [wiki/issues.md](issues.md) EK-108 至 EK-123。當場修正三筆：EK-108 Attention 證據表第 11、12 列節次（結果在 §6.1、§6.3，非 §5）；EK-109 Attention 開頭引言補「本頁引言為 Wiki 撰寫，非原文」並重建原型；EK-110 混合詞典 RAG 證據表第 13 列模型名（原文為 DeepSeek-R1-Distill-Llama-70B，非 Qwen-14B）。其餘 13 筆 open，涉及 Woodford、DeepSeek-R1、JWST、TULUN、ePark、容錯量子計算、混合詞典 RAG、FormosanMT 共 8 頁，`verification` 由 verified 改為 issues。主要者：DeepSeek-R1 寫 71.0%、8,000 步，Nature 版為 77.9%、10,400 步；容錯量子計算 T2 寫 1.5 s、約 200 原子，原文為 1 s、146；Woodford 兩式以產出缺口取代原文之對數偏離並漏衝擊項；TULUN、FormosanMT 之 Card 3 公式為 Wiki 自擬。
+  - 首頁卡片牆（TD-009，依 card-wall.md 第五節）：為 `2025-paiwan-bunun-morphology-mt-wu`、`2025-atayalic-oov-enumeration-yang` 補封面標題（只刪減 `title_zh`），重建兩篇原型；`build_home.py` 卡片牆 20 張（群星 8、我的關注 12），自我檢查 ERROR 0、WARN 0，`--check` 一致；`verify_wall.js` 全牆 PASS，WARN 10 項皆為研究語言標籤與會議名截斷，依第六節保留；截圖目視新上牆卡片無重疊。改動之三篇原型以 `verify_page.js` 驗證皆 PASS。以已提交之建置腳本重建全部原型，除上述三篇外無差異。
+  - 待辦：更新 TD-008、TD-009 進度；新增 TD-010（論文頁範本手機卡片偏移與返回鍵標示）、TD-011（已有卡片之證據表數值與原文公開資源）。刪除驗證用暫存（預覽伺服器、`_verify_page.js`、`.claude/launch.json`）。
+  - 檢查：`check_cards.py` 兩篇 ERROR 0；建置自我檢查 ERROR 0；`lint_wiki.py` ERROR 0。

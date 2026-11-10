@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#計算語言學", "#自然語言處理"]
 concepts: ["formosan-computational-linguistics"]
 status: "wiki"
-verification: "verified"
+verification: "issues"
 my_focus: true
 focus_role: "international"
 focus_languages: ["臺灣南島諸語"]

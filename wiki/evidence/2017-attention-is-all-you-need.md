@@ -8,8 +8,8 @@
 | Card 1 | 提出純自注意力 Transformer 架構，完全屏棄 RNN 與 CNN，實現 O(1) 交互路徑與高並行度 | 本篇研究結果 | 摘要與引言，pp. 1–2 | 符合來源 |
 | Card 2 | 傳統 RNN 順序依賴阻斷並行計算與長程依賴梯度衰減瓶頸 | 作者解釋 / 背景 | §1, §2，Table 1 | 符合來源 |
 | Card 3 | 縮放點積注意力除以 $\sqrt{d_k}$ 防止 Softmax 飽和、多頭注意力子空間投影、正弦幾何級數位置編碼 | 本篇研究結果 | §3.2, §3.5，pp. 3–6 | 符合來源 |
-| Card 4 | 交互路徑長度 $O(1)$ vs RNN $O(n)$；WMT 2014 EN-DE 28.4 BLEU；EN-FR 在 NeurIPS 定稿正文報告 41.0 BLEU，Table 2 與 arXiv 報告 41.8 BLEU | 本篇研究結果 | §5.1, §5.2，Table 1, Table 2（修正 EK-018） | 符合來源 |
-| Card 4 | 8 張 NVIDIA P100 訓練 12 小時（base）/ 3.5 天（big，算力 $2.3 \times 10^{19}$ FLOPs），WSJ 句法剖析 91.3/92.7 F1 | 本篇研究結果 | §5.2, §5.3，Table 2, Table 4 | 符合來源 |
+| Card 4 | 交互路徑長度 $O(1)$ vs RNN $O(n)$；WMT 2014 EN-DE 28.4 BLEU；EN-FR 在 NeurIPS 定稿正文報告 41.0 BLEU，Table 2 與 arXiv 報告 41.8 BLEU | 本篇研究結果 | §4，Table 1；§6.1 (p. 8)，Table 2（修正 EK-018；節次修正 EK-108） | 符合來源 |
+| Card 4 | 8 張 NVIDIA P100 訓練 12 小時（base）/ 3.5 天（big，算力 $2.3 \times 10^{19}$ FLOPs），WSJ 句法剖析 91.3/92.7 F1 | 本篇研究結果 | §5.2 (p. 7)；§6.1，Table 2；§6.3 (p. 9)，Table 4（節次修正 EK-108） | 符合來源 |
 | Card 4 | 後續 BERT/GPT 分流、擴展定律（Kaplan 2020; Chinchilla 2022）、跨模態（ViT、AlphaFold2、DiT） | 後續研究 | 各引文標註出處 | 符合來源 |
 | Card 5 | 矩陣運算高並行度；原文硬體為 8 張 P100（Pascal 架構），隨後與 Volta 架構首代 Tensor Cores 及現代算力集群產生強大共振 | 後續硬體發展 / 詮釋 | 標記 P100 原文事實與後續 Tensor Cores 演進（修正 EK-019） | 符合來源 |
 | Card 6 | 大幅放寬順序歸納偏置（但保留位置編碼與遮罩等先驗）；與 Hopfield 網路等價閉環 | Wiki 詮釋 / 文獻對照 | 哲學反思，精確修正歸納偏置陳述（修正 EK-020） | 不適用 |

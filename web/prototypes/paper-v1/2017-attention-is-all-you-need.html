@@ -247,7 +247,7 @@ button:disabled{cursor:default;opacity:.3}
 <div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
 </header>
 <section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
-<p class="epigraph">當模型不再被迫一個字一個字地順著時間軸緩慢爬行，而是能在一瞬間用矩陣乘法看清全局脈絡中每一處幽微的張力時，人工智慧的規模化奇點便真正降臨了。</p>
+<p class="epigraph">當模型不再被迫一個字一個字地順著時間軸緩慢爬行，而是能在一瞬間用矩陣乘法看清全局脈絡中每一處幽微的張力時，人工智慧的規模化奇點便真正降臨了。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
 <p>在 2017 年之前，自然語言處理與序列建模完全由循環神經網路（RNN、LSTM、GRU）主導。RNN 必須按時間順序從左到右逐字計算隱藏狀態 <span class="m-in" data-tex="h_t = f(h_{t-1}, x_t)"></span>，既無法在現代 GPU 叢集上大規模並行訓練，又會在長序列中遺忘早期資訊。Google Brain 與 Google Research 的八位作者在《Attention Is All You Need》中做出了一個激進的斷捨離：<strong>完全拋棄循環與卷積結構</strong>，提出純基於自注意力機制（Self-Attention）的 <strong>Transformer</strong> 架構，一舉刷新機器翻譯紀錄並將訓練成本降低一個數量級，成為日後 GPT、BERT、AlphaFold2、Sora 與 DeepSeek 等一切現代基礎模型的共同母體。</p>
 </section>
 <section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：序列計算的時間鎖鏈與長程梯度衰減</h2></div>
