@@ -1979,3 +1979,8 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6（本回合思考程度：高；執行環境未提供可核對的 effort 參數）
 - **具體變更**：依 wiki-content-audit 回核 GPT 1 指定 31 筆（EK-001–004、EK-088、EK-090、EK-005–007、EK-089、EK-008–028）的論文頁、卡片、證據表與第一手來源。確認 fixed：EK-001、EK-003–004、EK-088、EK-090、EK-005–007、EK-089、EK-009–013、EK-015–017、EK-019–021、EK-024–028；重開為 open：EK-002（Hopfield Card 4 仍有原文未支持的隨機突觸失效平緩退化說法）、EK-008（Woodford 卡片封面遺失「不太可能」限定）、EK-014（CRISPR 後續教學模型仍以區塊公式呈現且缺逐式來源定位）、EK-018（Transformer 定稿 Table 2 的 41.0 BLEU 被誤標為 41.8）、EK-022（AlphaFold 2 hook／Card 5 重現三角不等式直接或精確編碼的過度表述）、EK-023（NPC 整合建模成果範圍被擴大為完整逾千亞基複合體）。更新 wiki/issues.md、上述五篇論文頁之 verification 為 issues。2012-crispr-cas9 與 2023-drugclip 尚無 wiki/cards 卡片檔及 web/papers 成品，故本次只核實其 Wiki 論文頁與證據表，未核實最終卡片輸出。lint_wiki.py：ERROR 0、WARN 24。建議後續補強 wiki-content-audit 全頁殘留主張／區塊公式來源回查，以及 paper-card-writer 封面限定語與版本表格定位檢查；未修改 Skill。
+
+## [2026-11-10 19:25] fix | 修正 EK-002 與 EK-023 回核紀錄位置 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6（本回合思考程度：高；執行環境未提供可核對的 effort 參數）
+- **具體變更**：將先前錯放於下一篇分節標題下方的兩行回核紀錄移回各自問題條目 EK-002 與 EK-023，保留原有 6 筆 open 狀態與核實依據。重新執行 lint_wiki.py，ERROR 0、WARN 24。

@@ -19,6 +19,7 @@
 - **來源**：[封存原文](../raw/1982-hopfield-network.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:46] audit、[2026-11-08 23:36] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 p. 2556–2557 逐項確認後重寫 Card 4：改述隨機型態具「偽正交性（pseudoorthogonality）」而非嚴格正交；容量 0.15N 註明為嚴重錯誤前之近似上限，並列出 N=100 時 n=5/10/15 之誤差分佈實況；補列信噪比高斯尾部單一位元錯誤率積分式 (10)；將突觸損毀定量表述降格為原文之非對稱突觸（信噪比降 $1/\sqrt{2}$）、二值截斷（信噪比降 $\sqrt{2/\pi}$）及隨突觸失效平緩退化之 fail-soft 質性分析。證據表見 wiki/evidence/1982-hopfield-network.md。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新回核論文頁 Card 4 與 PNAS p. 2557：非對稱連結及權重截斷的信噪比分析有原文依據，但「隨突觸失效增加而平緩退化」未見隨機失效實驗支持；建議重開為 open。
 
 ## 1992 Aghion–Howitt 創造性破壞
 
@@ -183,6 +184,7 @@
 - **來源**：[封存主論文](../raw/2021-alphafold2.pdf)、[NPC 整合建模研究](https://pubmed.ncbi.nlm.nih.gov/35679401/)
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 5 典範轉移段落：明確將核孔複合體（NPC）等超大複合體結構解析標記為 AlphaFold 預測模型與低解析度冷凍電鏡（cryo-EM/ET）數據結合之「整合建模（Integrative Modeling）」應用，非單純直接預測之結果。證據表見 wiki/evidence/2021-alphafold2.md。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新核對 Card 5 與 Mosalaganti et al. 2022 Science（DOI: 10.1126/science.abm9326）：整合建模的歸因已修正，但該來源解析的是 NPC 細胞質環，不能支持頁面所稱完整逾千亞基 NPC 巨型結構已被攻克；建議重開為 open。
 
 ## 2023 DrugCLIP
 
