@@ -32,6 +32,8 @@ PAPER_REQUIRED = ['title', 'title_zh', 'paper_year', 'award_year', 'timeline_yea
                   'venue', 'domain', 'domain_tags', 'concepts', 'status', 'verification', 'hook',
                   'card_line', 'my_focus']
 CARD_LINE_MAX = 20  # AGENTS.md 第七章第 1 節「卡片一句話」：20 字以內，全形標點計入
+COVER_LINE_MAX = 9  # paper-card-writer cover.md 第三節：封面斷行每行 9 字以內
+COVER_LINES_MAX = 3  # 同上：最多 3 行；全形逗號必須在行尾
 CONCEPT_REQUIRED = ['title', 'title_zh', 'domain', 'domain_tags', 'papers', 'related_concepts',
                     'verification']
 # 日誌標題第三段規則之生效時間（AGENTS.md 第六章：2026-11-08 合併入 main 後生效）。
@@ -49,6 +51,12 @@ CHEM = re.compile(r'(?<![A-Za-z\\{])(Na|K|Ca|Mg|Cl|Fe|Zn|Cu|Li|Rb|Cs|Sr|Ba|Al|Mn
 WIKILINK = re.compile(r'\[\[(?![\d,\s]+\]\])[^\]\n]+\]\]')
 MDLINK = re.compile(r'\]\(([^)\s]+)(?:\s+"[^"]*")?\)')
 TEXT_EXT = {'.md', '.html', '.css', '.js', '.json', '.py', '.sh', '.txt', '.yml', '.yaml'}
+# 控制字元（不含換行與 Tab）：多半是 shell 把 LaTeX 的 \b、\f、\a、\v 轉成控制字元所致。
+# Tab 另只在 wiki/ 之 Markdown 檢查（\text、\times、\theta 被轉成 Tab）。
+CTRL = re.compile('[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]')
+# 證據表「主張」欄只寫「表 N 各數值」「Table 1 之 BLEU 分數」而未列出數字（wiki-content-audit 寫作模式第 2 步）。
+NUMLESS_CLAIM = re.compile(r'各(?:項)?(?:數值|數據|分數|指標|結果)|[之的]\s*[A-Za-z+\-]*\s*分數')
+TABLE_REF = re.compile(r'(?:表|Table|Tab\.|圖|Fig\.?|Figure)\s*[A-Za-z]?\d+(?:\s*[–-]\s*\d+)?', re.I)
 
 results = []
 
@@ -234,6 +242,13 @@ def mask_math(text):
 def check_text_rules(rel, text, is_log):
     for m in EMOJI.finditer(text):
         report('ERROR', rel, line_of(text, m.start()), '含表情符號 U+%04X' % ord(m.group(0)))
+    ctrl = list(CTRL.finditer(text))
+    if rel.startswith('wiki/') and rel.endswith('.md'):
+        ctrl += list(re.finditer('\t', text))
+    for m in sorted(ctrl, key=lambda x: x.start()):
+        report('ERROR', rel, line_of(text, m.start()),
+               '含控制字元 U+%04X：多半是 shell 吃掉 LaTeX 反斜線（如 \\text、\\frac、\\beta）所致，'
+               '以編輯工具重寫此行（wiki-content-audit 寫作模式第 3 步）' % ord(m.group(0)))
     # Markdown 中寫在行內程式碼裡的 file:/// 是在說明規則，不算違規；本腳本自身亦同。
     scan = strip_code(text) if rel.endswith('.md') else text
     if not rel.endswith('scripts/lint_wiki.py'):
@@ -248,6 +263,33 @@ def check_text_rules(rel, text, is_log):
 
 
 # ---------------------------------------------------------------- issues / evidence
+def check_evidence(root):
+    """證據表中「主張」欄只寫「表 N 各數值」之類、沒有寫出任何數字的列，報 WARN。"""
+    d = os.path.join(root, 'wiki', 'evidence')
+    if not os.path.isdir(d):
+        return
+    for f in sorted(os.listdir(d)):
+        if not f.endswith('.md'):
+            continue
+        rel = 'wiki/evidence/' + f
+        claim_col = None
+        for ln, line in enumerate(read(os.path.join(d, f)).split('\n'), 1):
+            s = line.strip()
+            if not s.startswith('|'):
+                claim_col = None
+                continue
+            cells = [c.strip() for c in s.strip('|').split('|')]
+            if claim_col is None:
+                claim_col = next((i for i, c in enumerate(cells) if '主張' in c), None)
+                continue
+            if set(s) <= set('|-: ') or claim_col >= len(cells):
+                continue
+            claim = cells[claim_col]
+            if NUMLESS_CLAIM.search(claim) and not re.search(r'\d', TABLE_REF.sub('', claim)):
+                report('WARN', rel, ln, '證據表此列未寫出數值（「%s」）：須逐一列出數字與表列、欄位名稱'
+                       '（wiki-content-audit 寫作模式第 2 步）' % claim[:24])
+
+
 
 def load_issues(root):
     path = os.path.join(root, 'wiki', 'issues.md')
@@ -408,6 +450,13 @@ def main():
                 report('ERROR', rel, where.get('card_line', 1), 'card_line 不得直接沿用 hook')
             if re.search(r'\d', cl):
                 report('WARN', rel, where.get('card_line', 1), 'card_line 含數字；規則不放數值')
+            segs = [s for s in re.split(r'(?<=，)', cl) if s]
+            need = sum(-(-len(s) // COVER_LINE_MAX) for s in segs)
+            if need > COVER_LINES_MAX:
+                report('WARN', rel, where.get('card_line', 1),
+                       'card_line 依逗號分段後至少需 %d 行封面斷行（逗號須在行尾、每行 %d 字以內、最多 %d 行），'
+                       '寫卡片前須改寫（paper-card-writer cover.md 第二節第 7 條）'
+                       % (need, COVER_LINE_MAX, COVER_LINES_MAX))
         st = fm.get('status')
         if st and st not in STATUSES:
             report('ERROR', rel, where.get('status', 1), 'status 須為 planned / wiki / published')
@@ -489,6 +538,8 @@ def main():
             check_links(root, rel, text, is_log)
         if rel.startswith('wiki/') and rel.endswith('.md') and not is_log:
             check_math(rel, text)
+
+    check_evidence(root)
 
     # 日誌標題格式。
     log_text = read(os.path.join(root, 'wiki', 'log.md'))

@@ -94,6 +94,9 @@ python .agents/skills/git-sync-guardian/scripts/sync.py
 # 主倉庫（跨平台 Python 版，Windows PowerShell 首選）：明確列出自己的檔案；列出 wiki/log.md 時只會提交 --agent 指定代理的條目
 python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "<提交訊息>" main --agent "Claude Code" -- DESIGN.md wiki/log.md
 
+# 同時提交日誌、問題清單與待辦時：順序固定為「訊息、倉庫、選項、--、檔案」；--log-heading、--issue、--todo 皆可重複，每個編號各寫一次旗標
+python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "fix(wiki): correct <slug> against its source" main --agent "Claude Code by Anthropic" --log-heading "## [YYYY-MM-DD HH:MM] fix | <標題> | <標籤>" --issue EK-150 --issue EK-151 --todo TD-012 -- wiki/papers/<slug>.md wiki/evidence/<slug>.md wiki/issues.md wiki/todo.md wiki/log.md
+
 # 私有 raw/ 倉庫：路徑相對於 raw/
 python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "<提交訊息>" raw --agent "Codex" -- my-focus/英文論文/foo.pdf
 

@@ -1684,3 +1684,15 @@
   - 首頁卡片牆（TD-009，依 card-wall.md 第五節）：為 `2025-paiwan-bunun-morphology-mt-wu`、`2025-atayalic-oov-enumeration-yang` 補封面標題（只刪減 `title_zh`），重建兩篇原型；`build_home.py` 卡片牆 20 張（群星 8、我的關注 12），自我檢查 ERROR 0、WARN 0，`--check` 一致；`verify_wall.js` 全牆 PASS，WARN 10 項皆為研究語言標籤與會議名截斷，依第六節保留；截圖目視新上牆卡片無重疊。改動之三篇原型以 `verify_page.js` 驗證皆 PASS。以已提交之建置腳本重建全部原型，除上述三篇外無差異。
   - 待辦：更新 TD-008、TD-009 進度；新增 TD-010（論文頁範本手機卡片偏移與返回鍵標示）、TD-011（已有卡片之證據表數值與原文公開資源）。刪除驗證用暫存（預覽伺服器、`_verify_page.js`、`.claude/launch.json`）。
   - 檢查：`check_cards.py` 兩篇 ERROR 0；建置自我檢查 ERROR 0；`lint_wiki.py` ERROR 0。
+
+## [2026-11-10 09:36] rule | 將第二批卡片回填之教訓寫入 Skill 與 lint 檢查 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者指示於第三批開工前調整相關 Skill。第二批回填時，標 verified 之論文頁查出多處與原文不符（EK-094 至 EK-123），以下規則原只寫在 TD-008 協調規則，改寫進 Skill 供任何代理沿用。
+  - `paper-card-writer`：第二節新增第 17 條「寫卡片前回原文抽查」（Card 3 公式、Card 4 數字、Card 5 里程碑出處），第 1、4 條補充 verified 不代表正確、公式須確認原文出處；第五節新增第 2-1 步（抽查方法，以及發現不符時依 wiki-content-audit 修正並登記、平行批次中停下回報）；第七節新增第 9 條（平行批次之協調規則優先）；第八節交付說明新增第 4 項「原文抽查」表（須寫在來源上實際看到的值），第 10 項改為列出修正與新登記之 EK 與最後之 verification；第十一節偷工自查表新增四列。`card-03-secret.md` 第四節新增第 6 條（論文頁公式不是原文公式時不得取用）；`card-04-evidence.md` 補證據表未列數值時之處理；`card-05-revolution.md` 新論文模式補「先查原文公開資源、限制、未來工作是否已記入論文頁」；`cover.md` 第二節新增第 7 條（`card_line` 須能切成 3 行以內之封面斷行）。
+  - `wiki-content-audit`：數字取自 `doi_url` 指向之版本、預印本與正式版不得混用；證據表數值逐一寫出、區塊公式逐條登記式號；區塊公式只放原文公式，原文只有文字敘述者不得自擬集合式或函數式，教學推導改以行內式或文字並標明；Card 5 後續研究附 DOI、發表兩年內之論文須記載公開資源、限制與未來工作；含 LaTeX 之內容不得以 shell heredoc 寫入；verified 之意義；修正 open 問題後未整頁重核者改 partial，平行批次依協調規則取號。
+  - `lint_wiki.py` 新增三項檢查：控制字元（ERROR；wiki/ 之 Markdown 另查 Tab）、`card_line` 依逗號分段估算之最少封面行數超過 3 行（WARN）、證據表主張欄只寫「表 N 各數值」而無數字（WARN）。全庫執行結果：ERROR 0，新檢查命中 4 筆 WARN，皆為已知問題（Saleva `card_line`；Frontull、Pei、Macayan 證據表各一列），無誤報；另以人工構造之損壞字串測試控制字元檢查會報 ERROR。
+  - `git-sync-guardian`：補一個同時帶 `--log-heading`、`--issue`、`--todo` 之提交範例，說明參數順序。
+  - `AGENTS.md` 第七章第 1、4 節各補一行，與上述 Skill 規則一致。TD-008 第三批協調規則第 3 項註明已寫入 Skill。
+  - 既有論文頁中以區塊公式呈現之 Wiki 推導式，未全面清查；依新規則由撰寫卡片或修訂該頁者於回原文抽查時處理。
+  - 檢查：`lint_wiki.py` ERROR 0；`check_cards.py` 全部 20 個卡片檔 ERROR 0。
