@@ -2115,6 +2115,15 @@
 - **模型版本**：GPT-6
 - **具體變更**：處理 TD-011、修正 EK-202，依官方補充資料改寫座標變換與排序式、逐式登記出處，卡片補齊指標及取樣條件並修訂示意圖。卡片、論文頁與首頁檢查 ERROR 0、WARN 0；瀏覽器目視待 TD-021。
 
+## [2026-11-10 21:37] config | 驗證 paper-pdf-parser 之 MinerU 環境並登記 Windows 端待驗 | 全域
+- **執行代理**：OpenCode by SST（模型供應商 MiniMax）
+- **模型版本**：MiniMax M3.1 Flash Free（minimax-m3.1-flash-free）
+- **具體變更**：首次參與本專案，於 macOS 實測 `paper-pdf-parser` 之 MinerU 環境：`setup_env.py` 回報 MinerU 套件 4.1.7、`basic` 檔位模型齊全、PyMuPDF 2.1 與 pymupdf4llm 2.1 可用、MinerU 引擎可用；另以檔案系統確認 `~/.mineru/models/MinerU-4_models_torch` 實佔 854 MB、下載時間 2026-11-09 15:04，與 [2026-11-09 15:13] 之紀錄相符。
+- **查核發現**：使用者問及 `paper-pdf-parser` SKILL.md 是否載有「下載模型須先徵得使用者同意」，經查確有兩處：第三章硬性規則第 5 條（「未經使用者同意不得執行 `mineru-kit models download`」）與第四章環境段（`mineru-kit models download --tier basic` 須經使用者同意）。此條自 2026-11-09 14:44 提交 `7050f0e` 引入，當時模型尚未下載；同日 15:13 經使用者同意下載 `basic` 檔位。該規則為防呆而非每次觸發：macOS 模型已齊全故實際不生效，但 Windows 端因 2026-11-09 15:20 的 WSL2 magic-pdf 1.x 路線已於 15:29 撤回（commit `65ea567`），其權重與現行 MinerU 4.x 所需之 `MinerU-4_models_torch` 目錄結構不相容，故 Windows 端仍可能需要重新下載，該規則仍有實質效力。
+- **具體變更**：於 `wiki/todo.md` 登記 TD-022（範圍 `skill`，狀態 `open`），載明 Windows 端驗證的五項工作（`setup_env.py` 檢查、模型不齊全時先取得使用者同意再下載、`parse_pdf.py` 實測並回原頁抽查、依 SKILL.md 第四章五項條件逐項確認、回填 SKILL.md 第四章與第六章實測紀錄），並註明不得重啟 WSL2 magic-pdf 1.x 路線。
+- **驗證**：`python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 為 ERROR 0（既有 WARN 21 項皆與本次變更無關）；`stage_todo.py TD-022 --dry-run` 正確辨識為新條目。
+- **待使用者處理**：於 Windows 機器執行 TD-022 之驗證步驟；若該端 `basic` 檔位模型不齊全，須先取得使用者同意方能下載。
+
 ## [2026-11-10 21:40] audit | 創造性破壞公式核對狀態 | #宏觀經濟學 #制度經濟學
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
