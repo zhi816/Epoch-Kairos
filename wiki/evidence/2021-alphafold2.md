@@ -8,10 +8,11 @@
 | Card 1 | CASP14 主鏈誤差中位數 0.96 Å；結構預測取得進展 | 本篇研究結果 | 摘要與引言，pp. 583–584 | 評測結果不代表已解決所有蛋白質或其摺疊過程。 |
 | Card 2 | Levinthal 構型爆炸與傳統共演化接觸圖缺乏 3D 幾何一致性之局限 | 作者解釋 / 背景 | pp. 583–584 | 符合來源 |
 | Card 3 | Evoformer 雙軌注意力；三角形乘法與注意力受三角不等式啟發，非幾何硬性約束 | 本篇研究結果 | 主文 p. 586、Figure 3c | 對照主文對三角形更新之動機與適用範圍（EK-022）。 |
-| Card 3 公式 | 向外邊三角形乘法更新的 LayerNorm、投影、閘控與輸出 | 本篇研究結果 | [補充資料](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-021-03819-2/MediaObjects/41586_2021_3819_MOESM1_ESM.pdf) Algorithm 11, p. 18 | 已補回輸出投影與閘控；原文的多個 Linear 為不同投影（EK-194）。 |
-| Card 3 公式 | 起始節點三角形注意力權重與閘控輸出 | 本篇研究結果 | 同上 Algorithm 13 第 5–6 行, p. 19 | 權重保留原文注意力頭索引 $h$ 和偏置 $b_{jk}^{h}$；卡片選用較短的閘控輸出公式（EK-194）。 |
-| Card 3 公式 | IPA 各注意力頭權重及 $w_C$、$w_L$ | 本篇研究結果 | 同上 Algorithm 22 第 5–7 行, p. 28 | 已補回外層 $w_L$、各頭索引與原文之點距離項；IPA 不變、座標更新等變（EK-022、EK-194）。 |
-| Card 3 公式 | FAPE 局部座標差、截斷平均與 $1/Z$ 長度正規化 | 本篇研究結果 | 同上 Algorithm 28, p. 34；§1.9.3 | 已補回 $1/Z$；原文設定 $Z=10\,\text{\AA}$、$d_{\text{clamp}}=10\,\text{\AA}$，FAPE 對反射不具不變性（EK-194）。 |
+| Card 3 區塊公式 1 | 向外邊三角形乘法更新的 LayerNorm、投影、閘控與輸出 | 本篇研究結果 | [補充資料](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-021-03819-2/MediaObjects/41586_2021_3819_MOESM1_ESM.pdf) Algorithm 11 第 1–4 行, p. 18 | 與 PDF 頁面逐項核對；原文的多個 Linear 為不同投影（EK-194）。 |
+| Card 3 區塊公式 2 | 起始節點三角形注意力權重 | 本篇研究結果 | 補充資料 Algorithm 13 第 5 行, p. 19 | 與 PDF 頁面逐項核對；保留注意力頭索引與偏置（EK-194）。 |
+| Card 3 區塊公式 3 | 起始節點三角形注意力的閘控輸出 | 本篇研究結果 | 補充資料 Algorithm 13 第 6 行, p. 19 | 與 PDF 頁面逐項核對；此式亦為卡片公式（EK-194）。 |
+| Card 3 區塊公式 4 | IPA 各注意力頭權重及 $w_C$、$w_L$ | 本篇研究結果 | 補充資料 Algorithm 22 第 5–7 行, p. 28 | 與 PDF 頁面逐項核對；IPA 不變、座標更新等變（EK-022、EK-194）。 |
+| Card 3 區塊公式 5 | FAPE 局部座標差、截斷平均與 $1/Z$ 長度正規化 | 本篇研究結果 | 補充資料 Algorithm 28 第 1–4 行, p. 34；§1.9.3 | 與 PDF 頁面逐項核對；原文設定 $Z=10\,\text{\AA}$、$d_{\text{clamp}}=10\,\text{\AA}$，FAPE 對反射不具不變性（EK-194）。 |
 | Card 4 | CASP14 r.m.s.d.95 0.96 Å（亞軍 2.8 Å）；全原子 1.5 Å（亞軍 3.5 Å） | 本篇研究結果 | Figure 1, Figure 2，p. 584 | 符合來源 |
 | Card 4 | pLDDT 與真實 lDDT-Cα 相關係數在近期 PDB 測試集為 r = 0.76（主論文 Figure 2c；伴篇 Tunyasuvunakool et al. 2021 報告為 r = 0.73） | 本篇研究結果 / 伴篇對照 | Figure 2c，p. 585（修正 EK-021） | 符合來源 |
 | Card 4 | 消融實驗證實 IPA、三角形更新與 MSA 耦合缺一不可 | 本篇研究結果 | Extended Data Figure 5，p. 588 | 符合來源 |

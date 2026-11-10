@@ -8,10 +8,10 @@
 | Card 1 | 約 80 萬筆監督資料（approximately 800,000 supervised samples），蒸餾以同一批 800k 資料微調 2–3 個 epoch | 本篇研究結果 | Supplementary B.3.3, pp. 26–27；B.4.3, p. 35（「using the 800k data」） | 符合來源 |
 | Card 2 | 價值模型通常與策略模型規模相近，帶來顯著記憶體與運算負擔；只有最終結果獎勵時價值模型難以由部分回答預測最終獎勵 | 作者解釋 | Supplementary A.3, pp. 14–15 | 符合來源 |
 | Card 2 | 神經獎勵模型在大規模強化學習中易遭獎勵駭客利用，重新訓練需大量算力 | 作者解釋 | §2.2, p. 4 | 符合來源 |
-| Card 3 | 區塊公式：GRPO 目標函數 $\mathcal{J}_{GRPO}(\theta)$ | 本篇研究結果 | §2.1, p. 3，式 (1)；Supplementary A.3, p. 15，式 (11) | 符合來源 |
-| Card 3 | 區塊公式：KL 無偏估計量 $\mathbb{D}_{KL}(\pi_\theta \Vert \pi_{ref}) = \pi_{ref}/\pi_\theta - \log(\pi_{ref}/\pi_\theta) - 1$（原頁面加註之「≥ 0」原文沒有，已刪，EK-152）；採 Schulman (2020) 之無偏估計並直接加入損失 | 本篇研究結果 | §2.1, p. 3，式 (2)；Supplementary A.3, p. 15，式 (12) 與正文 | 符合來源 |
-| Card 3 | 區塊公式：優勢 $A_i = (r_i - \mathrm{mean}(\{r_1, \cdots, r_G\})) / \mathrm{std}(\{r_1, \cdots, r_G\})$ | 本篇研究結果 | §2.1, p. 3，式 (3) | 符合來源 |
-| Card 3 | 區塊公式：規則獎勵 $Reward_{\text{rule}} = Reward_{\text{acc}} + Reward_{\text{format}}$，兩項等權；不對推理任務使用神經獎勵模型 | 本篇研究結果 | §2.2, p. 4，式 (4) | 符合來源 |
+| Card 3 區塊公式 1 | GRPO 目標函數 $\mathcal{J}_{GRPO}(\theta)$ | 本篇研究結果 | §2.1, p. 3，式 (1)；Supplementary A.3, p. 15，式 (11) | 符合來源（核對 PDF 頁面） |
+| Card 3 區塊公式 4 | KL 無偏估計量 $\mathbb{D}_{KL}(\pi_\theta \Vert \pi_{ref}) = \pi_{ref}/\pi_\theta - \log(\pi_{ref}/\pi_\theta) - 1$（原頁面加註之「≥ 0」原文沒有，已刪，EK-152）；採 Schulman (2020) 之無偏估計並直接加入損失 | 本篇研究結果 | §2.1, p. 3，式 (2)；Supplementary A.3, p. 15，式 (12) 與正文 | 符合來源（核對 PDF 頁面） |
+| Card 3 區塊公式 3 | 優勢 $A_i = (r_i - \mathrm{mean}(\{r_1, \cdots, r_G\})) / \mathrm{std}(\{r_1, \cdots, r_G\})$ | 本篇研究結果 | §2.1, p. 3，式 (3) | 符合來源（核對 PDF 頁面） |
+| Card 3 區塊公式 2 | 規則獎勵 $Reward_{\text{rule}} = Reward_{\text{acc}} + Reward_{\text{format}}$，兩項等權；不對推理任務使用神經獎勵模型 | 本篇研究結果 | §2.2, p. 4，式 (4) | 符合來源（核對 PDF 頁面） |
 | Card 3 | 訓練設定：學習率 3e-6、KL 係數 0.001、每題取樣 16 個輸出、每 400 步更新參考模型 | 本篇研究結果 | §2.1, p. 3 | 符合來源 |
 | Card 3 | 格式獎勵要求思考過程置於 think 標籤；範本另要求答案置於 answer 標籤 | 本篇研究結果 | §2.2, p. 4；Table 1, p. 3 | 符合來源 |
 | Card 3 | Qwen2.5-32B 上，蒸餾 R1 優於同一基座直接做大規模強化學習 | 本篇研究結果 | Supplementary F.1, Table 16, p. 61；p. 62 正文 | 符合來源 |

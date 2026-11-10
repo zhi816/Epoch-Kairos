@@ -10,7 +10,8 @@
 | Card 3 | 三個區：儲存區、糾纏區、讀取區之功能；雙位元閘保真度 99.5%（ref. 8）；以 2D AOD 搬運原子達成任意連接 | 本篇研究結果 | Logical processor based on atom arrays 節；Fig. 1a；Extended Data Fig. 1 | 符合來源 |
 | Card 3 | 橫向閘：AOD 網格拾起兩個邏輯區塊交錯排列，打一道全域里德堡雷射；閘時同一閘位原子相距 $\lesssim 2\,\mu$m、不同閘位至少 $10\,\mu$m（原頁面寫 $\lesssim 3\,\mu$m，EK-121）；錯誤不會在同一邏輯區塊內擴散 | 本篇研究結果 | Fig. 2a；Extended Data Fig. 1 圖說；Methods, Fault tolerance and transversal gates | 符合來源 |
 | Card 3 | 相關解碼：以邊與超邊連接兩區塊穩定子之聯合解碼超圖；傳統各自解碼時保真度隨碼距下降 | 本篇研究結果 | Improving entangling gates with code distance 節；Fig. 2b | 符合來源 |
-| Card 3 | 區塊公式（頁面把原文同一展示式分為目標與限制兩式，符號與條件不變）：相關解碼之混合整數規劃（maximize $\sum_j \log(p_j) E_j + \log(1-p_j)(1-E_j)$；subject to $\sum_{E_j \in f(D_i)} E_j - 2K_i = D_i$、$E_j \in \{0,1\}$、$K_i \in \mathbb{Z}_{\ge 0}$）；以 Stim 估計 $p_j$、以 Gurobi 求解 | 本篇研究結果 | Methods, Correlated decoding，未編號式（arXiv v1 PDF p. 15） | 符合來源 |
+| Card 3 區塊公式 1 | 相關解碼之混合整數規劃目標：maximize $\sum_j \log(p_j) E_j + \log(1-p_j)(1-E_j)$；以 Stim 估計 $p_j$，以 Gurobi 求解。頁面把原文同一展示式分為目標與限制兩式，符號與條件不變 | 本篇研究結果 | 正式發表版 PDF 第 11 頁，Methods, Correlated decoding，未編號式 | 符合來源 |
+| Card 3 區塊公式 2 | 同一規劃的偵測器限制：$\sum_{E_j \in f(D_i)} E_j - 2K_i = D_i$；另有 $E_j \in \{0,1\}$、$K_i \in \mathbb{Z}_{\ge 0}$ 等條件，見該公式前之正文 | 本篇研究結果 | 正式發表版 PDF 第 11 頁，Methods, Correlated decoding，未編號式 | 符合來源 |
 | Card 3 | 邏輯錯誤率 $\propto (p/p_{\text{th}})^{(d+1)/2}$ 為行文中之式子，引 ref. 24；原頁面之區塊式與 $\Lambda$ 定義、里德堡哈密頓量、穩定子碼空間、橫向 CNOT 張量積四條區塊公式原文皆沒有，已刪（修正 EK-121） | 作者解釋 | Methods, Code distance, decoding and thresholds | 符合來源 |
 | Card 3 | $[[8,3,2]]$ 碼以 8 個物理位元編碼 3 個邏輯位元；邏輯三元組在 4D 超立方體上糾纏，物理連接相當於 7D 超立方體 | 本篇研究結果 | Fig. 5；Extended Data Fig. 6 | 符合來源 |
 | Card 4 | Fig. 2d 橫軸：每個邏輯貝爾對之物理位元數，$d = 3$ 為 26、$d = 5$ 為 74、$d = 7$ 為 146（修正 EK-120：原寫「約 200 個」） | 本篇研究結果 | Fig. 2d（arXiv v1 PDF p. 3） | 符合來源 |

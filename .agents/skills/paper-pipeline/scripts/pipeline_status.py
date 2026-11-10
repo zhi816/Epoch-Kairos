@@ -8,7 +8,7 @@
 
 步驟代號與 SKILL.md 第四節相同：
     S1 收件      論文頁「原始檔典藏」所指之 raw/ 檔案存在
-    S3 證據表    wiki/evidence/<slug>.md 存在；數值逐一寫出；區塊公式皆已登記
+    S3 證據表    wiki/evidence/<slug>.md 存在；數值逐一寫出；區塊公式按序號逐條登記
     S4 論文頁    論文頁存在、結構完整（開頭引言、Card 1 至 6、知識網絡）、lint_wiki.py 對本頁無 ERROR（概念頁相關之 ERROR 歸 S5）、card_line 切得成封面斷行
     S5 概念索引  concepts 非空且概念頁雙向列出本篇；wiki/index.md 有本篇連結；lint_wiki.py 對本頁無概念頁相關之 ERROR
     S6 核實      verification 為 partial 或 verified；wiki/issues.md 無本頁 open 問題
@@ -144,20 +144,54 @@ def numless_rows(ev_text):
 
 
 def formula_rows(ev_text):
-    """證據表中登記公式之列數：「位置」欄含「公式」，或「主張」欄有含等號或 LaTeX 指令之 $...$。"""
-    n = 0
-    for line in ev_text.split('\n'):
-        cells = line.strip().split('|')
-        if not line.strip().startswith('|') or len(cells) < 4:
+    """讀取位置欄的「區塊公式 N」編號；回傳有效編號與格式問題。
+
+    N 是論文頁所有區塊公式由上而下的 1-based 序號。一式一列。
+    缺少主張或來源的列、同一列有多個編號的列，不能計為已登記。
+    """
+    rows, problems = {}, []
+    columns = None
+    for line in ev_text.splitlines():
+        line = line.strip()
+        if not line.startswith('|'):
+            columns = None
             continue
-        if '公式' in cells[1] or any(('=' in m or '\\' in m) for m in re.findall(r'\$([^$]+)\$', cells[2])):
-            n += 1
-    return n
+        # \| 是表格儲存格內的直線，而非欄分隔符。
+        cells = [c.strip() for c in re.split(r'(?<!\\)\|', line.strip('|'))]
+        # 兼容現行五欄表及早期四欄表；欄名不同不代表已登記的公式失效。
+        position = next((i for i, c in enumerate(cells) if c in ('位置', '頁面章節')), None)
+        claim = next((i for i, c in enumerate(cells) if '主張' in c), None)
+        source = next((i for i, c in enumerate(cells) if '來源' in c), None)
+        if position is not None and claim is not None and source is not None:
+            columns = (position, claim, source)
+            continue
+        if columns is None:
+            continue
+        pos, claim, source = columns
+        if pos >= len(cells):
+            continue
+        ids = re.findall(r'區塊公式\s*([1-9]\d*)(?!\d)', cells[pos])
+        if not ids:
+            continue
+        if len(ids) != 1:
+            problems.append('同一證據列含多個區塊公式編號')
+            continue
+        number = int(ids[0])
+        if (claim >= len(cells) or not cells[claim] or cells[claim] in ('-', '—')
+                or source is None or source >= len(cells) or not cells[source]
+                or cells[source] in ('-', '—')):
+            problems.append('區塊公式 %d 缺主張或第一手來源欄' % number)
+            continue
+        rows[number] = rows.get(number, 0) + 1
+    for number, count in sorted(rows.items()):
+        if count > 1:
+            problems.append('區塊公式 %d 重複登記 %d 列' % (number, count))
+    return {n for n, count in rows.items() if count == 1}, problems
 
 
 def block_formulas(page_text):
     body = re.sub(r'```.*?```', '', page_text, flags=re.S)
-    return len(re.findall(r'\$\$(.+?)\$\$', body, flags=re.S))
+    return len(re.findall(r'(?<![\\$])\$\$(?!\$)(.+?)(?<![\\$])\$\$(?!\$)', body, flags=re.S))
 
 
 def open_issues():
@@ -206,8 +240,17 @@ def collect():
     return ctx
 
 
+def completion_status(results):
+    """九步皆 OK 才算完成；未完成依 NG、無法判斷、WARN 順序提示。"""
+    for kind in ('NG', '--', 'WARN'):
+        for step in STEPS:
+            if results[step][0] == kind:
+                return kind, step
+    return 'OK', None
+
+
 def check_evidence(slug, page=None):
-    """S3：證據表存在、數值逐一寫出；論文頁已建立時另比對區塊公式條數與公式列數。"""
+    """S3：證據表存在、數值逐一寫出；論文頁已建立時比對各區塊公式之登記編號。"""
     ev_rel = 'wiki/evidence/%s.md' % slug
     ev_path = os.path.join(ROOT, ev_rel)
     if not os.path.exists(ev_path):
@@ -217,14 +260,20 @@ def check_evidence(slug, page=None):
     nl = numless_rows(ev)
     if nl:
         why.append('證據表有未寫出數值之列：' + '、'.join(nl))
-    nf = formula_rows(ev)
+    formula_ids, problems = formula_rows(ev)
+    why.extend(problems)
     if page is None:
-        note = '證據表存在；公式列 %d 列（論文頁尚未建立，區塊公式是否皆已登記於 S4 後檢查）' % nf
+        note = '證據表存在；公式編號 %d 個（論文頁尚未建立，於 S4 後檢查對應）' % len(formula_ids)
         return ('WARN', why) if why else ('OK', [note])
     nb = block_formulas(page)
-    if nb > nf:
-        why.append('論文頁有 %d 條區塊公式，證據表登記公式之列只有 %d 列（每條區塊公式須登記原文式號或頁碼）' % (nb, nf))
-    return ('WARN', why) if why else ('OK', ['證據表存在；區塊公式 %d 條、公式列 %d 列' % (nb, nf)])
+    expected = set(range(1, nb + 1))
+    missing = sorted(expected - formula_ids)
+    extra = sorted(formula_ids - expected)
+    if missing:
+        why.append('論文頁有 %d 條區塊公式，證據表缺編號：%s' % (nb, '、'.join(map(str, missing))))
+    if extra:
+        why.append('證據表有超出論文頁範圍的公式編號：' + '、'.join(map(str, extra)))
+    return ('WARN', why) if why else ('OK', ['證據表存在；區塊公式 %d 條，已逐條登記（仍須人工核對原文）' % nb])
 
 
 def check(slug, ctx):
@@ -457,23 +506,26 @@ def main():
             for step in STEPS:
                 state, why = r[step]
                 say('  %-4s %-4s %s' % (step, state, '；'.join(why)))
-            todo = [s for s in STEPS if r[s][0] == 'NG']
-            if todo:
+            state, step = completion_status(r)
+            if state == 'NG':
                 bad = 1
-                say('  下一步：' + NEXT[todo[0]].replace('<slug>', slug))
+                say('  下一步：' + NEXT[step].replace('<slug>', slug))
+            elif state != 'OK':
+                pending = [s for s in STEPS if r[s][0] in ('WARN', '--')]
+                say('  結果：尚待確認 %s；WARN 須逐條交代，無法判斷者須補查' % '、'.join(pending))
             else:
-                warn = [s for s in STEPS if r[s][0] == 'WARN']
-                say('  結果：全部完成' + ('（%s 有 WARN，須在交付說明逐條交代）' % '、'.join(warn) if warn else ''))
+                say('  結果：全部完成')
         return bad
     say('%-52s %s  下一步' % ('slug', ' '.join('%-4s' % s for s in STEPS)))
     done = 0
     for slug in ctx['papers']:
         r = check(slug, ctx)
         marks = ' '.join('%-4s' % {'OK': 'ok', 'NG': 'NG', 'WARN': '!', '--': '--'}[r[s][0]] for s in STEPS)
-        todo = [s for s in STEPS if r[s][0] == 'NG']
-        if not todo:
+        state, step = completion_status(r)
+        if state == 'OK':
             done += 1
-        say('%-52s %s  %s' % (slug, marks, todo[0] if todo else '完成'))
+        next_step = '完成' if state == 'OK' else (step if state == 'NG' else '待確認 ' + step)
+        say('%-52s %s  %s' % (slug, marks, next_step))
     say('---')
     say('論文 %d 篇；全部步驟完成 %d 篇。ok 完成、NG 未完成、! 有 WARN 須交代、-- 無法判斷。' % (len(ctx['papers']), done))
     if not ctx['home_ok']:

@@ -282,7 +282,7 @@ button:disabled{cursor:default;opacity:.3}
 <ul><li><strong>外部詞典</strong>：以 1,556 條的賽德克語辭典（Temi Nawi 編）測試，增益較小（賽德克語→華語 +0.51 BLEU），作者歸因於詞典較小、且不到一半的詞出現在平行句中（表 10, §5.2）。</li><li><strong>西班牙語－納瓦特語</strong>：方法同樣有效；西班牙語→納瓦特語 chrF 27.52，略高於 AmericasNLP 2023 最佳的 27.25，但 BLEU 較低（表 11, §5.3）。</li><li><strong>多語言預訓練沒有明確幫助</strong>：以 16 種語言一起預訓練再微調，BLEU 平均只高 0.15、chrF 反而低 0.17；作者推測臺灣南島語彼此差異太大、資料也太少（表 12, §5.4）。</li></ul>
 </section>
 <section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
-<ul><li><strong>作者結論</strong>（§6）：詞典是改善低資源翻譯的重要資源，在平行語料有限時可明確教模型詞彙對應。</li><li><strong>作者自述的限制</strong>：詞典與平行句的重疊程度難以定義（尤其華語的「詞」界線模糊）；可用的外部詞典很少（§5.2）。本文自建的詞典條目幾乎都出現在平行句中，這可能使詞典的效果偏高；外部詞典的增益明顯較小。</li><li>（Wiki 詮釋）表 9 的阿美語數列有重複數值（如「＋Lex.」族語→華語與基線華語→族語皆為 11.12／32.10），可能有誤植，引用時宜謹慎。</li></ul>
+<ul><li><strong>作者結論</strong>（§6）：詞典是改善低資源翻譯的重要資源，在平行語料有限時可明確教模型詞彙對應。</li><li><strong>本篇資源</strong>：作者在 §3 公開<a href="https://github.com/francisdzheng/formosan-mandarin">臺灣南島語－華語資料集</a>（p. 11250）。</li><li><strong>作者自述的限制</strong>：詞典與平行句的重疊程度難以定義（尤其華語的「詞」界線模糊）；可用的外部詞典很少（§5.2）。本文自建的詞典條目幾乎都出現在平行句中，這可能使詞典的效果偏高；外部詞典的增益明顯較小。</li><li><strong>作者所述的限制與未來工作</strong>：研究未請 16 種語言的母語者檢查輸出，也無法確定結果對其他語言對的泛化程度；作者希望擴展至其他低資源語言對，並讓人評估模型輸出（§6，p. 11256；Limitations，p. 11257）。</li><li>（Wiki 詮釋）表 9 的阿美語數列有重複數值（如「＋Lex.」族語→華語與基線華語→族語皆為 11.12／32.10），可能有誤植，引用時宜謹慎。</li></ul>
 </section>
 <section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
 <blockquote>以下為使用者個人研究之延伸思考（Wiki 詮釋），非原文主張。</blockquote>

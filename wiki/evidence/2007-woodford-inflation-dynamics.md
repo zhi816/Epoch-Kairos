@@ -9,11 +9,11 @@
 | Card 2 | 盧卡斯批判挑戰與全球化下「貨幣控制失效論」（全球流動性、全球實質利率平價、全球產出缺口） | 作者解釋 / 文獻背景 | pp. 3–5, 33–34, 45–46 | 符合來源 |
 | Card 3 | 第 1 節政策以泰勒利率規則表示（未建模央行如何具體操作利率）；第 2 節進一步論證準備金付息可維持利率控制 | 本篇研究結果 | §1 pp. 12–14; §2 pp. 34–38（修正 EK-009） | 符合來源 |
 | Card 3 | $\phi_\pi, \phi^*_\pi > 1$ 時 $\lim_{n\to\infty} A^n = 0$，系統 (1.25) 可向前求解，對任何有界之產出與政策截距路徑得到唯一有界之通膨解 (1.26)；推廣封閉經濟中 $\phi_\pi > 1$ 之結論 | 本篇研究結果 | PDF pp. 13–14，式 (1.25)、(1.26) 與註 8 | 符合來源 |
-| Card 3 | 區塊公式：本國 CPI 通膨之動態 AD 關係 $\pi_t = \sum_{j} [\psi_{1,j} E_t \hat{Y}_{t+j} + \psi_{2,j} E_t \hat{Y}^*_{t+j} + \psi_{3,j} E_t \bar{\imath}_{t+j} + \psi_{4,j} E_t \bar{\imath}^*_{t+j}]$ | 本篇研究結果 | PDF p. 14，式 (1.27) | 符合來源 |
-| Card 3 | 區塊公式：開放經濟新凱因斯菲利浦曲線 $\pi_{Ht} = \kappa_H \hat{Y}_t + \kappa_F \hat{Y}^*_t + \beta E_t \pi_{Ht+1} - \xi \omega q_t$；$\hat{Y}_t$ 為產出相對穩態之對數偏離，$q_t$ 為技術與偏好衝擊合成項（修正 EK-112） | 本篇研究結果 | PDF p. 58，式 (3.19) | 符合來源 |
-| Card 3 | 區塊公式：$\kappa_H = \xi[\omega + \sigma^{-1} + \gamma(1 - \sigma^{-1})]$、$\kappa_F = -\xi\gamma(1 - \sigma^{-1})$ | 本篇研究結果 | PDF p. 58，式 (3.19) 下方未編號式 | 符合來源 |
+| Card 3 區塊公式 1 | 本國 CPI 通膨之動態 AD 關係 $\pi_t = \sum_{j} [\psi_{1,j} E_t \hat{Y}_{t+j} + \psi_{2,j} E_t \hat{Y}^*_{t+j} + \psi_{3,j} E_t \bar{\imath}_{t+j} + \psi_{4,j} E_t \bar{\imath}^*_{t+j}]$ | 本篇研究結果 | PDF p. 14，式 (1.27) | 符合來源 |
+| Card 3 區塊公式 2 | 開放經濟新凱因斯菲利浦曲線 $\pi_{Ht} = \kappa_H \hat{Y}_t + \kappa_F \hat{Y}^*_t + \beta E_t \pi_{Ht+1} - \xi \omega q_t$；$\hat{Y}_t$ 為產出相對穩態之對數偏離，$q_t$ 為技術與偏好衝擊合成項（修正 EK-112） | 本篇研究結果 | PDF p. 58，式 (3.19) | 符合來源 |
+| Card 3 區塊公式 3 | $\kappa_H = \xi[\omega + \sigma^{-1} + \gamma(1 - \sigma^{-1})]$、$\kappa_F = -\xi\gamma(1 - \sigma^{-1})$ | 本篇研究結果 | PDF p. 58，式 (3.19) 下方未編號式 | 符合來源 |
 | Card 3 | $\sigma > 1$ 為較符合實證之情形；此時外國產出增加降低本國生產之邊際成本，方向與 global slack 論點相反；開放度提高使總供給斜率變陡而非變平 | 作者解釋 | PDF p. 57（印刷頁 55）第 1 段 | 符合來源 |
-| Card 3 | 區塊公式：利率規則 $\hat{\imath}_t = \bar{\imath}_t + \phi_\pi \pi_t + \phi_y \hat{Y}_t$（修正 EK-112） | 本篇研究結果 | PDF p. 13，式 (1.23) | 符合來源 |
+| Card 3 區塊公式 4 | 利率規則 $\hat{\imath}_t = \bar{\imath}_t + \phi_\pi \pi_t + \phi_y \hat{Y}_t$（修正 EK-112） | 本篇研究結果 | PDF p. 13，式 (1.23) | 符合來源 |
 | Card 4 | 數值示例參數：年化 $\phi_\pi = 2$、$\phi_y = 1$（季度表示為 $\phi_\pi = 2$、$\phi_y = 0.25$）；$\sigma = 6.37$ 為 Rotemberg & Woodford (1997) 對美國之估計；一季為一期；$\gamma = 0$、$0.5$、$1$ 三種開放度；第 3 節另取 $\kappa = 0.0236$。原文未寫 $\beta$ 之值（修正 EK-150） | 本篇研究結果 | PDF p. 14 正文與註 9、10；PDF p. 61 註 54 | 符合來源 |
 | Card 4 | Figure 6：商品與金融市場完全整合時，各國貨幣政策對本國 CPI 通膨仍有可觀影響；相對短暫之政策變動對通膨的即時效果，在高度開放經濟中甚至大於封閉經濟（「at least in the calibrated example」）（修正 EK-150） | 本篇研究結果 | PDF p. 60 Figure 6；PDF p. 61 第 1 段 | 符合來源 |
 | Card 4 | $\sigma = 1$ 時兩國 AD 區塊無貨幣政策外溢；作者認為 $\sigma = 1$ 並非符合實證之校準 | 本篇研究結果 | PDF p. 24（印刷頁 22） | 符合來源 |

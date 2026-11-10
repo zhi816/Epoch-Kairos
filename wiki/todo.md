@@ -54,15 +54,11 @@
 - **等待**：回報者補充重現情境，或使用者決定關閉。
 - **來源**：第二批卡片回填 B 組最後回報、首頁卡片牆實作者回報（使用者轉貼，2026-11-10）；2026-11-10 登記，2026-11-10 更新，Claude Code by Anthropic。
 
-### TD-011 | open | wiki | 補齊已有卡片之證據表數值與原文公開資源
-- **內容**：第二批組員回報下列缺口。它們不影響已交付之卡片，但限制卡片可用之數字（`check_cards.py` 只能逐字比對證據表），也讓 Card 5 新論文模式少了「本篇資源」列。（1）證據表只寫「表 N 各數值」而未逐一列出：`2025-manchu-in-context-mt-pei` 第 18 列（表 1 至 4）、`2024-taiwanese-mt-resegmentation-tang`（表 15 字級 BLEU）、`2025-formosanbench-llm-benchmark-lin`（多列未記數值）。（2）論文頁未記載原文公開之程式、資料或作者所述之未來工作：`2025-manchu-in-context-mt-pei`（原文註 1 公開程式與資料）、`2024-formosan-mt-bilingual-lexicon-zheng`（§3 公開資料集、未來工作與 Limitations）、`2025-indigenous-tek-ai-revitalization-wang`（§6 未來工作、§4 原型測試案例）。（3）`2025-formosanbench-llm-benchmark-lin` 論文頁未寫明人工檢視之對象為微調後之 NLLB 輸出。（4）2026-11-10 起 `wiki-content-audit` 要求論文頁每條區塊公式在證據表登記原文式號或頁碼，`paper-pipeline` 之 `pipeline_status.py` 對下列 10 篇之 S3 報 WARN（區塊公式條數多於證據表登記公式之列數）：`2001-colonial-origins-acemoglu`（5 條／3 列）、`2012-crispr-cas9`（2／0）、`2013-icecube-neutrino`（5／0）、`2017-attention-is-all-you-need`（4／2）、`2019-generalized-data-augmentation-xia`（1／0）、`2021-alphafold2`（5／0）、`2021-seediq-chinese-mt-you`（3／1）、`2023-drugclip`（3／2）、`2024-sora-world-simulator`（3／1）、`2025-nerve-mito-cancer`（3／1）；每條回原文找式號與頁碼登記，找不到者依 `wiki-content-audit` 寫作模式第 3 步刪除或改寫並登記 `wiki/issues.md`。`2012-crispr-cas9`、`2025-nerve-mito-cancer`、`2023-drugclip` 之處理對象與 TD-008 待使用者決定之篇目相同，一併等待。依 `wiki-content-audit` 回原文補記；補記後若要改卡片，同步改卡片檔並重建原型與首頁。第三批分配到之篇目若有同類缺口，由該篇撰寫者處理，不列於此。
-- **完成條件**：上列各項補記完畢，`lint_wiki.py` ERROR 0；`python .agents/skills/paper-pipeline/scripts/pipeline_status.py` 上列各篇之 S3 為 ok；有改卡片者 `check_cards.py` ERROR 0，原型與首頁已重建並驗證。
-- **來源**：第二批卡片回填 B、C 組最後回報（使用者轉貼，2026-11-10）；2026-11-10 登記，Claude Code by Anthropic。
-
-### TD-017 | open | skill | 收緊 pipeline_status.py 對證據表「公式列」之計數
-- **內容**：`pipeline_status.py` 之 `formula_rows()` 把「位置」欄含「公式」之列，以及「主張」欄有任何含等號或 LaTeX 指令之 `$...$` 的列都算成公式列。物理與經濟論文之證據表常在主張中寫 `$k_BT/\hbar\omega_p \sim 6$`、`$I_0 = 30.572\,\mu\mathrm{A}$` 之類數值，因而被算成公式列（`2023-jwst-massive-galaxies` 5 條區塊公式對 23 列、`1985-macroscopic-quantum-tunneling` 2 條對 13 列），S3 之「區塊公式皆已登記」檢查形同虛設。若只算「位置」欄含「公式」之列，2026-11-10 試算全庫有 9 篇（`1982-hopfield-network`、`1992-creative-destruction-aghion`、`2007-woodford-inflation-dynamics`、`2023-atayal-truku-morphology-dai`、`2023-jwst-massive-galaxies`、`2024-alphafold3`、`2024-fault-tolerant-quantum`、`2024-finnish-northern-sami-mt-saleva`、`2025-deepseek-r1`）會新報 WARN，TD-011 第 4 項所列之條數也會改變。先決定登記格式（例如規定公式列之「位置」欄寫「Card N 公式」，或「第一手來源」欄寫原文式號），再改 `formula_rows()`、`wiki-content-audit` 寫作模式第 2 步與 TD-011 之清單；既有證據表依新格式補記時，每條仍須回原文確認式號。
-- **完成條件**：登記格式寫入 `wiki-content-audit` 與 `paper-pipeline`；`formula_rows()` 只計符合格式之列；全庫 `pipeline_status.py` 之 S3 結果與 TD-011 清單一致。
-- **來源**：TD-014 試跑（2026-11-10，`1985-macroscopic-quantum-tunneling`）發現；2026-11-10 登記，Claude Code by Anthropic。
+### TD-011 | open | wiki | 補齊公式證據與瀏覽器驗證
+- **內容**：依 TD-017 新格式，逐條回原文核對並登記尚缺來源的區塊公式；無原文依據者依 `wiki-content-audit` 改寫並登記問題。全庫 S3 目前尚有 WARN：`1982-hopfield-network`（5 條）、`1992-creative-destruction-aghion`（5 條）、`2024-alphafold3`（3 條）。另 `2005-optogenetics` 因完全沒有證據表而為 NG，已由 TD-008／TD-007 追蹤，不在本條重複處理。
+- **完成條件**：上述 WARN 論文逐條核對及修正後 S3 均為 OK；`lint_wiki.py` ERROR 0；若修改卡片，卡片檢查與建置 ERROR 0、首頁一致；受影響頁面之桌面、手機與卡片牆瀏覽器驗證依 TD-021 補完。
+- **進度**：已逐一補記滿語表 1–4、臺華翻譯表 15、FormosanBench 表格數值與人工檢視對象，以及滿語、族語雙語詞典和排灣族知識論文的公開資源或限制；原列 10 篇之公式已回原文核對或移除未有依據者，並登記證據表。另已補量子穿隧、重力波、Woodford、泰雅語、JWST、芬蘭語、DeepSeek 與量子容錯之公式出處。瀏覽器連線服務不可用，相關頁面補驗見 TD-021。
+- **來源**：第二批卡片回填 B、C 組最後回報（使用者轉貼，2026-11-10）；TD-017 全庫重檢（2026-11-10，Codex by OpenAI）。
 
 ### TD-018 | open | wiki | 在光遺傳學頁補寫奠基論文之原始檔路徑
 - **內容**：`raw/2003-channelrhodopsin2.pdf`（Nagel et al. 2003, PNAS）是 [2005-optogenetics](papers/2005-optogenetics.md) 之奠基論文，論文頁 `key_papers` 只寫 DOI，「知識網絡與文獻出處」沒有寫此原始檔路徑，`pipeline_status.py --new` 因而把它歸為「已列待辦」（TD-003 順帶提到它）而非「已引用」。依 `paper-pipeline` 之 `references/intake.md` 第三節，在該頁「原始權威文獻」另起一行寫明奠基論文原始檔路徑（不得改動「原始檔典藏」一行，S1 以第一個「原始檔典藏」判斷主軸原始檔）。此頁之卡片撰寫尚待使用者決定由誰處理（TD-008），本項只補一行路徑，不涉及內容撰寫。

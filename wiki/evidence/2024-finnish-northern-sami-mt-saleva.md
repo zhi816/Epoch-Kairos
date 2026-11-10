@@ -11,7 +11,7 @@
 | Card 2 | UiT 域內（網頁、政治文本）、YLE 域外（新聞，151 句） | 本篇研究結果 | §4.1, p. 12951；§4.3, p. 12953 | 符合來源 |
 | Card 2 | QLoRA 微調 MADLAD 仍低於 10 BLEU | 本篇研究結果 | 註 2, p. 12950 | 符合來源 |
 | Card 3 | 反向模型加 RBMT 合成資料、兩組回譯；正譯 95 萬句芬蘭語 mC4 | 本篇研究結果 | §3.1, p. 12950 | 符合來源 |
-| Card 3 | 區塊公式 $J(\theta) = -\log P_{\text{NMT}}(y \mid x) + \lambda D_{\text{KL}}(p_{\text{LM}}(y) \mid p_{\text{NMT}}(y \mid x))$（論文頁拆成兩行 aligned）；語言模型凍結 | 本篇研究結果 | §3.2, p. 12950，正文內嵌式、無式號；原文分隔符為單豎線 | 符合來源（2026-11-10 由雙豎線改照原文，EK-170） |
+| Card 3 區塊公式 1 | $J(\theta) = -\log P_{\text{NMT}}(y \mid x) + \lambda D_{\text{KL}}(p_{\text{LM}}(y) \mid p_{\text{NMT}}(y \mid x))$（論文頁拆成兩行 aligned）；語言模型凍結 | 本篇研究結果 | §3.2, p. 12950，正文內嵌式、無式號；原文分隔符為單豎線 | 符合來源（核對 PDF 頁面，EK-170） |
 | Card 3 | Transformer-base 設定；SentencePiece 8,000／5,000 | 本篇研究結果 | §4.1, p. 12951 | 符合來源 |
 | Card 4 | 芬蘭語→北薩米語 UiT 測試 BLEU／chrF：Baseline 26.86／58.60（Aulamo 欄 18.9）；Transformer-BT (RBMT) 37.22／67.89；Transformer-BT (combined) 41.75／70.12；Aulamo 欄最佳為 RNN-clean + RBMT 列 40.1 | 本篇研究結果 | 表 3, p. 12952，Finnish–Northern Sámi「UiT Test」BLEU、CHRF 欄 | 符合來源 |
 | Card 4 | 芬蘭語→北薩米語 YLE 測試 BLEU／chrF：Baseline 8.43／35.67；Transformer-BT (RBMT) 16.34／47.46；Transformer-BT (combined) 14.96／45.93 | 本篇研究結果 | 表 4, p. 12952，Finnish–N. Sámi BLEU、CHRF 欄 | 符合來源 |

@@ -280,7 +280,7 @@ button:disabled{cursor:default;opacity:.3}
 <p>以 DeepSeek-V3 的最佳設定，把 42,240 句滿語單語資料譯成英文，與 3,520 句真實平行語料一起微調 mT5-small（約 3 億參數）。只用真實資料時幾乎無法翻譯（0.15 BLEU）；合成資料為真實資料的 12 倍時達 7.84 BLEU／55.96 SBERT，接近 Llama3-70B 的上下文翻譯結果。</p>
 </section>
 <section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
-<ul><li><strong>作者結論</strong>（§7）：高品質詞典與適當檢索的平行例句是最有影響的因素，語法與 CoT 看不出明顯幫助；模型雖有一些滿語知識，但翻譯主要依賴上下文學習；上下文翻譯可用來產生合成平行資料。</li><li><strong>作者自述的限制</strong>：只研究滿語一種語言；滿語是詞素界線清楚的黏著語，結論是否適用於其他類型的語言尚不清楚（Limitations）。另外，平行語料原為滿漢對照，英文是以 Google 翻譯從中文轉譯而來（§3）。</li><li>（Wiki 詮釋）BLEU 與 chrF 可能低估語義正確的譯文（表 6 的例句 BLEU 4.99、SBERT 62.42），作者因此另做人工評估。</li></ul>
+<ul><li><strong>作者結論</strong>（§7）：高品質詞典與適當檢索的平行例句是最有影響的因素，語法與 CoT 看不出明顯幫助；模型雖有一些滿語知識，但翻譯主要依賴上下文學習；上下文翻譯可用來產生合成平行資料。</li><li><strong>本篇資源</strong>：作者於首頁註 1 公開<a href="https://github.com/cisnlp/manchu-in-context-mt">程式與資料</a>（p. 8767）。</li><li><strong>作者自述的限制</strong>：只研究滿語一種語言；滿語是詞素界線清楚的黏著語，結論是否適用於其他類型的語言尚不清楚（Limitations）。另外，平行語料原為滿漢對照，英文是以 Google 翻譯從中文轉譯而來（§3）。</li><li>（Wiki 詮釋）BLEU 與 chrF 可能低估語義正確的譯文（表 6 的例句 BLEU 4.99、SBERT 62.42），作者因此另做人工評估。</li></ul>
 </section>
 <section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
 <blockquote>以下為使用者個人研究之延伸思考（Wiki 詮釋），非原文主張。</blockquote>

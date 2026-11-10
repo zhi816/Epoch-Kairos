@@ -8,11 +8,11 @@
 | Card 1 | 最重候選落在上限邊緣，指出觀測推得之星系性質、早期星系形成或標準宇宙學本身有尚未解決的重要問題 | 本篇研究結果 | Abstract | 符合來源 |
 | Card 2 | 低紅移宇宙中所有星系 $\epsilon \lesssim 0.2$（修正 EK-115：原頁面寫 0.1–0.3） | 作者解釋 | Discussion 倒數第 2 段 | 符合來源 |
 | Card 3 | 參數：$H_0 = 67.32$、$\Omega_m = 0.3158$、$n_s = 0.96605$、$\sigma_8 = 0.8120$、$f_b = 0.156$（Planck 2020 基準 $\Lambda$CDM） | 本篇研究結果 | Assumptions 第 1 段 | 符合來源 |
-| Card 3 | 區塊公式：$M_\star = \epsilon f_b M_{\text{halo}}$，$\epsilon \le 1$（原頁面之 $M_{\text{halo}} \ge M_\star/f_b \approx 6.4 M_\star$ 與 $f_b = 0.1564$ 原文沒有，已刪，EK-154） | 本篇研究結果 | Assumptions，正文內嵌式，無式號 | 符合來源 |
-| Card 3 | 區塊公式：$n(> M_{\text{halo}}, z) = \int_{M_{\text{halo}}}^\infty dM\, dn/dM$ | 本篇研究結果 | Assumptions，式 (1) | 符合來源 |
-| Card 3 | 區塊公式：$\rho_m(> M_{\text{halo}}, z) = \int_{M_{\text{halo}}}^\infty dM\, M\, dn/dM$ | 本篇研究結果 | Assumptions，式 (2) | 符合來源 |
-| Card 3 | 區塊公式：$n_{\text{gal}}(> M_\star) \le n_{\text{halo}}(> M_\star / f_b)$ | 本篇研究結果 | Assumptions，式 (3) | 符合來源 |
-| Card 3 | 區塊公式：$\rho_\star(> M_\star) \le f_b \rho_m(> M_\star / f_b)$ | 本篇研究結果 | Assumptions，式 (5) | 符合來源 |
+| Card 3 區塊公式 1 | $M_\star = \epsilon f_b M_{\text{halo}}$，$\epsilon \le 1$（原頁面之 $M_{\text{halo}} \ge M_\star/f_b \approx 6.4 M_\star$ 與 $f_b = 0.1564$ 原文沒有，已刪，EK-154） | 本篇研究結果 | 正式版 Assumptions，p. 732，正文內嵌式，無式號 | 符合來源（核對正式版 PDF 頁面） |
+| Card 3 區塊公式 2 | $n(> M_{\text{halo}}, z) = \int_{M_{\text{halo}}}^\infty dM\, dn/dM$ | 本篇研究結果 | 正式版 Assumptions，p. 731，式 (1) | 符合來源（核對正式版 PDF 頁面） |
+| Card 3 區塊公式 3 | $\rho_m(> M_{\text{halo}}, z) = \int_{M_{\text{halo}}}^\infty dM\, M\, dn/dM$ | 本篇研究結果 | 正式版 Assumptions，p. 732，式 (2) | 符合來源（核對正式版 PDF 頁面） |
+| Card 3 區塊公式 4 | $n_{\text{gal}}(> M_\star) \le n_{\text{halo}}(> M_\star / f_b)$ | 本篇研究結果 | 正式版 Assumptions，p. 732，式 (3) | 符合來源（核對正式版 PDF 頁面） |
+| Card 3 區塊公式 5 | $\rho_\star(> M_\star) \le f_b \rho_m(> M_\star / f_b)$ | 本篇研究結果 | 正式版 Assumptions，p. 732，式 (5) | 符合來源（核對正式版 PDF 頁面） |
 | Card 3 | 以 Sheth & Tormen (1999) 暗物質暈質量函數計算；其在 $z \approx 7$–$10$ 相對模擬高估大質量暗物質暈豐度 20–50%，限制偏保守 | 本篇研究結果 | Assumptions；Discussion | 符合來源 |
 | Card 3 | 峰高 $\nu = \delta_c / \sigma$，$\delta_c \approx 1.7$；典型 $\nu = 1$ 對應宇宙 24% 的質量位於至少同等質量之暗物質暈 | 作者解釋 | Results 第 2 段 | 符合來源 |
 | Card 3 | $\epsilon < 1$ 時上限曲線相對資料點下移 $\epsilon$ 倍 | 作者解釋 | Fig. 1 圖說 | 符合來源 |
