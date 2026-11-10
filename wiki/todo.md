@@ -74,3 +74,10 @@
 - **完成條件**：使用者決定保留或改寫；改寫者依 `wiki-content-audit` 修改論文頁，重建論文頁並推送，網頁正文不再出現 `raw/`。
 - **等待**：使用者決定是否改寫。
 - **來源**：TD-005 部署前檢查發現（2026-11-10），TD-005 完成時轉登記；2026-11-10 登記，Claude Code by Anthropic。
+
+### TD-020 | waiting | wiki | 補齊多得獎者代表性奠基論文（首篇：Robert E. Hall 2005 勞動工資微觀基礎）
+- **內容**：使用者指示（2026-11-10）：凡重大榮譽（如諾貝爾獎）由多位學者共享、且各做出獨立奠基突破者，知識庫應分別獨立收錄每位得獎者之代表性論文，不應僅收錄單方論文而將另一位標註為非本篇作者。優先推進項目為 2026 諾貝爾經濟學獎共同得主 Robert E. Hall：收錄其勞動市場均衡與工資僵固性奠基論文 *Employment Fluctuations with Equilibrium Wage Stickiness*（AER 95(1): 50–65, 2005, DOI: 10.1257/0002828053828482，規劃 slug `2005-hall-wage-stickiness`），與現有之 Woodford 2007 共同掛鉤於概念頁 `institutions-and-macro-dynamics`。其餘待補多得主項目列入後續儲備：Geoffrey Hinton（1986 Nature 反向傳播 / 1985 玻爾茲曼機，2024 物理獎）、David Baker（2003 Science Top7，2024 化學獎）、Nagel & Hegemann（2003 PNAS 光敏感通道蛋白，2026 生理醫學獎，原始檔已在 `raw/2003-channelrhodopsin2.pdf`）、Henri B. Kagan（不對稱氫化，2026 化學獎）。
+- **完成條件**：取得 Hall (2005) 原始 PDF（`raw/2005-hall-wage-stickiness.pdf`），依 `paper-pipeline` 完成 S0 至 S10 收錄上架（證據表、論文頁、概念頁更新、卡片、論文頁網頁與首頁星圖/卡片牆）；`wiki/index.md` 與概念頁完成雙星關聯。
+- **等待**：取得 `raw/2005-hall-wage-stickiness.pdf`（由使用者放入 `raw/`，或明確指示下載）。
+- **來源**：使用者指示（2026-11-10，因 Woodford 2007 標註「Hall 並非本篇作者」引發討論，確立多得主各自收錄代表作原則）；2026-11-10 登記，Antigravity by Google DeepMind。
+
