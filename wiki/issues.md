@@ -1093,3 +1093,8 @@
 - **來源**：[官方補充資料](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-024-07487-w/MediaObjects/41586_2024_7487_MOESM1_ESM.pdf) Algorithm 19、§3.7.1、§5.9.3；[原文](../raw/2024-alphafold3.pdf) p. 494 Fig. 1 圖說、PDF p. 21 Extended Data Table 1。
 - **發現於**：2026-11-10，處理 TD-011 公式出處及抽查卡片，Codex by OpenAI。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6）。改以原文 Algorithm 19 座標變換步驟及作者文字說明呈現機制，排序公式保留原文表達；逐式登記來源，卡片補上指標與取樣條件，更新示意圖。
+
+### EK-203 | open | papers/1992-creative-destruction-aghion.md | Card 3 區塊公式 | 未能核實
+- **問題**：依正式版線上文字，式 (2.1) 寫 $y=AF(x)$，頁面額外加上下標；頁面以線性特例展示的研發條件與式 (2.10) 的一般不等式形式不同；頁面以 $g$、$\sigma^2$ 與期望、變異數擴寫式 (3.11)，原文以 AGR、VGR 表達。須核對正式版掃描頁，逐式判斷是否為原文或 Wiki 推導，並依規範改寫、登記來源。
+- **來源**：[Econometrica 正式版](https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf) pp. 327–330、332、336，式 (2.1)、(2.3)、(2.10)、(2.12)、(3.11)；[證據表](evidence/1992-creative-destruction-aghion.md)。
+- **發現於**：2026-11-10，處理 TD-011，Codex by OpenAI。`raw/` 檔案為其他論文；正式版線上文字可讀，但本環境無法取得掃描頁影像核對，尚未把文字擷取當作公式最終證據。
