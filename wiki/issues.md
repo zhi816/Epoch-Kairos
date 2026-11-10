@@ -733,15 +733,17 @@
 - **發現於**：第一、二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。回原文核對：R1-Zero AIME 2024 pass@1 改為 15.6% → 77.9%（§2.3, p. 4），刪除與 o1-0912 之比較；訓練步數改為共 10,400 步、第 8.2k 步長度上限提高後躍升（§2.1, p. 3）；cons@16 之 86.7% 經確認為正式版數字（p. 5）。另刪除 Card 4「R1 之 cons@64 與 o1-1217 持平」（原文無此比較），Table 8 各數字逐一附上 o1-1217 對照值；章節 §2.2 改為 §2.3。證據表依正式版逐項重建，數字逐一寫出表列與欄位。
 
-### EK-114 | open | papers/2023-jwst-massive-galaxies.md | hook 與 Card 1 | 過度表述
+### EK-114 | fixed | papers/2023-jwst-massive-galaxies.md | hook 與 Card 1 | 過度表述
 - **問題**：`hook` 稱「部分觀測結果甚至要求超過 100% 的重子轉化效率」，Card 1 第 35 行稱即使暗物質暈中 100% 的重子都變成恆星，理論上限「依然低於觀測推估值」。原文為觀測值「lie at the theoretical limit」，對應 ε(z≈9) = 0.99、ε(z≈7.5) = 0.84，作者稱為 physically implausible，計入 1σ 誤差後則為 marginally consistent；並非超過 100%。
 - **來源**：`raw/2023-jwst-massive-galaxies.pdf`（Boylan-Kolchin 2023），PDF 第 2 頁。
 - **發現於**：第一、二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。以正式版（Nature Astronomy 開放取用全文，PMC10281863）核對後，`hook` 與 Card 1 改寫為：最重候選落在上限邊緣，需 ε(z≈9) = 0.99、ε(z≈7.5) = 0.84（作者稱物理上不太可能），計入 1σ 誤差後 ε(z≈9) ≥ 0.57 才勉強相容；刪去「掀起全面重估」，並改正 JWST 傳回資料之年份敘述與 Labbé 候選之紅移範圍（依 Labbé 摘要）。
 
-### EK-115 | open | papers/2023-jwst-massive-galaxies.md | Card 3 與 Card 4 | 原文未支持
+### EK-115 | fixed | papers/2023-jwst-massive-galaxies.md | Card 3 與 Card 4 | 原文未支持
 - **問題**：Card 3 第 54–55 行之「極值統計（Extreme Value Statistics）鎖定巡天體積中的最重暗物質暈」，與 Card 4 第 85 行之最重暗物質暈質量 $4 \times 10^{11}$、重子極限 $6.5 \times 10^{10}$ 與 $1.2 \times 10^{10}\,M_\odot$、共動體積約 $10^5\,\text{Mpc}^3$ 等數值，原文全文搜尋皆未見；原文之效率推論來自累積數密度與累積恆星質量密度。
 - **來源**：同 EK-114 之 PDF，全文搜尋「extreme value」「6.5」「1.2」「4 ×」無相符結果。修正時須再看原文圖 1、圖 2 確認無圖中數值。
 - **發現於**：第一、二批卡片回填 B 組回報，協調者以全文搜尋確認（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。預印本與正式版全文、圖 1 與圖 2 之圖中文字均無極值統計與上述三個質量值，刪除；Card 3 第 3 點改為原文之峰高 ν（Results）。共動體積 $V \approx 10^5\,\text{Mpc}^3$ 原文確有（Results 第 1 段，為每個紅移區間之巡天體積），保留並改寫為原文語境。Card 2 之「ε ≈ 0.1–0.3」依 Discussion 改為 ε ≲ 0.2。Card 4 改依 Results 逐項列出數密度、峰高與效率，證據表逐一登記。
 
 ### EK-116 | open | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 3 | 原文未支持
 - **問題**：Card 3 第 65–66 行之 $\hat{y}_{\text{base}} = \operatorname{NMT}(x)$ 與 $\hat{y}_{\text{final}} = \operatorname{LLM}_{\text{CoT}}(\ldots)$ 為 Wiki 自擬之流程示意，原文沒有任何公式，頁面也未標明為示意。頁面有區塊公式，卡片因而無法依 Card 3 無公式模式撰寫。
@@ -842,3 +844,15 @@
 - **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`，§4（pp. 4–5）、§6（p. 5）、表 1 標題與表 2（p. 6）、表 3（p. 7）、§7（p. 7）、Conclusion（p. 8）。
 - **發現於**：第三批卡片回填交付稿撰寫時再抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。以原 PDF 頁面影像核對後，依原文改寫上述五處，表 2 補列 ZS、FS、PF 三種字元數與 DeepSeek-R1 推論秒數；證據表同步更正並逐一列出數值。卡片檔不受影響（Card 4 四個數字均取自表 1）。`verification` 維持 `partial`。
+
+### EK-154 | fixed | papers/2023-jwst-massive-galaxies.md | Frontmatter、開頭引言與 Card 3 | 原文不符
+- **問題**：（1）Card 3 四條區塊公式皆非原文式：$M_{\text{halo}} = M_\star/(\epsilon f_b) \ge M_\star/f_b \approx 6.4 M_\star$ 為 Wiki 推算（且 $f_b$ 寫成 0.1564，原文為 0.156）；兩條積分把 $\epsilon$ 併入下限，原文式 (3)、(5) 取 $\epsilon = 1$ 並另以式 (1)、(2) 定義積分；Press–Schechter erfc 解析式與 $\delta_c \approx 1.686/D(z)$、$\propto e^{-\nu^2/2}$ 原文沒有（原文為 $\delta_c \approx 1.7$）。證據表未登記任何式號。（2）`title_zh`「JWST 早期宇宙成熟巨大星系發現」使讀者以為本篇發現了星系；本篇為對 Labbé 等候選之理論檢驗，原題為 Stress testing ΛCDM with high-redshift galaxy candidates。（3）開頭引言為 Wiki 撰寫卻未註明。（4）證據表未記載封存原文為 arXiv v2 預印本，而 `doi_url` 指向正式版。
+- **來源**：Boylan-Kolchin 2023 正式版全文（PMC10281863），Assumptions 式 (1)–(5)、Results；`raw/2023-jwst-massive-galaxies.pdf`（arXiv:2208.01611v2）。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。區塊公式改為原文之 $M_\star = \epsilon f_b M_{\text{halo}}$ 與式 (1)、(2)、(3)、(5)，刪去 Wiki 推算與 erfc 式；`title_zh` 與內文標題改為「以高紅移星系候選對 ΛCDM 宇宙學進行壓力測試」；引言加註為 Wiki 撰寫；證據表註明採用正式版並列出與預印本之差異。
+
+### EK-155 | fixed | papers/2023-jwst-massive-galaxies.md | Card 4 後續與 Card 5 | 原文未支持
+- **問題**：Card 4 後續段稱 Kocevski et al. (2023) 發現「Labbé 樣本中質量最大的候選者之一」實為 $z = 5.62$ 之遮蔽型 AGN、恆星質量「下修約一個數量級」，Kocevski 摘要未提 Labbé 樣本與下修幅度；稱 Carnall、Glazebrook、Dekel「光譜確認……效率高達 ε ≈ 0.3–0.5」，三篇摘要皆無此數；Glazebrook 寫成「z > 11 形成之 $10^{11}\,M_\odot$」，摘要為恆星約於 z ∼ 11 形成。Card 5 三點（「改寫教科書」、小紅點黑洞與恆星質量比 1%–10%、「精準劃分」宇宙學與天體物理）皆無出處。
+- **來源**：doi:10.3847/2041-8213/ace5a0（Kocevski 2023 摘要）、doi:10.1038/s41586-024-07191-9（Glazebrook 2024，arXiv:2308.05606 摘要）、doi:10.1093/mnras/stad1557（Dekel 2023 摘要）、doi:10.1038/s41586-023-06158-6（Carnall 2023，arXiv:2301.11413 摘要）。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。刪去 Card 4 後續段與 Card 5 三點無出處之敘述；Card 5 改列五篇經摘要核對之後續研究（Dekel 2023、Arrabal Haro 2023、Glazebrook 2024、Desprez 2024、Chworowsky 2024），各附 DOI，並註明結論不一致；Card 4 改列作者自己討論之可能解釋（含黑洞吸積貢獻）；Card 6 第 2 點改為不依賴未查核事實之寫法。證據表登記各列。

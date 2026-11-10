@@ -1775,3 +1775,8 @@
   - 原文抽查：以 PDF 文字核對第 5 節（pp. 84–85）與表二。原文為「所有的台灣南島語」都有「說」→「想」之延伸，論文頁 `card_line` 寫「多半」、`hook` 寫「普遍」，比原文弱，登記 EK-131 並改為「都」（已修正）。`verification` 由 verified 改為 partial。
   - 卡片：Card 3 無公式模式（原文為語義特徵分析，無編號公式），示意圖為作者推論之施為動詞演化途徑；Card 4 結論模式三條；Card 5 一般模式三筆（本篇自述語法化途徑待探討、Jheng 2023、Hsieh 2026）；Card 6 取論文頁 Card 6 泛泰雅語「說」兼「做」一點，未涉及使用者碩論。
   - 檢查：`check_cards.py` ERROR 0、WARN 0（初稿導語含數字之 WARN 已改寫）；建置自我檢查 ERROR 0、WARN 1：資訊欄期刊名超過兩行，該刊 DOI 註冊於華藝而非 Crossref，無法確認通用縮寫，依 paper-page.md 第三節不填 `venue_short`；`verify_page.js` 結果 PASS；無頭截圖目視，修正 Card 2、4、5 拆詞折行與範圍欄落單。`lint_wiki.py` ERROR 0。`card_line` 已改，首頁於本批結束時統一重建。
+
+## [2026-11-10 10:20] update | 2023-jwst-massive-galaxies 卡片回填與論文頁原文修正 | #宇宙學 #天體物理
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：TD-008 第三批 B 組。以 `doi_url` 指向之正式版（Nature Astronomy 開放取用全文，PMC10281863；封存原文為 arXiv v2 預印本，差異已記入證據表）修正 [論文頁](papers/2023-jwst-massive-galaxies.md) 並重建 [證據表](evidence/2023-jwst-massive-galaxies.md)：完成 EK-114（hook 與 Card 1 改為最重候選落在上限邊緣、ε = 0.99 與 0.84、計入誤差需 ε ≥ 0.57）與 EK-115（刪除極值統計與三個原文沒有的質量值，Card 2 效率改為 ε ≲ 0.2）；新登記並修正 EK-154（Card 3 四條區塊公式改為原文式，刪除 Wiki 推算與 erfc 式；`title_zh` 改為「以高紅移星系候選對 ΛCDM 宇宙學進行壓力測試」；引言註明為 Wiki 撰寫）與 EK-155（刪除未經查核之 AGN 下修與小紅點敘述，Card 5 改列五篇經摘要核對之後續研究：Dekel 2023、Arrabal Haro 2023、Glazebrook 2024、Desprez 2024、Chworowsky 2024）；`verification` 改為 `partial`。新增 [卡片檔](cards/2023-jwst-massive-galaxies.md) 與論文頁原型 `web/prototypes/paper-v1/2023-jwst-massive-galaxies.html`。check_cards：ERROR 0、WARN 0；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（37 項）。來源：Card 3 公式取自原文式 (5)；Card 4 四個數字取自證據表 Results 與 Discussion 列（0.99、0.84、≥ 0.57、≲ 0.2）；Card 5 五筆取自證據表後續研究列。複核：Card 4 兩個來源位置原寫節名，補上圖號與節號；封面導語與標題改為不含縮寫；Card 5 標題與 Card 6 結語折行落單，改寫；示意圖標籤壓到上限線，移開。首頁卡片牆：依協調規則未重建，由協調者處理；`title_zh` 已改，首頁待協調者重建後更新。

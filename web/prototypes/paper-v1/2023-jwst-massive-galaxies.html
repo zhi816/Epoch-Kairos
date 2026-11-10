@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>以高紅移星系候選對 ΛCDM 宇宙學進行壓力測試｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#D3BEFD;--deep:#4D2E8B;--win:#23222B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.14</span><span>物理</span></div><div class="win"><i style="left:47.3%;top:44.4%;width:1px;height:1px;opacity:0.70"></i><i style="left:59.5%;top:21.3%;width:1px;height:1px;opacity:0.30"></i><i style="left:28.3%;top:41.2%;width:1.5px;height:1.5px;opacity:0.69"></i><i style="left:6.8%;top:5.0%;width:1px;height:1px;opacity:0.39"></i><i style="left:53.5%;top:7.3%;width:1px;height:1px;opacity:0.59"></i><i style="left:9.1%;top:41.1%;width:1px;height:1px;opacity:0.30"></i><i style="left:31.5%;top:22.6%;width:1px;height:1px;opacity:0.52"></i><i style="left:20.3%;top:23.8%;width:1px;height:1px;opacity:0.57"></i><i style="left:95.0%;top:20.5%;width:1.5px;height:1.5px;opacity:0.71"></i><i style="left:17.0%;top:14.9%;width:1px;height:1px;opacity:0.42"></i><i style="left:32.4%;top:43.8%;width:1px;height:1px;opacity:0.78"></i><i style="left:91.5%;top:25.5%;width:1.5px;height:1.5px;opacity:0.56"></i><i style="left:77.1%;top:43.6%;width:1px;height:1px;opacity:0.49"></i><i style="left:12.1%;top:25.0%;width:1px;height:1px;opacity:0.51"></i><span class="rep"></span><span class="line"><span>算出宇宙早期</span><span>最多能長出</span><span>多大的星系</span></span></div><div class="tags">物理、天文與地球科學・#宇宙學 #天體物理</div><div class="name">以高紅移星系候選對宇宙學進行壓力測試</div><div class="lead">早期候選星系已逼近標準宇宙學的恆星上限。</div><div class="yrs">2023 發表 ｜ Nature Astronomy</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">宇宙早期，<br>真能長出這麼重的星系？</span><div class="rows"><div class="row"><b>哈伯</b><span>觀測波長不夠長，看不清早期星系已累積多少恆星</span></div><div class="row"><b>重子分數</b><span>暗物質暈裡重子只佔物質的 0.156，成星原料有限</span></div><div class="row"><b>轉化效率</b><span>低紅移宇宙中，星系把重子變成恆星的效率都在兩成以下</span></div><div class="row gap"><b>檢驗</b><span>沒有簡單方法判斷這些候選是否超出標準宇宙學允許的範圍</span></div></div><span class="ft" style="color:var(--ink)">先得知道那時宇宙最多能提供多少原料。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">恆星不能多於可用的重子</span><svg class="dia" viewBox="0 0 300 120" role="img" aria-label="示意：暗物質暈裡只有一部分是重子，恆星最多用完這些重子；觀測候選幾乎貼著上限。">
+  <rect class="k-ink k-ring" x="8" y="8" width="164" height="104" rx="4"/>
+  <rect class="k-soft" x="28" y="36" width="124" height="66" rx="4"/>
+  <rect class="k-accent k-ring" x="56" y="62" width="68" height="30" rx="4"/>
+  <rect class="k-soft" x="230" y="28" width="12" height="80"/>
+  <line class="k-line" x1="226" y1="28" x2="250" y2="28"/>
+  <circle class="k-accent" cx="236" cy="36" r="4"/>
+  <text class="k-label" x="90" y="26" text-anchor="middle">暗物質暈</text>
+  <text class="k-label" x="90" y="54" text-anchor="middle">重子</text>
+  <text class="k-label-accent" x="90" y="82" text-anchor="middle">恆星</text>
+  <text class="k-label" x="258" y="32">上限</text>
+  <text class="k-label-accent" x="222" y="44" text-anchor="end">觀測候選</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\rho_\star(&gt; M_\star) \le f_b \rho_m(&gt; M_\star / f_b)"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">大於某質量的星系，恆星總密度不能超過夠重暗物質暈裡的重子總量。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">0.99</span><span class="l">z≈9 恆星質量密度所需的重子轉化效率</span></div><div class="stat"><span class="v">0.84</span><span class="l">z≈7.5 的同一指標</span></div><div class="stat"><span class="v">≥0.57</span><span class="l">計入 1σ 誤差後，z≈9 仍需的最低效率</span></div><div class="stat"><span class="v">≲0.2</span><span class="l">低紅移宇宙所有星系的轉化效率</span></div></div><span class="ft">範圍：Boylan-Kolchin 2023，單一巡天的測光候選，未經光譜確認</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">張力之下，<br>光譜與理論回應</span><div class="time"><p><b>2023</b><span>Dekel 等提出免反饋星暴，說明高效成星</span></p><p><b>2023</b><span>Arrabal Haro 等光譜否定 z≈16 候選</span></p><p><b>2024</b><span>Glazebrook 等：恆星在 z≈11 已形成</span></p><p><b>2024</b><span>Desprez 等另選樣本，未見特別重的星系</span></p><p><b>2024</b><span>Chworowsky 等認為過量與宇宙學無衝突</span></p></div><span class="ft">以上皆為後續他人成果，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">不追究星系怎麼形成，只清點那時有多少重子，就畫出不可越過的線。</span><span class="shift"><span>模擬細節</span><i aria-hidden="true"></i><b>守恆上限</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2023 發表 ｜ Nature Astronomy</span>
+<h1>以高紅移星系候選對 ΛCDM 宇宙學進行壓力測試</h1>
+<p class="en">Stress testing ΛCDM with high-redshift galaxy candidates</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">當韋伯太空望遠鏡將人類的視線推回大爆炸後僅五億年的宇宙黎明時，我們原本以為只會看到零星的幼年星團，卻震驚地在黑暗中撞見了質量堪比銀河系的龐然大物。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>根據標準冷暗物質宇宙學模型（<span class="m-in" data-tex="\Lambda\text{CDM}"></span>），宇宙結構是「由下而上（Bottom-Up）」階層式生長的：大爆炸後數億年內，微小的暗物質暈（Dark Matter Halos）才剛開始坍縮併合，第一代星系應該體積微小且質量低微。然而，詹姆斯・韋伯太空望遠鏡（JWST）2022 年傳回的早期觀測資料中，Labbé et al. (2023) 在紅移 <span class="m-in" data-tex="7.4 &lt; z &lt; 9.1"></span>（大爆炸後約 <span class="m-in" data-tex="5"></span> 至 <span class="m-in" data-tex="7"></span> 億年）找到 6 個恆星質量大於 <span class="m-in" data-tex="10^{10}\,M_\odot"></span> 的紅色候選星系，其中一個可能達 <span class="m-in" data-tex="10^{11}\,M_\odot"></span>（Labbé 等摘要）。Boylan-Kolchin (2023) 從暗物質暈質量函數推導出任一時期星系數密度與恆星質量密度之絕對上限，發現最重的候選落在上限邊緣：在 <span class="m-in" data-tex="z \approx 9"></span> 與 <span class="m-in" data-tex="z \approx 7.5"></span>，觀測到的累積恆星質量密度分別需要 <span class="m-in" data-tex="\epsilon = 0.99"></span> 與 <span class="m-in" data-tex="0.84"></span> 的重子轉化效率，作者稱為物理上不太可能；計入 <span class="m-in" data-tex="1\sigma"></span> 誤差後，也需要 <span class="m-in" data-tex="\epsilon(z \approx 9) \ge 0.57"></span> 才勉強相容（Results）。作者據此指出，觀測推得的星系性質、早期星系如何在 <span class="m-in" data-tex="\Lambda\text{CDM}"></span> 中形成，或標準宇宙學本身，存在一個尚未解決的重要問題（Abstract）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：哈伯望遠鏡的紅外盲區與早期結構形成的極限矛盾</h2></div>
+<p>探索宇宙黎明（Cosmic Dawn，<span class="m-in" data-tex="z &gt; 7"></span>）長期面臨觀測與理論的雙重斷層：</p>
+<ul><li><strong>哈伯太空望遠鏡（HST）的波長極限（<span class="m-in" data-tex="&lt; 1.7\,\mu\text{m}"></span>）</strong>：在紅移 <span class="m-in" data-tex="z &gt; 7"></span> 時，代表成熟恆星群年齡與質量的巴耳末跳躍（Balmer Break，靜止波長 <span class="m-in" data-tex="3646\,\text{\AA}"></span>）與 <span class="m-in" data-tex="4000\,\text{\AA}"></span> 斷裂已被宇宙膨脹紅移至 <span class="m-in" data-tex="&gt; 3.2\,\mu\text{m}"></span> 的中紅外波段。哈伯僅能觀測到靜止系紫外光（反映瞬時年輕大質量恆星形成率），對早期宇宙中已累積的老年恆星總質量完全「失明」。</li><li><strong>暗物質暈坍縮速率與重子冷卻效率的物理上限</strong>：在標準普朗克（Planck）宇宙學參數下，宇宙中重子物質佔總物質的比例固定為宇宙重子分數 <span class="m-in" data-tex="f_b = \Omega_b / \Omega_m \approx 0.156"></span>。在低紅移宇宙中，所有星系把重子轉化為恆星的效率都只有 <span class="m-in" data-tex="\epsilon \lesssim 0.2"></span>（Discussion）。若高紅移處真存在如此多的 <span class="m-in" data-tex="10^{10}"></span>–<span class="m-in" data-tex="10^{11}\,M_\odot"></span> 星系，就必須解釋它們從哪裡取得足夠的重子。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>Boylan-Kolchin 提出一個幾乎不依賴星系形成細節、只由宇宙學參數與重子總量決定的上限檢驗：</p>
+<ol><li><strong>恆星質量不得超過暗物質暈內的重子</strong>：<ul><li>暗物質暈最多含 <span class="m-in" data-tex="f_b M_{\text{halo}}"></span> 的重子（<span class="m-in" data-tex="f_b \equiv \Omega_b/\Omega_m = 0.156"></span>），恆星質量可寫為 <span class="m-in" data-tex="M_\star = \epsilon f_b M_{\text{halo}}"></span>，其中 <span class="m-in" data-tex="\epsilon \le 1"></span> 為重子轉化為恆星的效率。因此質量為 <span class="m-in" data-tex="M_\star"></span> 的星系，只有在質量 <span class="m-in" data-tex="M_\star / (\epsilon f_b)"></span> 的暗物質暈已經形成時才可能存在（Assumptions；Discussion）。</li></ul></li><li><strong>累積數密度 <span class="m-in" data-tex="n(&gt; M_\star, z)"></span> 與累積恆星質量密度 <span class="m-in" data-tex="\rho_\star(&gt; M_\star, z)"></span> 雙重檢驗</strong>：<ul><li>以 Sheth &amp; Tormen (1999) 暗物質暈質量函數積分，得到任一紅移處大於某質量之暗物質暈的共動數密度與共動質量密度，再乘上 <span class="m-in" data-tex="f_b"></span> 即為星系統計之上限。作者指出，相較數值模擬，Sheth–Tormen 函數在 <span class="m-in" data-tex="z \approx 7"></span>–<span class="m-in" data-tex="10"></span> 高估大質量暗物質暈豐度 20–50%，故此處之限制偏保守（Discussion）。</li></ul></li><li><strong>以峰高衡量稀有程度</strong>：<ul><li>在延伸 Press–Schechter 模型中，峰高 <span class="m-in" data-tex="\nu(M_{\text{halo}}, z) = \delta_c / \sigma(M_{\text{halo}}, z)"></span>（<span class="m-in" data-tex="\delta_c \approx 1.7"></span> 為坍縮門檻）衡量宇宙中有多少質量位於比 <span class="m-in" data-tex="M_{\text{halo}}"></span> 更重的暗物質暈；典型暗物質暈 <span class="m-in" data-tex="\nu = 1"></span>，對應宇宙 24% 的質量位於至少同等質量的暗物質暈中，<span class="m-in" data-tex="\nu"></span> 越大越稀有（Results）。</li></ul></li></ol>
+<h3>1. 恆星質量與暗物質暈質量之關係 (Baryon Budget)</h3>
+<p>採 Planck 2020 基準 <span class="m-in" data-tex="\Lambda\text{CDM}"></span> 參數（<span class="m-in" data-tex="H_0 = 67.32\,\text{km}\,\text{s}^{-1}\,\text{Mpc}^{-1}"></span>、<span class="m-in" data-tex="\Omega_m = 0.3158"></span>、<span class="m-in" data-tex="n_s = 0.96605"></span>、<span class="m-in" data-tex="\sigma_8 = 0.8120"></span>、<span class="m-in" data-tex="f_b = 0.156"></span>，Assumptions）。恆星質量與宿主暗物質暈質量之關係為（Assumptions，正文內嵌式，無式號）：</p>
+<span class="m-disp" data-tex="M_\star = \epsilon f_b M_{\text{halo}}"></span>
+<h3>2. 累積數密度與累積恆星質量密度上限 (Cumulative Number &amp; Mass Density Bounds)</h3>
+<p>由暗物質暈質量函數 <span class="m-in" data-tex="dn(M, z)/dM"></span> 得到大於 <span class="m-in" data-tex="M_{\text{halo}}"></span> 之暗物質暈的共動數密度與共動質量密度（式 1、式 2）：</p>
+<span class="m-disp" data-tex="n(&gt; M_{\text{halo}}, z) = \int_{M_{\text{halo}}}^{\infty} dM \frac{dn(M, z)}{dM}"></span>
+<span class="m-disp" data-tex="\rho_m(&gt; M_{\text{halo}}, z) = \int_{M_{\text{halo}}}^{\infty} dM\, M \frac{dn(M, z)}{dM}"></span>
+<p>取物理上的最大效率 <span class="m-in" data-tex="\epsilon = 1"></span>，星系之累積數密度與累積恆星質量密度上限為（式 3、式 5）：</p>
+<span class="m-disp" data-tex="n_{\text{gal}}(&gt; M_\star) \le n_{\text{halo}}(&gt; M_\star / f_b)"></span>
+<span class="m-disp" data-tex="\rho_\star(&gt; M_\star) \le f_b \rho_m(&gt; M_\star / f_b)"></span>
+<p>效率 <span class="m-in" data-tex="\epsilon &lt; 1"></span> 時，圖中各上限曲線相對資料點下移 <span class="m-in" data-tex="\epsilon"></span> 倍（Fig. 1 圖說）。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Boylan-Kolchin 2023）與 Labbé et al. (2023) 之核心證據</h3>
+<ul><li><strong>Labbé et al. (2023) 之候選星系</strong>：在 JWST 早期觀測中找到 6 個恆星質量大於 <span class="m-in" data-tex="10^{10}\,M_\odot"></span>、紅移 <span class="m-in" data-tex="7.4 &lt; z &lt; 9.1"></span> 的候選，其中一個可能達 <span class="m-in" data-tex="10^{11}\,M_\odot"></span>（Labbé et al. 2023 摘要，doi:10.1038/s41586-023-05786-2）；樣本以同時具有萊曼斷裂與巴耳末斷裂選出，光度紅移峰值窄（<span class="m-in" data-tex="\sigma_z \approx 0.25"></span>），恆星質量取四種擬合方法之中位數並假設 Salpeter 初始質量函數（本篇 Discussion）。本篇使用其中最重的兩個：<span class="m-in" data-tex="z \approx 7.5"></span>（<span class="m-in" data-tex="M_\star \approx 10^{11}\,M_\odot"></span>）與 <span class="m-in" data-tex="z \approx 9.1"></span>（<span class="m-in" data-tex="M_\star \approx 10^{10.5}\,M_\odot"></span>）。</li><li><strong>對應的暗物質暈極為稀少</strong>：若 <span class="m-in" data-tex="\epsilon = 1"></span>，這兩個候選所需暗物質暈之累積共動數密度不高於約 <span class="m-in" data-tex="10^{-5.2}\,\text{Mpc}^{-3}"></span>；<span class="m-in" data-tex="\epsilon = 0.32"></span>（0.10）時約為 <span class="m-in" data-tex="10^{-7}"></span>（<span class="m-in" data-tex="10^{-9.3}"></span>）<span class="m-in" data-tex="\text{Mpc}^{-3}"></span>。相比之下，候選是在 38 arcmin² 的巡天中找到，在 <span class="m-in" data-tex="7 &lt; z &lt; 8.5"></span> 與 <span class="m-in" data-tex="8.5 &lt; z &lt; 10"></span> 兩個紅移區間各約 <span class="m-in" data-tex="V \approx 10^5\,\text{Mpc}^3"></span>（Results，Fig. 1 左）。以峰高衡量，這些候選至少對應 <span class="m-in" data-tex="\nu = 4.5"></span>（<span class="m-in" data-tex="\epsilon = 1"></span>），即宇宙中至多 <span class="m-in" data-tex="6.2 \times 10^{-5}"></span> 的重子位於足以容納它們的暗物質暈中；<span class="m-in" data-tex="\epsilon = 0.32"></span> 或 0.10 時峰高約為 5.4 或 6.4（Results，Fig. 1 右）。</li><li><strong>累積恆星質量密度要求極端重子轉化效率</strong>：<ul><li>在 <span class="m-in" data-tex="z \approx 9"></span> 與 <span class="m-in" data-tex="z \approx 7.5"></span>，Labbé et al. 之測量值都落在 <span class="m-in" data-tex="\rho_\star(&gt; M_\star) = f_b \rho_m(&gt; M_\star / f_b)"></span> 的理論極限上，對應物理上不太可能的 <strong><span class="m-in" data-tex="\epsilon(z \approx 9) = 0.99"></span></strong> 與 <strong><span class="m-in" data-tex="\epsilon(z \approx 7.5) = 0.84"></span></strong>（Results，Fig. 2）。</li><li>納入泊松漲落與樣本方差（平方相加）之 <span class="m-in" data-tex="1\sigma"></span> 誤差後，資料在 <strong><span class="m-in" data-tex="\epsilon(z \approx 9) \ge 0.57"></span></strong> 時才與可用重子量勉強相容，作者認為這很可能仍是不切實際的高值；若取較合理的 <span class="m-in" data-tex="\epsilon = 0.1"></span> 或 <span class="m-in" data-tex="0.32"></span>，即使計入觀測誤差，兩個紅移都與 <span class="m-in" data-tex="\Lambda\text{CDM}"></span> 預期明顯不符（Results）。低紅移宇宙中所有星系皆為 <span class="m-in" data-tex="\epsilon \lesssim 0.2"></span>（Discussion）。</li></ul></li><li><strong>作者討論之可能解釋</strong>（Discussion）：恆星初始質量函數與假設的 Salpeter 形式大不相同、黑洞吸積對星系發光有顯著貢獻，或目前巡天體積極不典型；觀測面另有 NIRCam 流量校正持續更新等不確定性；若採 Smith et al. 之早期暗能量最佳參數，<span class="m-in" data-tex="z \approx 9.1"></span> 最重候選對應之重子密度為基準 <span class="m-in" data-tex="\Lambda\text{CDM}"></span> 的 3.1 倍，資料點將落在 <span class="m-in" data-tex="\epsilon = 0.74"></span> 而非 0.99，但此模型與低紅移之 <span class="m-in" data-tex="S_8"></span> 量測及古老星系年齡有更強張力。若以上解釋都不成立且候選經光譜確認，將對參數取自 Planck 2020 之 <span class="m-in" data-tex="\Lambda\text{CDM}"></span> 結構形成構成嚴重挑戰；作者預期更廣視野的 JWST 巡天與光譜可很快確認或否定此張力。（正式版數字；預印本 v2 為 3.3 倍與 0.72。）</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<p>本篇指出最重候選落在 <span class="m-in" data-tex="\Lambda\text{CDM}"></span> 上限邊緣後，後續研究從成星理論、光譜驗證與更大樣本三方面回應，結論並不一致。以下皆為後續他人研究（Chworowsky 等一文之共同作者含本篇作者），各附出處：</p>
+<ul><li><strong>成星效率理論</strong>：Dekel et al. (2023), <em>MNRAS</em> 523:3201-3218, doi:10.1093/mnras/stad1557，提出「免反饋星暴」：<span class="m-in" data-tex="z \sim 10"></span> 時的高密度與低金屬量，使最重暗物質暈中的成星效率很高，可說明 JWST 所見明亮星系之過量。</li><li><strong>光譜驗證</strong>：Arrabal Haro et al. (2023), <em>Nature</em> 622:707-711, doi:10.1038/s41586-023-06521-7，以 JWST 光譜確認兩個 <span class="m-in" data-tex="z &gt; 11"></span> 的明亮星系，也發現一個光度紅移 <span class="m-in" data-tex="z \approx 16"></span> 的候選實為 <span class="m-in" data-tex="z = 4.9"></span>，強調光譜驗證之必要。</li><li><strong>極早成星之靜止星系</strong>：Glazebrook et al. (2024), <em>Nature</em> 628:277-281, doi:10.1038/s41586-024-07191-9，以 JWST 光譜觀測 <span class="m-in" data-tex="z = 3.205"></span> 的大質量靜止星系 ZF-UDS-7329，推得其恆星約在 <span class="m-in" data-tex="z \sim 11"></span> 形成，當時標準情境下尚未聚成足夠質量的暗物質暈。</li><li><strong>同法另選樣本</strong>：Desprez et al. (2024), <em>MNRAS</em> 530:2935-2952, doi:10.1093/mnras/stae1084，以相同雙斷裂選樣標準在 CANUCS 五個視野（約 60 arcmin²）選出 19 個候選，擬合未得到特別高的恆星質量；有光譜的五個雖都在高紅移，紅色卻來自強發射線而非巴耳末斷裂；不同視野之最大恆星質量相差約 1.5 dex，顯示早期單一視野結果可能受宇宙變異或樣本偏差影響。</li><li><strong>大質量星系數密度之演化</strong>：Chworowsky et al. (2024), <em>Astronomical Journal</em> 168:113, doi:10.3847/1538-3881/ad57c1，以 CEERS 資料推估 <span class="m-in" data-tex="z \sim 4"></span>–<span class="m-in" data-tex="8"></span> 大質量星系之數密度，在 <span class="m-in" data-tex="z &gt; 4"></span> 仍見超出固定轉化效率模型之過量，但認為可由成星物理或效率之適度改變解釋，與現代宇宙學無衝突。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>這場「JWST 觀測 vs. <span class="m-in" data-tex="\Lambda\text{CDM}"></span> 理論」的交鋒，展現了現代科學面對反常現象（Anomaly）時的典範反應：</p>
+<ol><li><strong>用最簡潔的守恆律做最鋒利的審判</strong>：面對極度複雜的星系流體力學，Boylan-Kolchin 沒有陷入數十個自由參數的模擬爭論，而是退回最基本的「重子質量守恆（<span class="m-in" data-tex="\epsilon \le 1"></span>）＋ 暗物質暈統計」，用一張圖表劃定了理論不可退讓的紅線。</li><li><strong>「證偽危機」逼出更好的檢驗</strong>：上限檢驗本身不判定是觀測、星系物理還是宇宙學出錯，只指出三者至少有一處要修正；後續研究因此分頭以光譜、更大樣本與成星理論回應（見 Card 5），問題至今仍在討論。</li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2023</b><span>發表・Nature Astronomy</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Michael Boylan-Kolchin</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Nature Astronomy, 7(6), 731-735</span><a href="https://doi.org/10.1038/s41550-023-01937-7">doi:10.1038/s41550-023-01937-7</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#宇宙學</span><span class="chip">#天體物理</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>多信使天體物理與極端宇宙學</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1038/s41586-023-05786-2" title="Labbé, I. et al. (2023) A population of red candidate massive galaxies ~600 Myr after the Big Bang. Nature 616(7956):266-269.">Labbé 等（2023）</a><a href="https://doi.org/10.1038/s41550-023-01937-7" title="Boylan-Kolchin, M. (2023) Stress testing ΛCDM with high-redshift galaxy candidates. Nature Astronomy 7(6):731-735.">Boylan-Kolchin（2023）</a><a href="https://doi.org/10.1038/s41586-023-06521-7" title="Arrabal Haro, P. et al. (2023) Confirmation and refutation of very luminous galaxies in the early Universe. Nature 622(7984):707-711.">Arrabal Haro 等（2023）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">本條目以 Michael Boylan-Kolchin 於 2023 年發表於《Nature Astronomy》之理論分析論文為主軸（正式版開放取用，PMC10281863；<code>raw/2023-jwst-massive-galaxies.pdf</code> 為 arXiv:2208.01611v2 審稿後預印本，正式版之早期暗能量比較數字略有不同，本頁以正式版為準），直接針對 Ivo Labbé 等人於 2023 年發表於《Nature》（616:266-269）基於 JWST CEERS 巡天數據發現之 6 個紅移 <span class="m-in" data-tex="z \approx 7.4"></span>–<span class="m-in" data-tex="9.1"></span> 超大質量候選星系進行標準 <span class="m-in" data-tex="\Lambda\text{CDM}"></span> 宇宙學極限檢驗。兩篇核心文獻與後續光譜認證論文一併列於 <code>key_papers</code>。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
