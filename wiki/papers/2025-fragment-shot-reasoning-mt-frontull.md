@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#人工智慧", "#深度學習"]
 concepts: ["low-resource-machine-translation"]
 status: "published"
-verification: "issues"
+verification: "partial"
 my_focus: true
 focus_role: "llm-assisted"
 focus_languages: ["拉定語"]
@@ -96,7 +96,8 @@ card_line: "檢索相似片段當例句，讓大模型翻譯拉定語"
 ## Card 4 ｜ 可核實的原文證據 (The Evidence)
 
 ### 1. 實驗設定（§4–§5, pp. 4–5）
-* **受測模型**：GPT-3.5（175B）、GPT-4o（200B）、o1-mini（50B）、Llama-3.3（70B）、DeepSeek-R1（658B）。
+* **受測模型**：GPT-3.5、GPT-4o、o1-mini、Llama-3.3、DeepSeek-R1。原研究透過各服務的 API 使用模型，但未說明具體快照版本（§5, p. 5）。
+* **參數量的來源差異**：原文依序列出 175B、200B、50B、70B、658B。這是論文所報數字，並非均經模型開發者資料證實：例如 [DeepSeek 官方模型資料](https://github.com/deepseek-ai/DeepSeek-R1) 將原始 R1 列為 671B 總參數、每個 token 啟用 37B，與原文的 658B 不同；[OpenAI 的 175B 資料](https://openai.com/index/language-models-are-few-shot-learners/) 指的是 GPT-3，不能據此確認 GPT-3.5 的參數量。所查 [GPT-4o 系統卡](https://cdn.openai.com/gpt-4o-system-card.pdf)與 [o1 系統卡](https://openai.com/index/openai-o1-system-card/)未核實原文的 200B、50B；[Meta 的 Llama 3.3 70B 模型卡](https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct) 支持 70B 規模。API 快照未明，不能直接斷定它與公開權重為同一版本。
 * **檢索語料庫**：Val Badia–Italian（18,140 句，前已公開）、Gherdëina–Italian（19,971 句，取自 Forni 2013 辭典），以及兩者義大利語端對齊而成之 Val Badia–Gherdëina（14,953 句）；原為語言參考材料，句子簡短，平均長度約 25 字元（§4, pp. 4–5）。
 * **測試集**：FLORES+（dev split）抽取的 175 句，由拉定文化協會「Micurá de Rü」母語專業譯者翻譯並依循 OLDI 指引。
 * **評估指標**：SacreBLEU 報告之 BLEU 平均值與信賴區間（表 1 標題）。

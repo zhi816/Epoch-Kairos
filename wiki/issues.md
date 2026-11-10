@@ -1021,7 +1021,8 @@
 - **來源**：[原始論文](https://doi.org/10.3390/socsci15010007) 首頁與全文；[證據表](evidence/2025-indigenous-tek-ai-revitalization-wang.md)。
 - **發現於**：2026-11-10，使用者提供之分組複核，Codex by OpenAI 再查原文。
 
-### EK-193 | open | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 4 模型參數與證據表 | 未能核實
+### EK-193 | fixed | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 4 模型參數與證據表 | 未能核實
 - **問題**：論文頁列 GPT-3.5 175B、GPT-4o 200B、o1-mini 50B、Llama 3.3 70B、DeepSeek-R1 658B，與本篇原文 §5 所列數字一致，但證據表僅記模型名稱。DeepSeek 官方資料為原始 R1 列出 671B 總參數與 37B 啟用參數，與本篇的 658B 不一致；所查 OpenAI 資料的 175B 是 GPT-3 的數字，不能據此確定 GPT-3.5 的參數量，所查 GPT-4o 與 o1 系統卡亦未核實頁面列出的 200B 與 50B。Meta 的 Llama 3.3 70B 模型卡支持 70B 規模。原研究使用 API，未明確記載服務實例的具體快照；修訂時須保留論文與官方來源的差異，不把未證實直接視為證偽，也不能僅憑官方權重推定當時 API 版本。
 - **來源**：[Frontull 與 Ströhle 原文](https://arxiv.org/html/2505.22293v1) §5 p. 5；[DeepSeek 官方模型資料](https://github.com/deepseek-ai/DeepSeek-R1)；[OpenAI GPT-3 資料](https://openai.com/index/language-models-are-few-shot-learners/)；[GPT-4o 系統卡](https://cdn.openai.com/gpt-4o-system-card.pdf)；[o1 系統卡](https://openai.com/index/openai-o1-system-card/)；[Meta Llama 3.3 70B 模型卡](https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct)。
 - **發現於**：2026-11-10，第五批審查回報，Codex by OpenAI 再核對原文與官方資料。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。論文頁將參數量明確歸給原研究，並列官方 R1 的 671B／37B、GPT-3 175B 的版本歸屬及所查系統卡無法核實的數字，保留 API 快照未明的限制；證據表逐一登記原文及官方資料。無法核實的實際 API 規模不作猜測，此頁核實狀態改為 partial。
