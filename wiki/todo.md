@@ -64,9 +64,10 @@
 - **完成條件**：上列各項補記完畢，`lint_wiki.py` ERROR 0；`python .agents/skills/paper-pipeline/scripts/pipeline_status.py` 上列各篇之 S3 為 ok；有改卡片者 `check_cards.py` ERROR 0，原型與首頁已重建並驗證。
 - **來源**：第二批卡片回填 B、C 組最後回報（使用者轉貼，2026-11-10）；2026-11-10 登記，Claude Code by Anthropic。
 
-### TD-014 | open | skill | 以 paper-pipeline 實際收錄一篇新原始檔，驗證流程並補齊缺口
+### TD-014 | doing | skill | 以 paper-pipeline 實際收錄一篇新原始檔，驗證流程並補齊缺口
 - **內容**：[`paper-pipeline`](../.agents/skills/paper-pipeline/SKILL.md)（2026-11-10 新增）已以全庫進度檢查與既有論文測過 `pipeline_status.py` 與 `verify_star.js`，但尚未拿一篇從未收錄的原始檔從 S0 做到 S10。從 TD-001 中選一篇物理或化學題目試跑，建議 `raw/1985-macroscopic-quantum-tunneling.pdf`（超導電路巨觀量子穿隧，2025 諾貝爾物理學獎；index.md 已有 `[planned]` 條目）或 `raw/1999-metal-organic-frameworks-mof5.pdf`（MOFs，2025 諾貝爾化學獎）。逐步照 SKILL.md 第五節做，每一步記下：照文件做得下去嗎、指令輸出與文件所寫是否相符、哪裡寫得不清楚或缺了步驟、花了多少工夫。做完後把發現的缺口改進 SKILL.md、`references/` 或 `pipeline_status.py`，改不了的登記為新待辦。
 - **完成條件**：該篇 `pipeline_status.py <slug>` 九步皆 OK，結束碼 0；交付說明依 SKILL.md 第七節逐項填寫；試跑中發現之缺口皆已修正或登記；該篇從 TD-001 移除。
+- **負責**：Claude Code by Anthropic（2026-11-10 起，試跑 `raw/1985-macroscopic-quantum-tunneling.pdf`，預覽埠 8781）。
 - **來源**：使用者指示（2026-11-10：新流程先建立待辦，之後試跑）；2026-11-10 登記，Claude Code by Anthropic。
 
 ### TD-015 | open | wiki | 為三篇論文補期刊簡稱 venue_short
