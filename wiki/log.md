@@ -1894,3 +1894,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：[2026-11-10 12:12] rule「期刊簡稱 venue_short 處理流程整理入 paper-card-writer」一筆之標題時間係預先填寫，未照 `log_time.py` 之輸出；實際應為 2026-11-10 12:10（提交 b2464d9 時間 12:10:57）。依 append-only 原則不改原條目，以本筆更正。
+
+## [2026-11-10 12:23] ingest | 依 paper-pipeline 收錄 1985 超導電路巨觀能階量子化（TD-014 試跑） | #量子物理
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本工作階段之平台規範不允許將模型型號寫入版控檔案，請使用者自行補填，見 TD-004）
+- **具體變更**：依 `paper-pipeline` S0 至 S10 收錄 `raw/1985-macroscopic-quantum-tunneling.pdf`（Martinis, Devoret & Clarke 1985, PRL 55(15):1543-1546，2025 諾貝爾物理學獎）。新增論文頁 `wiki/papers/1985-macroscopic-quantum-tunneling.md`（verified）、證據表 `wiki/evidence/1985-macroscopic-quantum-tunneling.md`（32 列，數字與公式依掃描版頁面影像核對；3 篇後續研究以 Crossref 與摘要核對，參考文獻皆列本篇）、新概念頁 `wiki/concepts/macroscopic-quantum-circuits.md`（partial；既有之容錯量子計算概念與本篇無直接關係，只以 related_concepts 互列，`quantum-error-correction` 同步加回）、卡片檔 `wiki/cards/1985-macroscopic-quantum-tunneling.md` 與論文頁原型；`wiki/index.md` 之 `[planned]` 條目改為連結並標 `[wiki]`，第五節加概念頁。檢查結果：crossref_check OK；lint ERROR 0；check_cards ERROR 0、WARN 0；build_paper_prototype ERROR 0、WARN 0；verify_page.js PASS；build_home.py --card ERROR 0、WARN 0（群星 17→18、概念 8→9）；verify_wall.js PASS（WARN 20 項皆為他篇既有之語言標籤與期刊名截斷）；verify_star.js PASS。本篇插入為 No.04，其後 11 篇群星論文之卡片編號各加一，已重建其論文頁原型（每檔僅編號一行改變）。目視修正：Card 1 導語與 Card 6 結語原有一至兩字落單之行，已縮短。TD-001 移除本篇（餘 7 條目）。未決：模型版本欄之平台規範衝突（TD-004）；試跑發現之流程缺口於下一筆 rule 處理。

@@ -4,7 +4,7 @@ title_zh: "容錯量子計算與量子糾錯碼"
 domain: "physics"
 domain_tags: ["#量子物理", "#統計物理"]
 papers: ["1982-hopfield-network", "2024-fault-tolerant-quantum"]
-related_concepts: ["multi-messenger-astrophysics"]
+related_concepts: ["multi-messenger-astrophysics", "macroscopic-quantum-circuits"]
 verification: "partial"
 ---
 
@@ -37,3 +37,4 @@ verification: "partial"
 
 ## 關聯概念網絡
 * [多信使天體物理與極端宇宙學](multi-messenger-astrophysics.md)
+* [超導電路之巨觀量子現象](macroscopic-quantum-circuits.md)

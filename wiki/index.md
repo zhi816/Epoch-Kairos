@@ -33,8 +33,8 @@
 
 * `2025` ｜ 金屬有機骨架（MOFs）奈米多孔晶體 ｜ `#材料科學` ｜ `[2025 諾貝爾化學獎]` ｜ `[planned]`
   * 代表文獻：Li, Eddaoudi, O'Keeffe & Yaghi (1999) *Nature* 402:276-279，https://doi.org/10.1038/46248（出版社付費牆，`raw/` 暫無原始檔）。
-* `2025` ｜ 超導電路巨觀量子穿隧效應 ｜ `#量子物理` ｜ `[2025 諾貝爾物理學獎]` ｜ `[planned]`
-  * 原始文獻為 1980 年代中期 Clarke、Devoret、Martinis 之系列實驗，收錄時檔名須依實際發表年份。代表文獻：Martinis, Devoret & Clarke (1985) *Physical Review Letters* 55:1543-1546，https://doi.org/10.1103/PhysRevLett.55.1543（出版社付費牆，`raw/` 暫無原始檔）。
+* `2025` ｜ [超導電路巨觀能階量子化：電流偏壓約瑟夫森接面零電壓態之能階](papers/1985-macroscopic-quantum-tunneling.md) ｜ `#量子物理` ｜ *1985 發表 ｜ 2025 諾貝爾物理學獎* ｜ `[wiki]`
+  * 得獎者：John Clarke, Michel H. Devoret, John M. Martinis（即本篇三位作者）。原始文獻：`raw/1985-macroscopic-quantum-tunneling.pdf`（Martinis et al. (1985) *Physical Review Letters* 55(15):1543-1546，https://doi.org/10.1103/PhysRevLett.55.1543）。
 * `2025` ｜ 調節性 T 細胞（Treg）與周邊免疫耐受 ｜ `#免疫學` ｜ `[2025 諾貝爾生理學或醫學獎]` ｜ `[planned]`
   * 原始文獻為 Sakaguchi et al. (1995) *Journal of Immunology* 155:1151-1164，https://doi.org/10.4049/jimmunol.155.3.1151（Cloudflare 關卡，`raw/` 暫無原始檔）與 Brunkow et al. (2001) *Nature Genetics* 27:68-73，https://doi.org/10.1038/83784（出版社付費牆）；檔名依實際發表年份。
 * `2025` ｜ [創造性破壞與內生經濟成長模型（Aghion-Howitt 熊彼特成長理論）](papers/1992-creative-destruction-aghion.md) ｜ `#宏觀經濟學` `#制度經濟學` ｜ *1992 發表 ｜ 2025 諾貝爾經濟學獎* ｜ `[wiki]`
@@ -96,6 +96,7 @@
 * [可編程細胞與基因工程](concepts/programmable-cellular-engineering.md) ｜ `#基因工程` `#生物科技` `#分子生物` `#神經科學`
 * [多信使天體物理與極端宇宙學](concepts/multi-messenger-astrophysics.md) ｜ `#天體物理` `#宇宙學`
 * [容錯量子計算與量子糾錯碼](concepts/quantum-error-correction.md) ｜ `#量子物理` `#統計物理`
+* [超導電路之巨觀量子現象](concepts/macroscopic-quantum-circuits.md) ｜ `#量子物理`
 * [制度演化與宏觀經濟動態](concepts/institutions-and-macro-dynamics.md) ｜ `#宏觀經濟學` `#制度經濟學`
 * [臺灣南島語計算語言學與構詞解析](concepts/formosan-computational-linguistics.md) ｜ `#計算語言學` `#自然語言處理` `#人工智慧`
 * [低資源神經機器翻譯與檢索增強生成](concepts/low-resource-machine-translation.md) ｜ `#自然語言處理` `#深度學習` `#人工智慧` `#計算語言學`
