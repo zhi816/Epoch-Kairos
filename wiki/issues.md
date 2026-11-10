@@ -259,19 +259,21 @@
 
 ## 2024 Sora
 
-### EK-035 | open | papers/2024-sora-world-simulator.md | Card 3 | 原文未支持
+### EK-035 | fixed | papers/2024-sora-world-simulator.md | Card 3 | 原文未支持
 - **問題**：把 VAE 具體架構、3D RoPE、adaLN-Zero 與 epsilon-prediction 當作 Sora 已知實作。OpenAI 報告未提供實作細節，並說模型訓練預測原始乾淨 patch，與 epsilon-MSE 公式不符；二手反向推測須明標推測。
 - **來源**：[OpenAI 技術報告](https://openai.com/index/video-generation-models-as-world-simulators/)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回 OpenAI 技術報告與 DiT、綜述原文核實修訂 Card 3：明確劃分 OpenAI 官方公開機制（時空壓縮網路、時空圖塊 Token 化、預測原始乾淨圖塊）與學界推測（adaLN-Zero 源自 Peebles & Xie 2023，3D-RoPE 與 3D-VAE 細節源自 Liu et al. 2024）；公式依官方報告明示更新為預測乾淨圖塊目標（$\hat{U}_0$），並對比經典 DiT 之 $\epsilon$ 預測目標。證據表見 wiki/evidence/2024-sora-world-simulator.md。
 - **複核**：2026-11-10，Codex by OpenAI（GPT-6）。OpenAI 報告未公開模型實作細節；Card 3 仍把 adaLN-Zero 與影片重標註並列為引導生成的機制，論文頁仍列圖塊映射、乾淨圖塊損失與 adaLN 區塊公式，卡片 Card 3 另列圖塊數量式，報告未提供這些公式。EK-099 原先所指的舊冪律式與運算量式已刪；其複核提出的現存公式缺口在此一併追蹤，修正時須同時核對論文頁與卡片。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。依 OpenAI 技術報告及 Liu 綜述圖 4 分開公開流程與逆向推測，移除未公開的圖塊數量、嵌入、損失與 adaLN 區塊公式；論文頁改以文字說明，卡片採無公式模式，證據表同步更正。DiT 的 adaLN-Zero 僅歸給 Peebles 與 Xie 的研究。
 
-### EK-036 | open | papers/2024-sora-world-simulator.md | Card 1 | 過度表述
+### EK-036 | fixed | papers/2024-sora-world-simulator.md | Card 1 | 過度表述
 - **問題**：將遮擋後維持物體存在寫成一般穩定能力，報告措辭為「常能但並非總是」並明列物理模擬限制；即時互動與狀態記憶之說法亦超出原文示例。Card 5、6 之世界模型與隱式幾何重建描述應保留為有限能力觀察或詮釋。
 - **來源**：同 EK-035
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit、[2026-11-08 22:35] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。對照 OpenAI 官方報告修訂 Card 1、Card 4 與 Card 5：Card 1 將遮擋存在性精確限定為「常能（但並非總是）維持短暫被遮擋物體時空存在感」，並補列報告明示之物理交互局限；Card 4 刪除 Minecraft 具備即時互動與完備狀態記憶之表述，改為提示詞零樣本渲染動態畫面，並客觀補列玻璃碎裂與吃食物咬痕等物理失敗模式；Card 5 將世界模型描述限定為初步探索與有限能力湧現，強調高維視覺統計擬合與顯式因果物理引擎之本質差異。證據表見 wiki/evidence/2024-sora-world-simulator.md。
 - **複核**：2026-11-10，Codex by OpenAI（GPT-6）。Card 1 的限定語已補，但 Card 5 仍將隱藏層的三維幾何關聯寫成既定事實，Card 6 稱模型被迫反推世界幾何與物理規則；報告展示的是有限生成能力與失敗案例，未直接驗證這些內部機制。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。Card 5、6 改述報告展示的樣本及失敗案例，移除對隱藏層幾何與物理推理的未證實斷言；封面導言、hook 與證據表同步收斂。僅修正登記問題，論文頁 verification 改為 partial。
 
 ## 2025 DeepSeek-R1
 

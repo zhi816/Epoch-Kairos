@@ -10,20 +10,20 @@ domain: "ai"
 domain_tags: ["#計算機視覺", "#人工智慧", "#深度學習"]
 concepts: ["generative-world-models"]
 status: "published"
-verification: "issues"
+verification: "partial"
 my_focus: false
 doi_url: "https://arxiv.org/abs/2402.17177"
 key_papers:
   - "Peebles, W., & Xie, S. (2023) Scalable Diffusion Models with Transformers (DiT). Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV), 4195-4205. https://doi.org/10.1109/ICCV51070.2023.00387"
   - "Brooks, T., Peebles, B., Holmes, C., DePue, W., Guo, Y., Jing, L., Schnurr, D., Taylor, J., Luhman, T., Luhman, E., Ng, C., Wang, R., & Ramesh, A. (2024) Video generation models as world simulators. OpenAI Technical Report. https://openai.com/research/video-generation-models-as-world-simulators"
   - "Liu, Y. et al. (2024) Sora: A Review on Background, Technology, Limitations, and Opportunities of Large Vision Models. arXiv:2402.17177. https://arxiv.org/abs/2402.17177"
-hook: "將不同時長、解析度與長寬比的影片統一壓縮為三維「時空圖塊（Spacetime Patches）」，以擴散轉換器（DiT）取代傳統 U-Net 骨幹，展現出隨訓練算力擴展而湧現的三維視角一致性與物理世界模擬能力。"
+hook: "將不同時長與長寬比的影片壓縮並切成時空圖塊，以擴散轉換器生成影片；公開樣本呈現部分視角一致性，也顯示物理互動的限制。"
 card_line: "把影片切成時空小塊，生成連貫的長影片"
 ---
 
 # Sora 與世界模型時空物理模擬：基於擴散轉換器（DiT）與時空圖塊的視覺生成湧現
 
-> 「當大型語言模型將人類知識統一為一維文字 Token 時，Sora 將流動的三維光影與時間切分成時空圖塊（Spacetime Patches），讓神經網路在去噪過程中自發領悟透視、遮擋與運動的直覺物理。」
+> 「影片先壓縮並切成時空圖塊，再由擴散轉換器生成；樣本的連貫性與物理互動仍有明確限制。」（本頁引言為 Wiki 撰寫，非原文）
 
 **2024 發表 ｜ 視覺世界模型與擴散轉換器突破**
 
@@ -37,45 +37,20 @@ OpenAI 報告指出，過去的圖像與影片生成做法通常把訓練影片�
 ---
 
 ## Card 2 ｜ 世紀瓶頸：U-Net 算力天花板與固定裁切導致的空間碎裂 (The Dilemma)
-在 Sora 之前，視覺生成模型長期受困於兩大歷史包袱：
-
-* **卷積 U-Net 架構的擴展瓶頸**：自 DDPM 與 Stable Diffusion 以來，擴散模型普遍採用卷積 U-Net 作為去噪主幹。然而，卷積核感受野受限於局部空間，難以維持跨越數百幀（數十秒）的長程時間一致性；且當模型參數與算力放大時，U-Net 缺乏如 LLM Transformer 般平滑且可預測的性能冪律躍升。
-* **固定解析度與正方形強行裁切（Cropping Bias）的毒害**：傳統影片訓練管線為了拼成固定形狀張量，強制將所有訓練影片剪裁為固定時長（如 16 幀）、固定正方形比例。這導致大量訓練畫面中的主體被截斷，模型無法學習完整的構圖美學、廣角鏡頭運動與跨時間尺度的因果物理。
+OpenAI 報告指出，過去部分圖像與影片生成做法會將資料縮放、裁切或截短為固定解析度與時長，例如 4 秒、$256 \times 256$。作者比較在原生尺寸與裁成正方形資料上訓練的模型，觀察到後者有時只生成畫面主體的一部分。另一個研究問題是：擴散轉換器在影片生成中的樣本品質，是否會隨訓練算力增加而改善（§Variable durations, resolutions, aspect ratios；§Scaling transformers for video generation）。
 
 ---
 
 ## Card 3 ｜ 突破架構與原理 (The Secret)
-Sora 建構於三大核心技術支柱之上：**三維時空潛在壓縮**、**時空圖塊化（Spacetime Patchification）**與**擴散轉換器（Diffusion Transformer, DiT）**。在架構解讀上，需明確區分 OpenAI 官方報告已公開機制與學界（Liu et al. 2024）之分析推測：
+OpenAI 技術報告公開的是高層流程，並明言不提供模型與實作細節；Liu 等（2024）圖 4 則是綜述作者的逆向推測，不能直接當成 Sora 已證實的內部架構。
 
-1. **時空潛在壓縮網路（Video Compression Network）**：
-   * 官方報告指出，模型訓練一個在時間維度 $T$ 與空間維度 $H \times W$ 同步降維的網路，將高維原始像素影片 $X \in \mathbb{R}^{T \times H \times W \times 3}$ 映射為緊湊的低維三維潛在張量 $Z \in \mathbb{R}^{t \times h \times w \times c}$，解碼器則負責將潛在向量映射回像素空間。學界（Liu et al. 2024）推測其為基於 3D 卷積或因果時間卷積的時空 VAE 架構（如 MagViT-v2 風格）。
-2. **時空圖塊（Spacetime Patches）作為視覺 Token**：
-   * 借鏡 Vision Transformer（ViT）與 ViViT 思想，將三維潛在張量 $Z$ 切分為固定體積為 $p_t \times p_h \times p_w$ 的三維圖塊序列並展平為一維序列。正因為輸入是一維序列，無論原始影片是橫屏、豎屏、單張靜態圖片（$T=1$）還是 60 秒長片，皆能以**原生解析度與長寬比（Native Aspect Ratio）**直接打包進同一個 Transformer 進行訓練。
-3. **擴散轉換器（DiT）與乾淨圖塊預測目標**：
-   * 以純 Transformer 骨幹取代 U-Net。**關鍵差異在於**：經典 DiT（Peebles & Xie 2023）採用噪聲預測（$\epsilon$-prediction），而 OpenAI 官方報告明確指出 Sora 訓練於**給定噪聲圖塊與條件資訊下直接預測原始乾淨圖塊（Predict the original clean patches）**。DiT 經典設計中的自適應層正規化（adaLN-Zero）與密集影片重標註（Recaptioning）共同引導去噪生成。
+### 1. 時空壓縮與圖塊序列
 
-### 1. 時空潛在壓縮與圖塊序列映射 (Spacetime Patch Tokenization)
+報告描述一個同時壓縮影片時間與空間維度的網路，另以解碼器將生成的潛在表示映回像素。壓縮後的表示被切成時空圖塊，作為 Transformer 的輸入；單張圖片可視為只有一個時間影格的影片。這種表示支援不同時長、解析度與長寬比（§Video compression network；§Spacetime latent patches）。
 
-給定原始影片 $X \in \mathbb{R}^{T \times H \times W \times 3}$，經時空壓縮網路映射至潛在空間 $Z \in \mathbb{R}^{t \times h \times w \times c}$（下採樣倍率分別為 $r_t, r_s, r_s$）。接著以體積為 $p_t \times p \times p$ 的三維圖塊將 $Z$ 切分為 $N$ 個時空 Token：
+### 2. 從帶雜訊圖塊預測乾淨圖塊
 
-$$\begin{aligned}
-N &= \frac{t}{p_t} \cdot \frac{h}{p} \cdot \frac{w}{p} \\
-u_i &= W_{\text{patch}}\,\operatorname{vec}(Z_i) + \mathbf{p}_i^{\text{3D}} \in \mathbb{R}^d, \quad i \in \{1, \dots, N\}
-\end{aligned}$$
-
-其中 $\mathbf{p}_i^{\text{3D}}$ 為三維時空座標 $(t_i, y_i, x_i)$ 之位置編碼（OpenAI 未公開具體編碼形式，學界綜述推測可採 3D-RoPE 或正弦時空編碼），使模型在任意解析度與時長下皆能感知圖塊間的相對時空位置。
-
-### 2. 擴散轉換器之乾淨圖塊預測目標 (Clean Patch Diffusion Objective)
-
-在連續潛在空間中，將真實影片圖塊序列 $U_0 = [u_1, \dots, u_N]$ 與標準高斯雜訊 $\epsilon \sim \mathcal{N}(0, I)$ 依擴散時間步 $\tau \in [0, 1]$ 進行加噪：$U_\tau = \alpha_\tau U_0 + \sigma_\tau \epsilon$。與經典 DiT 預測雜訊 $\epsilon$ 不同，OpenAI 技術報告明示 Sora 訓練目標為預測原始「乾淨」圖塊 $\hat{U}_0$：
-
-$$\begin{aligned}
-\mathcal{L}_{\text{Sora}}(\theta) &= \mathbb{E}_{U_0, \epsilon, \tau, c_{\text{text}}} \left[ \left\| \hat{U}_0(U_\tau, \tau, c_{\text{text}}) - U_0 \right\|_2^2 \right]
-\end{aligned}$$
-
-在作為基礎參考的經典 DiT 架構（Peebles & Xie 2023）中，條件注入機制採自適應層正規化（adaLN-Zero），由條件向量 $(c_{\text{text}}, \tau)$ 動態調製正規化特徵：
-
-$$\operatorname{adaLN}(h, \tau, c) = \gamma(\tau, c) \odot \frac{h - \mu(h)}{\sigma(h)} + \beta(\tau, c)$$
+OpenAI 描述 Sora 是擴散轉換器：訓練時給定帶雜訊的圖塊與文字等條件資訊，模型預測原始乾淨圖塊（§Scaling transformers for video generation）。報告未公開此處的具體損失函數、圖塊嵌入或位置編碼公式。Peebles 與 Xie（2023）的 DiT 研究了 adaLN-Zero；這是相關架構的已公開設計，不能據此斷定 Sora 使用相同機制。
 
 ### 3. 算力與生成品質 (Compute and Sample Quality)
 
@@ -98,17 +73,14 @@ Peebles & Xie (2023) 以 12 種 DiT 設定（0.3 至 118.6 Gflops）測試，發
 ---
 
 ## Card 5 ｜ 時代典範轉移 (The Revolution)
-* **視覺與語言架構的徹底大一統**：繼 LLM 將文字化為 1D Token 後，Sora 證明連續的四維時空（3D 空間 ＋ 1D 時間）同樣可以被離散/連續圖塊化並交由標準 Transformer 統治，打通了原生多模態世界模型的任督二脈。
-* **朝向「直覺物理模擬」的初步探索與長程挑戰**：為了在數萬個時空圖塊之間極小化預測誤差，模型在隱藏層呈現出對三維視角與光影運動的隱式關聯建模。然而，這種基於高維視覺統計關聯的模擬與顯式因果物理引擎仍有本質區別，模型常在缺乏足夠數據先驗的非典型物理交互中失效，距離真正具備可靠因果推理與物理封閉性的世界模型仍具巨大差距。
-* **影視工業、模擬訓練與具身智能（Embodied AI）的合成數據引擎**：自動駕駛與人形機器人訓練長期受限於真實世界長尾極端場景（Corner Cases）數據不足；高保真生成式世界模型可作為可交互的虛擬物理沙盒，為強化學習代理提供無限合成環境。
+* **以圖塊處理不同尺寸的視覺資料**：OpenAI 將影片與圖片壓縮後切成時空圖塊，再以 Transformer 處理，讓同一表示方式適用於不同尺寸與時長的輸入。
+* **物理模擬仍有邊界**：報告展示部分視角變化與遮擋連貫的樣本，也指出玻璃破碎及進食後物體狀態可能不正確。這些輸出現象並未直接驗證模型隱藏層是否建構三維幾何或物理規則。
+* **可能的後續用途**：生成影片可供研究合成資料與模擬，但是否適合互動控制或特定訓練任務，仍須針對物理一致性與失敗情況獨立驗證。
 
 ---
 
 ## Card 6 ｜ 跨界思維與啟發 (The Kairos)
-Sora 與時空 DiT 的崛起印證了資訊理論與認知科學的深層交會：
-
-1. **壓縮即理解，預測即模擬**：要在時間維度上準確預測下一秒的千萬個像素如何變化，神經網路被迫在潛在空間中重演柏拉圖的「洞穴寓言」——透過觀察二維牆壁上的光影投影（訓練影片），反推出背後三維真實世界的幾何與物理規則。
-2. **表徵的靈活性決定規模的上限**：放棄刻板的正方形裁剪、擁抱可變長度的時空圖塊序列，看似只是一個資料前處理的工程改進，實則解開了束縛視覺模型讀取全人類原生影像遺產的枷鎖。
+**Wiki 延伸**：可變尺寸的時空圖塊提供一個設計思路：先選擇能容納不同資料形狀的表示，再檢驗模型能否從中生成有用的結果。影片看起來連貫，不等於模型已推導出世界幾何或物理定律；這仍須透過獨立實驗檢驗。
 
 ---
 
