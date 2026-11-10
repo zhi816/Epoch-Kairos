@@ -1743,3 +1743,12 @@
   - 原文抽查：Card 4 四個數字以 PDF 表 6（p. 23）、表 7（p. 24）、表 21(a)（p. 34）、表 22(a)（p. 35）核對（15.50、16.15、19.38、21.97，皆為交叉驗證）；證據表原只寫「表 21–22 交叉驗證最佳值與父語言」，補列六個方向之最佳值與多預欄數值。原文只有 §1.4 式 1、2（BLEU 與平滑）與 p. 12 式 3（Dice 係數，用於切分交叉驗證資料），Card 3 採無公式模式。論文頁其餘內容未查出與原文不符之處，`verification` 維持 verified。
   - 卡片：Card 3 無公式模式，示意圖為父模型微調與共用子詞；Card 4 數字模式，賽德克語雙向之多語言遷移式學習與單語基準；Card 5 一般模式三筆同實驗室後續碩士論文；Card 6 取論文頁 Card 6 評估資料重疊一點，未涉及使用者碩論。另填封面標題（只刪減）。
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 35 項 PASS；無頭截圖目視，修正封面標題「機／器」、Card 2「六／千」「族／語」「中／文」與 Card 6「資／料」之拆詞折行。`lint_wiki.py` ERROR 0。首頁卡片牆依 TD-008 協調規則於本批結束時統一重建。
+
+## [2026-11-10 10:04] update | 改寫片段提示翻譯頁之 Card 1、2、5 並新增卡片文字檔 | #自然語言處理 #人工智慧 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 C 組（TD-008）。先依 wiki-content-audit 修正 [wiki/papers/2025-fragment-shot-reasoning-mt-frontull.md](papers/2025-fragment-shot-reasoning-mt-frontull.md) 與證據表，再依 paper-card-writer 撰寫 [wiki/cards/2025-fragment-shot-reasoning-mt-frontull.md](cards/2025-fragment-shot-reasoning-mt-frontull.md) 並建置 `web/prototypes/paper-v1/2025-fragment-shot-reasoning-mt-frontull.html`。
+  - 頁面修正（EK-172，fixed）：證據表第 15 列改為逐一列出表 1（p. 6）五個翻譯方向、五款模型之 BLEU 與信賴區間，另列 +7.83 為依原文計算；Card 1「證明」改照摘要三項發現；Card 2 刪去原文未支持之「整句檢索只重疊停用詞」「辭典缺乏屈折示範」，改照 §1、§2 與 p. 6；Card 5 補列公開資源（GitHub、PyPI，測試集不公開）、Limitations（p. 9）與 Future Work（p. 8）。`verification` 改為 `partial`。
+  - 卡片：Card 3 無公式模式（全文無編號公式，片段選取以 §3 文字與圖 1 敘述）；Card 4 四個數字（28.60、13.11、20.94、14.22）回原文表 1 抽查相符；Card 5 新論文模式三筆取摘要、Limitations 與 Future Work；Card 6 依 §7「缺少直接平行資料時」之樞紐片段提示。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 37 項）；桌面箭頭、圓點、方向鍵與手機滑卡、「隨卡片｜全文」開關實測正常。目視修正 Card 2 對照欄之落單行。`lint_wiki.py` 本篇無 ERROR、WARN（唯一 ERROR 在他人未提交之 2025-deepseek-r1.md）。
+  - 首頁卡片牆依本批協調規則未重建，由協調者處理。

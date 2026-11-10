@@ -811,3 +811,9 @@
 - **來源**：`raw/my-focus/報告論文題材/2026.loresmt-1.2.pdf`，表 3（p. 33）、§7 與 Limitations（p. 34）。
 - **發現於**：第二批卡片回填 C 組回報與第三批撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。回原文核對後：證據表第 17 列改為逐一列出表 3 之 BLEU、chrF、Median SBERT 各 6 格數值（皆與論文頁 Card 4 表相符）；Card 5 補列 §7 未來工作、Limitations 所列限制與頁碼，並註明原文未提及公開資源；證據表同步補登。頁面 `verification` 改為 `partial`。
+
+### EK-172 | fixed | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 1、Card 2、Card 5 與證據表第 15 列 | 原文未支持
+- **問題**：（1）Card 2 第 1、2 點稱整句檢索在小語料中「命中率低、強制檢索出的整句往往只有少數不相關的高頻停用詞重疊」，並稱辭典提示「無法提供屈折變化、黏著語綴、詞序排列與焦點選擇的上下文示範」，原文 §1–§2 沒有這些說法；原文所述困難為大模型對小語言及其變體認識有限、少於 13,000 句對不足以訓練（Gu et al. 2018），以及拉定語沒有合適之語意嵌入模型。（2）Card 1 稱本篇「證明」大模型能以推理補償數據之不足，Card 5 第 2 點以圖 2 單一例子稱推理模型能「自發跨越兩跳完成語素映射，證明推理能部分補償數據匱乏」，且未交代 PF（20.94）仍低於有直接例句時之 FS（28.60）；原文摘要與結論之措辭為「更善用檢索知識」「讓模型超越例句而泛化」。（3）Card 5 漏記原文公開之程式碼、檢索語料與 PyPI 套件、Limitations 所列限制與 Future Work。（4）證據表第 15 列只寫「Table 1 之 BLEU 分數」，未逐一列出數值。
+- **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`，摘要與 §1（p. 1）、§2（pp. 2–3）、註 1（p. 3）、表 1（p. 6）、Conclusion 與 Future Work（p. 8）、Limitations（p. 9）。
+- **發現於**：第三批卡片回填撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。回原文核對後：Card 2 依 §1–§2 改寫為大模型對小語言掌握有限、微調資料不足、拉定語無嵌入模型而無從語意檢索；Card 1「證明」改為摘要之發現；Card 5 第 2 點改述 PF 與 ZS、FS 之數值關係並引結論原句；Card 5 補列公開資源、限制與未來工作；證據表逐一列出表 1 四個方向（另含 Gherdëina→Italian GPT-4o 兩格）之數值與信賴區間，補登上述各項。頁面 `verification` 改為 `partial`。
