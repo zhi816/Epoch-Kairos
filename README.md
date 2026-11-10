@@ -83,5 +83,5 @@ git clone https://github.com/zhi816/Mine-RAW.git raw
 ## 成果瀏覽
 
 * **GitHub Repository**：[https://github.com/zhi816/Epoch-Kairos](https://github.com/zhi816/Epoch-Kairos)
-* **GitHub Pages 成果展示**：*(部署完成後連結：https://zhi816.github.io/Epoch-Kairos/)*
+* **GitHub Pages 成果展示**：[https://zhi816.github.io/Epoch-Kairos/](https://zhi816.github.io/Epoch-Kairos/)（由 `.github/workflows/pages.yml` 於 `web/` 變動推送至 `main` 時自動發布，`web/prototypes/` 不上站）
 * **目前收錄進度**：見 [`wiki/index.md`](./wiki/index.md)。

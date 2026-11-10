@@ -1944,3 +1944,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依使用者指示，論文頁資訊欄「核實狀態」之「已逐項對照原文查核」前不再顯示綠色圓點：`tools/paper_template.html` 刪除 `.side .ok i` 樣式，`tools/build_paper_prototype.py` 不再輸出圓點元素，DESIGN.md 第五章第 1 節記錄此決定；重建全部 38 篇 `web/papers/<slug>/index.html`，自我檢查皆 ERROR 0、WARN 0；本機預覽 `2016-ligo-gravitational-waves` 確認圓點消失，`verify_page.js` PASS。
+
+## [2026-11-10 13:39] fix | 修正大螢幕首頁星圖與索引不顯示，GitHub Pages 上線 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：GitHub Pages 首次發布成功（使用者於 Settings 將 Source 設為 GitHub Actions 並執行工作流程），網址 https://zhi816.github.io/Epoch-Kairos/ 。使用者回報桌面 Safari 首頁索引與星圖皆空白；以 Chromium 1677 x 880 重現，原因為 `web/assets/js/starmap.js` 背景星數隨視窗面積放大至 1600 x 1.25 顆，卻只產生 1600 顆，視窗大於 1440 x 900 時讀到不存在之星而拋錯，腳本中止於建星圖之前（與瀏覽器無關，先前驗證皆在 1440 x 900 故未發現）。改為產生上限所需之 2000 顆（固定種子，前 1600 顆位置不變）並以實際星數為上限。驗證：本機 1677 x 880、2560 x 1440 星圖與索引正常、無主控台錯誤，`verify_wall.js` PASS；線上 `papers/2016-ligo-gravitational-waves/` KaTeX 45 處 0 錯誤、無綠點，`prototypes/` 回應 404（未上站）。README 改為正式連結。完成 TD-005；其中尚待決定之 raw/ 路徑事項轉登記 TD-019。

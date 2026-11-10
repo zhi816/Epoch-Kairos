@@ -26,13 +26,6 @@
 - **等待**：使用者提供當時之模型型號，並決定直接補入原條目（屬修改舊條目，須使用者明示同意）、另追加更正條目，或維持原樣。
 - **來源**：wiki/log.md [2026-11-07 22:47] audit「待使用者處理」第 1 項；2026-11-09 登記，Claude Code by Anthropic。
 
-### TD-005 | waiting | web | 以 GitHub Actions 將 web/ 發布至 GitHub Pages（工作流程已加入，待首次發布）
-- **內容**：GitHub Pages 之「Deploy from a branch」只接受倉庫根目錄或 `/docs`，無法直接發布 `web/`，且主倉庫目前尚無 `.github/` 目錄。新增 `.github/workflows/pages.yml`：推送至 `main` 且 `web/**` 有變動時觸發（另加 `workflow_dispatch` 供手動重新發布），依序以 `actions/checkout`、`actions/configure-pages`、`actions/upload-pages-artifact`（`path: web`）、`actions/deploy-pages` 發布，只公開 `web/` 之內容，`wiki/`、`AGENTS.md` 等不上站；寫入前先確認各 action 之最新主版本號。首頁檔名維持 `web/index.html`、論文頁維持 `web/papers/<slug>/index.html`，網址即 `https://zhi816.github.io/Epoch-Kairos/` 與 `https://zhi816.github.io/Epoch-Kairos/papers/<slug>/`。發布後將 README.md「GitHub Pages 成果展示」一行之暫定連結改為正式連結。
-- **完成條件**：工作流程首次執行成功（倉庫 Actions 分頁顯示成功），首頁網址可正常開啟，`assets/` 與 KaTeX 資源載入無誤，README 連結已更新。
-- **等待**：使用者至倉庫 Settings → Pages 將 Source 改為「GitHub Actions」，並確認倉庫為公開（私有倉庫之 Pages 需付費方案）；設定後於 Actions 分頁手動執行「Deploy web/ to GitHub Pages」（`workflow_dispatch`），或待下次 `web/**` 變動推送時自動觸發。
-- **進度**：2026-11-10 使用者決定先部署，不等卡片牆補齊（TD-009 之後重建首頁並推送時會自動重新發布）。已新增 `.github/workflows/pages.yml`（Claude Code by Anthropic）：`actions/checkout@v7`、`configure-pages@v6`、`upload-pages-artifact@v5`、`deploy-pages@v5`（2026-11-10 查得之最新主版本），只在 `web/**` 變動時觸發。同日論文頁移至 `web/papers/<slug>/`（TD-002），工作流程改為以 rsync 組出 `_site/` 並排除 `web/prototypes/`（樣稿與手機原型不上站，使用者同意）。尚未執行過：首次執行成功、首頁與 KaTeX 驗證、README 連結更新後才算完成。上線前可考慮：6 篇論文頁正文以文字寫有 `raw/<檔名>.pdf` 路徑（`2025-deepseek-r1`、`2007-woodford-inflation-dynamics`、`2023-jwst-massive-galaxies`、`2024-fault-tolerant-quantum`、`2024-alphafold3`、`2024-sora-world-simulator`），使用者尚未決定是否處理。使用者已於 2026-11-09 同意我的星系公開其研究主題（臺灣南島語計算語言學、低資源機器翻譯）與 24 篇關注論文；碩論題目、資料與結果仍不公開（DESIGN.md 第八章第 13 項、paper-card-writer 第二節第 13 條）。
-- **來源**：使用者指示（首頁確定後再發布）；2026-11-09 登記，Claude Code by Anthropic。
-
 ### TD-007 | waiting | wiki | 建立證據表「類型」欄白名單並清點違規列
 - **內容**：`wiki/evidence/` 各表之「類型」欄目前混用組合值與白名單外描述，例如 [1992-creative-destruction-aghion.md](evidence/1992-creative-destruction-aghion.md) 之「本篇研究結果 / 官方事實」、[2001-colonial-origins-acemoglu.md](evidence/2001-colonial-origins-acemoglu.md) 之「本篇研究結果 / 作者解釋」與「後續研究 / 政策推論」，不符 AGENTS.md 第七章第 4 節所定五類（本篇研究結果、後續研究、作者解釋、依原文數據計算、Wiki 詮釋）。應先全庫清點所有不合規列並列出清單與建議類型，再決定處置方式；每一列須回原文判斷主張歸屬，不得機械拆解組合值或批次改寫。
 - **完成條件**：清單列畢且經使用者確認處置方式（逐列修正，或於 AGENTS.md 明訂組合值之使用規則），必要時 `lint_wiki.py` 增列檢查；未經確認前不動任何證據表。另須處理 5 份缺「類型」欄之證據表（49 列）：補上欄位並逐列歸類，或經使用者同意另案處理；133 列之逐列清單與建議須以檔案存入專案，不得只留在對話中。
@@ -75,3 +68,9 @@
 - **內容**：`raw/2003-channelrhodopsin2.pdf`（Nagel et al. 2003, PNAS）是 [2005-optogenetics](papers/2005-optogenetics.md) 之奠基論文，論文頁 `key_papers` 只寫 DOI，「知識網絡與文獻出處」沒有寫此原始檔路徑，`pipeline_status.py --new` 因而把它歸為「已列待辦」（TD-003 順帶提到它）而非「已引用」。依 `paper-pipeline` 之 `references/intake.md` 第三節，在該頁「原始權威文獻」另起一行寫明奠基論文原始檔路徑（不得改動「原始檔典藏」一行，S1 以第一個「原始檔典藏」判斷主軸原始檔）。此頁之卡片撰寫尚待使用者決定由誰處理（TD-008），本項只補一行路徑，不涉及內容撰寫。
 - **完成條件**：`pipeline_status.py --new` 將 `raw/2003-channelrhodopsin2.pdf` 列為「已引用」；`lint_wiki.py` ERROR 0。
 - **來源**：TD-014 試跑（2026-11-10）發現；2026-11-10 登記，Claude Code by Anthropic。
+
+### TD-019 | waiting | wiki | 決定已公開論文頁正文中之 raw/ 原始檔路徑是否改寫
+- **內容**：GitHub Pages 已上線（2026-11-10），下列 6 篇論文頁之正文或資訊欄以文字寫有私有倉庫之原始檔路徑（如 `raw/2025-deepseek-r1.pdf`），公開網頁上讀者看得到檔名但無法開啟：`2025-deepseek-r1`、`2007-woodford-inflation-dynamics`、`2023-jwst-massive-galaxies`、`2024-fault-tolerant-quantum`（2 處）、`2024-alphafold3`、`2024-sora-world-simulator`。路徑多為說明「本頁採用哪一版本」（正式版、arXiv 版、補充資料），改寫時須保留版本資訊，改以 DOI 或 arXiv 版號表述。論文頁「知識網絡與文獻出處」之「原始檔典藏」一行為 `paper-pipeline` S1 所需，是否同樣出現在網頁上須一併確認。
+- **完成條件**：使用者決定保留或改寫；改寫者依 `wiki-content-audit` 修改論文頁，重建論文頁並推送，網頁正文不再出現 `raw/`。
+- **等待**：使用者決定是否改寫。
+- **來源**：TD-005 部署前檢查發現（2026-11-10），TD-005 完成時轉登記；2026-11-10 登記，Claude Code by Anthropic。

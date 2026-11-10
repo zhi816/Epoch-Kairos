@@ -86,10 +86,13 @@
   }
 
   /* ---------- 星空背景：固定種子，約半數集中於斜向銀河帶 ---------- */
+  /* 星數依視窗面積在 1440 x 900 之 0.3 至 1.25 倍間縮放（drawSky），故須備足上限 1600 x 1.25 顆；
+     種子固定，前 1600 顆與舊版相同。舊版只產生 1600 顆，視窗大於 1440 x 900 時讀到不存在的星而中止整支腳本（2026-11-10 修正） */
+  var SKY_BASE = 1600, SKY_MAX_SCALE = 1.25, SKY_N = Math.ceil(SKY_BASE * SKY_MAX_SCALE);
   var sky = $('sky'), sctx = sky.getContext('2d'), skyStars = [];
   (function () {
     var r = rndFrom(8161108), tints = ['#FFFFFF', '#FFFFFF', '#FFFFFF', '#FFF3E2', '#E4EEFF'];
-    for (var i = 0; i < 1600; i++) {
+    for (var i = 0; i < SKY_N; i++) {
       var band = r() < 0.45, x = r();
       var y = band ? 0.84 - x * 0.66 + (r() + r() + r() - 1.5) * 0.1 : r();
       var q = r(), sz = q < 0.66 ? 1 : (q < 0.94 ? 1.5 : 2.2);
@@ -102,7 +105,7 @@
     if (sky.width !== Math.round(w * dpr) || sky.height !== Math.round(h * dpr)) { sky.width = Math.round(w * dpr); sky.height = Math.round(h * dpr); }
     sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     sctx.clearRect(0, 0, w, h);
-    var n = Math.round(1600 * Math.max(0.3, Math.min(1.25, (w * h) / (1440 * 900))));
+    var n = Math.min(skyStars.length, Math.round(SKY_BASE * Math.max(0.3, Math.min(SKY_MAX_SCALE, (w * h) / (1440 * 900)))));
     for (var i = 0; i < n; i++) {
       var s = skyStars[i], o = s.o;
       if (s.tw && t) o *= 0.61 + 0.39 * Math.sin(t / 764 + s.ph);
