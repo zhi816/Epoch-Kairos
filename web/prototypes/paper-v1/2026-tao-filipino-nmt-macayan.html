@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>達悟語－菲律賓語神經機器翻譯｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#8FD5FD;--deep:#204960;--win:#1C252B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html#my-constellation" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.06</span><span>報告題材</span></div><div class="win"><i style="left:82.6%;top:37.5%;width:1.5px;height:1.5px;opacity:0.31"></i><i style="left:39.8%;top:24.6%;width:1px;height:1px;opacity:0.68"></i><i style="left:71.8%;top:35.0%;width:1.5px;height:1.5px;opacity:0.43"></i><i style="left:69.4%;top:40.7%;width:1px;height:1px;opacity:0.82"></i><i style="left:7.7%;top:14.7%;width:1px;height:1px;opacity:0.43"></i><i style="left:46.2%;top:18.4%;width:1px;height:1px;opacity:0.34"></i><i style="left:42.5%;top:16.9%;width:1px;height:1px;opacity:0.72"></i><i style="left:11.0%;top:35.6%;width:1px;height:1px;opacity:0.32"></i><i style="left:21.1%;top:30.5%;width:1px;height:1px;opacity:0.62"></i><i style="left:12.7%;top:31.3%;width:1px;height:1px;opacity:0.58"></i><i style="left:28.9%;top:32.8%;width:1px;height:1px;opacity:0.55"></i><i style="left:73.6%;top:15.7%;width:1px;height:1px;opacity:0.84"></i><i style="left:72.4%;top:39.3%;width:1px;height:1px;opacity:0.59"></i><i style="left:51.1%;top:17.3%;width:1px;height:1px;opacity:0.34"></i><span class="lang">達悟語</span><span class="rep"></span><span class="line"><span>借親屬語伊巴丹語，</span><span>把達悟語</span><span>譯成菲律賓語</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #計算語言學 #深度學習</div><div class="name">達悟語－菲律賓語翻譯</div><div class="lead">親屬語預訓練與辭典合成資料，各有所長。</div><div class="yrs">2026 發表 ｜ LoResMT 2026</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">只有聖經，<br>學不會日常對話</span><div class="rows"><div class="row"><b>聖經語料</b><span>主要平行資料是新約經文，模型偏向古老句構與用詞</span></div><div class="row"><b>NLLB-200</b><span>多語翻譯模型，預訓練有他加祿語，卻沒有巴丹語群語言</span></div><div class="row gap"><b>會話資料</b><span>只靠經文，模型難以處理日常會話</span></div></div><span class="ft" style="color:var(--ink)">得替日常會話另找翻譯資料。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">借親屬語暖身，<br>用辭典補會話</span><svg class="dia" viewBox="0 0 300 126" role="img" aria-label="示意：先以伊巴丹語預訓練模型，再用聖經與辭典例句轉成的會話資料微調達悟語。">
+  <rect class="k-ink k-ring" x="4" y="40" width="72" height="28" rx="4"/>
+  <rect class="k-ink k-ring" x="106" y="40" width="84" height="28" rx="4"/>
+  <rect class="k-accent k-ring" x="214" y="40" width="82" height="28" rx="4"/>
+  <rect class="k-ink k-ring" x="200" y="98" width="42" height="24" rx="4"/>
+  <rect class="k-ink k-ring" x="248" y="98" width="48" height="24" rx="4"/>
+  <line class="k-ink" x1="76" y1="54" x2="104" y2="54"/>
+  <polyline class="k-ink" points="98,49 104,54 98,59"/>
+  <line class="k-ink" x1="190" y1="54" x2="212" y2="54"/>
+  <polyline class="k-ink" points="206,49 212,54 206,59"/>
+  <line class="k-ink" x1="221" y1="96" x2="221" y2="72"/>
+  <polyline class="k-ink" points="216,78 221,72 226,78"/>
+  <line class="k-ink" x1="272" y1="96" x2="272" y2="72"/>
+  <polyline class="k-ink" points="267,78 272,72 277,78"/>
+  <text class="k-label" x="40" y="58" text-anchor="middle">伊巴丹語</text>
+  <text class="k-label" x="148" y="58" text-anchor="middle">預訓練模型</text>
+  <text class="k-label-accent" x="255" y="58" text-anchor="middle">微調達悟語</text>
+  <text class="k-label" x="221" y="114" text-anchor="middle">聖經</text>
+  <text class="k-label" x="272" y="114" text-anchor="middle">辭典例句</text>
+</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">先用同屬巴丹語群的伊巴丹語預訓練，再以聖經與辭典轉譯的會話句微調。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">34.85</span><span class="l">伊巴丹語預訓練後，聖經測試 BLEU</span></div><div class="stat"><span class="v">32.00</span><span class="l">只用聖經語料的基線，聖經測試 BLEU</span></div><div class="stat"><span class="v">6.67</span><span class="l">加辭典合成資料，域外會話 BLEU（內文 6.61）</span></div><div class="stat"><span class="v">3.12</span><span class="l">同一基線之域外會話 BLEU</span></div></div><span class="ft">範圍：Macayan 等 2026，達悟語→他加祿語；聖經 200 句、會話 20 句</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">斷詞與人工評估，<br>留待下一步</span><div class="time"><p><b>2026</b><span>只研究達悟語→他加祿語一個語言對</span></p><p><b>2026</b><span>沒有人工評估，指標測不到比喻與偏誤</span></p><p><b>2026</b><span>建議改用子詞斷詞，處理罕見詞與構詞</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">與達悟語越近的親屬語，越能幫上忙：先學伊巴丹語，經文翻得更好。</span><span class="shift"><span>只靠本語</span><i aria-hidden="true"></i><b>借力親屬語</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2026 發表 ｜ LoResMT 2026</span>
+<h1>達悟語－菲律賓語神經機器翻譯：極低資源情境下的策略</h1>
+<p class="en">Tao–Filipino Neural Machine Translation: Strategies for Ultra–Low-Resource Settings</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">當一種語言只剩下聖經譯本與辭典，翻譯系統就得從這些靜態檔案中學會日常對話。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>達悟語（Tao，又稱雅美語）通行於蘭嶼。原文指出，雖然地理上接近臺灣本島，達悟語在系譜上屬於<strong>馬來－玻里尼西亞語族的巴丹語群</strong>，「而非臺灣南島語（Formosan languages）」；類型上屬菲律賓型語言，動詞居首，有豐富的黏著構詞與焦點系統（§3, p. 30）。本文研究如何在監督資料極少的情況下，以 NLLB-200（600M 參數）建立達悟語→他加祿語翻譯系統，結合領域微調、合成資料與跨語言遷移（摘要）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：只有聖經與辭典</h2></div>
+<ul><li><strong>平行語料以聖經為主</strong>：主要平行資料是達悟語新約聖經（<em>Seysyo No Tao</em>）與他加祿語聖經的經文對齊，另有 Rau &amp; Dong (2006) 收錄的文本（§3–§4.1）。</li><li><strong>聖經偏誤</strong>：只用聖經訓練，模型會偏向古老的句構與用詞，作者稱之為「禮儀偏誤」（liturgical bias），難以處理日常會話（§2, §4.4）。</li><li><strong>NLLB 沒有巴丹語</strong>：NLLB-200 預訓練含他加祿語、伊洛卡諾語等菲律賓語言，但沒有任何巴丹語群語言（§4.6）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：三個模型的比較</h2></div>
+<h3>1. 三個模型（§4.5–4.6, pp. 31–32）</h3>
+<table><thead><tr><th>模型</th><th>訓練資料</th></tr></thead><tbody><tr><td>Model 1</td><td>只用達悟語－他加祿語聖經平行語料（10,498 句）</td></tr><tr><td>Model 2</td><td>聖經＋合成會話資料：原住民族語言研究發展基金會辭典中的達悟語－華語例句（3,966 句），以 Google 翻譯把華語轉成他加祿語；複製 3 倍（11,898 句）使數量與聖經相當，並與聖經資料打散混合</td></tr><tr><td>Model 3</td><td>先以<strong>伊巴丹語→他加祿語</strong>（同屬巴丹語群）預訓練 NLLB-200，再以聖經與合成資料微調達悟語→他加祿語</td></tr></tbody></table>
+<ul><li>作者以表 2 說明，NLLB-200 自身的華語→他加祿語翻譯品質很差（如把「坐下。」原樣輸出），因此改用 Google 翻譯產生合成資料（§4.4）。</li><li>原文<strong>沒有</strong>在目標函數中加入參數距離懲罰項，也<strong>沒有</strong>訓練構詞感知的子詞分詞器：作者明言因時間限制使用 NLLB-200 的預設分詞器，並把子詞與構詞處理列為未來工作（§7、Limitations, p. 34）。</li></ul>
+<h3>2. 前處理與評估（§3–§4.3）</h3>
+<p>文字轉小寫、統一空白，經文長度上限 128 個詞元。測試集分兩部分：從聖經隨機抽 200 組（域內），以及從 Rau &amp; Dong (2006) 人工整理、以同源詞比對驗證的 20 組會話句（域外，稱為 Validation 或 Cognate Challenge Set）。指標為 BLEU、chrF（文中寫 chrF++）與 SBERT 中位數。</p>
+<pre>Model 1：[達悟語－他加祿語聖經] ──────────────────────────────────► NLLB-200 微調
+Model 2：[聖經] ＋ [辭典例句：達悟語－華語 ──Google 翻譯──► 達悟語－他加祿語（×3）] ──► NLLB-200 微調
+Model 3：[伊巴丹語－他加祿語聖經] ──► 預訓練 NLLB-200 ──► 再以 Model 2 的資料微調</pre>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>可核實的原文證據</h2></div>
+<h3>達悟語→他加祿語（表 3, p. 33）</h3>
+<table><thead><tr><th>指標</th><th>Model 1 聖經／域外</th><th>Model 2 聖經／域外</th><th>Model 3 聖經／域外</th></tr></thead><tbody><tr><td>BLEU</td><td>32.00／3.12</td><td>30.97／<strong>6.67</strong></td><td><strong>34.85</strong>／3.64</td></tr><tr><td>chrF</td><td>56.26／28.28</td><td>55.16／<strong>34.01</strong></td><td><strong>58.36</strong>／32.29</td></tr><tr><td>SBERT 中位數</td><td>92.26／<strong>82.77</strong></td><td><strong>92.55</strong>／79.80</td><td>90.54／77.94</td></tr></tbody></table>
+<ul><li><strong>遷移學習</strong>：Model 3 在聖經域內最好，作者歸因於伊巴丹語與達悟語同屬巴丹語群。</li><li><strong>合成資料</strong>：Model 2 在聖經上略降，但域外 BLEU 約為 Model 1 的兩倍、chrF 最高。</li><li><strong>形式偏誤</strong>：Model 3 的域外 SBERT 最低（77.94），作者推測遷移與聖經訓練強化了正式語域。</li><li>域外測試集只有 20 句，數字波動可能很大（Wiki 註）。</li></ul>
+<h3>原文內部不一致</h3>
+<ul><li>引言與 §3 有幾處寫成「達悟語－英語」翻譯或語料，但實驗與表 3 皆為達悟語－他加祿語。</li><li>引言與結論稱平行語料少於 5,000 句，但 §4.5 的聖經資料為 10,498 句。</li><li>§5 內文寫 Model 2 域外 BLEU 為 6.61，表 3 為 6.67。</li><li>相關研究一節引述 FormosanBench（Lin et al. 2025）時，把語言寫成泰雅、賽德克、排灣（實為阿美、泰雅、排灣），並稱大型語言模型在提供詞典定義時展現「顯著的少樣本能力」；FormosanBench 原文並無此結論（見其頁面）。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>作者結論</strong>（§6）：平行語料極少時，單靠資料量不夠，利用語言結構與詞彙資源是關鍵；以伊巴丹語遷移最能提高翻譯忠實度，辭典合成資料則能改善泛化。作者建議兩者互補：遷移建立語法骨架，合成資料擴充現代溝通所需的語義範圍。</li><li><strong>作者自述的限制</strong>（Limitations, p. 34）：只研究達悟語→他加祿語一個語言對，結果不代表其他南島語或低資源語言；聖經譯本彼此差異大，經文也不能代表一般句構與用詞；合成資料經機器翻譯產生，仍有偏誤與錯誤，不能拿來驗證翻譯品質；只用 600M 模型與 30 小時 Kaggle GPU；使用預設分詞器；沒有人工評估，所用指標測不到比喻、歧義句與性別等偏誤。</li><li><strong>本篇公開之資源</strong>：原文未提及公開資料、程式或模型。</li><li><strong>作者所述之未來工作</strong>（§7 Recommendations, p. 34）：採用更進階的文字正規化；以更好的硬體加大批次、訓練更多回合或改用更大的模型；改用子詞等更細的斷詞方式，處理罕見詞與達悟語豐富的構詞；與母語者及語言專家合作驗證譯文。Limitations 另建議後續研究納入更多低資源語言（p. 34）。</li><li>（Wiki 詮釋）合成資料經「達悟語－華語－他加祿語」轉譯，達悟語端未變，但他加祿語端的品質取決於 Google 翻譯，可能把華語釋義的錯誤帶進訓練資料。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<blockquote>以下為使用者個人研究之延伸思考（Wiki 詮釋），非原文主張。</blockquote>
+<h3>對個人碩士論文研究之映射與啟發</h3>
+<ol><li><strong>親屬語言預訓練</strong>：<ul><li>本文以同屬巴丹語群的伊巴丹語預訓練最有效。對泛泰雅語群而言，三語互為最近的親屬，廖恒慶（2023）的多語言做法即在此方向；而本文與廖恒慶都顯示，與目標語越接近的資料越有幫助。</li></ul></li><li><strong>辭典例句轉成合成資料</strong>：<ul><li>本文把原民會辭典的族語－華語例句轉成族語－他加祿語。我的研究若做族語－華語翻譯，可直接使用這些例句，不需轉譯；但需注意辭典例句與測試資料的重疊（參見 Zheng et al. 2024 與廖恒慶 2023）。</li></ul></li><li><strong>域外測試與語域</strong>：<ul><li>本文顯示聖經語料會帶來語域偏誤，且不同模型在域內與域外的排名相反；評估時應同時報告兩者。</li></ul></li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2026</b><span>發表・LoResMT 2026</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Adrian Denzel Macayan<br>Luis Andrew Madridijo<br>Ellexandrei Esponilla<br>Zachary Mitchell Francisco</span></div>
+    <div class="blk"><span class="lab">我的關注</span><span>報告題材</span><span class="note">研究語言：達悟語</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Proceedings for the Ninth Workshop on Technologies for Machine Translation of Low Resource Languages (LoResMT 2026), 27-36</span><a href="https://doi.org/10.18653/v1/2026.loresmt-1.2">doi:10.18653/v1/2026.loresmt-1.2</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#自然語言處理</span><span class="chip">#計算語言學</span><span class="chip">#深度學習</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>臺灣南島語計算語言學與構詞解析</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>低資源神經機器翻譯與檢索增強生成</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">Macayan, Madridijo, Esponilla &amp; Francisco（De La Salle University–Manila），<em>LoResMT 2026</em>, pp. 27–36。實驗方向為達悟語→他加祿語（Tagalog，即菲律賓語之基礎）。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

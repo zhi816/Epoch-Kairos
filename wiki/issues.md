@@ -792,3 +792,9 @@
 - **來源**：`raw/my-focus/報告論文題材/2024.findings-acl.768.pdf`，§1（p. 12949）、§3.2（p. 12950）、§4.3 與 §5（p. 12953）、表 1、3、4、5（pp. 12950–12953）。
 - **發現於**：第二批卡片回填 C 組回報與第三批撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。回原文核對後：公式改照原文作單豎線，拆成兩行 aligned 並註明「§3.2 正文內嵌式，無式號，p. 12950」；Card 5 補列公開資源（§1）與作者所述之未來方向（§5、§4.3），作者自述限制補頁碼；證據表逐一列出表 1、3、4、5 數值並補登上述各項。另依 `cover.md` 第二節第 7 條改寫 `card_line`（原句切不出 3 行以內之封面斷行）。頁面 `verification` 改為 `partial`。
+
+### EK-171 | fixed | papers/2026-tao-filipino-nmt-macayan.md | Card 5 與證據表第 17 列 | 原文不符
+- **問題**：（1）證據表第 17 列只寫「表 3 各數值」，未逐一列出數值與表列、欄位。（2）Card 5 漏記原文所述之未來工作與部分限制：原文 §7 Recommendations 列出進階正規化、更好硬體與更大模型、子詞斷詞處理罕見詞與構詞、與母語者及專家合作；Limitations 另指出只研究達悟語→他加祿語一個語言對、經文不能代表一般句構、未做人工評估且指標測不到比喻與偏誤。論文頁亦未說明原文是否公開資料或程式（原文未提及）。
+- **來源**：`raw/my-focus/報告論文題材/2026.loresmt-1.2.pdf`，表 3（p. 33）、§7 與 Limitations（p. 34）。
+- **發現於**：第二批卡片回填 C 組回報與第三批撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。回原文核對後：證據表第 17 列改為逐一列出表 3 之 BLEU、chrF、Median SBERT 各 6 格數值（皆與論文頁 Card 4 表相符）；Card 5 補列 §7 未來工作、Limitations 所列限制與頁碼，並註明原文未提及公開資源；證據表同步補登。頁面 `verification` 改為 `partial`。

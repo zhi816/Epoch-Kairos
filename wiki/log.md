@@ -1720,3 +1720,12 @@
   - 卡片：Card 3 取二元機率一行；Card 4 數字模式四個數字（含作者所述考慮邊界之二元模型在太魯閣語低於一元模型）；Card 5 一般模式三筆同實驗室後續碩士論文；Card 6 取論文頁 Card 6 小測試集一點，未涉及使用者碩論。另填封面標題（16 字）。
   - `verification` 由 verified 改為 partial（修正 EK-130 與補後續研究，未整頁重新逐項核對）。
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 37 項 PASS；無頭截圖目視，修正 Card 4 與 Card 5 拆詞折行、Card 3 說明「機／率」斷行與範圍欄落單。`lint_wiki.py` ERROR 0。首頁卡片牆依 TD-008 協調規則於本批結束時統一重建。
+
+## [2026-11-10 09:54] update | 補列達悟語翻譯頁之表 3 數值與 Card 5 並新增卡片文字檔 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 C 組（TD-008）。先依 wiki-content-audit 修正 [wiki/papers/2026-tao-filipino-nmt-macayan.md](papers/2026-tao-filipino-nmt-macayan.md) 與證據表，再依 paper-card-writer 撰寫 [wiki/cards/2026-tao-filipino-nmt-macayan.md](cards/2026-tao-filipino-nmt-macayan.md) 並建置 `web/prototypes/paper-v1/2026-tao-filipino-nmt-macayan.html`。
+  - 頁面修正（EK-171，fixed）：證據表第 17 列改為逐一列出表 3（p. 33）之 BLEU、chrF、Median SBERT 共 18 格；Card 5 補列 Limitations（p. 34）所列限制、§7 Recommendations 之未來工作，並註明原文未提及公開資源。`verification` 改為 `partial`。
+  - 卡片：Card 3 無公式模式（paper-pdf-parser 抽取全文 10 頁，無編號公式，僅 p. 32 有合成資料量之乘算）；Card 4 四個數字（34.85、32.00、6.67、3.12）回原文表 3 抽查相符，6.67 註明內文作 6.61；Card 5 新論文模式三筆取 Limitations 與 §7；封面標題「達悟語－菲律賓語翻譯」。
+  - 檢查：`check_cards.py` ERROR 0、WARN 1（NLLB-200 為模型名稱，已在同句說明為多語翻譯模型）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 35 項）。目視檢查修正封面論文名、Card 5 第三筆與範圍欄之落單行。`lint_wiki.py` ERROR 0。
+  - 首頁卡片牆依本批協調規則未重建，由協調者處理。
