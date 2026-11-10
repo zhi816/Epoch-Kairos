@@ -12,7 +12,7 @@ domain: "econ"
 domain_tags: ["#制度經濟學", "#宏觀經濟學"]
 concepts: ["institutions-and-macro-dynamics"]
 status: "published"
-verification: "verified"
+verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.1257/aer.91.5.1369"
 key_papers:
@@ -47,11 +47,7 @@ card_line: "從殖民者死亡率，找出制度決定國家貧富"
 ---
 
 ## Card 3 ｜ 突破架構與原理 (The Secret)
-作者建構了一條跨越數百年的歷史因果鏈，並以兩階段最小平方法（2SLS）實現因果識別：
-
-$$\ln M_i \implies S_i \implies C_i \implies R_i \implies \log y_i$$
-
-其中 $\ln M_i$ 為歷史潛在殖民者死亡率，$S_i$ 為早期歐洲定居人數比例，$C_i$ 為早期殖民制度，$R_i$ 為當代制度品質，$\log y_i$ 為當代人均對數產出。
+作者提出歷史上的潛在殖民者死亡率影響歐洲人定居，再影響早期制度與當代制度，進而與當代經濟表現相連；以此假說為基礎，作者運用兩階段最小平方法（2SLS）估計制度與所得的關係（p. 1370）。其因果解釋取決於工具變數的識別假設。
 
 1. **雙軌殖民策略（Extractive vs. Inclusive Institutions）**：
    * 在瘧疾與黃熱病肆虐、歐洲人死亡率極高的地區（如剛果、黃金海岸），殖民強權無法大規模移民定居，遂建立以榨取金礦、象牙與奴隸為目的的「掠奪型制度（Extractive State）」，不設行政制衡與私人產權保護。
@@ -67,29 +63,21 @@ $$\ln M_i \implies S_i \implies C_i \implies R_i \implies \log y_i$$
 
 $$\log y_i = \mu + \alpha R_i + X_i' \gamma + \epsilon_i$$
 
-而當代制度 $R_i$ 則由早期制度 $C_i$、早期歐洲定居人口比例 $S_i$ 及歷史殖民者死亡率 $\ln M_i$ 依序傳遞：
+作者以早期制度 $C_i$、早期歐洲定居人口比例 $S_i$ 及殖民者死亡率 $\log M_i$ 寫出下列迴歸關係（p. 1383，式 2–4）：
 
 $$\begin{aligned}
 R_i &= \lambda_R + \beta_R C_i + X_i' \gamma_R + \nu_{Ri} \\
 C_i &= \lambda_C + \beta_C S_i + X_i' \gamma_C + \nu_{Ci} \\
-S_i &= \lambda_S + \beta_S \ln M_i + X_i' \gamma_S + \nu_{Si}
+S_i &= \lambda_S + \beta_S \log M_i + X_i' \gamma_S + \nu_{Si}
 \end{aligned}$$
 
 ### 2. 兩階段最小平方法（2SLS）識別方程 (Two-Stage Least Squares Estimation)
 
-由於結構誤差項 $\operatorname{Cov}(R_i, \epsilon_i) \neq 0$，直接估計 $\alpha$ 會產生偏誤。作者將上述歷史傳遞鏈收斂為以對數殖民者死亡率 $\ln M_i$ 為工具變數的第一階段（First-Stage）迴歸：
+為處理制度可能內生的問題，作者以殖民者對數死亡率作為當代制度的工具變數；第一階段為（p. 1384，式 5）：
 
-$$\begin{aligned}
-\text{First Stage:} \quad R_i &= \zeta + \beta \ln M_i + X_i' \delta + v_i \\
-\text{Second Stage:} \quad \log y_i &= \mu + \alpha \hat{R}_i + X_i' \gamma + \epsilon_i
-\end{aligned}$$
+$$R_i = \zeta + \beta \log M_i + X_i' \delta + v_i$$
 
-其中兩階段最小平方法估計量 $\hat{\alpha}_{\text{2SLS}}$ 在排他性條件 $\operatorname{Cov}(\ln M_i, \epsilon_i \mid X_i) = 0$ 與強相關條件 $\beta \neq 0$ 下，具有統計一致性（Consistency）：
-
-$$\begin{aligned}
-\operatorname{plim} \hat{\alpha}_{\text{2SLS}} &= \frac{\operatorname{Cov}(\log y_i, \ln M_i \mid X_i)}{\operatorname{Cov}(R_i, \ln M_i \mid X_i)} \\
-&= \alpha
-\end{aligned}$$
+作者再以兩階段最小平方法估計式 (1) 中制度與人均所得的關係。其識別須仰賴死亡率與當代制度有關，且在控制其他變數後，死亡率不透過制度發展以外的途徑影響當代所得；作者討論疾病環境等可能威脅此排他性假設的因素（pp. 1371–1372、1383–1384）。
 
 ---
 

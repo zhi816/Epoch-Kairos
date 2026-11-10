@@ -259,30 +259,21 @@ button:disabled{cursor:default;opacity:.3}
 <ul><li><strong>反向因果（Reverse Causality）</strong>：究竟是因為擁有包容性好制度才帶來富裕，還是因為國家變得富裕之後，才負擔得起高品質的法院、廉潔官僚與產權保護？</li><li><strong>遺漏變數偏誤（Omitted Variable Bias）与地理決定論</strong>：Jeffrey Sachs 與 Jared Diamond 等學者指出，緯度、氣候、土壤與疾病負擔直接影響經濟產出。若不將制度從地理、文化等混雜因素中剝離，任何普通最小平方法（OLS）迴歸都只是一紙相關性，無法作為因果證據。</li></ul>
 </section>
 <section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
-<p>作者建構了一條跨越數百年的歷史因果鏈，並以兩階段最小平方法（2SLS）實現因果識別：</p>
-<span class="m-disp" data-tex="\ln M_i \implies S_i \implies C_i \implies R_i \implies \log y_i"></span>
-<p>其中 <span class="m-in" data-tex="\ln M_i"></span> 為歷史潛在殖民者死亡率，<span class="m-in" data-tex="S_i"></span> 為早期歐洲定居人數比例，<span class="m-in" data-tex="C_i"></span> 為早期殖民制度，<span class="m-in" data-tex="R_i"></span> 為當代制度品質，<span class="m-in" data-tex="\log y_i"></span> 為當代人均對數產出。</p>
+<p>作者提出歷史上的潛在殖民者死亡率影響歐洲人定居，再影響早期制度與當代制度，進而與當代經濟表現相連；以此假說為基礎，作者運用兩階段最小平方法（2SLS）估計制度與所得的關係（p. 1370）。其因果解釋取決於工具變數的識別假設。</p>
 <ol><li><strong>雙軌殖民策略（Extractive vs. Inclusive Institutions）</strong>：<ul><li>在瘧疾與黃熱病肆虐、歐洲人死亡率極高的地區（如剛果、黃金海岸），殖民強權無法大規模移民定居，遂建立以榨取金礦、象牙與奴隸為目的的「掠奪型制度（Extractive State）」，不設行政制衡與私人產權保護。</li><li>在疾病環境溫和、死亡率極低的地區（如美國、加拿大、澳洲、紐西蘭），歐洲移民大量定居並要求享有與母國同等的法治與代議制，建立起保護財產與鼓勵投資的「新歐洲（Neo-Europes）」包容型制度。</li></ul></li><li><strong>制度的歷史持續性（Institutional Persistence）</strong>：<ul><li>建立包容型制度需要高昂的沉沒成本；反之，一旦掠奪型國家機器成型，獨立後的本土新統治菁英同樣有強烈誘因繼承這套便於尋租與徵收的體制，使早期制度延續至今。</li></ul></li><li><strong>排他性限制（Exclusion Restriction）</strong>：<ul><li>工具變數法之核心識別假設為 <span class="m-in" data-tex="\operatorname{Cov}(\ln M_i, \epsilon_i \mid X_i) = 0"></span>，即數百年前殖民者死亡率僅能透過影響「早期制度形成」來決定當代產出，不存在直接影響當代生產力的殘差路徑。對此識別假設的最大疑慮是：高歷史死亡率的熱帶疾病環境可能直接延續至今，造成當代人口的健康劣勢。作者對此提出流行病學與歷史證據論證假設之合理性：導致 18、19 世紀歐洲軍人極高死亡率的瘧疾與黃熱病，對當地已具備自然免疫力與抗性之成年原住民勞動力的致命威脅遠低於歐洲人（例如 Philip Curtin 統計顯示在印度孟加拉與馬德拉斯服役之本地士兵年死亡率與英國本土部隊相當，而當地英國士兵死亡率則數倍於此）。因此，歷史殖民者死亡率反映的是歐洲殖民定居環境的阻力，而非當地原住民勞動力受不可抗拒地理宿命限制的證明。</li></ul></li></ol>
 <h3>1. 結構方程與歷史制度演化鏈 (Structural Causal Chain)</h3>
 <p>當代第 <span class="m-in" data-tex="i"></span> 個前殖民地國家的人均對數所得 <span class="m-in" data-tex="\log y_i"></span> 由當代制度品質 <span class="m-in" data-tex="R_i"></span>（以「免於政府徵收風險指數」衡量）與其他協變數向量 <span class="m-in" data-tex="X_i&#x27;"></span> 決定：</p>
 <span class="m-disp" data-tex="\log y_i = \mu + \alpha R_i + X_i&#x27; \gamma + \epsilon_i"></span>
-<p>而當代制度 <span class="m-in" data-tex="R_i"></span> 則由早期制度 <span class="m-in" data-tex="C_i"></span>、早期歐洲定居人口比例 <span class="m-in" data-tex="S_i"></span> 及歷史殖民者死亡率 <span class="m-in" data-tex="\ln M_i"></span> 依序傳遞：</p>
+<p>作者以早期制度 <span class="m-in" data-tex="C_i"></span>、早期歐洲定居人口比例 <span class="m-in" data-tex="S_i"></span> 及殖民者死亡率 <span class="m-in" data-tex="\log M_i"></span> 寫出下列迴歸關係（p. 1383，式 2–4）：</p>
 <span class="m-disp" data-tex="\begin{aligned}
 R_i &amp;= \lambda_R + \beta_R C_i + X_i&#x27; \gamma_R + \nu_{Ri} \\
 C_i &amp;= \lambda_C + \beta_C S_i + X_i&#x27; \gamma_C + \nu_{Ci} \\
-S_i &amp;= \lambda_S + \beta_S \ln M_i + X_i&#x27; \gamma_S + \nu_{Si}
+S_i &amp;= \lambda_S + \beta_S \log M_i + X_i&#x27; \gamma_S + \nu_{Si}
 \end{aligned}"></span>
 <h3>2. 兩階段最小平方法（2SLS）識別方程 (Two-Stage Least Squares Estimation)</h3>
-<p>由於結構誤差項 <span class="m-in" data-tex="\operatorname{Cov}(R_i, \epsilon_i) \neq 0"></span>，直接估計 <span class="m-in" data-tex="\alpha"></span> 會產生偏誤。作者將上述歷史傳遞鏈收斂為以對數殖民者死亡率 <span class="m-in" data-tex="\ln M_i"></span> 為工具變數的第一階段（First-Stage）迴歸：</p>
-<span class="m-disp" data-tex="\begin{aligned}
-\text{First Stage:} \quad R_i &amp;= \zeta + \beta \ln M_i + X_i&#x27; \delta + v_i \\
-\text{Second Stage:} \quad \log y_i &amp;= \mu + \alpha \hat{R}_i + X_i&#x27; \gamma + \epsilon_i
-\end{aligned}"></span>
-<p>其中兩階段最小平方法估計量 <span class="m-in" data-tex="\hat{\alpha}_{\text{2SLS}}"></span> 在排他性條件 <span class="m-in" data-tex="\operatorname{Cov}(\ln M_i, \epsilon_i \mid X_i) = 0"></span> 與強相關條件 <span class="m-in" data-tex="\beta \neq 0"></span> 下，具有統計一致性（Consistency）：</p>
-<span class="m-disp" data-tex="\begin{aligned}
-\operatorname{plim} \hat{\alpha}_{\text{2SLS}} &amp;= \frac{\operatorname{Cov}(\log y_i, \ln M_i \mid X_i)}{\operatorname{Cov}(R_i, \ln M_i \mid X_i)} \\
-&amp;= \alpha
-\end{aligned}"></span>
+<p>為處理制度可能內生的問題，作者以殖民者對數死亡率作為當代制度的工具變數；第一階段為（p. 1384，式 5）：</p>
+<span class="m-disp" data-tex="R_i = \zeta + \beta \log M_i + X_i&#x27; \delta + v_i"></span>
+<p>作者再以兩階段最小平方法估計式 (1) 中制度與人均所得的關係。其識別須仰賴死亡率與當代制度有關，且在控制其他變數後，死亡率不透過制度發展以外的途徑影響當代所得；作者討論疾病環境等可能威脅此排他性假設的因素（pp. 1371–1372、1383–1384）。</p>
 </section>
 <section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
 <h3>本篇論文（Acemoglu, Johnson &amp; Robinson 2001）之核心證據</h3>
@@ -311,7 +302,6 @@ S_i &amp;= \lambda_S + \beta_S \ln M_i + X_i&#x27; \gamma_S + \nu_{Si}
     <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>制度演化與宏觀經濟動態</span></div>
     <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1257/aer.91.5.1369" title="Acemoglu, D., Johnson, S., &amp; Robinson, J. A. (2001) The Colonial Origins of Comparative Development: An Empirical Investigation. American Economic Review 91(5):1369-1401.">Acemoglu、Johnson 與 Robinson（2001）</a><a href="https://doi.org/10.1162/003355302320935025" title="Acemoglu, D., Johnson, S., &amp; Robinson, J. A. (2002) Reversal of Fortune: Geography and Institutions in the Making of the Modern World Income Distribution. Quarterly Journal of Economics 117(4):1231-1294.">Acemoglu、Johnson 與 Robinson（2002）</a><a href="https://doi.org/10.1016/S1574-0684(05)01006-3" title="Acemoglu, D., Johnson, S., &amp; Robinson, J. A. (2005) Institutions as a Fundamental Cause of Long-Run Growth. Handbook of Economic Growth 1A:385-472.">Acemoglu、Johnson 與 Robinson（2005）</a></div>
     <div class="blk"><span class="lab">本頁範圍</span><span class="note">2024 年諾貝爾經濟學獎頒予 Daron Acemoglu、Simon Johnson 與 James A. Robinson 三位學者，表彰其對「制度如何形成並影響國家長期繁榮」之開創性貢獻。本頁以三人於 2001 年發表於《American Economic Review》之代表作（AJR 2001）為主軸，並於 <code>key_papers</code> 列出 2002 年「命運逆轉（Reversal of Fortune）」與 2005 年政治制度動態理論之奠基文獻。</span></div>
-    <div class="blk"><span class="lab">核實狀態</span><span class="ok">已逐項對照原文查核</span></div>
   </aside>
 </div>
 <script>

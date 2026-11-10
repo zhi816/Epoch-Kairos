@@ -1064,6 +1064,12 @@
 - **發現於**：2026-11-10，修正 EK-039、EK-040 時交叉複核，Codex by OpenAI。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6）。刪除無依據的方法與過度結論，分別說明體外、活體、小鼠、人類組織及不同追蹤模型的證據；調整標題、索引、證據表與 Wiki 比喻的歸屬。
 
+### EK-198 | fixed | papers/2001-colonial-origins-acemoglu.md | Card 3 公式 | 原文未支持
+- **問題**：論文頁把作者的文字示意鏈改寫為自擬符號區塊公式，並將自行寫出的第二階段及 2SLS 機率極限式作為展示公式；另將原文式 (4) 的對數記號改為 ln。
+- **來源**：[AER 正式版](https://economics.mit.edu/sites/default/files/publications/colonial-origins-of-comparative-development.pdf) pp. 1370、1378、1383–1384，式 (1)–(5)。
+- **發現於**：2026-11-10，處理 TD-011 公式出處，Codex by OpenAI。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。將自擬示意與估計式改為作者方法和識別假設的文字說明，恢復式 (4) 的原文記號，並逐式登記原文位置；卡片使用的式 (1) 未變。僅核對本次相關內容，核實狀態改為 partial。
+
 ### EK-199 | fixed | papers/2013-icecube-neutrino.md | Card 2–3 公式與卡片 | 原文未支持
 - **問題**：論文頁與卡片使用的光錐角度、Frank–Tamm 光譜、截面冪律、存活率及一般化通量展示式未在本篇找到；證據表誤將 Frank–Tamm 公式歸給本文。頁面稱高能微中子穿透地球的碰撞機率極低，卡片更稱不被吸收，與原文指出的高能地球吸收不符。
 - **來源**：[Aartsen 等原文](https://arxiv.org/pdf/1311.5238) pp. 2–6、Fig. 1–2；[論文頁](papers/2013-icecube-neutrino.md) Card 2–3。
