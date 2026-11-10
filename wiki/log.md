@@ -2110,6 +2110,11 @@
 - **模型版本**：GPT-6
 - **具體變更**：依 EK-201 修正 paper-card-writer 的 Hopfield 能量範例與零閾值條件，避免再次引入原文沒有的項；並移除描述欄的角括號以符合 skill 中繼資料驗證。quick_validate 通過，Hopfield 卡片檢查 ERROR 0、WARN 0。
 
+## [2026-11-10 21:35] fix | AlphaFold 3 原文公式與卡片條件 | #計算生物 #人工智慧 #結構生物學
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：處理 TD-011、修正 EK-202，依官方補充資料改寫座標變換與排序式、逐式登記出處，卡片補齊指標及取樣條件並修訂示意圖。卡片、論文頁與首頁檢查 ERROR 0、WARN 0；瀏覽器目視待 TD-021。
+
 ## [2026-11-10 21:37] config | 驗證 paper-pdf-parser 之 MinerU 環境並登記 Windows 端待驗 | 全域
 - **執行代理**：OpenCode by SST（模型供應商 MiniMax）
 - **模型版本**：MiniMax M3.1 Flash Free（minimax-m3.1-flash-free）

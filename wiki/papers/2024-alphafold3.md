@@ -56,12 +56,9 @@ AlphaFold 3 對網路架構進行了大刀闊斧的「減法與重構」，實�
 
 ### 1. 多尺度全原子擴散正向加噪與去噪目標 (Multi-Scale All-Atom Diffusion)
 
-設生物分子複合體中全部 $N_{\text{atoms}}$ 個重原子的真實三維座標為 $X_0 \in \mathbb{R}^{N_{\text{atoms}} \times 3}$。在擴散雜訊尺度 $\sigma_t \in [\sigma_{\min}, \sigma_{\max}]$ 下，經隨機全局剛體變換 $\mathcal{T} \sim \mathrm{SE}(3)$（中心化後隨機旋轉與平移）與各向同性高斯加噪後得到含噪座標 $X_t$：
+訓練時，作者先將結構座標中心化，再隨機旋轉與平移，並加入獨立雜訊，訓練擴散模組還原結構（補充資料 §3.7.1）。其中 $\vec{x}_l$ 是第 $l$ 個原子座標，$R$ 是隨機旋轉，$\vec{t}$ 是隨機平移；中心化後的旋轉與平移步驟為（補充資料 Algorithm 19 第 4 行）：
 
-$$\begin{aligned}
-\tilde{X}_0 &= \mathcal{T}(X_0) \\
-X_t &= \tilde{X}_0 + \varepsilon, \quad \varepsilon \sim \mathcal{N}\left(0, \sigma_t^2 I_{3N_{\text{atoms}}}\right)
-\end{aligned}$$
+$$\vec{x}_l \leftarrow R \cdot \vec{x}_l + \vec{t}$$
 
 擴散網路 $D_\theta\left(X_t, \sigma_t \mid s_{\text{trunk}}, z_{\text{trunk}}\right)$ 以 Pairformer 主幹輸出的單一與成對表徵為條件，直接預測去噪後的原子座標 $\hat{X}_0$。補充資料（Supplementary Information 式 6，SI p. 28）之擴散模組損失為：
 
@@ -76,7 +73,7 @@ $$\begin{aligned}
 
 為評估不同生物分子鏈（如蛋白質靶點與小分子配體或抗體與抗原）之間的結合介面可靠度，AF3 利用預測對齊誤差（PAE）分佈計算介面預測 TM-score（$\text{ipTM}$），並加入鼓勵無序區呈伸展構型（相對溶劑可及面積較高）的項，以及鏈間嚴重碰撞之懲罰，給出綜合排序分數（SI 式 19，p. 37；正文 p. 498）：
 
-$$\text{Score}_{\text{ranking}} = 0.8 \cdot \text{ipTM} + 0.2 \cdot \text{pTM} + 0.5 \cdot \text{disorder} - 100 \cdot \text{has\_clash}$$
+$$0.8 \cdot \text{ipTM} + 0.2 \cdot \text{pTM} + 0.5 \cdot \text{disorder} - 100 \cdot \text{has\_clash}$$
 
 其中 $\text{has\_clash}$ 為 0 或 1：任兩條聚合物鏈之間距離小於 1.1 Å 的原子對超過 100 個，或超過較小鏈原子數之一半時記為 1（SI §5.9.2，p. 37）。
 

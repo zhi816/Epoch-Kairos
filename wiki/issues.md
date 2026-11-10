@@ -1087,3 +1087,9 @@
 - **來源**：[Hopfield 原文](../raw/1982-hopfield-network.pdf) p. 2556，式 (7)–(8)；[Amit 等原文](https://doi.org/10.1103/PhysRevLett.55.1530) pp. 1531–1532。
 - **發現於**：2026-11-10，處理 TD-011 公式出處及抽查卡片後續成果，Codex by OpenAI。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6）。依 Hopfield 原式及零閾值條件修正論文頁與卡片，逐式登記來源；Amit 等之結果標為副本對稱近似，並記下作者對對稱破缺影響的討論。
+
+### EK-202 | fixed | papers/2024-alphafold3.md | Card 3 公式與 Card 4 數據條件 | 原文不符
+- **問題**：原頁與卡片使用補充資料未列出的自擬座標變換與加噪公式；排序分數式另加原文沒有的左側符號。卡片數據未標出原文評估指標，抗體成功率未寫 1,000 個模型種子的條件。
+- **來源**：[官方補充資料](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-024-07487-w/MediaObjects/41586_2024_7487_MOESM1_ESM.pdf) Algorithm 19、§3.7.1、§5.9.3；[原文](../raw/2024-alphafold3.pdf) p. 494 Fig. 1 圖說、PDF p. 21 Extended Data Table 1。
+- **發現於**：2026-11-10，處理 TD-011 公式出處及抽查卡片，Codex by OpenAI。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。改以原文 Algorithm 19 座標變換步驟及作者文字說明呈現機制，排序公式保留原文表達；逐式登記來源，卡片補上指標與取樣條件，更新示意圖。
