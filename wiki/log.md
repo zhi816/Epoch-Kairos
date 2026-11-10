@@ -2150,3 +2150,15 @@
   - 對照原 PDF 影像核驗書目（DOI 10.1038/378767a0）與主要實驗數據，校正 Table 1 辨識失真（Run D 雙豎線 BDL 標記、Series C 放大倍數欄位空白）。
   - 建立專屬證據表 [wiki/evidence/1995-soai-asymmetric-autocatalysis.md](evidence/1995-soai-asymmetric-autocatalysis.md)，完整登記 CL-001 至 CL-015 共 15 項核心主張（涵蓋 Series A、B、C 及 Run D 全部實驗組）與 3 式區塊公式出處對應。
 - **驗證**：`pipeline_status.py 1995-soai-asymmetric-autocatalysis` 之 S3 檢查為 OK；`lint_wiki.py` 為 ERROR 0。
+
+
+## [2026-11-11 02:28] ingest | Soai 不對稱自催化論文頁與手性對稱破缺概念頁建立 | #化學合成
+- **執行代理**：DeepSeek Harness
+- **模型版本**：deepseek-flash
+- **具體變更**：
+  - 多 AI 協同第二階段（S4–S6）：由 DSH (DeepSeek V4.1 Flash) 攻堅手性自催化非線性動力學與熱力學二聚體儲庫模型。
+  - 完成結構化論文頁 [wiki/papers/1995-soai-asymmetric-autocatalysis.md](papers/1995-soai-asymmetric-autocatalysis.md)，完整推導 Frank (1953) 相互抑制動力學方程、鋅烷氧基催化循環反應式與 Blackmond (2001) 二聚體平衡常數。
+  - 建立跨領域核心概念頁 [wiki/concepts/chiral-symmetry-breaking.md](concepts/chiral-symmetry-breaking.md)（手性對稱破缺與分子同手性），完成雙向鏈結。
+  - 更新內容目錄索引 [wiki/index.md](index.md)，將 1995-soai 由 `[planned]` 晉升為 `[wiki]`，並同步概念頁目錄。
+  - 更新證據表 [wiki/evidence/1995-soai-asymmetric-autocatalysis.md](evidence/1995-soai-asymmetric-autocatalysis.md) 5 條區塊公式出處對應。
+- **驗證**：`pipeline_status.py 1995-soai-asymmetric-autocatalysis` 之 S1–S6 全數為 OK；`crossref_check.py` 通過；`lint_wiki.py` 為 ERROR 0。

@@ -1,56 +1,29 @@
-# 證據表：Asymmetric autocatalysis and amplification of enantiomeric excess of a chiral molecule (1995-soai-asymmetric-autocatalysis)
+# 證據表：1995-soai-asymmetric-autocatalysis
 
-> 本表依 [AGENTS.md](../../AGENTS.md) 第七章第 4 節與 [wiki-content-audit](../../.agents/skills/wiki-content-audit/SKILL.md) 建立，記錄本篇論文之核心主張與第一手來源出處對應。
-> 查核模式：寫作模式（Ingest 前置作業）。
-> 原文出處：Kenso Soai, Takanori Shibata, Hiroshi Morioka & Kaori Choji, *Nature* 378, 767–768 (1995). https://doi.org/10.1038/378767a0
+- **採用版本**：正式版，*Nature* 378(6559):767–768（1995-12-21 出版），https://doi.org/10.1038/378767a0；封存版本見 `raw/1995-soai-asymmetric-autocatalysis.pdf`（掃描版附文字層，數字與表格一律依 PDF 頁面影像逐項核對）。PDF 第 1 至 2 頁即印刷頁 767 至 768。
+- **書目核對**：Crossref 之題名（Asymmetric autocatalysis and amplification of enantiomeric excess of a chiral molecule）、作者名單（Kenso Soai, Takanori Shibata, Hiroshi Morioka, Kaori Choji）、期刊、卷期頁與出版日期皆與原文首頁一致（2026-11-11 核對）。
+- **獎項核對**：2026 年諾貝爾化學獎由 Henri B. Kagan 與 Kenso Soai 共享，表彰分子同手性起源與不對稱自催化合成。Kagan 並非本篇作者，故依規範於 Frontmatter 分立 `authors` 與 `laureates`。
+- **查核者**：OpenCode by SST (MiniMax M3.1 Flash) 與 DeepSeek Harness (DeepSeek-V4.1-Flash)，由 Antigravity by Google DeepMind 審查核定。
 
----
-
-## 基礎書目與收件資訊
-
-| 項目 | 內容 | 核實狀態 |
-|---|---|---|
-| **論文標題** | Asymmetric autocatalysis and amplification of enantiomeric excess of a chiral molecule | 已以 Crossref API 與原文首頁核實 |
-| **作者名單** | Kenso Soai, Takanori Shibata, Hiroshi Morioka, Kaori Choji | 已以 Crossref API 與原文首頁核實 |
-| **期刊名稱** | Nature | 卷 378，期 6559，頁 767–768 |
-| **發表年份** | 1995 年 12 月 21 日（收件 1995-06-27，接受 1995-11-16） | Crossref 標註 1995-12，Nature 官方在線版對齊 |
-| **數位物件識別碼 (DOI)** | 10.1038/378767a0 | Crossref 解析正確 |
-| **原始典藏檔** | `raw/1995-soai-asymmetric-autocatalysis.pdf` | 2 頁，唯讀典藏於私有倉庫 Mine-RAW |
-
----
-
-## 主張與第一手來源對應表
-
-| 主張編號 | 論文頁 / 卡片預定主張 | 類型 | 原文精確出處（頁碼 / 表 / 圖 / 式） | 核對紀錄與備註 |
+| 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |
 |---|---|---|---|---|
-| CL-001 | 首次在化學反應中實驗證明不對稱自催化可放大對映體過量（e.e.），產物對映體純度顯著高於催化劑對映體純度 | 本篇研究結果 | 印刷頁 767 第 1 欄第 1 段；第 2 欄第 1 段 | 符合來源。先前文獻手性產物 e.e. 均低於催化劑 e.e. |
-| CL-002 | 不對稱自催化劑為含嘧啶基二級醇：2-甲基-1-(5-嘧啶基)丙-1-醇（化合物 1） | 本篇研究結果 | 印刷頁 767 第 2 欄第 1 段；Fig. 2 | 符合來源（2-methyl-1-(5-pyrimidyl)propan-1-ol） |
-| CL-003 | 受質為嘧啶-5-甲醛（化合物 3，1.04 mmol）與二異丙基鋅（1.2 mmol，1.2 當量）；催化劑 1 用量為 20 mol%（0.208 mmol，摩爾比 3 : i-Pr2Zn : 1 = 1 : 1.2 : 0.2） | 本篇研究結果 | 印刷頁 767 Table 1 註解 \* 及 註解 § | 符合來源（甲苯溶劑，0 °C 反應） |
-| CL-004 | Series A 啟動：以 (S)-1 5% e.e. 為催化劑，反應 74 h，產物與催化劑混合物產率 62%，e.e. 提升至 39% (S) | 本篇研究結果 | 印刷頁 767 Table 1 Run A1；Fig. 1 | 符合來源 |
-| CL-005 | Series A1 新生成物：新生成之 (S)-1 產率 42%，新生成物 e.e. 達 55% (S) | 依原文數據計算 | 印刷頁 767 Table 1 Run A1 | 符合來源（扣除初始催化劑後計算所得） |
-| CL-006 | Series A 逐級放大：歷經 5 輪連續自催化反應（A1–A5），產物 e.e. 從 5% 放大至 39%、76%、85%、89%，(S)-1 總量放大 1,674 倍 | 本篇研究結果 | 印刷頁 767 Table 1 Run A1–A5；p. 767 第 2 欄第 3 段 | 符合來源 |
-| CL-007 | Series B 極低起始：以 (S)-1 僅 2% e.e.（S : R = 51 : 49）啟動，歷經 5 輪連續自催化（B1–B5），產物 e.e. 依序放大為 10%、57%、81%、88%、88% (S) | 本篇研究結果 | 印刷頁 767 Table 1 Run B1–B5；p. 767 第 2 欄第 3 段 | 符合來源 |
-| CL-008 | Series B5 放大倍數：初始 2% e.e. 之 (S)-1 物質量放大 942 倍，新生成物純度達 88%–90% e.e. | 本篇研究結果 | 印刷頁 767 Table 1 Run B5；p. 767 第 2 欄第 3 段 | 符合來源 |
-| CL-009 | 對映異構物對稱響應（Series C）：以 (R)-1 10% e.e. 啟動，反應 70 h，產物富集 (R)-1 達 53% e.e.（新生成物 67% e.e.）；以 (R)-1 30% e.e. 啟動，產物達 72% e.e.（新生成物 86% e.e.） | 本篇研究結果 | 印刷頁 767 Table 1 Run C1–C2；p. 767 第 2 欄末段 | 符合來源 |
-| CL-010 | 外消旋體控制組（Run D）：以外消旋 1（0% e.e.）為催化劑，反應 55 h，產率 68%，產物手性選擇性低於檢測極限（BDL） | 本篇研究結果 | 印刷頁 767 Table 1 Run D | 符合來源（Below Detection Level） |
-| CL-011 | 反應活性中間體為現場原位生成的對掌異丙基鋅烷氧基中間體 2（isopropylzinc alkoxide），由 1 與等摩爾二異丙基鋅反應生成，並經 ¹H NMR 結構表徵 | 本篇研究結果 | 印刷頁 767 第 2 欄第 4 段；Fig. 2 | 符合來源 |
-| CL-012 | 催化劑對掌組態決定產物對掌組態：(S)-1 誘導生成 (S)-1，(R)-1 誘導生成 (R)-1，證實為典型不對稱自催化體系 | 本篇研究結果 | 印刷頁 767 第 2 欄末段 | 符合來源 |
-| CL-013 | 與 Frank (1953) 相互抑制對稱破缺模型的關聯：作者認為本反應可能是 Frank 假說的首個實驗化學反應實例 | 作者解釋 | 印刷頁 768 第 1 欄末段 | 符合來源（原文註記 Conceivable，尚未完全確定是否存在抑制） |
-| CL-014 | 限制：自催化步驟之詳細機構與動力學、尤其是系統中是否存在相互抑制或二聚體失活機制，在 1995 年本篇發表時尚未闡明 | 作者解釋 | 印刷頁 768 第 1 欄末段 | 符合來源 |
-| CL-015 | 限制：中間體 2 僅以 ¹H NMR 檢驗，未提供 X-ray 單晶結構或完整反應速率常數 | 本篇研究結果 | 印刷頁 767–768 全文 | 符合來源 |
-
----
-
-## 區塊公式來源對應
-
-| 公式序號 | 預定公式形式 | 原文出處或推導基礎 | 類型 |
-|---|---|---|---|
-| 區塊公式 1 | 自催化與立體選擇性放大的化學計量加成反應式 | 印刷頁 767 Fig. 2 反應機理圖 | 本篇研究結果 |
-| 區塊公式 2 | 對映體過量（Enantiomeric Excess, ee）定義式：$$\mathrm{e.e.} = \frac{|[S] - [R]|}{[S] + [R]} \times 100\%$$ | 印刷頁 767 Table 1 註解 § 計算例與實驗操作 | 依原文數據計算 |
-| 區塊公式 3 | Frank (1953) 互抑制手性自催化動力學方程（引自文中 ref. 7）：$$\frac{\mathrm{d}[S]}{\mathrm{d}t} = k_1 [A][S] - k_2 [S][R]$$ | 印刷頁 767 第 1 欄第 1 段；p. 768 ref. 7 (Frank 1953) | Wiki 詮釋 |
-
----
-
-## 查核總結
-- 查核者：OpenCode by SST (MiniMax M3.1 Flash) 與 Antigravity by Google DeepMind (Lead Architect)
-- 查核結論：數值全部核對無誤，與 Nature 378, 767–768 印刷影像 100% 一致。
+| Card 1、hook | 作者首次在化學反應中實驗證明不對稱自催化可放大對映體過量（e.e.），產物對映體純度顯著高於催化劑對映體純度 | 本篇研究結果 | 印刷頁 767 左欄第 1 段；第 2 欄第 1 段 | 符合來源 |
+| Card 1、Card 4 | Series A 逐級放大：歷經 5 輪連續自催化反應（A1–A5），產物與催化劑混合物 e.e. 從 5% 放大至 39%、76%、85%、89%、89% (S)，(S)-1 總量放大 1,674 倍 | 本篇研究結果 | 印刷頁 767 Table 1 Runs A1–A5；p. 767 右欄第 3 段 | 符合來源 |
+| Card 1、Card 4 | Series B 極低起始：以 (S)-1 僅 2% e.e.（S : R = 51 : 49）啟動，歷經 5 輪連續自催化（B1–B5），產物混合物 e.e. 依序放大為 10%、57%、81%、88%、88% (S)，(S)-1 物質量放大 942 倍，新生成物純度達 88%–90% e.e. | 本篇研究結果 | 印刷頁 767 Table 1 Runs B1–B5；p. 767 右欄第 3 段 | 符合來源 |
+| Card 2 | 先前不對稱自催化反應（refs 19–21）之產物 e.e. 始終低於催化劑 e.e.，手性訊息在複製中被稀釋而非放大 | 作者解釋 | 印刷頁 767 左欄第 2 段 | 符合來源 |
+| Card 2 | Frank (1953) 提出「自催化 ＋ 相互抑制」理論方案（ref. 7），但長期缺乏化學反應實驗實例；當時唯一接近的實驗為 Kondepudi 等人（ref. 27）之自發結晶對稱破缺，屬物理而非化學過程 | 作者解釋 | 印刷頁 767 左欄第 1 段；p. 768 左欄末段 | 符合來源 |
+| Card 3 區塊公式 1 | 對映體過量（e.e.）量化定義式：$\mathrm{e.e.} = \frac{|[S]-[R]|}{[S]+[R]} \times 100\%$ | 依原文數據計算 | 印刷頁 767 Table 1 註解 § 計算例與實驗操作 | 符合來源 |
+| Card 3 區塊公式 2 | Frank (1953) 相互抑制手性自催化動力學方程：$\frac{\mathrm{d}[S]}{\mathrm{d}t} = k_{\mathrm{a}}[A][S] - k_{\mathrm{i}}[S][R]$，$\frac{\mathrm{d}[R]}{\mathrm{d}t} = k_{\mathrm{a}}[A][R] - k_{\mathrm{i}}[S][R]$（標準形式，作理論對照） | Wiki 詮釋 | 印刷頁 767 左欄第 1 段；p. 768 ref. 7 (Frank 1953) | 符合來源 |
+| Card 3 區塊公式 3 | 原位生成之異丙基鋅烷氧基中間體 2 催化循環簡化反應式：$\mathrm{1} + \mathrm{i}\text{-}\mathrm{Pr}_2\mathrm{Zn} \rightarrow \mathrm{2} + \mathrm{i}\text{-}\mathrm{PrH}$；$\mathrm{3} + \mathrm{i}\text{-}\mathrm{Pr}_2\mathrm{Zn} \xrightarrow{\mathrm{2}} \mathrm{2}_{\mathrm{new}}$；$\mathrm{2}_{\mathrm{new}} + \mathrm{H^+} \rightarrow \mathrm{1}_{\mathrm{new}} + \mathrm{Zn(II)}$ | 本篇研究結果 | 印刷頁 767 Fig. 2 反應機理圖與正文 | 符合來源 |
+| Card 3 區塊公式 4 | 二聚體平衡方程式：$\mathrm{(S)}\text{-}\mathrm{2} + \mathrm{(S)}\text{-}\mathrm{2} \rightleftharpoons \mathrm{(S)}\text{-}\mathrm{(S)}\text{-}\mathrm{2}_2$ ($K_{\mathrm{homo}}$)；$\mathrm{(S)}\text{-}\mathrm{2} + \mathrm{(R)}\text{-}\mathrm{2} \rightleftharpoons \mathrm{(S)}\text{-}\mathrm{(R)}\text{-}\mathrm{2}_2$ ($K_{\mathrm{hetero}}$) | 後續研究 | Blackmond et al. (2001), *JACS* 123:10103-10104 (doi:10.1021/ja0165133) | 符合來源 |
+| Card 3 區塊公式 5 | 二聚體平衡常數定義式：$K_{\mathrm{homo}} = \frac{[\mathrm{(S)}\text{-}\mathrm{(S)}\text{-}\mathrm{2}_2]}{[\mathrm{(S)}\text{-}\mathrm{2}]^2}$；$K_{\mathrm{hetero}} = \frac{[\mathrm{(S)}\text{-}\mathrm{(R)}\text{-}\mathrm{2}_2]}{[\mathrm{(S)}\text{-}\mathrm{2}][\mathrm{(R)}\text{-}\mathrm{2}]}$ | 後續研究 | Blackmond et al. (2001), *JACS* 123:10103-10104 (doi:10.1021/ja0165133) | 符合來源 |
+| Card 4 | Series A1 數據：起始 5% e.e. (S)-1，反應 74 h，產率 62%，混合物 e.e. 39% (S)；新生成物產率 42%、e.e. 55% (S)，(S)-1 放大 4.1 倍 | 本篇研究結果 | 印刷頁 767 Table 1 Run A1 | 符合來源 |
+| Card 4 | Series B 詳細數據：B1（2% e.e. $\rightarrow$ 10% e.e., 2.5倍）、B2（10% e.e. $\rightarrow$ 57% e.e., 13倍）、B3（57% e.e. $\rightarrow$ 81% e.e., 61倍）、B4（81% e.e. $\rightarrow$ 88% e.e., 239倍）、B5（88% e.e. $\rightarrow$ 88% e.e., 942倍） | 本篇研究結果 | 印刷頁 767 Table 1 Runs B1–B5 | 符合來源 |
+| Card 4 | Series C 鏡像對稱實驗：(R)-1 起始 10% e.e. 反應 70 h 得 53% e.e. (R)（新生成 67%）；(R)-1 起始 30% e.e. 反應 65 h 得 72% e.e. (R)（新生成 86%），證實催化劑組態決定產物組態 | 本篇研究結果 | 印刷頁 767 Table 1 Runs C1–C2；p. 767 右欄末段 | 符合來源 |
+| Card 4 | Run D 外消旋控制組：以外消旋 1（0% e.e.）催化反應 55 h，產率 68%，立體選擇性低於檢測極限（BDL） | 本篇研究結果 | 印刷頁 767 Table 1 Run D | 符合來源 |
+| Card 4 後續 | Shibata et al. (1996), *JACS* 118:471-472 (doi:10.1021/ja953066g)：同嘧啶醇骨架高選擇性催化性自動增殖 | 後續研究 | JACS 118:471-472 摘要與全文 | 符合來源 |
+| Card 4 後續 | Buono & Blackmond (2003), *JACS* 125:8978-8979 (doi:10.1021/ja034705n)：四聚體過渡態動力學證據 | 後續研究 | JACS 125:8978-8979 摘要與全文 | 符合來源 |
+| Card 4 後續 | Kawasaki et al. (2009), *Science* 324:492-495 (doi:10.1126/science.1170322)：碳同位素 $^{13}\mathrm{C}/^{12}\mathrm{C}$ 誘發不對稱自催化手性放大 | 後續研究 | Science 324:492-495 摘要與全文 | 符合來源 |
+| Card 4 後續 | Möhler et al. (2025), *Nature Communications* 16:7303 (doi:10.1038/s41467-025-62591-3)：吡啶基與嘧啶基受質動力學剖析更新 | 後續研究 | Nat. Commun. 16:7303 摘要與全文 | 符合來源 |
+| Card 5、Card 6 | 本反應將「生命起源分子同手性之謎」轉化為實驗室可精確測量之化學動力學問題 | 作者解釋 | 印刷頁 768 左欄末段 | 符合來源 |
+| 限制 | 自催化詳細機構與動力學尚未完全闡明，是否存在抑制機制未知；中間體 2 僅以 ¹H NMR 表徵 | 作者解釋 | 印刷頁 768 左欄末段；p. 767 右欄第 4 段 | 符合來源 |
