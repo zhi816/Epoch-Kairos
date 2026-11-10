@@ -37,7 +37,8 @@ button:focus-visible, a:focus-visible, .panel:focus-visible { outline: 1px solid
 .shell { position: relative; z-index: 1; display: flex; align-items: flex-start; gap: 16px; min-height: 100vh; padding: 16px; }
 .rail { position: sticky; top: 16px; z-index: 2; flex: 0 0 auto; display: flex; gap: 26px; height: var(--panel-h); }
 .title-v { height: 100%; flex: 0 0 auto; display: flex; }
-.title-v svg { height: 100%; width: auto; aspect-ratio: 151 / 860; overflow: visible; display: block; }
+/* 直排標題對齊左下角：字形左緣貼欄左緣、「E」底端對齊左欄底部英文小字之底端；viewBox 寬 141 須與 tools/home_template.html 一致 */
+.title-v svg { height: 100%; width: auto; aspect-ratio: 141 / 860; overflow: visible; display: block; }
 /* Playfair Display 之「Epoch Kairos」自然寬度約 5.93em；字級取略小於 textLength 可容納者，讓 textLength 只微調字距、不擠壓字形 */
 .title-text { font-family: var(--font-display); font-weight: 400; font-size: 133px; }
 .title-h .title-text { font-size: 58px; }
@@ -165,7 +166,8 @@ body[data-mode="focus"] .archive::before { background: linear-gradient(90deg, rg
 .arch-head h2 { letter-spacing: 0.12em; }
 body[data-mode="focus"] .arch-head h2 { color: var(--blue); }
 .arch-info { font-size: 12px; line-height: 1.6; color: var(--subtle); }
-.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 16px; }
+/* 桌面四欄、欄距 36、列距 44（2026-11-10 使用者自間距比較三版中選定 C）；右欄較窄時依下方容器查詢改三欄、兩欄 */
+.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 36px; row-gap: 44px; margin-top: 22px; }
 .wall-empty { margin: 16px 0 0; padding: 26px 0; font-size: 13px; line-height: 1.7; color: var(--soft); }
 .wc { display: block; container-type: inline-size; border-radius: 2px; color: inherit; transition: transform 0.25s ease; }
 .wc:hover { transform: translateY(-3px); }
@@ -187,8 +189,9 @@ body[data-mode="focus"] .arch-head h2 { color: var(--blue); }
 .wc.focus .tag { position: absolute; left: 4.5cqw; top: 4.5cqw; max-width: 58cqw; box-sizing: border-box; padding: 0.5cqw 2.4cqw; border-radius: 999px; background: #0C0E11; box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 35%, transparent); font-size: 6.6cqw; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--c); }
 .wc.focus .ttl { color: var(--fg-strong); }
 .wc.focus .bot { border-top-color: rgba(234, 230, 223, 0.14); color: var(--muted); }
-/* 右欄較窄時（約 1100px 以下之桌面視窗）改 2 欄，卡片內最小字才不致小於手機版 */
-@container stage (max-width: 760px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } }
+/* 右欄 1000px 以下（約 1500px 寬之視窗）改 3 欄、760px 以下（約 1200px 寬）改 2 欄，卡片內最小字才不致小於手機版；手機版另於下方媒體查詢設定 */
+@container stage (max-width: 1000px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 32px; row-gap: 40px; } }
+@container stage (max-width: 760px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; row-gap: 30px; } }
 
 .noscript { padding: 24px 0; font-size: 14px; line-height: 1.8; color: var(--body); }
 .noscript ul { padding-left: 20px; }

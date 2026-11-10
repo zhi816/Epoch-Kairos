@@ -225,7 +225,7 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 | `python tools/build_paper_prototype.py <slug>` | S8 | 產生論文頁網頁並自我檢查 |
 | `paper-card-writer` 之 `scripts/verify_page.js` | S8 | 瀏覽器量測論文頁（桌面與手機） |
 | `python tools/build_home.py [--check] [--card <slug>]` | S9、S10 | 重建或比對首頁（星圖、我的星系、卡片牆） |
-| `paper-card-writer` 之 `scripts/verify_wall.js` | S9 | 瀏覽器量測卡片牆（四種組合） |
+| `paper-card-writer` 之 `scripts/verify_wall.js` | S9 | 瀏覽器量測卡片牆（三種尺寸乘兩種模式，共六組） |
 | 本 Skill 之 `scripts/verify_star.js` | S9 | 瀏覽器確認這篇在星圖或我的星系看得見、點得開 |
 | `python .agents/skills/git-sync-guardian/scripts/log_time.py`、`safe_commit_push.py` | S10 | 日誌時間、只提交自己的檔案並推送 |
 

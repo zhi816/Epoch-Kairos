@@ -49,7 +49,7 @@ description: >-
 | `wiki/issues.md` 中本頁條目 | 是否有尚未修正的問題影響卡片 |
 | 範例 `wiki/cards/1982-hopfield-network.md`（群星）、`wiki/cards/2021-seediq-chinese-mt-you.md`（我的關注） | 完整格式範例；只看格式，**內容不得套用到其他論文** |
 | 參考網頁 `web/papers/1982-hopfield-network/index.html`、`2021-seediq-chinese-mt-you/index.html` | 上述兩份卡片檔實際做成論文頁的樣子（`python tools/build_paper_prototype.py <slug>` 產生）。開工前在瀏覽器打開看過，知道每個欄位最後出現在哪裡、多大；寫完自己那篇**必須**用同一指令建置並驗證（第五節第 7 步） |
-| 首頁 `web/index.html` 下方「群星檔案」與 `#my-constellation`「我的星系檔案」 | 封面卡在首頁卡片牆上的樣子（桌面 3 欄、手機 2 欄，比論文頁 Card 1 小）。開工前以本機伺服器打開看過；寫完自己那篇**必須**以 `python tools/build_home.py --card <slug>` 放上牆並驗證（第五節第 7 步） |
+| 首頁 `web/index.html` 下方「群星檔案」與 `#my-constellation`「我的星系檔案」 | 封面卡在首頁卡片牆上的樣子（桌面 4 欄，右欄較窄時 3 欄或 2 欄；手機 2 欄；比論文頁 Card 1 小）。開工前以本機伺服器打開看過；寫完自己那篇**必須**以 `python tools/build_home.py --card <slug>` 放上牆並驗證（第五節第 7 步） |
 
 ## 四、卡片總覽
 
@@ -195,7 +195,7 @@ description: >-
 
 `scripts/verify_wall.js`（瀏覽器執行）：
 
-* 以本機伺服器開啟首頁 `index.html` 後，在 Console 先執行 `var EK_SLUG = '<slug>';` 再執行全文；以隱藏 iframe 量測 1440 x 900 與 375 x 812、群星與我的星系兩種模式，輸出逐項結果與「結果：PASS」或「結果：FAIL n 項」。量測項目見 `references/card-wall.md` 第四節第 3 步。
+* 以本機伺服器開啟首頁 `index.html` 後，在 Console 先執行 `var EK_SLUG = '<slug>';` 再執行全文；以隱藏 iframe 量測 1920 x 1080（4 欄）、1440 x 900（3 欄）與 375 x 812（2 欄）、群星與我的星系兩種模式，共六組，輸出逐項結果與「結果：PASS」或「結果：FAIL n 項」。量測項目見 `references/card-wall.md` 第四節第 3 步。
 * 同樣只量版面與一致性，不判斷內容對錯。
 
 ## 十、與其他規範的關係
@@ -234,7 +234,7 @@ description: >-
 | 執行 `build_home.py` 沒加 `--card`，卻宣稱已上牆 | 未提交之卡片檔不會上牆；輸出清單裡沒有自己的 slug | `card-wall.md` 第三節 |
 | 用 `--card` 帶入別人的卡片檔，或把別人的卡片檔、論文頁一起提交 | 等於替別人交出未完成的工作 | `card-wall.md` 第三節、第七節 |
 | 手改 `web/index.html`，或手動合併它的衝突標記 | 首頁是產生檔；衝突時重跑建置即可 | `card-wall.md` 第四節第 5 步 |
-| `verify_wall.js` 沒設 `EK_SLUG`，或只驗群星沒驗我的星系 | 無法證明自己的卡片在牆上；腳本一次驗四組，報告要原樣貼上 | `card-wall.md` 第四節第 3 步 |
+| `verify_wall.js` 沒設 `EK_SLUG`，或只驗群星沒驗我的星系 | 無法證明自己的卡片在牆上；腳本一次驗六組，報告要原樣貼上 | `card-wall.md` 第四節第 3 步 |
 | 提交時漏了 `web/index.html`，或推送後沒跑 `--check` | 首頁與已提交內容不一致，別人重建時才發現 | 第五節第 9 步 |
 | 返回鍵標示與目的地不符，卻在單篇網頁手改標示或自行改模板 | 群星論文應為「回到群星」、我的關注論文應為「回到我的星系」，由模板與建置腳本統一決定；不符是模板問題，登記 `wiki/todo.md` 並告知使用者 | `paper-page.md` 第二節、第七節 |
 | 只驗桌面、沒驗手機；或驗證報告改寫成「全部通過」 | `verify_page.js` 一次量兩種尺寸，報告要原樣貼上 | `paper-page.md` 第六節 |

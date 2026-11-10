@@ -1964,3 +1964,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依使用者指示，手機版（窄於 900px）論文頁之長文頁首（雙年份、中英文標題、「隨卡片｜全文」開關）由卡片與段落之間移到頁面最上方，卡片下方直接接目前段落，滑卡片即可看到換段。修改 [`tools/paper_template.html`](../tools/paper_template.html)（`.pane`、`.art` 以 `display:contents` 攤平並以 `order` 排序，手機頁首字級略縮）與 [`tools/build_paper_prototype.py`](../tools/build_paper_prototype.py)（六段包入 `.body`），重建 `web/papers/` 全部 38 頁，自我檢查 ERROR 0。[`verify_page.js`](../.agents/skills/paper-card-writer/scripts/verify_page.js) 新增手機檢查「頁首在卡片上方、段落緊接卡片欄之下」，以 2007-woodford-inflation-dynamics 與 2023-atayal-truku-morphology-dai 驗證皆 PASS。同步更新 [`DESIGN.md`](../DESIGN.md) 第五章第 1 節、否決紀錄與版本歷程、[`AGENTS.md`](../AGENTS.md) 第七章第 3 節手機佈局與 `paper-card-writer` 之 `references/paper-page.md`。
+
+## [2026-11-10 15:48] design | 桌面卡片牆改四欄、直排標題對齊左下角 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者認為桌面首頁卡片太大、間距太擠，先以 1920 x 1080 截圖比較三版（A 三欄卡寬上限 400px、欄距 40 列距 48；B 三欄卡寬上限 340px、欄距 64 列距 72；C 四欄滿版、欄距 36 列距 44），使用者選 C。`web/assets/css/starmap.css` 卡片牆改為四欄、欄距 36、列距 44，右欄 1000px 以下改三欄（欄距 32、列距 40）、760px 以下改兩欄（欄距 24、列距 30），手機版不變；1920 寬時卡寬由 434px 降為約 309px。使用者另指出直排標題「Epoch Kairos」應依早先樣貌對齊左下角：`tools/home_template.html` 之標題 SVG 寬由 151 縮為 141、基線 `y` 由 112 改為 102、起點 `x` 由 -852 改為 -862（CSS `aspect-ratio` 同步），字形左緣由距邊界約 10px 改為貼齊 16px 邊界，底端與左欄英文小字底端同高，懸星索引隨之左移約 10px。重建 `web/index.html`（`build_home.py --check` 一致）。桌面端 Skill 同步：`paper-card-writer` 之 `scripts/verify_wall.js` 增加 1920 x 1080 量測並依尺寸檢查欄數（1920 為 4 欄、1440 為 3 欄、手機 2 欄），`SKILL.md`、`references/card-wall.md` 與 `paper-pipeline` 之 `SKILL.md` 改寫欄數與組數；以新版 `verify_wall.js` 驗證全部卡片，結果 PASS（WARN 27 項皆為既有之語言標籤與期刊名截斷，三種尺寸相同）。`DESIGN.md` 第二章第 1、3 節與第十章同步記錄。

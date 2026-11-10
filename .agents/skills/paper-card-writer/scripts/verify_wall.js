@@ -6,17 +6,20 @@
 //   2. 在瀏覽器開 http://127.0.0.1:8781/index.html ，分頁保持在前景（背景分頁的計時器會被節流）。
 //   3. 在 Console 先執行一行，指定自己這篇（批次重建時可省略，省略則只驗全部卡片）：
 //        var EK_SLUG = '1982-hopfield-network';
-//      再把本檔全部內容貼進 Console 執行（或以代理之瀏覽器 JavaScript 工具執行，兩段放在同一次執行亦可），等待約 25 秒。
+//      再把本檔全部內容貼進 Console 執行（或以代理之瀏覽器 JavaScript 工具執行，兩段放在同一次執行亦可），等待約 40 秒。
 //   4. 把輸出的整段文字原樣貼進交付說明。任何一行 FAIL 都不得交付。
 //
-// 本腳本以隱藏 iframe 量測桌面 1440 x 900 與手機 375 x 812，群星與我的星系兩種模式各一次，不必手動調整視窗。
+// 本腳本以隱藏 iframe 量測桌面 1920 x 1080（4 欄）、桌面 1440 x 900（3 欄）與手機 375 x 812（2 欄），
+// 群星與我的星系兩種模式各一次，共六組，不必手動調整視窗。
 // 量測項目：卡片張數與頁面資料一致、指定之 slug 在牆上且只有一張、每張卡 3:4、卡片內容未被裁切、
 // 封面一句話每行不折行且最多三行、一句話與 card_line 逐字相同、一句話未壓到代表星或語言標籤、
 // 論文名與雙年份是否被截斷、欄數、手機最小字級、頁面無橫向捲動、學科（或角色）篩選後只顯示該篩選之卡片、
 // 每張卡之連結可開啟。只量版面與一致性，不判斷內容對錯。
 (async () => {
   const SLUG = (typeof EK_SLUG === 'string' ? EK_SLUG : '').trim();
-  const SIZES = [[1440, 900], [375, 812]];
+  const SIZES = [[1920, 1080], [1440, 900], [375, 812]];
+  // 各尺寸應有之欄數（DESIGN.md 第二章第 3 節：桌面右欄 4 欄，右欄 1000px 以下 3 欄、760px 以下 2 欄；手機 2 欄）
+  const COLS = { 1920: 4, 1440: 3, 375: 2 };
   const MODES = ['stars', 'focus'];
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const lines = [];
@@ -105,9 +108,9 @@
         cv.querySelectorAll('.bot, .tag').forEach(e => { if (e.scrollWidth > e.clientWidth + 1) warn(tag, id + ' ' + name(e) + ' 被截斷：「' + e.textContent + '」'); });
       });
 
-      // 4. 欄數：桌面 1440 為 3 欄，手機為 2 欄
+      // 4. 欄數：桌面 1920 為 4 欄、1440 為 3 欄，手機為 2 欄
       const cols = W.getComputedStyle(d.getElementById('grid')).gridTemplateColumns.split(' ').length;
-      out(cols === (narrow ? 2 : 3), tag, '卡片牆 ' + cols + ' 欄（應為 ' + (narrow ? 2 : 3) + ' 欄）');
+      out(cols === COLS[w], tag, '卡片牆 ' + cols + ' 欄（應為 ' + COLS[w] + ' 欄）');
 
       // 5. 頁面不得橫向捲動
       out(d.documentElement.scrollWidth <= W.innerWidth + 1, tag, '頁面寬 ' + d.documentElement.scrollWidth + 'px，視窗寬 ' + W.innerWidth + 'px');
