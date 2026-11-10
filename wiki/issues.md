@@ -2,7 +2,7 @@
 
 > 本檔登記查核發現之待修正事項，格式與狀態規則見 [AGENTS.md](../AGENTS.md) 第七章第 4 節。標題五段依序為：編號、狀態（`open` / `fixed` / `wontfix`）、相對於 `wiki/` 之檔案、位置、判定。修正時就地改狀態並追加「處理」行，不得刪除條目。
 >
-> EK-001 至 EK-056 係於 2026-11-09 自 [wiki/log.md](log.md) 2026-11-08 21:40 至 23:36 之 audit 條目逐筆轉錄（原查核者均為 Codex by OpenAI，EK-031 例外），問題描述與來源沿用原條目，轉錄時未重新核對原文。修正前須依 `wiki-content-audit` 回原文確認，不得只照本檔描述改寫。EK-057 至 EK-060 為轉錄同日以 `crossref_check.py` 查得之 DOI 問題。EK-061 至 EK-087 於 2026-11-09 00:55 之 audit 逐筆登記（Antigravity by Google DeepMind）。EK-088 至 EK-090 為同日核對證據表採用版本與先前修正引用時發現之錯置（Claude Code / DeepSeek Harness）。EK-091 至 EK-123 為 2026-11-09 至 2026-11-10 第一、二批卡片回填查核登記（Claude Code by Anthropic 等）。EK-130 至 EK-142、EK-150 至 EK-160、EK-170 至 EK-175 為 2026-11-10 第三批卡片回填抽查與概念頁同步登記（A、B、C 組依保留區段取號）。全庫 153 筆問題皆已修復（fixed）。條目依論文分節排列，編號順序不因分節而重排。
+> EK-001 至 EK-056 係於 2026-11-09 自 [wiki/log.md](log.md) 2026-11-08 21:40 至 23:36 之 audit 條目逐筆轉錄（原查核者均為 Codex by OpenAI，EK-031 例外），問題描述與來源沿用原條目，轉錄時未重新核對原文。修正前須依 `wiki-content-audit` 回原文確認，不得只照本檔描述改寫。EK-057 至 EK-060 為轉錄同日以 `crossref_check.py` 查得之 DOI 問題。EK-061 至 EK-087 於 2026-11-09 00:55 之 audit 逐筆登記（Antigravity by Google DeepMind）。EK-088 至 EK-090 為同日核對證據表採用版本與先前修正引用時發現之錯置（Claude Code / DeepSeek Harness）。EK-091 至 EK-123 為 2026-11-09 至 2026-11-10 第一、二批卡片回填查核登記（Claude Code by Anthropic 等）。EK-130 至 EK-142、EK-150 至 EK-160、EK-170 至 EK-175 為 2026-11-10 第三批卡片回填抽查與概念頁同步登記（A、B、C 組依保留區段取號）。全庫 153 筆中，本次 GPT-1 對指定 31 筆回核後，EK-002、EK-008、EK-014、EK-018、EK-022、EK-023 重開為 open；其餘 147 筆維持 fixed。條目依論文分節排列，編號順序不因分節而重排。
 
 ---
 
@@ -14,7 +14,7 @@
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit、[2026-11-08 23:36] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 p. 2556–2557 逐項確認後重寫 Card 3：明記並非所有局部極小值皆為名義記憶吸引子，零閾值下全零態（$0000\dots$）亦為穩定態，且隨機初態約有 10% 試驗落入無意義偽穩定態（Spurious States）、5% 停留在目標記憶鄰近態。證據表見 wiki/evidence/1982-hopfield-network.md。
 
-### EK-002 | fixed | papers/1982-hopfield-network.md | Card 4 | 原文不符
+### EK-002 | open | papers/1982-hopfield-network.md | Card 4 | 原文不符
 - **問題**：寫作「隨機正交型態」並稱 N=100 可穩定檢索 15 個完整記憶。原文稱隨機型態具 pseudoorthogonality，容量約 0.15N 是誤差變嚴重前之近似容量，不保證完整無誤檢索。另「隨機切除相當比例突觸或損毀神經元仍可正確重建」在原文無定量結果，須降格或另引直接實驗。
 - **來源**：[封存原文](../raw/1982-hopfield-network.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:46] audit、[2026-11-08 23:36] audit
@@ -76,11 +76,12 @@
 
 ## 2007 Woodford 通膨動態
 
-### EK-008 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 1 | 過度表述
+### EK-008 | open | papers/2007-woodford-inflation-dynamics.md | Card 1 | 過度表述
 - **問題**：「嚴格證明決定權毫不動搖」強於原文摘要「全球化不太可能削弱央行控制通膨的能力」。
 - **來源**：[原文（NBER WP 13329）](https://www.nber.org/system/files/working_papers/w13329/w13329.pdf)
 - **發現於**：wiki/log.md [2026-11-08 23:36] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文摘要 p. 2 與引言修訂 Frontmatter hook 與 Card 1：將「嚴格證明決定權毫不動搖」改述為貼合原文之「系統檢驗金融、商品與要素全球化對貨幣傳導機制三大環節（LM、IS、AS 方程）之影響，論證全球化不太可能削弱央行控制本國通膨動態的能力」。證據表見 wiki/evidence/2007-woodford-inflation-dynamics.md。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新回核卡片封面與 NBER WP 13329 摘要 p. 2：論文頁 hook／Card 1 保留「不太可能削弱」，但卡片封面仍寫成確定語氣「不會讓央行管不住通膨」；建議重開為 open。
 
 ### EK-009 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 3 | 原文未支持
 - **問題**：稱短期利率由準備金付息與供給條件決定，並列出未標號之 IS、NKPC 與廣義確定性公式。原文 p. 36 明說以 Taylor rule 表示政策、未建模央行如何實施操作利率；另行推導之標準式不得標為本文原式。
@@ -114,11 +115,12 @@
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 pp. 818–819 及 Figure 3D–E 查核修訂 Card 4：改述種子區特異性窗口，精確說明高效切割係要求緊鄰 PAM 之原間隔序列 3' 端維持「至少 13 個連續鹼基對完全互補」，而遠端（5' 端）可容忍多達 6 個連續錯配，更正原先「單一錯配即可完全廢除切割」之錯誤陳述。證據表見 wiki/evidence/2012-crispr-cas9.md。
 
-### EK-014 | fixed | papers/2012-crispr-cas9.md | Card 3 | 原文未支持
+### EK-014 | open | papers/2012-crispr-cas9.md | Card 3 | 原文未支持
 - **問題**：R-loop 自由能、切割速率常數與 K_d 等符號模型未見於原文，卻呈現為本文模型；可保留為教學推導，但須標明推導者、假設與來源。
 - **來源**：[封存原文](../raw/2012-crispr-cas9.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 3 公式小節：在 R-loop 自由能與雙結構域反應動力學公式前加註理論模型說明，明確標註此二公式為後續生物物理學文獻（如 Sternberg et al., 2014 等）對 Cas9 靶向機制的標準教學量化模型，非 2012 原文之直接方程。證據表見 wiki/evidence/2012-crispr-cas9.md。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新回核 Card 3 公式與 wiki-content-audit 現行公式規則：頁面雖標示後續教學模型，仍以區塊公式呈現非 2012 原文方程，且證據表未逐式列明直接來源位置；建議重開為 open。
 
 ### EK-015 | fixed | papers/2012-crispr-cas9.md | Card 5 | 歸因／版本錯置
 - **問題**：把 dCas9、nCas9 及鹼基／先導編輯工具家族寫成本篇建立；2012 原文報告的是雙 RNA 引導與嵌合單 RNA 切割，dCas9 調控平台見 2013 年後續研究。
@@ -142,11 +144,12 @@
 
 ## 2017 Transformer
 
-### EK-018 | fixed | papers/2017-attention-is-all-you-need.md | Card 4 | 歸因／版本錯置
+### EK-018 | open | papers/2017-attention-is-all-you-need.md | Card 4 | 歸因／版本錯置
 - **問題**：41.8 BLEU 符合 arXiv 版，NeurIPS 定稿 PDF 報 41.0（官方摘要頁 41.1）；頁面同時標 NeurIPS venue 與 arXiv 連結，須註明採用版本。
 - **來源**：[NeurIPS 定稿 PDF](https://proceedings.neurips.cc/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:46] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 NeurIPS 30 定稿 PDF 查核修訂 Card 4：明確標註英譯法（EN-FR）在 NeurIPS 定稿正文第 8 頁報告為 41.0 BLEU，在 Table 2 與 arXiv 版中標註為 41.8 BLEU（官方摘要頁載為 41.1），完整呈現版本數值差異。證據表見 wiki/evidence/2017-attention-is-all-you-need.md。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新回核 NeurIPS 定稿 PDF Table 2 與 arXiv v7：定稿正文及 Table 2 均為 41.0，41.8 見於 arXiv v7；目前頁面、卡片與證據表仍把定稿 Table 2 標為 41.8；建議重開為 open。
 
 ### EK-019 | fixed | papers/2017-attention-is-all-you-need.md | Card 5 | 原文不符
 - **問題**：稱原始 Transformer 訓練「完美契合 Tensor Cores」；原文使用 8 張 P100（Pascal），首代 Tensor Cores 出現於 Volta。
@@ -168,13 +171,14 @@
 - **發現於**：wiki/log.md [2026-11-08 21:46] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文主論文 Figure 2c 查核修訂 Card 4：明確標註主論文在近期 PDB 測試集（$n=10,795$）報告皮爾森相關係數為 $r = 0.76$（線性式 $\text{lDDT-C}_\alpha = 0.997 \times \text{pLDDT} - 1.17$），而在人類蛋白質組伴篇（Tunyasuvunakool et al. 2021）中報告為 $r = 0.73$，標明不同測試集出處。證據表見 wiki/evidence/2021-alphafold2.md。
 
-### EK-022 | fixed | papers/2021-alphafold2.md | Card 3 | 過度表述
+### EK-022 | open | papers/2021-alphafold2.md | Card 3 | 過度表述
 - **問題**：原文說三角更新受三角不等式「啟發」，頁面寫成「強制滿足」歐氏三角幾何；並把 IPA 注意力值之不變性與其後座標更新之等變性混稱。
 - **來源**：[封存原文](../raw/2021-alphafold2.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 Nature 2021 pp. 584–587 查核修訂 Card 3：更正三角更新表述為受三角不等式「啟發」（作為神經先驗引導逼近物理幾何，非剛性滿足）；精確區分 IPA 模組之數學性質：IPA 局部點距離計算之標量值具全局 $\mathrm{SE}(3)$ 不變性（Invariance），而結構模組利用該激活值對殘基剛體座標系實施等變更新（Equivariant Update），修正混稱。證據表見 wiki/evidence/2021-alphafold2.md。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新掃描論文頁全篇：Card 3 已修正，但 Frontmatter hook 與 Card 5 仍稱三角不等式直接／精確編碼為網路架構；原文僅稱受其啟發，並分別描述 IPA 不變性與座標更新等變性；建議重開為 open。
 
-### EK-023 | fixed | papers/2021-alphafold2.md | Card 5 | 歸因／版本錯置
+### EK-023 | open | papers/2021-alphafold2.md | Card 5 | 歸因／版本錯置
 - **問題**：把核孔複合體結構寫成直接套用 AF2 預測；後續研究是以 AlphaFold 模型結合 cryo-EM 等實驗資料做整合建模。
 - **來源**：[封存主論文](../raw/2021-alphafold2.pdf)、[NPC 整合建模研究](https://pubmed.ncbi.nlm.nih.gov/35679401/)
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit

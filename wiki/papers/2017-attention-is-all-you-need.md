@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#深度學習"]
 concepts: ["generative-world-models", "ai-for-structural-biology", "neural-circuits"]
 status: "published"
-verification: "verified"
+verification: "issues"
 my_focus: false
 doi_url: "https://arxiv.org/abs/1706.03762"
 key_papers:
