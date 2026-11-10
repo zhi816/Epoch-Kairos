@@ -817,3 +817,9 @@
 - **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`，摘要與 §1（p. 1）、§2（pp. 2–3）、註 1（p. 3）、表 1（p. 6）、Conclusion 與 Future Work（p. 8）、Limitations（p. 9）。
 - **發現於**：第三批卡片回填撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。回原文核對後：Card 2 依 §1–§2 改寫為大模型對小語言掌握有限、微調資料不足、拉定語無嵌入模型而無從語意檢索；Card 1「證明」改為摘要之發現；Card 5 第 2 點改述 PF 與 ZS、FS 之數值關係並引結論原句；Card 5 補列公開資源、限制與未來工作；證據表逐一列出表 1 四個方向（另含 Gherdëina→Italian GPT-4o 兩格）之數值與信賴區間，補登上述各項。頁面 `verification` 改為 `partial`。
+
+### EK-173 | fixed | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 4 與 Card 5 第 3 點 | 原文不符
+- **問題**：（1）Card 4 實驗設定稱檢索語料為「Gherdëina–Italian（18,485 句）」，原文無此數，原文為 Val Badia–Italian 18,140 句、Gherdëina–Italian 19,971 句，另對齊出 Val Badia–Gherdëina 14,953 句；證據表同列亦誤。（2）稱 BLEU 以「平均值 ± 標準差」報告，原文表 1 標題為平均值與信賴區間。（3）表 3 相關係數加註「p < 0.05」，原文僅以星號標示、未註明顯著水準。（4）「原文指出的局限性」7%–9% 一項寫作「無效拼寫或非標準詞」並標 Limitations p. 9，原文為 §7 p. 7「syntactically not valid in the target language」；Figure 2 一項寫成提示偏移「即」使 GPT-4o 找不到例句，原文為「may have caused」。（5）Card 5 第 3 點稱譯入高資源語言時「複雜提示無效甚至引入干擾」，原文為只有些微改善、FS 僅對 o1-mini 與 Llama-3.3 顯著，部分情形零樣本最好，未提干擾。
+- **來源**：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`，§4（pp. 4–5）、§6（p. 5）、表 1 標題與表 2（p. 6）、表 3（p. 7）、§7（p. 7）、Conclusion（p. 8）。
+- **發現於**：第三批卡片回填交付稿撰寫時再抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。以原 PDF 頁面影像核對後，依原文改寫上述五處，表 2 補列 ZS、FS、PF 三種字元數與 DeepSeek-R1 推論秒數；證據表同步更正並逐一列出數值。卡片檔不受影響（Card 4 四個數字均取自表 1）。`verification` 維持 `partial`。

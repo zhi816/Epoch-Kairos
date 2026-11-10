@@ -1752,3 +1752,11 @@
   - 卡片：Card 3 無公式模式（全文無編號公式，片段選取以 §3 文字與圖 1 敘述）；Card 4 四個數字（28.60、13.11、20.94、14.22）回原文表 1 抽查相符；Card 5 新論文模式三筆取摘要、Limitations 與 Future Work；Card 6 依 §7「缺少直接平行資料時」之樞紐片段提示。
   - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 37 項）；桌面箭頭、圓點、方向鍵與手機滑卡、「隨卡片｜全文」開關實測正常。目視修正 Card 2 對照欄之落單行。`lint_wiki.py` 本篇無 ERROR、WARN（唯一 ERROR 在他人未提交之 2025-deepseek-r1.md）。
   - 首頁卡片牆依本批協調規則未重建，由協調者處理。
+
+## [2026-11-10 10:08] fix | 更正片段提示翻譯頁之檢索語料句數與表 2、表 3 敘述 | #自然語言處理 #人工智慧 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 C 組（TD-008）。撰寫交付稿時再回原文抽查 [wiki/papers/2025-fragment-shot-reasoning-mt-frontull.md](papers/2025-fragment-shot-reasoning-mt-frontull.md) Card 4、5，以原 PDF 頁面影像核對後修正（EK-173，fixed）：
+  - 檢索語料「Gherdëina–Italian 18,485 句」原文無此數，改為 Val Badia–Italian 18,140 句、Gherdëina–Italian 19,971 句、對齊之 Val Badia–Gherdëina 14,953 句（§4, pp. 4–5）；BLEU「平均值 ± 標準差」改為平均值與信賴區間（表 1 標題）。
+  - 表 3 刪去原文未載之「p < 0.05」，註明原文僅以星號標示；表 2 補列三種提示之字元數與 DeepSeek-R1 推論秒數；7–9% 無效詞與 Figure 2 一項改標 §7 p. 7，並照原文「可能」之語氣；Card 5 第 3 點刪去「引入干擾」，改照 §6 p. 5 與 Conclusion p. 8。
+  - 證據表同步更正並逐一列出數值。卡片檔不受影響；原型重建自我檢查 ERROR 0、WARN 0，`verify_page.js` 結果 PASS（35 項）；`lint_wiki.py` ERROR 0。`verification` 維持 `partial`。本篇因此有第二個提交。
