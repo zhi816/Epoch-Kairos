@@ -1701,3 +1701,12 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：第三批 A 組（TD-008）。[wiki/papers/2024-sora-world-simulator.md](papers/2024-sora-world-simulator.md) Card 4 後續第一點原列快手 Kling、CogVideoX、HunyuanVideo、Wan2.1、Movie Gen 並稱其「遵循同一範式」「全面驗證」普適性，未附出處。以 arXiv API 取得四份技術報告摘要（arXiv:2408.06072、2410.13720、2412.03603、2503.20314），改寫為各報告自述之設計並附編號；刪除無技術報告之 Kling 與「同一範式」等說法，註明不據此推論與 Sora 之承接關係。證據表該列改寫；[wiki/issues.md](issues.md) EK-100 改為 fixed；本頁已無 open 問題，`verification` 由 issues 改為 partial（未整頁重新逐項核對）。卡片檔未受影響（Card 5 未用此段），重建論文頁原型：自我檢查 ERROR 0、WARN 0，`verify_page.js` 結果 PASS。`lint_wiki.py` ERROR 0。
+
+## [2026-11-10 09:47] update | 修正芬蘭語譯北薩米語頁之公式與 Card 5 並新增卡片文字檔 | #自然語言處理 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 C 組（TD-008）。先依 wiki-content-audit 修正 [wiki/papers/2024-finnish-northern-sami-mt-saleva.md](papers/2024-finnish-northern-sami-mt-saleva.md) 與證據表，再依 paper-card-writer 撰寫 [wiki/cards/2024-finnish-northern-sami-mt-saleva.md](cards/2024-finnish-northern-sami-mt-saleva.md) 並建置 `web/prototypes/paper-v1/2024-finnish-northern-sami-mt-saleva.html`。
+  - 頁面修正（EK-170，fixed）：KL 項照原文 §3.2 改為單豎線並拆成兩行 aligned、註明正文內嵌式無式號（p. 12950）；Card 5 補列 §1 公開之程式與資料（GitHub `j0ma/sami-translation`）與 §5、§4.3 所述之未來方向；證據表逐一列出表 1、3、4、5 數值。`card_line` 依 cover.md 第二節第 7 條改為「比較補資料方法，改善北薩米語翻譯」（原句切不出 3 行內之封面斷行）。`verification` 改為 `partial`。
+  - 卡片：Card 3 取 aligned 第二行之 KL 正則項；Card 4 四個數字（26.86、41.75 取自表 3 p. 12952，19.20 取自表 5 p. 12953，1.92 取自表 1 p. 12950）皆回原文抽查相符；Card 5 新論文模式三筆取 §1、Limitations、§5；封面標題「語言模型先驗與資料增強」（短名 24 字超過上限）。
+  - 檢查：`check_cards.py` ERROR 0、WARN 3（兩條 BLEU 為指標名稱、公式 81 字元經實測公式框不需捲動）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 37 項）。目視檢查修正 Card 2 標題超字數、封面標題與 Card 5 第二筆之單字落單。`lint_wiki.py` ERROR 0。
+  - 首頁卡片牆依本批協調規則未重建，由協調者處理；`card_line` 已改，首頁星圖與卡片牆待協調者重建後同步。

@@ -10,13 +10,13 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#深度學習"]
 concepts: ["low-resource-machine-translation"]
 status: "wiki"
-verification: "verified"
+verification: "partial"
 my_focus: true
 focus_role: "report"
 focus_languages: ["北薩米語"]
 doi_url: "https://doi.org/10.18653/v1/2024.findings-acl.768"
 hook: "以約 2.5 萬句平行語料的芬蘭語→北薩米語為例，比較回譯、標記回譯、正譯與語言模型先驗：充分訓練的基線即比前人高近 8 BLEU，最佳回譯模型達 41.75 BLEU，但各技術的效果隨測試領域而不同。"
-card_line: "比較多種補資料方法，改善芬蘭語譯北薩米語"
+card_line: "比較補資料方法，改善北薩米語翻譯"
 ---
 
 # 語言模型先驗與資料增強策略在低資源機器翻譯之應用：以芬蘭語至北薩米語為例 (Language Model Priors and Data Augmentation Strategies for Low-resource Machine Translation)
@@ -53,9 +53,14 @@ card_line: "比較多種補資料方法，改善芬蘭語譯北薩米語"
 * **標記回譯**：在合成句前加上 `<BT>` 作為第一個詞元。
 
 ### 2. 語言模型先驗（§3.2, p. 12950）
-依 Baziotis et al. (2020)，以北薩米語單語資料訓練自迴歸 Transformer 語言模型，作為 $p_{\text{NMT}}(y_t \mid x, y_{<t})$ 的弱資訊先驗。在詞元層級的翻譯對數概似損失上加一項 KL 散度正則項（原文式）：
+依 Baziotis et al. (2020)，以北薩米語單語資料訓練自迴歸 Transformer 語言模型，作為 $p_{\text{NMT}}(y_t \mid x, y_{<t})$ 的弱資訊先驗。在詞元層級的翻譯對數概似損失上加一項 KL 散度正則項（原文 §3.2 正文內嵌式，無式號，p. 12950；分隔符照原文作單豎線）：
 
-$$J(\theta) = -\log P_{\text{NMT}}(y \mid x) + \lambda\, D_{\text{KL}}\big(p_{\text{LM}}(y) \,\|\, p_{\text{NMT}}(y \mid x)\big)$$
+$$
+\begin{aligned}
+J(\theta) &= -\log P_{\text{NMT}}(y \mid x) \\
+&\quad + \lambda\, D_{\text{KL}}\big(p_{\text{LM}}(y) \mid p_{\text{NMT}}(y \mid x)\big)
+\end{aligned}
+$$
 
 KL 散度的方向是由語言模型分布指向翻譯模型分布。語言模型在訓練中凍結，只更新翻譯模型。
 
@@ -95,7 +100,9 @@ Transformer-base（編碼器、解碼器各 6 層，512 維嵌入，2048 維前�
 ## Card 5 ｜ 時代典範轉移 (The Revolution)
 * **作者的結論**：已展示多種以合成資料擴充極小平行語料的方法；在缺乏大型公開單語資料時，語言模型先驗可能是另一種正則化途徑（§5）。對最佳回譯模型而言，加語言模型先驗反而大幅降低 UiT 分數，作者推測回譯資料可能已提供足夠的正則化。
 * **正譯在域內有害、域外有益**：作者推測與領域不符有關（UiT 多為政治文本，正譯資料較一般），不應據此全面否定正譯（§4.3）。
-* **作者自述的限制**：只研究單一語言對，且每個實驗只跑一次；作者特別提醒讀者不要過度外推結果（Limitations）。
+* **作者自述的限制**：只研究單一語言對，且每個實驗只跑一次；作者特別提醒讀者不要過度外推結果（Limitations, pp. 12953–12954）。
+* **本篇公開之資源**：全部程式與資料（含正譯與回譯輸出）公開於 GitHub `j0ma/sami-translation`（§1, p. 12949）。
+* **作者所述之未來方向**：原文未設未來工作一節。結論指出，這些方法能否推廣到其他語言是關鍵問題，但因運算資源只夠跑資助方指定的語言對而未能回答（§5, p. 12953）；作者另推測，調整超參數後語言模型先驗與正譯或可並用，但初步實驗只見分數下降（§4.3, p. 12953）。
 * 本文沒有主張「回譯資料量充足時必須全面採用標記回譯」。
 
 ---
