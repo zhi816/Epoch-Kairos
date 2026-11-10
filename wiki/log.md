@@ -2104,3 +2104,8 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
 - **具體變更**：處理 TD-011、修正 EK-201，依原文恢復零閾值能量式及能量差、登記五條公式，並更正 Amit 等臨界容量的近似條件。卡片、論文頁及首頁檢查 ERROR 0、WARN 0；瀏覽器目視待 TD-021。
+
+## [2026-11-10 21:30] rule | 修正卡片技能原文公式範例 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：依 EK-201 修正 paper-card-writer 的 Hopfield 能量範例與零閾值條件，避免再次引入原文沒有的項；並移除描述欄的角括號以符合 skill 中繼資料驗證。quick_validate 通過，Hopfield 卡片檢查 ERROR 0、WARN 0。
