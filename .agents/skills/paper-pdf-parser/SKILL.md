@@ -11,6 +11,7 @@ description: >-
 把 `raw/` 中的論文 PDF 抽成可搜尋的 Markdown，每頁前加 `<!-- pdf-page: N -->` 標記，讓撰寫與查核時能快速找到某個數字、術語或句子在第幾頁。用途：
 
 * `wiki-content-audit` 建立證據表前，先搜尋主張出處並記下頁碼（寫作模式第 1、2 步、查核模式）。
+* 收錄新論文時，本 Skill 是 [`paper-pipeline`](../paper-pipeline/SKILL.md) 之 S2（讀原文）；讀原文時要記下的事見該 Skill 之 `references/intake.md` 第六節。
 * `academic-paper-translator` 盤點來源時，快速清點章節、表格與公式。
 
 ## 二、兩條核心原則（動手前必讀）

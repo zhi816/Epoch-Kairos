@@ -164,6 +164,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 >
 > | Skill | 何時使用 |
 > |---|---|
+> | [`paper-pipeline`](./.agents/skills/paper-pipeline/SKILL.md) | **收錄論文之總入口**：`raw/` 出現新原始檔、使用者要求收錄或上架、或要把某篇補到完成時，先讀此 Skill。依 S0 至 S10 規定每一步照哪份 Skill 做、產出哪些檔案、以哪個指令證明完成（從收件、證據表、論文頁、概念頁與索引、核對、卡片、論文頁網頁，到首頁星圖或我的星系與卡片牆、提交）；附 `pipeline_status.py`（全庫與單篇進度、待收錄原始檔）與 `verify_star.js`（瀏覽器確認星圖或我的星系已上架） |
 > | [`wiki-content-audit`](./.agents/skills/wiki-content-audit/SKILL.md) | Ingest 起草前（寫作模式）、Lint 第 2 條與任何事實查核（查核模式）；附 `lint_wiki.py` 與 `crossref_check.py` 兩支檢查腳本 |
 > | [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 將論文譯為繁體中文或重建 PDF 時 |
 > | [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | Ingest 第 1 步與查核時，將 `raw/` 論文 PDF 抽成附頁碼標記之文字，以搜尋主張出處；預設用 PyMuPDF，MinerU 僅用於純圖片、亂碼 PDF 或抄寫長公式；輸出一律只當草稿，須回原 PDF 核對，且只可在本機解析 |
@@ -171,7 +172,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 > | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | Ingest 第 4 步、回填或修訂卡片時：撰寫 `wiki/cards/<slug>.md`（首頁封面卡與論文頁 Card 1–6 之文字、Card 3 示意圖），並建置論文頁原型、放上首頁卡片牆且兩者皆驗證；`references/` 須逐份讀完，附 `check_cards.py` 檢查腳本與 `verify_page.js`、`verify_wall.js` 瀏覽器驗證腳本 |
 
 ### 1. Ingest（收錄新來源）
-當使用者在 `raw/` 放入新文件或指令收錄一篇論文時，AI 必須依序執行以下 5 個步驟：
+當使用者在 `raw/` 放入新文件或指令收錄一篇論文時，AI 必須依 [`paper-pipeline`](./.agents/skills/paper-pipeline/SKILL.md) 之 S0 至 S10 逐步執行，每一步以其完成條件之指令確認後才進下一步；`python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug>` 九步皆 OK 才算收錄完成。以下 5 個步驟為該流程之摘要：
 1. **讀取來源**：分析原始文本，提取核心命題、年代、期刊/榮譽、以及作者團隊。
    * **事實核驗為前置強制步驟**：凡有 DOI 者，一律先以 Crossref API（`https://api.crossref.org/works/<DOI>`）核對發表年份、作者名單、期刊名稱與卷期頁碼，嚴禁僅憑記憶或原始檔名推定年份。
    * **作者與得獎者必須分離**：`authors` 僅記載該篇論文之實際作者；獎項得獎者另記於 `laureates`，嚴禁混寫（諾貝爾獎常表彰一系列工作，得獎者未必為某單篇之作者）。
@@ -222,7 +223,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 10. **檢查待辦清單格式**：`wiki/todo.md` 之標題、狀態、範圍與必填欄位合規，且編號不重複（規則見第七章第 5 節）。
 11. **檢查卡片文字檔**：`wiki/cards/` 各檔之欄位、字數、封面斷行、禁用詞、公式出處、示意圖規格、Card 4 數字與證據表、Card 5 出處，均符合 `paper-card-writer`。
 
-> **工具分工**：第 1、3、4、5、7、8、9、10 條之可機械判斷部分由 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 執行（公式、化學式與長公式為啟發式檢查，警告須人工判斷）；第 6 條由 `crossref_check.py` 執行（需網路）；第 11 條由 `python .agents/skills/paper-card-writer/scripts/check_cards.py` 執行（`--missing` 另列出尚無卡片檔之論文）；第 2 條與內容事實查核依 `wiki-content-audit` 查核模式人工進行，發現之問題一律登記於 `wiki/issues.md`，不得只寫在日誌。
+> **工具分工**：第 1、3、4、5、7、8、9、10 條之可機械判斷部分由 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 執行（公式、化學式與長公式為啟發式檢查，警告須人工判斷）；第 6 條由 `crossref_check.py` 執行（需網路）；第 11 條由 `python .agents/skills/paper-card-writer/scripts/check_cards.py` 執行（`--missing` 另列出尚無卡片檔之論文）；第 2 條與內容事實查核依 `wiki-content-audit` 查核模式人工進行，發現之問題一律登記於 `wiki/issues.md`，不得只寫在日誌。每篇論文從原始檔到上架首頁之各步驟是否完成，以 `python .agents/skills/paper-pipeline/scripts/pipeline_status.py` 檢查（`--new` 列出 `raw/` 中尚未收錄之原始檔）。
 
 ### 4. Handoff（接手與交接）
 多個 AI 輪流接手同一專案。交接脈絡一律從下列來源取得，不從日誌整份讀取：

@@ -12,7 +12,7 @@ description: >-
 
 ## 一、適用時機
 
-1. **收錄新論文**（`AGENTS.md` 第六章 Ingest）：論文頁與證據表完成、`lint_wiki.py` 無 ERROR 之後，同一輪內撰寫卡片文字檔。
+1. **收錄新論文**（`AGENTS.md` 第六章 Ingest）：論文頁與證據表完成、`lint_wiki.py` 無 ERROR 之後，同一輪內撰寫卡片文字檔。收錄的整體順序依 [`paper-pipeline`](../paper-pipeline/SKILL.md)：本 Skill 是其 S7（卡片檔）、S8（論文頁網頁）與 S9（卡片牆部分）；星圖或我的星系之上架驗證與整篇提交清單見該 Skill 之 `references/publish.md`。
 2. **回填既有論文**：為尚無 `wiki/cards/<slug>.md` 的論文補寫（見 `wiki/todo.md`）。
 3. **修訂**：論文頁內容、證據表、`card_line`、`title_zh`、獎項、`venue_short` 或 `wiki/issues.md` 之修正影響到卡片或論文頁時，同步修訂卡片文字檔，並重新建置與驗證該篇論文頁與首頁卡片牆（第五節第 7 步）。
 4. 不適用：卡片版面、配色、字體的設計討論（屬 `DESIGN.md`）；論文頁長文的撰寫（屬 [`wiki-content-audit`](../wiki-content-audit/SKILL.md)）。

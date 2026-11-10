@@ -1839,3 +1839,14 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：TD-008 第三批 B 組。依 `wiki-content-audit` 回原文修正 [論文頁](papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md) 並重建 [證據表](evidence/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)：完成 EK-111（刪除原文沒有之 80%／20% 分配與「證實」「徹底克服」，Card 5 改記作者結論、資料取得條件、限制與未來方向）；新登記並修正 EK-160（`card_line` 改為「先查辭典再交給大模型，把排灣語譯成華語」以符合單向實驗；「最具歷史深度」、把文獻之 10 萬句說法寫成排灣語條件、向量檢索召回相反語義例句、Card 6 之「60% 躍升至 85%」「百分之百防止幻覺」等無出處敘述）；Card 4 補記評估範圍之 Wiki 註記；`verification` 改為 `partial`。新增 [卡片檔](cards/2026-hybrid-dictionary-rag-llm-paiwan-wang.md) 與論文頁原型 `web/prototypes/paper-v1/2026-hybrid-dictionary-rag-llm-paiwan-wang.html`。check_cards：ERROR 0、WARN 0；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（35 項）。來源：Card 3 採無公式模式（原文無編號公式）；Card 4 四個數字取自證據表 BLEU 與餘弦相似度列之範圍端點（§4, p. 6）；Card 5 採新論文模式，四筆取自 §5 p. 7 與 Data Availability p. 8。複核：Card 2 一列與 Card 6 結語折行落單，縮短；示意圖「查不到」標籤壓到分支線，移開。首頁卡片牆：依協調規則未重建，由協調者處理；`card_line` 已改，首頁待協調者重建後更新。
+
+## [2026-11-10 10:56] rule | 新增論文收錄總流程 Skill（paper-pipeline）與進度檢查腳本 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者指示把「新 raw → 整理 Wiki → 卡片與內文 → 上架首頁與我的星系」做成完整流程，Skill 可分工但每一步要明確。新增 `.agents/skills/paper-pipeline/` 作為收錄總入口，既有 Skill 維持分工、改由它串接。
+  - `SKILL.md`：S0 同步與領件、S1 收件與書目、S2 讀原文、S3 證據表、S4 論文頁、S5 概念頁與索引、S6 核對與核實狀態、S7 卡片檔、S8 論文頁網頁、S9 上架首頁、S10 日誌與提交，每步寫明照哪份 Skill 哪一節、產出檔案與完成條件指令；另有硬規則 10 條（含回應被安全機制中止時停止該篇、不得改寫重試）、批次規則、逐步交付說明格式、偷工自查表與工具一覽。
+  - `references/`：`intake.md`（找出待收錄原始檔、驗證 PDF、要不要另立一頁、書目與 slug、群星或我的關注之資料夾對照、獎項、`raw/` 倉庫提交、讀原文要記下的事）、`paper-page-template.md`（群星與我的關注之論文頁骨架、Frontmatter 逐欄決定方式與常見錯誤、正文每段必寫內容與供哪張卡使用）、`concepts-and-index.md`（選與更新概念頁、雙向登記、新建骨架、`wiki/index.md` 區段與條目格式、我的星系只畫兩個概念中心之限制）、`publish.md`（首頁三處之資料來源、建置與驗證、目視清單、協調者統一上架、整篇提交清單與推送後確認）。
+  - `scripts/pipeline_status.py`：全庫總表、單篇逐項原因與下一步、`--new` 列出 `raw/` 未收錄之原始檔（區分新檔案、已列待辦、已引用）與 `raw/` 未提交之變動；檢查原始檔典藏、證據表數值與公式登記、論文頁結構與佔位符、概念雙向與索引、核實狀態、卡片檢查、網頁新舊、首頁星圖或我的星系與卡片牆、提交與日誌。全庫執行約 14 秒，結果與現況相符：本批首頁尚未重建，故 S9 全數 NG；另揭露 10 篇區塊公式未全數登記於證據表與 1 篇證據表未列數值，併入 TD-011。
+  - `scripts/verify_star.js`：瀏覽器確認論文在星圖（群星）或我的星系看得見、標籤含論文名、點擊後說明框顯示論文名與一句話；以 LIGO（群星）與謝富惠（我的星系）實測，桌面與手機皆 PASS，以不存在之 slug 測得 FAIL 2 項。
+  - 串接：`AGENTS.md` 第六章 Skill 一覽新增 paper-pipeline 為總入口、Ingest 改為依其 S0 至 S10 執行、Lint 工具分工補 `pipeline_status.py`；`paper-card-writer`、`wiki-content-audit`、`paper-pdf-parser` 之適用時機各加一行，說明本身是總流程的哪幾步；新增 `.claude/skills/paper-pipeline/SKILL.md` 轉介檔。
+  - 檢查：`lint_wiki.py` ERROR 0；兩支腳本語法檢查通過。

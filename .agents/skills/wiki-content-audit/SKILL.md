@@ -14,7 +14,7 @@ description: >-
 
 ## 使用時機與權限
 
-- 使用者要求收錄來源、撰寫或更新 Wiki 論文／概念頁時，從**起草前**使用寫作模式；不要等頁面寫完才載入查核原則。要求審查或事實校正既有頁面時，使用查核模式。一般文句潤飾、單純格式 lint 不需要啟用本 Skill。
+- 使用者要求收錄來源、撰寫或更新 Wiki 論文／概念頁時，從**起草前**使用寫作模式；不要等頁面寫完才載入查核原則。收錄新論文的整體順序依 [`paper-pipeline`](../paper-pipeline/SKILL.md)：本 Skill 是其 S3（證據表）、S4（論文頁，骨架見該 Skill 之 `references/paper-page-template.md`）與 S6（核對與核實狀態）。要求審查或事實校正既有頁面時，使用查核模式。一般文句潤飾、單純格式 lint 不需要啟用本 Skill。
 - 寫作模式只修改使用者指定或依 `AGENTS.md` 收錄流程必需的 Wiki／展示檔。僅要求審查時，不修改論文頁、概念頁或原始資料。`raw/` 永遠唯讀；批量改動遵守 `AGENTS.md` 的審核與版本控管規則。
 - 開始任何實質修改前，依 `AGENTS.md` 和 `.agents/skills/git-sync-guardian/` 執行遠端預檢；不提交時不自行建立 commit 或 push。
 
