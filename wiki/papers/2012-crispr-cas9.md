@@ -12,7 +12,7 @@ domain: "bio"
 domain_tags: ["#基因工程", "#生物科技"]
 concepts: ["programmable-cellular-engineering", "ai-for-structural-biology"]
 status: "wiki"
-verification: "issues"
+verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.1126/science.1225829"
 key_papers:
@@ -57,29 +57,13 @@ card_line: "把細菌免疫蛋白，變成能指定位置的基因剪刀"
 3. **PAM 位點識別與單鏈嵌合 RNA（sgRNA）工程化**：
    * 切割啟動的絕對前提是非互補股目標序列 3' 端緊鄰一個簡短的原間隔序列鄰近基序（PAM，化膿性鏈球菌 Cas9 為 $\text{5'-NGG-3'}$）。作者將 crRNA 的 3' 端與 tracrRNA 的 5' 端以四核苷酸環（Tetraloop, $\text{GAAA}$）連接，創造出單一嵌合引導 RNA（Single-Guide RNA, sgRNA），將三元系統簡化為「Cas9 蛋白 ＋ sgRNA」二元可編程系統。
 
-### 1. R-Loop 形成之熱力學自由能判準 (Thermodynamics of R-Loop Formation)
+### 1. RNA 引導辨識與 R-loop
 
-> **理論模型說明**：以下熱力學與動力學符號方程為後續生物物理學文獻（如 Sternberg et al., 2014 等）對 Cas9 靶向機制的標準教學量化刻畫，非 2012 年原始論文之直接方程。
+作者以細菌質體維持、體外切割及結合試驗，檢查導引 RNA 與目標 DNA 的配對及鄰近序列對辨識的影響。原文根據這些觀察，提出辨識過程可能涉及 DNA 雙股局部解開與 RNA–DNA 雜交的 R-loop。
 
-Cas9-sgRNA 核糖核蛋白（RNP）首先透過蛋白質結構域識別非互補股上的 $\text{5'-NGG-3'}$ PAM 基序，隨後自 PAM 鄰近之種子區（Seed Region，第 1 至 10–12 個核苷酸）定向解旋雙股 DNA 並形成 RNA-DNA 雜交 R-Loop。其構型轉換自由能 $\Delta G_{\text{total}}$ 可表為：
+### 2. 兩個催化結構域的分工
 
-$$\begin{aligned}
-\Delta G_{\text{total}}(n) = &\;\Delta G_{\text{PAM}} + \sum_{k=1}^{n} \left( \Delta G_{\text{RNA:DNA}, k} - \Delta G_{\text{DNA:DNA}, k} \right) \\
-&+ \Delta G_{\text{conf}}(\text{Cas9})
-\end{aligned}$$
-
-其中 $n \le 20$ 為已配對之鹼基數，$\Delta G_{\text{PAM}}$ 為 PAM 結合能，$\Delta G_{\text{conf}}(\text{Cas9})$ 為激活 HNH 與 RuvC 結構域所需的蛋白變構自由能。當種子區出現錯配（Mismatch）時，自由能壁壘急劇上升，阻斷後續催化切割。
-
-### 2. 雙催化結構域反應動力學方程 (Dual-Domain Cleavage Kinetics)
-
-在 $\mathrm{Mg}^{2+}$ 作為催化二價陽離子輔因子的條件下，Cas9-sgRNA（記為 $E$）與含 PAM 之目標雙股 DNA 底物（記為 $S$）結合形成活性 R-Loop 複合物 $ES^*$，並分別由 HNH 與 RuvC 結構域以一階速率常數 $k_{\text{HNH}}$ 與 $k_{\text{RuvC}}$ 切割互補股與非互補股：
-
-$$\begin{aligned}
-\frac{d[ES^*]}{dt} &= k_{\text{on}}[E][S] - \left( k_{\text{off}} + k_{\text{cleave}} \right) [ES^*] \\
-\frac{d[P_{\text{DSB}}]}{dt} &= k_{\text{cleave}} [ES^*]
-\end{aligned}$$
-
-當對任一催化位點進行單點突變——即 $\text{D10A}$（使 RuvC 失活）或 $\text{H840A}$（使 HNH 失活）時，對應速率常數歸零（$k_{\text{RuvC}} = 0$ 或 $k_{\text{HNH}} = 0$），系統即從雙股內切酶轉變為單股切口酶（Nickase, nCas9）；若兩者同時突變（$\text{dCas9}$），則有 $k_{\text{cleave}} = 0$，但仍保留高親和力之序列特異性 DNA 結合能力（$K_d = k_{\text{off}}/k_{\text{on}} \sim \text{nM}$ 量級）。
+作者比較各催化結構域的突變體與原始 Cas9，觀察到兩個結構域對切割不同 DNA 股的貢獻，支持兩者分工的解釋。
 
 ---
 
@@ -89,9 +73,9 @@ $$\begin{aligned}
 * **雙催化位點點突變驗證（$\text{D10A}$ 與 $\text{H840A}$）**：在質體與寡核苷酸體外切割實驗中，野生型 Cas9 產生線性化雙股斷裂（DSB）；$\text{Cas9(D10A)}$ 僅切割互補股、$\text{Cas9(H840A)}$ 僅切割非互補股，均只產生開環單股切口質體（Nicked Open Circular Plasmid）；雙突變體 $\text{Cas9(D10A/H840A)}$ 則完全喪失切割活性，嚴格鎖定兩結構域的催化分工。
 * **切割位點鹼基級定位（PAM 上游 3 bp）**：透過高解析度變性聚丙烯醯胺凝膠電泳（Denaturing PAGE）定序，確認 HNH 與 RuvC 均精準在距離 $\text{5'-NGG-3'}$ PAM 上游第 3 個核苷酸處切斷磷酸二酯鍵。
 * **種子區（Seed Sequence）特異性窗口與連續配對需求**：系統性分析目標序列突變對體外切割與體內質體消除之影響（Figure 3D–E），證實距離 PAM 最近的原間隔序列 3' 端存在關鍵「種子區」：高效切割嚴格要求 crRNA 與緊鄰 PAM 的目標 DNA 位點間維持**至少 13 個連續鹼基對的完全互補**；而在遠離 PAM 的 5' 端區域，即使存在多達 6 個連續錯配（Mismatches）仍可容忍切割活性，推翻了單一任意錯配必然完全廢除切割的簡化假設。
-* **多目標編程與 GFP 基因家族精準切割**：作者設計 5 條針對綠色螢光蛋白（GFP）基因不同位點的嵌合 sgRNA（Chimera A），在無須更動 Cas9 蛋白的情況下，100% 在預期位置切出對應長度的 DNA 片段，直接證明其通用可編程性。
+* **多目標編程與 GFP 切割**：作者測試 5 條針對綠色螢光蛋白（GFP）基因不同位置的嵌合 RNA；原文報告五個測試均在預期位置產生切割。
 
-> **範圍界定**：本篇論文（Jinek et al. 2012）之實驗全數為純化蛋白與體外（in vitro）DNA 切割驗證，並在文末明確預見並提出將此嵌合 sgRNA-Cas9 系統用於真核生物基因組編輯之構想。
+> **範圍界定**：本篇包含細菌細胞內質體維持試驗，以及純化蛋白的體外 DNA 切割與結合試驗；單一嵌合 RNA 的切割測試屬體外實驗。作者在文末提出用於真核生物基因組編輯的可能性，並未在本篇完成該應用。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
 * **哺乳動物與人類細胞基因組編輯之首次實現**：Cong et al. (2013)（張鋒團隊）,*Science* 339:819-823 與 Mali et al. (2013)（George Church 團隊）,*Science* 339:823-826，於 2013 年 1 月同步證明將 Cas9 與 sgRNA 導入人類與小鼠細胞後，可高效誘發非同源末端接合（NHEJ）或同源重組修復（HDR），實現多基因同步編輯。
