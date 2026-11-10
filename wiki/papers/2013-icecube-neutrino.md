@@ -12,7 +12,7 @@ domain: "physics"
 domain_tags: ["#天體物理", "#宇宙學"]
 concepts: ["multi-messenger-astrophysics"]
 status: "published"
-verification: "verified"
+verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.1126/science.1242856"
 key_papers:
@@ -43,7 +43,7 @@ card_line: "用南極冰層，捕捉來自宇宙的高能微中子"
 
 * **帶電宇宙射線失去方向記憶**：質子與原子核帶正電，在穿越銀河系與星系際磁場時受勞侖茲力偏轉，抵達地球時已完全喪失源頭方向資訊。
 * **高能伽瑪射線的宇宙不透明性**：能量超過 $\text{TeV}$–$\text{PeV}$ 的高能光子在星系際空間傳播時，會與宇宙微波背景輻射（CMB）及河外背景光（EBL）發生正負電子對產生反應（$\gamma + \gamma_{\text{CMB}} \to e^+ + e^-$）而被吸收，無法跨越宇宙學距離。
-* **微中子極端微弱的交互作用截面與龐大大氣背景**：微中子僅參與弱交互作用，穿透整個地球的碰撞機率在 $\text{TeV}$–$\text{PeV}$ 能區依然極低；同時，宇宙射線轟擊地球大氣層每秒在 IceCube 產生約 $3,000$ 個下行的背景緲子（Atmospheric Muons），背景率比天體微中子信號高出近十億倍。
+* **微中子極端微弱的交互作用截面與龐大大氣背景**：微中子與物質交互作用微弱，但數十 TeV 以上的微中子穿越地球時仍會受到吸收；同時，宇宙射線轟擊地球大氣層每秒在 IceCube 產生約 $3,000$ 個下行的背景緲子（Atmospheric Muons），背景率比天體微中子信號高出近十億倍。
 
 ---
 
@@ -51,42 +51,15 @@ card_line: "用南極冰層，捕捉來自宇宙的高能微中子"
 IceCube 結合了極地冰川光學物理、契忍可夫輻射（Cherenkov Radiation）與高能起始事件（High-Energy Starting Events, HESE）主動否決技術：
 
 1. **一立方公里超純極地冰作為靶物質與光學介質**：
-   * 南極深處超過 $1450\,\text{m}$ 的高壓古冰層中，氣泡已被完全壓入晶格形成籠形水合物，光吸收長度超過 $100\,\text{m}$。86 條垂直電纜（Strings）共掛載 5,160 個光電倍增管模組，構成三維光學陣列。
+   * 南極深冰中的光電倍增管組成三維光學陣列，深度約為 $1450$ 至 $2450\,\text{m}$；完整探測器有 86 條垂直電纜，合計 5,160 個光電倍增管（原文 p. 2、Fig. 1）。
 2. **次級帶電輕子之契忍可夫光錐重建**：
-   * 當高能微中子 $\nu_\ell$（$\ell = e, \mu, \tau$）與冰中原子核發生深非彈性散射時，產生的相對論性帶電粒子在冰中速度 $v$ 超過冰中光速 $c/n$，激發出夾角為 $\theta_C = \arccos(1/\beta n)$ 的藍紫光錐。事件呈現兩種拓撲型態：$\nu_\mu$ 帶電流交互作用產生長距離直線軌跡（Track，角解析度 $\lesssim 1^\circ$）；$\nu_e, \nu_\tau$ 及中性流交互作用則產生近球形的電磁/強子簇射（Cascade/Shower，能量解析度 $\approx 10\%$–$15\%$）。
+   * 微中子與探測物質交互作用時可產生次級輕子與強子簇射，冰中的光感測器記錄契忍可夫光。事件可呈現軌跡或簇射形態；本篇指出七個事件有緲子軌跡，其餘呈簇射狀（原文 pp. 2–3、Fig. 2）。
 3. **外層主動否決區（Outer Veto Layer）過濾大氣背景**：
    * 作者將探測器外圍與頂部的光學模組定義為「主動否決層」，僅篩選交互作用頂點（Vertex）發生在內部基準體積（Fiducial Volume，約 $400\,\text{Mt}$ 冰）且總收集光電子數超過 $6,000\,\text{pe}$（對應沉積能量 $\gtrsim 30\,\text{TeV}$）的「高能起始事件（HESE）」。此篩選對總電荷超過 $6,000\,\text{pe}$ 的穿透大氣緲子背景達到 $99.999\%$ 的拒斥率，並利用伴隨緲子濾除南半球約 $70\%$ 的大氣微中子，最終將兩年觀測預期的大氣緲子背景壓低至 $6.0 \pm 3.4$ 個事件、大氣微中子背景壓低至約 $6.1$ 個事件。
 
-### 1. 契忍可夫輻射Frank-Tamm公式與光錐幾何 (Cherenkov Radiation Spectrum)
+### 能譜與地球吸收
 
-當次級帶電粒子以相對論速度 $\beta = v/c > 1/n(\omega)$ 穿越折射率為 $n(\omega) \approx 1.32$ 的南極深冰時，單位路徑長度 $dx$ 與單位頻率區間 $d\omega$ 所輻射出的契忍可夫光子數由 Frank-Tamm 方程給出：
-
-$$\begin{aligned}
-\frac{d^2 N_\gamma}{dx\,d\omega} &= \alpha z^2 \sin^2 \theta_C(\omega) \\
-&= \alpha z^2 \left( 1 - \frac{1}{\beta^2 n^2(\omega)} \right)
-\end{aligned}$$
-
-其中 $\alpha \approx 1/137$ 為精細結構常數，$z=1$ 為粒子電荷數。在超相對論極限 $\beta \to 1$ 下，契忍可夫特徵角為：
-
-$$\theta_C = \arccos\left(\frac{1}{n}\right) \approx 41^\circ$$
-
-### 2. 超高能微中子—核子深非彈性散射與地球吸收衰減 (Neutrino-Nucleon Cross Section & Earth Absorption)
-
-微中子與冰中核子 $N$ 的帶電流（CC）與中性流（NC）微分散射截面由夸克部分子分佈函數（PDF）$q_i(x, Q^2)$ 決定。在能量 $E_\nu \gtrsim 10\,\text{TeV}$ 時，由於 $W^\pm / Z^0$ 玻色子傳播子（質量 $M_W \approx 80.4\,\text{GeV}$）的能標效應，總截面呈次線性冪律增長：
-
-$$\sigma_{\nu N}(E_\nu) \propto E_\nu^{0.363} \quad (10\,\text{TeV} \lesssim E_\nu \lesssim 10\,\text{PeV})$$
-
-因此，能量越高，地球本身對上行微中子（天頂角 $\theta_z > 90^\circ$）的遮蔽效應越顯著，穿透地球弦長 $L(\theta_z)$ 的存活率為：
-
-$$P_{\text{surv}}(E_\nu, \theta_z) = \exp\left( - N_A \sigma_{\nu N}(E_\nu) \int_0^{L(\theta_z)} \rho(r)\,dl \right)$$
-
-這正是高能天體微中子事件在南半球下行與水平方向顯著富集、而在正下方穿地方向受吸收衰減的物理原因。
-
-### 3. 天體物理微中子冪律能譜通量 (Astrophysical Power-Law Flux)
-
-在標準費米一階震波加速（Fermi Acceleration）機制下，天體源產生的全風味微中子微分通量 $\Phi_\nu(E_\nu)$ 遵循冪律譜，明顯硬於陡峭衰減的大氣微中子背景（$\propto E_\nu^{-3.7}$）：
-
-$$E_\nu^2 \Phi_{\text{astro}}(E_\nu) = \Phi_0 \left( \frac{E_\nu}{100\,\text{TeV}} \right)^{2 - \gamma}$$
+本篇比較觀測事件與大氣背景及天體通量假設。作者指出，數十 TeV 以上的微中子穿越地球時會受到吸收；在其考慮的各向同性高能天體通量下，預期約 60% 的事件出現在南半球，比例仍取決於能譜（原文 p. 5）。文章也以擬合結果與統計檢驗評估訊號；這些分析式並非探測器光學機制公式。
 
 ---
 
