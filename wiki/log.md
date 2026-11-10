@@ -1994,3 +1994,10 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6（思考程度：Max，依使用者指示）
 - **具體變更**：依 wiki-content-audit 查核 GPT 2 指定 31 筆（EK-029–030、032–041、031、042–059）的問題描述、目前目標頁／卡片／證據表與可得原始來源。確認 fixed：EK-029–034、037–038、041–043、046、050–051、054–059，共 20 筆；建議重開為 open：EK-035、036、039、040、044、045、047、048、049、052、053，共 11 筆；未能核實：0 筆。重開理由依序包括 Sora 未公開機制與內部幾何詮釋、粒線體測序模型混併及非原文區塊推導、全光學 BCI 規模與閉環證據混合、概念史因果歸因、Eastin–Knill 資源限制、中性原子 qLDPC 尚屬展望，以及 DrugCLIP 計時矛盾與 AF3+FEP 整合來源不足。建議 wiki-content-audit 增加結案前重新核對目標頁、卡片、證據表與原始來源的檢核項；只看處理紀錄不得判 fixed。依使用者指示，本次只追加日誌，未修改 Skill 或其他檔案；證據表仍有歷史結案措辭，待後續獲准修訂時同步。
+
+
+## [2026-11-10 19:41] audit | GPT 4 指定 EK-094–123 原文回核與 EK-099 重開 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6（思考程度：max，依使用者指示；執行環境未提供更細模型版本）
+- **具體變更**：依 wiki-content-audit 回核 EK-094–123 的問題描述、論文頁、卡片、證據表及第一手來源；確認 fixed：EK-094–098、EK-100–123，共 29 筆；建議重開並將 EK-099 改為 open；未能核實：0 筆。EK-099 舊冪律與運算量公式雖已刪，現行 Sora Card 3 與論文頁仍有 patch 數量、patch embedding、clean-patch diffusion 公式；OpenAI 報告明言未提供模型與實作細節。已更新 wiki/issues.md 與 wiki/evidence/2024-sora-world-simulator.md，論文頁 verification 為 issues。技能改善建議：wiki-content-audit 加入修正後對新增／替代公式的全頁回查；paper-card-writer 明確標記原文公式與 Wiki 推導式。
+

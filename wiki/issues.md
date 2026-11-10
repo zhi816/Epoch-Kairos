@@ -650,11 +650,12 @@
 - **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改依報告原文敘述過去做法與一分鐘影片，作者改寫為「Brooks, Peebles et al., 2024；Peebles 亦為 DiT 之第一作者」。
 
-### EK-099 | fixed | papers/2024-sora-world-simulator.md | Card 3 | 原文未支持
+### EK-099 | open | papers/2024-sora-world-simulator.md | Card 3 | 原文未支持
 - **問題**：Card 3 第 3 節稱「Peebles & Xie (2023) 與 OpenAI 實驗共同證實」生成品質「嚴格受……總訓練算力 $C$ 的冪律支配」，並列區塊公式 $\mathcal{L}_{\text{val}}(C) \propto C^{-\alpha}$ 與 $G \propto N \cdot d^2 + N^2 \cdot d$。DiT 原文只報告模型 Gflops 與 FID 之強負相關（圖 8），OpenAI 報告只有三組算力之樣本；兩者皆無此冪律或公式。
 - **來源**：Peebles & Xie (2023) 圖 8，p. 8；OpenAI 報告 §Scaling transformers for video generation。
 - **發現於**：撰寫卡片文字檔時發現（Claude Code by Anthropic，第二批卡片回填 A 組，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。第 3 節改題「算力與生成品質」，改寫為兩來源實際所述，刪除冪律公式與運算量估算式。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：max，依使用者指示）。回查 OpenAI 官方報告與目前頁面：報告明言未提供模型及實作細節；目前 Card 3 仍列 patch 數量式，論文頁仍列 patch embedding 及 clean-patch diffusion 目標式，報告未見這些公式。舊冪律與運算量式已刪，現存公式仍須移除或明確標為 Wiki 推導並補一手依據，因此重開為 open。
 
 ### EK-100 | fixed | papers/2024-sora-world-simulator.md | Card 4 後續 | 未能核實
 - **問題**：後續研究第一點列出快手 Kling、智譜 CogVideoX、騰訊 HunyuanVideo、阿里 Wan2.1 與 Meta Movie Gen，稱其遵循「3D-VAE ＋ 時空圖塊 ＋ DiT ＋ 3D-RoPE ＋ 流匹配」範式並「全面驗證時空 DiT 架構作為視覺基座模型的普適性」，未附任何出處。
