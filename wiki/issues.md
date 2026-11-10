@@ -781,6 +781,12 @@
 - **來源**：同 EK-122 之 PDF 全文。
 - **發現於**：第二批卡片回填 C 組回報，協調者核對（Claude Code by Anthropic，2026-11-10）
 
+### EK-130 | fixed | papers/2023-atayal-truku-morphology-dai.md | Card 3 | 原文不符
+- **問題**：Card 3 之前綴機率公式寫作 $P_{\text{uni}}(\text{pfx}) = \prod_{i=1}^{m} P(x_i), \qquad P_{\text{bi}}(\text{pfx}) = \cdots$。原文兩式皆寫作 $P(\mathit{pfx})$，以「一元機率」「二元機率」文字區分；uni、bi 下標為 Wiki 所加，與原文寫法不同。式子內容（上下限與條件機率）與原文相同。
+- **來源**：`raw/my-focus/學長姐論文/泰雅語與太魯閣語構詞結構之自動解析_戴晟哲.pdf`，§3.5，p. 29（PDF 頁面影像）。
+- **發現於**：撰寫卡片前回原文抽查時發現（Claude Code by Anthropic，第三批卡片回填 A 組，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。改為與原文相同之 $P(\mathit{pfx})$ 兩行 aligned，並以文字註明第一行為一元機率、第二行為二元機率；證據表該列同步改寫。
+
 ### EK-170 | fixed | papers/2024-finnish-northern-sami-mt-saleva.md | Card 3 與 Card 5 | 原文不符
 - **問題**：（1）Card 3 區塊公式之 KL 項寫作雙豎線 D_KL(p_LM(y) ‖ p_NMT(y|x))，原文 §3.2 為單豎線 DKL(pLM(y)|pNMT(y|x))，且該式為正文內嵌式、無式號，論文頁未註明位置。（2）Card 5 漏記原文公開之資源與作者所述之方向：原文 §1 寫明全部程式與資料（含正譯與回譯輸出）公開於 GitHub `j0ma/sami-translation`；§5 指出方法能否推廣到其他語言為關鍵問題、因運算資源所限未能回答；§4.3 推測調整超參數後語言模型先驗與正譯或可並用。論文頁與證據表均未記載。另證據表第 16 列只寫「表中各 BLEU／chrF」，未逐一列出數值。
 - **來源**：`raw/my-focus/報告論文題材/2024.findings-acl.768.pdf`，§1（p. 12949）、§3.2（p. 12950）、§4.3 與 §5（p. 12953）、表 1、3、4、5（pp. 12950–12953）。

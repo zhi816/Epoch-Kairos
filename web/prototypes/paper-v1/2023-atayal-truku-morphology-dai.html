@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>泰雅語與太魯閣語構詞結構之自動解析｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#8FD5FD;--deep:#204960;--win:#1C252B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html#my-constellation" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.19</span><span>學長姐論文</span></div><div class="win"><i style="left:30.7%;top:24.5%;width:1px;height:1px;opacity:0.79"></i><i style="left:71.4%;top:43.1%;width:1px;height:1px;opacity:0.59"></i><i style="left:14.7%;top:4.3%;width:1px;height:1px;opacity:0.34"></i><i style="left:30.0%;top:9.3%;width:1px;height:1px;opacity:0.61"></i><i style="left:59.4%;top:17.9%;width:1px;height:1px;opacity:0.80"></i><i style="left:88.1%;top:10.6%;width:1.5px;height:1.5px;opacity:0.47"></i><i style="left:76.9%;top:24.5%;width:1px;height:1px;opacity:0.71"></i><i style="left:28.7%;top:7.8%;width:1.5px;height:1.5px;opacity:0.71"></i><i style="left:92.0%;top:15.2%;width:1px;height:1px;opacity:0.55"></i><i style="left:66.4%;top:6.7%;width:1px;height:1px;opacity:0.81"></i><i style="left:10.4%;top:9.5%;width:1px;height:1px;opacity:0.80"></i><i style="left:7.7%;top:21.8%;width:1px;height:1px;opacity:0.49"></i><i style="left:68.7%;top:5.4%;width:1px;height:1px;opacity:0.59"></i><i style="left:92.1%;top:22.8%;width:1px;height:1px;opacity:0.43"></i><span class="lang">泰雅語、太魯閣語</span><span class="rep"></span><span class="line"><span>讓電腦拆解</span><span>泰雅語與太魯閣語的</span><span>詞根與詞綴</span></span></div><div class="tags">人工智慧、計算與數學・#計算語言學 #自然語言處理 #人工智慧</div><div class="name">泰雅語與太魯閣語構詞結構自動解析</div><div class="lead">沿用賽德克語的解析流程，為兩語另訂專屬規則。</div><div class="yrs">2023 發表 ｜ 碩士論文</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">書上的詞根，<br>不是真正的詞根</span><div class="rows"><div class="row"><b>泰雅語教材</b><span>標的是深層原形，還常省略弱元音，不是辭典詞根</span></div><div class="row"><b>辭典參照</b><span>「參照」欄不一定是詞根，須一路追到源頭</span></div><div class="row gap"><b>書寫規則</b><span>兩語書寫時保留的元音數不一，歸納不出轉換規則</span></div></div><span class="ft" style="color:var(--ink)">賽德克語的流程，無法原封不動照搬。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">改用比對，<br>再以機率挑前綴</span><svg class="dia" viewBox="0 0 300 104" role="img" aria-label="示意：由詞根列出深層原形候選，拼上中、後綴後與目標詞比對，剩下的前綴字串以機率挑出斷法，二元模型另加上邊界。">
+  <rect class="k-ink k-ring" x="4" y="22" width="52" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="64" y="22" width="52" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="124" y="22" width="52" height="30" rx="4"/>
+  <rect class="k-accent k-ring" x="184" y="22" width="52" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="244" y="22" width="52" height="30" rx="4"/>
+  <line class="k-ink" x1="56" y1="37" x2="62" y2="37"/>
+  <polyline class="k-ink" points="58,33 62,37 58,41"/>
+  <line class="k-ink" x1="116" y1="37" x2="122" y2="37"/>
+  <polyline class="k-ink" points="118,33 122,37 118,41"/>
+  <line class="k-ink" x1="176" y1="37" x2="182" y2="37"/>
+  <polyline class="k-ink" points="178,33 182,37 178,41"/>
+  <line class="k-ink" x1="236" y1="37" x2="242" y2="37"/>
+  <polyline class="k-ink" points="238,33 242,37 238,41"/>
+  <line class="k-accent k-dash" x1="210" y1="54" x2="210" y2="72"/>
+  <text class="k-label" x="30" y="41" text-anchor="middle">原形</text>
+  <text class="k-label" x="90" y="41" text-anchor="middle">拼接</text>
+  <text class="k-label" x="150" y="41" text-anchor="middle">比對</text>
+  <text class="k-label-accent" x="210" y="41" text-anchor="middle">前綴</text>
+  <text class="k-label" x="270" y="41" text-anchor="middle">結構</text>
+  <text class="k-label-accent" x="210" y="88" text-anchor="middle">加上邊界</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="P(\mathit{pfx}) = \prod_{i=1}^{m+1} P(x_i \mid x_{i-1})"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">書寫規則歸納不出，就改用三條規則比對；前綴斷法以機率挑選，二元模型頭尾另加邊界。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">96.72%</span><span class="l">泰雅語中後綴解析精確率</span></div><div class="stat"><span class="v">96.43%</span><span class="l">泰雅語前綴，考慮邊界的二元模型測試正確率</span></div><div class="stat"><span class="v">91.84%</span><span class="l">太魯閣語前綴，一元模型測試正確率</span></div><div class="stat"><span class="v">85.71%</span><span class="l">太魯閣語前綴，考慮邊界二元模型正確率低於一元</span></div></div><span class="ft">範圍：戴晟哲 2023，前綴只評長度 2 以上的字串</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">解析器與規則，<br>被後續論文沿用</span><div class="time"><p><b>2025</b><span>金柏毅用本篇解析器標出詞綴，再做翻譯</span></p><p><b>2025</b><span>吳維中沿用此架構，解析排灣語、布農語</span></p><p><b>2025</b><span>楊鈞凱借本篇規則，列舉未知詞的原形</span></p></div><span class="ft">三筆皆為同實驗室之後續碩士論文，頁碼見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">只有 56 個測試詞時，錯一個就差約 1.8 個百分點，數字要連詞數一起看。</span><span class="shift"><span>只報正確率</span><i aria-hidden="true"></i><b>同報詞數</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2023 發表 ｜ 碩士論文</span>
+<h1>泰雅語與太魯閣語構詞結構之自動解析</h1>
+<p class="en">Automatic Analysis of Morphological Structure in Atayal and Truku</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">語言學語法書記錄的是語言的靜態切片，而計算解析系統必須學會動態還原音素在喉嚨與齒唇間流轉時被壓縮、弱化甚至抹去的深層原形。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>戴晟哲的碩士論文延伸 Lin et al. (2020) 與游景勝 (2021) 的賽德克語研究，提出泰雅語（Atayal）與太魯閣語（Truku）的構詞結構自動解析系統（摘要，p. i；§1.2，p. 2）。實驗資料為《泰雅語語法概論》、《太魯閣語語法概論》與兩本《詞類及其教學》中所有帶構詞結構的詞，並以原住民族語線上辭典歸納深層原形（§2.2，pp. 6–7）。論文的主要工作，是找出兩個語言與賽德克語不同之處，並分別訂出專屬的規則與處理策略。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：書本詞根不是真正詞根，書寫規則也無法歸納</h2></div>
+<ul><li><strong>泰雅語教材標的是深層原形</strong>：賽德克語與太魯閣語的語法書在構詞結構中使用詞根原形；泰雅語語法書與詞類書則使用深層原形，甚至省略弱元音。例如 <code>bhyan</code> 被標為 <code>bhy-an</code>，但辭典參照詞根是 <code>bihiy</code>（§2.3.4，p. 17；§3.1.3，pp. 21–22）。若不先還原，解析工作會變得過於簡單，也無法套用到「給定辭典詞與其參照詞根」的真實情境。</li><li><strong>泰雅語辭典的「參照」欄不一定是詞根</strong>：例如 <code>ggalan</code> 參照 <code>galan</code>，<code>galan</code> 再參照 <code>agal</code>，須追溯到源頭詞根才能歸納深層原形（§3.1.1，p. 20）。</li><li><strong>書寫形式轉換規則無法歸納</strong>：賽德克語可用「除最後兩個元音外刪去所有元音」把構詞結構轉成書寫形式；泰雅語與太魯閣語書寫時保留的元音數從一個到三個都有，原因不明（如泰雅語 <code>inlaxan</code> 保留三個元音、<code>pglgan</code> 只有一個）（§3.4，p. 27）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：四個模組與泰雅、太魯閣專屬修正</h2></div>
+<p>輸入為一個泰雅詞或太魯閣詞<strong>及其詞根</strong>，輸出其前、中、後綴組合（第三章開頭，p. 18；圖 1）。</p>
+<h3>1. 實驗前準備（§3.1，pp. 19–25）</h3>
+<ul><li><strong>歸納深層原形</strong>：沿用 Lin et al. (2020) 的方法，蒐集同詞根、帶單元音後綴的辭典詞，刪去後綴後歸納共同結尾。例如太魯閣語詞根 <code>hksaw</code> 歸納出深層原形 <code>hksag</code>。</li><li><strong>深層原形結尾對應規則</strong>：由歸納結果整理出泰雅語 11 條、太魯閣語 18 條詞根結尾對應規則，另依語法書的詞音位轉換規則補充，例如泰雅語 <code>p</code> 結尾對應 <code>b</code> 結尾共 5 條、太魯閣語 <code>k</code> 結尾對應 <code>b</code> 結尾共 4 條，以及太魯閣語 <code>t</code> 對應 <code>d</code> 的清化規則（§3.1.2，p. 21）。</li><li><strong>泰雅語詞根還原</strong>：設計十個依序判斷的條件（書本詞根與辭典參照相同、只差元音、只差常見前綴與元音、為其深層原形……，最後以中文語意相近作判斷）。語法書 494 詞中還原 438 詞、詞類書 669 詞中還原 602 詞，其餘不納入實驗（§3.1.3，pp. 22–25）。</li></ul>
+<h3>2. 解析流程（§3.2–3.5，pp. 25–31）</h3>
+<ol><li><strong>深層原形處理模組</strong>：候選列表包含歸納出的深層原形、詞根本身、去掉常見前綴的詞根、依結尾規則改變的詞根；泰雅語另加入「加上或刪除輔音 <code>’</code>」的變體，處理輔音刪除後的同音融合（如 <code>nbu’-un</code> → <code>nbun</code>）。</li><li><strong>中後綴拼接模組</strong>：從候選、中綴列表、後綴列表各取一項（可為空字串）拼成不含前綴的構詞結構。</li><li><strong>書寫形式比對模組</strong>：因無法歸納書寫轉換規則，<strong>不再產生真正的書寫形式</strong>，改用三條比對規則判斷該結構能否對上目標詞的後半段：(1) 去掉詞綴符號後直接比對；(2) 只保留最後兩個元音後比對（接近賽德克語規則）；(3) 刪去詞根與中綴的所有元音後比對。比對成功時，未覆蓋的前半段即為前綴字串。</li><li><strong>前綴結構解析模組</strong>：窮舉前綴字串所有斷法，並把可能的重疊前綴改寫為 <code>RED</code>。前綴單位為表 3 的前綴組（泰雅語 10 組、太魯閣語 17 組），以 Lidstone 平滑的一元模型或 back-off 的二元模型挑選機率最高的組合。</li></ol>
+<p>與 Lin et al. (2020) 不同的是，二元模型在前後加上邊界符號 <span class="m-in" data-tex="\$"></span>：設前綴字串 <span class="m-in" data-tex="\mathit{pfx}"></span> 的一種組合為 <span class="m-in" data-tex="x_0 x_1 \cdots x_m x_{m+1}"></span>，其中 <span class="m-in" data-tex="x_0"></span> 與 <span class="m-in" data-tex="x_{m+1}"></span> 為邊界符號 <span class="m-in" data-tex="\$"></span>。原文的一元機率（第一行）與二元機率（第二行）如下（§3.5，p. 29）：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+P(\mathit{pfx}) &amp;= \prod_{i=1}^{m} P(x_i) \\
+P(\mathit{pfx}) &amp;= \prod_{i=1}^{m+1} P(x_i \mid x_{i-1})
+\end{aligned}"></span>
+<p>因此二元機率乘積的第一項是 <span class="m-in" data-tex="x_1"></span> 位在開頭的機率（§3.5.2，p. 30）。</p>
+<p>未出現的前綴組以 <span class="m-in" data-tex="\lambda / (N + B\lambda)"></span> 作為機率（<span class="m-in" data-tex="N"></span> 為頻率總和、<span class="m-in" data-tex="B"></span> 為前綴組個數）；未出現的二元組改用 <span class="m-in" data-tex="\alpha P(x_i)"></span>，結尾邊界則直接規定 <span class="m-in" data-tex="P(\$ \mid x_{i-1}) = 0.8"></span>（§3.5.1–3.5.2，p. 30）。</p>
+<pre>[目標詞 + 詞根] ──► 深層原形處理（候選列表）──► 中後綴拼接 ──► 書寫形式比對（三條規則）
+                                                                    │ 對上目標詞後半段
+                                                                    ▼
+                                    前綴字串 ──► 前綴結構解析（一元／二元機率，含 RED 與邊界）──► 構詞結構</pre>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>可核實的原文證據</h2></div>
+<h3>中後綴結構解析（表 14–17，pp. 32–34；以「詞」為單位）</h3>
+<table><thead><tr><th>資料</th><th>總數</th><th>精確率</th><th>召回率</th></tr></thead><tbody><tr><td>泰雅語語法書</td><td>438</td><td>96.72%</td><td>94.29%</td></tr><tr><td>泰雅語詞類書</td><td>602</td><td>96.39%</td><td>93.19%</td></tr><tr><td>太魯閣語語法書</td><td>342</td><td>96.59%</td><td>91.23%</td></tr><tr><td>太魯閣語詞類書</td><td>558</td><td>96.31%</td><td>93.55%</td></tr></tbody></table>
+<h3>前綴結構解析（表 18–23，pp. 34–38；只評估長度 2 以上的前綴字串，指標為 accuracy）</h3>
+<ul><li><strong>泰雅語</strong>（訓練：語法書 61 詞；測試：詞類書 56 詞）：一元模型測試 98.21%；考慮邊界的二元模型測試 <strong>96.43%</strong>（訓練 93.44%）；不考慮邊界的二元模型（<span class="m-in" data-tex="\alpha \geq 0.1"></span>）測試 100.00%、訓練 86.89%。</li><li><strong>太魯閣語</strong>（訓練：詞類書 214 詞；測試：語法書 49 詞）：一元模型（<span class="m-in" data-tex="\lambda = 0.01"></span>）測試 <strong>91.84%</strong>；考慮邊界的二元模型（<span class="m-in" data-tex="\alpha \geq 0.2"></span>）測試 <strong>85.71%</strong>（訓練 92.99%），作者明言「反而輸給一元機率模型」；不考慮邊界時測試降至 67.35%。</li><li><strong>「最佳系統」的說法須搭配表格閱讀</strong>：摘要與結論稱最佳系統為考慮邊界的二元模型（泰雅語 96.43%、太魯閣語 85.71%）。但以測試正確率而言，泰雅語不考慮邊界的二元模型（100.00%）與太魯閣語的一元模型（91.84%）都更高。（Wiki 依表 18–23 比較）考慮邊界的二元模型在兩語的<strong>訓練資料</strong>上正確率最高，且在太魯閣語測試資料上明顯優於不考慮邊界的版本。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>移植並非直接套用</strong>：本文沿用賽德克語流程的骨架（深層原形、中後綴拼接、比對、前綴機率），但須為兩語另訂詞根還原條件、輔音 <code>’</code> 變體、三條書寫比對規則與邊界機率（第五章，p. 39）。換言之，跨語言移植需要逐語言補規則，不能只替換一組參數。</li><li><strong>後續研究的引用</strong>（同實驗室 2025 年三篇碩士論文，皆為國立臺灣海洋大學資訊工程學系；頁碼為各論文印刷頁碼）：<ul><li>金柏毅（2025）的泛泰雅語翻譯實驗，以本文提出的構詞結構解析器猜測泰雅語與太魯閣語線上辭典詞的構詞結構，作為詞綴資訊；並以本文「正確率已達九成以上」說明這些自動分析結果可信（金柏毅 2025，p. 10）。見 2025-atayalic-affix-mt-jin。</li><li>吳維中（2025）的排灣語、布農語構詞結構自動解析，架構與流程大致沿用 Lin et al. (2020) 與本文，再依兩語特性加入專屬處理（吳維中 2025，第三章開頭，p. 9）。見 2025-paiwan-bunun-morphology-mt-wu。</li><li>楊鈞凱（2025）處理泛泰雅語未知詞時，以 Lin et al. (2020) 與本文歸納的深層原形及深層原形結尾對應規則，列舉未知詞可能的深層原形（楊鈞凱 2025，p. 22）；其詞綴列表亦依本文與游景勝（2021）的前綴類型統計準備（§3.1.1，p. 17）。見 2025-atayalic-oov-enumeration-yang。</li></ul></li><li>作者在結論中表示，系統未來可用於預測大量泰雅詞與太魯閣詞的構詞結構，為翻譯提供更多資訊（p. 39）；本文本身未做翻譯實驗。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<blockquote>以下為使用者個人研究之延伸思考（Wiki 詮釋），非原文主張。</blockquote>
+<h3>對個人碩士論文研究之映射與啟發</h3>
+<ol><li><strong>構詞解析可作為下游任務的前處理</strong>：<ul><li>若能先把族語詞拆成詞根與詞綴，翻譯或檢索時可減少同一詞根的不同表面形被視為不同詞的情形。本文只評估解析本身，構詞資訊對翻譯的效果需參考游景勝（2021）與金柏毅（2025）的實驗。</li></ul></li><li><strong>對未知詞的反思</strong>：<ul><li>本文的解析器需要已知詞根，泰雅語部分還依賴辭典參照與十個還原條件。實際翻譯時會遇到辭典沒有收錄的詞，這是楊鈞凱（2025）以構詞規則窮舉處理未知詞的出發點。</li></ul></li><li><strong>小測試集的評估風險</strong>：<ul><li>泰雅語前綴測試集只有 56 詞，一詞之差即約 1.8 個百分點；不同模型在訓練與測試資料上的排名甚至相反。引用本文數字時宜同時交代資料量。</li></ul></li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2023</b><span>發表・碩士論文</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Cheng-Che Dai</span></div>
+    <div class="blk"><span class="lab">我的關注</span><span>學長姐論文</span><span class="note">研究語言：泰雅語、太魯閣語</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Master&#x27;s Thesis, Department of Computer Science and Engineering, National Taiwan Ocean University</span></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#計算語言學</span><span class="chip">#自然語言處理</span><span class="chip">#人工智慧</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>臺灣南島語計算語言學與構詞解析</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">國立臺灣海洋大學資訊工程學系碩士論文（2023 年 1 月，指導教授林川傑）。頁碼為論文印刷頁碼。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

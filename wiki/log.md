@@ -1710,3 +1710,13 @@
   - 卡片：Card 3 取 aligned 第二行之 KL 正則項；Card 4 四個數字（26.86、41.75 取自表 3 p. 12952，19.20 取自表 5 p. 12953，1.92 取自表 1 p. 12950）皆回原文抽查相符；Card 5 新論文模式三筆取 §1、Limitations、§5；封面標題「語言模型先驗與資料增強」（短名 24 字超過上限）。
   - 檢查：`check_cards.py` ERROR 0、WARN 3（兩條 BLEU 為指標名稱、公式 81 字元經實測公式框不需捲動）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 37 項）。目視檢查修正 Card 2 標題超字數、封面標題與 Card 5 第二筆之單字落單。`lint_wiki.py` ERROR 0。
   - 首頁卡片牆依本批協調規則未重建，由協調者處理；`card_line` 已改，首頁星圖與卡片牆待協調者重建後同步。
+
+## [2026-11-10 09:52] update | 新增戴晟哲泰雅語、太魯閣語構詞解析之卡片文字檔並補後續研究 | #計算語言學 #自然語言處理 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 A 組（TD-008）。依 paper-card-writer 撰寫 [wiki/cards/2023-atayal-truku-morphology-dai.md](cards/2023-atayal-truku-morphology-dai.md) 並建置 `web/prototypes/paper-v1/2023-atayal-truku-morphology-dai.html`。
+  - 先修頁面：論文頁 Card 5 原只有楊鈞凱（2025）一筆後續研究，一般模式須 3 筆。回 `raw/` 三篇 2025 年同實驗室碩士論文 PDF 核對引用處，補入金柏毅（p. 10，以本篇解析器猜測構詞結構作為翻譯之詞綴資訊）、吳維中（第三章開頭 p. 9，架構與流程沿用 Lin et al. 2020 與本篇）、楊鈞凱（p. 22 列舉深層原形、§3.1.1 p. 17 前綴統計），證據表改為三列並附印刷頁碼。
+  - 原文抽查：Card 3 前綴機率公式以 PDF 頁面影像核對（§3.5 p. 29、§3.5.2 p. 30），原文兩式皆寫 $P(\mathit{pfx})$，論文頁所加之 uni、bi 下標與原文不同，改為原文寫法之兩行 aligned 並登記 EK-130（已修正）。Card 4 四個數字以 PDF 表 14、19、21、22 逐格核對（96.72%、96.43%、91.84%、85.71%）；證據表原只寫「表 14–17 詞層級精確率與召回率」，補列四表之數值。
+  - 卡片：Card 3 取二元機率一行；Card 4 數字模式四個數字（含作者所述考慮邊界之二元模型在太魯閣語低於一元模型）；Card 5 一般模式三筆同實驗室後續碩士論文；Card 6 取論文頁 Card 6 小測試集一點，未涉及使用者碩論。另填封面標題（16 字）。
+  - `verification` 由 verified 改為 partial（修正 EK-130 與補後續研究，未整頁重新逐項核對）。
+  - 檢查：`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 兩種尺寸 37 項 PASS；無頭截圖目視，修正 Card 4 與 Card 5 拆詞折行、Card 3 說明「機／率」斷行與範圍欄落單。`lint_wiki.py` ERROR 0。首頁卡片牆依 TD-008 協調規則於本批結束時統一重建。
