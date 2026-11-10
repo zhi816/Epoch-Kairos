@@ -5,7 +5,7 @@ domain: "econ"
 domain_tags: ["#宏觀經濟學", "#制度經濟學"]
 papers: ["1992-creative-destruction-aghion", "2001-colonial-origins-acemoglu", "2007-woodford-inflation-dynamics"]
 related_concepts: []
-verification: "verified"
+verification: "partial"
 ---
 
 # 概念：制度演化與宏觀經濟動態 (Institutional Evolution & Macroeconomic Dynamics)
@@ -24,7 +24,7 @@ verification: "verified"
   * 詳見核心論文：[創造性破壞與內生經濟成長模型（1992 發表 ｜ 2025 諾貝爾經濟學獎）](../papers/1992-creative-destruction-aghion.md)
 * **比較發展的殖民起源與制度因果識別（Acemoglu, Johnson & Robinson, 2001）**：在排他性限制（Exclusion Restriction）假設下，以數百年前歐洲殖民者歷史死亡率作為當代產權保護制度的工具變數，實證分離出制度環境對跨國人均所得差距的顯著因果貢獻，為「制度優於單純地理決定論」提供了開創性的計量識別框架（但學界對排他性外生性與地理疾病之直接影響仍存有學術爭鳴）。
   * 詳見核心論文：[比較發展的殖民起源（2001 發表 ｜ 2024 諾貝爾經濟學獎）](../papers/2001-colonial-origins-acemoglu.md)
-* **開放經濟新凱因斯貨幣控制與通膨動態（Woodford, 2007）**：從個體跨期最優化與 Calvo 交錯定價微觀基礎出發，證明即使在金融、貿易與生產要素高度全球化的環境下，央行仍能透過滿足泰勒原理的利率規則與前瞻性預期錨定牢牢控制本國通膨。
+* **開放經濟新凱因斯貨幣控制與通膨動態（Woodford, 2007）**：以兩國新凱因斯模型，逐一檢驗金融市場、商品市場與要素市場全球整合對貨幣傳導三環節之影響，論證全球化不太可能削弱央行控制本國通膨的能力；在作者之校準示例中，開放經濟下本國貨幣政策對通膨之即時效果甚至更大，小國央行無須國際協調亦能穩定本國通膨（見論文頁 Card 1、Card 4）。結論來自理論推導與校準示例，後續實證研究結果不一（見論文頁 Card 5）。
   * 詳見核心論文：[宏觀經濟穩定政策的微觀基礎（2007 發表 ｜ 2026 諾貝爾經濟學獎）](../papers/2007-woodford-inflation-dynamics.md)
 
 ---

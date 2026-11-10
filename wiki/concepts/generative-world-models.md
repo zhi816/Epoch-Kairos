@@ -5,7 +5,7 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#深度學習", "#強化學習", "#計算機視覺"]
 papers: ["1982-hopfield-network", "2017-attention-is-all-you-need", "2021-alphafold2", "2024-alphafold3", "2024-sora-world-simulator", "2025-deepseek-r1"]
 related_concepts: ["ai-for-structural-biology", "neural-circuits"]
-verification: "verified"
+verification: "partial"
 ---
 
 # 概念：生成式世界模型與擴展定律 (Generative World Models & Scaling Laws)
@@ -28,8 +28,8 @@ verification: "verified"
   * 詳見核心論文：[AlphaFold2（2021 發表 ｜ 2024 諾貝爾化學獎）](../papers/2021-alphafold2.md)、[AlphaFold 3（2024 發表）](../papers/2024-alphafold3.md)
 * **時空圖塊與視覺物理世界模擬初步探索（2024）**：Sora 與擴散轉換器（DiT）將高維度影片壓縮為統一的時空圖塊（Spacetime Patches），在算力擴展下自發湧現出動態攝影機三維透視、短暫遮擋連貫性與直覺物理互動畫面；然而此類純視覺擴散模型仍基於高維統計關聯擬合，在涉及因果狀態改變與嚴格物理規律（如碰撞、破碎）時頻繁出現穿模與失真，指明了融合顯式物理約束與交互式世界模型之長期挑戰。
   * 詳見核心論文：[Sora 與世界模型時空物理模擬（2024 發表）](../papers/2024-sora-world-simulator.md)
-* **純強化學習與推理運算擴展定律（2025）**：DeepSeek-R1-Zero 透過群體相對策略優化（GRPO）與基於規則之結果獎勵，證明無須人工示範即可激發基礎語言模型自發湧現長鏈推理、自我反思與測試時算力擴展（Test-Time Compute Scaling）；DeepSeek-R1 則進一步結合冷啟動數據、多階段 SFT 與二次 RL 解決可讀性與語言對齊問題（將可驗證獎勵泛化至任意領域驗證器與自主科學探索代理為重要未來展望）。
-  * 詳見核心論文：[DeepSeek-R1 與推理運算擴展定律（2025 發表）](../papers/2025-deepseek-r1.md)
+* **以規則獎勵之純強化學習訓練推理（2025）**：DeepSeek-R1-Zero 不先做監督微調，直接對 DeepSeek-V3-Base 以群體相對策略優化（GRPO）與基於規則之獎勵做大規模強化學習，模型在訓練中逐漸產生長思維鏈、自我反思與驗證等行為；DeepSeek-R1 再加入冷啟動資料與多階段訓練改善可讀性與語言一致，並蒸餾給較小模型。作者亦列出結構化輸出與工具使用、過度思考、語言混雜等限制，並指出難以驗證之任務如何擴大純強化學習仍是開放問題（見論文頁 Card 5）。
+  * 詳見核心論文：[DeepSeek-R1（2025 發表）](../papers/2025-deepseek-r1.md)
 
 ---
 

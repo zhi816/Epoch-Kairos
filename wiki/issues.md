@@ -949,3 +949,27 @@
 - **來源**：`raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`，摘要（p. 1）、§1–§2（pp. 2–3）、§3.4–§3.5（p. 5）、§4（pp. 6–7）。
 - **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。`card_line` 改為「先查辭典再交給大模型，把排灣語譯成華語」，依原文改寫上述各句；Card 6 之推測改標為 Wiki 推測並刪去無出處之數字；Card 4 補記評估範圍之 Wiki 註記（只有自動指標、測試句與辭典語料同源未說明是否排除）；證據表重建。
+
+### EK-139 | fixed | concepts/generative-world-models.md | 關鍵突破支柱（DeepSeek-R1） | 過度表述
+- **問題**：概念頁仍沿用論文頁已修正之說法：條目名「推理運算擴展定律」，並稱 R1-Zero「證明無須人工示範即可激發」長鏈推理與測試時算力擴展。論文頁已依 Nature 版改寫（EK-113、EK-152），`title_zh` 已刪「與推理運算擴展定律」，原文未稱證明。
+- **來源**：`wiki/papers/2025-deepseek-r1.md` Card 1、Card 5（依 `raw/2025-deepseek-r1.pdf` 修正後）。
+- **發現於**：第三批卡片回填 B 組回報，協調者核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依修正後論文頁改寫條目與連結文字，補作者所列限制；概念頁 `verification` 改為 partial。
+
+### EK-140 | fixed | concepts/multi-messenger-astrophysics.md | 關鍵突破支柱（LIGO、JWST） | 原文不符
+- **問題**：LIGO 條目把峰值應變 $10^{-21}$ 寫成「極限應變靈敏度」，並稱「開啟……暗宇宙直接探測時代」；JWST 條目稱本篇「發現」大爆炸後 5 至 7 億年之大質量星系與「小紅點」超大質量黑洞，並沿用舊標題。論文頁已修正（EK-114、EK-115、EK-132 至 EK-138、EK-154、EK-155）：$1.0 \times 10^{-21}$ 為峰值應變；JWST 本篇是由暗物質暈質量函數推導上限，檢驗 Labbé 等之測光候選，未談小紅點。
+- **來源**：`wiki/papers/2016-ligo-gravitational-waves.md` 與 `wiki/papers/2023-jwst-massive-galaxies.md` Card 1、Card 4（依原文修正後）。
+- **發現於**：第三批卡片回填 B 組回報與 A 組 LIGO 修正，協調者核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。兩條依修正後論文頁改寫，更新連結文字；概念頁 `verification` 改為 partial。
+
+### EK-141 | fixed | concepts/quantum-error-correction.md | 關鍵突破支柱（容錯量子計算） | 過度表述
+- **問題**：條目稱本篇「首次在單一處理器同時編碼 48 個邏輯量子位元」並提「高編碼率超立方體碼」。論文頁已修正（EK-120、EK-121、EK-158、EK-159）：最多 280 個物理位元、40 個色碼邏輯位元，48 個邏輯位元之電路以三維 $[[8,3,2]]$ 碼執行，原文未稱首次。
+- **來源**：`wiki/papers/2024-fault-tolerant-quantum.md` Card 1、Card 4（依正式版修正後）。
+- **發現於**：第三批卡片回填 B 組回報，協調者核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依修正後論文頁改寫條目與連結文字；概念頁 `verification` 改為 partial。
+
+### EK-142 | fixed | concepts/institutions-and-macro-dynamics.md | 關鍵突破支柱（Woodford） | 過度表述
+- **問題**：條目稱本篇「證明」央行仍能「牢牢控制」本國通膨。論文頁已修正（EK-112、EK-150、EK-151）：本篇以理論推導與校準示例論證全球化不太可能削弱央行控制通膨之能力，後續實證結果不一。
+- **來源**：`wiki/papers/2007-woodford-inflation-dynamics.md` Card 1、Card 4、Card 5（依原文修正後）。
+- **發現於**：第三批卡片回填 B 組回報，協調者核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依修正後論文頁改寫條目並註明結論之性質；概念頁 `verification` 改為 partial。

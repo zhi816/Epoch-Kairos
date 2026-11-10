@@ -1850,3 +1850,13 @@
   - `scripts/verify_star.js`：瀏覽器確認論文在星圖（群星）或我的星系看得見、標籤含論文名、點擊後說明框顯示論文名與一句話；以 LIGO（群星）與謝富惠（我的星系）實測，桌面與手機皆 PASS，以不存在之 slug 測得 FAIL 2 項。
   - 串接：`AGENTS.md` 第六章 Skill 一覽新增 paper-pipeline 為總入口、Ingest 改為依其 S0 至 S10 執行、Lint 工具分工補 `pipeline_status.py`；`paper-card-writer`、`wiki-content-audit`、`paper-pdf-parser` 之適用時機各加一行，說明本身是總流程的哪幾步；新增 `.claude/skills/paper-pipeline/SKILL.md` 轉介檔。
   - 檢查：`lint_wiki.py` ERROR 0；兩支腳本語法檢查通過。
+
+## [2026-11-10 11:17] update | 第三批卡片回填收尾：首頁統一上架、索引與概念頁同步修正 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：TD-008 第三批協調者收尾。B 組 7 篇、C 組 6 篇皆完成並由組員自行提交；A 組 5 項先前已提交。
+  - 首頁（TD-009，依 `paper-pipeline` 之 `references/publish.md` 第四節）：`build_home.py` 卡片牆 37 張（群星 13、我的關注 24），自我檢查 ERROR 0、WARN 0，`--check` 一致；`verify_wall.js` 全牆 PASS，WARN 26 項（研究語言標籤與期刊名截斷）；本批 17 篇逐篇以 `verify_star.js` 驗證星圖或我的星系，皆 PASS。期刊名截斷之三篇待查 Crossref 簡稱（當次查詢逾時），記於 TD-009。
+  - 索引：`wiki/index.md` 7 條之連結文字依論文頁 `title_zh` 更新（冰立方、DeepSeek-R1、nerve-mito、容錯量子、JWST、Macayan、FormosanBench），2 條標籤順序依 `domain_tags` 調整。
+  - 概念頁：依 B 組回報與 A 組 LIGO 修正，改寫 4 個概念頁中沿用已修正說法之條目，登記 EK-139 至 EK-142（皆 fixed）：generative-world-models（DeepSeek-R1「證明」與舊名）、multi-messenger-astrophysics（LIGO 把峰值應變寫成靈敏度；JWST「發現」大質量星系與小紅點）、quantum-error-correction（「首次」48 邏輯位元）、institutions-and-macro-dynamics（Woodford「證明……牢牢控制」）；4 頁 `verification` 由 verified 改為 partial。
+  - 待辦：TD-008 改為 waiting（剩 4 篇待使用者決定由誰撰寫），進度補第三批 B、C 組結果與協調者判定；TD-009 補本批上架結果；新增 TD-012（論文頁封面研究語言標籤過長，Xia 之標籤折行壓到代表星，以截圖確認）、TD-013（Card 3 原文公式只用於資料處理時之寫法，Ranathunga 與 Wu 兩例），皆待使用者決定。
+  - 檢查：`lint_wiki.py` ERROR 0；`pipeline_status.py` 待提交後確認。

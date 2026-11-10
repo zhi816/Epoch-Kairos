@@ -20,7 +20,7 @@
   * 得獎者：Karl Deisseroth, Peter Hegemann, Georg Nagel。原始文獻：`raw/2005-optogenetics.pdf`（Boyden et al. (2005) *Nature Neuroscience* 8(9):1263-1268，https://doi.org/10.1038/nn1525）。
 * `2026` ｜ 分子同手性與 Soai 不對稱自催化 ｜ `#化學合成` ｜ `[2026 諾貝爾化學獎]` ｜ `[planned]`
   * 得獎者：Henri B. Kagan, Kenso Soai。原始文獻：Soai et al. (1995) *Nature* 378:767-768，https://doi.org/10.1038/378767a0（出版社付費牆，`raw/` 暫無原始檔）；Kagan 之不對稱氫化工作可追溯至 1970 年代。
-* `2026` ｜ [南極「冰立方」（IceCube）高能微中子觀測](papers/2013-icecube-neutrino.md) ｜ `#天體物理` `#宇宙學` ｜ *2013 發表 ｜ 2026 諾貝爾物理學獎* ｜ `[wiki]`
+* `2026` ｜ [南極冰立方（IceCube）高能宇宙微中子探測：開啟高能微中子天文學時代](papers/2013-icecube-neutrino.md) ｜ `#天體物理` `#宇宙學` ｜ *2013 發表 ｜ 2026 諾貝爾物理學獎* ｜ `[wiki]`
   * 得獎者：Francis Halzen。原始文獻：`raw/2013-icecube-neutrino.pdf`（Aartsen et al. (2013) *Science* 342(6161):1242856，https://doi.org/10.1126/science.1242856）。
 * `2026` ｜ [宏觀經濟穩定政策的微觀基礎：通膨動態、預期錨定與貨幣控制](papers/2007-woodford-inflation-dynamics.md) ｜ `#宏觀經濟學` ｜ *2007 發表 ｜ 2026 諾貝爾經濟學獎* ｜ `[wiki]`
   * 得獎者：Robert E. Hall, Michael Woodford。原始文獻：`raw/2007-woodford-inflation-dynamics.pdf`（Woodford (2007) NBER Working Paper No. 13329，https://doi.org/10.3386/w13329）。
@@ -39,9 +39,9 @@
   * 原始文獻為 Sakaguchi et al. (1995) *Journal of Immunology* 155:1151-1164，https://doi.org/10.4049/jimmunol.155.3.1151（Cloudflare 關卡，`raw/` 暫無原始檔）與 Brunkow et al. (2001) *Nature Genetics* 27:68-73，https://doi.org/10.1038/83784（出版社付費牆）；檔名依實際發表年份。
 * `2025` ｜ [創造性破壞與內生經濟成長模型（Aghion-Howitt 熊彼特成長理論）](papers/1992-creative-destruction-aghion.md) ｜ `#宏觀經濟學` `#制度經濟學` ｜ *1992 發表 ｜ 2025 諾貝爾經濟學獎* ｜ `[wiki]`
   * 得獎者：Joel Mokyr, Philippe Aghion, Peter Howitt。原始文獻：`raw/1992-creative-destruction-aghion.pdf`（Aghion & Howitt (1992) *Econometrica* 60(2):323-351，https://doi.org/10.2307/2951599）。
-* `2025` ｜ [DeepSeek-R1 與推理運算擴展定律：以純強化學習激發大型語言模型之自我反思與長鏈推理湧現](papers/2025-deepseek-r1.md) ｜ `#人工智慧` `#強化學習` `#深度學習` ｜ `[wiki]`
+* `2025` ｜ [DeepSeek-R1：以純強化學習激發大型語言模型之自我反思與長鏈推理湧現](papers/2025-deepseek-r1.md) ｜ `#人工智慧` `#強化學習` `#深度學習` ｜ `[wiki]`
   * 原始文獻：`raw/2025-deepseek-r1.pdf`（DeepSeek-AI (2025) arXiv:2501.12948，https://arxiv.org/abs/2501.12948）。
-* `2025` ｜ [《Nature》神經元向癌細胞轉移粒線體：揭開腫瘤神經科學中驅動癌症遠端轉移的代謝劫持機制](papers/2025-nerve-mito-cancer.md) ｜ `#神經科學` `#生物科技` `#分子生物` ｜ `[wiki]`
+* `2025` ｜ [神經元向癌細胞轉移粒線體：揭開腫瘤神經科學中驅動癌症遠端轉移的代謝劫持機制](papers/2025-nerve-mito-cancer.md) ｜ `#神經科學` `#生物科技` `#分子生物` ｜ `[wiki]`
   * 原始文獻：`raw/2025-nerve-mito-cancer.pdf`（Hoover et al. (2025) "Nerve-to-cancer transfer of mitochondria during cancer metastasis", *Nature* 644(8075):252-262，https://doi.org/10.1038/s41586-025-09176-8）。
 * `2025` ｜ 抗極端高溫水稻基因 QT12 ｜ `#農業科技` ｜ `[planned]`
   * 原始文獻：Li et al. (2025) "A natural gene on-off system confers field thermotolerance for grain quality and yield in rice", *Cell* 188:3661-3678.e21，https://doi.org/10.1016/j.cell.2025.04.011（出版社付費牆，`raw/` 暫無原始檔）。
@@ -66,10 +66,10 @@
   * 得獎者：Daron Acemoglu, Simon Johnson, James A. Robinson。原始文獻：`raw/2001-colonial-origins-acemoglu.pdf`（Acemoglu, Johnson & Robinson (2001) *American Economic Review* 91(5):1369-1401，https://doi.org/10.1257/aer.91.5.1369）。
 * `2024` ｜ [Sora 與世界模型時空物理模擬：基於擴散轉換器（DiT）與時空圖塊的視覺生成湧現](papers/2024-sora-world-simulator.md) ｜ `#計算機視覺` `#人工智慧` `#深度學習` ｜ `[wiki]`
   * 原始文獻：`raw/2024-sora-world-simulator.pdf`（Liu et al. (2024) arXiv:2402.17177；並涵蓋 Peebles & Xie (2023) ICCV DiT 與 Brooks, Peebles et al. (2024) OpenAI Technical Report）。
-* `2024` ｜ [可重構中性原子陣列之邏輯量子處理器：邁向容錯量子計算的歷史跨越](papers/2024-fault-tolerant-quantum.md) ｜ `#量子物理` `#統計物理` ｜ `[wiki]`
+* `2024` ｜ [可重構中性原子陣列之邏輯量子處理器](papers/2024-fault-tolerant-quantum.md) ｜ `#量子物理` `#統計物理` ｜ `[wiki]`
   * 原始文獻：`raw/2024-fault-tolerant-quantum.pdf`（Bluvstein et al. (2024) "Logical quantum processor based on reconfigurable atom arrays", *Nature* 626(7997):58-65，https://doi.org/10.1038/s41586-023-06927-3）。
 * `2024` ｜ 體內原位 CRISPR 與個人化 mRNA 疫苗 ｜ `#基因工程` ｜ `[planned]`
-* `2023` ｜ [JWST 早期宇宙成熟巨大星系發現：對標準 ΛCDM 宇宙學模型的極限壓力測試](papers/2023-jwst-massive-galaxies.md) ｜ `#宇宙學` `#天體物理` ｜ `[wiki]`
+* `2023` ｜ [以高紅移星系候選對 ΛCDM 宇宙學進行壓力測試](papers/2023-jwst-massive-galaxies.md) ｜ `#宇宙學` `#天體物理` ｜ `[wiki]`
   * 原始文獻：`raw/2023-jwst-massive-galaxies.pdf`（Boylan-Kolchin (2023) *Nature Astronomy* 7(6):731-735，https://doi.org/10.1038/s41550-023-01937-7；對應觀測文獻 Labbé et al. (2023) *Nature* 616(7956):266-269，https://doi.org/10.1038/s41586-023-05786-2）。
 * `2023` ｜ [DrugCLIP：以蛋白質—分子三維對比學習實現超高速虛擬藥物篩選](papers/2023-drugclip.md) ｜ `#人工智慧` `#計算生物` ｜ `[wiki]`
   * 原始文獻：`raw/2023-drugclip.pdf`（Gao et al. (2023) "DrugCLIP: Contrastive Protein-Molecule Representation Learning for Virtual Screening", *NeurIPS* 36:44595-44614, arXiv:2310.06367，https://arxiv.org/abs/2310.06367）。
@@ -104,7 +104,7 @@
 
 ## 六、個人核心關注研究（My Focus：臺灣南島語與低資源機器翻譯）
 
-* `2026` ｜ [達悟語－菲律賓語神經機器翻譯：極低資源環境下的應對策略](papers/2026-tao-filipino-nmt-macayan.md) ｜ `#自然語言處理` `#深度學習` `#計算語言學` ｜ *LoResMT 2026* ｜ `[wiki]`
+* `2026` ｜ [達悟語－菲律賓語神經機器翻譯：極低資源情境下的策略](papers/2026-tao-filipino-nmt-macayan.md) ｜ `#自然語言處理` `#計算語言學` `#深度學習` ｜ *LoResMT 2026* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/報告論文題材/2026.loresmt-1.2.pdf`（Macayan et al. (2026) LoResMT 2026, 27-36）。
 * `2026` ｜ [結合混合辭典、檢索增強生成與大語言模型之低資源機器翻譯](papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md) ｜ `#自然語言處理` `#人工智慧` `#計算語言學` ｜ *Engineering Proceedings 2026* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（Wang et al. (2026) Eng. Proc. 120(1):52）。
@@ -124,7 +124,7 @@
   * 原始文獻：`raw/my-focus/學長姐論文/排灣語、布農語的構詞結構自動分析與機器翻譯_吳維中.pdf`（吳維中 (2025)，指導教授：林川傑博士）。
 * `2025` ｜ [理解低資源語言之上下文機器翻譯：以滿語為例的實證研究](papers/2025-manchu-in-context-mt-pei.md) ｜ `#自然語言處理` `#計算語言學` `#人工智慧` ｜ *ACL 2025* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/報告論文題材/2025.acl-long.429.pdf`（Pei et al. (2025) ACL 2025, 8767-8788）。
-* `2025` ｜ [FormosanBench：大語言模型時代臺灣低資源南島語言之評測基準](papers/2025-formosanbench-llm-benchmark-lin.md) ｜ `#自然語言處理` `#人工智慧` `#計算語言學` ｜ *EMNLP 2025 Findings* ｜ `[wiki]`
+* `2025` ｜ [FormosanBench：大型語言模型時代的低資源南島語言評測基準](papers/2025-formosanbench-llm-benchmark-lin.md) ｜ `#自然語言處理` `#計算語言學` `#人工智慧` ｜ *EMNLP 2025 Findings* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/英文論文/FormosanBench Benchmarking Low-Resource Austronesian Languages in the Era of Large Language Models _ 2025.findings-emnlp.897.pdf`（Lin et al. (2025) Findings of EMNLP 2025, 16527-16539）。
 * `2025` ｜ [從默會知識蒸餾到 AI 賦能文化復振：原住民族文化系統之知識循環建模](papers/2025-indigenous-tek-ai-revitalization-wang.md) ｜ `#人工智慧` `#計算語言學` `#社會學` ｜ *Social Sciences 2025* ｜ `[wiki]`
   * 原始文獻：`raw/my-focus/英文論文/From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization Modeling Knowledge Cycles in Indigenous Cultural Systems_socsci-15-00007.pdf`（Wang et al. (2025) Social Sciences 15(1):7）。

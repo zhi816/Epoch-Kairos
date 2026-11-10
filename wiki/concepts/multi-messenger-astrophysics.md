@@ -5,7 +5,7 @@ domain: "physics"
 domain_tags: ["#天體物理", "#宇宙學"]
 papers: ["2013-icecube-neutrino", "2016-ligo-gravitational-waves", "2023-jwst-massive-galaxies"]
 related_concepts: ["quantum-error-correction"]
-verification: "verified"
+verification: "partial"
 ---
 
 # 概念：多信使天體物理與極端宇宙學 (Multi-Messenger Astrophysics & Extreme Cosmology)
@@ -22,10 +22,10 @@ verification: "verified"
 ## 關鍵突破支柱
 * **南極冰立方 PeV 級高能宇宙微中子探測（IceCube, 2013）**：以一立方公里南極深冰作為契忍可夫光學陣列，首次在 $30\,\text{TeV}$ 至 $> 1\,\text{PeV}$ 能區捕捉到系外高能天體微中子，穿透電磁波無法跨越的塵埃與背景光子屏障。
   * 詳見核心論文：[南極冰立方高能微中子探測（2013 發表 ｜ 2026 諾貝爾物理學獎）](../papers/2013-icecube-neutrino.md)
-* **LIGO 雙黑洞併合重力波直接探測（GW150914, 2016）**：以 $10^{-21}$ 極限應變靈敏度首次直接捕捉 13 億光年外雙黑洞旋近與併合釋放的時空漣漪，開啟強場動力學廣義相對論檢驗與暗宇宙直接探測時代。
+* **LIGO 雙黑洞併合重力波直接探測（GW150914, 2016）**：LIGO 兩座探測器記錄到峰值應變 $1.0 \times 10^{-21}$ 的訊號，光度距離約 410 Mpc（約 13 億光年）；作者稱這是首次直接偵測到重力波，也是首次觀測到雙黑洞併合，波形與廣義相對論對旋近、併合與振鈴之預測相符，所做三項檢驗皆與強場區之預測一致（見論文頁 Card 1、Card 4）。
   * 詳見核心論文：[LIGO 雙黑洞重力波直接探測（2016 發表 ｜ 2017 諾貝爾物理學獎）](../papers/2016-ligo-gravitational-waves.md)
-* **JWST 宇宙黎明巨大星系與 $\Lambda\text{CDM}$ 極限壓力測試（2023）**：詹姆斯・韋伯太空望遠鏡穿透高紅移紅外盲區，發現大爆炸後 5 至 7 億年即存在超預期大質量星系與早期超大質量黑洞（「小紅點」），對標準暗物質暈結構形成與重子轉化效率提出嚴格邊界檢驗。
-  * 詳見核心論文：[JWST 早期宇宙成熟巨大星系發現（2023 發表）](../papers/2023-jwst-massive-galaxies.md)
+* **以高紅移星系候選檢驗 $\Lambda\text{CDM}$ 之恆星質量上限（2023）**：Boylan-Kolchin 從暗物質暈質量函數推導任一時期星系數密度與恆星質量密度的上限，用來檢驗 Labbé 等以詹姆斯・韋伯太空望遠鏡測得的高紅移大質量候選星系；最重的候選落在上限邊緣，在 $z \approx 9$ 與 $z \approx 7.5$ 分別需要 $\epsilon = 0.99$ 與 $0.84$ 的重子轉化效率。候選星系的質量來自測光，尚未經光譜確認（見論文頁 Card 1、Card 4）。
+  * 詳見核心論文：[以高紅移星系候選對 ΛCDM 宇宙學進行壓力測試（2023 發表）](../papers/2023-jwst-massive-galaxies.md)
 
 ---
 

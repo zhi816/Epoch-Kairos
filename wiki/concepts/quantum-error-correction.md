@@ -5,7 +5,7 @@ domain: "physics"
 domain_tags: ["#量子物理", "#統計物理"]
 papers: ["1982-hopfield-network", "2024-fault-tolerant-quantum"]
 related_concepts: ["multi-messenger-astrophysics"]
-verification: "verified"
+verification: "partial"
 ---
 
 # 概念：容錯量子計算與量子糾錯碼 (Fault-Tolerant Quantum Computation & Error Correction)
@@ -22,8 +22,8 @@ verification: "verified"
 ## 關鍵突破支柱
 * **自旋晶格統計物理與能量吸引子基礎（1982）**：伊辛自旋交互作用與無序自旋玻璃相變理論，不僅奠定了 Hopfield 聯想記憶網路，亦直接構成拓撲量子糾錯碼（如表面碼與色碼）之「統計力學映射定理」——量子糾錯碼的容錯閾值在數學上嚴格對應於隨機鍵伊辛模型（Random-Bond Ising Model）的鐵磁—順磁相變臨界點。
   * 詳見核心論文：[Hopfield 神經網絡（1982 發表 ｜ 2024 諾貝爾物理學獎）](../papers/1982-hopfield-network.md)
-* **可重構中性原子陣列之 48 邏輯量子位元處理器（2024）**：利用聲光偏轉器（AOD）光學鑷子在計算途中相干搬運中性銣原子，打破平面二維近鄰佈線束縛，首次在單一處理器同時編碼 48 個邏輯量子位元並執行單步平行橫向邏輯 CNOT 閘與高編碼率超立方體碼。
-  * 詳見核心論文：[可重構中性原子陣列邏輯量子處理器（2024 發表）](../papers/2024-fault-tolerant-quantum.md)
+* **可重構中性原子陣列之邏輯量子處理器（2024）**：以二維聲光偏轉器（AOD）在計算途中搬運光學鑷子中的中性銣原子，結合分區架構，在最多 280 個物理位元的處理器上操作 40 個色碼邏輯位元，以橫向閘平行作用於邏輯位元，並以三維 $[[8,3,2]]$ 碼執行含 48 個邏輯位元之電路（見論文頁 Card 1、Card 4）。
+  * 詳見核心論文：[可重構中性原子陣列之邏輯量子處理器（2024 發表）](../papers/2024-fault-tolerant-quantum.md)
 
 ---
 
