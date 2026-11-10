@@ -56,13 +56,13 @@ description: >-
 | S0 同步與領件 | 同步兩個倉庫；找出要收錄的原始檔；確認沒有別人在做 | `git-sync-guardian`；`references/intake.md` 第一節 | 無 | `git fetch origin main`、`git status -sb` 不落後；`pipeline_status.py --new` 列出這份檔案；`wiki/todo.md` 沒有別人 `doing` 這篇 |
 | S1 收件與書目 | 驗證原始檔、決定 slug 與年份、核對書目、判斷群星或我的關注 | `references/intake.md` 第二至四節 | 收件紀錄（寫進交付說明） | slug、`paper_year`、作者、期刊卷期頁、DOI 皆已以 Crossref 或原文首頁核對；我的關注者 `focus_role` 已依資料夾決定 |
 | S2 讀原文 | 抽出全文文字，通讀原文，記下問題、方法、結果、限制與公開資源 | `paper-pdf-parser`；`references/intake.md` 第六節 | 抽取文字（只放 scratchpad，不進倉庫） | 能寫出四句：做了什麼、怎麼做、證據是什麼、限制是什麼，各附原文頁碼 |
-| S3 證據表 | 把要寫的強主張逐條對應到原文頁、表、圖 | `wiki-content-audit` 寫作模式第 1、2 步 | `wiki/evidence/<slug>.md` | 檔案存在；數值逐一寫出；每條預定的區塊公式都有式號或頁碼；`pipeline_status.py <slug>` 之 S3 為 OK |
-| S4 論文頁 | 依骨架寫 Frontmatter 與正文六段 | `references/paper-page-template.md`；`wiki-content-audit` 寫作模式第 3 步 | `wiki/papers/<slug>.md` | `lint_wiki.py` 對本頁無 ERROR；S4 為 OK（`card_line` 切得成封面斷行） |
+| S3 證據表 | 把要寫的強主張逐條對應到原文頁、表、圖 | `wiki-content-audit` 寫作模式第 1、2 步 | `wiki/evidence/<slug>.md` | 檔案存在；數值逐一寫出；每條預定的區塊公式都有式號或頁碼；`pipeline_status.py <slug>` 之 S3 為 OK（論文頁尚未建立時只檢查證據表，區塊公式條數於 S4 後再比對） |
+| S4 論文頁 | 依骨架寫 Frontmatter 與正文六段 | `references/paper-page-template.md`；`wiki-content-audit` 寫作模式第 3 步 | `wiki/papers/<slug>.md` | `lint_wiki.py` 對本頁除概念頁相關者外無 ERROR；S4 為 OK（`card_line` 切得成封面斷行） |
 | S5 概念頁與索引 | 連結或建立概念頁（雙向）；登記 `wiki/index.md` | `references/concepts-and-index.md` | 更新之 `wiki/concepts/*.md`、`wiki/index.md` | S5 為 OK；`lint_wiki.py` 無雙向對應與孤島 ERROR |
 | S6 核對與核實狀態 | 先宏觀、再微觀，回原文逐項核對；查到的問題修正並登記；設定 `verification` | `wiki-content-audit` 寫作模式第 4、5 步；`crossref_check.py` | `wiki/issues.md` 條目（若有）；`verification` | 本頁沒有 open 問題；`verification` 為 `verified`（或 `partial` 並寫明未核對範圍）；S6 為 OK |
 | S7 卡片檔 | 寫封面、Card 2 至 6 與 Card 3 示意圖 | `paper-card-writer` 第五節第 1 至 6 步（含第 2-1 步回原文抽查） | `wiki/cards/<slug>.md` | `check_cards.py <slug>` ERROR 0，WARN 逐條交代；S7 為 OK |
 | S8 論文頁網頁 | 建置論文頁原型並以瀏覽器驗證 | `paper-card-writer` 第五節第 7-1 步、`references/paper-page.md` | `web/prototypes/paper-v1/<slug>.html` | 建置自我檢查 ERROR 0；`verify_page.js` 結果 PASS；截圖目視無拆詞折行、無重疊 |
-| S9 上架首頁 | 重建首頁，確認這篇出現在星圖或我的星系，封面卡出現在卡片牆 | `references/publish.md` 第一至四節；`paper-card-writer` 第五節第 7-2 步 | `web/index.html` | `build_home.py --card <slug>` 卡片牆自我檢查 ERROR 0；`verify_wall.js` 與 `verify_star.js` 結果皆 PASS |
+| S9 上架首頁 | 重建首頁，確認這篇出現在星圖或我的星系，封面卡出現在卡片牆；重建因本篇而編號後移之他篇原型 | `references/publish.md` 第一至四節；`paper-card-writer` 第五節第 7-2 步 | `web/index.html`；編號後移之 `web/prototypes/paper-v1/*.html` | `build_home.py --card <slug>` 卡片牆自我檢查 ERROR 0；`verify_wall.js` 與 `verify_star.js` 結果皆 PASS；`pipeline_status.py` 全庫總表沒有 S8 編號不一致之 NG |
 | S10 日誌與提交 | 寫日誌、一次提交本篇所有檔案、推送；`raw/` 有新檔時另行提交 | `references/publish.md` 第五、六節；`git-sync-guardian` | 一個主倉庫提交（必要時加一個 `raw/` 提交） | 推送成功（`Ahead: 0`）；`build_home.py --check` 一致；`pipeline_status.py <slug>` 全部 OK、結束碼 0 |
 
 **怎麼知道一篇做到哪裡**：
@@ -82,7 +82,7 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 1. 依 `git-sync-guardian` 執行 `git fetch origin main` 與 `git status -sb`；第一行出現 `behind` 時先執行 `python .agents/skills/git-sync-guardian/scripts/sync.py`。
 2. 執行 `pipeline_status.py --new`，看要收錄的檔案屬於哪一類（`新檔案`、`已列待辦`、`已引用`），依 `references/intake.md` 第一節處理。最後幾行若列出 `raw/` 有未提交之變動，依 `references/intake.md` 第五節處理。
 3. 整份讀 `wiki/todo.md`：這篇若已有條目，狀態為 `waiting` 時不得動工（等使用者），`doing` 且負責人不是你時不得接手；平行批次有協調規則時照規則做。
-4. 啟動本機伺服器（S8、S9 要用）：`python -m http.server 8781 --bind 127.0.0.1 --directory web`（埠號依協調規則；不可用 `file://` 開檔）。
+4. 啟動本機伺服器（S8、S9 要用）：`python -m http.server 8781 --bind 127.0.0.1 --directory web`（埠號依協調規則；不可用 `file://` 開檔）。macOS 上倉庫位於「文件」等受保護資料夾時，桌面 app 之預覽伺服器讀不到該資料夾（`PermissionError: Operation not permitted`）：把 `web/` 複製到 scratchpad 再從該處啟動，三支驗證腳本也複製進去，以 `fetch` 讀入執行；每次重建原型或首頁後都要重新複製（`references/publish.md` 第三節第 1 點）。
 
 ### S1 收件與書目
 
@@ -97,7 +97,7 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 
 ### S2 讀原文
 
-1. 依 `paper-pdf-parser` 抽出全文（預設 PyMuPDF），輸出放在 scratchpad，**不得**放進倉庫或 `raw/`。
+1. 依 `paper-pdf-parser` 抽出全文（預設 PyMuPDF）。輸出放在 `parse_pdf.py` 預設之 `work/parsed/`（已列入 `.gitignore`）或 scratchpad，**不得**放進 `wiki/`、`web/` 或 `raw/`，也不得提交。掃描版（文字層之公式與圖中文字多為亂碼）一律另以 PyMuPDF 把頁面轉成影像閱讀，數字與公式以影像為準。
 2. 完整讀一遍原文（不是只讀摘要）。表格、圖、雙欄順序或公式抽取有疑問時，回看 PDF 頁面影像。
 3. 寫下四句話：這篇做了什麼、怎麼做、證據是什麼、限制是什麼，各附原文頁碼。寫不出限制，代表還沒讀完。
 4. 同時記下 `references/intake.md` 第六節列的事項：公開的程式、資料與模型；作者明列的限制與未來工作；原文的編號公式與所在頁；主要結果表的表號。
@@ -108,13 +108,13 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 2. 要列的主張：論文頁與卡片會用到的每個數字（逐一寫出數值與表列、欄位，不得只寫「表 3 各數值」）、每條區塊公式（式號或頁碼）、「首次／證明／導致／所有」等強斷言、獎項與後續研究之歸屬。
 3. 後續研究：每筆打開該研究本身（DOI 頁、摘要），確認它做了你要寫的事；書目以 Crossref 核對。不得把作者自述的未來工作寫成他人後續成果。
 4. 「類型」只能取五類之一：本篇研究結果、後續研究、作者解釋、依原文數據計算、Wiki 詮釋。
-5. 完成條件：`pipeline_status.py <slug>` 之 S3 為 OK；若為 `!`，依原因補齊或在交付說明交代。
+5. 完成條件：`pipeline_status.py <slug>` 之 S3 為 OK；若為 `!`，依原因補齊或在交付說明交代。此時論文頁尚未建立，腳本只檢查證據表（存在、數值逐一寫出）；區塊公式條數是否都已登記，於 S4 寫完論文頁後由同一指令再比對。
 
 ### S4 論文頁
 
 1. 依 `references/paper-page-template.md` 複製骨架，逐欄填寫 Frontmatter，逐段寫正文。每一句事實都能在證據表或原文找到位置。
 2. 區塊公式只放原文公式（`wiki-content-audit` 寫作模式第 3 步）；原文沒有公式的研究不放區塊公式。
-3. 完成條件：`python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 對本頁無 ERROR；`pipeline_status.py <slug>` 之 S1、S3、S4 為 OK（`card_line` 切不成封面斷行時 S4 為 `!`，必須改寫 `card_line`）。
+3. 完成條件：`python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 對本頁無 ERROR，但概念頁相關之 ERROR（`concepts 指向不存在的概念頁`、`雙向對應缺漏`、指向 `../concepts/` 之連結失效）可留到 S5：`concepts` 欄在 S4 就要填，概念頁要到 S5 才新建或反向登記。`pipeline_status.py <slug>` 之 S1、S3、S4 為 OK（概念頁相關之 ERROR 計入 S5；`card_line` 切不成封面斷行時 S4 為 `!`，必須改寫 `card_line`）。
 
 ### S5 概念頁與索引
 
@@ -150,15 +150,16 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 1. 同步遠端後執行 `python tools/build_home.py --card <slug>`：輸出清單須有本篇一行、斷行與卡片檔相同，「卡片牆自我檢查：ERROR 0」；再以 `--check --card <slug>` 確認一致。
 2. 開 `http://127.0.0.1:8781/index.html`，依序執行 `verify_wall.js`（`var EK_SLUG = '<slug>';`）與本 Skill 之 `scripts/verify_star.js`（同樣先設 `EK_SLUG`），兩份報告最後一行都須為「結果：PASS」。
 3. 截圖目視：群星論文在星圖上看得到這顆星、點了說明框顯示雙年份與一句話；我的關注論文在 `#my-constellation` 看得到；卡片牆上的封面卡斷行、論文名、雙年份正常；點卡片開到本篇論文頁、按返回回到首頁。
-4. 平行批次的協調規則禁止組員重建首頁時，略過本步，交付說明寫明「首頁：依協調規則未重建，由協調者處理」；協調者在該批結束時依 `references/publish.md` 第四節統一上架。
-5. 完成條件：上述各項達成。卡片檔提交前 `pipeline_status.py` 之 S9 會顯示「卡片檔尚未提交」，提交後才會轉為 OK（S10 第 4 步確認）。
+4. **重建編號後移之他篇原型**：卡片編號依 `timeline_year` 由新到舊排（`tools/build_home.py` 之 `card_numbers()`），新收錄的論文會使排在它之後的論文編號各加一，那些論文之原型 Card 1 左上就和首頁卡片牆對不上。執行 `pipeline_status.py`（全庫總表），S8 報「編號與首頁卡片牆不同」者，逐篇以 `python tools/build_paper_prototype.py <slug>` 重建（自我檢查 ERROR 0，`git diff` 應只有編號一行改變），與本篇同一提交（`references/publish.md` 第二節第 4 點）。工作目錄裡 `tools/paper_template.html` 或 `tools/build_paper_prototype.py` 有他人未提交之修改時，不得在工作目錄重建，改依同節以 HEAD 之暫時 worktree 重建。
+5. 平行批次的協調規則禁止組員重建首頁時，略過本步，交付說明寫明「首頁：依協調規則未重建，由協調者處理」；協調者在該批結束時依 `references/publish.md` 第四節統一上架，第 4 點之他篇原型亦由協調者重建。
+6. 完成條件：上述各項達成。卡片檔提交前 `pipeline_status.py` 之 S9 會顯示「卡片檔尚未提交」，提交後才會轉為 OK（S10 第 4 步確認）。
 
 ### S10 日誌與提交
 
 依 `references/publish.md` 第五、六節：
 
 1. 執行 `lint_wiki.py`（ERROR 須為 0），以 `python .agents/skills/git-sync-guardian/scripts/log_time.py` 取得時間，在 `wiki/log.md` 檔尾追加一筆日誌（動作 `ingest`；新收錄以外之補完用 `update`）。
-2. 以 `safe_commit_push.py` 一次提交本篇所有檔案：論文頁、證據表、卡片檔、論文頁網頁、首頁、改動的概念頁、`wiki/index.md`、`wiki/issues.md`（以 `--issue` 逐條列出）、`wiki/todo.md`（以 `--todo` 逐條列出）、日誌（以 `--log-heading` 指定自己的標題）。檔案清單見 `references/publish.md` 第五節。
+2. 以 `safe_commit_push.py` 一次提交本篇所有檔案：論文頁、證據表、卡片檔、論文頁網頁、首頁、S9 第 4 步重建之他篇原型、改動的概念頁、`wiki/index.md`、`wiki/issues.md`（以 `--issue` 逐條列出）、`wiki/todo.md`（以 `--todo` 逐條列出）、日誌（以 `--log-heading` 指定自己的標題）。檔案清單見 `references/publish.md` 第五節。
 3. `raw/` 有使用者新放入、尚未提交的原始檔時，依 `references/intake.md` 第五節在 `raw/` 另行提交與推送。
 4. 推送後：不加 `--card` 執行 `python tools/build_home.py --check`，須為「一致」；執行 `pipeline_status.py <slug>`，九步全部 OK（或 `!` 已交代）、結束碼 0。不是的話回到該步處理，處理完再提交一次。
 
@@ -204,6 +205,7 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 | 沒有逐項核對就標 `verified` | `verified` 會在網頁顯示「已逐項對照原文查核」 | S6 |
 | 寫卡片時只信自己剛寫的論文頁，不回原文抽查 | 第二批回填時，自己寫的頁面也查出錯誤 | S7 |
 | 只建論文頁網頁，沒上架首頁；或只驗卡片牆，沒驗星圖或我的星系 | 使用者要的是「出現在首頁」；三處都要看到 | S9 |
+| 收錄後沒重建編號後移之他篇原型，或重建了卻沒和本篇同一提交 | 首頁卡片牆與他篇論文頁 Card 1 編號不一致；共用工作目錄中未提交之產生檔可能被他人還原（2026-11-10 TD-014 試跑實際發生） | S9 第 4 步 |
 | 分好幾個提交，或漏提交首頁、概念頁、索引 | 使用者無法逐篇檢視與退回；別人重建首頁時才發現不一致 | S10 |
 | `raw/` 有使用者新放入的檔案卻沒提交 | 原始檔只存在本機，換一台機器就不見 | S10、`intake.md` 第五節 |
 | 回應被安全機制中止後，換個說法重試 | 不得以改寫規避；停下、登記、告知使用者 | 第二節第 6 條 |
@@ -211,9 +213,11 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 
 ## 九、檢查工具一覽
 
+各指令中的 `python` 指 Python 3.7 以上；macOS 未提供 `python` 指令時改用 `python3`（各腳本只用標準函式庫，`paper-pdf-parser` 另會自動改用 `.venv-mineru`）。
+
 | 工具 | 在哪一步 | 做什麼 |
 |---|---|---|
-| `python .agents/skills/paper-pipeline/scripts/pipeline_status.py [--new｜<slug> ...]` | 每一步之後 | 全庫總表、單篇逐項原因、待收錄原始檔；只用標準函式庫，會呼叫下列三支 Python 腳本 |
+| `python .agents/skills/paper-pipeline/scripts/pipeline_status.py [--new｜<slug> ...]` | 每一步之後 | 全庫總表、單篇逐項原因（論文頁尚未建立時只檢查證據表）、待收錄原始檔、原型與首頁之編號是否一致；只用標準函式庫，會呼叫下列三支 Python 腳本 |
 | `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` | S4、S5、S6、S10 | Frontmatter、標籤、雙向對應、連結、公式、控制字元、核實狀態一致性 |
 | `python .agents/skills/wiki-content-audit/scripts/crossref_check.py <slug>` | S1、S6 | 書目與 Crossref 一致（需網路） |
 | `python .agents/skills/paper-card-writer/scripts/check_cards.py <slug>` | S7 | 卡片檔欄位、字數、來源比對 |

@@ -154,6 +154,6 @@ focus_languages: ["<研究對象之低資源語言>"]
 
 ## 四、寫完之後（S4 完成條件）
 
-1. `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：本頁無 ERROR；`card_line` 封面斷行之 WARN 須處理。
-2. `python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug>`：S1、S3、S4 為 OK（S5 以後尚未做，NG 是正常的）。
-3. 搜尋佔位符：`grep -n "<[^a-zA-Z/!]" wiki/papers/<slug>.md` 不應找到 `<……>` 之類未替換的佔位。
+1. `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：本頁無 ERROR；`card_line` 封面斷行之 WARN 須處理。概念頁相關之 ERROR（`concepts` 指向不存在的概念頁、雙向對應缺漏、指向 `../concepts/` 之連結失效）在 S5 新建或更新概念頁後消失，此時可先保留。
+2. `python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug>`：S1、S3、S4 為 OK（S5 以後尚未做，NG 是正常的；概念頁相關之 ERROR 計入 S5）。
+3. 未替換的佔位符由第 2 步之 S4 檢查（`<中文……>`、`<slug>`、`<DOI>`、`<URL>`）。不要用 `grep "<[^a-zA-Z/!]"` 自行搜尋：公式中的 `<`（如 `$\Gamma(0) < 2$`）也會被找出來。

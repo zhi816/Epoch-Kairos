@@ -22,7 +22,7 @@
 - **來源**：wiki/log.md [2026-11-08 21:37] git「仍待補」與 index.md 原「待辦與已知問題」一節；2026-11-09 登記，Claude Code by Anthropic。
 
 ### TD-004 | waiting | wiki | 補填日誌條目之「模型版本」欄
-- **內容**：下列日誌條目之「模型版本」欄為佔位文字「本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填」，不符第九章須載明模型版本之規定：[2026-11-06 22:12] rule、[2026-11-07 22:47] 四筆（rule、fix、update、audit）、[2026-11-08 14:14] git。2026-11-10 TD-014 試跑之工作階段同樣受平台規範限制，[2026-11-10 12:23] ingest 之「模型版本」欄、`wiki/evidence/1985-macroscopic-quantum-tunneling.md` 之「查核者」與 `wiki/cards/1985-macroscopic-quantum-tunneling.md` 之「撰寫者」「最後核對」皆以佔位文字代替型號（型號已於對話中告知使用者）。
+- **內容**：下列日誌條目之「模型版本」欄為佔位文字「本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填」，不符第九章須載明模型版本之規定：[2026-11-06 22:12] rule、[2026-11-07 22:47] 四筆（rule、fix、update、audit）、[2026-11-08 14:14] git。2026-11-10 TD-014 試跑之工作階段同樣受平台規範限制，[2026-11-10 12:23] ingest、[2026-11-10 12:25] fix 與 [2026-11-10 12:33] rule 三筆之「模型版本」欄、`wiki/evidence/1985-macroscopic-quantum-tunneling.md` 之「查核者」與 `wiki/cards/1985-macroscopic-quantum-tunneling.md` 之「撰寫者」「最後核對」皆以佔位文字代替型號（型號已於對話中告知使用者）。
 - **完成條件**：依使用者決定補填或註記完畢；若決定維持原樣，經同意後刪除本條。
 - **等待**：使用者提供當時之模型型號，並決定直接補入原條目（屬修改舊條目，須使用者明示同意）、另追加更正條目，或維持原樣。
 - **來源**：wiki/log.md [2026-11-07 22:47] audit「待使用者處理」第 1 項；2026-11-09 登記，Claude Code by Anthropic。
@@ -67,8 +67,12 @@
 - **完成條件**：上列各項補記完畢，`lint_wiki.py` ERROR 0；`python .agents/skills/paper-pipeline/scripts/pipeline_status.py` 上列各篇之 S3 為 ok；有改卡片者 `check_cards.py` ERROR 0，原型與首頁已重建並驗證。
 - **來源**：第二批卡片回填 B、C 組最後回報（使用者轉貼，2026-11-10）；2026-11-10 登記，Claude Code by Anthropic。
 
-### TD-014 | doing | skill | 以 paper-pipeline 實際收錄一篇新原始檔，驗證流程並補齊缺口
-- **內容**：[`paper-pipeline`](../.agents/skills/paper-pipeline/SKILL.md)（2026-11-10 新增）已以全庫進度檢查與既有論文測過 `pipeline_status.py` 與 `verify_star.js`，但尚未拿一篇從未收錄的原始檔從 S0 做到 S10。從 TD-001 中選一篇物理或化學題目試跑，建議 `raw/1985-macroscopic-quantum-tunneling.pdf`（超導電路巨觀量子穿隧，2025 諾貝爾物理學獎；index.md 已有 `[planned]` 條目）或 `raw/1999-metal-organic-frameworks-mof5.pdf`（MOFs，2025 諾貝爾化學獎）。逐步照 SKILL.md 第五節做，每一步記下：照文件做得下去嗎、指令輸出與文件所寫是否相符、哪裡寫得不清楚或缺了步驟、花了多少工夫。做完後把發現的缺口改進 SKILL.md、`references/` 或 `pipeline_status.py`，改不了的登記為新待辦。
-- **完成條件**：該篇 `pipeline_status.py <slug>` 九步皆 OK，結束碼 0；交付說明依 SKILL.md 第七節逐項填寫；試跑中發現之缺口皆已修正或登記；該篇從 TD-001 移除。
-- **負責**：Claude Code by Anthropic（2026-11-10 起，試跑 `raw/1985-macroscopic-quantum-tunneling.pdf`，預覽埠 8781）。
-- **來源**：使用者指示（2026-11-10：新流程先建立待辦，之後試跑）；2026-11-10 登記，Claude Code by Anthropic。
+### TD-017 | open | skill | 收緊 pipeline_status.py 對證據表「公式列」之計數
+- **內容**：`pipeline_status.py` 之 `formula_rows()` 把「位置」欄含「公式」之列，以及「主張」欄有任何含等號或 LaTeX 指令之 `$...$` 的列都算成公式列。物理與經濟論文之證據表常在主張中寫 `$k_BT/\hbar\omega_p \sim 6$`、`$I_0 = 30.572\,\mu\mathrm{A}$` 之類數值，因而被算成公式列（`2023-jwst-massive-galaxies` 5 條區塊公式對 23 列、`1985-macroscopic-quantum-tunneling` 2 條對 13 列），S3 之「區塊公式皆已登記」檢查形同虛設。若只算「位置」欄含「公式」之列，2026-11-10 試算全庫有 9 篇（`1982-hopfield-network`、`1992-creative-destruction-aghion`、`2007-woodford-inflation-dynamics`、`2023-atayal-truku-morphology-dai`、`2023-jwst-massive-galaxies`、`2024-alphafold3`、`2024-fault-tolerant-quantum`、`2024-finnish-northern-sami-mt-saleva`、`2025-deepseek-r1`）會新報 WARN，TD-011 第 4 項所列之條數也會改變。先決定登記格式（例如規定公式列之「位置」欄寫「Card N 公式」，或「第一手來源」欄寫原文式號），再改 `formula_rows()`、`wiki-content-audit` 寫作模式第 2 步與 TD-011 之清單；既有證據表依新格式補記時，每條仍須回原文確認式號。
+- **完成條件**：登記格式寫入 `wiki-content-audit` 與 `paper-pipeline`；`formula_rows()` 只計符合格式之列；全庫 `pipeline_status.py` 之 S3 結果與 TD-011 清單一致。
+- **來源**：TD-014 試跑（2026-11-10，`1985-macroscopic-quantum-tunneling`）發現；2026-11-10 登記，Claude Code by Anthropic。
+
+### TD-018 | open | wiki | 在光遺傳學頁補寫奠基論文之原始檔路徑
+- **內容**：`raw/2003-channelrhodopsin2.pdf`（Nagel et al. 2003, PNAS）是 [2005-optogenetics](papers/2005-optogenetics.md) 之奠基論文，論文頁 `key_papers` 只寫 DOI，「知識網絡與文獻出處」沒有寫此原始檔路徑，`pipeline_status.py --new` 因而把它歸為「已列待辦」（TD-003 順帶提到它）而非「已引用」。依 `paper-pipeline` 之 `references/intake.md` 第三節，在該頁「原始權威文獻」另起一行寫明奠基論文原始檔路徑（不得改動「原始檔典藏」一行，S1 以第一個「原始檔典藏」判斷主軸原始檔）。此頁之卡片撰寫尚待使用者決定由誰處理（TD-008），本項只補一行路徑，不涉及內容撰寫。
+- **完成條件**：`pipeline_status.py --new` 將 `raw/2003-channelrhodopsin2.pdf` 列為「已引用」；`lint_wiki.py` ERROR 0。
+- **來源**：TD-014 試跑（2026-11-10）發現；2026-11-10 登記，Claude Code by Anthropic。

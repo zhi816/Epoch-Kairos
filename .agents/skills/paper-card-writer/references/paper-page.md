@@ -123,6 +123,7 @@ python tools/build_paper_prototype.py <slug>
    ```bash
    python -m http.server 8781 --bind 127.0.0.1 --directory web
    ```
+   macOS 上倉庫位於受保護資料夾而伺服器無法啟動時，依 [`card-wall.md`](card-wall.md) 第四節第 3 步第 1 點把 `web/` 複製到暫存資料夾再啟動；每次重建原型後都要重新複製。
 2. 開 `http://127.0.0.1:8781/prototypes/paper-v1/<slug>.html`。
 3. 把 `.agents/skills/paper-card-writer/scripts/verify_page.js` **全文**貼進開發者工具 Console 執行（或以代理的瀏覽器 JavaScript 工具執行），約 10 秒後輸出報告。腳本以兩個隱藏 iframe 同時量測 1440 x 900 與 375 x 812，不必調整視窗。瀏覽器分頁須在前景，背景分頁的計時器會被節流而逾時。
 4. 最後一行必須是「結果：PASS」。任何 FAIL 都不得交付；WARN 逐條處理。

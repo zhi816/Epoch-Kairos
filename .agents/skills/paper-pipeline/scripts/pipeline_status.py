@@ -4,15 +4,16 @@
     python .agents/skills/paper-pipeline/scripts/pipeline_status.py             # 全庫：每篇論文各步驟狀態與下一步
     python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new       # 只列 raw/ 中尚未有論文頁之原始檔
     python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug> ...  # 指定論文：逐步列出每項檢查與原因
+    （論文頁尚未建立而證據表已存在時，只檢查 S3 之證據表部分，供 S3 完成時確認）
 
 步驟代號與 SKILL.md 第四節相同：
     S1 收件      論文頁「原始檔典藏」所指之 raw/ 檔案存在
     S3 證據表    wiki/evidence/<slug>.md 存在；數值逐一寫出；區塊公式皆已登記
-    S4 論文頁    論文頁存在、結構完整（開頭引言、Card 1 至 6、知識網絡）、lint_wiki.py 對本頁無 ERROR、card_line 切得成封面斷行
-    S5 概念索引  concepts 非空且概念頁雙向列出本篇；wiki/index.md 有本篇連結
+    S4 論文頁    論文頁存在、結構完整（開頭引言、Card 1 至 6、知識網絡）、lint_wiki.py 對本頁無 ERROR（概念頁相關之 ERROR 歸 S5）、card_line 切得成封面斷行
+    S5 概念索引  concepts 非空且概念頁雙向列出本篇；wiki/index.md 有本篇連結；lint_wiki.py 對本頁無概念頁相關之 ERROR
     S6 核實      verification 為 partial 或 verified；wiki/issues.md 無本頁 open 問題
     S7 卡片      wiki/cards/<slug>.md 存在且 check_cards.py 對本篇無 ERROR
-    S8 網頁      web/prototypes/paper-v1/<slug>.html 存在，且不舊於卡片檔與論文頁
+    S8 網頁      web/prototypes/paper-v1/<slug>.html 存在，且不舊於卡片檔與論文頁；Card 1 編號與首頁卡片牆相同
     S9 上架      卡片檔已提交；web/index.html 之星圖（或我的星系）與卡片牆都有本篇；首頁與資料一致
     S10 提交     本篇之論文頁、證據表、卡片檔、網頁皆無未提交之修改，且 wiki/log.md 有本篇之日誌
 本腳本只檢查「做了沒有」與可機械判斷之形式，不判斷內容是否忠於原文（那是 wiki-content-audit 之人工核對）。
@@ -90,10 +91,16 @@ def tool_findings(output):
     return out
 
 
+CARD_NO = r'((?:No|F)\.\d+)'
+# lint_wiki.py 中屬於概念頁連結之 ERROR：論文頁先填 concepts（S4），概念頁到 S5 才建立或反向登記，故歸 S5 判斷
+CONCEPT_LINT = ('concepts 指向不存在的概念頁', '雙向對應缺漏', '相對連結指向不存在的檔案：../concepts/')
+
+
 def homepage_data():
+    """回傳（星圖論文、我的星系論文、卡片牆論文、卡片牆編號 {slug: 'No.04'}）。"""
     path = os.path.join(ROOT, 'web', 'index.html')
     if not os.path.exists(path):
-        return set(), set(), set()
+        return set(), set(), set(), {}
     t = read(path)
     m = re.search(r'<script[^>]*id="ek-data"[^>]*>(.*?)</script>', t, re.S)
     stars, focus = set(), set()
@@ -102,7 +109,14 @@ def homepage_data():
         stars = {p['slug'] for p in d.get('papers', [])}
         focus = {p['slug'] for p in (d.get('focus') or {}).get('papers', [])}
     wall = set(re.findall(r'<a class="wc[^"]*"[^>]*\sdata-slug="([^"]+)"', t))
-    return stars, focus, wall
+    numbers = dict(re.findall(r'<a class="wc[^"]*"[^>]*\sdata-slug="([^"]+)"[^>]*>(?:<[^>]+>){0,4}' + CARD_NO + '<', t))
+    return stars, focus, wall, numbers
+
+
+def proto_number(path):
+    """論文頁原型 Card 1 左上之編號（No.04、F.23）；找不到時回傳 None。"""
+    m = re.search('>' + CARD_NO + '<', read(path))
+    return m.group(1) if m else None
 
 
 def raw_cited(text):
@@ -192,6 +206,27 @@ def collect():
     return ctx
 
 
+def check_evidence(slug, page=None):
+    """S3：證據表存在、數值逐一寫出；論文頁已建立時另比對區塊公式條數與公式列數。"""
+    ev_rel = 'wiki/evidence/%s.md' % slug
+    ev_path = os.path.join(ROOT, ev_rel)
+    if not os.path.exists(ev_path):
+        return ('NG', ['缺少 ' + ev_rel])
+    ev = read(ev_path)
+    why = []
+    nl = numless_rows(ev)
+    if nl:
+        why.append('證據表有未寫出數值之列：' + '、'.join(nl))
+    nf = formula_rows(ev)
+    if page is None:
+        note = '證據表存在；公式列 %d 列（論文頁尚未建立，區塊公式是否皆已登記於 S4 後檢查）' % nf
+        return ('WARN', why) if why else ('OK', [note])
+    nb = block_formulas(page)
+    if nb > nf:
+        why.append('論文頁有 %d 條區塊公式，證據表登記公式之列只有 %d 列（每條區塊公式須登記原文式號或頁碼）' % (nb, nf))
+    return ('WARN', why) if why else ('OK', ['證據表存在；區塊公式 %d 條、公式列 %d 列' % (nb, nf)])
+
+
 def check(slug, ctx):
     """回傳 {步驟: (狀態, [原因, ...])}；狀態為 OK、NG、WARN 或 --（無法判斷）。"""
     r = {}
@@ -215,19 +250,7 @@ def check(slug, ctx):
         r['S1'] = ('OK', ['原始檔：' + cited])
 
     # S3 證據表
-    ev_path = os.path.join(ROOT, ev_rel)
-    if not os.path.exists(ev_path):
-        r['S3'] = ('NG', ['缺少 ' + ev_rel])
-    else:
-        ev = read(ev_path)
-        why = []
-        nl = numless_rows(ev)
-        if nl:
-            why.append('證據表有未寫出數值之列：' + '、'.join(nl))
-        nb, nf = block_formulas(page), formula_rows(ev)
-        if nb > nf:
-            why.append('論文頁有 %d 條區塊公式，證據表登記公式之列只有 %d 列（每條區塊公式須登記原文式號或頁碼）' % (nb, nf))
-        r['S3'] = ('WARN', why) if why else ('OK', ['證據表存在；區塊公式 %d 條、公式列 %d 列' % (nb, nf)])
+    r['S3'] = check_evidence(slug, page)
 
     # S4 論文頁
     why = []
@@ -242,7 +265,8 @@ def check(slug, ctx):
     if holes:
         why.append('有未替換之骨架佔位符：' + '、'.join(sorted(set(holes))[:5]))
     errs = [m for lv, m in ctx['lint'].get(page_rel, []) if lv == 'ERROR']
-    why += ['lint ERROR：' + m for m in errs]
+    concept_errs = [m for m in errs if m.startswith(CONCEPT_LINT)]
+    why += ['lint ERROR：' + m for m in errs if m not in concept_errs]
     warn = [m for lv, m in ctx['lint'].get(page_rel, []) if lv == 'WARN' and '封面斷行' in m]
     if why:
         r['S4'] = ('NG', why)
@@ -267,6 +291,8 @@ def check(slug, ctx):
             why.append('概念頁 %s 列了本篇，但論文頁 concepts 沒有列它' % c)
     if '(papers/%s.md)' % slug not in ctx['index']:
         why.append('wiki/index.md 沒有本篇連結（papers/%s.md）' % slug)
+    # concepts 欄與雙向對應已由上方逐項檢查；正文中指向不存在之概念頁連結只有 lint 抓得到
+    why += ['lint ERROR：' + m for m in concept_errs if m.startswith(CONCEPT_LINT[2])]
     r['S5'] = ('NG', why) if why else ('OK', ['概念：' + '、'.join(concepts) + '；index.md 已登記'])
 
     # S6 核實
@@ -294,18 +320,21 @@ def check(slug, ctx):
             r['S7'] = ('OK', ['check_cards 無 ERROR、無 WARN'])
 
     # S8 網頁
+    stars, focus, wall, numbers = ctx['home']
     proto_path = os.path.join(ROOT, proto_rel)
     if not os.path.exists(proto_path):
         r['S8'] = ('NG', ['缺少 ' + proto_rel])
     else:
+        why = []
         newer = [p for p in (card_path, page_path) if os.path.exists(p) and os.path.getmtime(p) > os.path.getmtime(proto_path) + 1]
         if newer:
-            r['S8'] = ('NG', ['網頁舊於 ' + '、'.join(os.path.relpath(p, ROOT).replace('\\', '/') for p in newer) + '，須重建'])
-        else:
-            r['S8'] = ('OK', ['網頁存在且不舊於卡片檔與論文頁（瀏覽器驗證須另行執行 verify_page.js）'])
+            why.append('網頁舊於 ' + '、'.join(os.path.relpath(p, ROOT).replace('\\', '/') for p in newer) + '，須重建')
+        pn, hn = proto_number(proto_path), numbers.get(slug)
+        if pn and hn and pn != hn:
+            why.append('網頁 Card 1 編號 %s 與首頁卡片牆 %s 不同（收錄新論文會使其後之編號後移），須以 build_paper_prototype.py 重建' % (pn, hn))
+        r['S8'] = ('NG', why) if why else ('OK', ['網頁存在且不舊於卡片檔與論文頁，編號與首頁一致（瀏覽器驗證須另行執行 verify_page.js）'])
 
     # S9 上架
-    stars, focus, wall = ctx['home']
     why = []
     focus_paper = fm.get('my_focus') is True
     if not os.path.exists(card_path):
@@ -371,11 +400,14 @@ def show_new():
         also = [s for s, t in pages.items() if rel in t or name in t]
         tds = [re.match(r'### (TD-\d+) \| (\w+)', it).group(1, 2) for it in todo_items
                if it.startswith('### TD-') and name in it]
-        if tds:
-            rows.append(('已列待辦', rel, '已登記於 wiki/todo.md %s；依該條目之狀態處理（waiting 者不得自行動工），可動工時依 SKILL.md 第四節從 S0 開始'
-                         % '、'.join('%s（%s）' % t for t in tds)))
-        elif also:
-            rows.append(('已引用', rel, '列於論文頁 %s（例如奠基論文），不另立頁面；需另立時依 intake.md 第三節判斷' % '、'.join(also)))
+        td_note = '、'.join('%s（%s）' % t for t in tds)
+        if also:
+            # 已被論文頁引用者（多半是奠基論文）優先歸「已引用」：待辦條目可能只是順帶提到這份檔案
+            rows.append(('已引用', rel, '列於論文頁 %s（例如奠基論文），不另立頁面；需另立時依 intake.md 第三節判斷%s'
+                         % ('、'.join(also), '；另見 wiki/todo.md ' + td_note if tds else '')))
+        elif tds:
+            rows.append(('已列待辦', rel, '已登記於 wiki/todo.md %s；依該條目之狀態處理（waiting 者不得自行動工），可動工時依 SKILL.md 第五節從 S0 開始'
+                         % td_note))
         elif rel in index or name in index or name[:-4] in index:
             rows.append(('已立案', rel, 'wiki/index.md 有 [planned] 條目，依 SKILL.md 第四節從 S1 開始收錄'))
         else:
@@ -409,8 +441,14 @@ def main():
         bad = 0
         for slug in args:
             if slug not in ctx['papers']:
-                say('%s：找不到 wiki/papers/%s.md。尚未收錄者先依 SKILL.md 第四節 S1 至 S4 建立論文頁。' % (slug, slug))
                 bad = 1
+                if os.path.exists(os.path.join(WIKI, 'evidence', slug + '.md')):
+                    state, why = check_evidence(slug)
+                    say('== %s（尚無論文頁，只檢查證據表）' % slug)
+                    say('  %-4s %-4s %s' % ('S3', state, '；'.join(why)))
+                    say('  下一步：' + NEXT['S4'].replace('<slug>', slug))
+                else:
+                    say('%s：找不到 wiki/papers/%s.md 與 wiki/evidence/%s.md。尚未收錄者依 SKILL.md 第五節 S1 至 S4 先建立證據表與論文頁。' % (slug, slug, slug))
                 continue
             r = check(slug, ctx)
             say('== %s' % slug)

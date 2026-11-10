@@ -24,6 +24,17 @@
    * 「卡片牆自我檢查：ERROR 0」。有 ERROR 時腳本不寫檔，依 `card-wall.md` 第六節處理。
    * 最後一行「已寫入 web/index.html（群星 a、標籤 b、概念 c、我的關注 d）」：新收錄之群星論文，`a` 比收錄前多 1；我的關注論文，`d` 多 1。新建概念頁時 `c` 多 1。
 3. 一致性：`python tools/build_home.py --check --card <slug>`，最後一行「web/index.html 與建置結果一致」。
+4. **編號後移之他篇原型**（S9 第 4 步）：清單中排在本篇之後的論文，編號各加一（群星 `No.`、我的關注 `F.` 各自排序；`tools/build_home.py` 之 `card_numbers()`），但它們的論文頁原型仍是舊編號。
+   * 執行 `python .agents/skills/paper-pipeline/scripts/pipeline_status.py`（全庫總表），S8 為 NG 且原因為「編號與首頁卡片牆不同」者，逐篇重建：`python tools/build_paper_prototype.py <slug> ...`。自我檢查須為 ERROR 0；`git diff -U0 -- web/prototypes/paper-v1/` 每檔應只有編號一行改變，有其他差異時停下查明原因（多半是他人修改了範本），不得一併提交。
+   * `git status` 顯示 `tools/paper_template.html` 或 `tools/build_paper_prototype.py` 有他人未提交之修改時，不得在工作目錄重建（會把別人未完成的範本產生進原型），改以 HEAD 之暫時 worktree 重建再複製：
+     ```bash
+     git worktree add --detach <scratchpad>/wt-head HEAD
+     (cd <scratchpad>/wt-head && python tools/build_paper_prototype.py <slug> ...)
+     cp <scratchpad>/wt-head/web/prototypes/paper-v1/<slug>.html web/prototypes/paper-v1/
+     git worktree remove --force <scratchpad>/wt-head
+     ```
+     本篇尚未提交時，worktree 裡沒有本篇論文頁，算出的編號仍是舊的；此時先完成 S10 提交本篇，再以 worktree 重建並另行提交（日誌動作 `fix`）。
+   * 重建之他篇原型與本篇同一提交（第五節第 2 點）。`web/prototypes/` 是多人共用之產生檔，未提交的重建結果可能被他人重建或還原；提交後以 `git show HEAD:web/prototypes/paper-v1/<slug>.html` 確認編號已進入提交。
 
 ## 三、瀏覽器驗證與目視（S9 第 2、3 步）
 
@@ -35,7 +46,9 @@
 2. **星圖或我的星系**：先執行 `var EK_SLUG = '<slug>';`，再執行 `.agents/skills/paper-pipeline/scripts/verify_star.js` 全文，最後一行須為「結果：PASS（首頁星圖，指定 <slug>）」。它會依首頁資料判斷這篇在群星或我的星系，在桌面 1440 x 900 與手機 375 x 812 各確認：首頁資料有這篇、星點存在且看得見、無障礙標籤含論文名、點擊後為選取狀態且說明框顯示論文名（群星另查一句話）。
 3. 兩份報告**全文原樣**貼進交付說明，不得改寫成「全部通過」。
 
-代理以瀏覽器 JavaScript 工具執行時，可把腳本暫時複製到 `web/` 下（例如 `web/_verify_star.js`）再以 `fetch` 讀入執行；**驗證完立刻刪除，不得提交**。瀏覽器窗格隱藏時計時器會變慢，腳本可能超過工具的等待時間：改為把結果存到 `window` 變數，稍後再讀。
+代理以瀏覽器 JavaScript 工具執行時，可把腳本暫時複製到 `web/` 下（例如 `web/_verify_star.js`）再以 `fetch` 讀入執行；**驗證完立刻刪除，不得提交**。瀏覽器窗格隱藏時計時器會變慢，腳本可能超過工具的等待時間：改為把結果存到 `window` 變數，稍後再讀，例如 `var EK_SLUG = '<slug>'; (async () => { window.__ekStar = await eval(await (await fetch('/verify_star.js')).text()); })();`，約 20 秒後讀 `window.__ekStar`。
+
+macOS 上倉庫位於「文件」等受保護資料夾時，桌面 app 之預覽伺服器可能因 `PermissionError: Operation not permitted` 無法從倉庫啟動（`card-wall.md` 第四節第 3 步）：把 `web/` 複製到 scratchpad（如 `rsync -a --delete web/ <scratchpad>/webcopy/`），三支驗證腳本也複製進去，再從該處啟動伺服器。腳本留在 scratchpad，不會誤入提交；每次重建原型或首頁後都要重新複製，否則驗到的是舊檔。
 
 ### 2. 目視（截圖，桌面 1440 x 900 與手機 375 x 812）
 
@@ -58,8 +71,9 @@
 2. 執行 `verify_wall.js`（不設 `EK_SLUG`，一次驗全部卡片），結果 PASS；WARN 依 `card-wall.md` 第六節處理。
 3. 對本批每一篇執行 `verify_star.js`（每次設該篇之 `EK_SLUG`），結果皆 PASS。
 4. 依本檔第三節第 2 點目視本批新上架之星與卡片。
-5. 單獨提交 `web/index.html` 與日誌（本檔第五節），日誌列出本批上架之 slug 與兩支腳本的結果。
-6. 執行 `python .agents/skills/paper-pipeline/scripts/pipeline_status.py`，本批各篇之 S9 應為 OK。
+5. 本批有新收錄之論文時，依本檔第二節第 4 點重建編號後移之原型。
+6. 單獨提交 `web/index.html`、第 5 步重建之原型與日誌（本檔第五節），日誌列出本批上架之 slug 與兩支腳本的結果。
+7. 執行 `python .agents/skills/paper-pipeline/scripts/pipeline_status.py`，本批各篇之 S9 應為 OK，全庫沒有 S8 編號不一致之 NG。
 
 ## 五、提交（S10）
 
@@ -84,6 +98,7 @@
 | `wiki/cards/<slug>.md` | 一定 | — |
 | `web/prototypes/paper-v1/<slug>.html` | 一定 | — |
 | `web/index.html` | 有執行 S9 時（協調規則禁止時不列） | 首頁衝突時依 `card-wall.md` 第四節第 5 步重建，不得手改 |
+| `web/prototypes/paper-v1/<他篇>.html` | 第二節第 4 點重建之編號後移者 | 每檔只應有編號一行改變 |
 | `wiki/concepts/<概念>.md` | 有改動的每一個 | — |
 | `wiki/index.md` | 一定 | 只改自己的條目 |
 | `wiki/issues.md` | 有新增或修改問題條目時 | `--issue EK-NNN`，每個編號一次 |
