@@ -745,15 +745,17 @@
 - **發現於**：第一、二批卡片回填 B 組回報，協調者以全文搜尋確認（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。預印本與正式版全文、圖 1 與圖 2 之圖中文字均無極值統計與上述三個質量值，刪除；Card 3 第 3 點改為原文之峰高 ν（Results）。共動體積 $V \approx 10^5\,\text{Mpc}^3$ 原文確有（Results 第 1 段，為每個紅移區間之巡天體積），保留並改寫為原文語境。Card 2 之「ε ≈ 0.1–0.3」依 Discussion 改為 ε ≲ 0.2。Card 4 改依 Results 逐項列出數密度、峰高與效率，證據表逐一登記。
 
-### EK-116 | open | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 3 | 原文未支持
+### EK-116 | fixed | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 3 | 原文未支持
 - **問題**：Card 3 第 65–66 行之 $\hat{y}_{\text{base}} = \operatorname{NMT}(x)$ 與 $\hat{y}_{\text{final}} = \operatorname{LLM}_{\text{CoT}}(\ldots)$ 為 Wiki 自擬之流程示意，原文沒有任何公式，頁面也未標明為示意。頁面有區塊公式，卡片因而無法依 Card 3 無公式模式撰寫。
 - **來源**：`raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf` 全文無編號公式。
 - **發現於**：第二批卡片回填 B 組回報，協調者以全文搜尋確認（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。回原文確認全文無編號公式、流程只以文字與 Figure 1 說明後，刪除兩條自擬區塊公式，改以文字依序說明流程（§3.1–§3.2）；頁首「Card 3 之數學式為流程示意表示」改為「全文無編號公式」。證據表登記。
 
-### EK-117 | open | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 5 | 原文不符
+### EK-117 | fixed | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 5 | 原文不符
 - **問題**：Card 5 第 115 行稱「證明……利用現成小型開源 NMT 模型搭配輕量 API RAG 後編輯即可超越 54B 巨型單體模型」。原文 FLORES 實驗以 NLLB-54B 本身為初譯模型（baseline MT model），再以 LLM 後編輯，平均比 NLLB-54B 高 2.8 ChrF++；並非以小型 NMT 超越 54B 模型。
 - **來源**：同 EK-116 之 PDF，摘要 p. 1、§4.2 p. 5、Table 2 p. 6。
 - **發現於**：第二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。刪去 Card 5 兩點無出處之「打破壁壘」「證明……超越 54B」敘述，改寫為：FLORES 以 NLLB-54B 本身為初譯再後編輯、平均高 2.83（表 2）；並依新論文需求補記原文公開之程式與系統、作者明列之限制（含易用性研究僅兩位共同作者）與 §6 之未來方向（提示最佳化、離線部署等），各附位置。
 
 ### EK-118 | open | papers/2026-epark-formosan-dialectometry-gagnier.md | Card 3 | 原文未支持
 - **問題**：Card 3 第 64 行之 $D_{\text{norm}}(s_1, s_2) = \operatorname{LD}(s_1, s_2) / \max(|s_1|, |s_2|)$ 寫明除以較長字串之長度。原文只說「normalized by word length」，未指明取較長者，也未寫出公式；證據表第 12 列未登記此式。
@@ -870,3 +872,9 @@
 - **來源**：doi:10.3847/2041-8213/ace5a0（Kocevski 2023 摘要）、doi:10.1038/s41586-024-07191-9（Glazebrook 2024，arXiv:2308.05606 摘要）、doi:10.1093/mnras/stad1557（Dekel 2023 摘要）、doi:10.1038/s41586-023-06158-6（Carnall 2023，arXiv:2301.11413 摘要）。
 - **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。刪去 Card 4 後續段與 Card 5 三點無出處之敘述；Card 5 改列五篇經摘要核對之後續研究（Dekel 2023、Arrabal Haro 2023、Glazebrook 2024、Desprez 2024、Chworowsky 2024），各附 DOI，並註明結論不一致；Card 4 改列作者自己討論之可能解釋（含黑洞吸積貢獻）；Card 6 第 2 點改為不依賴未查核事實之寫法。證據表登記各列。
+
+### EK-156 | fixed | papers/2025-tulun-adaptable-lrl-mt-merx.md | Card 1、Card 2、Card 3 與 Card 4 | 過度表述
+- **問題**：（1）Card 1 稱系統「首創」此架構、傳統微調「迭代週期動輒數月，根本無法應對前線緊急需求」；原文只說作者所知是唯一支援德頓語、比斯拉馬語之開源術語感知工具（§2, p. 131），未提數月。（2）Card 2 之「部落長老」、「例如將 potable water 錯譯為非飲用水」、LLM「常輸出文法崩潰的句子」原文沒有；原文示例只說 MT 把 potable 譯錯（Figure 2）。（3）Card 3 稱翻譯記憶「論文評估中預設為 5 句」，原文只說 N 可設定；稱 MADLAD 針對德頓語、OPUS-MT 針對比斯拉馬語，原文兩者皆在兩語言評估。（4）Card 4 稱 SUS「對應 Grade A」，原文為 excellent；未記載易用性研究只有兩份回應、兩位參與者為共同作者；基隆迪語「回升至 42.76」為 Wiki 依原文 +0.25 計算之值，未標明。
+- **來源**：`raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`，§1–§3（pp. 129–132）、§4.1.1–§4.1.2（pp. 132–133）、§5（p. 134）、倫理聲明（p. 135）。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依原文改寫上述各句，補記易用性研究之樣本與共同作者關係、表 1 之 LLM-only 對照值與資料取得條件；`hook` 補上 FLORES 平均增益；證據表重建，表 1、表 2 數值逐一寫出列與欄。

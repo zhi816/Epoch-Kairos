@@ -1790,3 +1790,8 @@
   - Card 5 依新論文模式補列公開資源（GitHub FormosanBank/FormosanBank-MT）、§7 限制與 §6 未來工作；證據表全表重寫並逐一列出數值。`verification` 由 `issues` 改為 `partial`。
   - 卡片：Card 3 無公式模式；Card 4 改用兩格（493,519、26.90；四格時七位數折行，verify_page.js FAIL），兩數回原文抽查相符；Card 5 新論文模式；Card 6 不提碩論。`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` PASS（35 項）；桌面箭頭、圓點、方向鍵與手機滑卡實測正常；目視修正 Card 2 落單行與 Card 3 標籤位置。`lint_wiki.py` ERROR 0。
   - 首頁卡片牆依本批協調規則未重建，由協調者處理。
+
+## [2026-11-10 10:26] update | 2025-tulun-adaptable-lrl-mt-merx 卡片回填與論文頁原文修正 | #自然語言處理 #人工智慧 #計算語言學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：TD-008 第三批 B 組。依 `wiki-content-audit` 回原文修正 [論文頁](papers/2025-tulun-adaptable-lrl-mt-merx.md) 並重建 [證據表](evidence/2025-tulun-adaptable-lrl-mt-merx.md)（表 1、表 2 數值逐一寫出列與欄）：完成 EK-116（刪除兩條 Wiki 自擬之流程區塊公式，改以文字說明）與 EK-117（刪除「小型 NMT 超越 54B 模型」等無據敘述，Card 5 改記原文公開之程式與系統、作者明列之限制與未來方向）；新登記並修正 EK-156（「首創」「動輒數月」「部落長老」「非飲用水」「預設 5 句」「Grade A」等原文沒有之敘述，補記易用性研究僅兩位共同作者）；`verification` 改為 `partial`。新增 [卡片檔](cards/2025-tulun-adaptable-lrl-mt-merx.md) 與論文頁原型 `web/prototypes/paper-v1/2025-tulun-adaptable-lrl-mt-merx.html`。check_cards：ERROR 0、WARN 0；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（35 項）。來源：Card 3 採無公式模式（原文無編號公式）；Card 4 四個數字取自證據表表 1 MADLAD 與 MADLAD + Gemini 之 TDT 欄、表 2 NLLB 54B 與 NLLB + Gemini APE 之 AVERAGE 欄；Card 5 採新論文模式，四筆取自 p. 130 註 2、倫理聲明 p. 135、§5 p. 134、§6 pp. 134–135。複核：Card 4 範圍之縮寫 FLORES 改為中文；Card 4 範圍、Card 5 標題與一筆里程碑折行落單，改寫。首頁卡片牆：依協調規則未重建，由協調者處理。
