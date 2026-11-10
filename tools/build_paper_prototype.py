@@ -478,6 +478,11 @@ def key_labels(keys):
 
 # ---------------------------------------------------------------- 主程式
 
+# 論文頁左上返回鍵：(連結, 標示)。我的關注論文回首頁我的星系，其餘回首頁星圖；標示須與目的地一致
+BACK_STARS = ('../../index.html', '回到群星')
+BACK_FOCUS = ('../../index.html#my-constellation', '回到我的星系')
+
+
 def build(slug, papers, concepts_zh, colors, tpl, nums):
     card_path = os.path.join(WIKI, 'cards', slug + '.md')
     cc.results.clear()
@@ -500,7 +505,8 @@ def build(slug, papers, concepts_zh, colors, tpl, nums):
     art, scope = article(fm, body)
     page = (tpl.replace('{{PAGE_TITLE}}', esc(home.short_name(fm['title_zh'])))
             .replace('{{VARS}}', vars_)
-            .replace('{{BACK}}', '../../index.html' + ('#my-constellation' if fm.get('my_focus') is True else ''))
+            .replace('{{BACK}}', BACK_FOCUS[0] if fm.get('my_focus') is True else BACK_STARS[0])
+            .replace('{{BACK_LABEL}}', BACK_FOCUS[1] if fm.get('my_focus') is True else BACK_STARS[1])
             .replace('{{CARDS}}', cards)
             .replace('{{ARTICLE}}', art)
             .replace('{{SIDE}}', side(fm, [concepts_zh[c] for c in fm.get('concepts') or [] if c in concepts_zh], scope)))
@@ -554,6 +560,11 @@ def selfcheck(slug, page, fm, body):
     yrs = re.search(r'<div class="yrs">([^<]*)</div>', page)
     if not (kicker and yrs and kicker.group(1) == yrs.group(1)):
         add('ERROR', '長文頂部與 Card 1 底部之雙年份不一致')
+    back = re.search(r'<a class="back" href="([^"]*)" aria-label="([^"]*)"', page)
+    want = BACK_FOCUS if fm.get('my_focus') is True else BACK_STARS
+    if not back or (back.group(1), back.group(2)) != want:
+        add('ERROR', '論文頁返回鍵與規範不符：應為連結 %s、標示「%s」，實際為 %s' % (
+            want[0], want[1], '（找不到返回鍵）' if not back else '連結 %s、標示「%s」' % back.groups()))
     venue = home.venue_of(fm)
     if cc.width('發表・' + venue) > VENUE_LINE_MAX:
         add('WARN', '資訊欄「發表・%s」超過兩行：請依 paper-card-writer 之 references/paper-page.md 第三節補 venue_short' % venue)

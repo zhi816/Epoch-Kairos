@@ -10,7 +10,8 @@
 // 本腳本以兩個隱藏 iframe 同時量測桌面 1440 x 900 與手機 375 x 812，不必手動調整視窗。
 // 量測項目：公式是否全部渲染且無錯誤、六張卡內容是否溢出卡片、卡片內公式是否需要水平捲動、
 // 封面一句話是否超過三行或溢出星窗、頁面是否有橫向捲動、卡片下方控制列是否超出版面、
-// 頁面是否露出 ** 或 $、長文區塊公式是否可水平捲動。只量版面，不判斷內容對錯。
+// 頁面是否露出 ** 或 $、長文區塊公式是否可水平捲動、返回鍵標示是否與目的地一致、
+// 手機版連點下一張與上一張時 .stage 位置是否不變。只量版面，不判斷內容對錯。
 (async () => {
   const SIZES = [[1440, 900], [375, 812]];
   const wait = ms => new Promise(r => setTimeout(r, ms));
@@ -134,6 +135,16 @@
     const noScroll = disp.filter(e => !['auto', 'scroll'].includes(W.getComputedStyle(e).overflowX));
     out(noScroll.length === 0, size, '長文區塊公式 ' + disp.length + ' 條皆可水平捲動');
 
+    // 8b. 返回鍵標示須與目的地一致（paper-page.md 第二節）：連到我的星系者寫「回到我的星系」，其餘寫「回到群星」
+    const back = d.querySelector('.rail a.back');
+    if (back) {
+      const href = back.getAttribute('href') || '', lab = back.getAttribute('aria-label') || '';
+      const toFocus = /#my-constellation$/.test(href);
+      out(/index\.html(#my-constellation)?$/.test(href) && lab === (toFocus ? '回到我的星系' : '回到群星'), size, '返回鍵連結 ' + href + '，標示「' + lab + '」' + (toFocus ? '（我的星系）' : '（群星）') + '，與目的地一致');
+    } else {
+      out(false, size, '找不到返回鍵（.rail a.back）');
+    }
+
     // 9. 手機（寬度 900px 以下）：卡片可左右滑動並停在整張；長文「隨卡片」時只顯示目前段落，「全文」時全部顯示且不隨卡片變動
     if (w <= 900) {
       const deck = d.querySelector('.deck'), cs = [...d.querySelectorAll('.card')];
@@ -143,6 +154,27 @@
       // 以程式捲動卡片列時，部分環境（隱藏 iframe、背景分頁）會把 scroll 事件延遲一秒以上，故捲動後主動送出一次 scroll 事件
       const slide = async k => { deck.scrollLeft = cs[k].offsetLeft - cs[0].offsetLeft; deck.dispatchEvent(new W.Event('scroll')); await wait(400); };
       out(shown().join() === '1', size, '隨卡片：開頁只顯示 01 段（實際：' + shown().join() + '）');
+      // 9b. 點「下一張」「上一張」時 .stage 不得移動，頁面捲動位置也不得被改（wiki/todo.md TD-010：手機版曾回報偏移 96px）。
+      //     先把頁面捲下 60px，讓控制列仍在可視範圍內；以文件座標（視窗座標加頁面捲動量）比較，
+      //     因為 .stage 在長文上方，隨卡片換段改變文件高度時，不應推動 .stage。
+      const stg = d.getElementById('stage'), nextBtn = d.getElementById('next'), prevBtn = d.getElementById('prev');
+      if (stg && nextBtn && prevBtn) {
+        W.scrollTo(0, 60); await wait(150);
+        const at = () => { const r = stg.getBoundingClientRect(); return { top: Math.round(r.top + W.scrollY), left: Math.round(r.left + W.scrollX), y: Math.round(W.scrollY) }; };
+        const p0 = at(), shifts = [];
+        const steps = [...Array(cs.length - 1).fill(nextBtn), ...Array(cs.length - 1).fill(prevBtn)];
+        for (let k = 0; k < steps.length; k++) {
+          steps[k].click(); await wait(250);
+          const p = at();
+          if (p.top !== p0.top || p.left !== p0.left || p.y !== p0.y) shifts.push((k < cs.length - 1 ? '下一張 ' : '上一張 ') + '第 ' + (k % (cs.length - 1) + 1) + ' 次：stage 上緣 ' + (p.top - p0.top) + 'px、左緣 ' + (p.left - p0.left) + 'px、頁面捲動 ' + (p.y - p0.y) + 'px');
+        }
+        out(shifts.length === 0, size, '點下一張、上一張各 ' + (cs.length - 1) + ' 次，.stage 位置與頁面捲動不變（起點 上緣 ' + p0.top + 'px、左緣 ' + p0.left + 'px、捲動 ' + p0.y + 'px）' + (shifts.length ? '；偏移：' + shifts.slice(0, 3).join('；') : ''));
+        // 還原：等最後一次平滑捲動與頁面之 700ms 捲動鎖過去，否則後面送出的 scroll 事件會被忽略
+        await wait(900);
+        W.scrollTo(0, 0); deck.scrollTo({ left: 0, behavior: 'auto' }); deck.dispatchEvent(new W.Event('scroll')); await wait(400);
+      } else {
+        out(false, size, '找不到卡片切換按鈕（#next、#prev）或 #stage');
+      }
       await slide(2);
       out(lab() === '03' && shown().join() === '3', size, '隨卡片：滑到第 3 張，標示 ' + lab() + '，長文顯示 ' + shown().join() + ' 段');
       const fullBtn = d.getElementById('m-full'), cardBtn = d.getElementById('m-card');

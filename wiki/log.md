@@ -1900,6 +1900,11 @@
 - **模型版本**：（本工作階段之平台規範不允許將模型型號寫入版控檔案，請使用者自行補填，見 TD-004）
 - **具體變更**：依 `paper-pipeline` S0 至 S10 收錄 `raw/1985-macroscopic-quantum-tunneling.pdf`（Martinis, Devoret & Clarke 1985, PRL 55(15):1543-1546，2025 諾貝爾物理學獎）。新增論文頁 `wiki/papers/1985-macroscopic-quantum-tunneling.md`（verified）、證據表 `wiki/evidence/1985-macroscopic-quantum-tunneling.md`（32 列，數字與公式依掃描版頁面影像核對；3 篇後續研究以 Crossref 與摘要核對，參考文獻皆列本篇）、新概念頁 `wiki/concepts/macroscopic-quantum-circuits.md`（partial；既有之容錯量子計算概念與本篇無直接關係，只以 related_concepts 互列，`quantum-error-correction` 同步加回）、卡片檔 `wiki/cards/1985-macroscopic-quantum-tunneling.md` 與論文頁原型；`wiki/index.md` 之 `[planned]` 條目改為連結並標 `[wiki]`，第五節加概念頁。檢查結果：crossref_check OK；lint ERROR 0；check_cards ERROR 0、WARN 0；build_paper_prototype ERROR 0、WARN 0；verify_page.js PASS；build_home.py --card ERROR 0、WARN 0（群星 17→18、概念 8→9）；verify_wall.js PASS（WARN 20 項皆為他篇既有之語言標籤與期刊名截斷）；verify_star.js PASS。本篇插入為 No.04，其後 11 篇群星論文之卡片編號各加一，已重建其論文頁原型（每檔僅編號一行改變）。目視修正：Card 1 導語與 Card 6 結語原有一至兩字落單之行，已縮短。TD-001 移除本篇（餘 7 條目）。未決：模型版本欄之平台規範衝突（TD-004）；試跑發現之流程缺口於下一筆 rule 處理。
 
+## [2026-11-10 12:25] fix | 論文頁原型返回鍵標示隨目的地，並補 verify_page.js 之 .stage 位置與返回鍵檢查（TD-010） | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本工作階段之平台規範不允許將模型型號寫入版控檔案，請使用者自行補填，見 TD-004）
+- **具體變更**：經使用者同意修改範本與建置腳本並將 TD-010 拆分。（1）`tools/paper_template.html` 之返回鍵 `aria-label` 改為佔位符 `{{BACK_LABEL}}`，`tools/build_paper_prototype.py` 新增 `BACK_STARS`、`BACK_FOCUS`：群星論文「回到群星」連到 `../../index.html`，`my_focus: true` 者「回到我的星系」連到 `../../index.html#my-constellation`；自我檢查新增返回鍵連結與標示須與規範一致（ERROR）。（2）重建全部原型：24 篇我的關注論文之 `web/prototypes/paper-v1/*.html` 僅返回鍵標示改變，13 篇群星論文產出與原檔相同；自我檢查全數 ERROR 0。建置在 `git archive HEAD` 之乾淨副本進行，因工作目錄內他人尚未提交之第 38 篇論文（1985 巨觀量子穿隧）會使卡片編號全數位移；工作目錄之他人未提交檔案（含 `web/index.html`、1985 原型）未動。（3）`verify_page.js` 新增第 8b 項（返回鍵標示與目的地一致）與第 9b 項（手機連點下一張、上一張各五次，量 `.stage` 位置與頁面捲動量）；於 `2025-deepseek-r1`（群星）與 `2021-seediq-chinese-mt-you`（我的關注）桌面與手機皆 PASS，另以刻意加 96px 偏移之副本確認第 9b 項會 FAIL。（4）`paper-page.md` 補返回鍵規範（第二節）、驗證項與表格（第一、六、七節）、人工檢查兩項，`publish.md` 之連結列補我的關注論文之目的地。（5）`.stage` 偏移 96px 於預覽窗格未能重現（四篇、連點下一張、頁面捲動 0、60、100px 皆不動），不改範本；TD-010 改為 waiting 並只留此項，其餘（返回鍵、skill 側檢查與規範）已完成，故不另立 skill 條目。未處理：DESIGN.md 第五章窄導軌一行仍寫「回到群星」，我的關注論文實為「回到我的星系」，待使用者決定是否同步。
+
 ## [2026-11-10 12:25] fix | 補提交 11 篇群星論文頁原型之卡片編號 | 全域
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：（本工作階段之平台規範不允許將模型型號寫入版控檔案，請使用者自行補填，見 TD-004）
