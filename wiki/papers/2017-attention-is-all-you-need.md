@@ -59,14 +59,11 @@ Transformer 將序列中任意兩個位置之間的交互距離直接壓縮為�
 
 $$\operatorname{Attention}(Q, K, V) = \operatorname{softmax}\left( \frac{QK^\top}{\sqrt{d_k}} \right) V$$
 
-為什麼必須除以 $\sqrt{d_k}$？假設 $q, k \in \mathbb{R}^{d_k}$ 之各分量為獨立同分佈、均值為 $0$、方差為 $1$ 的隨機變數，則其內積 $q \cdot k = \sum_{i=1}^{d_k} q_i k_i$ 之均值與方差為：
+為說明為何需要縮放，作者考慮 $q$ 與 $k$ 的分量相互獨立、均值為 $0$、方差為 $1$ 的情況，寫出內積（p. 4 註 4）：
 
-$$\begin{aligned}
-\mathbb{E}[q \cdot k] &= 0 \\
-\operatorname{Var}(q \cdot k) &= d_k
-\end{aligned}$$
+$$q \cdot k = \sum_{i=1}^{d_k} q_i k_i$$
 
-因此除以標準差 $\sqrt{d_k}$ 可將內積方差嚴格標準化回 $1$，防止當 $d_k$ 較大時 Softmax 分佈退化為單點極端值（One-Hot）而切斷反向傳播梯度。
+在上述假設下，作者以文字指出內積的均值為 $0$、方差為 $d_k$，並推測較大的內積可能使 Softmax 進入梯度極小的區域，因此將內積除以 $\sqrt{d_k}$（§3.2.1）。
 
 ### 2. 多頭子空間並行注意力 (Multi-Head Attention)
 
@@ -86,7 +83,7 @@ PE_{(pos, 2i)} &= \sin\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \right) \
 PE_{(pos, 2i+1)} &= \cos\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \right)
 \end{aligned}$$
 
-根據三角和角公式，對任意固定相對距離 $k$，$[PE_{(pos+k, 2i)}, PE_{(pos+k, 2i+1)}]^\top$ 恆為 $[PE_{(pos, 2i)}, PE_{(pos, 2i+1)}]^\top$ 的正交旋轉線性變換，使模型能輕鬆學習相對位置關係。
+作者指出，對任意固定相對距離 $k$，$PE_{pos+k}$ 可表示為 $PE_{pos}$ 的線性函數；作者據此推測這種位置編碼有助模型學習相對位置關係（§3.5）。
 
 ---
 

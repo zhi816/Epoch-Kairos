@@ -7,7 +7,11 @@
 | Frontmatter | 作者 Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N. Gomez, Łukasz Kaiser, Illia Polosukhin；NeurIPS 30 | 本篇研究結果 / 官方事實 | NeurIPS 30 首頁；arXiv:1706.03762 | 符合來源 |
 | Card 1 | 提出純自注意力 Transformer 架構，完全屏棄 RNN 與 CNN，實現 O(1) 交互路徑與高並行度 | 本篇研究結果 | 摘要與引言，pp. 1–2 | 符合來源 |
 | Card 2 | 傳統 RNN 順序依賴阻斷並行計算與長程依賴梯度衰減瓶頸 | 作者解釋 / 背景 | §1, §2，Table 1 | 符合來源 |
-| Card 3 | 縮放點積注意力除以 $\sqrt{d_k}$ 防止 Softmax 飽和、多頭注意力子空間投影、正弦幾何級數位置編碼 | 本篇研究結果 | §3.2, §3.5，pp. 3–6 | 符合來源 |
+| Card 3 | 作者以除以 $\sqrt{d_k}$ 緩解其推測的 Softmax 小梯度問題；多頭注意力子空間投影、正弦幾何級數位置編碼 | 本篇研究結果 / 作者解釋 | §3.2, §3.5，pp. 4–6 | 符合來源 |
+| Card 3 區塊公式 1 | 縮放點積注意力 | 本篇研究結果 | §3.2.1 p. 4，式 (1) | 符合來源 |
+| Card 3 區塊公式 2 | 查詢與鍵的內積；原文以文字指出在獨立、均值 0、方差 1 的假設下，內積均值為 0、方差為 $d_k$ | 作者解釋 | p. 4 註 4，未編號行內式 | 符合來源；原頁把文字結論另排成自擬展示式，已改為原文內積式（EK-200） |
+| Card 3 區塊公式 3 | 多頭注意力與各頭投影，合排於同一公式區塊 | 本篇研究結果 | §3.2.2 p. 5，未編號式 | 符合來源 |
+| Card 3 區塊公式 4 | 正弦與餘弦位置編碼，合排於同一公式區塊 | 本篇研究結果 | §3.5 p. 6，未編號式 | 符合來源 |
 | Card 4 | 交互路徑長度 $O(1)$ vs RNN $O(n)$；WMT 2014 EN-DE 28.4 BLEU；EN-FR 的 NeurIPS 定稿 Table 2 與正文均為 41.0，表中最佳集成模型為 41.29 | 本篇研究結果 | [NeurIPS 定稿](https://proceedings.neurips.cc/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf) §4、Table 1；§6.1、Table 2，p. 8 | 回看原始頁面；41.0 超過表內單一模型，但低於最佳集成模型（EK-018）。 |
 | Card 4 | EN-FR 版本差異：arXiv v7 摘要及 Table 2 為 41.8、正文為 41.0；NeurIPS 網站摘要為 41.1 | 本篇研究結果 | [arXiv v7](https://arxiv.org/abs/1706.03762v7) 摘要、Table 2 與 §6.1；[NeurIPS 網站摘要](https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html) | 分開標示版本與同一版本內的差異，不把 arXiv 的 Table 2 誤歸為 NeurIPS 定稿（EK-018）。 |
 | Card 4 | 8 張 NVIDIA P100 訓練 12 小時（base）/ 3.5 天（big，算力 $2.3 \times 10^{19}$ FLOPs），WSJ 句法剖析 91.3/92.7 F1 | 本篇研究結果 | §5.2 (p. 7)；§6.1，Table 2；§6.3 (p. 9)，Table 4（節次修正 EK-108） | 符合來源 |

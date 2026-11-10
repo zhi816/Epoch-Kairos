@@ -230,7 +230,7 @@ button:disabled{cursor:default;opacity:.3}
   <circle class="k-ink" cx="278" cy="86" r="4"/>
   <text class="k-label" x="74" y="50" text-anchor="middle">循環層逐字傳遞</text>
   <text class="k-label-accent" x="224" y="104" text-anchor="middle">自注意力直接相連</text>
-</svg><div class="fbox"><span class="m-disp" data-tex="\operatorname{Var}(q \cdot k) = d_k"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)"><span class="m-in" data-tex="q"></span>、<span class="m-in" data-tex="k"></span> 分量獨立、均值 0、變異數 1 時，內積變異數為 <span class="m-in" data-tex="d_k"></span>，故注意力除以 <span class="m-in" data-tex="\sqrt{d_k}"></span>。</span></div></section>
+</svg><div class="fbox"><span class="m-disp" data-tex="q \cdot k = \sum_{i=1}^{d_k} q_i k_i"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">查詢與鍵的內積衡量相符程度；縮放後用來計算各位置的注意力權重。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">28.4</span><span class="l">WMT 2014 英譯德 BLEU（大型版本）</span></div><div class="stat"><span class="v">41.0</span><span class="l">WMT 2014 英譯法 BLEU，NeurIPS 定稿</span></div><div class="stat"><span class="v">3.5 天</span><span class="l">大型版本以 8 張 P100 GPU 訓練的時間</span></div><div class="stat"><span class="v">91.3</span><span class="l">WSJ 英語句法剖析 F1，只用 WSJ 訓練</span></div></div><span class="ft">範圍：Vaswani 等 2017，2014 翻譯評測、華爾街日報句法剖析，8 張 P100</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">從翻譯模型，<br>到各種模態的通用骨幹</span><div class="time"><p><b>2019</b><span>Devlin 等取編碼器提出 BERT</span></p><p><b>2020</b><span>Brown 等取解碼器擴展到 1,750 億參數</span></p><p><b>2020</b><span>Kaplan 等觀察到損失隨規模呈冪律下降</span></p><p><b>2021</b><span>Jumper 等以注意力預測蛋白質結構</span></p><p><b>2023</b><span>Peebles 與 Xie 結合注意力與擴散模型</span></p></div><span class="ft">以上皆為後續他人成果，出處見長文</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">拿掉逐字遞推的結構，只留位置編碼等少數先驗，字與字的關聯交給資料學。</span><span class="shift"><span>強結構偏置</span><i aria-hidden="true"></i><b>資料驅動</b></span></div></section>
@@ -267,12 +267,9 @@ button:disabled{cursor:default;opacity:.3}
 <h3>1. 縮放點積注意力矩陣方程 (Scaled Dot-Product Attention)</h3>
 <p>給定查詢矩陣 <span class="m-in" data-tex="Q \in \mathbb{R}^{n \times d_k}"></span>、鍵矩陣 <span class="m-in" data-tex="K \in \mathbb{R}^{m \times d_k}"></span> 與值矩陣 <span class="m-in" data-tex="V \in \mathbb{R}^{m \times d_v}"></span>，縮放點積注意力輸出定義為：</p>
 <span class="m-disp" data-tex="\operatorname{Attention}(Q, K, V) = \operatorname{softmax}\left( \frac{QK^\top}{\sqrt{d_k}} \right) V"></span>
-<p>為什麼必須除以 <span class="m-in" data-tex="\sqrt{d_k}"></span>？假設 <span class="m-in" data-tex="q, k \in \mathbb{R}^{d_k}"></span> 之各分量為獨立同分佈、均值為 <span class="m-in" data-tex="0"></span>、方差為 <span class="m-in" data-tex="1"></span> 的隨機變數，則其內積 <span class="m-in" data-tex="q \cdot k = \sum_{i=1}^{d_k} q_i k_i"></span> 之均值與方差為：</p>
-<span class="m-disp" data-tex="\begin{aligned}
-\mathbb{E}[q \cdot k] &amp;= 0 \\
-\operatorname{Var}(q \cdot k) &amp;= d_k
-\end{aligned}"></span>
-<p>因此除以標準差 <span class="m-in" data-tex="\sqrt{d_k}"></span> 可將內積方差嚴格標準化回 <span class="m-in" data-tex="1"></span>，防止當 <span class="m-in" data-tex="d_k"></span> 較大時 Softmax 分佈退化為單點極端值（One-Hot）而切斷反向傳播梯度。</p>
+<p>為說明為何需要縮放，作者考慮 <span class="m-in" data-tex="q"></span> 與 <span class="m-in" data-tex="k"></span> 的分量相互獨立、均值為 <span class="m-in" data-tex="0"></span>、方差為 <span class="m-in" data-tex="1"></span> 的情況，寫出內積（p. 4 註 4）：</p>
+<span class="m-disp" data-tex="q \cdot k = \sum_{i=1}^{d_k} q_i k_i"></span>
+<p>在上述假設下，作者以文字指出內積的均值為 <span class="m-in" data-tex="0"></span>、方差為 <span class="m-in" data-tex="d_k"></span>，並推測較大的內積可能使 Softmax 進入梯度極小的區域，因此將內積除以 <span class="m-in" data-tex="\sqrt{d_k}"></span>（§3.2.1）。</p>
 <h3>2. 多頭子空間並行注意力 (Multi-Head Attention)</h3>
 <p>通過 <span class="m-in" data-tex="h"></span> 組可學習投影矩陣 <span class="m-in" data-tex="W_i^Q \in \mathbb{R}^{d_{\text{model}} \times d_k}"></span>、<span class="m-in" data-tex="W_i^K \in \mathbb{R}^{d_{\text{model}} \times d_k}"></span>、<span class="m-in" data-tex="W_i^V \in \mathbb{R}^{d_{\text{model}} \times d_v}"></span> 及輸出融合矩陣 <span class="m-in" data-tex="W^O \in \mathbb{R}^{h d_v \times d_{\text{model}}}"></span>，多頭注意力表示為：</p>
 <span class="m-disp" data-tex="\begin{aligned}
@@ -285,7 +282,7 @@ button:disabled{cursor:default;opacity:.3}
 PE_{(pos, 2i)} &amp;= \sin\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \right) \\
 PE_{(pos, 2i+1)} &amp;= \cos\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \right)
 \end{aligned}"></span>
-<p>根據三角和角公式，對任意固定相對距離 <span class="m-in" data-tex="k"></span>，<span class="m-in" data-tex="[PE_{(pos+k, 2i)}, PE_{(pos+k, 2i+1)}]^\top"></span> 恆為 <span class="m-in" data-tex="[PE_{(pos, 2i)}, PE_{(pos, 2i+1)}]^\top"></span> 的正交旋轉線性變換，使模型能輕鬆學習相對位置關係。</p>
+<p>作者指出，對任意固定相對距離 <span class="m-in" data-tex="k"></span>，<span class="m-in" data-tex="PE_{pos+k}"></span> 可表示為 <span class="m-in" data-tex="PE_{pos}"></span> 的線性函數；作者據此推測這種位置編碼有助模型學習相對位置關係（§3.5）。</p>
 </section>
 <section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
 <h3>本篇論文（Vaswani et al. 2017）之核心證據</h3>
