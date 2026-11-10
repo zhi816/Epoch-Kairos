@@ -18,47 +18,44 @@
 
 ## Card 3｜突破原理
 - 標題：隨機轉向，再從雜訊還原原子
-- 公式：\tilde{X}_0 = \mathcal{T}(X_0)
-- 說明：整個複合體先隨機旋轉平移再加雜訊，模型學著還原，網路不必內建旋轉對稱。
+- 公式：\vec{x}_l \leftarrow R \cdot \vec{x}_l + \vec{t}
+- 說明：$R$ 與 $\vec{t}$ 是隨機旋轉及平移；座標再加雜訊，模型學著還原結構。
 - 圖類型：示意圖
 - 圖說：示意：原子座標先經隨機旋轉平移，再加上雜訊，模型逐步去除雜訊，還原出結構。
 
 ```svg
 <svg viewBox="0 0 300 96" role="img" aria-label="示意：原子座標先經隨機旋轉平移，再加上雜訊，模型逐步去除雜訊，還原出結構。">
-  <rect class="k-ink k-ring" x="4" y="34" width="52" height="30" rx="4"/>
-  <rect class="k-ink k-ring" x="64" y="34" width="52" height="30" rx="4"/>
-  <rect class="k-ink k-ring" x="124" y="34" width="52" height="30" rx="4"/>
-  <rect class="k-accent k-ring" x="184" y="34" width="52" height="30" rx="4"/>
-  <rect class="k-ink k-ring" x="244" y="34" width="52" height="30" rx="4"/>
-  <line class="k-ink" x1="56" y1="49" x2="62" y2="49"/>
-  <polyline class="k-ink" points="58,45 62,49 58,53"/>
-  <line class="k-ink" x1="116" y1="49" x2="122" y2="49"/>
-  <polyline class="k-ink" points="118,45 122,49 118,53"/>
-  <line class="k-ink" x1="176" y1="49" x2="182" y2="49"/>
-  <polyline class="k-ink" points="178,45 182,49 178,53"/>
-  <line class="k-ink" x1="236" y1="49" x2="242" y2="49"/>
-  <polyline class="k-ink" points="238,45 242,49 238,53"/>
-  <path class="k-muted k-dash" d="M198 32 C 198 12, 222 12, 222 32"/>
-  <polyline class="k-muted" points="217,27 222,32 227,27"/>
-  <text class="k-label" x="30" y="53" text-anchor="middle">座標</text>
-  <text class="k-label" x="90" y="53" text-anchor="middle">轉向</text>
-  <text class="k-label" x="150" y="53" text-anchor="middle">加雜訊</text>
-  <text class="k-label-accent" x="210" y="53" text-anchor="middle">去噪</text>
-  <text class="k-label" x="270" y="53" text-anchor="middle">結構</text>
+  <rect class="k-ink k-ring" x="4" y="34" width="68" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="78" y="34" width="68" height="30" rx="4"/>
+  <rect class="k-accent k-ring" x="152" y="34" width="68" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="226" y="34" width="68" height="30" rx="4"/>
+  <line class="k-ink" x1="72" y1="49" x2="78" y2="49"/>
+  <polyline class="k-ink" points="74,45 78,49 74,53"/>
+  <line class="k-ink" x1="146" y1="49" x2="152" y2="49"/>
+  <polyline class="k-ink" points="148,45 152,49 148,53"/>
+  <line class="k-ink" x1="220" y1="49" x2="226" y2="49"/>
+  <polyline class="k-ink" points="222,45 226,49 222,53"/>
+  <path class="k-muted k-dash" d="M174 32 C 174 12, 198 12, 198 32"/>
+  <polyline class="k-muted" points="193,27 198,32 203,27"/>
+  <text class="k-label" x="38" y="53" text-anchor="middle">座標</text>
+  <text class="k-label" x="112" y="46" text-anchor="middle">旋轉平移</text>
+  <text class="k-label" x="112" y="60" text-anchor="middle">加雜訊</text>
+  <text class="k-label-accent" x="186" y="53" text-anchor="middle">去噪</text>
+  <text class="k-label" x="260" y="53" text-anchor="middle">結構</text>
 </svg>
 ```
 
 ## Card 4｜決定性數據
 - 模式：數字
-- 數字：76.4%｜不給結合口袋，藥物分子位置預測成功率｜Extended Data 表 1, p. 21
-- 數字：62.9%｜抗體與抗原介面成功率｜Extended Data 表 1, p. 21
-- 數字：64.8｜蛋白質－DNA 介面分數｜Extended Data 表 1, p. 21
-- 數字：78.5%｜共價結合配體預測成功率｜Extended Data 表 1, p. 21
-- 範圍：Abramson 等 2024，近期結構；DNA 為雙股
+- 數字：76.4%｜盲測配體位置 RMSD < 2 Å 的比例｜Extended Data 表 1, p. 21
+- 數字：62.9%｜抗體介面 DockQ > 0.23；1,000 種子｜Extended Data 表 1, p. 21
+- 數字：64.8｜蛋白質與雙股 DNA 介面 iLDDT｜Extended Data 表 1, p. 21
+- 數字：78.5%｜共價配體 RMSD < 2 Å 的比例｜Extended Data 表 1, p. 21
+- 範圍：Abramson 等 2024，PoseBusters V1 與近期結構
 
 ## Card 5｜典範轉移
 - 標題：程式公開，開源模型跟上
-- 里程碑：2024｜Chai-1 公開模型權重與推論程式｜Chai Discovery 2024, bioRxiv
+- 里程碑：2024｜Chai-1 公開非商用權重與推論程式｜Chai Discovery 2024, bioRxiv
 - 里程碑：2024｜Boltz-1 以 MIT 授權開源同等級模型｜Wohlwend et al. 2024, bioRxiv
 - 里程碑：2024｜DeepMind 釋出 AlphaFold 3 推論程式｜Abramson et al. 2024, Nature 636:E4
 - 註記：三項皆為後續發布，出處見長文

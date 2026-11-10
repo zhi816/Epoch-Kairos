@@ -205,29 +205,26 @@ button:disabled{cursor:default;opacity:.3}
       <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.11</span><span>AI</span></div><div class="win"><i style="left:16.1%;top:31.9%;width:1px;height:1px;opacity:0.64"></i><i style="left:68.1%;top:35.7%;width:1px;height:1px;opacity:0.83"></i><i style="left:25.9%;top:45.9%;width:1px;height:1px;opacity:0.34"></i><i style="left:4.7%;top:30.6%;width:1px;height:1px;opacity:0.37"></i><i style="left:65.5%;top:44.2%;width:1.5px;height:1.5px;opacity:0.68"></i><i style="left:72.9%;top:37.0%;width:1px;height:1px;opacity:0.70"></i><i style="left:81.0%;top:36.5%;width:1.5px;height:1.5px;opacity:0.65"></i><i style="left:83.3%;top:9.2%;width:1px;height:1px;opacity:0.44"></i><i style="left:29.5%;top:42.4%;width:1px;height:1px;opacity:0.65"></i><i style="left:41.7%;top:45.2%;width:1.5px;height:1.5px;opacity:0.49"></i><i style="left:49.6%;top:45.4%;width:1px;height:1px;opacity:0.81"></i><i style="left:54.5%;top:36.1%;width:1px;height:1px;opacity:0.71"></i><i style="left:78.1%;top:22.3%;width:1px;height:1px;opacity:0.44"></i><i style="left:92.9%;top:24.2%;width:1px;height:1px;opacity:0.64"></i><span class="rep"></span><span class="line"><span>預測蛋白質與核酸、</span><span>藥物結合後的</span><span>立體結構</span></span></div><div class="tags">人工智慧、計算與數學・#計算生物 #人工智慧 #結構生物學</div><div class="name">AlphaFold 3</div><div class="lead">把蛋白質、核酸、小分子與離子都放進同一個模型，直接在原子座標上去雜訊，預測結合後的形狀。</div><div class="yrs">2024 發表 ｜ Nature</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">一類分子，<br>一套工具</span><div class="rows"><div class="row"><b>剛體框架</b><span>AlphaFold2 只為胺基酸設計</span></div><div class="row"><b>專用方法</b><span>各管一種交互，無法處理一般複合體</span></div><div class="row gap"><b>複合體</b><span>沒有模型能同時處理各類生物分子</span></div></div><span class="ft" style="color:var(--ink)">細胞裡的分子，從不單獨行動。</span></div></section>
       <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">隨機轉向，<br>再從雜訊還原原子</span><svg class="dia" viewBox="0 0 300 96" role="img" aria-label="示意：原子座標先經隨機旋轉平移，再加上雜訊，模型逐步去除雜訊，還原出結構。">
-  <rect class="k-ink k-ring" x="4" y="34" width="52" height="30" rx="4"/>
-  <rect class="k-ink k-ring" x="64" y="34" width="52" height="30" rx="4"/>
-  <rect class="k-ink k-ring" x="124" y="34" width="52" height="30" rx="4"/>
-  <rect class="k-accent k-ring" x="184" y="34" width="52" height="30" rx="4"/>
-  <rect class="k-ink k-ring" x="244" y="34" width="52" height="30" rx="4"/>
-  <line class="k-ink" x1="56" y1="49" x2="62" y2="49"/>
-  <polyline class="k-ink" points="58,45 62,49 58,53"/>
-  <line class="k-ink" x1="116" y1="49" x2="122" y2="49"/>
-  <polyline class="k-ink" points="118,45 122,49 118,53"/>
-  <line class="k-ink" x1="176" y1="49" x2="182" y2="49"/>
-  <polyline class="k-ink" points="178,45 182,49 178,53"/>
-  <line class="k-ink" x1="236" y1="49" x2="242" y2="49"/>
-  <polyline class="k-ink" points="238,45 242,49 238,53"/>
-  <path class="k-muted k-dash" d="M198 32 C 198 12, 222 12, 222 32"/>
-  <polyline class="k-muted" points="217,27 222,32 227,27"/>
-  <text class="k-label" x="30" y="53" text-anchor="middle">座標</text>
-  <text class="k-label" x="90" y="53" text-anchor="middle">轉向</text>
-  <text class="k-label" x="150" y="53" text-anchor="middle">加雜訊</text>
-  <text class="k-label-accent" x="210" y="53" text-anchor="middle">去噪</text>
-  <text class="k-label" x="270" y="53" text-anchor="middle">結構</text>
-</svg><div class="fbox"><span class="m-disp" data-tex="\tilde{X}_0 = \mathcal{T}(X_0)"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">整個複合體先隨機旋轉平移再加雜訊，模型學著還原，網路不必內建旋轉對稱。</span></div></section>
-      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">76.4%</span><span class="l">不給結合口袋，藥物分子位置預測成功率</span></div><div class="stat"><span class="v">62.9%</span><span class="l">抗體與抗原介面成功率</span></div><div class="stat"><span class="v">64.8</span><span class="l">蛋白質－DNA 介面分數</span></div><div class="stat"><span class="v">78.5%</span><span class="l">共價結合配體預測成功率</span></div></div><span class="ft">範圍：Abramson 等 2024，近期結構；DNA 為雙股</span></div></section>
-      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">程式公開，<br>開源模型跟上</span><div class="time"><p><b>2024</b><span>Chai-1 公開模型權重與推論程式</span></p><p><b>2024</b><span>Boltz-1 以 MIT 授權開源同等級模型</span></p><p><b>2024</b><span>DeepMind 釋出 AlphaFold 3 推論程式</span></p></div><span class="ft">三項皆為後續發布，出處見長文</span></div></section>
+  <rect class="k-ink k-ring" x="4" y="34" width="68" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="78" y="34" width="68" height="30" rx="4"/>
+  <rect class="k-accent k-ring" x="152" y="34" width="68" height="30" rx="4"/>
+  <rect class="k-ink k-ring" x="226" y="34" width="68" height="30" rx="4"/>
+  <line class="k-ink" x1="72" y1="49" x2="78" y2="49"/>
+  <polyline class="k-ink" points="74,45 78,49 74,53"/>
+  <line class="k-ink" x1="146" y1="49" x2="152" y2="49"/>
+  <polyline class="k-ink" points="148,45 152,49 148,53"/>
+  <line class="k-ink" x1="220" y1="49" x2="226" y2="49"/>
+  <polyline class="k-ink" points="222,45 226,49 222,53"/>
+  <path class="k-muted k-dash" d="M174 32 C 174 12, 198 12, 198 32"/>
+  <polyline class="k-muted" points="193,27 198,32 203,27"/>
+  <text class="k-label" x="38" y="53" text-anchor="middle">座標</text>
+  <text class="k-label" x="112" y="46" text-anchor="middle">旋轉平移</text>
+  <text class="k-label" x="112" y="60" text-anchor="middle">加雜訊</text>
+  <text class="k-label-accent" x="186" y="53" text-anchor="middle">去噪</text>
+  <text class="k-label" x="260" y="53" text-anchor="middle">結構</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\vec{x}_l \leftarrow R \cdot \vec{x}_l + \vec{t}"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)"><span class="m-in" data-tex="R"></span> 與 <span class="m-in" data-tex="\vec{t}"></span> 是隨機旋轉及平移；座標再加雜訊，模型學著還原結構。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">76.4%</span><span class="l">盲測配體位置 RMSD &lt; 2 Å 的比例</span></div><div class="stat"><span class="v">62.9%</span><span class="l">抗體介面 DockQ &gt; 0.23；1,000 種子</span></div><div class="stat"><span class="v">64.8</span><span class="l">蛋白質與雙股 DNA 介面 iLDDT</span></div><div class="stat"><span class="v">78.5%</span><span class="l">共價配體 RMSD &lt; 2 Å 的比例</span></div></div><span class="ft">範圍：Abramson 等 2024，PoseBusters V1 與近期結構</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">程式公開，<br>開源模型跟上</span><div class="time"><p><b>2024</b><span>Chai-1 公開非商用權重與推論程式</span></p><p><b>2024</b><span>Boltz-1 以 MIT 授權開源同等級模型</span></p><p><b>2024</b><span>DeepMind 釋出 AlphaFold 3 推論程式</span></p></div><span class="ft">三項皆為後續發布，出處見長文</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">拆掉只適合蛋白質的框架，模型反而能處理更多分子。</span><span class="shift"><span>專用框架</span><i aria-hidden="true"></i><b>通用生成</b></span></div></section>
     </div>
     <div class="ctrl">
@@ -260,11 +257,8 @@ button:disabled{cursor:default;opacity:.3}
 <p>AlphaFold 3 對網路架構進行了大刀闊斧的「減法與重構」，實現了從氨基酸殘基級向<strong>全原子級（All-Atom）生成模型</strong>的跨越：</p>
 <ol><li><strong>從 Evoformer 精簡為 Pairformer（成對表徵成為唯一核心主幹）</strong>：<ul><li>AF3 將 MSA 處理模組大幅縮減為僅 4 個輕量級區塊，提取完共演化信號後即丟棄龐大的 MSA 張量；隨後的 48 層 <strong>Pairformer</strong> 僅在「單一標記表徵（Single Representation）」與「成對標記表徵（Pair Representation）」上運作（標準胺基酸與核苷酸以單一殘基為 1 個 Token，小分子與修飾基團則以<strong>每一個重原子</strong>為 1 個 Token）。</li></ul></li><li><strong>全原子三維座標生成式擴散模組（All-Atom Diffusion Module）</strong>：<ul><li>徹底移除 AF2 的不變點注意力（IPA）、局部剛體框架與扭轉角預測，改用基於擴散轉換器（Diffusion Transformer）的去噪生成模組，直接接受受高斯雜訊污染的三維全原子笛卡兒座標 <span class="m-in" data-tex="\vec{x}_t \in \mathbb{R}^{N_{\text{atoms}} \times 3}"></span>，一步步去噪還原出真實三維原子座標 <span class="m-in" data-tex="\hat{\vec{x}}_0"></span>。</li><li><strong>拋棄硬性 <span class="m-in" data-tex="\mathrm{SE}(3)"></span> 等變層，改採隨機旋轉平移資料增強</strong>：作者發現，不在網路內部強加複雜的 <span class="m-in" data-tex="\mathrm{SE}(3)"></span> 等變約束，而是直接在每次擴散去噪步驟前對輸入座標施加隨機三維剛體旋轉與平移增強（Data Augmentation），不僅大幅提升大核矩陣運算效率，且在全原子尺度上泛化能力更強。</li></ul></li><li><strong>交叉蒸餾（Cross-Distillation）防止無序區幻覺（Hallucination）</strong>：<ul><li>擴散生成模型天性傾向將天然無序蛋白區（IDRs）強行生成為看似合理的假性 <span class="m-in" data-tex="\alpha"></span>-螺旋。AF3 利用 AlphaFold-Multimer v2.3 的預測結構進行交叉蒸餾訓練，教導擴散模型將無序區自然展開為延伸絲狀構型。</li></ul></li></ol>
 <h3>1. 多尺度全原子擴散正向加噪與去噪目標 (Multi-Scale All-Atom Diffusion)</h3>
-<p>設生物分子複合體中全部 <span class="m-in" data-tex="N_{\text{atoms}}"></span> 個重原子的真實三維座標為 <span class="m-in" data-tex="X_0 \in \mathbb{R}^{N_{\text{atoms}} \times 3}"></span>。在擴散雜訊尺度 <span class="m-in" data-tex="\sigma_t \in [\sigma_{\min}, \sigma_{\max}]"></span> 下，經隨機全局剛體變換 <span class="m-in" data-tex="\mathcal{T} \sim \mathrm{SE}(3)"></span>（中心化後隨機旋轉與平移）與各向同性高斯加噪後得到含噪座標 <span class="m-in" data-tex="X_t"></span>：</p>
-<span class="m-disp" data-tex="\begin{aligned}
-\tilde{X}_0 &amp;= \mathcal{T}(X_0) \\
-X_t &amp;= \tilde{X}_0 + \varepsilon, \quad \varepsilon \sim \mathcal{N}\left(0, \sigma_t^2 I_{3N_{\text{atoms}}}\right)
-\end{aligned}"></span>
+<p>訓練時，作者先將結構座標中心化，再隨機旋轉與平移，並加入獨立雜訊，訓練擴散模組還原結構（補充資料 §3.7.1）。其中 <span class="m-in" data-tex="\vec{x}_l"></span> 是第 <span class="m-in" data-tex="l"></span> 個原子座標，<span class="m-in" data-tex="R"></span> 是隨機旋轉，<span class="m-in" data-tex="\vec{t}"></span> 是隨機平移；中心化後的旋轉與平移步驟為（補充資料 Algorithm 19 第 4 行）：</p>
+<span class="m-disp" data-tex="\vec{x}_l \leftarrow R \cdot \vec{x}_l + \vec{t}"></span>
 <p>擴散網路 <span class="m-in" data-tex="D_\theta\left(X_t, \sigma_t \mid s_{\text{trunk}}, z_{\text{trunk}}\right)"></span> 以 Pairformer 主幹輸出的單一與成對表徵為條件，直接預測去噪後的原子座標 <span class="m-in" data-tex="\hat{X}_0"></span>。補充資料（Supplementary Information 式 6，SI p. 28）之擴散模組損失為：</p>
 <span class="m-disp" data-tex="\begin{aligned}
 \mathcal{L}_{\text{diffusion}} &amp;= \frac{\hat{t}^2 + \sigma_{\text{data}}^2}{(\hat{t} + \sigma_{\text{data}})^2} \cdot \left( \mathcal{L}_{\text{MSE}} + \alpha_{\text{bond}} \mathcal{L}_{\text{bond}} \right) \\
@@ -273,7 +267,7 @@ X_t &amp;= \tilde{X}_0 + \varepsilon, \quad \varepsilon \sim \mathcal{N}\left(0,
 <p>其中 <span class="m-in" data-tex="\hat{t}"></span> 為取樣之雜訊尺度，<span class="m-in" data-tex="\sigma_{\text{data}}"></span> 為依資料變異數設定之常數（16），<span class="m-in" data-tex="\mathcal{L}_{\text{MSE}}"></span> 為預測座標與經加權剛體對齊後之真實座標間的加權均方誤差，<span class="m-in" data-tex="\alpha_{\text{bond}}"></span> 於一般訓練為 0、兩個微調階段為 1。正文指出，雜訊小時的去噪任務著重局部立體化學，雜訊大時則著重系統的大尺度結構（p. 495）。</p>
 <h3>2. 介面預測模板建模分數（ipTM）與複合體排序 (Interface pTM &amp; Ranking Score)</h3>
 <p>為評估不同生物分子鏈（如蛋白質靶點與小分子配體或抗體與抗原）之間的結合介面可靠度，AF3 利用預測對齊誤差（PAE）分佈計算介面預測 TM-score（<span class="m-in" data-tex="\text{ipTM}"></span>），並加入鼓勵無序區呈伸展構型（相對溶劑可及面積較高）的項，以及鏈間嚴重碰撞之懲罰，給出綜合排序分數（SI 式 19，p. 37；正文 p. 498）：</p>
-<span class="m-disp" data-tex="\text{Score}_{\text{ranking}} = 0.8 \cdot \text{ipTM} + 0.2 \cdot \text{pTM} + 0.5 \cdot \text{disorder} - 100 \cdot \text{has\_clash}"></span>
+<span class="m-disp" data-tex="0.8 \cdot \text{ipTM} + 0.2 \cdot \text{pTM} + 0.5 \cdot \text{disorder} - 100 \cdot \text{has\_clash}"></span>
 <p>其中 <span class="m-in" data-tex="\text{has\_clash}"></span> 為 0 或 1：任兩條聚合物鏈之間距離小於 1.1 Å 的原子對超過 100 個，或超過較小鏈原子數之一半時記為 1（SI §5.9.2，p. 37）。</p>
 </section>
 <section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
