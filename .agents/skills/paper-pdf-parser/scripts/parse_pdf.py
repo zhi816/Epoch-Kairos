@@ -117,13 +117,14 @@ def header(src, engine, pages_desc, extra=''):
 def has_pymupdf():
     try:
         import pymupdf  # noqa: F401
+        import pymupdf4llm  # noqa: F401
         return True
     except ImportError:
         return False
 
 
 def maybe_reexec():
-    """目前的 Python 沒有 PyMuPDF 而 .venv-mineru 存在時，改用其 Python 重新執行本腳本。"""
+    """目前的 Python 沒有完整 PyMuPDF/pymupdf4llm 而 .venv-mineru 存在時，改用其 Python 重新執行本腳本。"""
     if has_pymupdf() or os.environ.get(REEXEC_FLAG) or not os.path.exists(VENV_PY):
         return
     env = dict(os.environ, **{REEXEC_FLAG: '1'})
@@ -135,7 +136,17 @@ def dist_version(name):
         from importlib.metadata import version
         return version(name)
     except Exception:
-        return '?'
+        pass
+    if os.path.exists(VENV_PY):
+        try:
+            code = 'from importlib.metadata import version; print(version(%r))' % name
+            res = subprocess.run([VENV_PY, '-I', '-c', code], capture_output=True, text=True,
+                                 encoding='utf-8', errors='replace', timeout=10)
+            if res.returncode == 0 and res.stdout.strip():
+                return res.stdout.strip()
+        except Exception:
+            pass
+    return '?'
 
 
 def run_pymupdf(pdf, out_dir, pages_spec, rel_src):
@@ -177,7 +188,7 @@ def run_pymupdf(pdf, out_dir, pages_spec, rel_src):
 def mineru_ready():
     if not os.path.exists(MINERU_KIT):
         return False, '找不到 %s' % os.path.relpath(MINERU_KIT, ROOT)
-    res = subprocess.run([MINERU_KIT, 'models', 'verify', '--tier', MINERU_TIER], capture_output=True, text=True)
+    res = subprocess.run([MINERU_KIT, 'models', 'verify', '--tier', MINERU_TIER], capture_output=True, text=True, encoding='utf-8', errors='replace')
     if res.returncode != 0:
         return False, 'MinerU %s 檔位模型不齊全（執行 setup_env.py 查看下載方式）' % MINERU_TIER
     return True, ''
@@ -206,13 +217,27 @@ def run_mineru(pdf, out_dir, pages_spec, rel_src):
     if n_img:
         extra += 'note: 已略去 %d 張嵌入圖片。\n' % n_img
     out = os.path.join(out_dir, 'content.md')
+    ver = dist_version('mineru')
+    engine_desc = 'MinerU %s（mineru-kit parse --tier %s，本機）' % (ver, MINERU_TIER)
+    page_marker = ('<!-- pdf-page: %s -->\n\n' % pages_spec) if (pages_spec and pages_spec.isdigit()) else ''
     with open(out, 'w', encoding='utf-8', newline='\n') as f:
-        f.write(header(rel_src, 'MinerU（mineru-kit parse --tier %s，本機）' % MINERU_TIER, pages_spec or 'all', extra) + '\n' + md)
-    print('引擎：MinerU（本機）')
+        f.write(header(rel_src, engine_desc, pages_spec or 'all', extra) + '\n' + page_marker + md)
+    print('引擎：%s' % engine_desc)
     print('輸出：%s（原始輸出在 %s）' % (out, raw_dir))
 
 
 def main():
+    if sys.platform == 'win32':
+        if hasattr(sys.stdout, 'reconfigure'):
+            try:
+                sys.stdout.reconfigure(encoding='utf-8')
+            except Exception:
+                pass
+        if hasattr(sys.stderr, 'reconfigure'):
+            try:
+                sys.stderr.reconfigure(encoding='utf-8')
+            except Exception:
+                pass
     ap = argparse.ArgumentParser(description='把論文 PDF 抽成附頁碼標記的 Markdown（搜尋與定位用，非證據）')
     ap.add_argument('input_pdf', help='PDF 路徑')
     ap.add_argument('--output-dir', '-o', help='輸出目錄（預設 work/parsed/<檔名>/）')

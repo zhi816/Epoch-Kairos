@@ -38,19 +38,33 @@ def dist_version(py, dist):
             'try:\n    print(m.version(%r))\n'
             'except Exception:\n    pass\n') % dist
     try:
-        res = subprocess.run([py, '-I', '-c', code], capture_output=True, text=True, timeout=30)
+        res = subprocess.run([py, '-X', 'utf8', '-I', '-c', code], capture_output=True, text=True,
+                             encoding='utf-8', errors='replace', timeout=30)
         return res.stdout.strip() or None
     except Exception:
         return None
 
 
 def accel(py):
-    code = ('import torch\n'
-            'if torch.cuda.is_available(): print("CUDA：" + torch.cuda.get_device_name(0))\n'
-            'elif getattr(torch.backends, "mps", None) and torch.backends.mps.is_available(): print("MPS（Apple Silicon）")\n'
-            'else: print("僅 CPU")\n')
+    code = (
+        'try:\n'
+        '    import torch\n'
+        '    if torch.cuda.is_available(): print("CUDA：" + torch.cuda.get_device_name(0))\n'
+        '    elif getattr(torch.backends, "mps", None) and torch.backends.mps.is_available(): print("MPS（Apple Silicon）")\n'
+        '    else: print("僅 CPU（PyTorch）")\n'
+        'except ImportError:\n'
+        '    try:\n'
+        '        import onnxruntime as ort\n'
+        '        provs = ort.get_available_providers()\n'
+        '        if "DmlExecutionProvider" in provs: print("DirectML（ONNX Runtime）")\n'
+        '        elif "CUDAExecutionProvider" in provs: print("CUDA（ONNX Runtime）")\n'
+        '        else: print("僅 CPU（ONNX Runtime）")\n'
+        '    except Exception:\n'
+        '        print("僅 CPU")\n'
+    )
     try:
-        res = subprocess.run([py, '-I', '-c', code], capture_output=True, text=True, timeout=60)
+        res = subprocess.run([py, '-X', 'utf8', '-I', '-c', code], capture_output=True, text=True,
+                             encoding='utf-8', errors='replace', timeout=60)
         return res.stdout.strip() or '無法判斷'
     except Exception:
         return '無法判斷'
@@ -60,19 +74,25 @@ def models_ok():
     if not os.path.exists(MINERU_KIT):
         return None
     try:
-        res = subprocess.run([MINERU_KIT, 'models', 'verify', '--tier', 'basic'], capture_output=True, text=True, timeout=120)
+        res = subprocess.run([MINERU_KIT, 'models', 'verify', '--tier', 'basic'], capture_output=True,
+                             text=True, encoding='utf-8', errors='replace', timeout=120)
         return res.returncode == 0
     except Exception:
         return None
 
 
 def main():
+    if sys.platform == 'win32' and hasattr(sys.stdout, 'reconfigure'):
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+        except Exception:
+            pass
     ap = argparse.ArgumentParser(description='檢查 paper-pdf-parser 執行環境')
     ap.add_argument('--check', action='store_true', help='相容舊用法；預設即為檢查')
     ap.parse_args()
     venv = VENV_PY if os.path.exists(VENV_PY) else None
     py = venv or sys.executable
-    uv = shutil.which('uv')
+    uv = shutil.which('uv') or shutil.which('uv', path=os.path.expanduser('~/.local/bin'))
     mupdf = dist_version(py, 'PyMuPDF')
     m4llm = dist_version(py, 'pymupdf4llm')
     mineru = dist_version(py, 'mineru')

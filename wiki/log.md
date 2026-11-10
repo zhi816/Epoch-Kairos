@@ -2128,3 +2128,15 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
 - **具體變更**：處理 TD-011 時比對正式版線上文字，發現論文頁部分公式形式待原文影像確認，登記 EK-203，核實狀態改為 issues 並重建論文頁；建置與 lint ERROR 0。公式逐式核對及瀏覽器驗證仍分別留在 TD-011、TD-021。
+
+## [2026-11-10 23:28] config | 驗證 Windows 端 paper-pdf-parser 之 MinerU 環境並完成實測 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - 處理並完成 TD-022，從 [wiki/todo.md](todo.md) 移除該待辦條目。
+  - 於 Windows 端以 uv 配置 Python 3.12 隔離虛擬環境（`.venv-mineru`），安裝 PyMuPDF (2.1)、pymupdf4llm (2.1) 與 MinerU (4.2.0)。
+  - 經使用者同意授權，執行 `mineru-kit models download --tier basic` 下載 Windows 端 DirectML/ONNX Runtime 所需之 `MinerU-4_models_onnx` 權重（共 13 個 ONNX 檔案至 `%USERPROFILE%\.mineru\models`，約 0.9 GB）。
+  - 修復 [setup_env.py](../.agents/skills/paper-pdf-parser/scripts/setup_env.py) 與 [parse_pdf.py](../.agents/skills/paper-pdf-parser/scripts/parse_pdf.py) 於 Windows 環境下 subprocess UTF-8 解碼與 stdout 輸出編碼問題，改進 `dist_version` 與 `maybe_reexec` 使其能準確取用虛擬環境版本。
+  - 以 Hopfield 1982（`raw/1982-hopfield-network.pdf`）第 3 頁實測解析，確認 `--pages` 參數實際生效（僅解析 1 頁，耗時約 28 秒）、輸出僅落於 `work/parsed/`、檔頭明確記錄實際引擎名稱與版本 `MinerU 4.2.0（mineru-kit parse --tier basic，本機）` 與單頁 `<!-- pdf-page: 3 -->` 標記、模型缺失時直接退出碼 1 報錯不默默降級。
+  - 對照原 PDF 影像抽查核驗，式 (1)–(4) 區塊公式辨識完整，並記錄 OCR 漢字幻覺（$T_{ij} \to T_{ 扩 }$）、行內門檻符號錯誤與括號幻覺等典型瑕疵，回填至 [.agents/skills/paper-pdf-parser/SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md) 第四章與第六章，並刪除「Windows 環境尚未實測」。
+- **驗證**：`setup_env.py` 回報「MinerU basic 模型：齊全」且「MinerU 引擎可用」，硬體加速辨識出 DirectML（ONNX Runtime）；`python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 為 ERROR 0；`stage_todo.py TD-022 --dry-run` 正確辨識為刪除。
