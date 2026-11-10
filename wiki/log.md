@@ -2050,3 +2050,8 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
 - **具體變更**：完成 EK-018：對照 NeurIPS 2017 定稿與 arXiv v7 Table 2 的頁面影像，以定稿英譯法 41.0 BLEU 更新論文頁、卡片與證據表；另列 arXiv 摘要及表格 41.8、其正文 41.0 與會議網站摘要 41.1。定稿表中最佳集成模型為 41.29，故改正「超越所有集成」說法。頁面 verification 改為 partial；check_cards.py、論文頁與首頁卡片牆建置均 ERROR 0、WARN 0，瀏覽器服務不可用，待驗證見 TD-021；lint_wiki.py ERROR 0、WARN 23。
+
+## [2026-11-10 20:35] fix | 釐清 Hopfield 突觸失效分析 | #統計物理 #人工智慧
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：完成 EK-002：回看 PNAS pp. 2556–2557 及 Fig. 2，將 n=5 改為原文「幾乎總是」可回憶，區分單向連接模擬與突觸失效的平緩退化分析，記下原文信噪比方向與前述分析的張力，不猜測作者本意；論文頁、卡片與證據表同步更新，verification 改為 partial。check_cards.py、論文頁與首頁卡片牆建置均 ERROR 0、WARN 0；瀏覽器服務不可用，待驗證見 TD-021；lint_wiki.py ERROR 0、WARN 23。

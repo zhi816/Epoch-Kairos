@@ -13,7 +13,7 @@ domain: "physics"
 domain_tags: ["#統計物理", "#人工智慧"]
 concepts: ["neural-circuits", "brain-machine-interface", "generative-world-models", "quantum-error-correction"]
 status: "published"
-verification: "issues"
+verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.1073/pnas.79.8.2554"
 key_papers:
@@ -94,11 +94,11 @@ $$\begin{aligned}
 ## Card 4 ｜ 決定性數據 (The Evidence)
 
 ### 本篇論文（Hopfield 1982）之核心證據
-* **記憶容量與神經元規模的線性標度律（$0.15N$ 近似上限）**：Hopfield 在 PNAS p. 2556 指出，在檢索誤差變得嚴重之前，系統約可同時儲存 $M \approx 0.15N$ 個名義記憶型態。隨機產生的型態在統計上具有「偽正交性（pseudoorthogonality）」，而非嚴格正交；當儲存數量增加時會出現位元翻轉錯誤，在 $N = 100$ 時，$n=5$ 可達成零錯誤，$n=10$ 與 $n=15$ 則已出現不同程度之位元偏差（見原文 Fig. 2 誤差分佈），因此 $0.15N$ 係指嚴重退化前之近似容量，並非保證 100% 完整無誤檢索。
+* **記憶容量與神經元規模的線性標度律（$0.15N$ 近似上限）**：Hopfield 在 PNAS p. 2556 指出，在檢索誤差變得嚴重之前，系統約可同時儲存 $M \approx 0.15N$ 個名義記憶型態。隨機產生的型態在統計上具有「偽正交性（pseudoorthogonality）」，而非嚴格正交；在 $N = 100$ 的模擬中，$n=5$ 時指定記憶幾乎總是穩定且可完全回憶，$n=10$ 與 $n=15$ 則出現不同程度的位元偏差（見原文 Fig. 2 誤差分佈）。$0.15N$ 是嚴重退化前的近似容量，並非保證完整無誤檢索。
 * **信噪比（Signal-to-Noise Ratio）解析解**：當讀取第 $s'$ 個名義記憶時，有效場 $H_i^{s'}$ 的期望值為 $\pm N/2$，而來自其餘 $M-1$ 個記憶的交叉干擾雜訊呈現均值為 0、標準差為 $\sigma = \sqrt{(M-1)N/2}$ 的高斯分佈。單一位元的錯誤率可由高斯分佈尾部積分推導：
   $$P = \frac{1}{\sqrt{2\pi}\sigma} \int_{N/2}^{\infty} e^{-x^2 / (2\sigma^2)} \, dx$$
   當 $N=100, n=10$ 時理論位元錯誤率 $P=0.0091$，100 位元皆無錯之狀態機率約 $e^{-0.91} \approx 0.40$（蒙地卡羅模擬實測值約 0.60），清楚界定了記憶過載（Overload）相變的數學邊界。
-* **對硬體損毀與突觸失效的平緩退化（Fail-Soft Degradation）**：系統展現出非局域分佈式儲存的物理韌性。Hopfield 分析指出，即使突觸連接非對稱化（如僅保留單向連接使信噪比下降 $1/\sqrt{2}$）或簡化為非線性二值符號截斷（Clipped $T_{ij} = \pm 1$，信噪比下降 $\sqrt{2/\pi}$），演算法仍能收斂至穩定極小值；隨著突觸失效增加，信噪比平緩下降、錯誤率緩慢上升，呈現「平緩退化（Fail-Soft）」而非災難性崩潰。
+* **突觸連接與平緩退化（Fail-Soft Degradation）**：原文在單向、非對稱連接的模擬中仍觀察到穩定極小值，但錯誤率增加；其高斯雜訊分析將信噪比估為原來的 $1/\sqrt{2}$。權重截斷成 $\pm 1$ 的另一項分析，信噪比為未截斷時的 $\sqrt{2/\pi}$。作者進一步以分析描述突觸失效增加時的平緩退化，而非提供各失效比例的實驗曲線（p. 2557 右欄）。同段最後一句同時寫信噪比與錯誤率緩慢上升，與前述信噪比降低的說法存在張力；此處不擅自判定哪一方向是作者本意。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
 * **統計力學嚴格容量極限（$\alpha_c \approx 0.138$）**：Amit, Gutfreund & Sompolinsky (1985), *Physical Review Letters* 55:1530-1533，運用自旋玻璃副本對稱破缺（Replica Symmetry Breaking）方法，嚴格解出 Hopfield 網路在零溫下的相變臨界容量為 $M/N \approx 0.138$。

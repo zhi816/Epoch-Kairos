@@ -81,7 +81,7 @@
 - **來源**：使用者指示（2026-11-10，因 Woodford 2007 標註「Hall 並非本篇作者」引發討論，確立多得主各自收錄代表作原則）；2026-11-10 登記，Antigravity by Google DeepMind。
 
 ### TD-021 | open | web | 補驗受影響論文頁與首頁卡片牆
-- **內容**：2026-11-10 複核問題清單後，`1982-hopfield-network`、`2017-attention-is-all-you-need`、`2021-alphafold2`、`2021-seediq-chinese-mt-you`、`2025-indigenous-tek-ai-revitalization-wang` 因核實狀態改為 `issues` 而重建，原先均只移除核實完成標記。後續 `2017-attention-is-all-you-need` 更正英譯法數字及版本，`2021-seediq-chinese-mt-you` 修正論文頁及卡片公式，`2025-fragment-shot-reasoning-mt-frontull` 補充模型參數來源差異，三頁再次重建；`2019-generalized-data-augmentation-xia` 修正證據表公式後重建，網頁產出未變；`2007-woodford-inflation-dynamics` 修正封面限定語後重建論文頁與首頁；`2024-sora-world-simulator` 移除未公開的公式並重建論文頁。各篇建置自我檢查均為 ERROR 0、WARN 0。瀏覽器服務不可用，尚未完成論文頁與首頁卡片牆驗證。
+- **內容**：2026-11-10 複核問題清單後，`1982-hopfield-network`、`2017-attention-is-all-you-need`、`2021-alphafold2`、`2021-seediq-chinese-mt-you`、`2025-indigenous-tek-ai-revitalization-wang` 因核實狀態改為 `issues` 而重建，原先均只移除核實完成標記。後續 `1982-hopfield-network` 釐清突觸失效分析，`2017-attention-is-all-you-need` 更正英譯法數字及版本，`2021-seediq-chinese-mt-you` 修正論文頁及卡片公式，`2025-fragment-shot-reasoning-mt-frontull` 補充模型參數來源差異，均再次重建；`2019-generalized-data-augmentation-xia` 修正證據表公式後重建，網頁產出未變；`2007-woodford-inflation-dynamics` 修正封面限定語後重建論文頁與首頁；`2024-sora-world-simulator` 移除未公開的公式並重建論文頁。各篇建置自我檢查均為 ERROR 0、WARN 0。瀏覽器服務不可用，尚未完成論文頁與首頁卡片牆驗證。
 - **完成條件**：在可使用的瀏覽器環境中，依 `paper-card-writer` 流程檢查上述論文頁之桌面與手機版，以及各篇首頁卡片牆；確認先前的核實完成標記及版面正確，記錄驗證結果並處理所見問題。
 - **來源**：2026-11-10 問題清單分組複核整合，Codex by OpenAI。
 

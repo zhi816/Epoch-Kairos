@@ -14,13 +14,14 @@
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit、[2026-11-08 23:36] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 p. 2556–2557 逐項確認後重寫 Card 3：明記並非所有局部極小值皆為名義記憶吸引子，零閾值下全零態（$0000\dots$）亦為穩定態，且隨機初態約有 10% 試驗落入無意義偽穩定態（Spurious States）、5% 停留在目標記憶鄰近態。證據表見 wiki/evidence/1982-hopfield-network.md。
 
-### EK-002 | open | papers/1982-hopfield-network.md | Card 4 | 原文不符
+### EK-002 | fixed | papers/1982-hopfield-network.md | Card 4 | 原文不符
 - **問題**：寫作「隨機正交型態」並稱 N=100 可穩定檢索 15 個完整記憶。原文稱隨機型態具 pseudoorthogonality，容量約 0.15N 是誤差變嚴重前之近似容量，不保證完整無誤檢索。另「隨機切除相當比例突觸或損毀神經元仍可正確重建」在原文無定量結果，須降格或另引直接實驗。
 - **來源**：[封存原文](../raw/1982-hopfield-network.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:46] audit、[2026-11-08 23:36] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 p. 2556–2557 逐項確認後重寫 Card 4：改述隨機型態具「偽正交性（pseudoorthogonality）」而非嚴格正交；容量 0.15N 註明為嚴重錯誤前之近似上限，並列出 N=100 時 n=5/10/15 之誤差分佈實況；補列信噪比高斯尾部單一位元錯誤率積分式 (10)；將突觸損毀定量表述降格為原文之非對稱突觸（信噪比降 $1/\sqrt{2}$）、二值截斷（信噪比降 $\sqrt{2/\pi}$）及隨突觸失效平緩退化之 fail-soft 質性分析。證據表見 wiki/evidence/1982-hopfield-network.md。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新回核論文頁 Card 4 與 PNAS p. 2557：非對稱連結及權重截斷的信噪比分析有原文依據，但「隨突觸失效增加而平緩退化」未見隨機失效實驗支持；建議重開為 open。
 - **複核**：2026-11-10，Codex by OpenAI（GPT-6）。更正前一行回核理由：Hopfield 原文 p. 2557 右欄確實以分析描述隨突觸失效而呈現 fail-soft，不能因未報不同失效比例的實驗而稱原文完全未支持此質性描述。同段原文寫信噪比與錯誤率皆緩慢上升，與前述信噪比下降以及 Wiki 現寫的下降方向存在待釐清差異；修訂時保留分析與實驗的區分，不應直接刪除有來源的 fail-soft。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。回看原文 pp. 2556–2557 及 Fig. 2，將 $n=5$ 的「零錯誤」改為原文的「幾乎總是」；區分單向連接模擬與平緩退化分析，記錄原文信噪比方向的內部張力，不推定作者原意；同步更新證據表及卡片用詞。頁面 verification 改為 partial。
 
 ## 1992 Aghion–Howitt 創造性破壞
 
