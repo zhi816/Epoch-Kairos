@@ -6,6 +6,7 @@ award_year: 2023
 timeline_year: 2023
 authors: "Surangika Ranathunga, En-Shiun Annie Lee, Marjana Prifti Skenduli, Ravi Shekhar, Mehreen Alam, Rishemjit Kaur"
 venue: "ACM Computing Surveys, 55(11), 229:1-229:37"
+venue_short: "ACM Comput. Surv."
 domain: "ai"
 domain_tags: ["#自然語言處理", "#深度學習", "#人工智慧"]
 concepts: ["low-resource-machine-translation"]

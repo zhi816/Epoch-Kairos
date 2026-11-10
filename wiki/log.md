@@ -1868,3 +1868,13 @@
   - TD-012 論文頁封面研究語言標籤：`tools/paper_template.html` 之 `.cover .lang` 比照卡片牆改為固定一行、`max-width: 58cqw`、超出以省略號截斷；`tools/build_paper_prototype.py` 為標籤加上 `title`，滑過顯示完整語言。`verify_page.js` 新增「研究語言標籤 1 行且未壓到代表星」一項（以文字範圍量行數；把 Xia 頁樣式暫改回舊樣式時量得 2 行、壓到代表星，會判 FAIL）。`DESIGN.md` 第四章記錄此決定。重建全部 37 個論文頁原型，自我檢查皆 ERROR 0；以 `verify_page.js` 抽驗 Xia（截斷）、Liao、FormosanBench、LIGO，皆 PASS，Xia 封面截圖確認標籤一行、代表星未被壓到。
   - TD-013 Card 3 無公式模式新增第四類「原文僅有資料處理公式」（篩選、切分、抽樣、統計用）：更新 `card-03-secret.md` 第四節第 5 條（新增一列、理由前綴、評估與資料處理公式不寫成區塊公式、判斷是否為核心機制之問法）、`file-format.md`、`SKILL.md` 第二節第 4 條、`check_cards.py`（理由前綴與提示）、`paper-pipeline` 之 `intake.md`、`AGENTS.md` 第七章第 3 節 Card 3 例外與 `DESIGN.md` 第五章。`2023-low-resource-nmt-survey-ranathunga` 回原文確認式 (1)（p. 229:22）只用於以四分位距篩選離群語言，無公式理由改為新前綴；`2025-paiwan-bunun-morphology-mt-wu` 之理由已同時寫明 BLEU 與 Dice 係數，符合新規則，不改。
   - 檢查：`check_cards.py` 全部 37 個卡片檔 ERROR 0；`build_home.py --check` 一致；`lint_wiki.py` ERROR 0。
+
+## [2026-11-10 12:04] update | 三篇論文補期刊簡稱 venue_short | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：完成 TD-015（條目已刪除）。依 `paper-card-writer` 之 `references/paper-page.md` 第三節，為首頁卡片牆雙年份被截斷之三篇論文填入 `venue_short`：
+  - `2023-jwst-massive-galaxies`：`Nat Astron`（Crossref `short-container-title`）。
+  - `2026-hybrid-dictionary-rag-llm-paiwan-wang`：`Eng. Proc.`（Crossref 無 `short-container-title`；採 MDPI 於原文 PDF 首頁引用格式自印之刊名縮寫「Eng. Proc. 2025, 120, 52」）。
+  - `2023-low-resource-nmt-survey-ranathunga`：`ACM Comput. Surv.`（Crossref `short-container-title`，與 ISO 4 縮寫相同）。ACM 之「CSUR」無法自第一手來源查證（ACM DL 拒絕自動讀取），故未採用；此篇卡片牆雙年份仍以省略號截斷，但截斷較原全名短。
+  - 重建三篇論文頁原型（自我檢查皆 ERROR 0、WARN 0）與首頁 `web/index.html`；`build_home.py --check` 一致；`lint_wiki.py` ERROR 0。
+  - `verify_wall.js`（全部卡片，桌面 1440 x 900 與手機 375 x 812、群星與我的星系）：結果 PASS，WARN 22 項；JWST 與排灣語兩篇之雙年份截斷 WARN 已消失，Ranathunga 仍有 1 項（每尺寸），其餘 WARN 為他篇研究語言標籤與會議名截斷，未變動。

@@ -69,8 +69,3 @@
 - **完成條件**：該篇 `pipeline_status.py <slug>` 九步皆 OK，結束碼 0；交付說明依 SKILL.md 第七節逐項填寫；試跑中發現之缺口皆已修正或登記；該篇從 TD-001 移除。
 - **負責**：Claude Code by Anthropic（2026-11-10 起，試跑 `raw/1985-macroscopic-quantum-tunneling.pdf`，預覽埠 8781）。
 - **來源**：使用者指示（2026-11-10：新流程先建立待辦，之後試跑）；2026-11-10 登記，Claude Code by Anthropic。
-
-### TD-015 | open | wiki | 為三篇論文補期刊簡稱 venue_short
-- **內容**：首頁卡片牆之雙年份因期刊名過長被截斷（`verify_wall.js` WARN）：`2023-jwst-massive-galaxies`（Nature Astronomy）、`2026-hybrid-dictionary-rag-llm-paiwan-wang`（Engineering Proceedings）、`2023-low-resource-nmt-survey-ranathunga`（ACM Computing Surveys）。依 `paper-card-writer` 之 `references/paper-page.md` 第三節，查 Crossref（`https://api.crossref.org/works/<DOI>`）之 `short-container-title` 或該刊通用縮寫，有則填入論文頁 `venue_short`，沒有則保留截斷。2026-11-10 協調者查詢時 Crossref 連線逾時，未能完成。注意：論文頁之 `doi_url` 以 CRLF 結尾，以 shell 擷取 DOI 時須先去掉 `\r`。
-- **完成條件**：三篇各自已填 `venue_short` 或註明無通用縮寫；有填者重建論文頁原型（`python tools/build_paper_prototype.py <slug>`）與首頁（`python tools/build_home.py`），`build_home.py --check` 一致，`verify_wall.js` 不再對已填者報期刊名截斷。
-- **來源**：TD-009 第三批上架結果（2026-11-10）；2026-11-10 登記，Claude Code by Anthropic。

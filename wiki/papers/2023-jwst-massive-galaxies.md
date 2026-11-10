@@ -6,6 +6,7 @@ award_year: 2023
 timeline_year: 2023
 authors: "Michael Boylan-Kolchin"
 venue: "Nature Astronomy, 7(6), 731-735"
+venue_short: "Nat Astron"
 domain: "physics"
 domain_tags: ["#宇宙學", "#天體物理"]
 concepts: ["multi-messenger-astrophysics"]

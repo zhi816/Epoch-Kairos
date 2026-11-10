@@ -6,6 +6,7 @@ award_year: 2026
 timeline_year: 2026
 authors: "Reen-Cheng Wang, Cheng-Kai Yang, Tun-Chieh Yang, Yi-Xuan Tseng"
 venue: "Engineering Proceedings, 120(1), 52:1-52:9"
+venue_short: "Eng. Proc."
 domain: "ai"
 domain_tags: ["#自然語言處理", "#人工智慧", "#計算語言學"]
 concepts: ["formosan-computational-linguistics", "low-resource-machine-translation"]
