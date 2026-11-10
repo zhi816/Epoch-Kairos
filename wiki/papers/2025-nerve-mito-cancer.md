@@ -10,7 +10,7 @@ domain: "bio"
 domain_tags: ["#神經科學", "#生物科技", "#分子生物"]
 concepts: ["neural-circuits", "programmable-cellular-engineering"]
 status: "wiki"
-verification: "verified"
+verification: "issues"
 my_focus: false
 doi_url: "https://doi.org/10.1038/s41586-025-09176-8"
 key_papers:

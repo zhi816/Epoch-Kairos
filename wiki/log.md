@@ -2001,3 +2001,7 @@
 - **模型版本**：GPT-6（思考程度：max，依使用者指示；執行環境未提供更細模型版本）
 - **具體變更**：依 wiki-content-audit 回核 EK-094–123 的問題描述、論文頁、卡片、證據表及第一手來源；確認 fixed：EK-094–098、EK-100–123，共 29 筆；建議重開並將 EK-099 改為 open；未能核實：0 筆。EK-099 舊冪律與運算量公式雖已刪，現行 Sora Card 3 與論文頁仍有 patch 數量、patch embedding、clean-patch diffusion 公式；OpenAI 報告明言未提供模型與實作細節。已更新 wiki/issues.md 與 wiki/evidence/2024-sora-world-simulator.md，論文頁 verification 為 issues。技能改善建議：wiki-content-audit 加入修正後對新增／替代公式的全頁回查；paper-card-writer 明確標記原文公式與 Wiki 推導式。
 
+## [2026-11-10 19:47] audit | 五批 issue 複核整合與新增追蹤 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：整合使用者提供的五批、原有 153 筆複核回報：各審查者合計建議維持 fixed 131 筆、重開 22 筆；針對有爭議之項目另核對目前頁面與原始資料，未宣稱獨立重查全部 153 筆。將 EK-035、036、039、040、044、045、047–049、052、053、150 改為 open，並補註 EK-002、023 之證據解讀。EK-062、074、078 的原缺失已處理，另發現之缺口分別登記 EK-190–192；Fragment-Shot 論文所列參數與模型官方資料之落差及證據表缺值登記 EK-193。EK-099 與 EK-035 的公式來源問題部分重疊；EK-157 不可辨字元仍不猜測。更新受影響論文／概念頁的 verification；依狀態重建五篇既有論文頁，建置檢查皆 ERROR 0、WARN 0；瀏覽器驗證受阻，登記 TD-021。lint_wiki.py 為 ERROR 0、WARN 24。依 TD-007，本次未修改證據表，亦未修改 Skill。

@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#自然語言處理", "#深度學習", "#人工智慧"]
 concepts: ["low-resource-machine-translation"]
 status: "published"
-verification: "partial"
+verification: "issues"
 my_focus: true
 focus_role: "international"
 focus_languages: ["亞塞拜然語", "白俄羅斯語", "加利西亞語", "斯洛伐克語"]

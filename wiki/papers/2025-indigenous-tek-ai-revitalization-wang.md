@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#計算語言學", "#社會學"]
 concepts: ["formosan-computational-linguistics"]
 status: "published"
-verification: "verified"
+verification: "issues"
 my_focus: true
 focus_role: "international"
 focus_languages: ["排灣語"]

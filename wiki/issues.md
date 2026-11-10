@@ -2,7 +2,7 @@
 
 > 本檔登記查核發現之待修正事項，格式與狀態規則見 [AGENTS.md](../AGENTS.md) 第七章第 4 節。標題五段依序為：編號、狀態（`open` / `fixed` / `wontfix`）、相對於 `wiki/` 之檔案、位置、判定。修正時就地改狀態並追加「處理」行，不得刪除條目。
 >
-> EK-001 至 EK-056 係於 2026-11-09 自 [wiki/log.md](log.md) 2026-11-08 21:40 至 23:36 之 audit 條目逐筆轉錄（原查核者均為 Codex by OpenAI，EK-031 例外），問題描述與來源沿用原條目，轉錄時未重新核對原文。修正前須依 `wiki-content-audit` 回原文確認，不得只照本檔描述改寫。EK-057 至 EK-060 為轉錄同日以 `crossref_check.py` 查得之 DOI 問題。EK-061 至 EK-087 於 2026-11-09 00:55 之 audit 逐筆登記（Antigravity by Google DeepMind）。EK-088 至 EK-090 為同日核對證據表採用版本與先前修正引用時發現之錯置（Claude Code / DeepSeek Harness）。EK-091 至 EK-123 為 2026-11-09 至 2026-11-10 第一、二批卡片回填查核登記（Claude Code by Anthropic 等）。EK-130 至 EK-142、EK-150 至 EK-160、EK-170 至 EK-175 為 2026-11-10 第三批卡片回填抽查與概念頁同步登記（A、B、C 組依保留區段取號）。全庫 153 筆中，本次 GPT-1 對指定 31 筆回核後，EK-002、EK-008、EK-014、EK-018、EK-022、EK-023 重開為 open；其餘 147 筆維持 fixed。條目依論文分節排列，編號順序不因分節而重排。
+> EK-001 至 EK-056 係於 2026-11-09 自 [wiki/log.md](log.md) 2026-11-08 21:40 至 23:36 之 audit 條目逐筆轉錄（原查核者均為 Codex by OpenAI，EK-031 例外），問題描述與來源沿用原條目，轉錄時未重新核對原文。修正前須依 `wiki-content-audit` 回原文確認，不得只照本檔描述改寫。EK-057 至 EK-060 為轉錄同日以 `crossref_check.py` 查得之 DOI 問題。EK-061 至 EK-087 於 2026-11-09 00:55 之 audit 逐筆登記（Antigravity by Google DeepMind）。EK-088 至 EK-090 為同日核對證據表採用版本與先前修正引用時發現之錯置（Claude Code / DeepSeek Harness）。EK-091 至 EK-123 為 2026-11-09 至 2026-11-10 第一、二批卡片回填查核登記（Claude Code by Anthropic 等）。EK-130 至 EK-142、EK-150 至 EK-160、EK-170 至 EK-175 為 2026-11-10 第三批卡片回填抽查與概念頁同步登記（A、B、C 組依保留區段取號）。原有 153 筆條目與後續複核新增條目之狀態，以各條標題為準。條目依論文分節排列，編號順序不因分節而重排。
 
 ---
 
@@ -20,6 +20,7 @@
 - **發現於**：wiki/log.md [2026-11-08 21:46] audit、[2026-11-08 23:36] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 p. 2556–2557 逐項確認後重寫 Card 4：改述隨機型態具「偽正交性（pseudoorthogonality）」而非嚴格正交；容量 0.15N 註明為嚴重錯誤前之近似上限，並列出 N=100 時 n=5/10/15 之誤差分佈實況；補列信噪比高斯尾部單一位元錯誤率積分式 (10)；將突觸損毀定量表述降格為原文之非對稱突觸（信噪比降 $1/\sqrt{2}$）、二值截斷（信噪比降 $\sqrt{2/\pi}$）及隨突觸失效平緩退化之 fail-soft 質性分析。證據表見 wiki/evidence/1982-hopfield-network.md。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新回核論文頁 Card 4 與 PNAS p. 2557：非對稱連結及權重截斷的信噪比分析有原文依據，但「隨突觸失效增加而平緩退化」未見隨機失效實驗支持；建議重開為 open。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。更正前一行回核理由：Hopfield 原文 p. 2557 右欄確實以分析描述隨突觸失效而呈現 fail-soft，不能因未報不同失效比例的實驗而稱原文完全未支持此質性描述。同段原文寫信噪比與錯誤率皆緩慢上升，與前述信噪比下降以及 Wiki 現寫的下降方向存在待釐清差異；修訂時保留分析與實驗的區分，不應直接刪除有來源的 fail-soft。
 
 ## 1992 Aghion–Howitt 創造性破壞
 
@@ -185,6 +186,7 @@
 - **發現於**：wiki/log.md [2026-11-08 22:35] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 5 典範轉移段落：明確將核孔複合體（NPC）等超大複合體結構解析標記為 AlphaFold 預測模型與低解析度冷凍電鏡（cryo-EM/ET）數據結合之「整合建模（Integrative Modeling）」應用，非單純直接預測之結果。證據表見 wiki/evidence/2021-alphafold2.md。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新核對 Card 5 與 Mosalaganti et al. 2022 Science（DOI: 10.1126/science.abm9326）：整合建模的歸因已修正，但該來源解析的是 NPC 細胞質環，不能支持頁面所稱完整逾千亞基 NPC 巨型結構已被攻克；建議重開為 open。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。更正前一行書目：DOI 10.1126/science.abm9326 是 Fontana 等的細胞質環研究；Mosalaganti 等為另一篇研究，DOI 10.1126/science.abm9506，報告人類核孔骨架超過九成的整合模型。核對頁面所指範圍時須分別查兩篇，不可混用作者與 DOI，也不可將細胞質環研究視為完整核孔的證據。
 
 ## 2023 DrugCLIP
 
@@ -256,17 +258,19 @@
 
 ## 2024 Sora
 
-### EK-035 | fixed | papers/2024-sora-world-simulator.md | Card 3 | 原文未支持
+### EK-035 | open | papers/2024-sora-world-simulator.md | Card 3 | 原文未支持
 - **問題**：把 VAE 具體架構、3D RoPE、adaLN-Zero 與 epsilon-prediction 當作 Sora 已知實作。OpenAI 報告未提供實作細節，並說模型訓練預測原始乾淨 patch，與 epsilon-MSE 公式不符；二手反向推測須明標推測。
 - **來源**：[OpenAI 技術報告](https://openai.com/index/video-generation-models-as-world-simulators/)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回 OpenAI 技術報告與 DiT、綜述原文核實修訂 Card 3：明確劃分 OpenAI 官方公開機制（時空壓縮網路、時空圖塊 Token 化、預測原始乾淨圖塊）與學界推測（adaLN-Zero 源自 Peebles & Xie 2023，3D-RoPE 與 3D-VAE 細節源自 Liu et al. 2024）；公式依官方報告明示更新為預測乾淨圖塊目標（$\hat{U}_0$），並對比經典 DiT 之 $\epsilon$ 預測目標。證據表見 wiki/evidence/2024-sora-world-simulator.md。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。OpenAI 報告未公開模型實作細節；Card 3 仍把 adaLN-Zero 與影片重標註並列為引導生成的機制，且圖塊映射、乾淨圖塊損失與 adaLN 均列為報告未提供之區塊公式。EK-099 所指的舊冪律式已刪，新公式缺口在此合併追蹤。
 
-### EK-036 | fixed | papers/2024-sora-world-simulator.md | Card 1 | 過度表述
+### EK-036 | open | papers/2024-sora-world-simulator.md | Card 1 | 過度表述
 - **問題**：將遮擋後維持物體存在寫成一般穩定能力，報告措辭為「常能但並非總是」並明列物理模擬限制；即時互動與狀態記憶之說法亦超出原文示例。Card 5、6 之世界模型與隱式幾何重建描述應保留為有限能力觀察或詮釋。
 - **來源**：同 EK-035
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit、[2026-11-08 22:35] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。對照 OpenAI 官方報告修訂 Card 1、Card 4 與 Card 5：Card 1 將遮擋存在性精確限定為「常能（但並非總是）維持短暫被遮擋物體時空存在感」，並補列報告明示之物理交互局限；Card 4 刪除 Minecraft 具備即時互動與完備狀態記憶之表述，改為提示詞零樣本渲染動態畫面，並客觀補列玻璃碎裂與吃食物咬痕等物理失敗模式；Card 5 將世界模型描述限定為初步探索與有限能力湧現，強調高維視覺統計擬合與顯式因果物理引擎之本質差異。證據表見 wiki/evidence/2024-sora-world-simulator.md。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。Card 1 的限定語已補，但 Card 5 仍將隱藏層的三維幾何關聯寫成既定事實，Card 6 稱模型被迫反推世界幾何與物理規則；報告展示的是有限生成能力與失敗案例，未直接驗證這些內部機制。
 
 ## 2025 DeepSeek-R1
 
@@ -284,17 +288,19 @@
 
 ## 2025 神經元粒線體與癌症
 
-### EK-039 | fixed | papers/2025-nerve-mito-cancer.md | Card 4 | 原文不符
+### EK-039 | open | papers/2025-nerve-mito-cancer.md | Card 4 | 原文不符
 - **問題**：測序方法、實驗模型與轉移比例被混併；原文為分選癌細胞後之 Nanopore 分析，不是單細胞長讀長測序。
 - **來源**：[原文](https://pmc.ncbi.nlm.nih.gov/articles/PMC12328229/)
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。對照 Nature 2025 原文 §Mitochondrial genome tracking（p. 254）與 Fig. 2h–j 核實 Card 4：更正實驗流程為共培養後經 FACS 螢光活化分選純化人類癌細胞，隨後進行體外 Nanopore 長讀長定序與物種特異性 qPCR，糾正誤寫為「單細胞長讀長定序」之錯誤。證據表見 wiki/evidence/2025-nerve-mito-cancer.md。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。Nature 原文 Fig. 2f–g 與方法中的 Nanopore 分析為腫瘤組織分選出的 4T1 細胞及變異點附近 420 bp 片段；目前 Card 4 卻合併人類 MDA-MB-231 共培養並稱定序檢出完整小鼠粒線體基因組及其轉錄、複製，須拆開實驗與證據。
 
-### EK-040 | fixed | papers/2025-nerve-mito-cancer.md | Card 3 | 原文未支持
+### EK-040 | open | papers/2025-nerve-mito-cancer.md | Card 3 | 原文未支持
 - **問題**：粒線體轉移—OCR 線性增益、轉移灶富集等符號模型未見於原文，卻呈現為本文模型；須標為教學推導並註明假設。
 - **來源**：[封存原文](../raw/2025-nerve-mito-cancer.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 Card 3：在質子動力勢、OCR 線性增益與轉移富集模型前新增數理模型說明，明確標記其為基於 Mitchell 化學滲透假說與群體選擇概率建立之教學唯象推導（Didactic Theoretical Models），非原文直接擬合之實驗方程。證據表見 wiki/evidence/2025-nerve-mito-cancer.md。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。Card 3 雖已標示教學模型，仍有非本篇原文的區塊公式；現行 wiki-content-audit 要求區塊公式逐條出自原文或補充資料，Wiki 推導限行內或文字並須交代假設及依據。
 
 ### EK-041 | fixed | papers/2025-nerve-mito-cancer.md | Card 6 | 原文未支持
 - **問題**：推論癌細胞偽裝成受損組織、誘使神經元依修復程序供應粒線體；原文支持轉移與富集，未證明此機制，應標作假說或比喻；治療建議亦非本文已驗證療效。
@@ -324,17 +330,19 @@
 - **發現於**：wiki/log.md [2026-11-08 21:40] audit、[2026-11-08 21:57] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂腦機介面與神經編碼概念頁：釐清 Hopfield (1982) 為群體狀態空間吸引子提供物理啟發，而現代 BCI 之神經流形解碼源自運動皮質實證降維建模脈絡（如 Churchland et al. 2012），兩者在群體狀態空間幾何上深層呼應而非直接數學繼承。建立證據表 wiki/evidence/brain-machine-interface.md。
 
-### EK-044 | fixed | concepts/brain-machine-interface.md | 跨學科延伸 | 過度表述
+### EK-044 | open | concepts/brain-machine-interface.md | 跨學科延伸 | 過度表述
 - **問題**：將雙光子讀取與全息光遺傳寫入概括為「萬級神經元的無損閉環互動」；原始研究為光刺激選定個別細胞、同時記錄數千神經元，未驗證萬級同時控制、無損或臨床可用。
 - **來源**：[原始研究](https://www.nature.com/articles/s41593-026-02350-9)
 - **發現於**：wiki/log.md [2026-11-08 23:21] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂腦機介面概念頁全光學 BCI 段落：將實驗規模客觀限定為在動物模型中記錄數千神經元並全息光刺激數十至數百個特定細胞之單細胞級閉環調控，刪除「萬級神經元無損閉環互動」之過度表述，交代光散射深度與光熱耐受等客觀物理瓶頸。建立證據表 wiki/evidence/brain-machine-interface.md。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。萬級與無損臨床的舊表述已收斂；但目前以單句將數千細胞記錄、數十至數百細胞刺激和單細胞級閉環調控合併，證據表所列研究尚未逐項支持同一實驗的全部條件。閉環研究存在，仍須為這項具體規模和回饋主張補直接來源或拆開。
 
-### EK-045 | fixed | concepts/generative-world-models.md | 支柱與時間線 | 歸因／版本錯置
+### EK-045 | open | concepts/generative-world-models.md | 支柱與時間線 | 歸因／版本錯置
 - **問題**：將 Hopfield/Hinton 能量模型合標為 1982（Boltzmann machine 學習論文為 Ackley、Hinton、Sejnowski 1985），並把 Hopfield、Boltzmann、score matching、擴散模型與 Transformer 寫成直接奠基鏈；須分開作者年代並改標為概念類比或補中間研究。
 - **來源**：[Hopfield 封存原文](../raw/1982-hopfield-network.pdf)、[Ackley et al. 1985](https://doi.org/10.1207/s15516709cog0901_7)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit、[2026-11-08 22:44] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂生成式世界模型概念頁：分開標註 Hopfield (1982) 李亞普諾夫能量函數與 Ackley、Hinton、Sejnowski (1985) 波茲曼機學習演算法之年代；將擴散模型、分數匹配與 Transformer 注意力之聯繫明確界定為統計物理能量景觀與連續狀態空間之深層理論類比與現代聯想記憶等價性，刪除直接線性奠基之過度概括。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。Hopfield 與 Boltzmann 年代已拆開；目前支柱仍稱該概念視角啟發分數匹配等方法，現有兩篇來源不足以建立所述歷史因果鏈，應補直接承接證據或明確改為有限的概念類比。
 
 ### EK-046 | fixed | concepts/generative-world-models.md | DeepSeek-R1 段 | 歸因／版本錯置
 - **問題**：將「無須人工示範」歸給 DeepSeek-R1（實為 R1-Zero），並把可驗證獎勵從原文之數學與程式任務推廣到任意驗證器與科學探索代理，應標為展望。
@@ -342,23 +350,26 @@
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂生成式世界模型概念頁 DeepSeek 段落：明確將「無須人工示範」限定於 R1-Zero 純 RL 模型，說明完整版 R1 結合冷啟動、多階段 SFT 與二次 RL，並將可驗證獎勵（RLVR）向任意領域驗證器與自主科學探索代理之推廣標明為重大未來展望。證據表見 wiki/evidence/2025-deepseek-r1.md。
 
-### EK-047 | fixed | concepts/quantum-error-correction.md | 支柱 | 歸因／版本錯置
+### EK-047 | open | concepts/quantum-error-correction.md | 支柱 | 歸因／版本錯置
 - **問題**：把 Hopfield 1982 列為表面碼／色碼隨機鍵 Ising 映射之直接來源；映射可追溯至 Dennis et al. 2002，其原文未引用 Hopfield，須分開數學類比與歷史來源。
 - **來源**：[Dennis et al. 2002](https://arxiv.org/abs/quant-ph/0110143)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂容錯量子計算與量子糾錯碼概念頁：明確將拓撲表面碼容錯閾值向 2D 隨機鍵伊辛模型（RBIM）Nishimori 線相變之精確數學映射歸因於 Dennis et al. (2002) 之理論工作，將 Hopfield 能量景觀與量子糾錯釐清為統計物理相變理論在神經計算與量子拓撲之平行應用，糾正直接歷史繼承之歸因錯置。建立證據表 wiki/evidence/quantum-error-correction.md。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。現行句子的文法主詞為伊辛與自旋玻璃理論，不能直接引述成「Hopfield 直接構成映射」；但該段標題為 1982 且只連 Hopfield，未在正文區分表面碼映射研究的歷史來源與概念類比，仍須澄清並定位 Dennis 等研究的適用條件。
 
-### EK-048 | fixed | concepts/quantum-error-correction.md | 定義段 | 原文不符
+### EK-048 | open | concepts/quantum-error-correction.md | 定義段 | 原文不符
 - **問題**：稱以橫向閘即可阻止錯誤擴散並實現「任意深度」演算法；依 Eastin–Knill 定理，可偵測錯誤之非平凡量子碼不存在通用橫向邏輯閘集合，須說明其他非橫向或測量型資源。
 - **來源**：[Eastin–Knill](https://arxiv.org/abs/0811.4262)
 - **發現於**：wiki/log.md [2026-11-08 21:57] audit、[2026-11-08 22:00] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂容錯量子計算概念頁核心定義：依據 Eastin–Knill 定理，說明任何可偵測錯誤之非平凡量子碼均不存在通用橫向邏輯閘集合；補列魔術態蒸餾（Magic State Distillation）、格子手術或代碼切換以注入非橫向非 Clifford 資源之機制，糾正原先「單憑橫向閘即可實現任意深度演算法」之定理違背。建立證據表 wiki/evidence/quantum-error-correction.md。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。定義仍可能使讀者理解為只靠橫向閘即可通用容錯計算，缺少非橫向或測量型資源。Eastin–Knill 限制的是通用橫向閘集合；不可把「任意深度」本身等同於通用性。
 
-### EK-049 | fixed | concepts/quantum-error-correction.md | 跨學科延伸 | 過度表述
+### EK-049 | open | concepts/quantum-error-correction.md | 跨學科延伸 | 過度表述
 - **問題**：稱可重構中性原子陣列已能直接實作 3D／4D 拓撲碼與常數編碼率 qLDPC；所引 2024 實驗將 qLDPC 列為後續方向，未報告已實作。
 - **來源**：[Nature 原文](https://www.nature.com/articles/s41586-023-06927-3)
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂容錯量子計算概念頁跨學科延伸：客觀交代中性原子處理器實驗實作之編碼為色碼與三維 [[8,3,2]] 碼，將常數編碼率 qLDPC 碼標明為該實驗展望之核心未來方向，刪除「已在實驗室直接實作 qLDPC」之過度表述。建立證據表 wiki/evidence/quantum-error-correction.md。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。概念頁仍將可重構原子陣列之 3D／4D 拓撲碼與常數編碼率 qLDPC 寫成已在實驗室直接實作；所引 Bluvstein 等研究將 qLDPC 作為未來改善編碼效率的方向。
 
 ### EK-050 | fixed | concepts/multi-messenger-astrophysics.md | 核心定義 | 原文不符
 - **問題**：把深空紅外線列為與重力波、微中子、宇宙射線並列之獨立信使；紅外線屬電磁波譜。定義與後文「三大信使」亦不一致，須統一分類（光、粒子、重力波）。
@@ -372,17 +383,19 @@
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂制度演化與宏觀經濟動態概念頁：明確指出 AJR (2001) 係在排他性限制（Exclusion Restriction）假設下以歷史死亡率作為產權制度的工具變數，實證分離出制度環境之顯著因果貢獻；刪除將其寫成排除一切地理作用之「唯一根本原因」的過度表述，客觀呈現排他性外生性與地理直接影響之學術爭鳴。建立證據表 wiki/evidence/institutions-and-macro-dynamics.md。
 
-### EK-052 | fixed | concepts/ai-for-structural-biology.md | 跨學科延伸 | 原文不符
+### EK-052 | open | concepts/ai-for-structural-biology.md | 跨學科延伸 | 原文不符
 - **問題**：稱 DrugCLIP 可「數秒」篩選百億級分子；原文為 6 billion 分子檢索少於 10,000 秒，GenomeScreenDB 規模約 10,000 個人類蛋白質、5 億化合物，全基因組篩選約 24 小時（8 張 A100）。
 - **來源**：[DrugCLIP 封存原文](../raw/2023-drugclip.pdf)、[論文紀錄](https://pubmed.ncbi.nlm.nih.gov/41505557/)、[計算配置](https://www.biorxiv.org/content/10.1101/2024.09.02.610777v3.full)
 - **發現於**：wiki/log.md [2026-11-08 22:44] audit、[2026-11-08 23:21] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 AI 驅動之結構生物學與分子設計概念頁：更正 DrugCLIP 單靶點 60 億 Enamine 分子檢索耗時為小於 10,000 秒（約 2.78 小時），刪除「數秒內完成百億級初篩」之誇大陳述，並客觀交代 GPU 叢集一日內完成全基因組尺度篩選之實況。建立證據表 wiki/evidence/ai-for-structural-biology.md。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。舊的數秒篩百億分子已刪，概念頁的「小於 2.8 小時」是由小於 10,000 秒換算出的保守上界，數學上成立；但未註明預先編碼並存於記憶體的條件、換算依據，也未交代原文同句括註約 30 小時與秒數矛盾。
 
-### EK-053 | fixed | concepts/ai-for-structural-biology.md | 跨學科延伸 | 原文未支持
+### EK-053 | open | concepts/ai-for-structural-biology.md | 跨學科延伸 | 原文未支持
 - **問題**：把 AlphaFold 3＋FEP 描述成已實證之全原子誘導契合精排管線；AF3 原文報告的是複合體結構預測基準，應標為待驗證提案並另引直接驗證研究。
 - **來源**：[AlphaFold 3 原文](https://www.nature.com/articles/s41586-024-07487-w)
 - **發現於**：wiki/log.md [2026-11-08 23:21] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。修訂 AI 驅動之結構生物學與分子設計概念頁：明確將 AlphaFold 3 複合體預測與自由能微擾（FEP）結合標明為計算生物學界正在探索的前沿整合策略，刪除將其寫成已實證成熟精排管線之過度表述。建立證據表 wiki/evidence/ai-for-structural-biology.md。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。概念頁已將成熟管線降為探索，但其「計算生物學界正在探索」AF3 與 FEP 結合的主張仍只由 AF3 原文及一般 FEP 文獻支撐，缺少直接例證；不得因此推定這類研究不存在，應補合適的一手研究或明確標為提案。
 
 ### EK-054 | fixed | concepts/programmable-cellular-engineering.md | 跨學科延伸 | 過度表述
 - **問題**：「已能直接在患者肝臟、視網膜與造血幹細胞中修正致病突變」合併不同遞送方式與證據階段：Casgevy 為體外編輯後回輸；EDIT-101 為小型 1–2 期試驗；肝臟 LNP 鹼基編輯為單一新生兒 N-of-1 個案。另須同步校正自 CRISPR 論文頁重述之 PAM 與衍生技術歸因（見 EK-012、EK-015）。
@@ -813,11 +826,12 @@
 - **發現於**：第二批卡片回填 C 組回報與第三批撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。回原文核對後：公式改照原文作單豎線，拆成兩行 aligned 並註明「§3.2 正文內嵌式，無式號，p. 12950」；Card 5 補列公開資源（§1）與作者所述之未來方向（§5、§4.3），作者自述限制補頁碼；證據表逐一列出表 1、3、4、5 數值並補登上述各項。另依 `cover.md` 第二節第 7 條改寫 `card_line`（原句切不出 3 行以內之封面斷行）。頁面 `verification` 改為 `partial`。
 
-### EK-150 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 4 | 原文不符
+### EK-150 | open | papers/2007-woodford-inflation-dynamics.md | Card 4 | 原文不符
 - **問題**：（1）Card 4 第 94 行標題寫「要素市場全球化（$\tilde{\kappa}_H \to 0$）之極限穩健性證明」，並稱國內產出缺口對邊際成本之影響趨近於零、名目工資與物價須經匯率與利率平價錨定。原文 §3.3 為 $\tilde{\kappa}_H \equiv \kappa(1-\gamma) + \xi\gamma$，不趨近於零；只有 $\nu + \sigma^{-1} > 1$ 時才小於封閉經濟之 $\kappa$，在 Rotemberg & Woodford (1997) 校準下反而較大，作者結論為整合可能使菲利浦曲線變陡；原文未談經匯率與利率平價錨定。（2）第 92 行之 $\beta = 0.99$ 原文未寫；「CPI 通膨初期反應因匯率傳導而更為靈敏」之「因匯率傳導」原文未說，且漏了作者「至少在此校準例中」之限定。（3）第 93 行稱外國衝擊「完全可以被本國貨幣政策有效對沖」，原文結論為本國央行仍可單獨穩定本國通膨、不需國際協調。（4）第 96–99 行把早於本篇之 Eggertsson & Woodford (2003)、Hall (2005) 列為「後續」；Eggertsson & Woodford 頁碼誤為 139-211（Crossref 為 139-233）；Smets & Wouters (2007) 稱成為 FRB/US 等央行標準系統、Eggertsson & Woodford「直接指導」2008 與 2020 年之政策、Hall「解決了 Shimer 謎題」，三者摘要皆無此說。
 - **來源**：`raw/2007-woodford-inflation-dynamics.pdf`，PDF pp. 14、24、60–61、71–73、75；doi:10.1257/aer.97.3.586、doi:10.1353/eca.2003.0010、doi:10.1257/0002828053828482（Crossref 書目與摘要）。
 - **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依原文改寫 Card 4 四點（參數、Figure 6、外溢與結論、全球要素市場之 $\tilde{\kappa}_H$），刪去 $\beta = 0.99$；相關研究改標「相關研究（非本篇成果）」並註明兩篇早於本篇，各附 DOI，描述改依摘要，改正頁碼。證據表逐項重登。
+- **複核**：2026-11-10，Codex by OpenAI（GPT-6）。原問題包括將早於本篇的研究誤列為後續；論文頁已改為相關研究，但[證據表](evidence/2007-woodford-inflation-dynamics.md) Card 4 的同一列仍將 Eggertsson & Woodford (2003)、Hall (2005) 與 Smets & Wouters (2007) 整列標為「後續研究」，與該列的「非後續」說明矛盾。證據表類型的處置依 TD-007 待決，本次未修改證據表。
 
 ### EK-151 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 5 | 原文未支持
 - **問題**：Card 5 三點（本篇與 Woodford 系列理論「終結了貨幣主義舊框架」、「直接啟發」聯準會 2012 年點陣圖、「及時化解政策恐慌，證明……」）均無出處；本篇發表於 2007 年，依 `wiki-content-audit` 須有至少 3 筆附出處之後續研究，頁面一筆也沒有（Card 4 所列兩篇早於本篇）。
@@ -980,3 +994,23 @@
 - **來源**：`wiki/papers/2007-woodford-inflation-dynamics.md` Card 1、Card 4、Card 5（依原文修正後）。
 - **發現於**：第三批卡片回填 B 組回報，協調者核對（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依修正後論文頁改寫條目並註明結論之性質；概念頁 `verification` 改為 partial。
+
+### EK-190 | open | papers/2021-seediq-chinese-mt-you.md | Card 3 特徵拼接公式 | 原文未支持
+- **問題**：Card 3 將詞嵌入與詞綴特徵的 Wiki 自行形式化寫成區塊公式；頁面已標示「形式化為 Wiki 整理」，但現行規則只允許原文或補充資料的公式置於區塊。這是 EK-062 原先二元前綴公式及詞嵌入歸屬問題以外的新缺口。
+- **來源**：[論文頁](papers/2021-seediq-chinese-mt-you.md) Card 3；[原始學位論文](../raw/my-focus/學長姐論文/賽德克語－中文機器翻譯之研究_游景勝.pdf) §4.1、§4.3；[公式規則](../.agents/skills/wiki-content-audit/SKILL.md) 寫作模式第 3 步。
+- **發現於**：2026-11-10，使用者提供之分組複核，Codex by OpenAI 再查原文。
+
+### EK-191 | open | papers/2019-generalized-data-augmentation-xia.md | 證據表 Card 3 公式列 | 原文不符
+- **問題**：[證據表](evidence/2019-generalized-data-augmentation-xia.md) Card 3 的 Procrustes 約束漏掉左側 W 並有不成對的公式分隔符；論文頁與卡片目前使用的約束為 $W^\top W = I$，須同步修正證據表。此為 EK-074 原先方法與加權目標式問題以外的新缺口。
+- **來源**：[Xia 等原文](https://aclanthology.org/P19-1579.pdf) §3.1，p. 5788；[論文頁](papers/2019-generalized-data-augmentation-xia.md) Card 3。
+- **發現於**：2026-11-10，使用者提供之分組複核，Codex by OpenAI 再查原文。
+
+### EK-192 | open | papers/2025-indigenous-tek-ai-revitalization-wang.md | Card 1 與證據表 | 原文未支持
+- **問題**：Card 1 稱作者為「教授」並稱研究「首創」，證據表將教授職稱歸給原文首頁；原文首頁僅列作者與機構，所查全文的 first 包括研究目標排序等用法，未支持該首創斷言。教授職稱目前未由所列來源核實，不應僅因首頁未列就判定職稱為假。此為 EK-078 原先姓名與架構問題以外的新缺口。
+- **來源**：[原始論文](https://doi.org/10.3390/socsci15010007) 首頁與全文；[證據表](evidence/2025-indigenous-tek-ai-revitalization-wang.md)。
+- **發現於**：2026-11-10，使用者提供之分組複核，Codex by OpenAI 再查原文。
+
+### EK-193 | open | papers/2025-fragment-shot-reasoning-mt-frontull.md | Card 4 模型參數與證據表 | 未能核實
+- **問題**：論文頁列 GPT-3.5 175B、GPT-4o 200B、o1-mini 50B、Llama 3.3 70B、DeepSeek-R1 658B，與本篇原文 §5 所列數字一致，但證據表僅記模型名稱。DeepSeek 官方資料為原始 R1 列出 671B 總參數與 37B 啟用參數，與本篇的 658B 不一致；所查 OpenAI 資料的 175B 是 GPT-3 的數字，不能據此確定 GPT-3.5 的參數量，所查 GPT-4o 與 o1 系統卡亦未核實頁面列出的 200B 與 50B。Meta 的 Llama 3.3 70B 模型卡支持 70B 規模。原研究使用 API，未明確記載服務實例的具體快照；修訂時須保留論文與官方來源的差異，不把未證實直接視為證偽，也不能僅憑官方權重推定當時 API 版本。
+- **來源**：[Frontull 與 Ströhle 原文](https://arxiv.org/html/2505.22293v1) §5 p. 5；[DeepSeek 官方模型資料](https://github.com/deepseek-ai/DeepSeek-R1)；[OpenAI GPT-3 資料](https://openai.com/index/language-models-are-few-shot-learners/)；[GPT-4o 系統卡](https://cdn.openai.com/gpt-4o-system-card.pdf)；[o1 系統卡](https://openai.com/index/openai-o1-system-card/)；[Meta Llama 3.3 70B 模型卡](https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct)。
+- **發現於**：2026-11-10，第五批審查回報，Codex by OpenAI 再核對原文與官方資料。

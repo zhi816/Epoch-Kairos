@@ -5,7 +5,7 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#深度學習", "#強化學習", "#計算機視覺"]
 papers: ["1982-hopfield-network", "2017-attention-is-all-you-need", "2021-alphafold2", "2024-alphafold3", "2024-sora-world-simulator", "2025-deepseek-r1"]
 related_concepts: ["ai-for-structural-biology", "neural-circuits"]
-verification: "partial"
+verification: "issues"
 ---
 
 # 概念：生成式世界模型與擴展定律 (Generative World Models & Scaling Laws)

@@ -80,3 +80,8 @@
 - **完成條件**：依 `paper-pipeline` 完成 S0 至 S10 收錄上架（Crossref 核驗、證據表、論文頁、概念頁更新、卡片、論文頁網頁與首頁星圖/卡片牆）；`wiki/index.md` 與概念頁完成雙星關聯。
 - **來源**：使用者指示（2026-11-10，因 Woodford 2007 標註「Hall 並非本篇作者」引發討論，確立多得主各自收錄代表作原則）；2026-11-10 登記，Antigravity by Google DeepMind。
 
+### TD-021 | open | web | 驗證五篇論文頁之核實狀態
+- **內容**：2026-11-10 複核問題清單後，下列頁面因核實狀態改為 `issues` 而重建，建置結果各為 ERROR 0、WARN 0，產出差異均為移除原先的核實完成標記：`1982-hopfield-network`、`2017-attention-is-all-you-need`、`2021-alphafold2`、`2021-seediq-chinese-mt-you`、`2025-indigenous-tek-ai-revitalization-wang`。本次瀏覽器操作因無法可靠辨識目前網址而中止，尚未完成版面驗證。
+- **完成條件**：在可使用的瀏覽器環境中，依 `paper-card-writer` 的論文頁驗證流程檢查五篇之桌面與手機版，確認核實完成標記已移除且版面正常，記錄驗證結果並處理所見問題。
+- **來源**：2026-11-10 問題清單分組複核整合，Codex by OpenAI。
+

@@ -5,7 +5,7 @@ domain: "ai"
 domain_tags: ["#計算生物", "#人工智慧", "#結構生物學", "#生物科技"]
 papers: ["2012-crispr-cas9", "2017-attention-is-all-you-need", "2021-alphafold2", "2023-drugclip", "2024-alphafold3"]
 related_concepts: ["generative-world-models", "programmable-cellular-engineering"]
-verification: "verified"
+verification: "issues"
 ---
 
 # 概念：AI 驅動之結構生物學與分子設計 (AI for Structural Biology & Molecular Design)
