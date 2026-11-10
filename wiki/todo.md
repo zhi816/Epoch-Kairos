@@ -55,7 +55,7 @@
 - **來源**：第二批卡片回填 B 組最後回報、首頁卡片牆實作者回報（使用者轉貼，2026-11-10）；2026-11-10 登記，2026-11-10 更新，Claude Code by Anthropic。
 
 ### TD-011 | open | wiki | 補齊公式證據與瀏覽器驗證
-- **內容**：依 TD-017 新格式，逐條回原文核對並登記尚缺來源的區塊公式；無原文依據者依 `wiki-content-audit` 改寫並登記問題。全庫 S3 目前尚有 WARN：`1992-creative-destruction-aghion`（5 條）。另 `2005-optogenetics` 因完全沒有證據表而為 NG，已由 TD-008／TD-007 追蹤，不在本條重複處理。
+- **內容**：依 TD-017 新格式，逐條回原文核對並登記尚缺來源的區塊公式；無原文依據者依 `wiki-content-audit` 改寫並登記問題。全庫 S3 目前尚有 WARN：`1992-creative-destruction-aghion`（5 條；EK-203）。`raw/` 檔案是另一篇論文，正式版線上文字顯示部分符號與頁面不同，但目前無法取得掃描頁影像逐式確認，需在可讀取正式版 PDF 影像的環境續查。另 `2005-optogenetics` 因完全沒有證據表而為 NG，已由 TD-008／TD-007 追蹤，不在本條重複處理。
 - **完成條件**：上述 WARN 論文逐條核對及修正後 S3 均為 OK；`lint_wiki.py` ERROR 0；若修改卡片，卡片檢查與建置 ERROR 0、首頁一致；受影響頁面之桌面、手機與卡片牆瀏覽器驗證依 TD-021 補完。
 - **進度**：已逐一補記滿語表 1–4、臺華翻譯表 15、FormosanBench 表格數值與人工檢視對象，以及滿語、族語雙語詞典和排灣族知識論文的公開資源或限制；原列 10 篇之公式已回原文核對或移除未有依據者，並登記證據表。另已補量子穿隧、重力波、Woodford、Hopfield、泰雅語、JWST、AlphaFold 3、芬蘭語、DeepSeek 與量子容錯之公式出處，修正 Hopfield 與 AlphaFold 3 公式及卡片（EK-201、EK-202）。瀏覽器連線服務不可用，相關頁面補驗見 TD-021。
 - **來源**：第二批卡片回填 B、C 組最後回報（使用者轉貼，2026-11-10）；TD-017 全庫重檢（2026-11-10，Codex by OpenAI）。
@@ -73,7 +73,7 @@
 
 ### TD-021 | open | web | 補驗受影響論文頁與首頁卡片牆
 - **內容**：2026-11-10 複核問題清單後，`1982-hopfield-network`、`2017-attention-is-all-you-need`、`2021-alphafold2`、`2021-seediq-chinese-mt-you`、`2025-indigenous-tek-ai-revitalization-wang` 因核實狀態改為 `issues` 而重建，原先均只移除核實完成標記。後續 `1982-hopfield-network` 釐清突觸失效分析，`2017-attention-is-all-you-need` 更正英譯法數字及版本，`2021-alphafold2` 修正公式與後續研究歸屬，`2021-seediq-chinese-mt-you` 修正論文頁及卡片公式，`2025-fragment-shot-reasoning-mt-frontull` 補充模型參數來源差異，均再次重建；`2019-generalized-data-augmentation-xia` 修正證據表公式後重建，網頁產出未變；`2007-woodford-inflation-dynamics` 修正封面限定語後重建論文頁與首頁；`2024-sora-world-simulator` 移除未公開的公式並重建論文頁。各篇建置自我檢查均為 ERROR 0、WARN 0。瀏覽器服務不可用，尚未完成論文頁與首頁卡片牆驗證。
-- **進度**：2026-11-10 處理 TD-011，另重建 `2001-colonial-origins-acemoglu`、`2013-icecube-neutrino`、`2024-alphafold3`、`2024-formosan-mt-bilingual-lexicon-zheng`、`2025-formosanbench-llm-benchmark-lin`、`2025-manchu-in-context-mt-pei`；`1982-hopfield-network` 與 `2017-attention-is-all-you-need` 修正公式與卡片後再次重建。建置自我檢查皆為 ERROR 0、WARN 0。冰立方、Hopfield、Transformer 與 AlphaFold 3 卡片牆已重建且檢查一致；瀏覽器連線服務仍不可用，桌面、手機與卡片牆目視驗證均待補。
+- **進度**：2026-11-10 處理 TD-011，另重建 `1992-creative-destruction-aghion`（EK-203，核實狀態改為 issues）、`2001-colonial-origins-acemoglu`、`2013-icecube-neutrino`、`2024-alphafold3`、`2024-formosan-mt-bilingual-lexicon-zheng`、`2025-formosanbench-llm-benchmark-lin`、`2025-manchu-in-context-mt-pei`；`1982-hopfield-network` 與 `2017-attention-is-all-you-need` 修正公式與卡片後再次重建。建置自我檢查皆為 ERROR 0、WARN 0。冰立方、Hopfield、Transformer 與 AlphaFold 3 卡片牆已重建且檢查一致；瀏覽器連線服務仍不可用，桌面、手機與卡片牆目視驗證均待補。
 - **完成條件**：在可使用的瀏覽器環境中，依 `paper-card-writer` 流程檢查上述論文頁之桌面與手機版，以及各篇首頁卡片牆；確認先前的核實完成標記及版面正確，記錄驗證結果並處理所見問題。`2025-indigenous-tek-ai-revitalization-wang` 另於 EK-192 修正後重建，亦須複驗。
 - **來源**：2026-11-10 問題清單分組複核整合，Codex by OpenAI。
 

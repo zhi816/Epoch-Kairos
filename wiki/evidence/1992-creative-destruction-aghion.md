@@ -1,6 +1,7 @@
 # 證據表：1992-creative-destruction-aghion
 - **採用版本**：Aghion & Howitt (1992), *Econometrica*, 60(2), 323–351；DOI: https://doi.org/10.2307/2951599；逐列核對所用之正式版全文為 [JSTOR 掃描複本（由 University of Copenhagen 網站提供）](https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf)。raw/1992-creative-destruction-aghion.pdf 實為 Bertola, NBER Working Paper 3851，並非本表採用來源（見 EK-088）。
 - **查核者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-09；重核者：Codex by OpenAI（GPT-6），2026-11-09
+- **公式重核待辦**：正式版線上文字顯示部分展示式的符號或形式與論文頁不同；掃描頁目前無法在本環境取得影像逐式核對，見 [EK-203](../issues.md)。本表原有「符合來源」判定不應視為這些公式已依 TD-017 完成重核。
 
 | 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |
 |---|---|---|---|---|

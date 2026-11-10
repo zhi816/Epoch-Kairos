@@ -1094,7 +1094,12 @@
 - **發現於**：2026-11-10，處理 TD-011 公式出處及抽查卡片，Codex by OpenAI。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6）。改以原文 Algorithm 19 座標變換步驟及作者文字說明呈現機制，排序公式保留原文表達；逐式登記來源，卡片補上指標與取樣條件，更新示意圖。
 
-### EK-203 | fixed | papers/2005-optogenetics.md | Card 3 展示公式未見於原文 | 原文未支持
+### EK-203 | open | papers/1992-creative-destruction-aghion.md | Card 3 區塊公式 | 未能核實
+- **問題**：依正式版線上文字，式 (2.1) 寫 $y=AF(x)$，頁面額外加上下標；頁面以線性特例展示的研發條件與式 (2.10) 的一般不等式形式不同；頁面以 $g$、$\sigma^2$ 與期望、變異數擴寫式 (3.11)，原文以 AGR、VGR 表達。須核對正式版掃描頁，逐式判斷是否為原文或 Wiki 推導，並依規範改寫、登記來源。
+- **來源**：[Econometrica 正式版](https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf) pp. 327–330、332、336，式 (2.1)、(2.3)、(2.10)、(2.12)、(3.11)；[證據表](evidence/1992-creative-destruction-aghion.md)。
+- **發現於**：2026-11-10，處理 TD-011，Codex by OpenAI。`raw/` 檔案為其他論文；正式版線上文字可讀，但本環境無法取得掃描頁影像核對，尚未把文字擷取當作公式最終證據。
+
+### EK-204 | fixed | papers/2005-optogenetics.md | Card 3 展示公式未見於原文 | 原文未支持
 - **問題**：原論文頁 Card 3 列出光電流方程、三態連續馬可夫動力學與 Hodgkin-Huxley 整合微分方程等三組區塊展示公式，皆非 Boyden et al. (2005) 本文所載之公式；原文為實驗技術報告，全篇無編號數學展示式，上述公式實為後續生物物理學文獻之理論模型。
 - **來源**：[Boyden 等原文](../raw/2005-optogenetics.pdf) Nature Neuroscience 8(9):1263–1268 全文；[論文頁](papers/2005-optogenetics.md) Card 3。
 - **發現於**：2026-11-10，依 TD-017 / 2026-11-10 規則建立證據表與卡片檔，Antigravity by Google DeepMind。
