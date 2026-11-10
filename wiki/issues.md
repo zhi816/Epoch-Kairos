@@ -721,10 +721,11 @@
 - **來源**：同 EK-110 之 PDF，全文搜尋「80%」「20%」無結果。修正時改用原文結果節之實際數據，或刪去比例。
 - **發現於**：第二批卡片回填 B 組回報，協調者以全文搜尋確認（Claude Code by Anthropic，2026-11-10）
 
-### EK-112 | open | papers/2007-woodford-inflation-dynamics.md | Card 3 | 原文不符
+### EK-112 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 3 | 原文不符
 - **問題**：Card 3 第 75 行把開放經濟菲利浦曲線寫成國內通膨對「產出缺口」$y_t - y_t^n$、$y_t^* - y_t^{*n}$ 之關係，並標「式 3.11 / 3.19」；原文式 (3.19) 之產出項為相對穩態之對數偏離 $\hat{Y}_t$、$\hat{Y}^*_t$，且另有衝擊項 $-\xi \omega q_t$。第 83 行利率規則寫成 $\phi_y (y_t - y_t^n)$；原文式 (1.23) 為 $\hat{\imath}_t = \bar{\imath}_t + \phi_\pi \pi_t + \phi_y \hat{Y}_t$。
 - **來源**：`raw/2007-woodford-inflation-dynamics.pdf`，式 (3.19) 於 PDF 第 58 頁，式 (1.23) 於 PDF 第 13 頁。
 - **發現於**：第一、二批卡片回填 B 組回報，協調者回原文核對（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5），第三批卡片回填 B 組。逐式回原文核對後：(3.19) 改為原文式，並補 $\kappa_H$、$\kappa_F$ 之原文定義（PDF p. 58 未編號式）；(1.23) 改為原文式；(1.27) 左側原誤寫 $\hat{\pi}_t$，改為原文之 $\pi_t$，期望算子改為原文之 $E_t$。$\kappa_F$ 之說明原寫「透過進口要素或中間財成本溢出」、「等同於可被抵銷的外生衝擊」，改依 PDF p. 57 寫為 $\sigma > 1$ 時 $\kappa_F < 0$、與 global slack 論點方向相反。Card 3 第 3 點「即使菲利浦曲線極為平坦，央行仍可精確錨定通膨」與第 85 行引自 Woodford (2003) 之確定性條件（不在本篇）一併刪除，改寫為原文式 (1.25)–(1.26) 之向前求解條件。證據表逐式登記式號與 PDF 頁碼。
 
 ### EK-113 | open | papers/2025-deepseek-r1.md | Card 4 與證據表第 16 列 | 歸因／版本錯置
 - **問題**：Card 4 第 85 行與證據表第 16 列稱 R1-Zero 之 AIME 2024 pass@1 由 15.6% 升至 71.0%，第 85 行並稱「與 OpenAI o1-0912 持平」；第 86 行稱「8,000 多個強化學習訓練步」。本頁引用之 Nature 版原文為 77.9%，訓練共 10,400 步（8.2k 步出現明顯躍升）。證據表同一列寫 10,400 步而論文頁寫 8,000，二者也不一致。71.0% 與 o1-0912 之比較疑為 arXiv 初版之數字，修正時須一併確認 cons@16 之 86.7% 是否為 Nature 版數字。
@@ -792,6 +793,18 @@
 - **來源**：`raw/my-focus/報告論文題材/2024.findings-acl.768.pdf`，§1（p. 12949）、§3.2（p. 12950）、§4.3 與 §5（p. 12953）、表 1、3、4、5（pp. 12950–12953）。
 - **發現於**：第二批卡片回填 C 組回報與第三批撰寫前抽查（Claude Code by Anthropic，2026-11-10）
 - **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。回原文核對後：公式改照原文作單豎線，拆成兩行 aligned 並註明「§3.2 正文內嵌式，無式號，p. 12950」；Card 5 補列公開資源（§1）與作者所述之未來方向（§5、§4.3），作者自述限制補頁碼；證據表逐一列出表 1、3、4、5 數值並補登上述各項。另依 `cover.md` 第二節第 7 條改寫 `card_line`（原句切不出 3 行以內之封面斷行）。頁面 `verification` 改為 `partial`。
+
+### EK-150 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 4 | 原文不符
+- **問題**：（1）Card 4 第 94 行標題寫「要素市場全球化（$\tilde{\kappa}_H \to 0$）之極限穩健性證明」，並稱國內產出缺口對邊際成本之影響趨近於零、名目工資與物價須經匯率與利率平價錨定。原文 §3.3 為 $\tilde{\kappa}_H \equiv \kappa(1-\gamma) + \xi\gamma$，不趨近於零；只有 $\nu + \sigma^{-1} > 1$ 時才小於封閉經濟之 $\kappa$，在 Rotemberg & Woodford (1997) 校準下反而較大，作者結論為整合可能使菲利浦曲線變陡；原文未談經匯率與利率平價錨定。（2）第 92 行之 $\beta = 0.99$ 原文未寫；「CPI 通膨初期反應因匯率傳導而更為靈敏」之「因匯率傳導」原文未說，且漏了作者「至少在此校準例中」之限定。（3）第 93 行稱外國衝擊「完全可以被本國貨幣政策有效對沖」，原文結論為本國央行仍可單獨穩定本國通膨、不需國際協調。（4）第 96–99 行把早於本篇之 Eggertsson & Woodford (2003)、Hall (2005) 列為「後續」；Eggertsson & Woodford 頁碼誤為 139-211（Crossref 為 139-233）；Smets & Wouters (2007) 稱成為 FRB/US 等央行標準系統、Eggertsson & Woodford「直接指導」2008 與 2020 年之政策、Hall「解決了 Shimer 謎題」，三者摘要皆無此說。
+- **來源**：`raw/2007-woodford-inflation-dynamics.pdf`，PDF pp. 14、24、60–61、71–73、75；doi:10.1257/aer.97.3.586、doi:10.1353/eca.2003.0010、doi:10.1257/0002828053828482（Crossref 書目與摘要）。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。依原文改寫 Card 4 四點（參數、Figure 6、外溢與結論、全球要素市場之 $\tilde{\kappa}_H$），刪去 $\beta = 0.99$；相關研究改標「相關研究（非本篇成果）」並註明兩篇早於本篇，各附 DOI，描述改依摘要，改正頁碼。證據表逐項重登。
+
+### EK-151 | fixed | papers/2007-woodford-inflation-dynamics.md | Card 5 | 原文未支持
+- **問題**：Card 5 三點（本篇與 Woodford 系列理論「終結了貨幣主義舊框架」、「直接啟發」聯準會 2012 年點陣圖、「及時化解政策恐慌，證明……」）均無出處；本篇發表於 2007 年，依 `wiki-content-audit` 須有至少 3 筆附出處之後續研究，頁面一筆也沒有（Card 4 所列兩篇早於本篇）。
+- **來源**：頁面第 104–106 行；後續研究以 Crossref 與 OpenAlex 核對：doi:10.1111/j.1468-2362.2009.01248.x、doi:10.1016/j.jmacro.2010.04.002（摘要依 doi:10.24149/gwp33）、doi:10.1111/j.1468-2362.2010.01268.x、doi:10.24149/gwp300，四篇 OpenAlex 皆列為引用本篇（W2106451667）。
+- **發現於**：第三批卡片回填 B 組撰寫前抽查（Claude Code by Anthropic，2026-11-10）
+- **處理**：2026-11-10，Claude Code by Anthropic（Claude Opus 5.5）。刪去三點無出處之影響敘述，改列四篇檢驗「全球產出缺口」假說之後續研究（Calza 2009、Milani 2010、Ihrig 等 2010、Auer 等 2017，後者結論相反），各附 DOI 與摘要所載之結果，並列 2026 年獎項；證據表登記四列「後續研究」。
 
 ### EK-171 | fixed | papers/2026-tao-filipino-nmt-macayan.md | Card 5 與證據表第 17 列 | 原文不符
 - **問題**：（1）證據表第 17 列只寫「表 3 各數值」，未逐一列出數值與表列、欄位。（2）Card 5 漏記原文所述之未來工作與部分限制：原文 §7 Recommendations 列出進階正規化、更好硬體與更大模型、子詞斷詞處理罕見詞與構詞、與母語者及專家合作；Limitations 另指出只研究達悟語→他加祿語一個語言對、經文不能代表一般句構、未做人工評估且指標測不到比喻與偏誤。論文頁亦未說明原文是否公開資料或程式（原文未提及）。

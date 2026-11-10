@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>宏觀經濟穩定政策的微觀基礎｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Bodoni Moda',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;color:var(--focus)}
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+.side .ok{display:inline-flex;align-items:center;gap:8px}
+.side .ok i{width:7px;height:7px;border-radius:50%;background:#9BDCB1}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  .root{display:block;height:auto;overflow:visible}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .pane{overflow:visible}
+  .art{padding:32px 16px 64px}
+  .side{display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#E6C686;--deep:#53401C;--win:#24231F;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.02</span><span>經濟</span></div><div class="win"><i style="left:86.0%;top:27.7%;width:1.5px;height:1.5px;opacity:0.45"></i><i style="left:77.8%;top:27.6%;width:1px;height:1px;opacity:0.61"></i><i style="left:72.3%;top:22.7%;width:1px;height:1px;opacity:0.48"></i><i style="left:20.9%;top:44.2%;width:1px;height:1px;opacity:0.79"></i><i style="left:43.9%;top:35.9%;width:1px;height:1px;opacity:0.82"></i><i style="left:39.6%;top:9.8%;width:1.5px;height:1.5px;opacity:0.77"></i><i style="left:65.1%;top:31.1%;width:1px;height:1px;opacity:0.61"></i><i style="left:43.6%;top:20.8%;width:1px;height:1px;opacity:0.58"></i><i style="left:91.3%;top:32.1%;width:1px;height:1px;opacity:0.60"></i><i style="left:55.5%;top:40.8%;width:1px;height:1px;opacity:0.33"></i><i style="left:26.9%;top:5.3%;width:1.5px;height:1.5px;opacity:0.32"></i><i style="left:41.0%;top:39.3%;width:1px;height:1px;opacity:0.68"></i><i style="left:88.4%;top:5.8%;width:1px;height:1px;opacity:0.43"></i><i style="left:5.4%;top:38.2%;width:1px;height:1px;opacity:0.75"></i><span class="rep award"></span><span class="line"><span>論證全球化</span><span>不會讓央行</span><span>管不住通膨</span></span></div><div class="tags">宏觀經濟與治理・#宏觀經濟學</div><div class="name">宏觀穩定政策的微觀基礎</div><div class="lead">逐一檢驗金融、商品與要素市場的全球整合。</div><div class="yrs">2007 發表 ｜ 2026 諾貝爾經濟學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">全球化之下，<br>央行還管得住通膨嗎？</span><div class="rows"><div class="row"><b>利率平價</b><span>跨國套利下，單一央行似乎難以左右本國長期實質利率</span></div><div class="row"><b>產出缺口</b><span>進口與外國競爭，被認為讓通膨取決於全球而非本國缺口</span></div><div class="row"><b>要素市場</b><span>勞動與資本跨國流動，被認為會讓菲利浦曲線趨於平坦</span></div><div class="row gap"><b>理論</b><span>缺少從家戶與廠商最適化出發，逐一檢驗各種整合的分析</span></div></div><span class="ft" style="color:var(--ink)">全球化是否削弱央行，得逐一拆開傳導環節來看。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">外國產出增加，<br>本國成本反降</span><svg class="dia" viewBox="0 0 300 108" role="img" aria-label="示意：全球缺口說認為外國產出增加會推高本國通膨；本篇模型中外國產出增加反而壓低本國邊際成本。">
+  <line class="k-muted k-thin" x1="150" y1="8" x2="150" y2="100"/>
+  <line class="k-muted" x1="66" y1="54" x2="86" y2="54"/>
+  <polyline class="k-muted" points="81,49 86,54 81,59"/>
+  <polygon class="k-muted" points="40,74 34,86 46,86"/>
+  <polygon class="k-muted" points="116,74 110,86 122,86"/>
+  <line class="k-line" x1="210" y1="54" x2="234" y2="54"/>
+  <polyline class="k-line" points="229,49 234,54 229,59"/>
+  <polygon class="k-ink" points="182,74 176,86 188,86"/>
+  <polygon class="k-accent" points="264,86 258,74 270,74"/>
+  <text class="k-label" x="75" y="22" text-anchor="middle">全球缺口說</text>
+  <text class="k-label-accent" x="225" y="22" text-anchor="middle">本篇模型</text>
+  <text class="k-label" x="40" y="58" text-anchor="middle">外國產出</text>
+  <text class="k-label" x="116" y="58" text-anchor="middle">本國通膨</text>
+  <text class="k-label" x="182" y="58" text-anchor="middle">外國產出</text>
+  <text class="k-label-accent" x="264" y="58" text-anchor="middle">邊際成本</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\kappa_F = -\xi \gamma (1 - \sigma^{-1})"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">跨期替代彈性大於 1 時係數為負，外國增產反而壓低本國邊際成本。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="concl"><p>校準例中，開放經濟裡本國政策對通膨的即時效果更大</p><p>要素市場全球整合時，菲利浦曲線可能反而變陡</p><p>小國央行也能單獨穩住本國通膨，不需國際協調</p></div><span class="ft">範圍：Woodford 2007，理論推導與校準示例，無實證</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">全球產出缺口說，<br>交給資料檢驗</span><div class="time"><p><b>2009</b><span>Calza 檢驗歐元區，全球缺口解釋力有限</span></p><p><b>2010</b><span>Milani 發現全球產出經總需求影響通膨</span></p><p><b>2010</b><span>Ihrig 等測 11 國，外國缺口效果多不顯著</span></p><p><b>2017</b><span>Auer 等指出價值鏈強化全球缺口效果</span></p><p><b>2026</b><span>Hall 與 Woodford 獲諾貝爾經濟學獎</span></p></div><span class="ft">前四項為後續他人成果，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">在由前瞻決策者組成的經濟裡，可信的回饋法則比每一刻的推力更能穩住系統。</span><span class="shift"><span>當下推力</span><i aria-hidden="true"></i><b>管理預期</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2007 發表 ｜ 2026 諾貝爾經濟學獎</span>
+<h1>宏觀經濟穩定政策的微觀基礎：通膨動態、預期錨定與貨幣控制</h1>
+<p class="en">Globalization and Monetary Control</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">中央銀行對通貨膨脹的掌控力，並不依賴封閉邊界或龐大的基礎貨幣儲備，而是源自對未來名目利率路徑的承諾與公眾通膨預期的精準錨定。</p>
+<p>當代各國中央銀行（如美國聯準會 Fed、歐洲央行 ECB）為何皆以「短期政策利率規則」與「前瞻性指引（Forward Guidance）」作為穩定物價與就業的核心工具？在 2000 年代全球化浪潮巔峰期，市場與部分政策制定者普遍質疑：當跨國金融市場決定長期實質利率、全球產能決定商品價格、跨國移民平抑工資時，單一國家央行是否已淪為無力控制本國通膨的旁觀者？Michael Woodford 在本篇論文中運用新凱因斯微觀基礎框架，系統檢驗金融市場、商品市場與要素市場全球化對貨幣傳導機制三大環節（LM、IS、AS 方程）之影響，論證即便全球化程度遠超當前水準，各國央行依託利率規則依然能夠有效調控本國通膨動態，全球化不太可能削弱央行控制本國通膨的能力。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：盧卡斯批判與「全球化削弱央行控制力」之迷思</h2></div>
+<p>宏觀穩定政策理論曾長期面臨兩階段的重大挑戰：</p>
+<ul><li><strong>盧卡斯批判（Lucas Critique, 1976）對傳統凱因斯模型的摧毀</strong>：早期 IS-LM 模型與靜態菲利浦曲線缺乏家戶與廠商的跨期最優化微觀基礎，忽略了私人部門會根據政策規則改變而調整預期，導致在 1970 年代停滯性通膨（Stagflation）中徹底失靈。</li><li><strong>開放經濟下的「貨幣控制失效論」</strong>：到了 2000 年代，質疑者提出三大挑戰：<ol><li>跨國套利與無拋補利率平價（UIP）使單一央行無法獨立影響國內長期實質利率；</li><li>進口中間財與外國競爭使本國通膨受制於「全球產出缺口（Global Output Gap）」而非本國產出缺口；</li><li>生產要素跨國流動使國內邊際成本曲線完全平坦化，切斷了國內總需求向通膨傳導的菲利浦曲線斜率。</li></ol></li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>Woodford 將其與 Rotemberg 開創的「新凱因斯三方程微觀基礎框架（New Keynesian 3-Equation Model）」推廣至兩國開放經濟與小型開放經濟極限，從第一原理推導價格設定與貨幣傳導機制：</p>
+<ol><li><strong>Calvo 交錯定價與前瞻性新凱因斯菲利浦曲線（NKPC）</strong>：<ul><li>在壟斷競爭市場中，每期僅有比例為 <span class="m-in" data-tex="1 - \alpha"></span> 的廠商能重新調整價格。廠商在定價時必須前瞻性地折現未來所有期間的預期邊際成本與通膨，使當期通膨 <span class="m-in" data-tex="\pi_t"></span> 直接取決於預期未來通膨 <span class="m-in" data-tex="\mathbb{E}_t \pi_{t+1}"></span> 與實質邊際成本缺口。</li></ul></li><li><strong>跨期歐拉方程與貨幣政策工具（Policy Rules &amp; Operating Instruments）</strong>：<ul><li>在基準總需求分析中，貨幣政策直接以名目利率反應規則（Taylor Rule）表示。針對「全球流動性是否削弱央行操縱短期名目利率之能力」的疑慮，作者在第 2 節進一步建構貨幣需求模型證明：即使金融市場跨國完全整合、甚至外國貨幣同樣提供流動性服務，央行透過調整對基礎貨幣（法定準備金）的行政付息利率 <span class="m-in" data-tex="i_t^m"></span>，依然能夠有效確立本幣短期名目利率之操作目標，並傳導至國內總需求。</li></ul></li><li><strong>泰勒原理（Taylor Principle）與理性預期均衡唯一性（Determinacy）</strong>：<ul><li>在第 1 節之總需求分析中，只要兩國利率規則之通膨係數 <span class="m-in" data-tex="\phi_\pi, \phi^*_\pi &gt; 1"></span>，式 (1.25) 之係數矩陣 <span class="m-in" data-tex="A"></span> 滿足 <span class="m-in" data-tex="\lim_{n \to \infty} A^n = 0"></span>，系統可向前求解，對任何有界的產出與政策截距路徑得到唯一有界之通膨解（式 1.26，PDF p. 13），推廣了封閉經濟中 <span class="m-in" data-tex="\phi_\pi &gt; 1"></span> 之泰勒規則結論。第 3 節加入總供給後，作者並指出要素市場全球整合未必使菲利浦曲線變平（見 Card 4）。</li></ul></li></ol>
+<h3>1. 開放經濟跨期總需求（IS）與動態 AD 方程 (Open-Economy IS &amp; Dynamic AD)</h3>
+<p>在兩國開放經濟模型中，家戶跨期消費最優化導出兩國對數線性化 IS 方程（式 1.21–1.22）；以兩國利率規則（式 1.23–1.24）代入並向前求解（式 1.25–1.26），本國 CPI 通膨可寫成一條動態總需求（AD）關係（式 1.27，PDF p. 14）：</p>
+<span class="m-disp" data-tex="\begin{aligned} \pi_t = \sum_{j=0}^\infty \big[ &amp; \psi_{1,j} E_t \hat{Y}_{t+j} + \psi_{2,j} E_t \hat{Y}^*_{t+j} \\ &amp; + \psi_{3,j} E_t \bar{\imath}_{t+j} + \psi_{4,j} E_t \bar{\imath}^*_{t+j} \big] \end{aligned}"></span>
+<p>其中 <span class="m-in" data-tex="\pi_t"></span> 為本國 CPI 通膨，<span class="m-in" data-tex="\hat{Y}_t, \hat{Y}^*_t"></span> 為兩國產出相對穩態之對數偏離，<span class="m-in" data-tex="\bar{\imath}_t, \bar{\imath}^*_t"></span> 為兩國利率規則之截距項；係數 <span class="m-in" data-tex="\{\psi_{i,j}\}"></span> 刻畫兩國經濟活動與貨幣政策對本國通膨之動態影響，數值示例見原文 Figure 1。</p>
+<h3>2. 微觀基礎推導之開放經濟新凱因斯菲利浦曲線 (Open-Economy NKPC)</h3>
+<p>本國國內商品通膨率 <span class="m-in" data-tex="\pi_{Ht}"></span> 由 Calvo 交錯定價推導（式 3.18），代入邊際成本關係（式 3.11）後，得到開放經濟之新凱因斯菲利浦曲線（式 3.19，PDF p. 58）：</p>
+<span class="m-disp" data-tex="\pi_{Ht} = \kappa_H \hat{Y}_t + \kappa_F \hat{Y}^*_t + \beta E_t \pi_{Ht+1} - \xi \omega q_t"></span>
+<p>其中 <span class="m-in" data-tex="\hat{Y}_t, \hat{Y}^*_t"></span> 為兩國產出相對穩態之對數偏離，<span class="m-in" data-tex="q_t"></span> 為技術與偏好衝擊之合成項，<span class="m-in" data-tex="\xi &gt; 0"></span> 為價格調整速度參數。兩個產出彈性為（PDF p. 58，未編號）：</p>
+<span class="m-disp" data-tex="\begin{aligned} \kappa_H &amp;= \xi \left[ \omega + \sigma^{-1} + \gamma (1 - \sigma^{-1}) \right] \\ \kappa_F &amp;= -\xi \gamma (1 - \sigma^{-1}) \end{aligned}"></span>
+<p>作者認為較符合實證的情況是 <span class="m-in" data-tex="\sigma &gt; 1"></span>：此時 <span class="m-in" data-tex="\kappa_F &lt; 0"></span>，外國產出增加反而降低本國生產之邊際成本（貿易條件效果大於消費邊際效用效果），方向與「全球閒置（global slack）」論點的預測相反；開放度 <span class="m-in" data-tex="\gamma"></span> 提高也會使 <span class="m-in" data-tex="\kappa_H"></span> 變大，即國內通膨對國內產出之總供給斜率變陡，而非變平（PDF p. 57）。</p>
+<h3>3. 貨幣政策利率規則與均衡唯一性條件 (Taylor Rule &amp; Determinacy)</h3>
+<p>第 1 節以對數線性化之名目利率規則代表貨幣政策（式 1.23，PDF p. 13；外國為式 1.24）：</p>
+<span class="m-disp" data-tex="\hat{\imath}_t = \bar{\imath}_t + \phi_\pi \pi_t + \phi_y \hat{Y}_t"></span>
+<p>其中 <span class="m-in" data-tex="\hat{\imath}_t"></span> 為名目利率相對穩態之對數偏離，<span class="m-in" data-tex="\bar{\imath}_t"></span> 為規則之截距（可代表通膨目標或中性利率之變動、利率執行誤差等），<span class="m-in" data-tex="\pi_t"></span> 為 CPI 通膨。數值示例取年化係數 <span class="m-in" data-tex="\phi_\pi = 2"></span>、<span class="m-in" data-tex="\phi_y = 1"></span>（以季度利率與通膨表示時為 <span class="m-in" data-tex="\phi_\pi = 2"></span>、<span class="m-in" data-tex="\phi_y = 0.25"></span>，PDF p. 14 註 9）。將兩國規則代入 IS 方程後，只要 <span class="m-in" data-tex="\phi_\pi, \phi^*_\pi &gt; 1"></span>，系統即可向前求解，得到唯一有界之通膨解（式 1.25–1.26，PDF p. 13）。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Woodford 2007）之理論推導與數值示例</h3>
+<ul><li><strong>數值示例之參數</strong>：數值示例以一季為一期，兩國利率規則取年化係數 <span class="m-in" data-tex="\phi_\pi = 2"></span>、<span class="m-in" data-tex="\phi_y = 1"></span>（PDF p. 14 註 9），跨期替代彈性 <span class="m-in" data-tex="\sigma = 6.37"></span>（Rotemberg &amp; Woodford 1997 對美國之估計，PDF p. 14 註 10），第 3 節另取 <span class="m-in" data-tex="\kappa = 0.0236"></span>（PDF p. 61 註 54）；封閉經濟時與 Woodford (2003) 第 4 章之基準參數一致。開放度比較三種情形：<span class="m-in" data-tex="\gamma = 0"></span>（封閉經濟極限）、<span class="m-in" data-tex="\gamma = 0.5"></span>（兩等大國家）與 <span class="m-in" data-tex="\gamma = 1"></span>（小型開放經濟極限）。</li><li><strong>開放未削弱本國政策對通膨之影響</strong>：Figure 6 顯示，即使商品與金融市場完全整合，各國貨幣政策對本國 CPI 通膨仍有可觀影響；相對短暫的政策變動對通膨的即時效果，在高度開放經濟中甚至大於條件相同的封閉經濟（作者註明「至少在此校準例中」，PDF pp. 60–61）。</li><li><strong>外國衝擊之外溢與本國政策</strong>：僅在 <span class="m-in" data-tex="\sigma = 1"></span>（對數效用）時，本國 AD 曲線位置只取決於本國政策與本國預期產出，兩國間沒有貨幣政策外溢（PDF p. 24）；作者認為 <span class="m-in" data-tex="\sigma = 1"></span> 並非符合實證的校準，<span class="m-in" data-tex="\sigma &gt; 1"></span> 時外國產出會經貿易條件影響本國（PDF pp. 24, 57）。作者的結論是：即使在全球化下，本國央行仍可單獨以貨幣政策穩定本國通膨，小國亦然，不需與他國央行協調（PDF pp. 73, 75）。</li><li><strong>要素市場全球整合之極端情形</strong>：即使所有生產要素都在世界市場交易，國內通膨對國內產出之彈性為 <span class="m-in" data-tex="\tilde{\kappa}_H \equiv \kappa(1 - \gamma) + \xi\gamma"></span>，並不為零；它小於國家要素市場時之 <span class="m-in" data-tex="\kappa_H"></span>，但只有在 <span class="m-in" data-tex="\nu + \sigma^{-1} &gt; 1"></span> 時才小於封閉經濟之 <span class="m-in" data-tex="\kappa"></span>，而 Rotemberg &amp; Woodford (1997) 對美國之校準為 <span class="m-in" data-tex="\nu + \sigma^{-1} = 0.3"></span>（PDF pp. 71–72）。作者據此指出，整合未必使菲利浦曲線變平，反而可能變陡，國內通膨壓力也不會因此不再取決於國內經濟活動（PDF p. 73）。</li></ul>
+<h3>相關研究（非本篇成果，標註出處）</h3>
+<ul><li><strong>美國景氣循環之 DSGE 估計</strong>：Smets &amp; Wouters (2007), <em>American Economic Review</em> 97(3):586-606, doi:10.1257/aer.97.3.586，以貝氏方法、七個美國總體時間序列，估計含多種實質與名目摩擦及七種結構衝擊之 DSGE 模型，其樣本外預測可與貝氏向量自我迴歸模型相比。</li><li><strong>零利率下限與最適貨幣政策</strong>：Eggertsson &amp; Woodford (2003), <em>Brookings Papers on Economic Activity</em> 2003(1):139-233, doi:10.1353/eca.2003.0010，早於本篇，探討名目利率觸及零下限時之最適貨幣政策，主張央行對未來政策路徑之承諾可經由預期提供刺激。</li><li><strong>均衡工資僵固性與就業波動</strong>：共同得獎者 Hall (2005), <em>American Economic Review</em> 95(1):50-65, doi:10.1257/0002828053828482，早於本篇，指出搜尋匹配模型需要不合理的大衝擊才能解釋就業波動，提出一種在均衡中產生、不妨礙有效配對之工資僵固性模型，使模型對驅動力更為敏感。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<p>本篇主張全球化不太可能削弱央行控制本國通膨之能力後，「全球產出缺口（global slack）」假說成為後續實證檢驗之題目。以下皆為引用本篇之後續他人研究，結論並不一致：</p>
+<ul><li><strong>歐元區</strong>：Calza (2009), <em>International Finance</em> 12(3):301-320, doi:10.1111/j.1468-2362.2009.01248.x，以 1979–2003 年歐元區季資料、兩種加權方式之全球產出缺口檢驗，僅有有限證據顯示全球產能限制可解釋歐元區之消費者物價通膨，認為央行應特別針對全球產出缺口反應之主張，在歐元區似無依據。</li><li><strong>G-7 結構估計</strong>：Milani (2010), <em>Journal of Macroeconomics</em> 32(4):968-981, doi:10.1016/j.jmacro.2010.04.002，以完全資訊貝氏方法估計 G-7 經濟體之結構模型，發現全球產出在多數國家顯著影響總需求，可經此間接影響通膨，但不支持在國內菲利浦曲線中加入全球閒置作為驅動變數（摘要依同名工作論文 Federal Reserve Bank of Dallas GMPI Working Paper No. 33, doi:10.24149/gwp33 核對）。</li><li><strong>11 個工業國</strong>：Ihrig, Kamin, Lindner &amp; Marquez (2010), <em>International Finance</em> 13(3):343-375, doi:10.1111/j.1468-2362.2010.01268.x，估計 11 個工業國之菲利浦曲線，外國產出缺口對國內消費者物價通膨之效果大多不顯著，且常為錯誤符號；也未發現通膨對國內產出缺口敏感度之下降源於全球化。</li><li><strong>不同結論</strong>：Auer, Borio &amp; Filardo (2017), Federal Reserve Bank of Dallas GMPI Working Paper No. 300, doi:10.24149/gwp300，指出全球價值鏈（跨境中間財與服務貿易）擴張是全球經濟閒置影響國內通膨之重要管道，價值鏈擴張使國內通膨對全球產出缺口更敏感。此議題至今仍有爭論。</li><li><strong>獎項</strong>：2026 年諾貝爾經濟學獎由 Robert E. Hall 與 Michael Woodford 共享（見本頁範圍說明）；Hall 並非本篇作者。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>Woodford 與 Hall 的微觀基礎革命揭示了一個控制論與複雜系統的深層法則：</p>
+<ol><li><strong>在具備自我意識的系統中，「預期」比「當下推力」更重要</strong>：物理系統不會預測控制器的下一步，但人類經濟系統是由無數前瞻性決策者組成的。控制這類系統的關鍵，不是在每個瞬間施加蠻力，而是設計一套透明、可信的回饋法則，讓全系統的預期自發收斂至穩定平衡點。</li><li><strong>微觀結構決定宏觀湧現</strong>：唯有深入拆解個體定價、工資談判與跨期選擇的微觀摩擦，才能在宏觀風暴來臨時分辨哪些是短暫雜訊、哪些是結構失衡。</li></ol>
+</section>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2007</b><span>發表・NBER Working Paper No. 13329</span></div>
+    <div class="yr award"><b>2026</b><span>諾貝爾經濟學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Michael Woodford</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Robert E. Hall<br>Michael Woodford</span><span class="note">Hall 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>NBER Working Paper No. 13329 (published in International Dimensions of Monetary Policy, University of Chicago Press, pp. 13-77)</span><a href="https://doi.org/10.3386/w13329">doi:10.3386/w13329</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#宏觀經濟學</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>制度演化與宏觀經濟動態</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1086/654340" title="Rotemberg, J. J., &amp; Woodford, M. (1997) An Optimization-Based Econometric Framework for the Evaluation of Monetary Policy. NBER Macroeconomics Annual 12:297-346.">Rotemberg 與 Woodford（1997）</a><span title="Woodford, M. (2003) Interest and Prices: Foundations of a Theory of Monetary Policy. Princeton University Press.">Woodford（2003）</span><a href="https://doi.org/10.3386/w13329" title="Woodford, M. (2007) Globalization and Monetary Control. NBER Working Paper No. 13329 (later in Galí &amp; Gertler eds., International Dimensions of Monetary Policy, 2009, pp. 13-77).">Woodford（2007）</a><a href="https://doi.org/10.1257/0002828053828482" title="Hall, R. E. (2005) Employment Fluctuations with Equilibrium Wage Stickiness. American Economic Review 95(1):50-65.">Hall（2005）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2026 年諾貝爾經濟學獎由 Robert E. Hall 與 Michael Woodford 共享，表彰兩人為宏觀經濟穩定政策、價格與工資僵固性及現代貨幣政策建立嚴謹之微觀基礎。本頁以 <code>raw/2007-woodford-inflation-dynamics.pdf</code> 所收錄之 Woodford (2007) NBER Working Paper No. 13329（後收錄於 2009 年 NBER 專書《International Dimensions of Monetary Policy》第 1 章）為主軸，並在 <code>key_papers</code> 列出 Rotemberg &amp; Woodford (1997)、Woodford (2003) 經典巨著《Interest and Prices》以及共同得獎者 Hall (2005) 之代表作；Robert E. Hall 並非 2007 年本篇論文之作者。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過長文開頭，回到長文開頭
+    var top = art.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

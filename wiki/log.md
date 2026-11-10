@@ -1730,6 +1730,11 @@
   - 檢查：`check_cards.py` ERROR 0、WARN 1（NLLB-200 為模型名稱，已在同句說明為多語翻譯模型）；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（兩種尺寸 35 項）。目視檢查修正封面論文名、Card 5 第三筆與範圍欄之落單行。`lint_wiki.py` ERROR 0。
   - 首頁卡片牆依本批協調規則未重建，由協調者處理。
 
+## [2026-11-10 09:59] update | 2007-woodford-inflation-dynamics 卡片回填與論文頁原文修正 | #宏觀經濟學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：TD-008 第三批 B 組。依 `wiki-content-audit` 回原文修正 [論文頁](papers/2007-woodford-inflation-dynamics.md) 與 [證據表](evidence/2007-woodford-inflation-dynamics.md)：完成 EK-112（三條區塊公式改為原文式 (1.27)、(3.19)、(1.23)，補 κH、κF 之原文定義 PDF p. 58，說明改依 PDF p. 57）；新登記並修正 EK-150（Card 4 把 κ̃H 寫成趨近於零、β = 0.99 原文未見、早於本篇之研究誤列為後續）與 EK-151（Card 5 無出處之影響敘述，改列四篇引用本篇之後續研究並附 DOI：Calza 2009、Milani 2010、Ihrig 等 2010、Auer 等 2017）；`verification` 改為 `partial`。新增 [卡片檔](cards/2007-woodford-inflation-dynamics.md) 與論文頁原型 `web/prototypes/paper-v1/2007-woodford-inflation-dynamics.html`。check_cards：ERROR 0、WARN 0；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（37 項）。來源：Card 3 公式取自原文 PDF p. 58 κF 定義；Card 4 採結論模式，三條取自 PDF pp. 60–61（Fig. 6）、71–73、73 與 75；Card 5 四筆取自證據表後續研究列，獎項取自 `honor` 與 `laureates`。複核：封面論文名折行剩一字，改填封面標題（只刪「經濟」二字）；Card 5 兩筆里程碑折行落單，縮短；Card 3 示意圖箭頭貼近標籤，拉開。首頁卡片牆：依協調規則未重建，由協調者處理。
+
 ## [2026-11-10 09:59] update | 新增廖恒慶泛泰雅語群多語言翻譯之卡片文字檔並補後續研究 | #自然語言處理 #深度學習 #計算語言學
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
