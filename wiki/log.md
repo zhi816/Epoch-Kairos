@@ -1819,3 +1819,13 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：TD-008 第三批 B 組。依 `wiki-content-audit` 回原文修正 [論文頁](papers/2026-epark-formosan-dialectometry-gagnier.md) 並重建 [證據表](evidence/2026-epark-formosan-dialectometry-gagnier.md)（表 1 至表 3 數值逐一寫出列與欄）：完成 EK-118（刪除 Wiki 自擬之 Levenshtein 正規化區塊公式，改照原文文字）與 EK-119（跨方言遷移改照原文之「好候選」「應測試」，註明原文未做遷移實驗、未談負遷移；補記公開程式碼、限制、四點建議與未來方向）；新登記並修正 EK-157（「首度」「發源樞紐」「全球規模最完整」「美國學者」、布農語爭議、`^` 字元、最少詞元之方言誤植為四季、Card 6「必然」等）；`verification` 改為 `partial`。新增 [卡片檔](cards/2026-epark-formosan-dialectometry-gagnier.md) 與論文頁原型 `web/prototypes/paper-v1/2026-epark-formosan-dialectometry-gagnier.html`。check_cards：ERROR 0、WARN 0；論文頁建置自我檢查：ERROR 0、WARN 0；verify_page.js：結果 PASS（35 項）。來源：Card 3 採無公式模式（原文無編號公式）；Card 4 四個數字取自證據表表 2 賽德克語與泰雅語列之餘弦 Mean、表 1 排灣語 Core% 與魯凱語 Uniq%；Card 5 採新論文模式，四筆取自 §2.3 p. 125、§4.1 p. 130、§5 p. 131。複核：Card 2 一列與 Card 4 範圍折行落單，縮短；封面標題依 `title_zh` 刪減。首頁卡片牆：依協調規則未重建，由協調者處理。
+
+## [2026-11-10 10:41] update | 補列泛化資料增強頁之後續研究與表 2 數值並新增卡片文字檔 | #自然語言處理 #深度學習 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：第三批 C 組（TD-008）。先依 wiki-content-audit 補 [wiki/papers/2019-generalized-data-augmentation-xia.md](papers/2019-generalized-data-augmentation-xia.md) 與證據表，再依 paper-card-writer 撰寫 [wiki/cards/2019-generalized-data-augmentation-xia.md](cards/2019-generalized-data-augmentation-xia.md) 並建置 `web/prototypes/paper-v1/2019-generalized-data-augmentation-xia.html`。
+  - Card 5 補列三篇引用本篇之後續研究，皆以 Crossref 核對書目、以引文脈絡確認引用本篇、以其摘要或原文核對內容：Ko 等 2021（ACL-IJCNLP 2021, DOI 10.18653/v1/2021.acl-long.66）、Ranathunga 等 2023（ACM Computing Surveys 55(11), DOI 10.1145/3567592, p. 229:9）、Jones 等 2023（EMNLP 2023, DOI 10.18653/v1/2023.emnlp-main.26）。搜尋範圍寫入證據表。
+  - 證據表「表 2 各列數值」改為逐一列出第 1、3、4、7、9、12、13 列（頁面影像核對）；目標式補記為 §3.1 p. 5788 正文內嵌、無式號。`verification` 由 `verified` 改為 `partial`（本次只抽查卡片用到之主張）。
+  - `card_line` 由「借相近語言的語料，替小語種擴充翻譯資料」改為「借相近語言的語料，擴充小語種翻譯資料」：原句第二段 10 字須切三行，三行時封面一句話壓到星窗內四種語言之標籤與代表星（verify_page.js FAIL 2 項）；改後兩行、PASS。首頁星圖說明框與卡片牆須由協調者重建。
+  - 卡片：Card 3 取論文頁之 Procrustes 目標式（回原文 §3.1 核對相同）；Card 4 四個數字（16.34、15.72、24.51 取表 2，1.5–8 取 §1 貢獻 3）回原文抽查相符；Card 5 一般模式三筆後續研究；封面標題「低資源翻譯之泛化資料增強」。`check_cards.py` ERROR 0、WARN 0；建置自我檢查 ERROR 0、WARN 0；`verify_page.js` PASS（37 項）；目視修正封面論文名、Card 2 缺口、Card 4 兩則說明、Card 5 標題與一筆里程碑之落單行，Card 6 改照論文頁「前提是兩語相似」之說法。`lint_wiki.py` 本篇無 ERROR、WARN（唯一 ERROR 在他人未提交之 2024-fault-tolerant-quantum.md）。
+  - 首頁卡片牆依本批協調規則未重建，由協調者處理。
