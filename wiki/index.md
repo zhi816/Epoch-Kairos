@@ -43,7 +43,7 @@
   * 得獎者：Joel Mokyr, Philippe Aghion, Peter Howitt。原始文獻：`raw/1992-creative-destruction-aghion.pdf`（Aghion & Howitt (1992) *Econometrica* 60(2):323-351，https://doi.org/10.2307/2951599）。
 * `2025` ｜ [DeepSeek-R1：以純強化學習激發大型語言模型之自我反思與長鏈推理湧現](papers/2025-deepseek-r1.md) ｜ `#人工智慧` `#強化學習` `#深度學習` ｜ `[published]`
   * 原始文獻：`raw/2025-deepseek-r1.pdf`（DeepSeek-AI (2025) arXiv:2501.12948，https://arxiv.org/abs/2501.12948）。
-* `2025` ｜ [神經元向癌細胞轉移粒線體：揭開腫瘤神經科學中驅動癌症遠端轉移的代謝劫持機制](papers/2025-nerve-mito-cancer.md) ｜ `#神經科學` `#生物科技` `#分子生物` ｜ `[wiki]`
+* `2025` ｜ [神經元向癌細胞轉移粒線體：探索腫瘤代謝與遠端轉移](papers/2025-nerve-mito-cancer.md) ｜ `#神經科學` `#生物科技` `#分子生物` ｜ `[wiki]`
   * 原始文獻：`raw/2025-nerve-mito-cancer.pdf`（Hoover et al. (2025) "Nerve-to-cancer transfer of mitochondria during cancer metastasis", *Nature* 644(8075):252-262，https://doi.org/10.1038/s41586-025-09176-8）。
 * `2025` ｜ 抗極端高溫水稻基因 QT12 ｜ `#農業科技` ｜ `[planned]`
   * 原始文獻：Li et al. (2025) "A natural gene on-off system confers field thermotolerance for grain quality and yield in rice", *Cell* 188:3661-3678.e21，https://doi.org/10.1016/j.cell.2025.04.011（出版社付費牆，`raw/` 暫無原始檔）。
