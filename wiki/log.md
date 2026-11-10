@@ -2174,7 +2174,7 @@
 - **驗證**：`check_cards.py 1995-soai-asymmetric-autocatalysis` 檢查結果為 ERROR 0、WARN 0；`pipeline_status.py` S7 檢查為 OK。
 
 
-## [2026-11-11 02:36] publish | Soai 不對稱自催化雙欄網頁生成與首頁群星上架 | #化學合成
+## [2026-11-11 02:36] design | Soai 不對稱自催化雙欄網頁生成與首頁群星上架 | #化學合成
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 3.8 Flash
 - **具體變更**：
