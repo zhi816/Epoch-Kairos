@@ -10,7 +10,7 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#深度學習"]
 concepts: ["generative-world-models", "ai-for-structural-biology", "neural-circuits"]
 status: "published"
-verification: "issues"
+verification: "partial"
 my_focus: false
 doi_url: "https://arxiv.org/abs/1706.03762"
 key_papers:
@@ -25,6 +25,8 @@ card_line: "不再逐字讀句子，讓每個字同時看見整句"
 > 「當模型不再被迫一個字一個字地順著時間軸緩慢爬行，而是能在一瞬間用矩陣乘法看清全局脈絡中每一處幽微的張力時，人工智慧的規模化奇點便真正降臨了。」（本頁引言為 Wiki 撰寫，非原文）
 
 **2017 發表 ｜ 現代生成式 AI 奠基支柱**
+
+> **本頁數值版本**：優先採 [NeurIPS 2017 定稿 PDF](https://proceedings.neurips.cc/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf)；[arXiv v7](https://arxiv.org/abs/1706.03762v7) 與會議網站摘要的不同數值另行註明。
 
 ---
 
@@ -94,7 +96,7 @@ PE_{(pos, 2i+1)} &= \cos\left( \frac{pos}{10000^{2i / d_{\text{model}}}} \right)
 * **路徑長度與計算複雜度對比**：自注意力層的最大交互路徑長度為 $O(1)$、順序操作數為 $O(1)$，每層計算複雜度為 $O(n^2 \cdot d)$；相比之下，循環層（Recurrent Layer）的最大路徑長度與順序操作數皆高達 $O(n)$，每層計算複雜度為 $O(n \cdot d^2)$。在自然語言常見之序列長度 $n < d$（例如 $n \ll 512$）區間，自注意力不僅完全可並行，且單層浮點運算量更低。
 * **WMT 2014 英德與英法機器翻譯雙破紀錄**：
   * **英譯德（EN-DE）**：Transformer (big) 達到 **$28.4$ BLEU**，超越當時包括集成模型（Ensembles）在內的所有既有最佳系統超過 $2.0$ BLEU。
-  * **英譯法（EN-FR）**：Transformer (big) 在 NeurIPS 定稿正文第 8 頁報告達到 **$41.0$ BLEU**（而在 Table 2 及 arXiv 版中標註為 **$41.8$ BLEU**，NeurIPS 官方摘要頁載為 41.1），超越先前所有既有最佳單一模型與集成系統，且訓練成本不到先前最佳系統的四分之一。
+  * **英譯法（EN-FR）**：Transformer (big) 在 NeurIPS 定稿 Table 2 及正文第 8 頁均為 **$41.0$ BLEU**，超越表中既有單一模型，但低於表中最佳集成模型的 $41.29$；正文稱訓練成本低於先前最佳模型的四分之一。[arXiv v7](https://arxiv.org/abs/1706.03762v7) 摘要與 Table 2 為 $41.8$，其正文仍寫 $41.0$；[NeurIPS 網站摘要](https://proceedings.neurips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html) 則寫 $41.1$。
 * **訓練算力與時間大幅下降**：基礎模型（Base Model）在 8 顆 NVIDIA P100 GPU 上僅需訓練 **12 小時**（10 萬步），大型模型（Big Model）僅需訓練 **3.5 天**（30 萬步，總算力 $2.3 \times 10^{19}$ FLOPs），僅為當時頂尖競爭模型（如 ConvS2S Ensemble、GNMT+RL Ensemble）訓練算力成本的四分之一至數十分之一。
 * **英語句法成分剖析（Constituency Parsing）遷移能力**：在 WSJ 測試集上，僅用 WSJ 訓練集達到 $91.3$ F1，半監督設置下達到 $92.7$ F1，證明自注意力機制無須專門針對句法樹設計即可自動習得深層語法結構。
 

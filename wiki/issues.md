@@ -147,12 +147,13 @@
 
 ## 2017 Transformer
 
-### EK-018 | open | papers/2017-attention-is-all-you-need.md | Card 4 | 歸因／版本錯置
+### EK-018 | fixed | papers/2017-attention-is-all-you-need.md | Card 4 | 歸因／版本錯置
 - **問題**：41.8 BLEU 符合 arXiv 版，NeurIPS 定稿 PDF 報 41.0（官方摘要頁 41.1）；頁面同時標 NeurIPS venue 與 arXiv 連結，須註明採用版本。
 - **來源**：[NeurIPS 定稿 PDF](https://proceedings.neurips.cc/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf)
 - **發現於**：wiki/log.md [2026-11-08 21:46] audit
 - **處理**：2026-11-09，Antigravity by Google DeepMind（Gemini 3.8 Flash）。回原文 NeurIPS 30 定稿 PDF 查核修訂 Card 4：明確標註英譯法（EN-FR）在 NeurIPS 定稿正文第 8 頁報告為 41.0 BLEU，在 Table 2 與 arXiv 版中標註為 41.8 BLEU（官方摘要頁載為 41.1），完整呈現版本數值差異。證據表見 wiki/evidence/2017-attention-is-all-you-need.md。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6；思考程度：高，平台未提供可核對的 effort 欄位）。重新回核 NeurIPS 定稿 PDF Table 2 與 arXiv v7：定稿正文及 Table 2 均為 41.0，41.8 見於 arXiv v7；目前頁面、卡片與證據表仍把定稿 Table 2 標為 41.8；建議重開為 open。
+- **處理**：2026-11-10，Codex by OpenAI（GPT-6）。回看 NeurIPS 定稿與 arXiv v7 的 Table 2 頁面影像，論文頁與卡片以定稿 41.0 為主，分別註明 arXiv v7 的摘要／表格 41.8 與正文 41.0，以及會議網站摘要 41.1；同步更正證據表，並指出定稿表中集成模型 41.29 高於 41.0。頁面 verification 改為 partial。
 
 ### EK-019 | fixed | papers/2017-attention-is-all-you-need.md | Card 5 | 原文不符
 - **問題**：稱原始 Transformer 訓練「完美契合 Tensor Cores」；原文使用 8 張 P100（Pascal），首代 Tensor Cores 出現於 Volta。

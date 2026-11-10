@@ -2045,3 +2045,8 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
 - **具體變更**：完成 EK-035、036：回查 OpenAI 技術報告與 Liu 綜述圖 4，刪除未公開的圖塊數量、嵌入、損失及 adaLN 區塊公式，明確區分綜述逆向推測與官方描述；卡片改為無公式模式。修正文內對隱藏層三維幾何、物理推理與互動能力的未證實斷言，證據表同步更正，包括先前協作時追加之公式待處理註記；核實狀態改為 partial。check_cards.py、論文頁與首頁卡片牆建置均 ERROR 0、WARN 0；瀏覽器服務不可用，待驗證見 TD-021；lint_wiki.py ERROR 0、WARN 23。
+
+## [2026-11-10 20:32] fix | 對正 Transformer 英法 BLEU 版本 | #人工智慧 #深度學習
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：完成 EK-018：對照 NeurIPS 2017 定稿與 arXiv v7 Table 2 的頁面影像，以定稿英譯法 41.0 BLEU 更新論文頁、卡片與證據表；另列 arXiv 摘要及表格 41.8、其正文 41.0 與會議網站摘要 41.1。定稿表中最佳集成模型為 41.29，故改正「超越所有集成」說法。頁面 verification 改為 partial；check_cards.py、論文頁與首頁卡片牆建置均 ERROR 0、WARN 0，瀏覽器服務不可用，待驗證見 TD-021；lint_wiki.py ERROR 0、WARN 23。
