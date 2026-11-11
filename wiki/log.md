@@ -2280,3 +2280,11 @@
 - **具體變更**：逐頁檢視 Boyden 等（2005）原 PDF 印刷頁 1263–1268，確認原頁四組展示公式未見於本篇；移除公式，改以 p.1264、Fig. 1 之實驗觀察及來源界線說明，完成 EK-219。另依原文 pp.1264、1267 修正本篇慢病毒載體、作者提出的未來方向與全反式視黃醛表述，登記並修正 EK-220。建立 [部分證據表](evidence/2005-optogenetics.md)，僅涵蓋本次 Card 3 查核，論文頁 `verification` 設為 `partial`。
 - **同步**：更新 TD-007、TD-008、TD-011 對證據表的現況；卡片與論文網頁仍依 TD-008 等待後續工作，未將本次局部查核當成全頁核實或上架完成。
 - **驗證**：`lint_wiki.py` ERROR 0、既有 WARN 21；`pipeline_status.py 2005-optogenetics` 的 S1、S3 至 S6 為 OK，S7 至 S9 因尚無卡片與網頁而為 NG，S10 於提交前待完成；`build_home.py --check` 一致；`python -m unittest discover -s tools/tests -q` 12 項通過。
+
+## [2026-11-11 14:12] fix | Soai 原文公式、後續模型與卡片來源修正 | #化學合成
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：依 1995 原 PDF 印刷頁 767–768，移除非本篇原文的五組區塊公式，保留明示 Wiki 補充之行內 e.e. 定義，卡片 Card 3 改無公式模式（EK-221）；Card 2 結語改為原文所述理論缺口（EK-215），Card 6 不再把隨機漲落寫成本篇實驗結果（EK-223）。
+- **來源與歸屬**：移除未核實的二聚體熱力學排序與平衡式，改以 Blackmond 2004 作者回顧之二聚體統計形成與活性差異說明後續模型，更新論文頁、概念頁與各自證據表（EK-212、EK-218）；Kawasaki 2009 限依作者摘要與原文 p.495 描述同位素手性分子，明示未取得其餘全文（EK-217）。更正 Blackmond 2001 作者 Schorm 姓氏（EK-222），該文全文仍未取得。
+- **卡片核對**：保留使用者確認之原始撰寫者 Antigravity／Gemini 3.8 Flash；Card 4 四項對照 1995 Table 1 的 A5、B5 與註解，Card 5 對照 1996 原文 p.471、2004 回顧、2009 摘要與 p.495 及官方獎項公告。論文頁與概念頁維持 `verification: partial`，未把局部修正視為全頁核實。
+- **驗證**：`check_cards.py` ERROR 0、WARN 0；論文頁建置自我檢查 ERROR 0、WARN 0；`build_home.py --check --card 1995-soai-asymmetric-autocatalysis` 一致，卡片牆自我檢查 ERROR 0、WARN 0；`lint_wiki.py` ERROR 0、既有 WARN 21；12 項工具測試通過。瀏覽器服務無法連線，論文頁與首頁卡片牆之桌面、手機及操作複驗留在 TD-021，未宣稱瀏覽器驗證通過。
