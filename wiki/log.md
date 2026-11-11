@@ -2288,3 +2288,8 @@
 - **來源與歸屬**：移除未核實的二聚體熱力學排序與平衡式，改以 Blackmond 2004 作者回顧之二聚體統計形成與活性差異說明後續模型，更新論文頁、概念頁與各自證據表（EK-212、EK-218）；Kawasaki 2009 限依作者摘要與原文 p.495 描述同位素手性分子，明示未取得其餘全文（EK-217）。更正 Blackmond 2001 作者 Schorm 姓氏（EK-222），該文全文仍未取得。
 - **卡片核對**：保留使用者確認之原始撰寫者 Antigravity／Gemini 3.8 Flash；Card 4 四項對照 1995 Table 1 的 A5、B5 與註解，Card 5 對照 1996 原文 p.471、2004 回顧、2009 摘要與 p.495 及官方獎項公告。論文頁與概念頁維持 `verification: partial`，未把局部修正視為全頁核實。
 - **驗證**：`check_cards.py` ERROR 0、WARN 0；論文頁建置自我檢查 ERROR 0、WARN 0；`build_home.py --check --card 1995-soai-asymmetric-autocatalysis` 一致，卡片牆自我檢查 ERROR 0、WARN 0；`lint_wiki.py` ERROR 0、既有 WARN 21；12 項工具測試通過。瀏覽器服務無法連線，論文頁與首頁卡片牆之桌面、手機及操作複驗留在 TD-021，未宣稱瀏覽器驗證通過。
+
+## [2026-11-11 14:34] update | 整理索引內容 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：調整 wiki/index.md 與相關 Markdown 文件的內容及相對路徑。
