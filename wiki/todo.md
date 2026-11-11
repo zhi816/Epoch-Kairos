@@ -101,12 +101,6 @@
 - **等待**：使用者取得正確原文並放入 `raw/`（AI 對 `raw/` 唯讀）。
 - **來源**：2026-11-11 raw/ 頂層 PDF 第 1 頁核對（Codex GPT-5.6 Luna 唯讀檢查，結果經 Claude Code 以第 1 頁影像覆核）；與 EK-203、TD-011 相關。
 
-### TD-027 | waiting | rule | 決定是否在 AGENTS.md 之 Skill 一覽登記子代理派工 Skill
-- **內容**：使用者的 Mac 上有一份使用者層級 Skill `~/.claude/skills/subagent-dispatch/`（不在本倉庫內），規定 Claude Code 擔任總指揮時如何把工作派給本機的外部命令列代理（Antigravity Gemini、OpenCode MiniMax、GLM、DeepSeek、Codex 等），以及「子代理交叉驗證數輪，再由總指揮回原文查核、退回修正」的迴圈。其他 AI（Codex、Antigravity）與其他機器讀不到這份 Skill，也不知道本專案可能出現由子代理署名的提交與測試分支。可選做法：在 `AGENTS.md` 第六章 Skill 一覽加一列說明其存在與適用範圍；或把與本專案有關的部分（任務書須知、迴圈輪數與退回單格式）另寫成 `.agents/skills/` 下之專案 Skill；或維持現狀不登記。
-- **完成條件**：使用者決定做法；若要登記，修改 `AGENTS.md`（及必要時新增專案 Skill 與 `.claude/skills/` 轉介檔），並於 `wiki/log.md` 留一筆 `rule` 紀錄；處理後刪除本條目。
-- **等待**：使用者決定是否登記與採用哪一種做法（屬規範變更，依第九章須經使用者同意）。
-- **來源**：2026-11-11 子代理迴圈試跑後之評估；2026-11-11 登記，Claude Code by Anthropic。
-
 ### TD-028 | waiting | wiki | 以子代理迴圈核對 Aghion & Howitt 1992 之 Card 3 區塊公式（EK-203）
 - **內容**：以「子代理交叉驗證數輪，再由總指揮回原文查核、退回修正」之迴圈處理 EK-203：[1992-creative-destruction-aghion](papers/1992-creative-destruction-aghion.md) 五條區塊公式逐式對照 *Econometrica* 60(2):323–351 正式版之式 (2.1)、(2.3)、(2.10)、(2.12)、(3.11)，判斷各式為原文或 Wiki 推導，依 `wiki-content-audit` 改寫並登記證據表。預定分工：Antigravity（gemini-3.8-flash-high）執行，OpenCode 之 DeepSeek 與 MiniMax 審查，Claude Code 回正式版頁面影像查核。直接在 main 進行，不另開分支。2026-11-11 已以同一迴圈試跑 Soai 1995 四筆問題（結果與教訓見 wiki/log.md [2026-11-11 15:01] 及使用者 Mac 上之 `~/.claude/skills/subagent-dispatch/`）；本項之任務書須允許子代理使用公開之第一手來源，並寫明取得之頁碼。
 - **完成條件**：EK-203 改為 `fixed`；`pipeline_status.py 1992-creative-destruction-aghion` 之 S3 為 OK；`lint_wiki.py` ERROR 0；論文頁 `verification` 依第七章第 4 節更新並重建論文頁網頁。與 TD-011（全庫公式證據）及 TD-025（換正確之 raw 原文）相關：本項完成時同步更新 TD-011 之進度。

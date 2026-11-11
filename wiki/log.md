@@ -2308,3 +2308,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：claude-fable-5-2
 - **具體變更**：依使用者指示刪除 main 以外之所有分支。本機分支 `test/subagent-loop`（提交 `d9a6e26`，子代理迴圈試跑，內容不合併）連同其獨立工作目錄已移除；遠端分支 `claude/tender-faraday-ec4px6` 刪除前確認無任何未併入 main 之提交。本機與遠端現僅餘 `main`。完成 TD-026（使用者決定不保留測試分支，條目刪除）。另依使用者指示新增 TD-028：以子代理迴圈核對 Aghion & Howitt 1992 之 Card 3 區塊公式（EK-203），等待使用者提供正式版原文之取得方式。
+
+## [2026-11-11 15:08] rule | AGENTS.md Skill 一覽登記子代理派工 Skill | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：claude-fable-5-2
+- **具體變更**：經使用者同意，於 [AGENTS.md](../AGENTS.md) 第六章開頭之 Skill 一覽新增一列 `subagent-dispatch`：說明該 Skill 為使用者層級、正本在使用者 Mac 之 `~/.claude/skills/subagent-dispatch/` 而不在本倉庫，僅 Claude Code 擔任總指揮時使用；Claude Code 可能據此派工給外部命令列代理並採交叉驗證與退回修正之迴圈，故提交與日誌可能出現子代理署名；子代理仍須遵守本檔全部規範，結論由總指揮核對後才算完成。Skill 內容未搬入倉庫，其餘章節未改。完成 TD-027（條目刪除）。

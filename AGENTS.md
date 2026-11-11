@@ -171,6 +171,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 > | [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | Ingest 第 1 步與查核時，將 `raw/` 論文 PDF 抽成附頁碼標記之文字，以搜尋主張出處；預設用 PyMuPDF，MinerU 僅用於純圖片、亂碼 PDF 或抄寫長公式；輸出一律只當草稿，須回原 PDF 核對，且只可在本機解析 |
 > | [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 任何 Git 同步、提交與推送（見第十章） |
 > | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | Ingest 第 4 步、回填或修訂卡片時：撰寫 `wiki/cards/<slug>.md`（首頁封面卡與論文頁 Card 1–6 之文字、Card 3 示意圖），並建置論文頁、放上首頁卡片牆且兩者皆驗證；`references/` 須逐份讀完，附 `check_cards.py` 檢查腳本、`venue_short_lookup.py` 期刊簡稱查詢腳本與 `verify_page.js`、`verify_wall.js` 瀏覽器驗證腳本 |
+> | `subagent-dispatch`（使用者層級，不在本倉庫） | 僅 Claude Code 於使用者的 Mac 上擔任總指揮時使用，正本位於該機之 `~/.claude/skills/subagent-dispatch/`，其他 AI 與其他機器讀不到，亦無須讀取。Claude Code 可能依此把工作派給本機的外部命令列代理（Antigravity Gemini、OpenCode 之 MiniMax、GLM、DeepSeek、Codex 等），並採「子代理交叉驗證數輪，再由總指揮回原文查核、退回修正」之迴圈，故提交、日誌與問題清單之處理紀錄可能出現子代理署名。子代理仍須遵守本檔全部規範（第五章 `raw/` 唯讀、第九章日誌身分標註、第十章只提交自己的修改）；其結論由總指揮核對後才算完成 |
 
 ### 1. Ingest（收錄新來源）
 當使用者在 `raw/` 放入新文件或指令收錄一篇論文時，AI 必須依 [`paper-pipeline`](./.agents/skills/paper-pipeline/SKILL.md) 之 S0 至 S10 逐步執行，每一步以其完成條件之指令確認後才進下一步；`python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug>` 九步皆 OK 才算收錄完成。以下 5 個步驟為該流程之摘要：
