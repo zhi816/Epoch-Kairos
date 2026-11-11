@@ -2247,3 +2247,20 @@
   - `raw/2007-woodford-inflation-dynamics.pdf` 未改名：raw 檔名由使用者親自處理（AGENTS.md 第五章）。論文頁與索引之 raw 連結暫留原檔名，待改名後更新。
   - 另發現：論文頁 `title_zh`「宏觀經濟穩定政策的微觀基礎：通膨動態、預期錨定與貨幣控制」與原文題名 Globalization and Monetary Control 不符，本次未修改，待決定中文譯名。
 - **驗證**：`check_cards.py` 本篇 ERROR 0、WARN 0；`build_paper_prototype.py` 自我檢查 ERROR 0、WARN 0；`build_home.py --card` 已重建。卡片墻之舊卡片錯誤於提交後消失。全庫 lint 之 ERROR 2 為 1995 相關之新增 open 問題（EK-216、EK-217、EK-218），與本次改名無關。
+
+## [2026-11-11 12:28] audit | Soai 1995 第三輪獨立審查（Hy4） | #化學合成
+- **執行代理**：CodeBuddy Code by Tencent
+- **模型版本**：Hy4 Preview（hy4-preview）
+- **具體變更**：
+  - 本輪身分為獨立審查（只登記問題，不改內容），僅編輯 [wiki/issues.md](issues.md) 與本日誌；以 1995 Nature 原文（印刷頁 767–768，文字層 `pdf_page1_text.txt`、`pdf_page2_text.txt`）為唯一證據來源，對照四個核心知識檔案，於 [wiki/issues.md](issues.md) 新增 4 筆 open 問題條目；四筆之「發現於」時間與本日誌標題一致：
+    - EK-215：[wiki/cards/1995-soai-asymmetric-autocatalysis.md](cards/1995-soai-asymmetric-autocatalysis.md) Card 2 結語，「無手性種子時，產物選擇性低於檢測極限」為 Table 1 Run D 外消旋對照結果，誤置於描述 1995 年前困境之「世紀瓶頸」卡，且把外消旋 1（0% e.e.）錯述為「無手性種子」（歸因／版本錯置）。
+    - EK-216：[wiki/papers/1995-soai-asymmetric-autocatalysis.md](papers/1995-soai-asymmetric-autocatalysis.md) Card 6 第 1 點，把 Series A Run A5 之 1,674 倍與歸於 Series B 之新生成物 90% e.e. 併列為同一筆結果且未標系列／run，原文總結句並未如此並列（歸因／版本錯置）。
+    - EK-217：[wiki/papers/1995-soai-asymmetric-autocatalysis.md](papers/1995-soai-asymmetric-autocatalysis.md) Card 4 後續第 129 行，對內容未核對之 Kawasaki 2009 使用絕對化強斷言「證明」，未與卡片 Card 5 已降為「顯示」同步，亦未註明書目未核對（過度表述）。
+    - EK-218：[wiki/concepts/chiral-symmetry-breaking.md](concepts/chiral-symmetry-breaking.md) 第 32、34 行，物理場起源假說、Lotka–Volterra 類比與 Blackmond 2001 二聚體「熱力學失活陷阱」歸因，均非印刷頁 767–768 原文所有，卻把內容未核對之後續研究併為正面歸因與類比（過度表述）。
+  - 查證無誤、未登記之主要項目：
+    - 證據表第 11、12 行出處（審查重點 3）：Series A 為印刷頁 767 左欄第 3 段至末段（起始 5% e.e.、20 mol%、因子 4.1），942 與 1,674 倍合併總結句位於印刷頁 767 右欄首段；Series B 之「increased by the factor of 942 times」位於印刷頁 767 左欄末段；Table 1 與註 §、＊ 位於印刷頁 768。與已確認之文字塊座標一致。
+    - 數字一致性（審查重點 4）：Series A1–A5、B1–B5、C1–C2、Run D 之 e.e.、放大倍數（1,674、942、4.1）、反應時間、產率、用量與新生成物 e.e.，論文頁、卡片、證據表數值皆與 Table 1 一致。
+    - 強斷言（審查重點 5）：「唯一」對應印刷頁 768「only other possible experimental realization ... physical rather than chemical processes」；「顯示」類實驗表述有原文依據；未見無依據之「首次」或「必然」；「證明」僅於內容未核對之 Kawasaki 2009 以 EK-217 登記。
+- **驗證**：
+  - `python3 .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：論文頁 43、概念頁 12、問題清單 182 筆（open 5）、待辦 13 筆（waiting 7）；ERROR 2、WARN 21。兩筆 ERROR 為 [wiki/issues.md](issues.md) 未結問題之 verification 耦合檢查（EK-216、EK-217 指向論文頁、EK-218 指向概念頁，該兩頁 frontmatter 仍為 `verification: partial`），並非本次新增條目之格式 ERROR；本輪為獨立審查、不得修改四個內容檔，故未調整 frontmatter，留待後續 fix 輪處理（與 [2026-11-11 11:14] fix 輪「修正前 ERROR 2」同因）。
+  - `python3 .agents/skills/paper-card-writer/scripts/check_cards.py 1995-soai-asymmetric-autocatalysis`：卡片檔 1 個；ERROR 0、WARN 0。

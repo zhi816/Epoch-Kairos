@@ -1164,3 +1164,23 @@
 - **來源**：Kawasaki et al. (2009), *Science* 324:492–495；證據表 `evidence/1995-soai-asymmetric-autocatalysis.md` 第 26 行。
 - **發現於**：2026-11-11 10:47，Antigravity by Google DeepMind（Gemini 3.8 Flash）。
 - **處理**：2026-11-11 11:14，OpenCode by SST（MiniMax M3.1 Flash）。「證明」降格為「顯示」，並於出處欄保留「（書目未對照全文）」標示，與證據表第 26 行「僅書目」之狀態一致。
+
+### EK-215 | open | cards/1995-soai-asymmetric-autocatalysis.md | Card 2 結語 | 歸因／版本錯置
+- **問題**：「無手性種子時，產物選擇性低於檢測極限。」為本篇 Table 1 Run D 之外消旋對照實驗結果，卻置於描述 1995 年前困境的「世紀瓶頸」卡結語，把本篇實驗誤置為先前瓶頸；且「無手性種子」把外消旋 1（0% e.e.）錯述為無手性種子，原文為「the enantioselectivity of a racemic 1 as autocatalyst was below the detection level (run D; Table 1)」。
+- **來源**：印刷頁 768 Table 1 Run D（pdf_page2_text.txt 第 117–123 行）；印刷頁 767 右欄「On the other hand」段（pdf_page1_text.txt 第 127–135 行）。
+- **發現於**：wiki/log.md [2026-11-11 12:28] audit（CodeBuddy Code by Tencent）
+
+### EK-216 | open | papers/1995-soai-asymmetric-autocatalysis.md | Card 6 第 1 點 | 歸因／版本錯置
+- **問題**：「（新生成物 e.e. 達 90%，(S)-1 總量放大至 1,674 倍，Table 1，p.768）」把 Series A Run A5 的 1,674 倍與頁面他處（Card 4、證據表第 12 行）歸於 Series B 的新生成物 90% e.e. 併列為同一筆結果且未標系列／run，而原文總結句僅為「amplified to 88-89%, and the amount of (S)-1 was increased by a factor of 942 and 1,674」，並未把 90% 新生成物 e.e. 與 1,674 倍並列。
+- **來源**：印刷頁 768 Table 1 Runs A5、B4（pdf_page2_text.txt 第 53–60、86–101 行）；印刷頁 767 右欄首段總結句（pdf_page1_text.txt 第 122–126 行）。
+- **發現於**：wiki/log.md [2026-11-11 12:28] audit（CodeBuddy Code by Tencent）
+
+### EK-217 | open | papers/1995-soai-asymmetric-autocatalysis.md | Card 4 後續第 129 行 | 過度表述
+- **問題**：「證明碳同位素 $^{13}\mathrm{C}/^{12}\mathrm{C}$ 比例造成的微弱手性差異，也能在反覆自催化中被放大」對 Kawasaki 2009 使用絕對化強斷言「證明」，但證據表第 26 行標為「書目符合（Crossref）；內容未核對」，卡片 Card 5 第 64 行已依 EK-214 降為「顯示」並加註「書目未對照全文」，論文頁既未同步亦未註明書目未核對。
+- **來源**：印刷頁 767–768 全文（pdf_page1_text.txt、pdf_page2_text.txt 均無此後續研究）；證據表 evidence/1995-soai-asymmetric-autocatalysis.md 第 26 行；wiki/issues.md EK-214。
+- **發現於**：wiki/log.md [2026-11-11 12:28] audit（CodeBuddy Code by Tencent）
+
+### EK-218 | open | concepts/chiral-symmetry-breaking.md | 第 32、34 行 | 過度表述
+- **問題**：第 32 行「物理場起源（如圓偏振光、地球自轉科氏力、宇稱不守恆之弱相互作用能差）與統計純漲落兩種假說」與「這些結果支持……假設」、第 34 行「在數學形式上與若干非線性模型（例如 Lotka–Volterra 競爭方程）有類比」及「異手性二聚體充當『熱力學失活陷阱』」，均非印刷頁 767–768 原文所有（原文僅言 homochirality「remains a puzzle」、Frank 之隨機漲落方案，並明言詳細機制「remains to be clarified」），卻把內容未核對之 Kawasaki 2009 與 Blackmond 2001 模型描述併為正面歸因與類比，超出原文可支持範圍。
+- **來源**：印刷頁 767 左欄摘要第 1 段（pdf_page1_text.txt 第 10–25 行）；印刷頁 768 左欄末段至右欄「It seems conceivable…」與「remains to be clarified」（pdf_page2_text.txt 第 142–151、197–201 行）；證據表第 26、34 行。
+- **發現於**：wiki/log.md [2026-11-11 12:28] audit（CodeBuddy Code by Tencent）
