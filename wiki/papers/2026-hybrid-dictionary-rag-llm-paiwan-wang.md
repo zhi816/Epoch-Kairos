@@ -13,7 +13,7 @@ concepts: ["formosan-computational-linguistics", "low-resource-machine-translati
 status: "published"
 verification: "partial"
 my_focus: true
-focus_role: "international"
+focus_role: "llm-assisted"
 focus_languages: ["排灣語"]
 doi_url: "https://doi.org/10.3390/engproc2025120052"
 hook: "臺東大學團隊於 ICKII 2025 / Eng. Proc. 提出排灣語－華語混合翻譯管線：以記憶體 JSON 雜湊表詞典做預翻譯（未命中則 Fallback 至 Qdrant 向量檢索），再交由指令微調 LLM（GPT-4o mini、Llama 3.1、Gemma 3、DeepSeek-R1-Distill）進行語序重構與後編輯，在 250 句排灣語譯華語測試集上，使 BLEU 由 1.7–4.4 提高到 40.8–51.9。"
@@ -143,5 +143,5 @@ card_line: "先查辭典再交給大模型，把排灣語譯成華語"
   * [低資源神經機器翻譯與檢索增強生成](../concepts/low-resource-machine-translation.md)
 * **原始權威文獻**：
   * 官方學術出處：Wang, R.-C., Yang, C.-K., Yang, T.-C., & Tseng, Y.-X. (2026). Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation. *Engineering Proceedings*, 120(1), 52:1-52:9. DOI: [10.3390/engproc2025120052](https://doi.org/10.3390/engproc2025120052)
-  * 原始檔典藏：`raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/英文論文/llm 輔助/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
   * 證據表：[evidence/2026-hybrid-dictionary-rag-llm-paiwan-wang.md](../evidence/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)

@@ -1,5 +1,5 @@
 # 證據表：2026-hybrid-dictionary-rag-llm-paiwan-wang
-- **採用版本**：*Engineering Proceedings*, 120(1), 52, pp. 1–9（線上發表：2026-02-05；發表於 ICKII 2025 國際研討會），DOI: 10.3390/engproc2025120052；封存於 `raw/my-focus/英文論文/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（PDF 頁碼即文章頁碼 1–9）。
+- **採用版本**：*Engineering Proceedings*, 120(1), 52, pp. 1–9（線上發表：2026-02-05；發表於 ICKII 2025 國際研討會），DOI: 10.3390/engproc2025120052；封存於 `raw/my-focus/英文論文/llm 輔助/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（PDF 頁碼即文章頁碼 1–9）。
 - **查核者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-09；2026-11-10 由 Claude Code by Anthropic（Claude Opus 5.5）回原文逐項重建（EK-110 已修正、EK-111、EK-160）
 
 | 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |
