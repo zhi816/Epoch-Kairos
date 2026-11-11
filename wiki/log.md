@@ -2218,3 +2218,22 @@
 - **驗證**：
   - 執行 `python3 .agents/skills/wiki-content-audit/scripts/lint_wiki.py`，確認新增之 EK 條目無任何格式 ERROR。
   - 執行 `python3 .agents/skills/paper-card-writer/scripts/check_cards.py 1995-soai-asymmetric-autocatalysis`，檢查結果為 卡片檔 1 個；ERROR 0、WARN 0。
+
+## [2026-11-11 11:14] fix | Soai 1995 依獨立審查修正 EK-208 至 EK-214（OpenCode） | #化學合成
+- **執行代理**：OpenCode by SST
+- **模型版本**：MiniMax M3.1 Flash（minimax-m3.1-flash-free）
+- **具體變更**：
+  - EK-208（卡片 Card 5）：2026 諾貝爾化學獎里程碑改為「Kagan與Soai獲諾貝爾化學獎，表彰非線性效應」，補回官方引文核心「非線性效應」，並於註記標明獎項亦表彰自催化，不再將自催化單獨歸給 Kagan。
+  - EK-209（卡片 Card 2 與 Card 6）：刪除「自發放大」與「自發濃縮」殘留，轉變改為「稀釋雜訊→種子逐輪放大」、缺口改為「缺乏能把微小手性偏差逐輪放大的化學反應網路」；Card 2 結語改以 Run D 外消旋對照之實測結果表述（「無手性種子時，產物選擇性低於檢測極限。」）。
+  - EK-210（概念頁第 34 行）：改為二聚體模型之正確描述（「使催化活性較高的同手性二聚體在活性池中佔據優勢」），刪除誤植之「單體」與「壓倒性」，並加註依 Blackmond 2001 之模型描述、本頁尚未對照全文。
+  - EK-211（論文頁 Card 6 第 144–145 行）：第 1 點改為「放大的機制同時包含『合成』與『選擇』（Wiki 詮釋）」並補述本篇確實原位化學合成新嘧啶醇分子；第 2 點明確標為 Wiki 詮釋，刪去「有結構上的類比」之過度延伸，改為「僅作為概念類比，不是本篇或文獻之結論」。
+  - EK-212（論文頁 Card 3 第 108 行）：$K_{\mathrm{hetero}} > K_{\mathrm{homo}}$、$\Delta G^{\circ}$ 與「儲庫」推論全部改寫為「依 Blackmond 2001 之模型描述」之敘述，並加註判讀界線「同手性與異手性二聚體的統計因子會影響 $K$ 之直接比較，本頁未對照該文全文，數值判斷以原文為準」；證據表第 34 行同步標記。
+  - EK-213（證據表第 11、12 行）：Series A 出處改為 p. 767 左欄第 3 段（Series A 起始 5% e.e. 之實驗描述與 20 mol% 條件）並註明 942 與 1,674 倍之合併總結句位於 p. 767 右欄首段；Series B 出處改為 p. 767 左欄末段（含「increased by the factor of 942 times」文字塊），均以 pymupdf 文字塊座標逐一核對。
+  - EK-214（卡片 Card 5 第 64 行）：Kawasaki 2009 之「證明」降為「顯示」，出處欄保留「（書目未對照全文）」標示。
+  - 問題清單：wiki/issues.md 之 EK-208 至 EK-214 七筆狀態由 open 改為 fixed，並各追加處理行。
+- **驗證**：
+  - `python3 .agents/skills/paper-card-writer/scripts/check_cards.py 1995-soai-asymmetric-autocatalysis`：卡片檔 1 個；ERROR 0、WARN 0。
+  - `python3 tools/build_paper_prototype.py 1995-soai-asymmetric-autocatalysis`：已產生 web/papers/1995-soai-asymmetric-autocatalysis/index.html；自我檢查 ERROR 0、WARN 0。
+  - `python3 .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：論文頁 43、概念頁 12、問題清單 178 筆（open 1）、待辦 13 筆（waiting 7）；ERROR 0、WARN 21（修正前為 ERROR 2、WARN 21，ERROR 為 EK-208 至 EK-214 未結所致，修正後歸零且無新增 WARN）。
+  - `python3 tools/build_home.py --card 1995-soai-asymmetric-autocatalysis`：卡片牆自我檢查 ERROR 0、WARN 0；未變更 web/index.html（封面卡與 card_line 未動）。
+  - 出處核對：以 `.venv-mineru/bin/python` 之 pymupdf 讀取 raw/1995-soai-asymmetric-autocatalysis.pdf 文字塊與座標，確認「increased by a factor of 942 and 1,674」句位於印刷頁 767 右欄首段（x 301–550, y 313–365），Series A 實驗描述（5% e.e.、20 mol%、因子 4.1）位於左欄第 3 段（x 37–286, y 461–634），Series B 之 942 倍句位於左欄末段（x 37–207, y 692–754）；Table 1 及其註 §、＊ 位於印刷頁 768。
