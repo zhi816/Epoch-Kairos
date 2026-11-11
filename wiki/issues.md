@@ -1122,3 +1122,38 @@
 - **來源**：[Nobel Prize in Chemistry 2026](https://www.nobelprize.org/prizes/chemistry/2026/)
 - **發現於**：2026-11-11 10:28，總指揮查證；DeepSeek Harness 獨立審查同樣指出。
 - **處理**：2026-11-11 10:28，Claude Code by Anthropic（claude-haiku-5-5）。改為「表彰不對稱有機合成中非線性效應與自催化的發現」；證據表註明官方引文與科普概括之區別。
+
+### EK-208 | open | cards/1995-soai-asymmetric-autocatalysis.md | Card 5 第 65 行 | 歸因／版本錯置
+- **問題**：Card 5 里程碑將 2026 諾貝爾化學獎表彰語寫為「Kagan與Soai獲諾貝爾化學獎表彰不對稱自催化」，遺漏官方表彰核心「非線性效應（non-linear effects）」，且將非自催化發現者的 Kagan 錯誤歸為表彰不對稱自催化（Kagan 獲獎工作為非線性效應，Soai 為自催化）。
+- **來源**：[Nobel Prize in Chemistry 2026](https://www.nobelprize.org/prizes/chemistry/2026/)；論文頁 Frontmatter 第 10 行與正文第 28 行；證據表第 5 行。
+- **發現於**：2026-11-11 10:47，Antigravity by Google DeepMind（Gemini 3.8 Flash）。
+
+### EK-209 | open | cards/1995-soai-asymmetric-autocatalysis.md | Card 6 第 70 行與 Card 2 第 16–17 行 | 過度表述
+- **問題**：Card 6 轉變寫「稀釋雜訊→自發放大」，Card 2 缺口寫「缺乏能自發濃縮微小手性偏差之化學反應網路」，但 1995 原文為 2% 及 5% e.e. 種子放大，Run D 外消旋對照（0% e.e.）產物手性選擇性低於檢測極限（BDL），未顯示能「自發」放大或濃縮；且 EK-205 已決議刪除「自發」，卡片檔未同步清除殘留之「自發放大」與「自發濃縮」。
+- **來源**：印刷頁 768 Table 1 Run D；p. 767 左欄摘要第 1 段（文字層 `pdf_page1_text.txt` 第 18–25 行）；`wiki/issues.md` EK-205。
+- **發現於**：2026-11-11 10:47，Antigravity by Google DeepMind（Gemini 3.8 Flash）。
+
+### EK-210 | open | concepts/chiral-symmetry-breaking.md | 第 34 行 | 歸因／版本錯置
+- **問題**：內文稱「異手性二聚體充當『熱力學失活陷阱』，使主導手性單體在動力學活性池中佔據壓倒性催化優勢」，將活性催化中心誤寫為「單體」。在 Blackmond 2001 二聚體催化模型中，催化活性中心為同手性二聚體（homochiral dimer），並非單體；此處混淆了二聚體催化機制與單體催化模型（如 Noyori DAIB 機制），且與論文頁 Card 3 第 92、108 行矛盾。
+- **來源**：Blackmond et al. (2001), *JACS* 123:10103–10104；論文頁 `papers/1995-soai-asymmetric-autocatalysis.md` Card 3 第 92、108 行。
+- **發現於**：2026-11-11 10:47，Antigravity by Google DeepMind（Gemini 3.8 Flash）。
+
+### EK-211 | open | papers/1995-soai-asymmetric-autocatalysis.md | Card 6 第 144–145 行 | 過度表述
+- **問題**：內文斷言「放大的本質不是『製造』手性，而是『選擇』手性」，並將異手性二聚體熱力學穩定化類比為「免疫系統的容忍機制」。原文實驗顯示自催化反應由非手性受質原位化學合成了新嘧啶醇分子（新生成物 e.e. 達 90%、物質量放大至 1,674 倍），為化學合成與不對稱誘導過程，並非被動篩選；且與免疫系統容忍機制之結構類比缺乏文獻支持，屬過度詮釋。
+- **來源**：印刷頁 767–768 全文（文字層 `pdf_page1_text.txt`、`pdf_page2_text.txt` 均未見此類哲學主張與免疫學類比）；Table 1 新生成物數據（p. 768）。
+- **發現於**：2026-11-11 10:47，Antigravity by Google DeepMind（Gemini 3.8 Flash）。
+
+### EK-212 | open | papers/1995-soai-asymmetric-autocatalysis.md | Card 3 第 108 行 | 未能核實
+- **問題**：內文斷言「異手性二聚體 S-R 的生成平衡常數大於同手性二聚體，即 $K_{\mathrm{hetero}} > K_{\mathrm{homo}}$；在相同標準態下以 $\Delta G^{\circ} = -RT \ln K$ 表示，異手性二聚體的 $\Delta G^{\circ}$ 較負，熱力學上較穩定」，忽視了純統計二聚即存在 $K_{\mathrm{hetero}} = 2 K_{\mathrm{homo}}$ 之對稱度因子，且 Blackmond 2001 核心在於催化活性差異（$k_{\mathrm{homo}} \gg k_{\mathrm{hetero}} \approx 0$）；內文坦承「本頁尚未對照該文全文」，證據表第 34 行亦標記為「內容未核對」，卻於正文作出肯定性熱力學數值判定。
+- **來源**：Blackmond et al. (2001), *JACS* 123:10103–10104；證據表 `evidence/1995-soai-asymmetric-autocatalysis.md` 第 34 行。
+- **發現於**：2026-11-11 10:47，Antigravity by Google DeepMind（Gemini 3.8 Flash）。
+
+### EK-213 | open | evidence/1995-soai-asymmetric-autocatalysis.md | 第 11 行 | 原文不符
+- **問題**：表格將 Series A 出處標記為「印刷頁 768 Table 1 Runs A1–A5；p. 767 右欄首段」，但 p. 767 右欄首段實為 Series B 之延續與 A、B 兩系列總結（lines 122–126），Series A 之具體實驗描述與反應條件位於 p. 767 左欄第 3 段至末段（lines 37–53）。
+- **來源**：印刷頁 767（PDF 第 1 頁）文字層 `pdf_page1_text.txt` 第 37–53 行（左欄 Series A）與第 122–126 行（右欄 Series B 結尾）。
+- **發現於**：2026-11-11 10:47，Antigravity by Google DeepMind（Gemini 3.8 Flash）。
+
+### EK-214 | open | cards/1995-soai-asymmetric-autocatalysis.md | Card 5 第 64 行 | 過度表述
+- **問題**：Card 5 里程碑將 Kawasaki 2009 表述為「證明碳同位素微弱差異亦能觸發手性自催化」，使用絕對化強斷言「證明」；該文在證據表第 26 行標註為「僅書目，內容未核對」，且自然科學實驗為「顯示/示範」（Triggered/demonstrated），不宜在未核對全文下逕寫「證明」。
+- **來源**：Kawasaki et al. (2009), *Science* 324:492–495；證據表 `evidence/1995-soai-asymmetric-autocatalysis.md` 第 26 行。
+- **發現於**：2026-11-11 10:47，Antigravity by Google DeepMind（Gemini 3.8 Flash）。

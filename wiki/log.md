@@ -2196,3 +2196,25 @@
   - 驗證：`check_cards.py` ERROR 0、WARN 0；`build_paper_prototype.py` 自我檢查 ERROR 0、WARN 0；`build_home.py --card` 重建並 `--check --card` 一致；`pipeline_status.py` S1 至 S8 OK、S9 與 S10 待提交（卡片檔與網頁尚未提交）；`crossref_check.py` OK；`lint_wiki.py` 全庫 ERROR 0。瀏覽器驗證以本機只讀服務（`127.0.0.1:8782`，不改動專案）提供 `web/` 並映射三支驗證腳本，`verify_page.js`（桌面 1440×900 與手機 375×812）、`verify_star.js` 與 `verify_wall.js` 全部 PASS。卡片墻之 27 條 WARN 為其他論文既有之標籤與出版字樣截斷，與本篇無關。
   - 先前於 `127.0.0.1:8781` 之瀏覽器驗證因頁面快取讀到舊版，已不採信，改於 8782 全部重跑。
   - 未完成：未 commit、未 push，待使用者確認。Blackmond 2001、Buono & Blackmond 2003、Shibata 1996、Kawasaki 2009、Möhler 2025 之全文未取得，其內容判定維持「未核對」，論文頁 `verification` 為 partial。
+
+
+## [2026-11-11 10:47] audit | Soai 1995 獨立審查（Gemini 3.8 Flash） | #化學合成
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash（gemini-3.8-flash-high）
+- **具體變更**：
+  - 本次身分為獨立審查（只讀，不修改 papers、cards、evidence、concepts 內容檔），依 1995 Nature 原文（印刷頁 767–768，文字層 `pdf_page1_text.txt`、`pdf_page2_text.txt`）對照四個核心知識檔案，於 [wiki/issues.md](issues.md) 新增 7 筆 open 問題條目：
+    - EK-208：[wiki/cards/1995-soai-asymmetric-autocatalysis.md](cards/1995-soai-asymmetric-autocatalysis.md) Card 5 第 65 行，2026 諾貝爾化學獎表彰語遺漏「非線性效應」且將 Kagan 錯誤歸為表彰自催化（歸因／版本錯置）。
+    - EK-209：[wiki/cards/1995-soai-asymmetric-autocatalysis.md](cards/1995-soai-asymmetric-autocatalysis.md) Card 6 第 70 行與 Card 2 第 16–17 行，殘留「自發放大」與「自發濃縮」，與種子實驗及 Run D 外消旋對照矛盾（過度表述）。
+    - EK-210：[wiki/concepts/chiral-symmetry-breaking.md](concepts/chiral-symmetry-breaking.md) 第 34 行，將 Blackmond 2001 二聚體催化模型之活性中心誤寫為「單體」（歸因／版本錯置）。
+    - EK-211：[wiki/papers/1995-soai-asymmetric-autocatalysis.md](papers/1995-soai-asymmetric-autocatalysis.md) Card 6 第 144–145 行，斷言「放大的本質不是製造手性而是選擇手性」且與「免疫系統容忍機制」進行無文獻依據之跨界類比（過度表述）。
+    - EK-212：[wiki/papers/1995-soai-asymmetric-autocatalysis.md](papers/1995-soai-asymmetric-autocatalysis.md) Card 3 第 108 行，二聚體平衡忽視統計對稱因子，且在未對照全文下作出 $K_{\mathrm{hetero}} > K_{\mathrm{homo}}$ 肯定性熱力學判定（未能核實）。
+    - EK-213：[wiki/evidence/1995-soai-asymmetric-autocatalysis.md](evidence/1995-soai-asymmetric-autocatalysis.md) 第 11 行，Series A 原文出處誤植為「p. 767 右欄首段」（實為左欄第 3 段至末段，原文不符）。
+    - EK-214：[wiki/cards/1995-soai-asymmetric-autocatalysis.md](cards/1995-soai-asymmetric-autocatalysis.md) Card 5 第 64 行，Kawasaki 2009 結論使用絕對化斷言「證明」（過度表述）。
+  - 未登記但查證無誤之主要項目：
+    - Card 2 敘述 Frank 方案「在 1953 年之後長期停留在理論層次、沒有被落實在一個具體的化學反應中」：經核對原文 p. 768，作者明確指出 Kondepudi 自發結晶為「唯一其他可能的實驗實現且屬物理過程」，證實 1995 年前確實無化學反應實例，符合來源。
+    - Table 1 全部實驗數據（Series A1–A5、B1–B5、C1–C2、Run D）：e.e.、放大倍數（1,674 倍、942 倍等）、反應時間、產率、新生成物 e.e.，論文頁、卡片與證據表數值與 Table 1 完全一致。
+    - Card 3 鋅烷氧化物簡化循環反應式（步驟 1–3）質量與電荷守恒，與原文 Fig. 2 及正文描述一致。
+    - 化合物 1、2、3 之名稱與化學結構，及反應條件（20 mol%、0 °C、甲苯）均與原文註解完全一致。
+- **驗證**：
+  - 執行 `python3 .agents/skills/wiki-content-audit/scripts/lint_wiki.py`，確認新增之 EK 條目無任何格式 ERROR。
+  - 執行 `python3 .agents/skills/paper-card-writer/scripts/check_cards.py 1995-soai-asymmetric-autocatalysis`，檢查結果為 卡片檔 1 個；ERROR 0、WARN 0。
