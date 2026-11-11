@@ -2273,3 +2273,10 @@
 - **相容路徑**：Woodford 舊論文、證據表與卡片路徑改為連到新檔的 Markdown 轉介；舊網頁網址提供轉址及文字連結。建置、Lint、卡片與流程工具辨識明確標記的轉介檔，避免重複收錄；舊日誌未改寫。
 - **原文複核**：Soai 原 PDF 印刷頁 768 Table 1 的 Run A5 同列載新生成物 90% e.e. 與 1,674 倍，故 EK-216 所稱跨系列誤併不成立；論文頁、證據表與問題處理記錄已明確標示 A5。Run D 正文改為「以外消旋 1 為催化劑」，不稱無手性種子。
 - **驗證**：`lint_wiki.py` ERROR 0、既有 WARN 21；`check_cards.py 1995-soai-asymmetric-autocatalysis` ERROR 0、WARN 0；論文頁建置自我檢查 ERROR 0、WARN 0；`build_home.py --check` 一致；`python -m unittest discover -s tools/tests -v` 12 項通過。瀏覽器服務無法連線，Soai 現行頁、首頁卡片牆與 Woodford 舊網址之瀏覽器複驗登記於 TD-021；未宣稱瀏覽器驗證通過。
+
+## [2026-11-11 13:57] fix | 光遺傳學原文公式、載體與輔因子核對 | #神經科學 #生物科技
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：逐頁檢視 Boyden 等（2005）原 PDF 印刷頁 1263–1268，確認原頁四組展示公式未見於本篇；移除公式，改以 p.1264、Fig. 1 之實驗觀察及來源界線說明，完成 EK-219。另依原文 pp.1264、1267 修正本篇慢病毒載體、作者提出的未來方向與全反式視黃醛表述，登記並修正 EK-220。建立 [部分證據表](evidence/2005-optogenetics.md)，僅涵蓋本次 Card 3 查核，論文頁 `verification` 設為 `partial`。
+- **同步**：更新 TD-007、TD-008、TD-011 對證據表的現況；卡片與論文網頁仍依 TD-008 等待後續工作，未將本次局部查核當成全頁核實或上架完成。
+- **驗證**：`lint_wiki.py` ERROR 0、既有 WARN 21；`pipeline_status.py 2005-optogenetics` 的 S1、S3 至 S6 為 OK，S7 至 S9 因尚無卡片與網頁而為 NG，S10 於提交前待完成；`build_home.py --check` 一致；`python -m unittest discover -s tools/tests -q` 12 項通過。

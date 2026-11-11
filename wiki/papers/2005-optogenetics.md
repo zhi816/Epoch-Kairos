@@ -12,7 +12,7 @@ domain: "bio"
 domain_tags: ["#神經科學", "#生物科技"]
 concepts: ["neural-circuits", "brain-machine-interface", "programmable-cellular-engineering"]
 status: "wiki"
-verification: "issues"
+verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.1038/nn1525"
 key_papers:
@@ -50,51 +50,16 @@ card_line: "用一道藍光，開關大腦裡特定的神經元"
 Nagel 與 Hegemann 在 2002 與 2003 年證明，綠藻的光敏感通道蛋白（Channelrhodopsin）本身就是一個直接受光閘控的離子通道；Boyden、Zhang 與 Deisseroth 在 2005 年將其表達於哺乳動物神經元，造出兼具「細胞專一」與「毫秒響應」的光控開關。
 
 1. **光敏感通道蛋白-2（Channelrhodopsin-2, ChR2）**
-   * 源自單細胞綠藻 *Chlamydomonas reinhardtii*，兼具「感光色素」與「離子通道」雙重功能，無需額外補充輔因子即可在神經元中作用。
+   * 源自單細胞綠藻 *Chlamydomonas reinhardtii*，兼具感光與離子通道功能。ChR2 需要全反式視黃醛；本篇實驗未額外添加，作者認為培養環境中的背景來源可能足夠（p.1267）。
    * **藍光（約 470 nm）激發**：光照瞬間觸發通道構型翻轉，陽離子（$\mathrm{Na}^+$、$\mathrm{Ca}^{2+}$、$\mathrm{H}^+$）內流，細胞去極化，誘發動作電位（Action Potential）。
 2. **嗜鹽菌紫紅質（Halorhodopsin, NpHR）的配對抑制**
    * **黃光（約 580 nm）抑制**：光驅動氯離子（$\mathrm{Cl}^-$）泵入引發超極化，將過度活躍的神經元「靜音」。此雙向配對由 Zhang et al. (2007) 建立，非 2005 年該篇成果。
-3. **病毒載體基因靶向（AAV Targeting）**
-   * 透過細胞類型特異性啟動子，確保僅有特定腦區、特定細胞群表達光控蛋白，這是「專一性」的真正來源。
+3. **病毒載體與細胞表現（Lentiviral Expression）**
+   * 本篇使用慢病毒載體，將 ChR2 融合蛋白導入培養的海馬體神經元；作者另將細胞類型特異性啟動子與活體研究列為未來可能方向，而非本篇已完成的實驗（pp.1264、1267）。
 
-### 1. 光敏感通道之光電流方程 (Photocurrent Equation)
+### 本篇的觀察與模型界線
 
-$$I_{\text{ChR2}}(t, V_m) = g_{\text{ChR2}} \cdot O(t) \cdot G(V_m) \cdot (V_m - E_{\text{ChR2}})$$
-
-其中各項物理與生物參數定義如下：
-
-* $g_{\text{ChR2}}$：通道之最大膜電導係數（Maximal Conductance）。
-* $O(t)$：光敏感通道處於開放態（Open State）的分數比率。
-* $G(V_m)$：內向整流之無因次跨膜電壓依賴函數（Voltage Rectification Factor）：
-  $$G(V_m) = \frac{1 - e^{-(V_m - E_{\text{ChR2}})/V_0}}{(V_m - E_{\text{ChR2}})/V_1}$$
-  其中 $V_0$ 與 $V_1$ 為整流尺度參數（單位 mV），使 $G(V_m)$ 保持無因次，確保 $I_{\text{ChR2}}$ 之單位為電流。
-* $(V_m - E_{\text{ChR2}})$：跨膜電化學驅動力，逆轉電位 $E_{\text{ChR2}} \approx 0\,\text{mV}$。
-
-### 2. 三態光循環動力學 (Three-State Photocycle)
-
-ChR2 的光循環遵循「關閉態 $C$ 到開放態 $O$ 到去敏化態 $D$」之循環，三態分數滿足守恆條件：
-
-$$\begin{aligned}
-\frac{dC(t)}{dt} &= k_r\,D(t) - k_a(I)\,C(t) \\
-\frac{dO(t)}{dt} &= k_a(I)\,C(t) - k_d\,O(t) \\
-\frac{dD(t)}{dt} &= k_d\,O(t) - k_r\,D(t) \\
-C(t) + O(t) + D(t) &= 1
-\end{aligned}$$
-
-其中 $k_a(I)$ 為受光照強度 $I$ 支配的激活速率，$k_d$ 為通道關閉速率，$k_r$ 為由去敏化態回復至可激活態之速率。$k_r \ll k_d$ 正是高頻連續光刺激下光電流衰減（Desensitization）的成因。
-
-### 3. 膜電位動態演化整合方程 (Hodgkin-Huxley Optogenetic Model)
-
-將光敏通道整合至神經元全膜電位微分方程，並以 `aligned` 對齊斷行，避免行動端溢出：
-
-$$\begin{aligned}
-C_m \frac{dV_m}{dt} = &- \bar{g}_{\text{Na}}\, m^3 h\,(V_m - E_{\text{Na}}) \\
-&- \bar{g}_{\text{K}}\, n^4\,(V_m - E_{\text{K}}) \\
-&- g_L\,(V_m - E_L) \\
-&- I_{\text{ChR2}}(t, V_m) + I_{\text{ext}}
-\end{aligned}$$
-
-當藍光脈衝入射時，$I_{\text{ChR2}}$ 快速提供跨膜去極化內向電流，使膜電位在毫秒內突破激發閾值，即 $V_m(t) \ge V_{\text{threshold}}$，觸發毫秒級單一動作電位（Spike）。
+作者在培養神經元中觀察到光照引發的向內光電流，並以短促光脈衝誘發神經元放電（p.1264、Fig. 1）。這篇是實驗技術報告；逐頁檢視全文後，未見先前列於此處的光電流、三態光循環或 Hodgkin–Huxley 整合展示方程。若另行介紹理論模型，應引用該模型的原始來源，不應歸為本篇原文公式。
 
 ---
 
