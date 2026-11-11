@@ -81,3 +81,21 @@
 - **進度**：2026-11-10 處理 TD-011，另重建 `1992-creative-destruction-aghion`（EK-203，核實狀態改為 issues）、`2001-colonial-origins-acemoglu`、`2013-icecube-neutrino`、`2024-alphafold3`、`2024-formosan-mt-bilingual-lexicon-zheng`、`2025-formosanbench-llm-benchmark-lin`、`2025-manchu-in-context-mt-pei`；`1982-hopfield-network` 與 `2017-attention-is-all-you-need` 修正公式與卡片後再次重建。建置自我檢查皆為 ERROR 0、WARN 0。冰立方、Hopfield、Transformer 與 AlphaFold 3 卡片牆已重建且檢查一致；瀏覽器連線服務仍不可用，桌面、手機與卡片牆目視驗證均待補。
 - **完成條件**：在可使用的瀏覽器環境中，依 `paper-card-writer` 流程檢查上述論文頁之桌面與手機版，以及各篇首頁卡片牆；確認先前的核實完成標記及版面正確，記錄驗證結果並處理所見問題。`2025-indigenous-tek-ai-revitalization-wang` 另於 EK-192 修正後重建，亦須複驗。
 - **來源**：2026-11-10 問題清單分組複核整合，Codex by OpenAI。
+
+### TD-023 | waiting | raw | 改名 raw 檔以對應 2007 Woodford 論文之新 slug
+- **內容**：2007 Woodford 論文之 slug 已於提交 a83a66e 改為 `2007-woodford-globalization-monetary-control`，對應英文原題 *Globalization and Monetary Control*。raw 檔仍為 `raw/2007-woodford-inflation-dynamics.pdf`，`paper-pipeline` S1 依 slug 對應 raw 檔名。依 AGENTS.md 第五章，raw 檔名由使用者親自更名，AI 不得改動。更名後需同步更新論文頁「原始檔典藏」行、`wiki/index.md` 原始文獻行，以及 `wiki/issues.md` 內指向舊 raw 檔名之連結。
+- **完成條件**：`raw/` 內存在新檔名之 PDF（或使用者決定之檔名）；`pipeline_status.py 2007-woodford-globalization-monetary-control` 之 S1 指向新檔名且 OK；`lint_wiki.py` 無 ERROR。
+- **等待**：使用者親自更名 `raw/2007-woodford-inflation-dynamics.pdf`。
+- **來源**：wiki/log.md [2026-11-11 12:27] fix（slug 改名）；2026-11-11 登記，Claude Code by Anthropic。
+
+### TD-024 | waiting | wiki | 決定 2007 Woodford 論文之中文譯名（title_zh）
+- **內容**：`wiki/papers/2007-woodford-globalization-monetary-control.md` 之 `title_zh` 為「宏觀經濟穩定政策的微觀基礎：通膨動態、預期錨定與貨幣控制」，與原文題名 *Globalization and Monetary Control*（NBER Working Paper No. 13329）不符；卡片封面與英文 `title` 皆指向全球化主題。此中文名連動 `wiki/index.md` 標題、首頁卡片牆與星圖之中文名稱，以及 `web/prototypes/mobile-v2-src/data.py`、`mobile-v2.html` 之標題。建議譯名「全球化與貨幣控制」，使用者確定後由 Claude Code 修改並重建論文頁與首頁。
+- **完成條件**：使用者確認譯名；論文頁 `title_zh`、`wiki/index.md` 標題、首頁與論文頁網頁一致；`lint_wiki.py` 無 ERROR。
+- **等待**：使用者決定譯名（建議「全球化與貨幣控制」，或另擬）。
+- **來源**：2026-11-11 改名核對時發現（wiki/log.md [2026-11-11 12:27] fix「另發現」一項）；2026-11-11 登記，Claude Code by Anthropic。
+
+### TD-025 | waiting | raw | 換正確的 Aghion & Howitt 1992 原文，取代 raw 內另一篇論文之 PDF
+- **內容**：`raw/1992-creative-destruction-aghion.pdf` 第 1 頁影像為 Giuseppe Bertola, *Factor Shares and Savings in Endogenous Growth*（NBER Working Paper No. 3851，1991 年 9 月），不是 Aghion & Howitt 1992 年 *Econometrica* 論文。全 31 頁皆為掃描影像、無文字層，其餘頁未逐頁核對。因此 `wiki/papers/1992-creative-destruction-aghion.md` 之書目、公式、人名與 EK-203（Card 3 區塊公式，判定「未能核實」，見 TD-011）無法依此檔核實，論文頁「原始檔典藏」亦指向錯誤檔案。另一併核對之兩檔無誤：`raw/1985-macroscopic-quantum-tunneling.pdf` 首頁標題與論文頁一致；`raw/1999-metal-organic-frameworks-mof5.pdf` 第 2 至 4 頁為 MOF-5 論文，第 1 頁為同期另一篇 letter 之末段。
+- **完成條件**：使用者提供正確之 Aghion & Howitt（1992, *Econometrica*）PDF 並依 AGENTS.md 第五章處理檔名；之後以新 PDF 重新核對 EK-203 與論文頁，更新「原始檔典藏」與證據表。
+- **等待**：使用者取得正確原文並放入 `raw/`（AI 對 `raw/` 唯讀）。
+- **來源**：2026-11-11 raw/ 頂層 PDF 第 1 頁核對（Codex GPT-5.6 Luna 唯讀檢查，結果經 Claude Code 以第 1 頁影像覆核）；與 EK-203、TD-011 相關。
