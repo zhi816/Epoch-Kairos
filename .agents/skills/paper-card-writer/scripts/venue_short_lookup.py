@@ -22,7 +22,7 @@ import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, '..', '..', 'wiki-content-audit', 'scripts'))
-from lint_wiki import frontmatter, read, repo_root  # noqa: E402
+from lint_wiki import frontmatter, is_redirect, read, repo_root  # noqa: E402
 
 ROOT = repo_root()
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
@@ -70,12 +70,16 @@ def main():
     net = '--no-net' not in sys.argv
     long_only = '--long' in sys.argv
     papers = os.path.join(ROOT, 'wiki', 'papers')
-    slugs = args or sorted(f[:-3] for f in os.listdir(papers) if f.endswith('.md'))
+    slugs = args or sorted(f[:-3] for f in os.listdir(papers)
+                           if f.endswith('.md') and not is_redirect(os.path.join(papers, f)))
     shown_any = False
     for slug in slugs:
         path = os.path.join(papers, slug + '.md')
         if not os.path.exists(path):
             print('MISSING  %s：找不到 wiki/papers/%s.md' % (slug, slug))
+            continue
+        if is_redirect(path):
+            print('SKIP  %s：舊路徑轉介，請使用新論文頁' % slug)
             continue
         fm = frontmatter(read(path))[0] or {}
         if not fm.get('venue'):

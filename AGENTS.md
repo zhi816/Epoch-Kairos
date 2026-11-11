@@ -145,6 +145,7 @@ Epoch-Kairos/
    * **性質**：知識的「編譯結果與累積實體（Compounding Artifacts）」。
    * **特點**：每一篇新來源的加入，不僅是新增一頁，更會自動更新關聯的概念、修正舊論述、建立雙向交叉引用（Cross-References）。
    * **AI 權限**：**完全讀寫與維護（Read & Write）**。
+   * **舊路徑轉介**：論文頁、證據表或卡片改名後，可在原路徑保留首行為 `<!-- epoch-kairos:redirect -->` 的 Markdown 轉介檔，連至新檔，以維持追加式日誌中的既有連結。轉介檔不是新的論文、卡片或證據表；建置與檢查腳本以 `tools/wiki_redirects.py` 辨識，且轉介目標仍須存在。
 
 3. **第三層：The Schema (`AGENTS.md`)**
    * **性質**：定義 AI 的作業規範、格式標準與操作工作流（Workflows）。

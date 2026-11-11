@@ -490,6 +490,9 @@ BACK_FOCUS = ('../../index.html#my-constellation', '回到我的星系')
 
 def build(slug, papers, concepts_zh, colors, tpl, nums):
     card_path = os.path.join(WIKI, 'cards', slug + '.md')
+    if home.is_redirect(card_path) or home.is_redirect(os.path.join(WIKI, 'papers', slug + '.md')):
+        print('ERROR %s：這是舊路徑轉介，請使用新論文頁的 slug' % slug)
+        return False
     cc.results.clear()
     cc.check_card(card_path, slug, {})
     errs = [r for r in cc.results if r[0] == 'ERROR']
@@ -586,10 +589,12 @@ def snippet(text, token):
 
 
 def main():
-    papers = {os.path.basename(p)[:-3]: home.frontmatter(p) for p in sorted(glob.glob(os.path.join(WIKI, 'papers', '*.md')))}
+    papers = {os.path.basename(p)[:-3]: home.frontmatter(p) for p in sorted(glob.glob(os.path.join(WIKI, 'papers', '*.md')))
+              if not home.is_redirect(p)}
     concepts_zh = {os.path.basename(p)[:-3]: home.frontmatter(p).get('title_zh', '')
                    for p in glob.glob(os.path.join(WIKI, 'concepts', '*.md'))}
-    slugs = sys.argv[1:] or sorted(os.path.basename(p)[:-3] for p in glob.glob(os.path.join(WIKI, 'cards', '*.md')))
+    slugs = sys.argv[1:] or sorted(os.path.basename(p)[:-3] for p in glob.glob(os.path.join(WIKI, 'cards', '*.md'))
+                                   if not home.is_redirect(p))
     tpl = open(TEMPLATE, encoding='utf-8').read()
     colors, nums = star_colors(), home.card_numbers(papers)   # 編號與首頁卡片牆共用
     ok = all([build(s, papers, concepts_zh, colors, tpl, nums) for s in slugs])

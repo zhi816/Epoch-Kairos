@@ -20,6 +20,8 @@ import xml.etree.ElementTree as ET
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..'))
 WIKI = os.path.join(ROOT, 'wiki')
+sys.path.insert(0, os.path.join(ROOT, 'tools'))
+from wiki_redirects import is_redirect  # noqa: E402
 
 SECTIONS = ['封面', 'Card 2｜世紀瓶頸', 'Card 3｜突破原理', 'Card 4｜決定性數據', 'Card 5｜典範轉移', 'Card 6｜Kairos']
 SPEC = {
@@ -775,7 +777,7 @@ def main():
     ap.add_argument('slugs', nargs='*', help='只檢查指定論文（不含 .md）')
     ap.add_argument('--missing', action='store_true', help='另列出尚無卡片檔的論文')
     args = ap.parse_args()
-    files = sorted(glob.glob(os.path.join(WIKI, 'cards', '*.md')))
+    files = sorted(p for p in glob.glob(os.path.join(WIKI, 'cards', '*.md')) if not is_redirect(p))
     if args.slugs:
         files = [os.path.join(WIKI, 'cards', s + '.md') for s in args.slugs]
     all_cards = {}
@@ -784,12 +786,16 @@ def main():
         if not os.path.exists(p):
             report('ERROR', p, 0, '找不到卡片檔')
             continue
+        if is_redirect(p):
+            report('INFO', p, 1, '舊路徑轉介，請使用新卡片檔')
+            continue
         check_card(p, slug, all_cards)
     cross_file(all_cards)
     if args.missing:
-        have = {os.path.basename(p)[:-3] for p in glob.glob(os.path.join(WIKI, 'cards', '*.md'))}
+        have = {os.path.basename(p)[:-3] for p in glob.glob(os.path.join(WIKI, 'cards', '*.md'))
+                if not is_redirect(p)}
         for p in sorted(glob.glob(os.path.join(WIKI, 'papers', '*.md'))):
-            if os.path.basename(p)[:-3] not in have:
+            if not is_redirect(p) and os.path.basename(p)[:-3] not in have:
                 report('INFO', p, 0, '尚無卡片檔 wiki/cards/%s' % os.path.basename(p))
     try:
         sys.stdout.reconfigure(encoding='utf-8')

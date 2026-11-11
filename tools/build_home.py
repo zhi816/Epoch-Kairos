@@ -34,6 +34,8 @@ import subprocess
 import sys
 import unicodedata
 
+from wiki_redirects import is_redirect, is_redirect_text
+
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 WIKI = os.path.join(ROOT, 'wiki')
 TEMPLATE = os.path.join(ROOT, 'tools', 'home_template.html')
@@ -632,7 +634,8 @@ def wall_sources(P, extra):
     只收 Git 索引（已提交）之版本；extra（--card）指定之 slug 改用工作目錄版本，並先以 check_cards.py 檢查。"""
     errors, notes = [], []
     cards_dir = os.path.join(WIKI, 'cards')
-    disk = {os.path.basename(p)[:-3]: p for p in glob.glob(os.path.join(cards_dir, '*.md'))}
+    disk = {os.path.basename(p)[:-3]: p for p in glob.glob(os.path.join(cards_dir, '*.md'))
+            if not is_redirect(p)}
     idx = indexed('wiki/cards/')
     if idx is None:
         notes.append(('WARN', '不在 Git 工作區：卡片牆改讀工作目錄之全部卡片檔，無法排除他人尚未提交之檔案'))
@@ -646,7 +649,7 @@ def wall_sources(P, extra):
         slug_sha = {os.path.basename(p)[:-3]: sha for p, sha in files.items()
                     if p.endswith('.md') and os.path.dirname(p) == 'wiki/cards'}
         blobs = read_blobs(sorted(set(slug_sha.values())))
-        cards = {s: blobs[sha] for s, sha in slug_sha.items()}
+        cards = {s: blobs[sha] for s, sha in slug_sha.items() if not is_redirect_text(blobs[sha])}
         pidx = indexed('web/papers/')
         protos = {p.split('/')[2] for p in (pidx[0] if pidx else {})
                   if re.fullmatch(r'web/papers/[^/]+/index\.html', p)}
@@ -657,9 +660,12 @@ def wall_sources(P, extra):
             if s not in cards:
                 notes.append(('INFO', 'wiki/cards/%s.md 尚未提交，未放上卡片牆。是自己這篇：加 --card %s；'
                                       '不是自己的：不要理會，也不要提交 web/index.html 以外的他人檔案' % (s, s)))
-            elif open(p, encoding='utf-8').read() != cards[s].replace('\r\n', '\n'):   # core.autocrlf 下工作目錄可能是 CRLF
-                notes.append(('INFO', 'wiki/cards/%s.md 在工作目錄有未提交之修改，牆上用的是已提交版本；'
-                                      '修改是自己的：加 --card %s' % (s, s)))
+            else:
+                with open(p, encoding='utf-8') as stream:
+                    changed = stream.read() != cards[s].replace('\r\n', '\n')  # core.autocrlf 下可能是 CRLF
+                if changed:
+                    notes.append(('INFO', 'wiki/cards/%s.md 在工作目錄有未提交之修改，牆上用的是已提交版本；'
+                                          '修改是自己的：加 --card %s' % (s, s)))
     if extra:
         cc = load_module('check_cards_for_home', CHECK_CARDS)
         for s in extra:
@@ -769,7 +775,8 @@ def noscript(stars):
 
 
 def build(extra=()):
-    P = {os.path.basename(p)[:-3]: frontmatter(p) for p in sorted(glob.glob(os.path.join(WIKI, 'papers', '*.md')))}
+    P = {os.path.basename(p)[:-3]: frontmatter(p) for p in sorted(glob.glob(os.path.join(WIKI, 'papers', '*.md')))
+         if not is_redirect(p)}
     C = {os.path.basename(p)[:-3]: frontmatter(p) for p in sorted(glob.glob(os.path.join(WIKI, 'concepts', '*.md')))}
     for s, f in C.items():
         if not isinstance(f.get('papers'), list):

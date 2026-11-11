@@ -18,6 +18,9 @@ import re
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..', '..', 'tools')))
+from wiki_redirects import is_redirect  # noqa: E402
+
 ACTIONS = {'init', 'ingest', 'query', 'lint', 'audit', 'fix', 'rule', 'design',
            'math', 'update', 'config', 'git'}
 STATUSES = {'planned', 'wiki', 'published'}
@@ -377,8 +380,13 @@ def main():
 
     papers_dir = os.path.join(root, 'wiki', 'papers')
     concepts_dir = os.path.join(root, 'wiki', 'concepts')
-    papers = {f[:-3]: os.path.join(papers_dir, f) for f in sorted(os.listdir(papers_dir)) if f.endswith('.md')}
+    paper_files = [os.path.join(papers_dir, f) for f in sorted(os.listdir(papers_dir)) if f.endswith('.md')]
+    papers = {os.path.basename(p)[:-3]: p for p in paper_files if not is_redirect(p)}
     concepts = {f[:-3]: os.path.join(concepts_dir, f) for f in sorted(os.listdir(concepts_dir)) if f.endswith('.md')}
+    for path in paper_files:
+        if is_redirect(path):
+            rel = os.path.relpath(path, root).replace('\\', '/')
+            check_links(root, rel, read(path), False)
     issues = load_issues(root)
     todos = load_todo(root)
     open_by_target = {}

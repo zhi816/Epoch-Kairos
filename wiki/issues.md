@@ -1147,11 +1147,12 @@
 - **發現於**：2026-11-11 10:47，Antigravity by Google DeepMind（Gemini 3.8 Flash）。
 - **處理**：2026-11-11 11:14，OpenCode by SST（MiniMax M3.1 Flash）。Card 6 第 1 點改為「放大的機制同時包含『合成』與『選擇』（Wiki 詮釋）」，並補述本篇確實原位化學合成新嘧啶醇分子（新生成物 e.e. 達 90%、(S)-1 總量放大 1,674 倍，Table 1，p.768），不再斷言僅為「選擇」；第 2 點明確標為 Wiki 詮釋，刪去「有結構上的類比」之過度延伸，改為「僅作為概念類比，不是本篇或文獻之結論」。
 
-### EK-212 | fixed | papers/1995-soai-asymmetric-autocatalysis.md | Card 3 第 108 行 | 未能核實
+### EK-212 | open | papers/1995-soai-asymmetric-autocatalysis.md | Card 3 第 108 行 | 未能核實
 - **問題**：內文斷言「異手性二聚體 S-R 的生成平衡常數大於同手性二聚體，即 $K_{\mathrm{hetero}} > K_{\mathrm{homo}}$；在相同標準態下以 $\Delta G^{\circ} = -RT \ln K$ 表示，異手性二聚體的 $\Delta G^{\circ}$ 較負，熱力學上較穩定」，忽視了純統計二聚即存在 $K_{\mathrm{hetero}} = 2 K_{\mathrm{homo}}$ 之對稱度因子，且 Blackmond 2001 核心在於催化活性差異（$k_{\mathrm{homo}} \gg k_{\mathrm{hetero}} \approx 0$）；內文坦承「本頁尚未對照該文全文」，證據表第 34 行亦標記為「內容未核對」，卻於正文作出肯定性熱力學數值判定。
 - **來源**：Blackmond et al. (2001), *JACS* 123:10103–10104；證據表 `evidence/1995-soai-asymmetric-autocatalysis.md` 第 34 行。
 - **發現於**：2026-11-11 10:47，Antigravity by Google DeepMind（Gemini 3.8 Flash）。
 - **處理**：2026-11-11 11:14，OpenCode by SST（MiniMax M3.1 Flash）。$K_{\mathrm{hetero}} > K_{\mathrm{homo}}$、$\Delta G^{\circ}$ 與「儲庫」推論全部改寫為「依 Blackmond 2001 之模型描述」之敘述（催化活性差異亦同），不再以本頁斷言該文數值；並加註判讀界線「同手性與異手性二聚體的統計因子會影響 $K$ 之直接比較，本頁未對照該文全文，數值判斷以原文為準」，證據表第 34 行同步標記。
+- **重開**：2026-11-11，Codex by OpenAI（GPT-6）。論文頁仍將上述比較與熱力學推論歸於 Blackmond 2001，但證據表仍記「內容未核對」；加註限制無法證明此歸因，需核對原始文獻或移除未受支持的主張後重新結案。
 
 ### EK-213 | fixed | evidence/1995-soai-asymmetric-autocatalysis.md | 第 11 行 | 原文不符
 - **問題**：表格將 Series A 出處標記為「印刷頁 768 Table 1 Runs A1–A5；p. 767 右欄首段」，但 p. 767 右欄首段實為 Series B 之延續與 A、B 兩系列總結（lines 122–126），Series A 之具體實驗描述與反應條件位於 p. 767 左欄第 3 段至末段（lines 37–53）。
@@ -1170,10 +1171,11 @@
 - **來源**：印刷頁 768 Table 1 Run D（pdf_page2_text.txt 第 117–123 行）；印刷頁 767 右欄「On the other hand」段（pdf_page1_text.txt 第 127–135 行）。
 - **發現於**：wiki/log.md [2026-11-11 12:28] audit（CodeBuddy Code by Tencent）
 
-### EK-216 | open | papers/1995-soai-asymmetric-autocatalysis.md | Card 6 第 1 點 | 歸因／版本錯置
+### EK-216 | fixed | papers/1995-soai-asymmetric-autocatalysis.md | Card 6 第 1 點 | 歸因／版本錯置
 - **問題**：「（新生成物 e.e. 達 90%，(S)-1 總量放大至 1,674 倍，Table 1，p.768）」把 Series A Run A5 的 1,674 倍與頁面他處（Card 4、證據表第 12 行）歸於 Series B 的新生成物 90% e.e. 併列為同一筆結果且未標系列／run，而原文總結句僅為「amplified to 88-89%, and the amount of (S)-1 was increased by a factor of 942 and 1,674」，並未把 90% 新生成物 e.e. 與 1,674 倍並列。
 - **來源**：印刷頁 768 Table 1 Runs A5、B4（pdf_page2_text.txt 第 53–60、86–101 行）；印刷頁 767 右欄首段總結句（pdf_page1_text.txt 第 122–126 行）。
 - **發現於**：wiki/log.md [2026-11-11 12:28] audit（CodeBuddy Code by Tencent）
+- **處理**：2026-11-11，Codex by OpenAI（GPT-6）。直接複核原 PDF 印刷頁 768 Table 1：Run A5 同一列的新生成物 e.e. 為 90% (S)，(S)-1 增加 1,674 倍，因此兩數並非分屬不同系列；Run B4 亦有 90% (S)。原問題判斷有誤，正文與證據表已明確標出 Run A5，保留本條及原判斷供追溯。
 
 ### EK-217 | open | papers/1995-soai-asymmetric-autocatalysis.md | Card 4 後續第 129 行 | 過度表述
 - **問題**：「證明碳同位素 $^{13}\mathrm{C}/^{12}\mathrm{C}$ 比例造成的微弱手性差異，也能在反覆自催化中被放大」對 Kawasaki 2009 使用絕對化強斷言「證明」，但證據表第 26 行標為「書目符合（Crossref）；內容未核對」，卡片 Card 5 第 64 行已依 EK-214 降為「顯示」並加註「書目未對照全文」，論文頁既未同步亦未註明書目未核對。
@@ -1184,3 +1186,9 @@
 - **問題**：第 32 行「物理場起源（如圓偏振光、地球自轉科氏力、宇稱不守恆之弱相互作用能差）與統計純漲落兩種假說」與「這些結果支持……假設」、第 34 行「在數學形式上與若干非線性模型（例如 Lotka–Volterra 競爭方程）有類比」及「異手性二聚體充當『熱力學失活陷阱』」，均非印刷頁 767–768 原文所有（原文僅言 homochirality「remains a puzzle」、Frank 之隨機漲落方案，並明言詳細機制「remains to be clarified」），卻把內容未核對之 Kawasaki 2009 與 Blackmond 2001 模型描述併為正面歸因與類比，超出原文可支持範圍。
 - **來源**：印刷頁 767 左欄摘要第 1 段（pdf_page1_text.txt 第 10–25 行）；印刷頁 768 左欄末段至右欄「It seems conceivable…」與「remains to be clarified」（pdf_page2_text.txt 第 142–151、197–201 行）；證據表第 26、34 行。
 - **發現於**：wiki/log.md [2026-11-11 12:28] audit（CodeBuddy Code by Tencent）
+
+### EK-219 | open | papers/2005-optogenetics.md | Card 3 展示公式 | 未能核實
+- **問題**：2026-11-10 曾以 EK-204 登記此頁多組展示公式未見於 Boyden 等（2005）原文，並在當時修正；提交 `0a17f2f` 回退收錄時同時刪除了該問題與修正。現行頁面再次包含相關公式，須回原文核對其出處與歸屬，並依現行公式規範處理。本條恢復追蹤，不將當時已回退的修正視為現況。
+- **來源**：[回退前歷史紀錄](history/2026-11-10-optogenetics-reverted-records.md)保存提交 `b2dbc80` 的原問題與處理紀錄；回退見提交 `0a17f2f`；原文典藏 `raw/2005-optogenetics.pdf`。
+- **發現於**：2026-11-11 日誌與 Git 歷史審查，Codex by OpenAI（GPT-6）；原問題於 2026-11-10 由 Antigravity by Google DeepMind 登記。
+- **處理**：原 EK-204 已用於另一問題，依編號不重用原則以 EK-219 恢復追蹤；尚未重新逐式核對原文。

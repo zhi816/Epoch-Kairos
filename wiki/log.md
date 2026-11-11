@@ -2264,3 +2264,12 @@
 - **驗證**：
   - `python3 .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：論文頁 43、概念頁 12、問題清單 182 筆（open 5）、待辦 13 筆（waiting 7）；ERROR 2、WARN 21。兩筆 ERROR 為 [wiki/issues.md](issues.md) 未結問題之 verification 耦合檢查（EK-216、EK-217 指向論文頁、EK-218 指向概念頁，該兩頁 frontmatter 仍為 `verification: partial`），並非本次新增條目之格式 ERROR；本輪為獨立審查、不得修改四個內容檔，故未調整 frontmatter，留待後續 fix 輪處理（與 [2026-11-11 11:14] fix 輪「修正前 ERROR 2」同因）。
   - `python3 .agents/skills/paper-card-writer/scripts/check_cards.py 1995-soai-asymmetric-autocatalysis`：卡片檔 1 個；ERROR 0、WARN 0。
+
+## [2026-11-11 13:49] fix | 修復日誌追溯、舊路徑與核實狀態 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：將 `0a17f2f` 刪除之光遺傳學日誌與原 EK-204 問題全文，依 Git 差異保存於 [回退前歷史紀錄](history/2026-11-10-optogenetics-reverted-records.md)；說明合流改號及回退，不將歷史快照當作現況。原 EK-204 後被用於 Soai，故以 EK-219 恢復光遺傳學公式問題追蹤。EK-212 因 2001 原文仍未核對而重開；相關論文與概念頁、光遺傳學頁之 `verification` 改為 `issues`。
+- **歷史澄清**：`d9abe83` 曾直接更改 02:36 日誌標題，後續一律保留既有條目並追加更正。10:28 記載之待提交狀態是當時快照，相關工作已見提交 `ac8878e`。使用者於本次工作確認 Soai 卡片初稿撰寫者為 Antigravity by Google DeepMind（Gemini 3.8 Flash）；02:34 條目所述 Claude Haiku 為審查與編排，GLM-5.3 Flash 為示意圖設計，現有卡片撰寫者署名維持不變。
+- **相容路徑**：Woodford 舊論文、證據表與卡片路徑改為連到新檔的 Markdown 轉介；舊網頁網址提供轉址及文字連結。建置、Lint、卡片與流程工具辨識明確標記的轉介檔，避免重複收錄；舊日誌未改寫。
+- **原文複核**：Soai 原 PDF 印刷頁 768 Table 1 的 Run A5 同列載新生成物 90% e.e. 與 1,674 倍，故 EK-216 所稱跨系列誤併不成立；論文頁、證據表與問題處理記錄已明確標示 A5。Run D 正文改為「以外消旋 1 為催化劑」，不稱無手性種子。
+- **驗證**：`lint_wiki.py` ERROR 0、既有 WARN 21；`check_cards.py 1995-soai-asymmetric-autocatalysis` ERROR 0、WARN 0；論文頁建置自我檢查 ERROR 0、WARN 0；`build_home.py --check` 一致；`python -m unittest discover -s tools/tests -v` 12 項通過。瀏覽器服務無法連線，Soai 現行頁、首頁卡片牆與 Woodford 舊網址之瀏覽器複驗登記於 TD-021；未宣稱瀏覽器驗證通過。

@@ -5,7 +5,7 @@ domain: "chem"
 domain_tags: ["#化學合成", "#材料科學"]
 papers: ["1995-soai-asymmetric-autocatalysis"]
 related_concepts: []
-verification: "partial"
+verification: "issues"
 ---
 
 # 概念：手性對稱破缺與分子同手性 (Chiral Symmetry Breaking & Molecular Homochirality)

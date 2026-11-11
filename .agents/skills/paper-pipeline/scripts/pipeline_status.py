@@ -29,6 +29,8 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, '..', '..', '..', '..'))
 WIKI = os.path.join(ROOT, 'wiki')
+sys.path.insert(0, os.path.join(ROOT, 'tools'))
+from wiki_redirects import is_redirect  # noqa: E402
 RAW = os.path.join(ROOT, 'raw')
 LINT = os.path.join(ROOT, '.agents', 'skills', 'wiki-content-audit', 'scripts', 'lint_wiki.py')
 CHECK_CARDS = os.path.join(ROOT, '.agents', 'skills', 'paper-card-writer', 'scripts', 'check_cards.py')
@@ -217,7 +219,9 @@ def tracked(path):
 
 
 def collect():
-    papers = sorted(f[:-3] for f in os.listdir(os.path.join(WIKI, 'papers')) if f.endswith('.md'))
+    papers_dir = os.path.join(WIKI, 'papers')
+    papers = sorted(f[:-3] for f in os.listdir(papers_dir)
+                    if f.endswith('.md') and not is_redirect(os.path.join(papers_dir, f)))
     _, lint_out = run([sys.executable, LINT])
     _, cards_out = run([sys.executable, CHECK_CARDS])
     hc, home_out = run([sys.executable, BUILD_HOME, '--check'])
@@ -436,7 +440,7 @@ def show_new():
         return
     pages = {}
     for f in os.listdir(os.path.join(WIKI, 'papers')):
-        if f.endswith('.md'):
+        if f.endswith('.md') and not is_redirect(os.path.join(WIKI, 'papers', f)):
             pages[f[:-3]] = read(os.path.join(WIKI, 'papers', f))
     index = read(os.path.join(WIKI, 'index.md'))
     todo_path = os.path.join(WIKI, 'todo.md')
@@ -491,6 +495,10 @@ def main():
     if args:
         bad = 0
         for slug in args:
+            if is_redirect(os.path.join(WIKI, 'papers', slug + '.md')):
+                bad = 1
+                say('%s：這是舊路徑轉介，請使用轉介檔連結的新論文頁。' % slug)
+                continue
             if slug not in ctx['papers']:
                 bad = 1
                 if os.path.exists(os.path.join(WIKI, 'evidence', slug + '.md')):

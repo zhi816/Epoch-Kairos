@@ -24,7 +24,7 @@ import urllib.error
 import urllib.request
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from lint_wiki import frontmatter, read, repo_root  # noqa: E402
+from lint_wiki import frontmatter, is_redirect, read, repo_root  # noqa: E402
 
 UA = 'Epoch-Kairos-bibliography-check/1.0'
 
@@ -86,12 +86,16 @@ def main():
         pass
     root = repo_root()
     papers_dir = os.path.join(root, 'wiki', 'papers')
-    slugs = sys.argv[1:] or sorted(f[:-3] for f in os.listdir(papers_dir) if f.endswith('.md'))
+    slugs = sys.argv[1:] or sorted(f[:-3] for f in os.listdir(papers_dir)
+                                    if f.endswith('.md') and not is_redirect(os.path.join(papers_dir, f)))
     mismatches = 0
     for slug in slugs:
         path = os.path.join(papers_dir, slug + '.md')
         if not os.path.exists(path):
             print('SKIP  %s  找不到論文頁' % slug)
+            continue
+        if is_redirect(path):
+            print('SKIP  %s  舊路徑轉介，請使用新論文頁' % slug)
             continue
         fm, _, _ = frontmatter(read(path))
         doi = doi_of((fm or {}).get('doi_url'))
