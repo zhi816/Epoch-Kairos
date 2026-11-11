@@ -22,7 +22,7 @@
   * 得獎者：Henri B. Kagan, Kenso Soai。代表性文獻：`raw/1995-soai-asymmetric-autocatalysis.pdf`（Soai et al. (1995) *Nature* 378:767-768，https://doi.org/10.1038/378767a0）；Kagan 之不對稱氫化工作可追溯至 1970 年代。
 * `2026` ｜ [南極冰立方（IceCube）高能宇宙微中子探測：開啟高能微中子天文學時代](papers/2013-icecube-neutrino.md) ｜ `#天體物理` `#宇宙學` ｜ *2013 發表 ｜ 2026 諾貝爾物理學獎* ｜ `[published]`
   * 得獎者：Francis Halzen。原始文獻：`raw/2013-icecube-neutrino.pdf`（Aartsen et al. (2013) *Science* 342(6161):1242856，https://doi.org/10.1126/science.1242856）。
-* `2026` ｜ [宏觀經濟穩定政策的微觀基礎：通膨動態、預期錨定與貨幣控制](papers/2007-woodford-inflation-dynamics.md) ｜ `#宏觀經濟學` ｜ *2007 發表 ｜ 2026 諾貝爾經濟學獎* ｜ `[published]`
+* `2026` ｜ [宏觀經濟穩定政策的微觀基礎：通膨動態、預期錨定與貨幣控制](papers/2007-woodford-globalization-monetary-control.md) ｜ `#宏觀經濟學` ｜ *2007 發表 ｜ 2026 諾貝爾經濟學獎* ｜ `[published]`
   * 得獎者：Robert E. Hall, Michael Woodford。原始文獻：`raw/2007-woodford-inflation-dynamics.pdf`（Woodford (2007) NBER Working Paper No. 13329，https://doi.org/10.3386/w13329）。
 * `2026` ｜ 勞動市場波動與均衡工資僵固性（Robert E. Hall） ｜ `#宏觀經濟學` ｜ *2005 發表 ｜ 2026 諾貝爾經濟學獎* ｜ `[planned]`
   * 得獎者：Robert E. Hall, Michael Woodford。原始文獻：`raw/2005-hall-wage-stickiness.pdf`（Hall (2005) *American Economic Review* 95(1):50-65，https://doi.org/10.1257/0002828053828482）。

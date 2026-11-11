@@ -49,7 +49,7 @@ SHORT = {
     '1992-creative-destruction-aghion': ('創造性破壞與內生成長', 'Econometrica'),
     '2001-colonial-origins-acemoglu': ('比較發展的殖民起源', 'American Economic Review'),
     '2005-optogenetics': ('光遺傳學', 'Nature Neuroscience'),
-    '2007-woodford-inflation-dynamics': ('宏觀穩定政策的微觀基礎', 'NBER Working Paper'),
+    '2007-woodford-globalization-monetary-control': ('宏觀穩定政策的微觀基礎', 'NBER Working Paper'),
     '2012-crispr-cas9': ('CRISPR-Cas9 基因剪刀', 'Science'),
     '2013-icecube-neutrino': ('冰立方高能宇宙微中子', 'Science'),
     '2016-ligo-gravitational-waves': ('LIGO 重力波直接探測', 'Physical Review Letters'),

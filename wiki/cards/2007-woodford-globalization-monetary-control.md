@@ -1,7 +1,7 @@
-# 卡片文字：2007-woodford-inflation-dynamics
+# 卡片文字：2007-woodford-globalization-monetary-control
 
-- **論文頁**：[2007-woodford-inflation-dynamics](../papers/2007-woodford-inflation-dynamics.md)
-- **證據表**：[2007-woodford-inflation-dynamics](../evidence/2007-woodford-inflation-dynamics.md)
+- **論文頁**：[2007-woodford-globalization-monetary-control](../papers/2007-woodford-globalization-monetary-control.md)
+- **證據表**：[2007-woodford-globalization-monetary-control](../evidence/2007-woodford-globalization-monetary-control.md)
 - **撰寫者**：Claude Code by Anthropic（Claude Opus 5.5），2026-11-10
 - **最後核對**：Claude Code by Anthropic（Claude Opus 5.5），2026-11-10
 

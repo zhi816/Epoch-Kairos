@@ -2237,3 +2237,13 @@
   - `python3 .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：論文頁 43、概念頁 12、問題清單 178 筆（open 1）、待辦 13 筆（waiting 7）；ERROR 0、WARN 21（修正前為 ERROR 2、WARN 21，ERROR 為 EK-208 至 EK-214 未結所致，修正後歸零且無新增 WARN）。
   - `python3 tools/build_home.py --card 1995-soai-asymmetric-autocatalysis`：卡片牆自我檢查 ERROR 0、WARN 0；未變更 web/index.html（封面卡與 card_line 未動）。
   - 出處核對：以 `.venv-mineru/bin/python` 之 pymupdf 讀取 raw/1995-soai-asymmetric-autocatalysis.pdf 文字塊與座標，確認「increased by a factor of 942 and 1,674」句位於印刷頁 767 右欄首段（x 301–550, y 313–365），Series A 實驗描述（5% e.e.、20 mol%、因子 4.1）位於左欄第 3 段（x 37–286, y 461–634），Series B 之 942 倍句位於左欄末段（x 37–207, y 692–754）；Table 1 及其註 §、＊ 位於印刷頁 768。
+
+## [2026-11-11 12:27] fix | 2007 Woodford 論文改名為 globalization-monetary-control（slug 與英文原題一致） | #宏觀經濟學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Haiku 5.5（claude-haiku-5-5）
+- **具體變更**：
+  - slug 由 `2007-woodford-inflation-dynamics` 改為 `2007-woodford-globalization-monetary-control`，同步移動論文頁、卡片、證據表與網頁目錄 `web/papers/`。
+  - 更新 `wiki/index.md`、概念頁 `institutions-and-macro-dynamics`、`wiki/issues.md` 之 EK-008、EK-009、EK-010、EK-011、EK-112、EK-142、EK-150、EK-151 路徑引用、`wiki/todo.md` 之 TD-008、TD-019、TD-021 引用，以及兩份原型檔之引用。
+  - `raw/2007-woodford-inflation-dynamics.pdf` 未改名：raw 檔名由使用者親自處理（AGENTS.md 第五章）。論文頁與索引之 raw 連結暫留原檔名，待改名後更新。
+  - 另發現：論文頁 `title_zh`「宏觀經濟穩定政策的微觀基礎：通膨動態、預期錨定與貨幣控制」與原文題名 Globalization and Monetary Control 不符，本次未修改，待決定中文譯名。
+- **驗證**：`check_cards.py` 本篇 ERROR 0、WARN 0；`build_paper_prototype.py` 自我檢查 ERROR 0、WARN 0；`build_home.py --card` 已重建。卡片墻之舊卡片錯誤於提交後消失。全庫 lint 之 ERROR 2 為 1995 相關之新增 open 問題（EK-216、EK-217、EK-218），與本次改名無關。

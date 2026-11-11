@@ -1,4 +1,4 @@
-# 證據表：2007-woodford-inflation-dynamics
+# 證據表：2007-woodford-globalization-monetary-control
 - **採用版本**：NBER Working Paper No. 13329, August 2007（後收錄於 Jordi Galí & Mark Gertler 編 *International Dimensions of Monetary Policy*, University of Chicago Press, 2009, pp. 13–77）；DOI: https://doi.org/10.3386/w13329；封存版本見 `raw/2007-woodford-inflation-dynamics.pdf`
 - **查核者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-09；修訂：Claude Code by Anthropic（Claude Opus 5.5），2026-11-10（EK-112、EK-150、EK-151；頁碼一律為 PDF 頁碼，PDF 頁碼減 2 即印刷頁碼）
 
