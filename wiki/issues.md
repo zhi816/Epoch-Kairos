@@ -1221,3 +1221,9 @@
 - **來源**：Soai 等（1995）印刷頁 767 摘要、左欄及 p.768 Table 1。
 - **發現於**：2026-11-11 複核卡片與 EK-218 時，Codex by OpenAI（GPT-6）。
 - **處理**：2026-11-11，Codex by OpenAI（GPT-6）。改寫為起始手性偏差可被自催化放大，並保留生命手性最初起點尚待釐清的界線；論文頁 Card 6 同步改寫。
+
+### EK-224 | fixed | papers/1995-soai-asymmetric-autocatalysis.md | Card 4 Series B、證據表第 12 行 | 過度表述
+- **問題**：論文頁寫「B5 的 (S)-1 總量放大 942 倍，新生成物 e.e. 達 88%–90%」，緊接在 B5 之後，讀來像是 Run B5 的數值；證據表同列寫「新生成物純度達 88%–90% e.e.」。原文 Table 1 Series B 新生成物 e.e. 依序為 B1 16、B2 74、B3 89、B4 90、B5 88 (S)，「88%–90%」只對 B3 至 B5 成立，B5 本身為 88%。
+- **來源**：Soai 等（1995）印刷頁 768 Table 1 Runs B1–B5「Newly formed product 1」之 e.e. 欄（依 `raw/1995-soai-asymmetric-autocatalysis.pdf` 第 2 頁頁面影像核對）。
+- **發現於**：2026-11-11 子代理迴圈試跑（測試分支 test/subagent-loop），由 OpenCode（DeepSeek V4.1 Flash 免費版）審查時提出，Claude Code by Anthropic 回原文確認。
+- **處理**：2026-11-11，Claude Code by Anthropic（claude-fable-5-2）。論文頁改為「B5 的 (S)-1 總量放大 942 倍、其新生成物 e.e. 為 88% (S)；B3–B5 新生成物 e.e. 依序為 89%、90%、88% (S)」，證據表第 12 行同步並補上欄位名稱；重建論文頁網頁。卡片 Card 4 原已寫 Run B5 之 88% e.e.，無須修改。

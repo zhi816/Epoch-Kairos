@@ -100,3 +100,15 @@
 - **完成條件**：使用者提供正確之 Aghion & Howitt（1992, *Econometrica*）PDF 並依 AGENTS.md 第五章處理檔名；之後以新 PDF 重新核對 EK-203 與論文頁，更新「原始檔典藏」與證據表。
 - **等待**：使用者取得正確原文並放入 `raw/`（AI 對 `raw/` 唯讀）。
 - **來源**：2026-11-11 raw/ 頂層 PDF 第 1 頁核對（Codex GPT-5.6 Luna 唯讀檢查，結果經 Claude Code 以第 1 頁影像覆核）；與 EK-203、TD-011 相關。
+
+### TD-026 | waiting | skill | 決定子代理迴圈測試分支 test/subagent-loop 之去留
+- **內容**：2026-11-11 為試跑「子代理交叉驗證與修正迴圈」，在使用者的 Mac 上建立本機分支 `test/subagent-loop` 與獨立工作目錄 `../epoch-kairos-loop-test`（以 `git worktree` 建立，內有指向 `raw/` 之符號連結），提交 `d9a6e26` 為 Gemini 執行、MiniMax 與 DeepSeek 審查、Claude Code 查核後對 EK-215 至 EK-218 之修正。main 已由 Codex 於提交 `8c29eb4` 另行修正同四筆問題，測試分支之內容不合併；其中唯一 main 尚缺之修正（Series B 新生成物 e.e. 範圍）已另以 EK-224 處理。該分支未推送，只存在於該台 Mac。
+- **完成條件**：依使用者決定處理：推送留作比較、只留本機，或以 `git worktree remove` 與 `git branch -D` 刪除；處理後刪除本條目。
+- **等待**：使用者決定測試分支推送、保留或刪除；另決定是否以同一分支續做任務 B（EK-203，Aghion 1992 公式核對，需先同意下載正式版 PDF 至暫存目錄，見 TD-011、TD-025）。
+- **來源**：使用者指示（2026-11-11）；2026-11-11 登記，Claude Code by Anthropic。
+
+### TD-027 | waiting | rule | 決定是否在 AGENTS.md 之 Skill 一覽登記子代理派工 Skill
+- **內容**：使用者的 Mac 上有一份使用者層級 Skill `~/.claude/skills/subagent-dispatch/`（不在本倉庫內），規定 Claude Code 擔任總指揮時如何把工作派給本機的外部命令列代理（Antigravity Gemini、OpenCode MiniMax、GLM、DeepSeek、Codex 等），以及「子代理交叉驗證數輪，再由總指揮回原文查核、退回修正」的迴圈。其他 AI（Codex、Antigravity）與其他機器讀不到這份 Skill，也不知道本專案可能出現由子代理署名的提交與測試分支。可選做法：在 `AGENTS.md` 第六章 Skill 一覽加一列說明其存在與適用範圍；或把與本專案有關的部分（任務書須知、迴圈輪數與退回單格式）另寫成 `.agents/skills/` 下之專案 Skill；或維持現狀不登記。
+- **完成條件**：使用者決定做法；若要登記，修改 `AGENTS.md`（及必要時新增專案 Skill 與 `.claude/skills/` 轉介檔），並於 `wiki/log.md` 留一筆 `rule` 紀錄；處理後刪除本條目。
+- **等待**：使用者決定是否登記與採用哪一種做法（屬規範變更，依第九章須經使用者同意）。
+- **來源**：2026-11-11 子代理迴圈試跑後之評估；2026-11-11 登記，Claude Code by Anthropic。

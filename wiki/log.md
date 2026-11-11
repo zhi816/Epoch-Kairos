@@ -2298,3 +2298,8 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
 - **具體變更**：依資料性質校正一筆文獻分類與來源路徑，更新相關 Wiki 頁面、問題紀錄及生成頁面。
+
+## [2026-11-11 15:01] fix | Soai 1995 Series B 新生成物 e.e. 範圍寫法 | #化學合成
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：claude-fable-5-2
+- **具體變更**：修正 EK-224。[論文頁](papers/1995-soai-asymmetric-autocatalysis.md) Card 4 之 Series B 原寫「B5 … 新生成物 e.e. 達 88%–90%」，易誤讀為 Run B5 之數值；依原文印刷頁 768 Table 1（回 PDF 頁面影像核對）改為 B5 新生成物 e.e. 88% (S)，並列出 B3–B5 依序為 89%、90%、88% (S)；[證據表](evidence/1995-soai-asymmetric-autocatalysis.md) 第 12 行同步並補欄位名稱；以 `build_paper_prototype.py` 重建論文頁網頁，`lint_wiki.py`、`check_cards.py` 與 `build_home.py --check` 皆 ERROR 0。此問題來自當日在測試分支 `test/subagent-loop` 試跑之子代理迴圈（Gemini 執行，OpenCode MiniMax 與 DeepSeek 審查，Claude Code 回原文查核），由 DeepSeek 審查時提出；測試分支未合併，其去留登記為 TD-026，派工 Skill 是否寫入規範登記為 TD-027。
