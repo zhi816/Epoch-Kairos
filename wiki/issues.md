@@ -1098,3 +1098,27 @@
 - **問題**：依正式版線上文字，式 (2.1) 寫 $y=AF(x)$，頁面額外加上下標；頁面以線性特例展示的研發條件與式 (2.10) 的一般不等式形式不同；頁面以 $g$、$\sigma^2$ 與期望、變異數擴寫式 (3.11)，原文以 AGR、VGR 表達。須核對正式版掃描頁，逐式判斷是否為原文或 Wiki 推導，並依規範改寫、登記來源。
 - **來源**：[Econometrica 正式版](https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf) pp. 327–330、332、336，式 (2.1)、(2.3)、(2.10)、(2.12)、(3.11)；[證據表](evidence/1992-creative-destruction-aghion.md)。
 - **發現於**：2026-11-10，處理 TD-011，Codex by OpenAI。`raw/` 檔案為其他論文；正式版線上文字可讀，但本環境無法取得掃描頁影像核對，尚未把文字擷取當作公式最終證據。
+
+### EK-204 | fixed | papers/1995-soai-asymmetric-autocatalysis.md | Card 1–5、證據表 | 原文不符
+- **問題**：Table 1 與其註解（含 Run 數據、註 § 與 ＊）位於印刷頁 768（PDF 第 2 頁），論文頁、卡片檔與證據表多處標為 p.767；Series C 之出處標為「右欄末段」、Run D 之出處標為「右欄第 4 段」，但 p.767 右欄實為 3 段，兩者皆不對應。證據表原列之試劑與反應條件（20 mol%、0.208 mmol、甲苯、0 °C、96 h）亦未列。
+- **來源**：[1995 原文](../raw/1995-soai-asymmetric-autocatalysis.pdf) PDF 第 2 頁（印刷頁 768）含 Table 1 與註 §（toluene 49 ml、0.208 mmol、0 °C、96 h）；PDF 第 1 頁（印刷頁 767）右欄 “On the other hand…”、“We propose…” 段。
+- **發現於**：2026-11-11 10:28，Claude Code by Anthropic（claude-haiku-5-5）統籌，調派 OpenCode MiniMax M3.1 Flash 逐列核對。
+- **處理**：2026-11-11 10:28，Claude Code by Anthropic（claude-haiku-5-5）。Table 1 相關出處統一改為 p.768，段落序號依正文改為「右欄首段」「右欄第 2 段」；證據表補列試劑與條件列（以 PDF 文字層核對）。
+
+### EK-205 | fixed | papers/1995-soai-asymmetric-autocatalysis.md | hook、Card 1、Card 5、card_line；concepts/chiral-symmetry-breaking.md | 過度表述
+- **問題**：頁面以「首次」「自發」描述 1995 年成果，原文兩頁文字層均未見 “first”，「自發」與本篇的種子實驗（2% e.e. 起始）與 Run D 對照矛盾。卡片導語「首個化學實證」、card_line「揭示同手性起源」超出原文能支持的範圍。概念頁另有「首次在有機合成反應中實現」「千倍自增殖」，並把 Kawasaki 2009 的同位素結果歸於 Soai 反應，又以「證明」「精確相通」描述後續模型與其他領域模型之關係。
+- **來源**：[1995 原文](../raw/1995-soai-asymmetric-autocatalysis.pdf) PDF 第 1 頁摘要第 1 段（“Here we show experimentally that autocatalysis in a chemical reaction can indeed enhance…”）；PDF 第 2 頁（印刷頁 768）“It seems conceivable…”、“remains to be clarified”。
+- **發現於**：2026-11-11 10:28，Claude Code by Anthropic（claude-haiku-5-5）統籌；DeepSeek Harness 獨立審查提出，總指揮對照原文複核。
+- **處理**：2026-11-11 10:28，Claude Code by Anthropic（claude-haiku-5-5）。刪除「首次」「自發」「首個」；card_line 改為「不對稱自催化，微弱手性偏差被逐輪放大」，封面斷行同步改寫；導語改為「為生命起源同手性提供化學實驗模型。」；概念頁第 24、26、32、34 行改寫；後續研究之二聚體內容於論文頁註明「以 Blackmond 2001 為準，本頁尚未對照該文全文」。已重建論文頁與首頁，論文頁與首頁相關驗證通過。
+
+### EK-206 | fixed | papers/1995-soai-asymmetric-autocatalysis.md | Card 3 鋅烷氧化物循環式 | 原文未支持
+- **問題**：步驟 3 寫作 `2_new + H+ → 1_new + Zn(II)`，質量與電荷皆不平衡（缺 i-PrH，且 H+ 數不足）。頁面與證據表原稱「鋅副產物未配平」，但缺漏的 i-PrH 為有機副產物，不屬於鋅物種。
+- **來源**：依 Fig. 2 改寫（原文未配平）；以原子與電荷守恒推導為 `2_new + 2H+ → 1_new + i-PrH + Zn2+`（DeepSeek Harness 獨立審查提出，總指揮複核）。
+- **發現於**：2026-11-11 10:28，DeepSeek Harness 獨立審查（只讀）。
+- **處理**：2026-11-11 10:28，Claude Code by Anthropic（claude-haiku-5-5）。改為平衡式並註明「依 Fig. 2 改寫，未列鋅物種之完整計量」；證據表第 17 行同步。
+
+### EK-207 | fixed | papers/1995-soai-asymmetric-autocatalysis.md | frontmatter honor、正文表彰語、證據表獎項核對 | 原文不符
+- **問題**：honor 與正文寫「表彰分子同手性起源與不對稱自催化合成」，但諾貝爾官網 2026 化學獎引文為 “for the discovery of non-linear effects and autocatalysis in asymmetric organic synthesis”；「分子同手性起源」為官方科普說明之概括，不是表彰語原文。
+- **來源**：[Nobel Prize in Chemistry 2026](https://www.nobelprize.org/prizes/chemistry/2026/)
+- **發現於**：2026-11-11 10:28，總指揮查證；DeepSeek Harness 獨立審查同樣指出。
+- **處理**：2026-11-11 10:28，Claude Code by Anthropic（claude-haiku-5-5）。改為「表彰不對稱有機合成中非線性效應與自催化的發現」；證據表註明官方引文與科普概括之區別。

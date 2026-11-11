@@ -2,12 +2,12 @@
 
 - **論文頁**：[1995-soai-asymmetric-autocatalysis](../papers/1995-soai-asymmetric-autocatalysis.md)
 - **證據表**：[1995-soai-asymmetric-autocatalysis](../evidence/1995-soai-asymmetric-autocatalysis.md)
-- **撰寫者**：Claude Code by Anthropic（claude-haiku-5-5），2026-11-11
+- **撰寫者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-11
 - **最後核對**：Claude Code by Anthropic（claude-haiku-5-5），2026-11-11
 
 ## 封面
-- 封面斷行：不對稱自催化，／手性放大／揭示同手性起源
-- 導語：產物催化自身合成將微弱手性偏差逐級放大為壓倒性優勢，為生命起源同手性提供首個化學實證。
+- 封面斷行：不對稱自催化，／微弱手性偏差／被逐輪放大
+- 導語：產物催化自身合成將微弱手性偏差逐級放大為壓倒性優勢，為生命起源同手性提供化學實驗模型。
 
 ## Card 2｜世紀瓶頸
 - 標題：產物純度天花板與理論懸空
@@ -50,15 +50,15 @@
 
 ## Card 4｜決定性數據
 - 模式：數字
-- 數字：88% e.e.｜極低2%起始經5輪放大至近單一手性｜Table 1 Run B5, p. 767
-- 數字：942倍｜Series B終產物(S)-1物質量放大倍數｜Table 1 Run B5, p. 767
-- 數字：89% e.e.｜Series A經5輪放大後混合物光學純度｜Table 1 Run A5, p. 767
-- 數字：1,674倍｜Series A終產物(S)-1物質量放大倍數｜Table 1 Run A5, p. 767
+- 數字：88% e.e.｜極低2%起始經5輪放大至近單一手性｜Table 1 Run B5, p. 768
+- 數字：942倍｜Series B終產物(S)-1物質量放大倍數｜Table 1 Run B5, p. 768
+- 數字：89% e.e.｜Series A經5輪放大後混合物光學純度｜Table 1 Run A5, p. 768
+- 數字：1,674倍｜Series A終產物(S)-1物質量放大倍數｜Table 1 Run A5, p. 768
 - 範圍：嘧啶醇與二異丙基鋅甲苯體系0°C反應
 
 ## Card 5｜典範轉移
 - 標題：從純粹理論走向實驗室自組織化學
-- 里程碑：1995｜Soai首次在化學合成中實驗證實非線性手性自放大｜本篇
+- 里程碑：1995｜Soai 以實驗顯示自催化可放大對映體過量｜本篇
 - 里程碑：1996｜示範同骨架高對映選擇性催化性自動增殖｜Shibata 1996 JACS
 - 里程碑：2001｜提出同手性與異手性二聚體儲庫動力學模型｜Blackmond 2001 JACS
 - 里程碑：2009｜證明碳同位素微弱差異亦能觸發手性自催化｜Kawasaki 2009 Science

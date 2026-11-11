@@ -2183,3 +2183,16 @@
   - 執行 `tools/build_home.py` 重建首頁知識星圖與卡片牆，將本篇以 No.01 亮星上架於首頁（群星 15 張、我的關注 24 張），自我檢查 ERROR 0，`build_home.py --check` 100% 一致。
   - 更新 [wiki/todo.md](todo.md) TD-001，結案並移除 Soai 條目。
 - **驗證**：`pipeline_status.py 1995-soai-asymmetric-autocatalysis` 全步驟（S1–S9）全數為 OK；`build_home.py --check` 一致；`lint_wiki.py` 為 ERROR 0。
+
+
+## [2026-11-11 10:28] fix | Soai 不對稱自催化總指揮覆核與修正（源文核對、獨立審查、一致性審查） | #化學合成
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Haiku 5.5（claude-haiku-5-5）
+- **具體變更**：
+  - 總指揮調派：OpenCode MiniMax M3.1 Flash（逐列對照 PDF 核對證據表與舊版 CL-001 至 CL-015）、DeepSeek Harness（獨立審查論文頁公式與機制敘述）、Claude Haiku 5.5（卡片、論文頁、證據表之數字與年份一致性）。GLM-5.3 Flash 本輪未派，因 SVG 已通過 `check_cards.py` 規範檢查。子代理只輸出報告、不寫入專案，所有修改由總指揮統一執行。
+  - 報告採信情形：MiniMax 報告 A、B、C 三節完整，已抽查 PDF 文字層（Table 1 註 §、toluene 49 ml、0.208 mmol、0 °C、96 h 位於印刷頁 768；“On the other hand”、“proton NMR” 位於印刷頁 767 右欄；兩頁均無 “first”）。其進程退出碼為 1，原因是非互動模式下一次網路搜尋請求被取消，不影響已輸出之三節報告。DSH 報告之化學計量（步驟 3 缺 i-PrH 與 H+）經原子與電荷守恒複核採信；其「remains to be clarified 位於右欄上緣」之判斷與 PDF 文字塊座標不符，改以「p.768 左欄末段至右欄」標示。DSH 指出之 K 比較統計因子問題未寫入論文頁，僅於論文頁註明二聚體內容以 Blackmond 2001 為準、本頁尚未對照全文。Haiku 報告四項中採信三項（「首個」、2009 用詞、0 °C 與甲苯來源）；第四項（未列 2003、2025 里程碑）屬選擇性省略，未修改。
+  - 修正：論文頁（`verification` 由 verified 改為 partial；hook、正文「首次」「自發」「第一次」用語刪除；`honor` 與正文表彰語改為官方引文近似；`card_line` 改為「不對稱自催化，微弱手性偏差被逐輪放大」；步驟 3 化學式改為平衡式；Table 1 頁碼改為 p.768；後續研究之二聚體段落註明未對照全文）；卡片檔（撰寫者改為 Antigravity by Google DeepMind（Gemini 3.8 Flash），封面斷行與導語改寫，Card 4、5 頁碼與用詞修正）；概念頁（第 24、26、32、34 行改寫）；證據表（查核者署名之「審查核定」表述撤回；CL-002、CL-003、CL-011、CL-013 之還原與補列；Card 3 公式類型與來源修正；後續研究六列判定改為「書目符合（Crossref）；內容未核對」）。
+  - 問題登記：`wiki/issues.md` 新增 EK-204（頁碼與段落序號）、EK-205（優先權與機制過度表述）、EK-206（化學計量）、EK-207（表彰語與官方引文），皆為 fixed。
+  - 驗證：`check_cards.py` ERROR 0、WARN 0；`build_paper_prototype.py` 自我檢查 ERROR 0、WARN 0；`build_home.py --card` 重建並 `--check --card` 一致；`pipeline_status.py` S1 至 S8 OK、S9 與 S10 待提交（卡片檔與網頁尚未提交）；`crossref_check.py` OK；`lint_wiki.py` 全庫 ERROR 0。瀏覽器驗證以本機只讀服務（`127.0.0.1:8782`，不改動專案）提供 `web/` 並映射三支驗證腳本，`verify_page.js`（桌面 1440×900 與手機 375×812）、`verify_star.js` 與 `verify_wall.js` 全部 PASS。卡片墻之 27 條 WARN 為其他論文既有之標籤與出版字樣截斷，與本篇無關。
+  - 先前於 `127.0.0.1:8781` 之瀏覽器驗證因頁面快取讀到舊版，已不採信，改於 8782 全部重跑。
+  - 未完成：未 commit、未 push，待使用者確認。Blackmond 2001、Buono & Blackmond 2003、Shibata 1996、Kawasaki 2009、Möhler 2025 之全文未取得，其內容判定維持「未核對」，論文頁 `verification` 為 partial。
