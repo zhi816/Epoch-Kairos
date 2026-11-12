@@ -122,5 +122,11 @@
   11. *FormosanMT 臺灣南島語語料庫*【主幹論文已收錄於 [2026-formosanmt-parallel-corpus-scheppat](papers/2026-formosanmt-parallel-corpus-scheppat.md)】：嚴防測試集洩漏與方言混淆的 NLLB 微調範式（*FormosanMT* - LREC 2026 / Hugging Face 指南）。獨立單向檢查點機制避免目標語言漂移，增量 SentencePiece 詞表重置抑制 Token Bloat。報告題材重在工程微調實踐指引。
   待原始文獻就緒後，進行分流落地：（A）全新獨立論文者，依 `paper-pipeline` S0–S10 執行收錄立案（Crossref 核驗、證據表、論文頁、概念頁更新、卡片、論文頁網頁與首頁卡片牆/星圖）；（B）屬既有收錄篇目（如 `2026-tao-filipino-nmt-macayan`、`2026-epark-formosan-dialectometry-gagnier`、`2026-formosanmt-parallel-corpus-scheppat`、`2025-formosanbench-llm-benchmark-lin`）之延伸技術實踐者，增補至對應論文頁或概念頁；（C）同步更新 `raw/my-focus/研究主題索引.md`。
 - **完成條件**：原始文獻放入 `raw/my-focus/報告論文題材/`（並推入 Mine-RAW）；確認需獨立立案之論文清單；所選篇目完成 S0–S10 收錄或增補更新，`raw/my-focus/研究主題索引.md` 同步完成，`lint_wiki.py` 無 ERROR。
-- **等待**：使用者將論文原始檔放入 `raw/my-focus/報告論文題材/`，並確認哪些項目獨立立案為新論文頁（或哪些作為既有條目之技術深化補篇）。
+- **進度**（2026-11-12，下載三篇並推入 Mine-RAW 提交 a2d3ab7；僅下載，尚未收錄）：
+  - 已下載至 `my-focus/報告論文題材/`，檔名一律為 `YYYY-<主題>-<第一作者姓氏>.pdf`：
+    - 第 1 項 `2026-data-centric-continual-pretraining-ji.pdf`（Ji et al., Findings of ACL 2026, 18776–18807，DOI 10.18653/v1/2026.findings-acl.937）。原題實為 *Data-Centric Continual Pre-training for 500+ Languages: A New Bilingual Translation Corpus and Multilingual Models*。
+    - 第 5 項 `2026-tokenizations-austronesian-lms-lumbantobing.pdf`（Lumbantobing & Situngkir, arXiv:2602.06998；正式版 Springer LNCS 10.1007/978-3-032-29532-3_13 在付費牆後，未取）。此篇講印尼群島南島語之音節式分詞框架，並非題材描述的重疊詞幾何對齊，需使用者確認是否仍作第 5 項。
+    - 第 6 項 `2026-cross-lingual-alignment-moe-routers-bandarkar.pdf`（Bandarkar et al., arXiv:2610.01921）。
+  - 查無此題名或僅有資料集、未下載：第 2 項 FormosanBank 控制標記（只找到語料庫本身與其文件，無對應論文）、第 3 項 Morphology-Aware Subword Regularization（LoResMT 2026 全 24 篇無此篇；`2026.loresmt-1.2.pdf` 實為第 4 項 Tao–Filipino）、第 8 項 Resource-Ranked Semantic Drift（Mendeley 與 Harvard Dataverse 僅釋出阿美語、排灣語 docx 原始資料，無論文 PDF）、第 9 項 Dynamic Sample Re-weighting（DialRes 2026 與 FormosanMT 相關各篇均無此技術）、第 10 項 Morpheme-Aware NMT（arXiv 與 ACL Anthology 全庫書目皆查無此題名）。
+- **等待**：使用者確認第 5 項是否改用該篇（或另尋重疊詞對齊之文獻），並提供第 2、3、8、9、10 項之原始出處或檔案；之後確認哪些項目獨立立案為新論文頁（或哪些作為既有條目之技術深化補篇）。
 - **來源**：使用者指示（2026-11-12，規劃將 11 項臺灣南島語與低資源機器翻譯新題材納入報告題材資料夾與我的關注）；2026-11-12 登記，Antigravity by Google DeepMind。
