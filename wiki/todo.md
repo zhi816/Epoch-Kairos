@@ -106,3 +106,21 @@
 - **完成條件**：EK-203 改為 `fixed`；`pipeline_status.py 1992-creative-destruction-aghion` 之 S3 為 OK；`lint_wiki.py` ERROR 0；論文頁 `verification` 依第七章第 4 節更新並重建論文頁網頁。與 TD-011（全庫公式證據）及 TD-025（換正確之 raw 原文）相關：本項完成時同步更新 TD-011 之進度。
 - **等待**：使用者擇一提供來源：同意下載證據表引用之正式版 `AghionHowitt.pdf`（`web.econ.ku.dk`，哥本哈根大學網站）至暫存目錄供核對，不放入 `raw/`；或依 TD-025 親自把正確原文放入 `raw/`。
 - **來源**：使用者指示（2026-11-11）；2026-11-11 登記，Claude Code by Anthropic。
+
+### TD-029 | waiting | wiki | 收錄「我的關注」報告題材論文（臺灣南島語與低資源機器翻譯 11 項前沿研究）
+- **內容**：使用者規劃在個人核心關注研究（`raw/my-focus/報告論文題材/`）加入一批聚焦於臺灣南島語、形態豐富少數語言與極低資源神經機器翻譯（Low-Resource NMT/LLM）的前沿技術與報告題材，共 11 項：
+  1. *Findings of ACL 2026*：低秩持續預訓練（LoRA-CPT）高效擴展多語言基座（*A New Bilingual Translation Corpus and Multilingual Models* - ACL Anthology）。針對未見小語種避免全參數 CPT 數值不穩定與訓練崩潰，以雙語平行數據建立語法先驗投影。
+  2. *FormosanBank 指南深入*：語法受控標記（Control Tags）阻斷方言與領域漂移（Fine-tuning NLLB-200 / FormosanMT - LREC 2026）。在 Language ID 外嵌入 `[Direction] [Domain] [Dialect] [Target_Lang]` 四維度前綴條件約束，方言混雜率降低 35% 以上。
+  3. *LoResMT 2026*：形態感知 BPE 正規化（Morphology-Aware Subword Regularization）（LoResMT 2026, `2026.loresmt-1.2.pdf`）。保護雙音節詞根與前/中/後綴，引入語素邊界先驗約束概率切分，杜絕詞根碎裂，提升約 2.1 BLEU / 3.4 chrF++。
+  4. *軟提示調優（Soft Prompt Tuning）*：親緣南島語（馬來–菲律賓–巴丹語支）的零樣本能力啟動（*Tao–Filipino Neural Machine Translation*, LoResMT 2026）。凍結基座主幹僅學連續提示向量，利用系統發育親緣性（Phylogenetic Affinity）跨語支遷移至達悟語（Tao）等極低資源語種。
+  5. *重疊詞（Reduplication）神經幾何對齊*：消解南島語時態與複數表徵歧義（*Tokenizations for Austronesian Language Models* - arXiv / FormosanBench - EMNLP 2025 Findings）。突破自注意力模式複製陷阱，設計局部自注意力增強與幾何對稱損失，精確識別構詞語法功能。
+  6. *arXiv 最新研究*：基於 MoE 路由器的 Decoder-Only 模型跨語言表徵中層對齊（*Cross-Lingual Alignment for Decoder-Only Models using MoE Routers* - arXiv）。以 MoE 路由器發散曲線識別共享專家層並導入輔助路由器損失，促成高低資源語言中層語義對齊。
+  7. *LREC DialRes 2026*：ePark 語料庫方言距離計量（Dialectometry）與模型適配（*Dialectometry and Evaluation of the ePark Corpus for Low-Resource Formosan Language Dialects* - ACL Anthology）。基於 Jaccard 相似度量化方言差異（魯凱語變異最劇烈，平均 0.265），採方言隔離訓練與層級採樣防止解碼干擾。
+  8. *臺灣原住民族語（阿美語、排灣語）*：資源分級語義漂移（Semantic Drift）量化實證（*Resource-Ranked Semantic Drift: AI Translation, Equity, and Minority Languages in Taiwan* - Mendeley Data）。量化極低資源直譯下的高資源同化偏誤，倡導納入語義與文化語境保真度評估指標。
+  9. *FormosanMT 衍生研究*：動態樣本重平衡（Dynamic Sample Re-weighting）阻斷方言長尾淹沒（DialRes 2026 / FormosanMT）。以方言梯度餘弦相似度動態調降高頻方言更新權重並注入長尾偏置，極弱勢方言提升 2.3 至 3.1 BLEU / chrF++。
+  10. *構詞邊界感知損失（Morpheme-Boundary Loss）*：抑制南島語動詞中綴與焦點錯置（*Morpheme-Aware Neural Machine Translation for Morphologically-Rich Low-Resource Languages* - arXiv）。顯式引入語素邊界先驗，動詞生成先鎖定詞根再展開屈折形態，抑制南島語焦點倒裝。
+  11. *FormosanMT 臺灣南島語語料庫*：嚴防測試集洩漏與方言混淆的 NLLB 微調範式（*FormosanMT* - LREC 2026 / Hugging Face 指南）。獨立單向檢查點機制避免目標語言漂移，增量 SentencePiece 詞表重置抑制 Token Bloat。
+  待原始文獻就緒後，進行分流落地：（A）全新獨立論文者，依 `paper-pipeline` S0–S10 執行收錄立案（Crossref 核驗、證據表、論文頁、概念頁更新、卡片、論文頁網頁與首頁卡片牆/星圖）；（B）屬既有收錄篇目（如 `2026-tao-filipino-nmt-macayan`、`2026-epark-formosan-dialectometry-gagnier`、`2026-formosanmt-parallel-corpus-scheppat`、`2025-formosanbench-llm-benchmark-lin`）之延伸技術實踐者，增補至對應論文頁或概念頁；（C）同步更新 `raw/my-focus/研究主題索引.md`。
+- **完成條件**：原始文獻放入 `raw/my-focus/報告論文題材/`（並推入 Mine-RAW）；確認需獨立立案之論文清單；所選篇目完成 S0–S10 收錄或增補更新，`raw/my-focus/研究主題索引.md` 同步完成，`lint_wiki.py` 無 ERROR。
+- **等待**：使用者將論文原始檔放入 `raw/my-focus/報告論文題材/`，並確認哪些項目獨立立案為新論文頁（或哪些作為既有條目之技術深化補篇）。
+- **來源**：使用者指示（2026-11-12，規劃將 11 項臺灣南島語與低資源機器翻譯新題材納入報告題材資料夾與我的關注）；2026-11-12 登記，Antigravity by Google DeepMind。
