@@ -3,7 +3,7 @@
 - **論文頁**：[1992-creative-destruction-aghion](../papers/1992-creative-destruction-aghion.md)
 - **證據表**：[1992-creative-destruction-aghion](../evidence/1992-creative-destruction-aghion.md)
 - **撰寫者**：Claude Code by Anthropic（Claude Opus 5.5），2026-11-10
-- **最後核對**：Claude Code by Anthropic（Claude Opus 5.5），2026-11-10
+- **最後核對**：Antigravity by Google DeepMind（Gemini 4 Hydrogen），2026-11-13
 
 ## 封面
 - 封面斷行：新技術淘汰舊技術，／經濟才能長期成長
@@ -18,7 +18,7 @@
 
 ## Card 3｜突破原理
 - 標題：每次創新，都終結上一代的獨占
-- 公式：V_{t+1} = \frac{\pi_{t+1}}{r + \lambda \phi(n_{t+1})}
+- 公式：V_{t+1} = \frac{\pi_{t+1}}{r + \lambda \varphi(n_{t+1})}
 - 說明：專利的價值，取決於多快被下一次創新取代；後人越努力研發，今天的專利越短命。
 - 圖類型：示意圖
 - 圖說：示意：生產率隨每次創新上一階，創新到來的時間不固定，每一階都取代上一代。

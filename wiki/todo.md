@@ -54,12 +54,6 @@
 - **等待**：回報者補充重現情境，或使用者決定關閉。
 - **來源**：第二批卡片回填 B 組最後回報、首頁卡片牆實作者回報（使用者轉貼，2026-11-10）；2026-11-10 登記，2026-11-10 更新，Claude Code by Anthropic。
 
-### TD-011 | open | wiki | 補齊公式證據與瀏覽器驗證
-- **內容**：依 TD-017 新格式，逐條回原文核對並登記尚缺來源的區塊公式；無原文依據者依 `wiki-content-audit` 改寫並登記問題。全庫 S3 目前尚有 WARN：`1992-creative-destruction-aghion`（5 條；EK-203）。`raw/` 檔案是另一篇論文，正式版線上文字顯示部分符號與頁面不同，但目前無法取得掃描頁影像逐式確認，需在可讀取正式版 PDF 影像的環境續查。另 `2005-optogenetics` 已建立 Card 3 部分證據表，其餘主張與卡片待 TD-008 追蹤，不在本條重複處理。
-- **完成條件**：上述 WARN 論文逐條核對及修正後 S3 均為 OK；`lint_wiki.py` ERROR 0；若修改卡片，卡片檢查與建置 ERROR 0、首頁一致；受影響頁面之桌面、手機與卡片牆瀏覽器驗證依 TD-021 補完。
-- **進度**：已逐一補記滿語表 1–4、臺華翻譯表 15、FormosanBench 表格數值與人工檢視對象，以及滿語、族語雙語詞典和排灣族知識論文的公開資源或限制；原列 10 篇之公式已回原文核對或移除未有依據者，並登記證據表。另已補量子穿隧、重力波、Woodford、Hopfield、泰雅語、JWST、AlphaFold 3、芬蘭語、DeepSeek 與量子容錯之公式出處，修正 Hopfield 與 AlphaFold 3 公式及卡片（EK-201、EK-202）。瀏覽器連線服務不可用，相關頁面補驗見 TD-021。
-- **來源**：第二批卡片回填 B、C 組最後回報（使用者轉貼，2026-11-10）；TD-017 全庫重檢（2026-11-10，Codex by OpenAI）。
-
 ### TD-018 | open | wiki | 在光遺傳學頁補寫奠基論文之原始檔路徑
 - **內容**：`raw/2003-channelrhodopsin2.pdf`（Nagel et al. 2003, PNAS）是 [2005-optogenetics](papers/2005-optogenetics.md) 之奠基論文，論文頁 `key_papers` 只寫 DOI，「知識網絡與文獻出處」沒有寫此原始檔路徑，`pipeline_status.py --new` 因而把它歸為「已列待辦」（TD-003 順帶提到它）而非「已引用」。依 `paper-pipeline` 之 `references/intake.md` 第三節，在該頁「原始權威文獻」另起一行寫明奠基論文原始檔路徑（不得改動「原始檔典藏」一行，S1 以第一個「原始檔典藏」判斷主軸原始檔）。此頁之卡片撰寫尚待使用者決定由誰處理（TD-008），本項只補一行路徑，不涉及內容撰寫。
 - **完成條件**：`pipeline_status.py --new` 將 `raw/2003-channelrhodopsin2.pdf` 列為「已引用」；`lint_wiki.py` ERROR 0。
@@ -79,7 +73,7 @@
 ### TD-021 | open | web | 補驗受影響論文頁與首頁卡片牆
 - **內容**：2026-11-10 複核問題清單後，`1982-hopfield-network`、`2017-attention-is-all-you-need`、`2021-alphafold2`、`2021-seediq-chinese-mt-you`、`2025-indigenous-tek-ai-revitalization-wang` 因核實狀態改為 `issues` 而重建，原先均只移除核實完成標記。後續 `1982-hopfield-network` 釐清突觸失效分析，`2017-attention-is-all-you-need` 更正英譯法數字及版本，`2021-alphafold2` 修正公式與後續研究歸屬，`2021-seediq-chinese-mt-you` 修正論文頁及卡片公式，`2025-fragment-shot-reasoning-mt-frontull` 補充模型參數來源差異，均再次重建；`2019-generalized-data-augmentation-xia` 修正證據表公式後重建，網頁產出未變；`2007-woodford-globalization-monetary-control` 修正封面限定語後重建論文頁與首頁；`2024-sora-world-simulator` 移除未公開的公式並重建論文頁。各篇建置自我檢查均為 ERROR 0、WARN 0。瀏覽器服務不可用，尚未完成論文頁與首頁卡片牆驗證。
 - **進度**：2026-11-10 處理 TD-011，另重建 `1992-creative-destruction-aghion`（EK-203，核實狀態改為 issues）、`2001-colonial-origins-acemoglu`、`2013-icecube-neutrino`、`2024-alphafold3`、`2024-formosan-mt-bilingual-lexicon-zheng`、`2025-formosanbench-llm-benchmark-lin`、`2025-manchu-in-context-mt-pei`；`1982-hopfield-network` 與 `2017-attention-is-all-you-need` 修正公式與卡片後再次重建。建置自我檢查皆為 ERROR 0、WARN 0。冰立方、Hopfield、Transformer 與 AlphaFold 3 卡片牆已重建且檢查一致；瀏覽器連線服務仍不可用，桌面、手機與卡片牆目視驗證均待補。
-- **進度**：2026-11-11 複查日誌發現 `1995-soai-asymmetric-autocatalysis` 於 10:28 驗證後曾再修改並重建；同日後續修正 Card 2、3、5、6 與長文後再次建置。瀏覽器服務無法連線，該篇現行論文頁與首頁卡片牆均待桌面及手機版複驗。Woodford 舊網址轉介亦待以瀏覽器確認。
+- **進度**：2026-11-11 複查日誌發現 `1995-soai-asymmetric-autocatalysis` 於 10:28 驗證後曾再修改並重建；同日後續修正 Card 2、3、5、6 與長文後再次建置。瀏覽器服務無法連線，該篇現行論文頁與首頁卡片牆均待桌面及手機版複驗。Woodford 舊網址轉介亦待以瀏覽器確認。2026-11-13 處理 EK-203 後重建 `1992-creative-destruction-aghion`（Card 3 公式與 `verification: "verified"`），本機 Chrome DevTools 未啟用（`DevToolsActivePort` 不存在），該篇論文頁與卡片牆瀏覽器驗證仍留待本條補驗。
 - **完成條件**：在可使用的瀏覽器環境中，依 `paper-card-writer` 流程檢查上述論文頁之桌面與手機版，以及各篇首頁卡片牆；確認先前的核實完成標記及版面正確，記錄驗證結果並處理所見問題。`2025-indigenous-tek-ai-revitalization-wang` 另於 EK-192 修正後重建，亦須複驗。
 - **來源**：2026-11-10 問題清單分組複核整合，Codex by OpenAI。
 
@@ -94,18 +88,6 @@
 - **完成條件**：使用者確認譯名；論文頁 `title_zh`、`wiki/index.md` 標題、首頁與論文頁網頁一致；`lint_wiki.py` 無 ERROR。
 - **等待**：使用者決定譯名（建議「全球化與貨幣控制」，或另擬）。
 - **來源**：2026-11-11 改名核對時發現（wiki/log.md [2026-11-11 12:27] fix「另發現」一項）；2026-11-11 登記，Claude Code by Anthropic。
-
-### TD-025 | waiting | raw | 換正確的 Aghion & Howitt 1992 原文，取代 raw 內另一篇論文之 PDF
-- **內容**：`raw/1992-creative-destruction-aghion.pdf` 第 1 頁影像為 Giuseppe Bertola, *Factor Shares and Savings in Endogenous Growth*（NBER Working Paper No. 3851，1991 年 9 月），不是 Aghion & Howitt 1992 年 *Econometrica* 論文。全 31 頁皆為掃描影像、無文字層，其餘頁未逐頁核對。因此 `wiki/papers/1992-creative-destruction-aghion.md` 之書目、公式、人名與 EK-203（Card 3 區塊公式，判定「未能核實」，見 TD-011）無法依此檔核實，論文頁「原始檔典藏」亦指向錯誤檔案。另一併核對之兩檔無誤：`raw/1985-macroscopic-quantum-tunneling.pdf` 首頁標題與論文頁一致；`raw/1999-metal-organic-frameworks-mof5.pdf` 第 2 至 4 頁為 MOF-5 論文，第 1 頁為同期另一篇 letter 之末段。
-- **完成條件**：使用者提供正確之 Aghion & Howitt（1992, *Econometrica*）PDF 並依 AGENTS.md 第五章處理檔名；之後以新 PDF 重新核對 EK-203 與論文頁，更新「原始檔典藏」與證據表。
-- **等待**：使用者取得正確原文並放入 `raw/`（AI 對 `raw/` 唯讀）。
-- **來源**：2026-11-11 raw/ 頂層 PDF 第 1 頁核對（Codex GPT-5.6 Luna 唯讀檢查，結果經 Claude Code 以第 1 頁影像覆核）；與 EK-203、TD-011 相關。
-
-### TD-028 | waiting | wiki | 以子代理迴圈核對 Aghion & Howitt 1992 之 Card 3 區塊公式（EK-203）
-- **內容**：以「子代理交叉驗證數輪，再由總指揮回原文查核、退回修正」之迴圈處理 EK-203：[1992-creative-destruction-aghion](papers/1992-creative-destruction-aghion.md) 五條區塊公式逐式對照 *Econometrica* 60(2):323–351 正式版之式 (2.1)、(2.3)、(2.10)、(2.12)、(3.11)，判斷各式為原文或 Wiki 推導，依 `wiki-content-audit` 改寫並登記證據表。預定分工：Antigravity（gemini-3.8-flash-high）執行，OpenCode 之 DeepSeek 與 MiniMax 審查，Claude Code 回正式版頁面影像查核。直接在 main 進行，不另開分支。2026-11-11 已以同一迴圈試跑 Soai 1995 四筆問題（結果與教訓見 wiki/log.md [2026-11-11 15:01] 及使用者 Mac 上之 `~/.claude/skills/subagent-dispatch/`）；本項之任務書須允許子代理使用公開之第一手來源，並寫明取得之頁碼。
-- **完成條件**：EK-203 改為 `fixed`；`pipeline_status.py 1992-creative-destruction-aghion` 之 S3 為 OK；`lint_wiki.py` ERROR 0；論文頁 `verification` 依第七章第 4 節更新並重建論文頁網頁。與 TD-011（全庫公式證據）及 TD-025（換正確之 raw 原文）相關：本項完成時同步更新 TD-011 之進度。
-- **等待**：使用者擇一提供來源：同意下載證據表引用之正式版 `AghionHowitt.pdf`（`web.econ.ku.dk`，哥本哈根大學網站）至暫存目錄供核對，不放入 `raw/`；或依 TD-025 親自把正確原文放入 `raw/`。
-- **來源**：使用者指示（2026-11-11）；2026-11-11 登記，Claude Code by Anthropic。
 
 ### TD-029 | waiting | wiki | 收錄「我的關注」報告題材論文（臺灣南島語與低資源機器翻譯 11 項前沿研究）
 - **內容**：使用者規劃在個人核心關注研究（`raw/my-focus/報告論文題材/`）加入一批聚焦於臺灣南島語、形態豐富少數語言與極低資源神經機器翻譯（Low-Resource NMT/LLM）的前沿技術與報告題材，共 11 項：

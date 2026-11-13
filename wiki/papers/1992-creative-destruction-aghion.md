@@ -12,7 +12,7 @@ domain: "econ"
 domain_tags: ["#宏觀經濟學", "#制度經濟學"]
 concepts: ["institutions-and-macro-dynamics"]
 status: "published"
-verification: "issues"
+verification: "verified"
 my_focus: false
 doi_url: "https://doi.org/10.2307/2951599"
 key_papers:
@@ -50,7 +50,7 @@ Aghion 與 Howitt (1992) 建立一個由垂直產品創新推動的內生成長�
 Aghion 與 Howitt 將經濟體建模為一連串由研發（R&D）驅動的垂直品質躍遷過程，每一代新中間財都會完全取代上一代，摧毀前任創新者的獨占租金。
 
 1. **泊松創新到達過程（Poisson Arrival of Innovations）**：
-   * 當研發部門投入數量為 $n_t$ 的高技術研究勞動力時，下一次技術突破以泊松抵達率 $\lambda \phi(n_t)$ 發生。每次突破使中間財生產率提升固定倍數 $\gamma > 1$。
+   * 當研發部門投入數量為 $n_t$ 的高技術研究勞動力時，下一次技術突破以泊松抵達率 $\lambda \varphi(n_t)$ 發生（$\varphi(n_t) \equiv \phi(n_t, R)$，其中 $R$ 為固定投入的專業研究勞動力）。每次突破使中間財生產率提升固定倍數 $\gamma > 1$。
 2. **跨期前瞻性研發套利均衡（Forward-Looking R&D Arbitrage）**：
    * 當前第 $t$ 代創新者的獨占利潤，取決於**下一代第 $t+1$ 次創新何時到來**。若未來預期的研發強度 $n_{t+1}$ 越高，當前專利的預期存活壽命就越短，從而抑制當前的研發意願。這構成了跨期負向回饋關係：$n_t = \psi(n_{t+1})$。
 3. **租金竊取效應與社會最優偏離（Business-Stealing vs. Intertemporal Spillover）**：
@@ -58,45 +58,43 @@ Aghion 與 Howitt 將經濟體建模為一連串由研發（R&D）驅動的垂�
 
 ### 1. 最終財生產函數與垂直品質階梯 (Production & Quality Ladder)
 
-一般基準模型的最終財生產函數為 $y_t=A_tF(x_t)$（式 2.1）；作者另以 Cobb–Douglas 作為特例，令 $F(x)=x^\alpha$、$0<\alpha<1$（式 2.8）。每次成功創新使技術水準 $A_t$ 提高固定倍數 $\gamma>1$，因此（式 2.3）：
+一般基準模型的消費財生產函數為（§2.A, p. 327, 式 2.1）：
 
-$$\begin{aligned}
-y_t &= A_t F(x_t) \\
-A_t &= A_0 \gamma^t
-\end{aligned}$$
+$$y = AF(x)$$
 
-其中 $t \in \{0, 1, 2, \dots\}$ 代表迄今已發生的累計成功創新次數。總勞動力 $N$ 在製造部門 $x_t$ 與研發部門 $n_t$ 之間滿足資源出清條件：
+其中 $y$ 為消費財產出流、$x$ 為中間財投入流、$A$ 為反映中間財生產率之參數，且 $F'>0$、$F''<0$；作者另以 Cobb–Douglas 作為特例，令 $F(x)=x^\alpha$、$0<\alpha<1$（§2.B, p. 329, 式 2.8）。每次成功創新使生產率參數 $A$ 提高固定倍數 $\gamma>1$，故最先進中間財之生產率滿足（§2.A, p. 328, 式 2.3）：
 
-$$N = x_t + n_t$$
+$$A_t = A_0 \gamma^t \qquad (t = 0, 1, \dots)$$
+
+其中 $t \in \{0, 1, 2, \dots\}$ 代表迄今已發生的累計成功創新次數。總高技術勞動力 $N$ 在研發部門 $n_t$ 與製造部門 $x_t$ 之間滿足均衡出清條件 $N = n_t + x_t$（§3.A, p. 331）。
 
 ### 2. 創新價值泛函與跨期研發套利方程 (Bellman Value & R&D Arbitrage)
 
-令 $V_{t+1}$ 為第 $t+1$ 次創新成功者所能獲得的期望貼現獨占價值。在利率為 $r$、下一期研發投入為 $n_{t+1}$ 的條件下，該專利以泊松速率 $\lambda \phi(n_{t+1})$ 被下一次創新摧毀。原文的專利價值式為（§2.C，式 2.12）：
+令 $V_{t+1}$ 為第 $t+1$ 次創新成功者所能獲得的期望貼現獨占價值。在利率為 $r$、下一期研發投入為 $n_{t+1}$ 的條件下，該專利以泊松速率 $\lambda \varphi(n_{t+1})$ 被下一次創新摧毀。原文的專利價值式為（§2.C, p. 330, 式 2.12）：
 
-$$V_{t+1} = \frac{\pi_{t+1}}{r + \lambda \phi(n_{t+1})}$$
+$$V_{t+1} = \frac{\pi_{t+1}}{r + \lambda \varphi(n_{t+1})}$$
 
-其中 $\pi_{t+1}$ 為第 $t+1$ 代獨占者的利潤流。自由進入下的研發條件為 $w_t \geq \lambda\phi'(n_t)V_{t+1}$，且正研發投入時取等號（式 2.10）；在線性研發技術 $\phi(n)=n$ 下簡化為：
+其中 $\pi_{t+1}$ 為第 $t+1$ 代獨占者的利潤流。由 Kuhn–Tucker 條件推得之研發部門均衡條件為（§2.C, p. 330, 式 2.10）：
 
-$$w_t = \lambda V_{t+1}$$
+$$w_t \ge \varphi'(n_t)\lambda V_{t+1}, \qquad n_t \ge 0, \qquad \text{with at least one equality}$$
+
+其中 $\varphi(n_t) \equiv \phi(n_t, R)$。在線性研發技術 $\varphi(n) \equiv n$（§3.A, p. 333）且正研發投入（$n_t > 0$）之特例下，該條件化為 $w_t = \lambda V_{t+1}$（依式 2.10 推導）。
 
 ### 3. 穩態內生經濟成長率與方差 (Steady-State Growth Rate)
 
-在平穩均衡（Stationary Equilibrium，$n_t = \hat{n}$）下，對數產出 $\ln y(\tau)$ 在連續時間長度為 $1$ 的區間內服從複合泊松過程，其長期平均對數成長率（Average Growth Rate，$g$）與成長波動方差（Variance，$\sigma^2$）皆由研發投入 $\hat{n}$ 內生決定（式 3.11，§3.C，p. 336）：
+在平穩均衡（Stationary Equilibrium，$n_t = \hat{n}$）下，對數實質產出 $\ln y(\tau)$ 呈階梯狀隨機過程（每步跳升固定幅度 $\ln \gamma > 0$，相鄰創新間隔服從參數為 $\lambda\varphi(\hat{n})$ 的指數分佈）；若以單位時間間隔離散觀測，兩時點之間的創新次數服從參數為 $\lambda\varphi(\hat{n})$ 的泊松分佈。據此，經濟體的平均成長率（$AGR$）與成長率變異數（$VGR$）由式 (3.11) 給出（§3.C, p. 336）：
 
-$$\begin{aligned}
-g &= \mathbb{E}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \phi(\hat{n}) \ln \gamma \\
-\sigma^2 &= \operatorname{Var}[\ln y(\tau + 1) - \ln y(\tau)] = \lambda \phi(\hat{n}) (\ln \gamma)^2
-\end{aligned}$$
+$$AGR = \lambda \varphi(\hat{n}) \ln \gamma, \qquad VGR = \lambda \varphi(\hat{n}) (\ln \gamma)^2$$
 
-在線性研發技術 $\phi(n) = n$ 之特例下，兩式化為 $g = \lambda \hat{n} \ln \gamma$ 與 $\sigma^2 = \lambda \hat{n} (\ln \gamma)^2$；原文以此通式推導，線性特例僅用於後續 Cobb–Douglas 比較靜態分析。
+在線性研發技術 $\varphi(n) \equiv n$（§3.A, p. 333）之特例下，兩式化為 $AGR = \lambda \hat{n} \ln \gamma$ 與 $VGR = \lambda \hat{n} (\ln \gamma)^2$（依式 3.11 推導）。
 
 ---
 
 ## Card 4 ｜ 決定性數據 (The Evidence)
 
 ### 本篇論文（Aghion & Howitt 1992）之核心理論證明
-* **穩態均衡與內生 2 階循環（Two-Cycle）條件**：作者分析跨期研發套利映射 $n_t = \psi(n_{t+1})$。基準模型存在唯一平穩穩態 $\hat{n}$；當無成長陷阱（No-Growth Trap）存在且 $c'(\hat{n}) + b'(\hat{n}) > 0$ 時，可出現高研發與低研發交替之實質 2 階循環（一般存在條件 §3.A, p. 333；Cobb–Douglas 特例 p. 334）。在 Cobb–Douglas 生產函數與線性研發技術 $\phi(n) = n$ 之特例下，該條件約化為競爭程度參數 $\alpha$ 與利率 $r$ 足夠小（$1-\alpha$ 為 Lerner 壟斷力，故 $\alpha$ 越小表市場力量越大）。原文將此循環定位為創造性破壞導致內生波動之理論展示，並未宣稱可直接解釋現實商業週期；全文僅有 Proposition 1（p. 334），未以 $\psi'(\hat{n}) < -1$ 表述穩定條件，亦未使用「極限環（limit cycle）」一詞。
-* **福利效果的方向取決於多種扭曲**：社會計畫者的折現率為 $r-\lambda\phi(n)(\gamma-1)$，而私人專利估值的折現率為 $r+\lambda\phi(n)$。業務竊取、壟斷扭曲、可占有性與跨期外溢的效果彼此牴觸，因此自由放任下的成長可能高於或低於社會最適；在線性 Cobb–Douglas 例中，當市場力量較大（$\alpha$ 接近 0）且創新幅度不大時，業務竊取效應可主導並導致過度研發。
+* **穩態均衡與內生 2 階循環（Two-Cycle）條件**：作者分析跨期研發套利映射 $n_t = \psi(n_{t+1})$。基準模型存在唯一平穩穩態 $\hat{n}$；當無成長陷阱（No-Growth Trap）存在且 $c'(\hat{n}) + b'(\hat{n}) > 0$ 時，可出現高研發與低研發交替之實質 2 階循環（一般存在條件 §3.A, p. 333；Cobb–Douglas 特例 p. 334）。在 Cobb–Douglas 生產函數與線性研發技術 $\varphi(n) \equiv n$ 之特例下，該條件約化為競爭程度參數 $\alpha$ 與利率 $r$ 足夠小（$1-\alpha$ 為 Lerner 壟斷力，故 $\alpha$ 越小表市場力量越大）。原文將此循環定位為創造性破壞導致內生波動之理論展示，並未宣稱可直接解釋現實商業週期；全文僅有 Proposition 1（p. 334），未以 $\psi'(\hat{n}) < -1$ 表述穩定條件，亦未使用「極限環（limit cycle）」一詞。
+* **福利效果的方向取決於多種扭曲**：社會計畫者的折現率為 $r-\lambda\varphi(n)(\gamma-1)$，而私人專利估值的折現率為 $r+\lambda\varphi(n)$。業務竊取、壟斷扭曲、可占有性與跨期外溢的效果彼此牴觸，因此自由放任下的成長可能高於或低於社會最適；在線性 Cobb–Douglas 例中，當市場力量較大（$\alpha$ 接近 0）且創新幅度不大時，業務竊取效應可主導並導致過度研發。
 * **自由放任下的創新幅度偏小**：第 6 節讓研究企業同時選擇創新頻率與幅度；在顛覆性創新情形下，私人企業選擇的創新幅度低於社會最適。非顛覆性創新下，利潤率誘因會部分抵銷這一傾向；總體成長效果方向仍不確定。
 
 ### 後續領域關鍵實證（非本篇成果，標註出處）

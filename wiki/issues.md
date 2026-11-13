@@ -1094,10 +1094,11 @@
 - **發現於**：2026-11-10，處理 TD-011 公式出處及抽查卡片，Codex by OpenAI。
 - **處理**：2026-11-10，Codex by OpenAI（GPT-6）。改以原文 Algorithm 19 座標變換步驟及作者文字說明呈現機制，排序公式保留原文表達；逐式登記來源，卡片補上指標與取樣條件，更新示意圖。
 
-### EK-203 | open | papers/1992-creative-destruction-aghion.md | Card 3 區塊公式 | 未能核實
+### EK-203 | fixed | papers/1992-creative-destruction-aghion.md | Card 3 區塊公式 | 未能核實
 - **問題**：依正式版線上文字，式 (2.1) 寫 $y=AF(x)$，頁面額外加上下標；頁面以線性特例展示的研發條件與式 (2.10) 的一般不等式形式不同；頁面以 $g$、$\sigma^2$ 與期望、變異數擴寫式 (3.11)，原文以 AGR、VGR 表達。須核對正式版掃描頁，逐式判斷是否為原文或 Wiki 推導，並依規範改寫、登記來源。
 - **來源**：[Econometrica 正式版](https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf) pp. 327–330、332、336，式 (2.1)、(2.3)、(2.10)、(2.12)、(3.11)；[證據表](evidence/1992-creative-destruction-aghion.md)。
 - **發現於**：2026-11-10，處理 TD-011，Codex by OpenAI。`raw/` 檔案為其他論文；正式版線上文字可讀，但本環境無法取得掃描頁影像核對，尚未把文字擷取當作公式最終證據。
+- **處理**：2026-11-13，Antigravity by Google DeepMind（Gemini 4 Hydrogen）。經使用者授權自 Wayback Machine 存檔之 `https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf` 下載 JSTOR 正式版掃描全本並取代 `raw/1992-creative-destruction-aghion.pdf`，將印刷頁 pp. 323–343（PDF pp. 2–22）轉為影像逐式核對：(1) 式 (2.1) 改為原文 $y = AF(x)$（p. 327）、式 (2.3) 獨立列為 $A_t = A_0 \gamma^t \ (t = 0, 1, \dots)$（p. 328），並將無對應編號展示式之 $N = n_t + x_t$ 改為行內引用（§3.A, p. 331）；(2) 式 (2.12) 與式 (2.10) 皆依原文將單變數研發函數符號改為 $\varphi$（$\varphi(n_t) \equiv \phi(n_t, R)$，p. 330），區塊公式 4 改列原文完整 Kuhn–Tucker 條件 $w_t \ge \varphi'(n_t)\lambda V_{t+1},\; n_t \ge 0,\; \text{with at least one equality}$，線性特例 $w_t = \lambda V_{t+1}$ 改為行內推導說明；(3) 式 (3.11) 改為原文 $AGR = \lambda \varphi(\hat{n}) \ln \gamma,\; VGR = \lambda \varphi(\hat{n}) (\ln \gamma)^2$（p. 336），移除未見於該式之 $g$、$\sigma^2$ 與 $\mathbb{E}$、$\operatorname{Var}$ 擴寫；(4) 同步更新 `wiki/cards/1992-creative-destruction-aghion.md` Card 3 公式之 $\varphi$ 符號與 `wiki/evidence/1992-creative-destruction-aghion.md` 區塊公式 1–5 逐條位置，覆核全頁 Frontmatter、Card 1–6 與 Crossref 後續論文書目後，將論文頁 `verification` 設為 `verified`。
 
 ### EK-204 | fixed | papers/1995-soai-asymmetric-autocatalysis.md | Card 1–5、證據表 | 原文不符
 - **問題**：Table 1 與其註解（含 Run 數據、註 § 與 ＊）位於印刷頁 768（PDF 第 2 頁），論文頁、卡片檔與證據表多處標為 p.767；Series C 之出處標為「右欄末段」、Run D 之出處標為「右欄第 4 段」，但 p.767 右欄實為 3 段，兩者皆不對應。證據表原列之試劑與反應條件（20 mol%、0.208 mmol、甲苯、0 °C、96 h）亦未列。
