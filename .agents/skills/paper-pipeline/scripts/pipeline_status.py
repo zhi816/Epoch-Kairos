@@ -10,7 +10,7 @@
     S1 收件      論文頁「原始檔典藏」所指之 raw/ 檔案存在
     S3 證據表    wiki/evidence/<slug>.md 存在；數值逐一寫出；區塊公式按序號逐條登記
     S4 論文頁    論文頁存在、結構完整（開頭引言、Card 1 至 6、知識網絡）、lint_wiki.py 對本頁無 ERROR（概念頁相關之 ERROR 歸 S5）、card_line 切得成封面斷行
-    S5 概念索引  concepts 非空且概念頁雙向列出本篇；wiki/index.md 有本篇連結；lint_wiki.py 對本頁無概念頁相關之 ERROR
+    S5 概念索引  concepts 非空且概念頁雙向列出本篇；非關注篇在 wiki/index.md、my_focus 為 true 者改查 raw/my-focus/my-index.md；lint_wiki.py 對本頁無概念頁相關之 ERROR
     S6 核實      verification 為 partial 或 verified；wiki/issues.md 無本頁 open 問題
     S7 卡片      wiki/cards/<slug>.md 存在且 check_cards.py 對本篇無 ERROR
     S8 網頁      web/papers/<slug>/index.html 存在，且不舊於卡片檔與論文頁；Card 1 編號與首頁卡片牆相同；論文頁 status 為 published
@@ -40,7 +40,7 @@ NEXT = {
     'S1': 'S1 收件：依 references/intake.md 確認原始檔與檔名，論文頁「原始檔典藏」寫對路徑',
     'S3': 'S3 證據表：依 wiki-content-audit 寫作模式第 2 步建立或補齊 wiki/evidence/<slug>.md',
     'S4': 'S4 論文頁：依 references/paper-page-template.md 撰寫或修正論文頁，lint_wiki.py 本頁 ERROR 0',
-    'S5': 'S5 概念與索引：依 references/concepts-and-index.md 更新概念頁雙向連結與 wiki/index.md',
+    'S5': 'S5 概念與索引：依 references/concepts-and-index.md 更新概念頁雙向連結與索引（群星填 wiki/index.md；我的關注填 raw/my-focus/my-index.md）',
     'S6': 'S6 核實：依 wiki-content-audit 第 4、5 步修正 open 問題、設定 verification',
     'S7': 'S7 卡片：依 paper-card-writer 第五節第 1 至 6 步撰寫卡片檔，check_cards.py ERROR 0',
     'S8': 'S8 網頁：python tools/build_paper_prototype.py <slug>，再以 verify_page.js 驗證',
@@ -225,6 +225,7 @@ def collect():
     _, lint_out = run([sys.executable, LINT])
     _, cards_out = run([sys.executable, CHECK_CARDS])
     hc, home_out = run([sys.executable, BUILD_HOME, '--check'])
+    my_index_path = os.path.join(RAW, 'my-focus', 'my-index.md')
     ctx = {
         'papers': papers,
         'lint': tool_findings(lint_out),
@@ -234,6 +235,7 @@ def collect():
         'home': homepage_data(),
         'open': open_issues(),
         'index': read(os.path.join(WIKI, 'index.md')),
+        'my_index': read(my_index_path) if os.path.exists(my_index_path) else None,
         'log': read(os.path.join(WIKI, 'log.md')),
         'concepts': {},
     }
@@ -330,6 +332,7 @@ def check(slug, ctx):
 
     # S5 概念與索引
     why = []
+    focus_paper = fm.get('my_focus') is True
     concepts = fm.get('concepts') or []
     if not concepts:
         why.append('Frontmatter 之 concepts 為空')
@@ -342,11 +345,22 @@ def check(slug, ctx):
     for c, cfm in ctx['concepts'].items():
         if slug in (cfm.get('papers') or []) and c not in concepts:
             why.append('概念頁 %s 列了本篇，但論文頁 concepts 沒有列它' % c)
-    if '(papers/%s.md)' % slug not in ctx['index']:
+    if focus_paper:
+        if ctx['my_index'] is not None and not re.search(
+            r'\((?:\.\./\.\./wiki/)?papers/' + re.escape(slug) + r'\.md\)', ctx['my_index']
+        ):
+            why.append('raw/my-focus/my-index.md 沒有本篇連結（../../wiki/papers/%s.md）' % slug)
+    elif ('(papers/%s.md)' % slug) not in ctx['index']:
         why.append('wiki/index.md 沒有本篇連結（papers/%s.md）' % slug)
     # concepts 欄與雙向對應已由上方逐項檢查；正文中指向不存在之概念頁連結只有 lint 抓得到
     why += ['lint ERROR：' + m for m in concept_errs if m.startswith(CONCEPT_LINT[2])]
-    r['S5'] = ('NG', why) if why else ('OK', ['概念：' + '、'.join(concepts) + '；index.md 已登記'])
+    if why:
+        r['S5'] = ('NG', why)
+    elif focus_paper and ctx['my_index'] is None:
+        r['S5'] = ('--', ['概念：' + '、'.join(concepts) + '；本機沒有 raw/my-focus/my-index.md（未 clone Mine-RAW），無法確認我的關注索引'])
+    else:
+        idx_name = 'my-index.md' if focus_paper else 'index.md'
+        r['S5'] = ('OK', ['概念：' + '、'.join(concepts) + '；%s 已登記' % idx_name])
 
     # S6 核實
     v = fm.get('verification')

@@ -2323,3 +2323,8 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
 - **具體變更**：審查 Antigravity（Gemini 4 Hydrogen）2026-11-13 之 Aghion & Howitt 修訂；回正式版掃描頁印刷 pp. 327–330、333、336 核對式 (2.1)、(2.3)、(2.10)、(2.12)、(3.11) 與線性研發特例，符號、公式與頁碼相符。Card 5 第 2–3 點缺少可追溯之一手來源與證據表對應列，新增 EK-225 並將論文頁 `verification` 改為 `issues`，重建論文頁（ERROR 0、WARN 0）。`lint_wiki.py --errors-only`：ERROR 0；瀏覽器版面與首頁卡片牆驗證仍待 TD-021。
+
+## [2026-11-14 12:21] rule | 我的關注私有索引改名 my-index.md 並更新 S5 檢查腳本 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依使用者指示確立「我的關注」與公開索引之隱私分流：（1）`raw/`（Mine-RAW）：將 `raw/my-focus/研究主題索引.md` 更名為 `raw/my-focus/my-index.md`。（2）`Epoch-Kairos`：更新 `.agents/skills/paper-pipeline/scripts/pipeline_status.py`，使 `my_focus: true` 之論文於 S5 改查私有 `raw/my-focus/my-index.md`（未 clone `raw/` 時回報 `--`），其餘群星論文維持檢查 `wiki/index.md`；同步更新 [AGENTS.md](../AGENTS.md)、[.agents/skills/paper-pipeline/SKILL.md](../.agents/skills/paper-pipeline/SKILL.md)、[concepts-and-index.md](../.agents/skills/paper-pipeline/references/concepts-and-index.md)、[publish.md](../.agents/skills/paper-pipeline/references/publish.md) 與 [wiki/todo.md](todo.md)（TD-029 檔名引用），並新增單元測試 `tools/tests/test_pipeline_index_privacy.py`。（3）驗證：`python3 -m unittest discover -s tools/tests` 16 項全數通過；`lint_wiki.py` ERROR 0、WARN 21；`pipeline_status.py` 全庫 24 篇 `my_focus` 論文 S5 全數通過（全部步驟完成篇數由 2 升至 18）。

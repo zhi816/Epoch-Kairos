@@ -102,8 +102,8 @@
   9. *FormosanMT 衍生研究*：動態樣本重平衡（Dynamic Sample Re-weighting）阻斷方言長尾淹沒（DialRes 2026 / FormosanMT）。以方言梯度餘弦相似度動態調降高頻方言更新權重並注入長尾偏置，極弱勢方言提升 2.3 至 3.1 BLEU / chrF++。
   10. *構詞邊界感知損失（Morpheme-Boundary Loss）*：抑制南島語動詞中綴與焦點錯置（*Morpheme-Aware Neural Machine Translation for Morphologically-Rich Low-Resource Languages* - arXiv）。顯式引入語素邊界先驗，動詞生成先鎖定詞根再展開屈折形態，抑制南島語焦點倒裝。
   11. *FormosanMT 臺灣南島語語料庫*【主幹論文已收錄於 [2026-formosanmt-parallel-corpus-scheppat](papers/2026-formosanmt-parallel-corpus-scheppat.md)】：嚴防測試集洩漏與方言混淆的 NLLB 微調範式（*FormosanMT* - LREC 2026 / Hugging Face 指南）。獨立單向檢查點機制避免目標語言漂移，增量 SentencePiece 詞表重置抑制 Token Bloat。報告題材重在工程微調實踐指引。
-  待原始文獻就緒後，進行分流落地：（A）全新獨立論文者，依 `paper-pipeline` S0–S10 執行收錄立案（Crossref 核驗、證據表、論文頁、概念頁更新、卡片、論文頁網頁與首頁卡片牆/星圖）；（B）屬既有收錄篇目（如 `2026-tao-filipino-nmt-macayan`、`2026-epark-formosan-dialectometry-gagnier`、`2026-formosanmt-parallel-corpus-scheppat`、`2025-formosanbench-llm-benchmark-lin`）之延伸技術實踐者，增補至對應論文頁或概念頁；（C）同步更新 `raw/my-focus/研究主題索引.md`。
-- **完成條件**：原始文獻放入 `raw/my-focus/報告論文題材/`（並推入 Mine-RAW）；確認需獨立立案之論文清單；所選篇目完成 S0–S10 收錄或增補更新，`raw/my-focus/研究主題索引.md` 同步完成，`lint_wiki.py` 無 ERROR。
+  待原始文獻就緒後，進行分流落地：（A）全新獨立論文者，依 `paper-pipeline` S0–S10 執行收錄立案（Crossref 核驗、證據表、論文頁、概念頁更新、卡片、論文頁網頁與首頁卡片牆/星圖）；（B）屬既有收錄篇目（如 `2026-tao-filipino-nmt-macayan`、`2026-epark-formosan-dialectometry-gagnier`、`2026-formosanmt-parallel-corpus-scheppat`、`2025-formosanbench-llm-benchmark-lin`）之延伸技術實踐者，增補至對應論文頁或概念頁；（C）同步更新 `raw/my-focus/my-index.md`。
+- **完成條件**：原始文獻放入 `raw/my-focus/報告論文題材/`（並推入 Mine-RAW）；確認需獨立立案之論文清單；所選篇目完成 S0–S10 收錄或增補更新，`raw/my-focus/my-index.md` 同步完成，`lint_wiki.py` 無 ERROR。
 - **進度**（2026-11-12，下載三篇並推入 Mine-RAW 提交 a2d3ab7；僅下載，尚未收錄）：
   - 已下載至 `my-focus/報告論文題材/`，檔名一律為 `YYYY-<主題>-<第一作者姓氏>.pdf`：
     - 第 1 項 `2026-data-centric-continual-pretraining-ji.pdf`（Ji et al., Findings of ACL 2026, 18776–18807，DOI 10.18653/v1/2026.findings-acl.937）。原題實為 *Data-Centric Continual Pre-training for 500+ Languages: A New Bilingual Translation Corpus and Multilingual Models*。

@@ -100,7 +100,8 @@ macOS 上倉庫位於「文件」等受保護資料夾時，桌面 app 之預覽
 | `web/index.html` | 有執行 S9 時（協調規則禁止時不列） | 首頁衝突時依 `card-wall.md` 第四節第 5 步重建，不得手改 |
 | `web/papers/<他篇>/index.html` | 第二節第 4 點重建之編號後移者 | 每檔只應有編號一行改變 |
 | `wiki/concepts/<概念>.md` | 有改動的每一個 | — |
-| `wiki/index.md` | 一定 | 只改自己的條目 |
+| `wiki/index.md` | 群星論文一定列；`my_focus: true` 不列入 | 只改自己的條目 |
+| `raw/my-focus/my-index.md` | `my_focus: true` 論文（於 `raw/` 提交） | 依 `paper_year` 由新到舊加入或更新 |
 | `wiki/issues.md` | 有新增或修改問題條目時 | `--issue EK-NNN`，每個編號一次 |
 | `wiki/todo.md` | 有新增、修改或刪除條目時 | `--todo TD-NNN`，每個編號一次 |
 | `wiki/log.md` | 一定 | `--log-heading "<自己的完整標題行>"` |

@@ -58,7 +58,7 @@ description: >-
 | S2 讀原文 | 抽出全文文字，通讀原文，記下問題、方法、結果、限制與公開資源 | `paper-pdf-parser`；`references/intake.md` 第六節 | 抽取文字（只放 scratchpad，不進倉庫） | 能寫出四句：做了什麼、怎麼做、證據是什麼、限制是什麼，各附原文頁碼 |
 | S3 證據表 | 把要寫的強主張逐條對應到原文頁、表、圖 | `wiki-content-audit` 寫作模式第 1、2 步 | `wiki/evidence/<slug>.md` | 檔案存在；數值逐一寫出；每條預定的區塊公式都有式號或頁碼；`pipeline_status.py <slug>` 之 S3 為 OK（論文頁尚未建立時只檢查證據表，區塊公式條數於 S4 後再比對） |
 | S4 論文頁 | 依骨架寫 Frontmatter 與正文六段 | `references/paper-page-template.md`；`wiki-content-audit` 寫作模式第 3 步 | `wiki/papers/<slug>.md` | `lint_wiki.py` 對本頁除概念頁相關者外無 ERROR；S4 為 OK（`card_line` 切得成封面斷行） |
-| S5 概念頁與索引 | 連結或建立概念頁（雙向）；登記 `wiki/index.md` | `references/concepts-and-index.md` | 更新之 `wiki/concepts/*.md`、`wiki/index.md` | S5 為 OK；`lint_wiki.py` 無雙向對應與孤島 ERROR |
+| S5 概念頁與索引 | 連結或建立概念頁（雙向）；登記索引（群星填 `wiki/index.md`；我的關注填 `raw/my-focus/my-index.md`） | `references/concepts-and-index.md` | 更新之 `wiki/concepts/*.md`、`wiki/index.md` 或 `raw/my-focus/my-index.md` | S5 為 OK；`lint_wiki.py` 無雙向對應與孤島 ERROR |
 | S6 核對與核實狀態 | 先宏觀、再微觀，回原文逐項核對；查到的問題修正並登記；設定 `verification` | `wiki-content-audit` 寫作模式第 4、5 步；`crossref_check.py` | `wiki/issues.md` 條目（若有）；`verification` | 本頁沒有 open 問題；`verification` 為 `verified`（或 `partial` 並寫明未核對範圍）；S6 為 OK |
 | S7 卡片檔 | 寫封面、Card 2 至 6 與 Card 3 示意圖 | `paper-card-writer` 第五節第 1 至 6 步（含第 2-1 步回原文抽查） | `wiki/cards/<slug>.md` | `check_cards.py <slug>` ERROR 0，WARN 逐條交代；S7 為 OK |
 | S8 論文頁網頁 | 建置論文頁並以瀏覽器驗證 | `paper-card-writer` 第五節第 7-1 步、`references/paper-page.md` | `web/papers/<slug>/index.html`；論文頁 `status: "published"` | 建置自我檢查 ERROR 0；`verify_page.js` 結果 PASS；截圖目視無拆詞折行、無重疊 |
@@ -119,7 +119,7 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 ### S5 概念頁與索引
 
 1. 依 `references/concepts-and-index.md` 第一、二節，把本篇連到一至三個概念頁（必要時新建），論文頁 `concepts` 與概念頁 `papers` 雙向列出；概念頁「關鍵突破支柱」加入本篇一條。
-2. 依同檔第三節在 `wiki/index.md` 正確的區段加入本篇條目；原本是 `[planned]` 條目者改寫為連結並改標 `[wiki]`。
+2. 依同檔第三節登記索引：群星論文加入 `wiki/index.md` 正確的區段（原本是 `[planned]` 條目者改寫為連結並改標 `[wiki]`）；我的關注論文（`my_focus: true`）改加入私有倉庫 `raw/my-focus/my-index.md`，不列入公開之 `wiki/index.md`。
 3. 完成條件：`pipeline_status.py <slug>` 之 S5 為 OK；`lint_wiki.py` 沒有雙向對應或孤島之 ERROR。
 
 ### S6 核對與核實狀態

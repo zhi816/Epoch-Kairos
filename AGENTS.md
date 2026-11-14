@@ -102,7 +102,7 @@ Epoch-Kairos/
 │   └── paper_template.html    # 論文頁 HTML 範本（樣稿「論文頁 F」）
 │
 ├── raw/                       # 【第一層：Raw Sources】原始資料層（不可變，Immutable）
-│   ├── my-focus/              # 【使用者專屬關注區】存放個人精選研究、私人筆記與核心關注資料
+│   ├── my-focus/              # 【使用者專屬關注區】存放個人精選研究、私人筆記與核心關注資料（含私有索引 my-index.md）
 │   └── (存放論文原始摘要、筆記草稿、新聞、外部文獻剪藏)
 │
 ├── wiki/                      # 【第二層：The Wiki】知識庫核心層（由 AI 讀寫與維護）
@@ -188,7 +188,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
    * **建置論文頁並驗證**：執行 `python tools/build_paper_prototype.py <slug>`，產生 `web/papers/<slug>/index.html`（`<slug>` 即含年份前綴之論文頁檔名；左側 3:4 知識圖卡，右側 KaTeX 長文），自我檢查 ERROR 須為 0；有瀏覽器工具者再以 `verify_page.js` 驗證桌面與手機版面（`paper-card-writer` 第五節第 7 步）。產生後將論文頁 `status` 改為 `published`。2026-11-10 起原型即正式論文頁，輸出由 `web/prototypes/paper-v1/` 移至 `web/papers/`（使用者決定）。
    * 執行 `python tools/build_home.py --card <slug>` 重建首頁 `web/index.html`，新論文即依 Frontmatter（`domain`、`domain_tags`、`concepts`、`card_line`、雙年份與 `my_focus` 等欄位）出現在知識星圖或我的星系，其封面卡出現在卡片牆；卡片牆只收已提交之卡片檔，`--card` 帶入自己這篇尚未提交之卡片檔。有瀏覽器工具者以 `verify_wall.js` 驗證（`paper-card-writer` 第五節第 7-2 步）。不得手改 `web/index.html`。
 5. **更新索引與日誌**：
-   * 在 `wiki/index.md` 登記該論文之摘要與連結。
+   * 群星論文（`my_focus: false`）於 `wiki/index.md` 登記摘要與連結；我的關注論文（`my_focus: true`）改登記於私有倉庫 `raw/my-focus/my-index.md`（不公開列於 `wiki/index.md`）。
    * 寫日誌前執行 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`，錯誤（ERROR）須全數排除後才可提交。
    * 在 `wiki/log.md` 結尾追加一筆符合規範之紀錄，**第一條與第二條必須明確寫清 AI 身分名稱與底層模型版本型號**：
      ```markdown

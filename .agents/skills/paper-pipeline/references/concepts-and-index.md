@@ -72,17 +72,19 @@ verification: "unverified"
 
 新建後：在 `wiki/index.md` 第五節加一行（本檔第三節第 3 點）；`related_concepts` 列到的概念頁，其 `related_concepts` 也加回本概念（雙向）。
 
-## 三、登記 `wiki/index.md`
+## 三、登記索引（`wiki/index.md` 與 `raw/my-focus/my-index.md`）
 
-### 1. 放在哪一區段
+> **隱私分流原則**：公開主倉庫的 `wiki/index.md` 僅收錄「群星」論文與概念頁；凡 `my_focus: true` 之「我的關注」論文一律改記於私有 `Mine-RAW` 倉庫之 `raw/my-focus/my-index.md`，不列入 `wiki/index.md`，以免在公開索引揭露個人研究規劃與尚未發布的關注條目。
 
-| 論文 | 區段 | 排序 |
-|---|---|---|
-| 群星，`timeline_year` 為 2026、2025、2024 | 「一、2026 年諾貝爾獎與重大突破」、「二、2025 年……」、「三、2024 年……」中年份相同者 | 區段內依 `timeline_year` 由新到舊；同年者加在該年最後一條之後 |
-| 群星，`timeline_year` 為 2023 | 「三、2024 年諾貝爾獎與重大突破」之末（目前慣例） | 同上 |
-| 群星，`timeline_year` 為 2022 以前 | 「四、歷史重大奠基支柱」 | 由新到舊 |
-| 我的關注 | 「六、個人核心關注研究」 | 依 `paper_year` 由新到舊 |
-| `timeline_year` 晚於所有既有區段（例如 2027） | 停下來問使用者要新增區段還是放入既有區段；不得自行重排區段編號 | — |
+### 1. 放在哪一檔案與區段
+
+| 論文 | 目標索引檔 | 區段 | 排序 |
+|---|---|---|---|
+| 群星，`timeline_year` 為 2026、2025、2024 | `wiki/index.md` | 「一、2026 年諾貝爾獎與重大突破」、「二、2025 年……」、「三、2024 年……」中年份相同者 | 區段內依 `timeline_year` 由新到舊；同年者加在該年最後一條之後 |
+| 群星，`timeline_year` 為 2023 | `wiki/index.md` | 「三、2024 年諾貝爾獎與重大突破」之末（目前慣例） | 同上 |
+| 群星，`timeline_year` 為 2022 以前 | `wiki/index.md` | 「四、歷史重大奠基支柱」 | 由新到舊 |
+| 我的關注（`my_focus: true`） | `raw/my-focus/my-index.md` | 「個人核心關注研究（My Focus）」 | 依 `paper_year` 由新到舊 |
+| `timeline_year` 晚於所有既有區段（例如 2027） | `wiki/index.md` | 停下來問使用者要新增區段還是放入既有區段；不得自行重排區段編號 | — |
 
 原本已有 `[planned]` 條目者（例如待收錄之諾貝爾獎題目）：**改寫該條目**，不要另加一條。
 
@@ -97,11 +99,11 @@ verification: "unverified"
 
 群星、無獎項：同上，刪去 `*…*` 一段與「得獎者：」。
 
-我的關注：
+我的關注（登記於 `raw/my-focus/my-index.md`）：
 
 ```markdown
-* `<paper_year>` ｜ [<title_zh>](papers/<slug>.md) ｜ `#<標籤>` `#<標籤>` ｜ *<期刊或會議簡稱與年份，學位論文寫「<年份> 海大碩士論文」之類>* ｜ `[wiki]`
-  * 原始文獻：`raw/my-focus/<子資料夾>/<檔名>.pdf`（<作者> (<年份>) <發表處>, <頁>）。
+* `<paper_year>` ｜ [<title_zh>](../../wiki/papers/<slug>.md) ｜ `#<標籤>` `#<標籤>` ｜ *<期刊或會議簡稱與年份，學位論文寫「<年份> 海大碩士論文」之類>* ｜ `[wiki]`
+  * 原始文獻：`<子資料夾>/<檔名>.pdf`（<作者> (<年份>) <發表處>, <頁>）。
 ```
 
 * 標籤與論文頁 `domain_tags` 相同、順序相同。
