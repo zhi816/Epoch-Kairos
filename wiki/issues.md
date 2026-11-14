@@ -1228,3 +1228,8 @@
 - **來源**：Soai 等（1995）印刷頁 768 Table 1 Runs B1–B5「Newly formed product 1」之 e.e. 欄（依 `raw/1995-soai-asymmetric-autocatalysis.pdf` 第 2 頁頁面影像核對）。
 - **發現於**：2026-11-11 子代理迴圈試跑（測試分支 test/subagent-loop），由 OpenCode（DeepSeek V4.1 Flash 免費版）審查時提出，Claude Code by Anthropic 回原文確認。
 - **處理**：2026-11-11，Claude Code by Anthropic（claude-fable-5-2）。論文頁改為「B5 的 (S)-1 總量放大 942 倍、其新生成物 e.e. 為 88% (S)；B3–B5 新生成物 e.e. 依序為 89%、90%、88% (S)」，證據表第 12 行同步並補上欄位名稱；重建論文頁網頁。卡片 Card 4 原已寫 Run B5 之 88% e.e.，無須修改。
+
+### EK-225 | open | papers/1992-creative-destruction-aghion.md | Card 5 第 2–3 點 | 未能核實
+- **問題**：Card 5 第 2 點稱後續研究使宏觀經濟學能直接以專利引用、企業進出率及職位創造／毀滅資料診斷國家經濟活力；第 3 點稱既得利益者面對通用目的技術時會遊說政府築起監管高牆，並因此造成中等收入陷阱與長期停滯。頁面未提供這兩項主張的第一手來源或精確位置。證據表的後續研究列僅概述 Aghion et al. (2005)、Klette & Kortum (2004)、Akcigit & Kerr (2018) 的競爭與企業創新研究；唯一 Card 5 列記錄 Cunningham et al. (2021) 的扼殺式收購延伸，均未對應上述指標與因果主張。在補上直接來源或改為清楚標示的有限詮釋前，全頁不宜標為 `verified`。
+- **來源**：[論文頁 Card 5](papers/1992-creative-destruction-aghion.md)；[證據表](evidence/1992-creative-destruction-aghion.md) 中 Card 4 後續研究列與唯一 Card 5 列。現有紀錄未列上述主張的第一手來源位置。
+- **發現於**：wiki/log.md [2026-11-14 11:05] audit（Codex by OpenAI）。
