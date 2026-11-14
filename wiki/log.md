@@ -2372,3 +2372,8 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
 - **具體變更**：回核 Rao 等（2026）原文 pp. 2207–2211，檢查書目、任務方向、方法描述、表 1–5 數值與論文頁 Card 1–6 主要主張；數值與排名大致相符，Card 6 兩處因果與門檻說法超出「過濾回譯對比僅官方語料」的證據，新增 EK-226、將論文頁 verification 設為 issues 並重建網頁。更新 [git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md)，規定每個任務都檢查及同步 Epoch-Kairos 與 Mine-RAW，並於完成後複查兩邊遠端狀態。Crossref OK、卡片檢查 ERROR 0／WARN 0、論文頁建置 ERROR 0／WARN 0、首頁資料一致、全庫 lint ERROR 0／WARN 21（既有提醒）；Mine-RAW 無檔案變更。
+
+## [2026-11-14 15:47] update | 以新版翻譯與排版管線重建三篇報告題材論文之繁體中文 PDF 並同步 Mine-RAW | #人工智慧 #自然語言處理 #計算語言學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依新版 [academic-paper-translator](../.agents/skills/academic-paper-translator/SKILL.md)（`measure_pdf.py`、`layout-recipes.md`、KaTeX `0.16.11`、`--auto-figures`/`--crop` 與 `html_to_pdf.py`）重做並覆寫三份既有繁體中文譯本 PDF，同步更新 `raw/my-focus/報告論文題材/` 與本機文件目錄 `報告論文題材`：1. `2024.findings-acl.768_繁體中文翻譯.pdf`（原 8 頁重建為 7 頁 A4 雙欄，含 Table 1–5、KaTeX KL 先驗公式、北薩米語重音排版與 300 DPI Figure 1 回嵌）；2. `2025.acl-long.429_繁體中文翻譯.pdf`（原 22 頁含全部正文、41 筆 References、Table 1–17、Figure 1–3 及 Appendix A–I 重建為 17 頁，雙欄／附錄 G–I 單欄切換並保留滿文診斷表原文與色彩底線標註）；3. `2026.loresmt-1.2_繁體中文翻譯.pdf`（原 10 頁含 Table 1–3 與 31 筆 References 重建為 7 頁 A4 雙欄，保留原 PDF `gbsnu` 缺字與內部不一致標註而不靜默修補）。三篇均已逐頁轉圖目視檢查並通過兩階段核對，`lint_wiki.py` ERROR 0。
