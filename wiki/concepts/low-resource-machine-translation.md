@@ -18,6 +18,7 @@ papers:
   - "2025-paiwan-bunun-morphology-mt-wu"
   - "2025-tulun-adaptable-lrl-mt-merx"
   - "2026-context-volume-rag-domain-shift-setiawan"
+  - "2026-cross-lingual-alignment-moe-routers-bandarkar"
   - "2026-data-centric-russian-kyrgyz-mt-novokshanov"
   - "2026-formosanmt-parallel-corpus-scheppat"
   - "2026-hybrid-dictionary-rag-llm-paiwan-wang"
@@ -51,8 +52,8 @@ verification: "partial"
   * 詳見核心研究：[賽德克語－中文機器翻譯之研究（游景勝 2021）](../papers/2021-seediq-chinese-mt-you.md)、[使用詞綴資訊提升泛泰雅語機器翻譯效能（金柏毅 2025）](../papers/2025-atayalic-affix-mt-jin.md)。
 
 * **跨語言遷移與多語言模型（Multilingual Transfer & Related Language Sharing）**：
-  * 合併親屬語言的語料，以共享 BPE 子詞詞彙表與語言別標籤聯合訓練；或以資料較多的語言訓練父模型再微調。廖恒慶（2023）在泛泰雅三語上發現，未經子詞處理的直接合併效果不佳，共享 BPE 後的多語言系統優於單一族語，而以馬來語、印尼語父模型做遷移式學習又更好；作者認為訓練資料量的增加是主要因素。
-  * 詳見核心研究：[泛泰雅語群與中文之多語言機器翻譯研究（廖恒慶 2023）](../papers/2023-atayalic-multilingual-mt-liao.md)、[達悟語－菲律賓語神經機器翻譯（Macayan et al. 2026）](../papers/2026-tao-filipino-nmt-macayan.md)、[FormosanMT 多語言平行語料庫（Scheppat et al. 2026）](../papers/2026-formosanmt-parallel-corpus-scheppat.md)。
+  * 合併親屬語言的語料，以共享 BPE 子詞詞彙表與語言別標籤聯合訓練；或以資料較多的語言訓練父模型再微調。廖恒慶（2023）在泛泰雅三語上發現，未經子詞處理的直接合併效果不佳，共享 BPE 後的多語言系統優於單一族語，而以馬來語、印尼語父模型做遷移式學習又更好；作者認為訓練資料量的增加是主要因素。在純解碼器混合專家（MoE）大模型架構上，Bandarkar 等（2026）則以中間層路由器之序列平均權重分佈進行單向 KL 散度對齊，於 7 種目標語言與 4 款模型上改善跨語言遷移表現。
+  * 詳見核心研究：[泛泰雅語群與中文之多語言機器翻譯研究（廖恒慶 2023）](../papers/2023-atayalic-multilingual-mt-liao.md)、[達悟語－菲律賓語神經機器翻譯（Macayan et al. 2026）](../papers/2026-tao-filipino-nmt-macayan.md)、[FormosanMT 多語言平行語料庫（Scheppat et al. 2026）](../papers/2026-formosanmt-parallel-corpus-scheppat.md)、[利用混合專家路由器實現純解碼器模型之跨語言表徵對齊（Bandarkar et al. 2026）](../papers/2026-cross-lingual-alignment-moe-routers-bandarkar.md)。
 
 * **泛化資料增強與以資料為中心策略（Data Augmentation & Data-Centric Pipelines）**：
   * 利用回譯（Back-Translation）、高資源語言轉化（HRL-to-LRL Pivot）、隨機替換與雙語詞典直接注入，合成高品質偽平行數據；搭配多階段課程學習與跨語言語義過濾器（如 SONAR）淘汰噪聲句對。

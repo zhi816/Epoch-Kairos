@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>利用混合專家路由器實現純解碼器模型之跨語言表徵對齊｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--focus)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#8FD5FD;--deep:#204960;--win:#1C252B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html#my-constellation" aria-label="回到我的星系"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.02</span><span>報告題材</span></div><div class="win"><i style="left:82.6%;top:37.5%;width:1.5px;height:1.5px;opacity:0.31"></i><i style="left:39.8%;top:24.6%;width:1px;height:1px;opacity:0.68"></i><i style="left:71.8%;top:35.0%;width:1.5px;height:1.5px;opacity:0.43"></i><i style="left:69.4%;top:40.7%;width:1px;height:1px;opacity:0.82"></i><i style="left:7.7%;top:14.7%;width:1px;height:1px;opacity:0.43"></i><i style="left:46.2%;top:18.4%;width:1px;height:1px;opacity:0.34"></i><i style="left:42.5%;top:16.9%;width:1px;height:1px;opacity:0.72"></i><i style="left:11.0%;top:35.6%;width:1px;height:1px;opacity:0.32"></i><i style="left:21.1%;top:30.5%;width:1px;height:1px;opacity:0.62"></i><i style="left:12.7%;top:31.3%;width:1px;height:1px;opacity:0.58"></i><i style="left:28.9%;top:32.8%;width:1px;height:1px;opacity:0.55"></i><i style="left:73.6%;top:15.7%;width:1px;height:1px;opacity:0.84"></i><i style="left:72.4%;top:39.3%;width:1px;height:1px;opacity:0.59"></i><i style="left:51.1%;top:17.3%;width:1px;height:1px;opacity:0.34"></i><span class="lang" title="泰盧固語、吉爾吉斯語、康納達語、泰語、越南語、僧伽羅語、匈牙利語">泰盧固語、吉爾吉斯語、康納達語、泰語、越南語、僧伽羅語、匈牙利語</span><span class="rep"></span><span class="line"><span>訓練多語模型時，</span><span>讓翻譯句對</span><span>分派相似專家</span></span></div><div class="tags">人工智慧、計算與數學・#人工智慧 #深度學習 #自然語言處理</div><div class="name">混合專家路由器跨語言對齊</div><div class="lead">對齊混合專家模型的分派比例分佈，不用逐字對應翻譯句，就能拉近語言間的表徵並促進遷移。</div><div class="yrs">2026 發表 ｜ arXiv</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">缺句子向量，<br>解碼器怎做跨語對齊？</span><div class="rows"><div class="row"><b>編碼器</b><span>有整句向量可做對比學習，但主流架構已轉向純解碼器</span></div><div class="row"><b>隱狀態</b><span>直接做序列平均與餘弦對齊時，詞元特徵方向易互相抵銷</span></div><div class="row"><b>全層對齊</b><span>盲目強制全部層數表徵一致，容易損傷語言專屬結構</span></div><div class="row gap"><b>對齊目標</b><span>純解碼器缺少能代表整句語意、又不必逐詞對應的穩定對齊介面</span></div></div><span class="ft" style="color:var(--ink)">需要繞過逐詞對應的輕量序列統計介面。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">讓平行句在中間層選相似專家</span><svg class="dia" viewBox="0 0 300 136" role="img" aria-label="示意：英與目標語經詞元路由取平均路由分佈，在中間層散度對齊後僅對目標語端更新。">
+  <rect class="k-muted k-ring" x="10" y="12" width="70" height="26" rx="4"/>
+  <text class="k-label" x="45" y="29" text-anchor="middle">英語序列</text>
+  <line class="k-muted" x1="80" y1="25" x2="102" y2="25"/>
+  <polyline class="k-muted" points="97,21 102,25 97,29"/>
+  <rect class="k-muted k-ring" x="102" y="12" width="86" height="26" rx="4"/>
+  <text class="k-label" x="145" y="29" text-anchor="middle">平均路由分佈</text>
+  <polyline class="k-muted" points="188,25 251,25 251,40"/>
+  <polyline class="k-muted" points="247,35 251,40 255,35"/>
+  <rect class="k-soft" x="214" y="40" width="76" height="32" rx="4"/>
+  <rect class="k-line k-ring" x="214" y="40" width="76" height="32" rx="4"/>
+  <text class="k-label-accent" x="252" y="60" text-anchor="middle">中間層散度</text>
+  <rect class="k-ink k-ring" x="10" y="72" width="70" height="26" rx="4"/>
+  <text class="k-label" x="45" y="89" text-anchor="middle">目標語序列</text>
+  <line class="k-ink" x1="80" y1="85" x2="102" y2="85"/>
+  <polyline class="k-ink" points="97,81 102,85 97,89"/>
+  <rect class="k-accent k-ring" x="102" y="72" width="86" height="26" rx="4"/>
+  <text class="k-label-accent" x="145" y="89" text-anchor="middle">平均路由分佈</text>
+  <polyline class="k-ink" points="188,85 236,85 236,72"/>
+  <polyline class="k-ink" points="232,77 236,72 240,77"/>
+  <polyline class="k-accent k-dash" points="256,72 256,112 45,112 45,98"/>
+  <polyline class="k-accent" points="41,103 45,98 49,103"/>
+  <text class="k-label-accent" x="150" y="128" text-anchor="middle">僅對目標語端更新</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\mathcal{L} = \mathcal{L}_{LM} + \alpha \cdot \mathcal{L}_{XLR}"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">目標語預測損失加上中間層路由散度對齊項，僅對目標語端更新，讓選路分佈向英語靠攏。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">13/14</span><span class="l">實驗組合多任務平均勝過純語言模型基線（1 平手）</span></div><div class="stat"><span class="v">+0.9</span><span class="l">14 組跨多任務平均分較純語言模型基線提升</span></div><div class="stat"><span class="v">+2.1</span><span class="l">Qwen3-30B-A3B 吉爾吉斯語均分較基線高</span></div><div class="stat"><span class="v">38.1</span><span class="l">Marco-Nano 匈牙利語均分（隱狀態降為 36.9）</span></div></div><span class="ft">範圍：Bandarkar 等 2026，4 款已後訓練模型、7 語各 20 萬平行句</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">留給預訓練規模的路由器對齊測試題</span><div class="time"><p><b>2026</b><span>於 GitHub 公開路由對齊訓練與評估程式碼</span></p><p><b>2026</b><span>設計無填補打包與早期退出以壓低額外運算量</span></p><p><b>2026</b><span>作者明列僅測已後訓練模型與 20 萬句級語料</span></p><p><b>2026</b><span>作者擬於預訓練驗證並降低對平行句依賴</span></p></div><span class="ft">以上皆出自本篇預印本，尚無後續他人研究。</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">把跨語言對齊從高維向量轉到專家選擇分佈，為低資源翻譯避開逐字對應難題。</span><span class="shift"><span>對齊詞元向量</span><i aria-hidden="true"></i><b>對齊專家分派</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2026 發表 ｜ arXiv</span>
+<h1>利用混合專家路由器實現純解碼器模型之跨語言表徵對齊</h1>
+<p class="en">Cross-Lingual Alignment for Decoder-Only Models using MoE Routers</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">純解碼器大語言模型沒有天然的句子級向量，對隱藏狀態直接做平均又容易讓不同詞元的特徵互相抵銷；若改以混合專家層的路由器分佈做序列平均對齊，反而能繞過詞元對應難題，連帶拉近底層的跨語言隱藏表徵。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>在現代多語言大型語言模型中，低資源與預訓練暴露不足的語言往往效能落後；學界長期推測，能否將高資源語言習得的知識與推理能力遷移至其他語言（Cross-lingual transfer），取決於模型內部表徵是否具備跨語言對齊性（§1, p. 1）。早期編碼器—解碼器（Encoder-Decoder）架構可直接利用編碼器輸出的句子級嵌入向量搭配對比學習對齊平行語料，但當代主流語言模型全面轉向純解碼器（Decoder-only）架構後，既沒有天然的句子向量，各語言分詞詞彙與語法結構的差異也阻斷了精確的詞元對齊，使大量既有雙語翻譯語料未能有效化為跨語言表徵監督訊號（摘要 p. 1；§1, p. 2）。</p>
+<p>針對此結構瓶頸，UCLA、Haverford College 與 MILA／McGill 團隊於 2026 年 10 月發表本篇研究，提出在混合專家（Mixture-of-Experts, MoE）模型架構上<strong>以中間層路由器的序列平均權重分佈作為跨語言對齊目標</strong>。研究者在持續預訓練（Continual Pre-training, CPT）期間加入基於 KL 散度的輔助路由對齊損失 <span class="m-in" data-tex="\mathcal{L}_{XLR}"></span>，控制實驗涵蓋 4 款開源 MoE 模型與 7 種語言共 14 組模型—語言配對。結果顯示，該方法不僅實質縮減路由器跨語言分歧、連帶提升底層隱藏狀態的 SoftCKA 相似度，還在 13 組設定上超越純語言模型目標的 CPT 基線（另 1 組平手），為純解碼器 MoE 模型建立無須詞元對齊的跨語言對齊新途徑（摘要 p. 1；§1, p. 2；§5, pp. 6–8）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：解碼器架構欠缺序列向量與隱狀態平均的消減陷阱</h2></div>
+<p>在把跨語言對比學習遷移至當代生成式大型語言模型時，研究團隊指出既有機制存在三層困難（§1–§2, pp. 1–3）：</p>
+<ul><li><strong>編碼器句子嵌入無法直接沿用</strong>：傳統多語言編碼器能為整段輸入產出語意集中之序列向量，藉平行語料拉近互譯句對、推開無關句對（§1, p. 2；§2.1, p. 2）；但純解碼器模型逐詞自回歸運作，沒有現成的整句表徵可供對齊（§1, p. 2）。</li><li><strong>分詞差異與隱狀態平均池化的資訊衰減</strong>：由於不同文字系統的分詞切分率（Token fertility）與句法順序差異巨大，平行句之間無法逐詞對齊；若改採末詞元隱狀態或全句隱狀態向量平均池化（Mean-pooling），高維表徵空間中指向不同語義方向的詞元特徵容易相互抵銷或衰減，難以穩定代表整句意義（§1, p. 2；§2.3, p. 3）。實際對照亦顯示，在 Marco-Nano 上直接對中間層隱狀態平均做餘弦對齊（<span class="m-in" data-tex="\mathcal{L}_{XLH}"></span>，效仿 Liu &amp; Niehues 2025）於匈牙利語會使多任務平均分數自基線 37.4 下滑至 36.9（§5.2, p. 7；Table 2, p. 8）。</li><li><strong>盲目強制全層對齊會損傷語言特異性</strong>：多語言大模型傾向在中段層執行跨語言共享語義計算，首尾兩端則保留語言及文化專屬的表層與詞彙結構；若無差別地在全模型各層強制表徵對齊，反而可能抹除特定語言結構或損傷表現（§2.2, p. 3；§3.1, p. 3）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破原理：中間層 MoE 路由器權重平均之單向 KL 散度對齊</h2></div>
+<p>研究團隊以兩個核心前提為基礎：第一，MoE 模型在每一解碼層為每個詞元 <span class="m-in" data-tex="t"></span> 計算經 Top-<span class="m-in" data-tex="k"></span> 歸一化後之稀疏專家機率分佈 <span class="m-in" data-tex="\boldsymbol{p}_{\mathrm{lang}, l}^t = \mathrm{G}(\boldsymbol{z}_{\mathrm{lang}, l}^t) \in \mathbb{R}^E"></span>，其對整個輸入序列的平均池化 <span class="m-in" data-tex="\bar{\boldsymbol{p}} = \frac{1}{T}\sum_{t=1}^{T}\boldsymbol{p}^t"></span> 代表該句子動員各專家的整體分佈統計，在數學上為低維機率單體而非高維方向向量，因此能避免隱狀態平均時的向量抵銷（§2.3, p. 3；§3.2, pp. 3–4）。第二，藉由先行計算之跨語言路由發散曲線（Bandarkar et al., 2026c），可不經暴力搜尋便選定本來即存在跨語言專家共用的中間層集合 <span class="m-in" data-tex="\mathcal{M}"></span>（§3.1, p. 3；Appendix C, p. 23）。</p>
+<p>在此基礎上，論文定義<strong>跨語言路由損失（Cross-Lingual Routing Loss）</strong>，針對平行句對之英語端與目標語端在選中層集合 <span class="m-in" data-tex="\mathcal{M}"></span> 上計算序列平均路由分佈之間的單向 KL 散度平均（§3.2, p. 4，式 (1)）：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\mathcal{L}_{XLR} = \frac{1}{|\mathcal{M}|} \sum_{l \in \mathcal{M}} D_{\mathrm{KL}}\bigl(\bar{\boldsymbol{p}}_{\mathrm{eng}, l} \parallel \bar{\boldsymbol{p}}_{\mathrm{tgt}, l}\bigr)
+\end{aligned}"></span>
+<p>整體訓練目標則結合標準持續預訓練之目標語交叉熵語言模型損失 <span class="m-in" data-tex="\mathcal{L}_{LM}"></span>（§3.2, p. 4）：</p>
+<span class="m-disp" data-tex="\mathcal{L} = \mathcal{L}_{LM} + \alpha \cdot \mathcal{L}_{XLR}"></span>
+<p>關鍵實作與最佳化細節（§3.2–§3.3, pp. 3–4；§6, p. 9）：</p>
+<ol><li><strong>單向梯度與錨定機制</strong>：反向傳播僅通過目標語序列計算，英語平行句僅用於擷取參考路由分佈 <span class="m-in" data-tex="\bar{\boldsymbol{p}}_{\mathrm{eng}, l}"></span> 而<strong>不接收任何梯度更新</strong>，藉以將目標語路由與隱狀態拉向模型原本擅長的高資源英語運算軌跡，同時防止高資源表徵退化（§3.2, p. 4）。</li><li><strong>無負樣本而賴負載平衡防止坍塌</strong>：與傳統對比學習須額外建構負樣本對不同，MoE 模型本身皆帶有專家負載平衡（Load-balancing）輔助損失，天然抑制作為少數專家的坍塌傾向（§6, p. 9）。</li><li><strong>無填補打包與早期退出（Split-forward Packing）</strong>：實作上利用變長注意力將目標語與英語序列打包於同一次前向傳播而不插填補詞元，且英語序列在經過 <span class="m-in" data-tex="\mathcal{M}"></span> 最後一層後即提早停止前向計算，跳過剩餘深層與詞表投影，大幅壓低與單語 CPT 相比的額外算力開銷（§3.3, p. 4；Fig. 2）。</li></ol>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據：14 組模型—語言實驗與消融驗證</h2></div>
+<h3>實驗配置與規模（§4, pp. 4–5；Appendix D–F, pp. 24–25）</h3>
+<ul><li><strong>4 款開源已後訓練 MoE 模型</strong>（Table 7, p. 24）：<ul><li>大規模組：<code>Qwen3-30B-A3B</code>（31B 總參數 / A3B 啟動，48 層，每詞元啟動 8 / 128 專家，<span class="m-in" data-tex="\mathcal{M} = 7\text{–}34"></span> 層）、<code>GPT-OSS-20B</code>（22B / A4B，24 層，4 / 32 專家，<span class="m-in" data-tex="\mathcal{M} = 4\text{–}17"></span> 層）。</li><li>輕量組：<code>Marco-Nano</code>（8B / A0.6B，28 層，8 / 238 專家，<span class="m-in" data-tex="\mathcal{M} = 7\text{–}19"></span> 層）、<code>Granite-4.0-H-Tiny</code>（7B / 1B，40 層，6 / 64 專家，<span class="m-in" data-tex="\mathcal{M} = 10\text{–}35"></span> 層）。</li></ul></li><li><strong>7 種目標語言與平行訓練集</strong>：大規模組測泰盧固語（8 項基準）、吉爾吉斯語（4）、康納達語（4）、泰語（7）；輕量組測越南語（9）、僧伽羅語（5）、匈牙利語（6）。每種語言建置 <strong>200,000</strong> 筆訓練平行樣本與 <strong>1,000</strong> 筆驗證樣本，統一訓練 1 epoch、有效批次大小 32，評測涵蓋 FLORES（eng<span class="m-in" data-tex="\to"></span>tgt 翻譯）、Belebele（閱讀理解）、Global-MMLU 醫學子集、MMLU-ProX、MultiLoKo、INCLUDE、Global-PIQA、MGSM 與 PolyMath（§4.1, §4.4, pp. 4–5；Appendix E–F, pp. 24–25）。</li></ul>
+<h3>下游基準全面對照（Table 1, p. 8；§5.2, p. 7）</h3>
+<p>在全體 14 組模型—語言配對上，加入 <span class="m-in" data-tex="\mathcal{L}_{XLR}"></span> 相較純目標語 <span class="m-in" data-tex="\mathcal{L}_{LM}"></span> 持續預訓練基線取得 <strong>13 勝 1 平手</strong>，平均提升 <strong>0.9</strong> 分，最大單組增益達 <strong>+2.1</strong> 分：</p>
+<table><thead><tr><th>模型</th><th>訓練條件</th><th>泰盧固語 (8)</th><th>吉爾吉斯語 (4)</th><th>康納達語 (4)</th><th>泰語 (7)</th></tr></thead><tbody><tr><td><code>Qwen3-30B-A3B</code></td><td>Original checkpoint</td><td>44.6</td><td>40.8</td><td>49.3</td><td>43.0</td></tr><tr><td><code>Qwen3-30B-A3B</code></td><td>Baseline（純 <span class="m-in" data-tex="\mathcal{L}_{LM}"></span>）</td><td>45.4</td><td>43.5</td><td>49.6</td><td>44.9</td></tr><tr><td><code>Qwen3-30B-A3B</code></td><td><strong>+ aux routing loss（本篇）</strong></td><td><strong>46.3</strong></td><td><strong>45.6</strong></td><td><strong>51.4</strong></td><td><strong>45.4</strong></td></tr><tr><td><code>Qwen3-30B-A3B</code></td><td>Router-only training</td><td>45.1</td><td>42.2</td><td>49.9</td><td>43.8</td></tr><tr><td><code>GPT-OSS-20B</code></td><td>Original checkpoint</td><td>42.5</td><td>35.9</td><td>47.5</td><td>34.9</td></tr><tr><td><code>GPT-OSS-20B</code></td><td>Baseline（純 <span class="m-in" data-tex="\mathcal{L}_{LM}"></span>）</td><td>46.5</td><td>42.0</td><td>55.5</td><td>39.9</td></tr><tr><td><code>GPT-OSS-20B</code></td><td><strong>+ aux routing loss（本篇）</strong></td><td><strong>47.0</strong></td><td><strong>43.8</strong></td><td><strong>56.4</strong></td><td><strong>40.8</strong></td></tr><tr><td><code>GPT-OSS-20B</code></td><td>Router-only training</td><td>43.2</td><td>36.4</td><td>48.8</td><td>34.7</td></tr></tbody></table>
+<table><thead><tr><th>模型</th><th>訓練條件</th><th>越南語 (9)</th><th>僧伽羅語 (5)</th><th>匈牙利語 (6)</th></tr></thead><tbody><tr><td><code>Granite-4.0-H-Tiny</code></td><td>Original checkpoint</td><td>34.8</td><td>31.3</td><td>34.5</td></tr><tr><td><code>Granite-4.0-H-Tiny</code></td><td>Baseline（純 <span class="m-in" data-tex="\mathcal{L}_{LM}"></span>）</td><td>36.5</td><td>32.8</td><td>38.1</td></tr><tr><td><code>Granite-4.0-H-Tiny</code></td><td><strong>+ aux routing loss（本篇）</strong></td><td><strong>36.8</strong></td><td><strong>32.9</strong></td><td><strong>38.8</strong></td></tr><tr><td><code>Granite-4.0-H-Tiny</code></td><td>Router-only training</td><td>36.5</td><td>31.9</td><td>38.2</td></tr><tr><td><code>Marco-Nano</code></td><td>Original checkpoint</td><td>44.2</td><td>24.0</td><td>36.3</td></tr><tr><td><code>Marco-Nano</code></td><td>Baseline（純 <span class="m-in" data-tex="\mathcal{L}_{LM}"></span>）</td><td><strong>45.6</strong></td><td>26.1</td><td>37.4</td></tr><tr><td><code>Marco-Nano</code></td><td><strong>+ aux routing loss（本篇）</strong></td><td><strong>45.6</strong></td><td><strong>26.8</strong></td><td><strong>38.1</strong></td></tr><tr><td><code>Marco-Nano</code></td><td>Router-only training</td><td>44.8</td><td>25.2</td><td>37.1</td></tr></tbody></table>
+<h3>關鍵機制消融與內部表徵驗證（§5.1–§5.2, pp. 6–8；Table 2, p. 8）</h3>
+<ol><li><strong>路由器平均優於隱狀態平均（Table 2, p. 8）</strong>：在 Marco-Nano 上比較隱狀態平均餘弦對齊 <span class="m-in" data-tex="\mathcal{L}_{XLH}"></span>（<span class="m-in" data-tex="\alpha=5000"></span>）與路由對齊 <span class="m-in" data-tex="\mathcal{L}_{XLR}"></span>（<span class="m-in" data-tex="\alpha=10"></span>）：僧伽羅語上隱狀態對齊僅達 <strong>26.3</strong>（基線 26.1，路由對齊 <strong>26.8</strong>）；匈牙利語上隱狀態對齊甚至退步至 <strong>36.9</strong>（低於基線 37.4），路由對齊則升至 <strong>38.1</strong>。</li><li><strong>僅更新路由器遠不足夠</strong>：Router-only 設定雖只更新 <strong>小於 0.1%</strong> 參數，但在部分配對上分數與內部對齊皆呈劇烈雜訊，顯示成效主因來自路由器損失沿前向層傳遞並改造了輸入至路由器的底層隱藏表徵（§5.2, pp. 7–8）。</li><li><strong>跨語言路由收斂連帶拉近隱藏狀態</strong>：在評測分布外（FLORES）平行句對上量測，純基線 CPT 幾乎不改變路由發散，加入 <span class="m-in" data-tex="\mathcal{L}_{XLR}"></span> 則在所有模型與語言中明顯壓低中間層路由發散（Fig. 1, p. 1；Fig. 3, p. 6），且 Qwen3-30B-A3B 的逐層 SoftCKA 隱狀態相似度於四種目標語言皆同步上升（Fig. 4, p. 7）。</li></ol>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>典範轉移：作為新預訓練／對齊介面的路由空間、公開資源與已知限制</h2></div>
+<h3>本篇公開資源與科學貢獻</h3>
+<ul><li><strong>公開程式碼庫</strong>：訓練、分詞打包（split-forward packing）與評測腳本已釋出於 <code>https://github.com/lucasbandarkar/xl_moe_alignment</code>（Code Availability, p. 10）。</li><li><strong>為非對比階段補上直接早期梯度監督</strong>：文章指出傳統語言模型僅靠頂層詞表 softmax 反向傳遞梯度會遇見梯度瓶頸；內部路由器對齊損失為前中層參數提供直接監督訊號，同時具備向跨模態（例如視覺—語言 MoE 推理專家對齊）推廣的潛力（§6, p. 9）。</li></ul>
+<h3>作者明列之研究限制與後續問題（§6–§7, pp. 8–9）</h3>
+<ol><li><strong>後訓練檢查點上之短程試驗限制</strong>：為避免純基座模型無法跟隨推理或評測指令導致分數雜訊，實驗只得於已後訓練完成的模型上補跑 200k 筆短程 CPT，因而壓低基線與實驗組之間的絕對增幅；作者指出此機制真正最理想的使用時機應在預訓練階段（MoE 路由動態多於早期形成），但該規模實驗成本過高而未執行（§6, pp. 8–9）。</li><li><strong>高度依賴平行語料與狹窄句級分佈</strong>：<span class="m-in" data-tex="\mathcal{L}_{XLR}"></span> 天生須仰賴翻譯對照句對，無法單獨取代非平行預訓練、長文件理解或強化學習；現有平行語料多為單句、分佈狹隘（§6, p. 9）。</li><li><strong>未實證負載平衡交互影響與詞元粒度損失</strong>：本研究未探討路由器對齊在預訓練超大規模下與負載平衡損失之交互效應，也未將序列平均進一步細化以減少詞元層級資訊流失；此外，結果並未明確驗證跨語言對齊對數學／常識推理類任務的助益是否顯著高於翻譯與閱讀理解（§6–§7, p. 9）。</li></ol>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>KAIROS：低資源語言模型的另一條對齊介面</h2></div>
+<blockquote><strong>本段為 Wiki 詮釋與跨領域啟發分析</strong>：以下聯繫低資源機器翻譯研究方向並推演跨領域涵義，均屬知識庫策展詮釋，非原論文作者所主張。</blockquote>
+<ol><li><strong>當語料不夠寫滿所有參數，低維機率選擇分佈比高維語意向量更穩健</strong>：在低資源神經機器翻譯領域中，多語言大語言模型常常面臨「英文看懂問題、低資源語言卻找錯推理路徑」的困境——問題有時不是模型缺乏知識，而是低資源語種的詞元序列觸發了錯誤的中間層運算專家。Bandarkar 等人示範了如何把「跨語言對齊」從維度龐大、受分詞長度干擾的隱藏狀態向量空間，轉移到維度固定且具功能語意的路由器選擇分佈（僅 <span class="m-in" data-tex="E"></span> 維稀疏機率）。這為低資源語言在極有限的平行語料預算下進行模型適配，提供了一個不需要重寫詞表、也不需要逐詞對齊的結構切入點。</li><li><strong>「保留首尾語言個性、對齊中段邏輯骨幹」的分層設計哲學</strong>：本篇與多語言神經語言學近年觀點遙相呼應——過度一視同仁的表徵對齊容易伴隨「文化與詞彙抹除」，把細膩的在地語法強制揉進英語常模；將對齊嚴格鎖定在中間共享運算層，而讓前後端保留語種專屬詞法與表層生成空間，讓低資源多語言訓練在「能力遷移」與「語言多樣性保存」之間取得精細的結構分工。</li><li><strong>跨領域啟發（架構訊號作為可微分代理）</strong>：就像早期對比學習依賴雙端結構對稱、難以直接套用在異質編碼時序系統，任何帶有離散模組選擇（MoE、多通道注意力、條件路由）的複雜計算架構，都存在一個比內部高維張量更緊緻的「調度統計介面」。將監督訊號落在調度分佈而非原始激活張量上，或許也能成為跨感測器融合與多模態神經網路在非同步採樣條件下實現結構對齊的通用手段。</li></ol>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2026</b><span>發表・arXiv</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Lucas Bandarkar<br>Clark Peng<br>Ahmed Haj Ahmed<br>Aditi Khandelwal<br>Nanyun Peng</span></div>
+    <div class="blk"><span class="lab">我的關注</span><span>報告題材</span><span class="note">研究語言：泰盧固語、吉爾吉斯語、康納達語、泰語、越南語、僧伽羅語、匈牙利語</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>arXiv preprint arXiv:2610.01921</span><a href="https://arxiv.org/abs/2610.01921">https://arxiv.org/abs/2610.01921</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#人工智慧</span><span class="chip">#深度學習</span><span class="chip">#自然語言處理</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>低資源神經機器翻譯與檢索增強生成</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://openreview.net/forum?id=ZoZR0x7tTD" title="Bandarkar et al. (2026c) Multilingual routing in mixture-of-experts. ICLR 2026.">Bandarkar et al. (2026c) Multilingual routing in mixture-of-experts. ICLR 2026.</a><a href="https://doi.org/10.18653/v1/2025.acl-long.778" title="Liu &amp; Niehues (2025) Middle-layer representation alignment for cross-lingual transfer in fine-tuned LLMs. ACL 2025, 15979-15996.">Liu 與 Niehues（2025）</a><a href="https://openreview.net/forum?id=eFGQ97z5Cd" title="Li &amp; Zhou (2025) Your mixture-of-experts LLM is secretly an embedding model for free. ICLR 2025.">Li 與 Zhou（2025）</a><a href="https://aclanthology.org/2024.acl-long.820/" title="Wendler et al. (2024) Do llamas work in English? on the latent language of multilingual transformers. ACL 2024, 15366-15394.">Wendler 等（2024）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">Bandarkar、Peng、Ahmed（Haverford College）、Khandelwal（MILA &amp; McGill University）與 Nanyun Peng（UCLA），<em>arXiv:2610.01921</em>（2026 年 10 月）。實驗以四款已後訓練開源 MoE 模型（Qwen3-30B-A3B、GPT-OSS-20B、Marco-Nano、Granite-4.0-H-Tiny）為測試平台，於七種目標語言之 200,000 筆英—目標語平行樣本進行短程持續預訓練與多基準評測。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok">已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
