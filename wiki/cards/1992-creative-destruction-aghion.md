@@ -48,7 +48,7 @@
 
 ## Card 5｜典範轉移
 - 標題：成長理論，走進企業資料
-- 里程碑：2004｜Klette 與 Kortum 將企業創新納入成長模型｜Klette & Kortum 2004, JPE 112:986-1018
+- 里程碑：2004｜Klette 與 Kortum 建模創新企業成長｜Klette & Kortum 2004, JPE 112:986-1018
 - 里程碑：2005｜Aghion 等發現競爭與創新呈倒 U 型｜Aghion et al. 2005, QJE 120:701-728
 - 里程碑：2018｜Akcigit 與 Kerr 區分探索型與利用型研發｜Akcigit & Kerr 2018, JPE 126:1374-1443
 - 里程碑：2025｜Mokyr、Aghion、Howitt 獲諾貝爾獎｜獎項

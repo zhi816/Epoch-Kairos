@@ -2352,3 +2352,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：依 `paper-pipeline` S0–S10 完成 `2026-tokenizations-austronesian-lms-lumbantobing`（`arXiv:2602.06998v1`）arXiv API 與原 PDF 14 頁逐頁核對、證據表（[2026-tokenizations-austronesian-lms-lumbantobing.md](evidence/2026-tokenizations-austronesian-lms-lumbantobing.md)，登記區塊公式 1–5）、論文頁（[2026-tokenizations-austronesian-lms-lumbantobing.md](papers/2026-tokenizations-austronesian-lms-lumbantobing.md)，`verification: verified`、`my_focus: true`、`focus_role: report`、`focus_languages: ["印尼南島諸語"]`）、概念頁更新（[low-resource-machine-translation.md](concepts/low-resource-machine-translation.md)）、私有索引登記（`raw/my-focus/my-index.md`）、卡片文字（[2026-tokenizations-austronesian-lms-lumbantobing.md](cards/2026-tokenizations-austronesian-lms-lumbantobing.md)）、論文頁網頁（`web/papers/2026-tokenizations-austronesian-lms-lumbantobing/index.html` 及順延編號之 18 篇 `my_focus` 論文頁）與首頁卡片牆及我的星系（[web/index.html](../web/index.html)），並自 [todo.md](todo.md) 刪除已完成之 `TD-029`（3 篇已下載報告題材論文全部收錄上架完畢）。瀏覽器驗證：`verify_page.js`（1440x900 與 375x812 均 PASS、35/35 KaTeX 無誤、Card 3 SVG 與公式無溢出、手機 `.stage` dx=0/dy=0/dScroll=0）、`verify_star.js`（PASS）與 `verify_wall.js`（F.09 0 WARN，四組尺寸／模式 PASS）；`check_cards.py` ERROR 0、WARN 0，`lint_wiki.py` ERROR 0。
+
+## [2026-11-14 13:43] fix | 精簡 Aghion 卡片之 Klette–Kortum 里程碑 | #宏觀經濟學 #制度經濟學
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：依 Klette & Kortum 的 NBER 工作論文摘要與 §1 核對其研究描述，將 [1992-creative-destruction-aghion 卡片](cards/1992-creative-destruction-aghion.md) 之 Card 5「將企業創新納入成長模型」精簡為「建模創新企業成長」，並重建 [Aghion 論文頁](../web/papers/1992-creative-destruction-aghion/index.html)。卡片檢查 ERROR 0、WARN 0，論文頁建置 ERROR 0、WARN 0；未重建首頁，因 `web/index.html` 含其他未提交工作之變更。
