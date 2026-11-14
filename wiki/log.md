@@ -2337,3 +2337,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：依 `paper-pipeline` S0–S10 完成 `2026-cross-lingual-alignment-moe-routers-bandarkar`（`arXiv:2610.01921`）全文核對、證據表（[2026-cross-lingual-alignment-moe-routers-bandarkar.md](evidence/2026-cross-lingual-alignment-moe-routers-bandarkar.md)）、論文頁（[2026-cross-lingual-alignment-moe-routers-bandarkar.md](papers/2026-cross-lingual-alignment-moe-routers-bandarkar.md)，`verification: verified`、`my_focus: true`、`focus_role: report`）、概念頁更新（[low-resource-machine-translation.md](concepts/low-resource-machine-translation.md)）、私有索引登記（`raw/my-focus/my-index.md`）、卡片文字（[2026-cross-lingual-alignment-moe-routers-bandarkar.md](cards/2026-cross-lingual-alignment-moe-routers-bandarkar.md)）、論文頁網頁（`web/papers/2026-cross-lingual-alignment-moe-routers-bandarkar/index.html` 及順延編號之 23 篇 `my_focus` 論文頁）與首頁卡片牆及我的星系（[web/index.html](../web/index.html)）。瀏覽器執行 `verify_page.js`（桌面 1440x900 與手機 375x812 均 PASS、Card 4 手機捲動保留狀態）、`verify_wall.js`（六組 PASS，F.02 含「報告題材」篩選）及 `verify_star.js`（1440x900 與 375x812 PASS）；`check_cards.py` ERROR 0、WARN 0，`lint_wiki.py` ERROR 0。
+
+## [2026-11-14 13:10] fix | 補齊 Bandarkar (2026) 知識網絡與文獻出處及證據表公式編號 | #人工智慧 #深度學習 #自然語言處理
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依 `pipeline_status.py` 檢查結果，於 [2026-cross-lingual-alignment-moe-routers-bandarkar.md](papers/2026-cross-lingual-alignment-moe-routers-bandarkar.md) 補入「知識網絡與文獻出處」與「原始檔典藏」路徑，於 [evidence/2026-cross-lingual-alignment-moe-routers-bandarkar.md](evidence/2026-cross-lingual-alignment-moe-routers-bandarkar.md) 標註「區塊公式 1」「區塊公式 2」序號，並重建論文頁網頁。

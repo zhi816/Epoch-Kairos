@@ -136,3 +136,14 @@ $$\mathcal{L} = \mathcal{L}_{LM} + \alpha \cdot \mathcal{L}_{XLR}$$
 1. **當語料不夠寫滿所有參數，低維機率選擇分佈比高維語意向量更穩健**：在[低資源神經機器翻譯](../concepts/low-resource-machine-translation.md)領域中，多語言大語言模型常常面臨「英文看懂問題、低資源語言卻找錯推理路徑」的困境——問題有時不是模型缺乏知識，而是低資源語種的詞元序列觸發了錯誤的中間層運算專家。Bandarkar 等人示範了如何把「跨語言對齊」從維度龐大、受分詞長度干擾的隱藏狀態向量空間，轉移到維度固定且具功能語意的路由器選擇分佈（僅 $E$ 維稀疏機率）。這為低資源語言在極有限的平行語料預算下進行模型適配，提供了一個不需要重寫詞表、也不需要逐詞對齊的結構切入點。
 2. **「保留首尾語言個性、對齊中段邏輯骨幹」的分層設計哲學**：本篇與多語言神經語言學近年觀點遙相呼應——過度一視同仁的表徵對齊容易伴隨「文化與詞彙抹除」，把細膩的在地語法強制揉進英語常模；將對齊嚴格鎖定在中間共享運算層，而讓前後端保留語種專屬詞法與表層生成空間，讓低資源多語言訓練在「能力遷移」與「語言多樣性保存」之間取得精細的結構分工。
 3. **跨領域啟發（架構訊號作為可微分代理）**：就像早期對比學習依賴雙端結構對稱、難以直接套用在異質編碼時序系統，任何帶有離散模組選擇（MoE、多通道注意力、條件路由）的複雜計算架構，都存在一個比內部高維張量更緊緻的「調度統計介面」。將監督訊號落在調度分佈而非原始激活張量上，或許也能成為跨感測器融合與多模態神經網路在非同步採樣條件下實現結構對齊的通用手段。
+
+---
+
+## 知識網絡與文獻出處
+* **核心實體與跨領域概念**：
+  * [低資源神經機器翻譯與檢索增強生成](../concepts/low-resource-machine-translation.md)
+* **原始權威文獻**：
+  * 官方學術出處：Bandarkar, L., Peng, C., Ahmed, A. H., Khandelwal, A., & Peng, N. (2026). Cross-Lingual Alignment for Decoder-Only Models using MoE Routers. *arXiv preprint arXiv:2610.01921*. [https://arxiv.org/abs/2610.01921](https://arxiv.org/abs/2610.01921)
+  * 公開程式碼：[GitHub / lucasbandarkar/xl_moe_alignment](https://github.com/lucasbandarkar/xl_moe_alignment)
+  * 原始檔典藏：`raw/my-focus/報告論文題材/2026-cross-lingual-alignment-moe-routers-bandarkar.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 證據表：[evidence/2026-cross-lingual-alignment-moe-routers-bandarkar.md](../evidence/2026-cross-lingual-alignment-moe-routers-bandarkar.md)
