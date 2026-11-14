@@ -2342,3 +2342,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：依 `pipeline_status.py` 檢查結果，於 [2026-cross-lingual-alignment-moe-routers-bandarkar.md](papers/2026-cross-lingual-alignment-moe-routers-bandarkar.md) 補入「知識網絡與文獻出處」與「原始檔典藏」路徑，於 [evidence/2026-cross-lingual-alignment-moe-routers-bandarkar.md](evidence/2026-cross-lingual-alignment-moe-routers-bandarkar.md) 標註「區塊公式 1」「區塊公式 2」序號，並重建論文頁網頁。
+
+## [2026-11-14 13:25] ingest | 收錄 Ji 等（2026）五百餘語言雙語持續預訓練與 MaLA 語料庫論文（TD-029 之 2/3） | #人工智慧 #深度學習 #自然語言處理 #計算語言學
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依 `paper-pipeline` S0–S10 完成 `2026-data-centric-continual-pretraining-ji`（DOI: `10.18653/v1/2026.findings-acl.937`，*Findings of ACL 2026*）Crossref 與原 PDF 全頁及圖表核對、證據表（[2026-data-centric-continual-pretraining-ji.md](evidence/2026-data-centric-continual-pretraining-ji.md)）、論文頁（[2026-data-centric-continual-pretraining-ji.md](papers/2026-data-centric-continual-pretraining-ji.md)，`verification: verified`、`my_focus: true`、`focus_role: report`）、概念頁更新（[low-resource-machine-translation.md](concepts/low-resource-machine-translation.md)）、私有索引登記（`raw/my-focus/my-index.md`）、卡片文字（[2026-data-centric-continual-pretraining-ji.md](cards/2026-data-centric-continual-pretraining-ji.md)，採 Card 3 無公式模式與 `研究類型：多語預訓練`）、論文頁網頁（`web/papers/2026-data-centric-continual-pretraining-ji/index.html` 及順延編號之 `my_focus` 論文頁）與首頁卡片牆及我的星系（[web/index.html](../web/index.html)），另於 [todo.md](todo.md) 登記 `TD-030`（`STUDY_TYPE` 對照表差異）。瀏覽器驗證：`verify_page.js`（1440x900 與 375x812 均 PASS、Card 1–6 及手機捲動與 `.stage` dx=0/dy=0）、`verify_star.js`（PASS）與 `verify_wall.js`（F.03 0 WARN，四組尺寸／模式 PASS）；`check_cards.py` ERROR 0、WARN 0，`lint_wiki.py` ERROR 0。
