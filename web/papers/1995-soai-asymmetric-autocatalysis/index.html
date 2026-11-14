@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.01</span><span>化學</span></div><div class="win"><i style="left:37.4%;top:15.8%;width:1px;height:1px;opacity:0.47"></i><i style="left:6.3%;top:17.4%;width:1px;height:1px;opacity:0.41"></i><i style="left:4.3%;top:21.5%;width:1px;height:1px;opacity:0.44"></i><i style="left:40.2%;top:4.8%;width:1px;height:1px;opacity:0.32"></i><i style="left:78.8%;top:15.9%;width:1px;height:1px;opacity:0.66"></i><i style="left:90.3%;top:36.4%;width:1.5px;height:1.5px;opacity:0.46"></i><i style="left:88.5%;top:20.6%;width:1px;height:1px;opacity:0.48"></i><i style="left:7.4%;top:17.3%;width:1px;height:1px;opacity:0.55"></i><i style="left:87.2%;top:22.5%;width:1px;height:1px;opacity:0.45"></i><i style="left:5.9%;top:32.0%;width:1.5px;height:1.5px;opacity:0.36"></i><i style="left:46.2%;top:33.8%;width:1.5px;height:1.5px;opacity:0.49"></i><i style="left:94.9%;top:35.4%;width:1.5px;height:1.5px;opacity:0.36"></i><i style="left:30.4%;top:4.9%;width:1px;height:1px;opacity:0.78"></i><i style="left:69.7%;top:4.8%;width:1.5px;height:1.5px;opacity:0.41"></i><span class="rep award"></span><span class="line"><span>不對稱自催化，</span><span>微弱手性偏差</span><span>被逐輪放大</span></span></div><div class="tags">化學、材料與能源・#化學合成</div><div class="name">分子同手性與 Soai 不對稱自催化</div><div class="lead">產物催化自身合成將微弱手性偏差逐級放大為壓倒性優勢，為生命起源同手性提供化學實驗模型。</div><div class="yrs">1995 發表 ｜ 2026 諾貝爾化學獎</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">產物純度天花板與理論懸空</span><div class="rows"><div class="row"><b>純度天花板</b><span>先前自催化產物光學純度始終低於催化劑</span></div><div class="row"><b>物理結晶</b><span>Frank 方案先前僅有可能的物理實例</span></div><div class="row gap"><b>反應網路</b><span>缺少可實驗檢驗理論方案的化學反應</span></div></div><span class="ft" style="color:var(--ink)">理論仍待化學反應實例檢驗。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">鋅烷氧化物自催化閉環</span><svg class="dia" viewBox="0 0 300 120" role="img" aria-label="示意：手性嘧啶醇與鋅試劑生成活性中間體，催化加成產生更高光學純度的新產物並回饋循環。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">鋅烷氧化物自催化閉環</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 120" role="img" aria-label="示意：手性嘧啶醇與鋅試劑生成活性中間體，催化加成產生更高光學純度的新產物並回饋循環。">
   <rect class="k-ink k-ring" x="6" y="46" width="76" height="30" rx="4"/>
   <text class="k-label" x="44" y="58" text-anchor="middle">手性嘧啶醇</text>
   <text class="k-label" x="44" y="70" text-anchor="middle">起始催化劑</text>
@@ -225,7 +228,7 @@ button:disabled{cursor:default;opacity:.3}
   <path class="k-line k-dash" d="M256 76 C 256 102, 44 102, 44 80"/>
   <polyline class="k-line k-dash" points="41,86 44,80 47,86"/>
   <text class="k-label" x="150" y="112" text-anchor="middle">自催化閉環</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">手性產物形成鋅中間體，催化生成更多同組態產物並進入下一輪。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">手性產物形成鋅中間體，催化生成更多同組態產物並進入下一輪。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">88% e.e.</span><span class="l">Series B 從 2% 起始經 5 輪達到</span></div><div class="stat"><span class="v">942倍</span><span class="l">Series B終產物(S)-1物質量放大倍數</span></div><div class="stat"><span class="v">89% e.e.</span><span class="l">Series A經5輪放大後混合物光學純度</span></div><div class="stat"><span class="v">1,674倍</span><span class="l">Series A終產物(S)-1物質量放大倍數</span></div></div><span class="ft">範圍：嘧啶醇與二異丙基鋅甲苯體系0°C反應</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">從純粹理論走向實驗室自組織化學</span><div class="time"><p><b>1995</b><span>Soai 以實驗顯示自催化可放大對映體過量</span></p><p><b>1996</b><span>Shibata 等展示高選擇性自動增殖</span></p><p><b>2004</b><span>Blackmond 以二聚體活性差異解釋放大</span></p><p><b>2009</b><span>Kawasaki 等以同位素手性分子引發自催化</span></p><p><b>2026</b><span>Kagan與Soai獲諾貝爾化學獎，表彰非線性效應</span></p></div><span class="ft">1995為本篇；其餘為後續研究，獎項亦表彰自催化</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">微小手性偏差可被自催化放大，生命手性的最初起點仍待釐清。</span><span class="shift"><span>稀釋雜訊</span><i aria-hidden="true"></i><b>種子逐輪放大</b></span></div></section>

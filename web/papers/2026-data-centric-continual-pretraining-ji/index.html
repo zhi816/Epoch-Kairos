@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.03</span><span>報告題材</span></div><div class="win"><i style="left:33.6%;top:24.2%;width:1px;height:1px;opacity:0.61"></i><i style="left:36.8%;top:38.9%;width:1.5px;height:1.5px;opacity:0.79"></i><i style="left:10.6%;top:4.6%;width:1.5px;height:1.5px;opacity:0.45"></i><i style="left:58.8%;top:32.2%;width:1px;height:1px;opacity:0.75"></i><i style="left:34.0%;top:21.8%;width:1.5px;height:1.5px;opacity:0.44"></i><i style="left:42.0%;top:15.0%;width:1.5px;height:1.5px;opacity:0.67"></i><i style="left:91.2%;top:34.5%;width:1px;height:1px;opacity:0.69"></i><i style="left:77.1%;top:26.8%;width:1px;height:1px;opacity:0.80"></i><i style="left:20.9%;top:14.2%;width:1.5px;height:1.5px;opacity:0.43"></i><i style="left:37.5%;top:36.9%;width:1px;height:1px;opacity:0.42"></i><i style="left:15.6%;top:45.3%;width:1.5px;height:1.5px;opacity:0.77"></i><i style="left:54.2%;top:36.8%;width:1px;height:1px;opacity:0.76"></i><i style="left:18.3%;top:11.2%;width:1px;height:1px;opacity:0.34"></i><i style="left:72.4%;top:40.3%;width:1px;height:1px;opacity:0.59"></i><span class="lang" title="多語預訓練">多語預訓練</span><span class="rep"></span><span class="line"><span>併入雙語平行句，</span><span>替語言模型</span><span>補足低資源語言</span></span></div><div class="tags">人工智慧、計算與數學・#人工智慧 #深度學習 #自然語言處理 #計算語言學</div><div class="name">五百餘語言雙語持續預訓練</div><div class="lead">彙整大規模雙語對照語料並併入後續訓練，讓既有語言模型學會翻譯與理解更多低資源語言。</div><div class="yrs">2026 發表 ｜ Findings of ACL 2026</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">五百餘語模型為何難跨出高資源</span><div class="rows"><div class="row"><b>單語混合</b><span>只用單語網頁文本持續預訓練，缺乏跨語言對齊訊號</span></div><div class="row"><b>平行資料</b><span>多數僅有句對而無長文，若拆成單語串又會損及翻譯遷移</span></div><div class="row"><b>過度預訓練</b><span>高資源訓練極度飽和的基座，擴充語種時易起波動或退化</span></div><div class="row gap"><b>雙語混合</b><span>缺橫跨五百語的雙語混合語料與降學習率全參數續訓方案</span></div></div><span class="ft" style="color:var(--ink)">需要兼具平行句與高穩定續訓的新方案。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">將句對串成偽文件併入全參數預訓</span><svg class="dia" viewBox="0 0 300 132" role="img" aria-label="示意：雙語句對串成偽文件後與單語文本混編為雙語混合，經全參數續訓進行評測對照。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">將句對串成偽文件併入全參數預訓</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 132" role="img" aria-label="示意：雙語句對串成偽文件後與單語文本混編為雙語混合，經全參數續訓進行評測對照。">
   <rect class="k-accent k-ring" x="8" y="14" width="60" height="28" rx="4"/>
   <text class="k-label-accent" x="38" y="32" text-anchor="middle">雙語句對</text>
   <line class="k-accent" x1="68" y1="28" x2="86" y2="28"/>
@@ -225,7 +228,7 @@ button:disabled{cursor:default;opacity:.3}
   <polyline class="k-muted k-dash" points="258,74 258,112 150,112"/>
   <rect class="k-muted k-ring" x="62" y="100" width="88" height="24" rx="4"/>
   <text class="k-label" x="106" y="116" text-anchor="middle">評測對照</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">每十句串成偽文件並併入雙語混合，再把學習率降至萬分之一，展開全參數續訓。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">每十句串成偽文件並併入雙語混合，再把學習率降至萬分之一，展開全參數續訓。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">2,507</span><span class="l">MaLA 雙語翻譯語料庫涵蓋之跨語言對總數</span></div><div class="stat"><span class="v">24.02</span><span class="l">FLORES-200 英譯他語均分（基座 9.93 BLEU）</span></div><div class="stat"><span class="v">25.99</span><span class="l">低資源子集英譯他語均分（單語續訓 22.03）</span></div><div class="stat"><span class="v">88.18%</span><span class="l">FLORES-200 排名進入全組前三之語言比例</span></div></div><span class="ft">範圍：Ji 等 2026，7 任務 12 基準（分類與高資源閱讀理解見退化）</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">從開源雙語語料到過度訓練基座瓶頸</span><div class="time"><p><b>2026</b><span>釋出 MaLA 雙語語料庫與四款八億模型</span></p><p><b>2026</b><span>雙語版現九項基準退化，高資源遺忘仍顯著</span></p><p><b>2026</b><span>受算力限制未窮舉比例，雙單語步數未等長</span></p><p><b>2026</b><span>尚未經偏好對齊與安全紅隊測試，不可直接部署</span></p></div><span class="ft">以上皆出自本篇論文，尚無後續他人研究。</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">大規模雙語平行資料能為飽和大模型打開低資源之門，也映出多語容量的代際權衡。</span><span class="shift"><span>單語網頁預訓</span><i aria-hidden="true"></i><b>雙語平行續訓</b></span></div></section>

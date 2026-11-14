@@ -25,31 +25,31 @@
 - 圖說：示意：鋅氧團簇當節點、有機支柱當連結，前後兩層疊成簡單立方骨架並留下孔洞。
 
 ```svg
-<svg viewBox="0 0 300 140" role="img" aria-label="示意：鋅氧團簇當節點、有機支柱當連結，前後兩層疊成簡單立方骨架並留下孔洞。">
-  <line class="k-ink" x1="58" y1="42" x2="122" y2="42"/>
-  <line class="k-ink" x1="122" y1="42" x2="122" y2="106"/>
-  <line class="k-ink" x1="122" y1="106" x2="58" y2="106"/>
-  <line class="k-ink" x1="58" y1="106" x2="58" y2="42"/>
-  <line class="k-ink" x1="82" y1="18" x2="146" y2="18"/>
-  <line class="k-ink" x1="146" y1="18" x2="146" y2="82"/>
-  <line class="k-muted" x1="146" y1="82" x2="82" y2="82"/>
-  <line class="k-muted" x1="82" y1="82" x2="82" y2="18"/>
-  <line class="k-ink" x1="58" y1="42" x2="82" y2="18"/>
-  <line class="k-ink" x1="122" y1="42" x2="146" y2="18"/>
-  <line class="k-ink" x1="122" y1="106" x2="146" y2="82"/>
-  <line class="k-muted" x1="58" y1="106" x2="82" y2="82"/>
-  <circle class="k-line k-ring k-thin" cx="102" cy="62" r="16"/>
-  <circle class="k-accent" cx="58" cy="42" r="4.5"/>
-  <circle class="k-accent" cx="122" cy="42" r="4.5"/>
-  <circle class="k-accent" cx="122" cy="106" r="4.5"/>
-  <circle class="k-accent" cx="58" cy="106" r="4.5"/>
-  <circle class="k-accent" cx="82" cy="18" r="4.5"/>
-  <circle class="k-accent" cx="146" cy="18" r="4.5"/>
-  <circle class="k-accent" cx="146" cy="82" r="4.5"/>
-  <circle class="k-muted" cx="82" cy="82" r="4.5"/>
-  <text class="k-label-accent" x="102" y="66" text-anchor="middle">孔洞</text>
-  <text class="k-label" x="52" y="34" text-anchor="end">鋅氧團簇</text>
-  <text class="k-label" x="102" y="118" text-anchor="middle">有機支柱</text>
+<svg viewBox="0 0 300 236" role="img" aria-label="示意：鋅氧團簇當節點、有機支柱當連結，前後兩層疊成簡單立方骨架並留下孔洞。">
+  <line class="k-ink" x1="61" y1="78" x2="191" y2="78"/>
+  <line class="k-ink" x1="191" y1="78" x2="191" y2="208"/>
+  <line class="k-ink" x1="191" y1="208" x2="61" y2="208"/>
+  <line class="k-ink" x1="61" y1="208" x2="61" y2="78"/>
+  <line class="k-ink" x1="109" y1="30" x2="239" y2="30"/>
+  <line class="k-ink" x1="239" y1="30" x2="239" y2="160"/>
+  <line class="k-muted" x1="239" y1="160" x2="109" y2="160"/>
+  <line class="k-muted" x1="109" y1="160" x2="109" y2="30"/>
+  <line class="k-ink" x1="61" y1="78" x2="109" y2="30"/>
+  <line class="k-ink" x1="191" y1="78" x2="239" y2="30"/>
+  <line class="k-ink" x1="191" y1="208" x2="239" y2="160"/>
+  <line class="k-muted" x1="61" y1="208" x2="109" y2="160"/>
+  <circle class="k-line k-ring k-thin" cx="150" cy="119" r="28"/>
+  <circle class="k-accent" cx="61" cy="78" r="4.5"/>
+  <circle class="k-accent" cx="191" cy="78" r="4.5"/>
+  <circle class="k-accent" cx="191" cy="208" r="4.5"/>
+  <circle class="k-accent" cx="61" cy="208" r="4.5"/>
+  <circle class="k-accent" cx="109" cy="30" r="4.5"/>
+  <circle class="k-accent" cx="239" cy="30" r="4.5"/>
+  <circle class="k-accent" cx="239" cy="160" r="4.5"/>
+  <circle class="k-muted" cx="109" cy="160" r="4.5"/>
+  <text class="k-label-accent" x="150" y="123" text-anchor="middle">孔洞</text>
+  <text class="k-label" x="55" y="70" text-anchor="end">鋅氧團簇</text>
+  <text class="k-label" x="126" y="228" text-anchor="middle">有機支柱</text>
 </svg>
 ```
 

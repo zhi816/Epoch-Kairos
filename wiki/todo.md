@@ -94,3 +94,9 @@
 - **內容**：[2026-data-centric-continual-pretraining-ji](papers/2026-data-centric-continual-pretraining-ji.md) 為 `focus_languages: []` 之論文，卡片檔（[2026-data-centric-continual-pretraining-ji.md](cards/2026-data-centric-continual-pretraining-ji.md)）已填寫 `研究類型：多語預訓練`，但首頁星圖說明框目前仍讀取 `tools/build_home.py` 之 `STUDY_TYPE` 對照表（預設回退 `'綜述'`），導致兩處標籤不一致（見 `cover.md` 第七節）。
 - **完成條件**：將 `'2026-data-centric-continual-pretraining-ji': '多語預訓練'` 補入 `tools/build_home.py` `STUDY_TYPE`（或依 TD-008 規劃改由卡片檔統一讀取），重建 `web/index.html` 且 `build_home.py --check` 一致。
 - **來源**：2026-11-14 收錄 Ji et al. (2026) 依 `cover.md` 第七節登記，Antigravity by Google DeepMind（Gemini 4 Hydrogen）。
+
+### TD-031 | waiting | wiki | 決定無公式卡之扁長示意圖是否重畫為較高比例
+- **內容**：2026-11-15 起 Card 3 無公式模式之示意圖置中並佔滿空出空間、viewBox 高度上限放寬至 240（見 `DESIGN.md` 第五章第 2 節）。MOF-5 已重畫為 300 x 236。其餘 25 篇無公式卡之圖多為扁長（如 IceCube、Sora、Soai），寬度已撐滿，只會上下置中而不會變大；若要更大，須依 `diagram.md` 逐篇重畫為較高比例（例如 Soai 三框改上下三角排列）。
+- **完成條件**：使用者看過置中效果後決定是否重畫及重畫哪幾篇；重畫者 `check_cards.py` 與 `verify_page.js` 皆通過。
+- **等待**：使用者看過手機版效果後決定。
+- **來源**：使用者指示（2026-11-15）；2026-11-15 登記，Claude Code by Anthropic。

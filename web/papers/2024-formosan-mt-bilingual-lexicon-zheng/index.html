@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.20</span><span>國際文獻</span></div><div class="win"><i style="left:16.1%;top:31.9%;width:1px;height:1px;opacity:0.64"></i><i style="left:68.1%;top:35.7%;width:1px;height:1px;opacity:0.83"></i><i style="left:25.9%;top:45.9%;width:1px;height:1px;opacity:0.34"></i><i style="left:4.7%;top:30.6%;width:1px;height:1px;opacity:0.37"></i><i style="left:65.5%;top:44.2%;width:1.5px;height:1.5px;opacity:0.68"></i><i style="left:72.9%;top:37.0%;width:1px;height:1px;opacity:0.70"></i><i style="left:81.0%;top:36.5%;width:1.5px;height:1.5px;opacity:0.65"></i><i style="left:83.3%;top:9.2%;width:1px;height:1px;opacity:0.44"></i><i style="left:29.5%;top:42.4%;width:1px;height:1px;opacity:0.65"></i><i style="left:41.7%;top:45.2%;width:1.5px;height:1.5px;opacity:0.49"></i><i style="left:49.6%;top:45.4%;width:1px;height:1px;opacity:0.81"></i><i style="left:54.5%;top:36.1%;width:1px;height:1px;opacity:0.71"></i><i style="left:78.1%;top:22.3%;width:1px;height:1px;opacity:0.44"></i><i style="left:92.9%;top:24.2%;width:1px;height:1px;opacity:0.64"></i><span class="lang" title="臺灣南島諸語">臺灣南島諸語</span><span class="rep"></span><span class="line"><span>把族語辭典的詞條</span><span>拿來訓練，</span><span>改善族語翻譯</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #計算語言學 #深度學習</div><div class="name">雙語詞彙資源改善臺灣南島語言翻譯</div><div class="lead">平行句太少時，辭典詞條也能當成平行句用。</div><div class="yrs">2024 發表 ｜ Findings of ACL 2024</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">平行句太少，<br>辭典常被忽略</span><div class="rows"><div class="row"><b>平行語料</b><span>每種語言只有約 4,400 至 10,400 句，神經翻譯通常要數百萬句</span></div><div class="row"><b>雙語詞典</b><span>容易取得、能補罕見詞，缺上下文</span></div><div class="row gap"><b>做法</b><span>既有研究多拿詞典替換句中詞彙，詞條本身未直接拿來訓練</span></div></div><span class="ft" style="color:var(--ink)">需要更簡單的方式，把現成詞典交給模型。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">把詞條當成額外的平行句</span><svg class="dia" viewBox="0 0 300 120" role="img" aria-label="示意：辭典的詞條當平行句，或拿來替換族語詞造出偽平行句，兩者與原有平行句一起送進翻譯模型。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">把詞條當成額外的平行句</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 120" role="img" aria-label="示意：辭典的詞條當平行句，或拿來替換族語詞造出偽平行句，兩者與原有平行句一起送進翻譯模型。">
   <rect class="k-ink k-ring" x="4" y="46" width="46" height="28" rx="4"/>
   <rect class="k-accent k-ring" x="80" y="8" width="104" height="28" rx="4"/>
   <rect class="k-ink k-ring" x="96" y="48" width="72" height="24" rx="4"/>
@@ -228,7 +231,7 @@ button:disabled{cursor:default;opacity:.3}
   <text class="k-label" x="132" y="104" text-anchor="middle">替換族語詞</text>
   <text class="k-label" x="214" y="92" text-anchor="middle">偽平行句</text>
   <text class="k-label" x="261" y="64" text-anchor="middle">翻譯模型</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">詞條直接當平行句；另以詞典替換族語端詞彙造偽平行句，兩者並用最佳。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">詞條直接當平行句；另以詞典替換族語端詞彙造偽平行句，兩者並用最佳。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">+3.37</span><span class="l">只加詞條，16 種語言與華語雙向平均 BLEU 增幅</span></div><div class="stat"><span class="v">+0.51</span><span class="l">外部辭典加偽平行句，賽德克語→華語 BLEU 增幅</span></div><div class="stat"><span class="v">+3.11</span><span class="l">卡那卡那富語→華語，加 4,000 條詞條 BLEU 增幅</span></div><div class="stat"><span class="v">+6.22</span><span class="l">同一方向改加 4,000 句平行句的 BLEU 增幅</span></div></div><span class="ft">範圍：Zheng 等 2024，詞條幾乎都出現在平行句中，效果或偏高</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">留下資料，<br>也留下重疊難題</span><div class="time"><p><b>2024</b><span>作者整理 16 種臺灣南島語的平行句與詞典</span></p><p><b>2024</b><span>作者指出詞典與平行句的重疊難以界定</span></p><p><b>2024</b><span>作者指出可用的外部詞典很少</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">評估詞典增益時，宜另用與詞典來源不同的測試句，避免重疊抬高成績。</span><span class="shift"><span>只用平行句</span><i aria-hidden="true"></i><b>加入詞條</b></span></div></section>

@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.13</span><span>國際文獻</span></div><div class="win"><i style="left:21.4%;top:34.5%;width:1px;height:1px;opacity:0.51"></i><i style="left:27.4%;top:30.5%;width:1px;height:1px;opacity:0.41"></i><i style="left:55.7%;top:43.0%;width:1px;height:1px;opacity:0.52"></i><i style="left:50.5%;top:13.4%;width:1px;height:1px;opacity:0.51"></i><i style="left:65.5%;top:21.3%;width:1.5px;height:1.5px;opacity:0.37"></i><i style="left:64.5%;top:26.3%;width:1px;height:1px;opacity:0.65"></i><i style="left:87.5%;top:42.3%;width:1px;height:1px;opacity:0.39"></i><i style="left:9.1%;top:33.9%;width:1px;height:1px;opacity:0.62"></i><i style="left:61.3%;top:36.3%;width:1px;height:1px;opacity:0.79"></i><i style="left:68.7%;top:44.0%;width:1px;height:1px;opacity:0.34"></i><i style="left:18.5%;top:18.1%;width:1px;height:1px;opacity:0.55"></i><i style="left:46.8%;top:6.3%;width:1px;height:1px;opacity:0.32"></i><i style="left:66.6%;top:23.3%;width:1px;height:1px;opacity:0.66"></i><i style="left:28.5%;top:17.2%;width:1px;height:1px;opacity:0.54"></i><span class="lang" title="阿美語、泰雅語、排灣語">阿美語、泰雅語、排灣語</span><span class="rep"></span><span class="line"><span>出一套族語考題，</span><span>測大型語言模型</span><span>懂多少</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #計算語言學 #人工智慧</div><div class="name">FormosanBench</div><div class="lead">用阿美語、泰雅語、排灣語的翻譯、語音辨識與摘要，檢驗大型語言模型，結果三項都不理想。</div><div class="yrs">2025 發表 ｜ Findings of EMNLP 2025</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">大型語言模型，<br>懂臺灣南島語嗎？</span><div class="rows"><div class="row"><b>語態系統</b><span>動詞居首，同一句可依主事或受事語態有多種說法</span></div><div class="row"><b>先前研究</b><span>集中在機器翻譯與傳統序列模型</span></div><div class="row gap"><b>評測</b><span>沒有研究系統性評估大型語言模型在多項任務的能力</span></div></div><span class="ft" style="color:var(--ink)">需要一套跨任務、跨語言的共同考題。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">三語三任務，<br>分頭取材出題</span><svg class="dia" viewBox="0 0 300 120" role="img" aria-label="示意：線上辭典、E 樂園錄音、族語維基三個獨立來源，分別出成翻譯、語音辨識與摘要三項考題。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">三語三任務，<br>分頭取材出題</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 120" role="img" aria-label="示意：線上辭典、E 樂園錄音、族語維基三個獨立來源，分別出成翻譯、語音辨識與摘要三項考題。">
   <rect class="k-ink k-ring" x="10" y="8" width="100" height="26" rx="4"/>
   <rect class="k-ink k-ring" x="10" y="47" width="100" height="26" rx="4"/>
   <rect class="k-ink k-ring" x="10" y="86" width="100" height="26" rx="4"/>
@@ -223,7 +226,7 @@ button:disabled{cursor:default;opacity:.3}
   <text class="k-label-accent" x="236" y="25" text-anchor="middle">翻譯</text>
   <text class="k-label-accent" x="236" y="64" text-anchor="middle">語音辨識</text>
   <text class="k-label-accent" x="236" y="103" text-anchor="middle">摘要</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">翻譯取自線上辭典、語音取自 E 樂園錄音、摘要取自族語維基，三者來源各自獨立。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">翻譯取自線上辭典、語音取自 E 樂園錄音、摘要取自族語維基，三者來源各自獨立。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats two"><div class="stat"><span class="v">&lt;40%</span><span class="l">排灣語譯文中，母語者估計有意義者的比例</span></div><div class="stat"><span class="v">&lt;10%</span><span class="l">泰雅語譯文中，整句全對的比例</span></div></div><span class="ft">範圍：Lin 等 2025，翻譯輸出經母語者人工檢視之估計</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">一份公開的族語考卷</span><div class="time"><p><b>2025</b><span>作者公開三語三任務的資料集與程式碼</span></p><p><b>2025</b><span>作者指出訓練資料量是主要瓶頸</span></p><p><b>2025</b><span>作者指出擴充語言與任務需大量人工標注</span></p></div><span class="ft">此卡各項皆出自本篇</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">這份翻譯考題取自辭典例句，若訓練也用辭典，須先查兩者是否重疊。</span><span class="shift"><span>只測翻譯</span><i aria-hidden="true"></i><b>多項任務</b></span></div></section>

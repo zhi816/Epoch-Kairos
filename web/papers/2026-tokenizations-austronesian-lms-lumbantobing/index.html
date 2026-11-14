@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}

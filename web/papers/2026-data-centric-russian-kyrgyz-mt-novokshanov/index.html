@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.04</span><span>大模型輔助</span></div><div class="win"><i style="left:82.6%;top:37.5%;width:1.5px;height:1.5px;opacity:0.31"></i><i style="left:39.8%;top:24.6%;width:1px;height:1px;opacity:0.68"></i><i style="left:71.8%;top:35.0%;width:1.5px;height:1.5px;opacity:0.43"></i><i style="left:69.4%;top:40.7%;width:1px;height:1px;opacity:0.82"></i><i style="left:7.7%;top:14.7%;width:1px;height:1px;opacity:0.43"></i><i style="left:46.2%;top:18.4%;width:1px;height:1px;opacity:0.34"></i><i style="left:42.5%;top:16.9%;width:1px;height:1px;opacity:0.72"></i><i style="left:11.0%;top:35.6%;width:1px;height:1px;opacity:0.32"></i><i style="left:21.1%;top:30.5%;width:1px;height:1px;opacity:0.62"></i><i style="left:12.7%;top:31.3%;width:1px;height:1px;opacity:0.58"></i><i style="left:28.9%;top:32.8%;width:1px;height:1px;opacity:0.55"></i><i style="left:73.6%;top:15.7%;width:1px;height:1px;opacity:0.84"></i><i style="left:72.4%;top:39.3%;width:1px;height:1px;opacity:0.59"></i><i style="left:51.1%;top:17.3%;width:1px;height:1px;opacity:0.34"></i><span class="lang" title="吉爾吉斯語">吉爾吉斯語</span><span class="rep"></span><span class="line"><span>精挑語料、</span><span>分段訓練，</span><span>俄譯吉爾吉斯語奪冠</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #深度學習 #人工智慧</div><div class="name">俄羅斯語至吉爾吉斯語翻譯</div><div class="lead">先用語意評分把語料分級，再由粗到精分階段訓練，讓小模型在俄譯吉爾吉斯語競賽奪冠。</div><div class="yrs">2026 發表 ｜ LoResMT 2026</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">語料越灌越多，<br>模型越學越亂</span><div class="rows"><div class="row"><b>回譯</b><span>網路與回譯資料夾雜錯位、錯字與重複，未清洗會毒化模型</span></div><div class="row"><b>無差別混洗</b><span>雜訊合成句與少量好句子隨機混合，模型早期被噪聲帶偏</span></div><div class="row gap"><b>排程</b><span>不清楚雜訊資料與乾淨資料該以什麼順序給模型學</span></div></div><span class="ft" style="color:var(--ink)">要的不是更多資料，而是分好等級的資料。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">先分好壞，<br>再由粗到精分段教</span><svg class="dia" viewBox="0 0 300 112" role="img" aria-label="示意：語料先依語意評分分級，再依標準品質、高品質、回譯、對話的順序由粗到精訓練。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">先分好壞，<br>再由粗到精分段教</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 112" role="img" aria-label="示意：語料先依語意評分分級，再依標準品質、高品質、回譯、對話的順序由粗到精訓練。">
   <rect class="k-accent k-ring" x="4" y="8" width="140" height="26" rx="4"/>
   <line class="k-ink" x1="36" y1="34" x2="36" y2="52"/>
   <polyline class="k-ink" points="32,47 36,52 40,47"/>
@@ -226,7 +229,7 @@ button:disabled{cursor:default;opacity:.3}
   <text class="k-label" x="188" y="73" text-anchor="middle">回譯</text>
   <text class="k-label" x="264" y="73" text-anchor="middle">對話</text>
   <text class="k-label" x="150" y="108" text-anchor="middle">由粗到精</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">語料先依語意評分分級，再依序以粗資料、精資料、回譯、對話分四段訓練。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">語料先依語意評分分級，再依序以粗資料、精資料、回譯、對話分四段訓練。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">49.1</span><span class="l">官方測試集俄→吉 chrF++，賽道第一</span></div><div class="stat"><span class="v">44.9</span><span class="l">公開測試集 chrF++，勝過 54B 與 235B 模型</span></div><div class="stat"><span class="v">800M</span><span class="l">詞表剪枝後的模型參數量</span></div><div class="stat"><span class="v">23.2</span><span class="l">小模型加烏、塔語資料後 chrF++（原 21.5）</span></div></div><span class="ft">範圍：Novokshanov 2026，單一語言對之共享任務系統報告</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">留給吉爾吉斯語的資源</span><div class="time"><p><b>2026</b><span>公開最終模型權重</span></p><p><b>2026</b><span>公開過濾後的合成平行語料</span></p><p><b>2026</b><span>提供免安裝的線上翻譯展示</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">語料稀少時，順序也是一種資源：先用大量粗資料打底，再以精資料收尾。</span><span class="shift"><span>擴大模型</span><i aria-hidden="true"></i><b>整理資料</b></span></div></section>

@@ -2393,3 +2393,14 @@
   - **檢查結果**：`lint_wiki.py` ERROR 0；`crossref_check.py` OK；`check_cards.py` ERROR 0、WARN 0；`build_paper_prototype.py` 自我檢查 ERROR 0、WARN 0；`verify_page.js` 結果 PASS（1440 x 900 與 375 x 812 共 39 項，公式 168/168）；`build_home.py --card` 卡片牆自我檢查 ERROR 0、WARN 0（群星 20、概念 11）；`verify_wall.js` 結果 PASS（本篇 No.07 無 WARN，全牆 WARN 36 項皆屬其他卡片）；`verify_star.js` 結果 PASS（12 項）。原文無公式，Card 3 採無公式模式。
   - **另重建 32 篇既有論文頁**：全庫總表顯示既有論文頁 Card 1 編號與首頁卡片牆不一致（部分於本次收錄前已相差一號以上），依 `publish.md` 第二節第 4 點全部重建，`git diff` 確認每檔僅編號一行改變。
   - **未決事項**：三筆後續研究僅依 PubMed 摘要核對，未取得全文；`key_papers` 所列 Hoskins & Robson (1989) 與 Kondo et al. (1997) 為 Wiki 選列、非官方指定，頁面只依題名描述；Card 4 兩格說明於桌面版末行只剩一字，未處理；本篇依使用者指示維持一篇一個提交，子代理未各自提交。
+
+## [2026-11-15 00:21] design | Card 3 無公式模式之示意圖置中放大，MOF-5 示意圖重畫 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：（本工作階段之平台規範不允許將模型型號寫入版控檔案，型號已於對話中告知使用者，見 TD-004）
+- **具體變更**：依使用者指示，Card 3 無公式模式（公式填「無」）時，示意圖改為佔滿標題與說明之間的空間並上下左右置中，放不下時等比縮小；有公式之卡片不變。
+  - `tools/paper_template.html` 新增 `.dia-fill`；`tools/build_paper_prototype.py` 於無公式模式以 `.dia-fill` 包住示意圖。
+  - `check_cards.py` 於無公式模式容許 viewBox 高度至 240（原 140）；`references/card-03-secret.md`、`references/diagram.md` 與 [DESIGN.md](../DESIGN.md) 第五章第 2 節同步登記。
+  - [MOF-5 卡片檔](cards/1999-metal-organic-frameworks-mof5.md) Card 3 示意圖由 300 x 140 重畫為 300 x 236：原圖立方體只畫在畫布左半，改為置中並放大，「有機支柱」標籤移離角落節點；圖說與內容不變。
+  - 重建 44 篇論文頁：18 篇有公式者僅多三行 CSS，25 篇無公式者另改 Card 3 一行，MOF-5 另含新圖。
+  - 扁長示意圖是否重畫為較高比例，待使用者看過效果再定，登記 TD-031。
+  - **檢查結果**：`check_cards.py` ERROR 0；`build_paper_prototype.py` 44 篇自我檢查皆 ERROR 0、WARN 0；`build_home.py --check` 一致；`lint_wiki.py` ERROR 0；`verify_page.js` 於 26 篇無公式論文頁與 AlphaFold 3、Hopfield 兩篇有公式頁（1440 x 900 與 375 x 812）皆 PASS。

@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.14</span><span>大模型輔助</span></div><div class="win"><i style="left:66.1%;top:11.3%;width:1px;height:1px;opacity:0.36"></i><i style="left:44.2%;top:36.5%;width:1px;height:1px;opacity:0.65"></i><i style="left:11.4%;top:16.1%;width:1px;height:1px;opacity:0.41"></i><i style="left:61.9%;top:37.4%;width:1px;height:1px;opacity:0.69"></i><i style="left:71.7%;top:25.8%;width:1px;height:1px;opacity:0.47"></i><i style="left:61.9%;top:9.0%;width:1.5px;height:1.5px;opacity:0.81"></i><i style="left:60.6%;top:6.3%;width:1.5px;height:1.5px;opacity:0.53"></i><i style="left:39.7%;top:28.1%;width:1px;height:1px;opacity:0.59"></i><i style="left:88.1%;top:18.6%;width:1.5px;height:1.5px;opacity:0.80"></i><i style="left:20.0%;top:18.7%;width:1px;height:1px;opacity:0.65"></i><i style="left:14.2%;top:13.2%;width:1px;height:1px;opacity:0.64"></i><i style="left:6.8%;top:44.6%;width:1px;height:1px;opacity:0.38"></i><i style="left:13.2%;top:37.1%;width:1px;height:1px;opacity:0.32"></i><i style="left:16.1%;top:17.8%;width:1px;height:1px;opacity:0.32"></i><span class="lang" title="拉定語">拉定語</span><span class="rep"></span><span class="line"><span>檢索相似片段</span><span>當例句，</span><span>讓大模型翻譯拉定語</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #人工智慧 #深度學習</div><div class="name">以推理補償數據</div><div class="lead">翻向拉定語時效果明顯，翻回義大利語則幾乎無益。</div><div class="yrs">2025 發表 ｜ arXiv</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">資料不夠微調，<br>語意也無從檢索</span><div class="rows"><div class="row"><b>大模型</b><span>對小語言與其變體認識有限，難分變體、譯文不連貫</span></div><div class="row"><b>微調</b><span>少於 13,000 句對，就訓練不到可接受的翻譯品質</span></div><div class="row gap"><b>語意檢索</b><span>拉定語沒有合適的嵌入模型，無法依語意相似度挑例句</span></div></div><span class="ft" style="color:var(--ink)">得換一種不靠語意的選例方法。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">把句子拆成片段，<br>各找例句</span><svg class="dia" viewBox="0 0 300 124" role="img" aria-label="示意：待譯句切成片段 A 與片段 B，各自在語料中找到例句，一起送進大模型翻譯。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">把句子拆成片段，<br>各找例句</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 124" role="img" aria-label="示意：待譯句切成片段 A 與片段 B，各自在語料中找到例句，一起送進大模型翻譯。">
   <rect class="k-accent k-ring" x="40" y="10" width="108" height="24" rx="4"/>
   <rect class="k-accent k-ring" x="152" y="10" width="108" height="24" rx="4"/>
   <rect class="k-soft" x="46" y="50" width="44" height="16" rx="3"/>
@@ -225,7 +228,7 @@ button:disabled{cursor:default;opacity:.3}
   <text class="k-label-accent" x="206" y="27" text-anchor="middle">片段 B</text>
   <text class="k-label" x="68" y="62" text-anchor="middle">例句</text>
   <text class="k-label" x="150" y="111" text-anchor="middle">大模型</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">從 7 個詞的視窗逐步縮到 1 個詞，凡能精確比對的片段就取至多 6 組例句。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">從 7 個詞的視窗逐步縮到 1 個詞，凡能精確比對的片段就取至多 6 組例句。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">28.60</span><span class="l">片段提示，Val Badia→Gherdëina BLEU</span></div><div class="stat"><span class="v">13.11</span><span class="l">同方向零樣本提示之 BLEU</span></div><div class="stat"><span class="v">20.94</span><span class="l">同方向改走義大利語樞紐之 BLEU</span></div><div class="stat"><span class="v">14.22</span><span class="l">片段提示，義大利語→Val Badia BLEU</span></div></div><span class="ft">範圍：Frontull 與 Ströhle 2025，DeepSeek-R1，測試 175 句</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">推理為何有效，<br>仍待釐清</span><div class="time"><p><b>2025</b><span>公開程式碼與檢索語料</span></p><p><b>2025</b><span>只做拉定語與義大利語，測試僅 175 句</span></p><p><b>2025</b><span>作者擬探究推理機制與多輪查詢引導</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">親屬變體之間沒有平行句時，可以借一個共同的樞紐語言，讓大模型兩跳推理。</span><span class="shift"><span>直接對譯</span><i aria-hidden="true"></i><b>經樞紐兩跳</b></span></div></section>

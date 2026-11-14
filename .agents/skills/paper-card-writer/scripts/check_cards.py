@@ -250,7 +250,7 @@ def path_points(d):
     return pts, None
 
 
-def check_svg(path, line, svg_text, caption, kind, context):
+def check_svg(path, line, svg_text, caption, kind, context, no_formula=False):
     try:
         root = ET.fromstring(svg_text)
     except ET.ParseError as e:
@@ -263,10 +263,12 @@ def check_svg(path, line, svg_text, caption, kind, context):
     extra = set(root.attrib) - {'viewBox', 'role', 'aria-label'}
     if extra:
         report('ERROR', path, line, '<svg> 只能有 viewBox、role、aria-label，多了：%s' % '、'.join(sorted(extra)))
+    # 無公式模式少了公式框，圖可較高（diagram.md 第四節）
+    h_max = 240 if no_formula else 140
     m = re.fullmatch(r'0 0 300 (\d+)', root.attrib.get('viewBox', ''))
-    if not m or not 90 <= int(m.group(1)) <= 140:
-        report('ERROR', path, line, 'viewBox 須為「0 0 300 H」，H 為 90 至 140 的整數')
-        H = 140
+    if not m or not 90 <= int(m.group(1)) <= h_max:
+        report('ERROR', path, line, 'viewBox 須為「0 0 300 H」，H 為 90 至 %d 的整數%s' % (h_max, '（無公式模式）' if no_formula else '（無公式模式可至 240）'))
+        H = h_max
     else:
         H = int(m.group(1))
     if root.attrib.get('role') != 'img':
@@ -618,7 +620,7 @@ def check_card(path, slug, all_cards):
         report('ERROR', path, 1, 'Card 3 必須有示意圖（```svg 區塊）')
     else:
         context = paper + one(s, '標題')[0] + one(s, '說明')[0] + cap
-        check_svg(path, svg[1], svg[0], cap, kind or '示意圖', context)
+        check_svg(path, svg[1], svg[0], cap, kind or '示意圖', context, one(s, '公式')[0] == '無')
 
     # ---------- Card 4
     s = 'Card 4｜決定性數據'

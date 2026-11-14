@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.21</span><span>臺灣語言學</span></div><div class="win"><i style="left:79.1%;top:16.7%;width:1px;height:1px;opacity:0.49"></i><i style="left:42.3%;top:4.0%;width:1px;height:1px;opacity:0.47"></i><i style="left:94.6%;top:6.0%;width:1px;height:1px;opacity:0.30"></i><i style="left:15.6%;top:43.2%;width:1px;height:1px;opacity:0.76"></i><i style="left:16.8%;top:16.5%;width:1px;height:1px;opacity:0.84"></i><i style="left:77.3%;top:11.0%;width:1.5px;height:1.5px;opacity:0.66"></i><i style="left:68.7%;top:44.0%;width:1.5px;height:1.5px;opacity:0.48"></i><i style="left:85.2%;top:7.4%;width:1.5px;height:1.5px;opacity:0.36"></i><i style="left:84.7%;top:32.4%;width:1px;height:1px;opacity:0.60"></i><i style="left:8.0%;top:28.1%;width:1px;height:1px;opacity:0.50"></i><i style="left:84.2%;top:34.7%;width:1px;height:1px;opacity:0.68"></i><i style="left:59.2%;top:42.8%;width:1px;height:1px;opacity:0.34"></i><i style="left:86.5%;top:43.0%;width:1px;height:1px;opacity:0.31"></i><i style="left:13.8%;top:26.7%;width:1.5px;height:1.5px;opacity:0.34"></i><span class="lang" title="臺灣南島諸語">臺灣南島諸語</span><span class="rep"></span><span class="line"><span>比較族語怎麼說</span><span>昨天、明天、</span><span>前天與後天</span></span></div><div class="tags">語言、心理與社會・#語言學</div><div class="name">台灣南島語言時間詞之跨語言比較初探</div><div class="lead">多數族語按距今天數分組，少數按過去或未來。</div><div class="yrs">2024 發表 ｜ Taiwanica</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">中英文的切法，<br>套不上族語</span><div class="rows"><div class="row"><b>中文</b><span>四天各用不同的詞</span></div><div class="row"><b>英文</b><span>昨天配前天、明天配後天</span></div><div class="row"><b>萬山魯凱語</b><span>昨天 ’idha，明天 lo ’idha</span></div><div class="row gap"><b>Dixon</b><span>談到一詞兼指過去未來，未提南島語</span></div></div><span class="ft" style="color:var(--ink)">族語的時間，要用族語自己的切法來看。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">以今天為中心，<br>按天數或前後分組</span><svg class="dia" viewBox="0 0 300 116" role="img" aria-label="示意：中間圓點為今天；上方弧線為多數族語依天數配對（昨天配明天、前天配後天），下方虛線為少數依前後配對。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">以今天為中心，<br>按天數或前後分組</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 116" role="img" aria-label="示意：中間圓點為今天；上方弧線為多數族語依天數配對（昨天配明天、前天配後天），下方虛線為少數依前後配對。">
   <line class="k-muted k-thin" x1="16" y1="62" x2="284" y2="62"/>
   <path class="k-line" d="M40 58 C 70 0, 230 0, 260 58"/>
   <path class="k-line" d="M100 58 C 120 40, 180 40, 200 58"/>
@@ -221,7 +224,7 @@ button:disabled{cursor:default;opacity:.3}
   <text class="k-label" x="260" y="80" text-anchor="middle">後天</text>
   <text class="k-label-accent" x="150" y="35" text-anchor="middle">天數</text>
   <text class="k-label" x="150" y="104" text-anchor="middle">前後</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">多數族語依距今天數分組，少數則依過去或未來分組，也有四詞皆異者。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">多數族語依距今天數分組，少數則依過去或未來分組，也有四詞皆異者。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="concl"><p>多數族語依距今天數分組，前天與後天共用詞根</p><p>卑南、阿美等少數族語依過去未來分組</p><p>雙標類型最常見：實現與非實現都標記</p></div><span class="ft">範圍：林鴻瑞 2024，16 族 42 語別詞表之質性比較</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">初探之後，<br>留下三個問題</span><div class="time"><p><b>2024</b><span>標記是詞綴或依附詞，不在本文範圍</span></p><p><b>2024</b><span>臺灣以外的南島語，有待未來再比較</span></p><p><b>2024</b><span>原始南島語三階段推測，待更多證據</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">前天與後天同為一個詞時，靠實現標記分辨過去未來。</span><span class="shift"><span>看詞根</span><i aria-hidden="true"></i><b>看標記</b></span></div></section>

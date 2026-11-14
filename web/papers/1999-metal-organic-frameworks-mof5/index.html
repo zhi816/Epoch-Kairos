@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,32 +207,32 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.07</span><span>化學</span></div><div class="win"><i style="left:59.7%;top:44.6%;width:1px;height:1px;opacity:0.58"></i><i style="left:67.1%;top:25.5%;width:1.5px;height:1.5px;opacity:0.42"></i><i style="left:94.6%;top:39.1%;width:1px;height:1px;opacity:0.40"></i><i style="left:66.9%;top:23.7%;width:1px;height:1px;opacity:0.37"></i><i style="left:64.4%;top:30.7%;width:1px;height:1px;opacity:0.47"></i><i style="left:86.1%;top:30.0%;width:1px;height:1px;opacity:0.36"></i><i style="left:22.0%;top:22.6%;width:1px;height:1px;opacity:0.38"></i><i style="left:65.9%;top:39.2%;width:1px;height:1px;opacity:0.38"></i><i style="left:92.5%;top:32.3%;width:1px;height:1px;opacity:0.31"></i><i style="left:45.2%;top:7.9%;width:1px;height:1px;opacity:0.76"></i><i style="left:5.3%;top:40.3%;width:1px;height:1px;opacity:0.56"></i><i style="left:80.3%;top:21.3%;width:1px;height:1px;opacity:0.66"></i><i style="left:93.0%;top:42.3%;width:1px;height:1px;opacity:0.33"></i><i style="left:23.9%;top:42.6%;width:1px;height:1px;opacity:0.77"></i><span class="rep award"></span><span class="line"><span>合成金屬有機骨架，</span><span>抽乾溶劑仍維持孔洞</span></span></div><div class="tags">化學、材料與能源・#材料科學 #化學合成</div><div class="name">MOF-5 金屬有機骨架</div><div class="lead">把剛性的鋅氧團簇和有機二羧酸接起來，做出三維骨架；抽乾溶劑之後孔洞仍在，不必靠客體分子撐著。</div><div class="yrs">1999 發表 ｜ 2025 諾貝爾化學獎</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">抽乾溶劑，<br>孔洞還留得住嗎？</span><div class="rows"><div class="row"><b>沸石</b><span>傳統使用的微孔無機材料；有機骨架有潛力做到更彈性的理性設計</span></div><div class="row"><b>開放骨架</b><span>少了客體分子支撐，就無法維持孔隙而坍塌</span></div><div class="row gap"><b>設計策略</b><span>缺一套不靠客體分子也能維持孔洞的方法</span></div></div><span class="ft" style="color:var(--ink)">要有一種不靠客體、自己撐住孔洞的組裝方式。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">讓剛性單元自己撐起孔洞</span><svg class="dia" viewBox="0 0 300 140" role="img" aria-label="示意：鋅氧團簇當節點、有機支柱當連結，前後兩層疊成簡單立方骨架並留下孔洞。">
-  <line class="k-ink" x1="58" y1="42" x2="122" y2="42"/>
-  <line class="k-ink" x1="122" y1="42" x2="122" y2="106"/>
-  <line class="k-ink" x1="122" y1="106" x2="58" y2="106"/>
-  <line class="k-ink" x1="58" y1="106" x2="58" y2="42"/>
-  <line class="k-ink" x1="82" y1="18" x2="146" y2="18"/>
-  <line class="k-ink" x1="146" y1="18" x2="146" y2="82"/>
-  <line class="k-muted" x1="146" y1="82" x2="82" y2="82"/>
-  <line class="k-muted" x1="82" y1="82" x2="82" y2="18"/>
-  <line class="k-ink" x1="58" y1="42" x2="82" y2="18"/>
-  <line class="k-ink" x1="122" y1="42" x2="146" y2="18"/>
-  <line class="k-ink" x1="122" y1="106" x2="146" y2="82"/>
-  <line class="k-muted" x1="58" y1="106" x2="82" y2="82"/>
-  <circle class="k-line k-ring k-thin" cx="102" cy="62" r="16"/>
-  <circle class="k-accent" cx="58" cy="42" r="4.5"/>
-  <circle class="k-accent" cx="122" cy="42" r="4.5"/>
-  <circle class="k-accent" cx="122" cy="106" r="4.5"/>
-  <circle class="k-accent" cx="58" cy="106" r="4.5"/>
-  <circle class="k-accent" cx="82" cy="18" r="4.5"/>
-  <circle class="k-accent" cx="146" cy="18" r="4.5"/>
-  <circle class="k-accent" cx="146" cy="82" r="4.5"/>
-  <circle class="k-muted" cx="82" cy="82" r="4.5"/>
-  <text class="k-label-accent" x="102" y="66" text-anchor="middle">孔洞</text>
-  <text class="k-label" x="52" y="34" text-anchor="end">鋅氧團簇</text>
-  <text class="k-label" x="102" y="118" text-anchor="middle">有機支柱</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">鋅氧團簇當節點、剛性有機二羧酸當支柱，組成三維簡單立方骨架並留下孔洞。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">讓剛性單元自己撐起孔洞</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 236" role="img" aria-label="示意：鋅氧團簇當節點、有機支柱當連結，前後兩層疊成簡單立方骨架並留下孔洞。">
+  <line class="k-ink" x1="61" y1="78" x2="191" y2="78"/>
+  <line class="k-ink" x1="191" y1="78" x2="191" y2="208"/>
+  <line class="k-ink" x1="191" y1="208" x2="61" y2="208"/>
+  <line class="k-ink" x1="61" y1="208" x2="61" y2="78"/>
+  <line class="k-ink" x1="109" y1="30" x2="239" y2="30"/>
+  <line class="k-ink" x1="239" y1="30" x2="239" y2="160"/>
+  <line class="k-muted" x1="239" y1="160" x2="109" y2="160"/>
+  <line class="k-muted" x1="109" y1="160" x2="109" y2="30"/>
+  <line class="k-ink" x1="61" y1="78" x2="109" y2="30"/>
+  <line class="k-ink" x1="191" y1="78" x2="239" y2="30"/>
+  <line class="k-ink" x1="191" y1="208" x2="239" y2="160"/>
+  <line class="k-muted" x1="61" y1="208" x2="109" y2="160"/>
+  <circle class="k-line k-ring k-thin" cx="150" cy="119" r="28"/>
+  <circle class="k-accent" cx="61" cy="78" r="4.5"/>
+  <circle class="k-accent" cx="191" cy="78" r="4.5"/>
+  <circle class="k-accent" cx="191" cy="208" r="4.5"/>
+  <circle class="k-accent" cx="61" cy="208" r="4.5"/>
+  <circle class="k-accent" cx="109" cy="30" r="4.5"/>
+  <circle class="k-accent" cx="239" cy="30" r="4.5"/>
+  <circle class="k-accent" cx="239" cy="160" r="4.5"/>
+  <circle class="k-muted" cx="109" cy="160" r="4.5"/>
+  <text class="k-label-accent" x="150" y="123" text-anchor="middle">孔洞</text>
+  <text class="k-label" x="55" y="70" text-anchor="end">鋅氧團簇</text>
+  <text class="k-label" x="126" y="228" text-anchor="middle">有機支柱</text>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">鋅氧團簇當節點、剛性有機二羧酸當支柱，組成三維簡單立方骨架並留下孔洞。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">2,900</span><span class="l">m² g⁻¹ 表觀 Langmuir 值；大孔洞下單層未必成立</span></div><div class="stat"><span class="v">0.59</span><span class="l">g cm⁻³ 脫溶劑晶體密度，結晶材料中最低之一</span></div><div class="stat"><span class="v">300 °C</span><span class="l">脫溶劑後空氣加熱 24 h 仍為單晶，晶胞參數同加熱前</span></div><div class="stat"><span class="v">80%</span><span class="l">重疊凡得瓦球置於原子位置，未佔空間佔晶體體積</span></div></div><span class="ft">範圍：Li 1999，單晶繞射與 78 K 氮氣吸附；表面積為 Langmuir 估計</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">孔徑與官能基，<br>可以按設計調整</span><div class="time"><p><b>2002</b><span>Eddaoudi 等做出 16 種骨架，孔徑與官能基可調</span></p><p><b>2003</b><span>Rosi 等量出儲氫量，並指出氫的兩種結合位點</span></p><p><b>2003</b><span>Yaghi 等提出網狀合成，用次級建構單元設計骨架</span></p><p><b>2025</b><span>Kitagawa、Robson 與 Yaghi 獲諾貝爾化學獎</span></p></div><span class="ft">前三項為後續研究，非本篇成果；得獎者含非本篇作者</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">孔洞不是靠溶劑撐出來的，而是靠團簇與支柱的剛性；表面積也要連假設一起讀。</span><span class="shift"><span>靠客體支撐</span><i aria-hidden="true"></i><b>靠剛性組裝</b></span></div></section>

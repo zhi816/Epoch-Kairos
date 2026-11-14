@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.07</span><span>大模型輔助</span></div><div class="win"><i style="left:82.6%;top:37.5%;width:1.5px;height:1.5px;opacity:0.31"></i><i style="left:39.8%;top:24.6%;width:1px;height:1px;opacity:0.68"></i><i style="left:71.8%;top:35.0%;width:1.5px;height:1.5px;opacity:0.43"></i><i style="left:69.4%;top:40.7%;width:1px;height:1px;opacity:0.82"></i><i style="left:7.7%;top:14.7%;width:1px;height:1px;opacity:0.43"></i><i style="left:46.2%;top:18.4%;width:1px;height:1px;opacity:0.34"></i><i style="left:42.5%;top:16.9%;width:1px;height:1px;opacity:0.72"></i><i style="left:11.0%;top:35.6%;width:1px;height:1px;opacity:0.32"></i><i style="left:21.1%;top:30.5%;width:1px;height:1px;opacity:0.62"></i><i style="left:12.7%;top:31.3%;width:1px;height:1px;opacity:0.58"></i><i style="left:28.9%;top:32.8%;width:1px;height:1px;opacity:0.55"></i><i style="left:73.6%;top:15.7%;width:1px;height:1px;opacity:0.84"></i><i style="left:72.4%;top:39.3%;width:1px;height:1px;opacity:0.59"></i><i style="left:51.1%;top:17.3%;width:1px;height:1px;opacity:0.34"></i><span class="lang" title="排灣語">排灣語</span><span class="rep"></span><span class="line"><span>先查辭典</span><span>再交給大模型，</span><span>把排灣語譯成華語</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #人工智慧 #計算語言學</div><div class="name">混合辭典與大語言模型之低資源機器翻譯</div><div class="lead">辭典沒收的詞，再從平行例句庫檢索補上。</div><div class="yrs">2026 發表 ｜ Eng. Proc.</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">只查辭典，<br>句子卻不通順？</span><div class="rows"><div class="row"><b>詞典查找</b><span>現有排灣語工具多只能查詞，逐字輸出語意不通</span></div><div class="row"><b>向量檢索</b><span>書面語料極少，可檢索的例句稀疏</span></div><div class="row"><b>大模型</b><span>缺少排灣語資料，未經增強時幾乎譯不出原意</span></div><div class="row gap"><b>工具</b><span>沒有能把整句譯順、又保住排灣語詞義的工具</span></div></div><span class="ft" style="color:var(--ink)">要讓詞義準、句子順，兩者得兼顧。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">先查辭典，<br>查不到再找例句</span><svg class="dia" viewBox="0 0 300 110" role="img" aria-label="示意：排灣語句先查辭典，查到的詞直接給詞義，查不到的改從向量資料庫找例句，再交給大型語言模型重組成華語。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">先查辭典，<br>查不到再找例句</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 110" role="img" aria-label="示意：排灣語句先查辭典，查到的詞直接給詞義，查不到的改從向量資料庫找例句，再交給大型語言模型重組成華語。">
   <polygon class="k-ink k-ring" points="52,30 92,55 52,80 12,55"/>
   <rect class="k-ink k-ring" x="100" y="82" width="56" height="24" rx="4"/>
   <rect class="k-accent k-ring" x="176" y="42" width="64" height="26" rx="4"/>
@@ -222,7 +225,7 @@ button:disabled{cursor:default;opacity:.3}
   <text class="k-label" x="128" y="98" text-anchor="middle">找例句</text>
   <text class="k-label-accent" x="208" y="59" text-anchor="middle">語言模型</text>
   <text class="k-label" x="281" y="59" text-anchor="middle">華語</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">辭典給出確定詞義，缺字時從例句庫檢索補充，再由大型語言模型重排成通順華語。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">辭典給出確定詞義，缺字時從例句庫檢索補充，再由大型語言模型重排成通順華語。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">4.4</span><span class="l">排灣語→華語 BLEU，未加模組時之最高者</span></div><div class="stat"><span class="v">40.8</span><span class="l">同一測試，加上本系統後之最低者</span></div><div class="stat"><span class="v">0.236</span><span class="l">語意餘弦相似度，未加模組時之最高者</span></div><div class="stat"><span class="v">0.810</span><span class="l">同一指標，加上本系統後之最低者</span></div></div><span class="ft">範圍：Wang 等 2026，教材 250 句，四個大模型；只用自動指標</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">辭典覆蓋，<br>決定譯得好不好</span><div class="time"><p><b>2026</b><span>作者指出辭典缺詞時譯文語意偏離</span></p><p><b>2026</b><span>作者指出倒裝句與文化語句表現較弱</span></p><p><b>2026</b><span>作者計畫擴充辭典並納入母語者評估</span></p><p><b>2026</b><span>資料不公開，需向通訊作者申請</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">辭典只比對表面詞形，詞根加上詞綴就可能查不到，覆蓋率成了關鍵。</span><span class="shift"><span>只靠大模型</span><i aria-hidden="true"></i><b>先查辭典</b></span></div></section>

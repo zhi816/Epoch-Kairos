@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.09</span><span>報告題材</span></div><div class="win"><i style="left:82.6%;top:37.5%;width:1.5px;height:1.5px;opacity:0.31"></i><i style="left:39.8%;top:24.6%;width:1px;height:1px;opacity:0.68"></i><i style="left:71.8%;top:35.0%;width:1.5px;height:1.5px;opacity:0.43"></i><i style="left:69.4%;top:40.7%;width:1px;height:1px;opacity:0.82"></i><i style="left:7.7%;top:14.7%;width:1px;height:1px;opacity:0.43"></i><i style="left:46.2%;top:18.4%;width:1px;height:1px;opacity:0.34"></i><i style="left:42.5%;top:16.9%;width:1px;height:1px;opacity:0.72"></i><i style="left:11.0%;top:35.6%;width:1px;height:1px;opacity:0.32"></i><i style="left:21.1%;top:30.5%;width:1px;height:1px;opacity:0.62"></i><i style="left:12.7%;top:31.3%;width:1px;height:1px;opacity:0.58"></i><i style="left:28.9%;top:32.8%;width:1px;height:1px;opacity:0.55"></i><i style="left:73.6%;top:15.7%;width:1px;height:1px;opacity:0.84"></i><i style="left:72.4%;top:39.3%;width:1px;height:1px;opacity:0.59"></i><i style="left:51.1%;top:17.3%;width:1px;height:1px;opacity:0.34"></i><span class="lang" title="達悟語">達悟語</span><span class="rep"></span><span class="line"><span>借親屬語伊巴丹語，</span><span>把達悟語</span><span>譯成菲律賓語</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #計算語言學 #深度學習</div><div class="name">達悟語－菲律賓語翻譯</div><div class="lead">親屬語預訓練與辭典合成資料，各有所長。</div><div class="yrs">2026 發表 ｜ LoResMT 2026</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">只有聖經，<br>學不會日常對話</span><div class="rows"><div class="row"><b>聖經語料</b><span>主要平行資料是新約經文，模型偏向古老句構與用詞</span></div><div class="row"><b>NLLB-200</b><span>多語翻譯模型，預訓練有他加祿語，卻沒有巴丹語群語言</span></div><div class="row gap"><b>會話資料</b><span>只靠經文，模型難以處理日常會話</span></div></div><span class="ft" style="color:var(--ink)">得替日常會話另找翻譯資料。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">借親屬語暖身，<br>用辭典補會話</span><svg class="dia" viewBox="0 0 300 126" role="img" aria-label="示意：先以伊巴丹語預訓練模型，再用聖經與辭典例句轉成的會話資料微調達悟語。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">借親屬語暖身，<br>用辭典補會話</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 126" role="img" aria-label="示意：先以伊巴丹語預訓練模型，再用聖經與辭典例句轉成的會話資料微調達悟語。">
   <rect class="k-ink k-ring" x="4" y="40" width="72" height="28" rx="4"/>
   <rect class="k-ink k-ring" x="106" y="40" width="84" height="28" rx="4"/>
   <rect class="k-accent k-ring" x="214" y="40" width="82" height="28" rx="4"/>
@@ -223,7 +226,7 @@ button:disabled{cursor:default;opacity:.3}
   <text class="k-label-accent" x="255" y="58" text-anchor="middle">微調達悟語</text>
   <text class="k-label" x="221" y="114" text-anchor="middle">聖經</text>
   <text class="k-label" x="272" y="114" text-anchor="middle">辭典例句</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">先用同屬巴丹語群的伊巴丹語預訓練，再以聖經與辭典轉譯的會話句微調。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">先用同屬巴丹語群的伊巴丹語預訓練，再以聖經與辭典轉譯的會話句微調。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">34.85</span><span class="l">伊巴丹語預訓練後，聖經測試 BLEU</span></div><div class="stat"><span class="v">32.00</span><span class="l">只用聖經語料的基線，聖經測試 BLEU</span></div><div class="stat"><span class="v">6.67</span><span class="l">加辭典合成資料，域外會話 BLEU（內文 6.61）</span></div><div class="stat"><span class="v">3.12</span><span class="l">同一基線之域外會話 BLEU</span></div></div><span class="ft">範圍：Macayan 等 2026，達悟語→他加祿語；聖經 200 句、會話 20 句</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">斷詞與人工評估，<br>留待下一步</span><div class="time"><p><b>2026</b><span>只研究達悟語→他加祿語一個語言對</span></p><p><b>2026</b><span>沒有人工評估，指標測不到比喻與偏誤</span></p><p><b>2026</b><span>建議改用子詞斷詞，處理罕見詞與構詞</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">與達悟語越近的親屬語，越能幫上忙：先學伊巴丹語，經文翻得更好。</span><span class="shift"><span>只靠本語</span><i aria-hidden="true"></i><b>借力親屬語</b></span></div></section>

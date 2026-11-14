@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.06</span><span>國際文獻</span></div><div class="win"><i style="left:33.6%;top:24.2%;width:1px;height:1px;opacity:0.61"></i><i style="left:36.8%;top:38.9%;width:1.5px;height:1.5px;opacity:0.79"></i><i style="left:10.6%;top:4.6%;width:1.5px;height:1.5px;opacity:0.45"></i><i style="left:58.8%;top:32.2%;width:1px;height:1px;opacity:0.75"></i><i style="left:34.0%;top:21.8%;width:1.5px;height:1.5px;opacity:0.44"></i><i style="left:42.0%;top:15.0%;width:1.5px;height:1.5px;opacity:0.67"></i><i style="left:91.2%;top:34.5%;width:1px;height:1px;opacity:0.69"></i><i style="left:77.1%;top:26.8%;width:1px;height:1px;opacity:0.80"></i><i style="left:20.9%;top:14.2%;width:1.5px;height:1.5px;opacity:0.43"></i><i style="left:37.5%;top:36.9%;width:1px;height:1px;opacity:0.42"></i><i style="left:15.6%;top:45.3%;width:1.5px;height:1.5px;opacity:0.77"></i><i style="left:54.2%;top:36.8%;width:1px;height:1px;opacity:0.76"></i><i style="left:18.3%;top:11.2%;width:1px;height:1px;opacity:0.34"></i><i style="left:72.4%;top:40.3%;width:1px;height:1px;opacity:0.59"></i><span class="lang" title="臺灣南島諸語">臺灣南島諸語</span><span class="rep"></span><span class="line"><span>彙整各族語</span><span>與中文的對照句，</span><span>建成翻譯語料庫</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #計算語言學 #深度學習</div><div class="name">FormosanMT</div><div class="lead">收錄臺灣各原住民族語言與華語、英語的對照句，連同整理腳本與基準模型一起公開。</div><div class="yrs">2026 發表 ｜ LREC 2026</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">族語平行語料少，<br>又散在各處</span><div class="rows"><div class="row"><b>瀕危語言</b><span>缺少書寫傳統與說話人口，平行語料難以累積</span></div><div class="row"><b>前人</b><span>只用辭典資料的一部分，自行篩選切分，結果無法與本篇比較</span></div><div class="row gap"><b>公開來源</b><span>辭典、教材、田野紀錄與影片字幕分散各處，品質不一</span></div></div><span class="ft" style="color:var(--ink)">得把散落的資料整理成能直接訓練的語料。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">先清洗過濾，<br>再分來源切分</span><svg class="dia" viewBox="0 0 300 112" role="img" aria-label="示意：多個公開來源的句對經清洗過濾後，按來源切分，再分別訓練兩種翻譯模型。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">先清洗過濾，<br>再分來源切分</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 112" role="img" aria-label="示意：多個公開來源的句對經清洗過濾後，按來源切分，再分別訓練兩種翻譯模型。">
   <rect class="k-soft" x="6" y="10" width="58" height="12" rx="3"/>
   <rect class="k-soft" x="6" y="26" width="58" height="12" rx="3"/>
   <rect class="k-soft" x="6" y="42" width="58" height="12" rx="3"/>
@@ -227,7 +230,7 @@ button:disabled{cursor:default;opacity:.3}
   <text class="k-label" x="193" y="36" text-anchor="middle">切分</text>
   <text class="k-label-accent" x="269" y="36" text-anchor="middle">平行語料</text>
   <text class="k-label" x="269" y="110" text-anchor="middle">兩種模型</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">正規化文字，剔除非平行內容與長度比懸殊的句對，再按來源切成訓練、開發、測試集。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">正規化文字，剔除非平行內容與長度比懸殊的句對，再按來源切成訓練、開發、測試集。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats two"><div class="stat"><span class="v">493,519</span><span class="l">族語與華語、英語之句對總數，已過濾切分</span></div><div class="stat"><span class="v">26.90</span><span class="l">族語譯華語之最高 BLEU：卡那卡那富語</span></div></div><span class="ft">範圍：Scheppat 等 2026，臺灣 15 種原住民族語言，微調多語翻譯模型</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">語料與模型公開，<br>方言仍待細分</span><div class="time"><p><b>2026</b><span>公開語料、腳本、分詞器與模型</span></p><p><b>2026</b><span>只試兩種架構，也未使用方言資訊</span></p><p><b>2026</b><span>擬以全部語料繼續預訓練，借助親屬語</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">語料連同整理規則與腳本一起公開，來源增加時，語料也能跟著重建。</span><span class="shift"><span>一次釋出</span><i aria-hidden="true"></i><b>可再重建</b></span></div></section>

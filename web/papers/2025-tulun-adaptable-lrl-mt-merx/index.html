@@ -76,6 +76,9 @@ button:disabled{cursor:default;opacity:.3}
 
 /* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
 .dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
 .dia path,.dia line,.dia polyline{fill:none!important}
 .dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
@@ -204,7 +207,7 @@ button:disabled{cursor:default;opacity:.3}
     <div class="deck">
       <section class="card cover focus" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>F.18</span><span>大模型輔助</span></div><div class="win"><i style="left:21.4%;top:34.5%;width:1px;height:1px;opacity:0.51"></i><i style="left:27.4%;top:30.5%;width:1px;height:1px;opacity:0.41"></i><i style="left:55.7%;top:43.0%;width:1px;height:1px;opacity:0.52"></i><i style="left:50.5%;top:13.4%;width:1px;height:1px;opacity:0.51"></i><i style="left:65.5%;top:21.3%;width:1.5px;height:1.5px;opacity:0.37"></i><i style="left:64.5%;top:26.3%;width:1px;height:1px;opacity:0.65"></i><i style="left:87.5%;top:42.3%;width:1px;height:1px;opacity:0.39"></i><i style="left:9.1%;top:33.9%;width:1px;height:1px;opacity:0.62"></i><i style="left:61.3%;top:36.3%;width:1px;height:1px;opacity:0.79"></i><i style="left:68.7%;top:44.0%;width:1px;height:1px;opacity:0.34"></i><i style="left:18.5%;top:18.1%;width:1px;height:1px;opacity:0.55"></i><i style="left:46.8%;top:6.3%;width:1px;height:1px;opacity:0.32"></i><i style="left:66.6%;top:23.3%;width:1px;height:1px;opacity:0.66"></i><i style="left:28.5%;top:17.2%;width:1px;height:1px;opacity:0.54"></i><span class="lang" title="德頓語、比斯拉馬語">德頓語、比斯拉馬語</span><span class="rep"></span><span class="line"><span>讓大模型參考</span><span>詞彙表與舊譯文，</span><span>修潤譯稿</span></span></div><div class="tags">人工智慧、計算與數學・#自然語言處理 #人工智慧 #計算語言學</div><div class="name">TULUN</div><div class="lead">專用翻譯先出初稿，再由大型語言模型依詞彙表與舊譯文修正，不必重新訓練模型。</div><div class="yrs">2025 發表 ｜ ACL 2025</div></div></section>
       <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">有詞彙表，<br>翻譯系統卻用不上？</span><div class="rows"><div class="row"><b>微調模型</b><span>把術語加入翻譯模型多要微調，小型組織負擔不起</span></div><div class="row"><b>專用翻譯</b><span>會譯錯領域術語，遇到領域外內容常產生幻覺</span></div><div class="row"><b>語言模型</b><span>翻成低資源語言時，準確度可能不如專用翻譯模型</span></div><div class="row gap"><b>工具</b><span>沒有讓非技術使用者直接用上詞彙表與舊譯文的工具</span></div></div><span class="ft" style="color:var(--ink)">要讓懂術語的人，不必寫程式也能改進翻譯。</span></div></section>
-      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">先機器翻譯，<br>再查表後編輯</span><svg class="dia" viewBox="0 0 300 124" role="img" aria-label="示意：來源句先經機器翻譯出初稿，同時查詢詞彙表與翻譯記憶，三者交給語言模型後編輯成最終譯文。">
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">先機器翻譯，<br>再查表後編輯</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 124" role="img" aria-label="示意：來源句先經機器翻譯出初稿，同時查詢詞彙表與翻譯記憶，三者交給語言模型後編輯成最終譯文。">
   <rect class="k-ink k-ring" x="4" y="49" width="48" height="26" rx="4"/>
   <rect class="k-ink k-ring" x="76" y="6" width="64" height="26" rx="4"/>
   <rect class="k-ink k-ring" x="76" y="49" width="64" height="26" rx="4"/>
@@ -228,7 +231,7 @@ button:disabled{cursor:default;opacity:.3}
   <text class="k-label" x="108" y="109" text-anchor="middle">翻譯記憶</text>
   <text class="k-label-accent" x="203" y="66" text-anchor="middle">語言模型</text>
   <text class="k-label" x="276" y="66" text-anchor="middle">譯文</text>
-</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">專用翻譯先出初稿，再把查到的詞彙表條目與相似舊譯文交給大型語言模型修正。</span></div></section>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">專用翻譯先出初稿，再把查到的詞彙表條目與相似舊譯文交給大型語言模型修正。</span></div></section>
       <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">35.78</span><span class="l">德頓語醫療翻譯 ChrF++，只用 MADLAD</span></div><div class="stat"><span class="v">47.87</span><span class="l">同一測試集，MADLAD 初譯再經後編輯</span></div><div class="stat"><span class="v">38.26</span><span class="l">FLORES 六種語言平均 ChrF++，只用 NLLB-54B</span></div><div class="stat"><span class="v">41.09</span><span class="l">同一設定，NLLB-54B 初譯再經後編輯</span></div></div><span class="ft">範圍：Merx 等 2025，兩組織資料與六種語言評測</span></div></section>
       <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">下一步，<br>調提示與離線部署</span><div class="time"><p><b>2025</b><span>以 MIT 授權公開程式碼與線上系統</span></p><p><b>2025</b><span>作者指出易用性評估僅兩位共同作者</span></p><p><b>2025</b><span>作者指出基隆迪語因詞彙表誤改而退步</span></p><p><b>2025</b><span>作者計畫最佳化提示並支援離線部署</span></p></div><span class="ft">以上皆出自本篇，尚無後續研究</span></div></section>
       <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">詞彙表不是越多越好；未經校驗的條目會讓模型改錯字，基隆迪語就因此退步。</span><span class="shift"><span>一次訓練</span><i aria-hidden="true"></i><b>持續校正</b></span></div></section>
