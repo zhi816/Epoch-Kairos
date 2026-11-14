@@ -24,6 +24,7 @@ papers:
   - "2026-formosanmt-parallel-corpus-scheppat"
   - "2026-hybrid-dictionary-rag-llm-paiwan-wang"
   - "2026-tao-filipino-nmt-macayan"
+  - "2026-tokenizations-austronesian-lms-lumbantobing"
 related_concepts:
   - "formosan-computational-linguistics"
 verification: "partial"
@@ -49,8 +50,8 @@ verification: "partial"
 ## 關鍵技術路徑與核心突破
 
 * **構詞特徵增強與架構調適（Morphology-Enhanced Architecture）**：
-  * 把構詞資訊提供給翻譯模型的做法，在海大實驗室的研究中有兩種代表：游景勝（2021）把 52 維布林詞綴特徵拼接在詞的表示之後，最佳系統使用詞彙原文（非詞根）搭配自訓練嵌入（BLEU 21.03 → 25.10），但同樣的特徵搭配小語料預訓練嵌入反而使 BLEU 由 22.28 降至 12.09；金柏毅（2025）把族語句改寫為「詞綴字串形式」，並以兩個獨立 encoder 分別編碼詞與布林詞綴特徵、輸出串接（FC_ftr_jnt）。詞綴資訊的效果隨表示方式與嵌入來源而異，不宜一概而論。
-  * 詳見核心研究：[賽德克語－中文機器翻譯之研究（游景勝 2021）](../papers/2021-seediq-chinese-mt-you.md)、[使用詞綴資訊提升泛泰雅語機器翻譯效能（金柏毅 2025）](../papers/2025-atayalic-affix-mt-jin.md)。
+  * 把構詞資訊提供給翻譯模型的做法，在海大實驗室的研究中有兩種代表：游景勝（2021）把 52 維布林詞綴特徵拼接在詞的表示之後，最佳系統使用詞彙原文（非詞根）搭配自訓練嵌入（BLEU 21.03 → 25.10），但同樣的特徵搭配小語料預訓練嵌入反而使 BLEU 由 22.28 降至 12.09；金柏毅（2025）把族語句改寫為「詞綴字串形式」，並以兩個獨立 encoder 分別編碼詞與布林詞綴特徵、輸出串接（FC_ftr_jnt）。詞綴資訊的效果隨表示方式與嵌入來源而異，不宜一概而論。在子詞切分層面，Lumbantobing 與 Situngkir（2026）則借鏡印尼傳統 *aksara* 音節文字邏輯建構 2,843 詞元之音節分詞器，使 NusaX 十種印尼南島語維持 ~0.4 穩定字元詞元比並提高跨語局部序列相似度。
+  * 詳見核心研究：[賽德克語－中文機器翻譯之研究（游景勝 2021）](../papers/2021-seediq-chinese-mt-you.md)、[使用詞綴資訊提升泛泰雅語機器翻譯效能（金柏毅 2025）](../papers/2025-atayalic-affix-mt-jin.md)、[南島語系語言模型的音節分詞法（Lumbantobing & Situngkir 2026）](../papers/2026-tokenizations-austronesian-lms-lumbantobing.md)。
 
 * **跨語言遷移與多語言模型（Multilingual Transfer & Related Language Sharing）**：
   * 合併親屬語言的語料，以共享 BPE 子詞詞彙表與語言別標籤聯合訓練；或以資料較多的語言訓練父模型再微調。廖恒慶（2023）在泛泰雅三語上發現，未經子詞處理的直接合併效果不佳，共享 BPE 後的多語言系統優於單一族語，而以馬來語、印尼語父模型做遷移式學習又更好；作者認為訓練資料量的增加是主要因素。在純解碼器混合專家（MoE）大模型架構上，Bandarkar 等（2026）則以中間層路由器之序列平均權重分佈進行單向 KL 散度對齊，於 7 種目標語言與 4 款模型上改善跨語言遷移表現。

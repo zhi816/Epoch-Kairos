@@ -90,15 +90,6 @@
 - **等待**：使用者決定譯名（建議「全球化與貨幣控制」，或另擬）。
 - **來源**：2026-11-11 改名核對時發現（wiki/log.md [2026-11-11 12:27] fix「另發現」一項）；2026-11-11 登記，Claude Code by Anthropic。
 
-### TD-029 | doing | wiki | 收錄「我的關注」報告題材 3 篇已下載論文
-- **負責**：Antigravity by Google DeepMind（Gemini 4 Hydrogen），2026-11-14 開始
-- **內容**：經 2026-11-14 與使用者核對確認，從原 11 項推介清單移除查無對應論文或僅有資料集之項目（原第 2、3、8、9、10 項），以及原屬既有收錄篇目之不實延伸描述（原第 4、7、11 項之軟提示、方言隔離、增量詞表重置等說法，以實際論文為準）。目前僅收錄已下載至 `raw/my-focus/報告論文題材/` 之 3 篇論文，依 `paper-pipeline` S0–S10 逐篇完成立案、寫卡、建頁與上牆：
-  1. `2026-cross-lingual-alignment-moe-routers-bandarkar.pdf`（Bandarkar et al., arXiv:2610.01921，MoE 路由器跨語言對齊；原第 6 項）。
-  2. `2026-data-centric-continual-pretraining-ji.pdf`（Ji et al., Findings of ACL 2026, pp. 18776–18807, DOI: 10.18653/v1/2026.findings-acl.937，全參數持續預訓練；原第 1 項）。
-  3. `2026-tokenizations-austronesian-lms-lumbantobing.pdf`（Lumbantobing & Situngkir, arXiv:2602.06998，印尼南島語音節式分詞框架，按實際論文主題收錄；原第 5 項）。
-- **完成條件**：3 篇皆完成 `paper-pipeline` S0–S10 收錄立案、雙倉庫（`raw/my-focus/my-index.md` 與主倉庫）同步提交推送，`pipeline_status.py` 九步全數 OK，`lint_wiki.py` 無 ERROR。
-- **來源**：使用者指示（2026-11-12 提出；2026-11-14 核對確認範圍後由 Antigravity by Google DeepMind 接手執行）。
-
 ### TD-030 | open | web | 補齊 tools/build_home.py STUDY_TYPE 對照表之研究類型
 - **內容**：[2026-data-centric-continual-pretraining-ji](papers/2026-data-centric-continual-pretraining-ji.md) 為 `focus_languages: []` 之論文，卡片檔（[2026-data-centric-continual-pretraining-ji.md](cards/2026-data-centric-continual-pretraining-ji.md)）已填寫 `研究類型：多語預訓練`，但首頁星圖說明框目前仍讀取 `tools/build_home.py` 之 `STUDY_TYPE` 對照表（預設回退 `'綜述'`），導致兩處標籤不一致（見 `cover.md` 第七節）。
 - **完成條件**：將 `'2026-data-centric-continual-pretraining-ji': '多語預訓練'` 補入 `tools/build_home.py` `STUDY_TYPE`（或依 TD-008 規劃改由卡片檔統一讀取），重建 `web/index.html` 且 `build_home.py --check` 一致。
