@@ -23,6 +23,7 @@ papers:
   - "2026-data-centric-russian-kyrgyz-mt-novokshanov"
   - "2026-formosanmt-parallel-corpus-scheppat"
   - "2026-hybrid-dictionary-rag-llm-paiwan-wang"
+  - "2026-malm-backtranslation-indic-mt-rao"
   - "2026-tao-filipino-nmt-macayan"
   - "2026-tokenizations-austronesian-lms-lumbantobing"
 related_concepts:
@@ -58,8 +59,8 @@ verification: "partial"
   * 詳見核心研究：[泛泰雅語群與中文之多語言機器翻譯研究（廖恒慶 2023）](../papers/2023-atayalic-multilingual-mt-liao.md)、[達悟語－菲律賓語神經機器翻譯（Macayan et al. 2026）](../papers/2026-tao-filipino-nmt-macayan.md)、[FormosanMT 多語言平行語料庫（Scheppat et al. 2026）](../papers/2026-formosanmt-parallel-corpus-scheppat.md)、[利用混合專家路由器實現純解碼器模型之跨語言表徵對齊（Bandarkar et al. 2026）](../papers/2026-cross-lingual-alignment-moe-routers-bandarkar.md)。
 
 * **泛化資料增強與以資料為中心策略（Data Augmentation & Data-Centric Pipelines）**：
-  * 利用回譯（Back-Translation）、高資源語言轉化（HRL-to-LRL Pivot）、隨機替換與雙語詞典直接注入，合成高品質偽平行數據；搭配多階段課程學習與跨語言語義過濾器（如 SONAR）淘汰噪聲句對。在大規模大語言模型擴展上，Ji 等（2026）建構涵蓋 500 餘種語言與 2,507 個語言對的 MaLA 雙語翻譯語料庫，並透過單語與雙語混合配方進行全參數持續預訓練，實證納入雙語平行句對可顯著提升 204 語翻譯與低資源泛化能力。
-  * 詳見核心文獻：[低資源翻譯之泛化資料增強（Xia et al. 2019）](../papers/2019-generalized-data-augmentation-xia.md)、[芬蘭語－北薩米語回譯策略（Sälevä & Lignos 2024）](../papers/2024-finnish-northern-sami-mt-saleva.md)、[以雙語詞典提升臺灣南島語機器翻譯（Zheng et al. 2024）](../papers/2024-formosan-mt-bilingual-lexicon-zheng.md)、[五百餘語言的雙語持續預訓練（Ji et al. 2026）](../papers/2026-data-centric-continual-pretraining-ji.md)、[LoResMT 2026 突厥語冠軍資料策略（Novokshanov 2026）](../papers/2026-data-centric-russian-kyrgyz-mt-novokshanov.md)。
+  * 利用回譯（Back-Translation）、高資源語言轉化（HRL-to-LRL Pivot）、隨機替換與雙語詞典直接注入，合成高品質偽平行數據；搭配多階段課程學習與跨語言語義過濾器（如 SONAR）淘汰噪聲句對。針對多語品質評估模型（如 LaBSE、CometKiwi）尚未覆蓋的極低資源語言，Rao 等（2026）則提出僅從官方平行語料歸納 IBM Model 1 雙語詞彙表，結合借詞編輯距離擴充與 Morfessor 詞幹子字串匹配（MALM）過濾回譯資料，於 WMT 2026 僅 2,000 句對的那加梅斯語與 15,214 句對的博多語奪得第一名（同時揭示超過 5 萬平行句後合成回譯效益趨緩甚至倒退）。在大規模大語言模型擴展上，Ji 等（2026）建構涵蓋 500 餘種語言與 2,507 個語言對的 MaLA 雙語翻譯語料庫，並透過單語與雙語混合配方進行全參數持續預訓練，實證納入雙語平行句對可顯著提升 204 語翻譯與低資源泛化能力。
+  * 詳見核心文獻：[低資源翻譯之泛化資料增強（Xia et al. 2019）](../papers/2019-generalized-data-augmentation-xia.md)、[芬蘭語－北薩米語回譯策略（Sälevä & Lignos 2024）](../papers/2024-finnish-northern-sami-mt-saleva.md)、[以雙語詞典提升臺灣南島語機器翻譯（Zheng et al. 2024）](../papers/2024-formosan-mt-bilingual-lexicon-zheng.md)、[五百餘語言的雙語持續預訓練（Ji et al. 2026）](../papers/2026-data-centric-continual-pretraining-ji.md)、[LoResMT 2026 突厥語冠軍資料策略（Novokshanov 2026）](../papers/2026-data-centric-russian-kyrgyz-mt-novokshanov.md)、[以構詞感知詞彙過濾回譯資料提升低資源英語至印度諸語翻譯（Rao et al. 2026）](../papers/2026-malm-backtranslation-indic-mt-rao.md)。
 
 * **大型語言模型檢索增強生成與上下文學習（LLM ICL & RAG）**：
   * 當傳統微調因訓練集太小而發生過擬合時，利用外部詞典、語法手冊、翻譯記憶庫（Translation Memory）與密集檢索器，透過高語境容量（Context Volume）、片段少樣本（Fragment-Shot）或動態後編輯（Post-Editing），引導大模型完成高品質翻譯。
