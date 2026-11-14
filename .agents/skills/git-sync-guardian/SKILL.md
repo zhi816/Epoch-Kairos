@@ -35,8 +35,9 @@ description: >-
 - 在開始任何實質檔案編輯、或執行 pull 操作前，必須先執行 `git fetch origin main` 檢查遠端最新動態。
 - 若遠端領先（Behind），優先進行安全合流；若發現分岔，依規定執行三方合併（3-way merge），絕不以強制覆蓋（force push）抹除他人提交。
 
-### 3. 雙倉庫一體化覆蓋（Dual-Repo Parity）
-- 凡任務涉及 `raw/` 內之任何原始素材、文獻剪藏或新生成之 PDF 譯本，檢查與提交推送操作必須在主倉庫（`Epoch-Kairos`）與私有倉庫（`Mine-RAW`，位於 `raw/`）兩處同時執行。
+### 3. 雙倉庫最新同步與一體化覆蓋（Dual-Repo Freshness & Parity）
+- **每個任務都先更新兩邊**：無論本次工作是否會修改 `raw/`，開始實質編輯前一律執行 `status.py`，確認主倉庫（`Epoch-Kairos`）與私有倉庫（`Mine-RAW`，位於 `raw/`）都已向遠端 fetch。任一倉庫若落後，執行 `sync.py` 更新兩邊，再跑一次 `status.py`，確認兩邊 `Behind: 0` 後才開始編輯。主倉庫已最新不代表 Mine-RAW 已最新，不得因此略過 raw 倉庫。
+- **修改內容分倉庫提交**：主倉庫檔案在 `Epoch-Kairos` 提交推送；`raw/` 檔案在 `Mine-RAW` 提交推送。任務只修改其中一邊時，另一邊仍須完成前述遠端同步檢查。
 
 ### 4. 日誌並行合流原則（Log Append-Only Concurrency）
 - `wiki/log.md` 為追加模式（Append-only）。當多個 AI 同時在日誌末尾追加紀錄而產生 Git 合併衝突時，一律按時間戳記先後排序並保留所有條目，嚴禁覆蓋或抹除其他 AI 的工作紀錄。`scripts/merge_log.py` 可自動完成：已提交的條目順序不動，對方獨有的條目依時間插入。
@@ -139,15 +140,15 @@ python .agents/skills/git-sync-guardian/scripts/merge_log.py
 ## 四、標準作業程序 (SOP)
 
 ### SOP-1：開始新任務或提取更新
-1. 執行 `python .agents/skills/git-sync-guardian/scripts/status.py`（或 `status.sh`）查看狀態。若報 `git fetch` 權限錯誤，立即向沙盒申請 `.git` 寫入與網路權限後重跑。
-2. 若落後遠端，執行 `python .agents/skills/git-sync-guardian/scripts/sync.py`（或 `sync.sh`）同步最新成果。
+1. 每個新任務在實質編輯前，執行 `python .agents/skills/git-sync-guardian/scripts/status.py`（或 `status.sh`）；該指令會 fetch 主倉庫與 Mine-RAW 兩邊。不得只查主倉庫，即使本次工作不涉及 `raw/` 也一樣。
+2. 任一倉庫落後遠端時，執行 `python .agents/skills/git-sync-guardian/scripts/sync.py`（或 `sync.sh`）；腳本會檢查並同步兩邊。完成後再跑 `status.py`，確認兩邊 `Behind: 0`；fetch 或同步失敗時，先排除原因並重跑，不以舊狀態視為已更新。
 3. 接手脈絡依 `AGENTS.md` 第六章第 4 節取得：`git log --oneline -10`、整份閱讀 `wiki/todo.md`，仍需細節時以 `scripts/log_tail.py` 讀日誌最後幾筆；不得整份讀取 `wiki/log.md`。
 
 ### SOP-2：完成任務並固化成果
 1. 確認全專案無任何表情符號（Zero-Emoji）。
 2. 在 `wiki/log.md` 結尾**追加**符合 `AGENTS.md` 規範之條目（標明執行代理、底層模型、白名單標籤與具體變更）。本項工作若完成某筆待辦，同時從 `wiki/todo.md` 刪除該條目，並於日誌寫明編號。寫入日誌後立即進行第 3 步，不等使用者指示（鐵律 6）。
 3. 以 `git diff --stat` 確認哪些檔案是自己改的，再執行 `python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "<符合 Conventional Commits 格式之訊息>" main --agent "<代理名稱>" -- <自己的檔案> wiki/log.md`（或 `safe_commit_push.sh`；涉及待辦時加上 `--todo TD-NNN` 並列出 `wiki/todo.md`）；若 `raw/` 也有自己的修改，再以 `raw` 執行一次，確保兩處倉庫均推送成功。
-4. 確認腳本最後列出的「仍未提交的修改」都不是自己的；若有自己的檔案遺漏，補上後再執行一次。
+4. 確認腳本最後列出的「仍未提交的修改」都不是自己的；若有自己的檔案遺漏，補上後再執行一次。最後再跑 `status.py`，確認主倉庫與 Mine-RAW 的 `Behind` 皆為 0。
 
 ### SOP-3：遭遇 wiki/log.md 衝突時之排解
 `safe_commit_push.py` / `.sh` 與 `sync.py` / `.sh` 遇到「只有 `wiki/log.md` 衝突」時會自動呼叫 `merge_log.py` 排解。若需人工處理：

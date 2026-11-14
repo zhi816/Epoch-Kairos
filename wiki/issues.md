@@ -1234,3 +1234,8 @@
 - **來源**：[論文頁 Card 4–5](papers/1992-creative-destruction-aghion.md)；[證據表](evidence/1992-creative-destruction-aghion.md)；[Klette & Kortum NBER WP 8819](https://www.nber.org/papers/w8819) 摘要、§1；[Akcigit & Kerr NBER WP 16443](https://www.nber.org/papers/w16443) 摘要、§1、§3.1。NBER 書目頁分別列出 JPE 2004 與 2018 發表版本；本次未取得兩篇正式版全文，論文頁明示依據工作論文版本的主張。
 - **發現於**：wiki/log.md [2026-11-14 11:05] audit（Codex by OpenAI）。
 - **處理**：2026-11-14，Codex by OpenAI（GPT-6）。移除 Card 5 無直接來源的國家活力診斷，以及既得利益者遊說導致中等收入陷阱與長期停滯之因果主張；重寫 Card 4，分開記錄 Klette & Kortum 的企業創新一般均衡模型，以及 Akcigit & Kerr 工作論文版的探索型／利用型研發、資料來源與專利引用結果，移除未被支持的企業類型 TFP 貢獻比例。同步修訂 Card 5 里程碑、證據表與論文頁，將 verification 設為 partial；正式 JPE 全文未取得，現行文字已明示所採工作論文版本，詳見證據表。
+
+### EK-226 | open | papers/2026-malm-backtranslation-indic-mt-rao.md | Card 6 第 1–2 點 | 過度表述
+- **問題**：第 1 點稱 MALM 的設計「證明」詞幹濾網能攔截偏離句並保留有效合成訊號；第 2 點稱四種語料規模「證明」約 50,000 句是資源轉折門檻，並把結果歸因於反向模型有限精度造成的分佈偏差。原文表 5 與 §5 比較「MALM 過濾回譯加官方語料」和「僅官方語料」，可支持這兩種訓練配置的結果差異，不能單獨驗證濾網辨識噪聲的能力或其因果貢獻；作者也將「未過濾合成資料」與「MALM 過濾資料」的直接比較列為未來工作。四個方向的結果亦不足以證明普遍適用的 50,000 句門檻或未經測量的有限精度／分佈偏差機制。
+- **來源**：[原文 PDF](../raw/my-focus/報告論文題材/2026.wmt-main.160.pdf)，印刷頁 2211（PDF p. 5），§5、Table 5、§6。
+- **發現於**：wiki/log.md [2026-11-14 15:38] audit（Codex by OpenAI）。

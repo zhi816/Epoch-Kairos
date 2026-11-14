@@ -2367,3 +2367,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：將論文 PDF 視覺還原與排版檢查流程模組化收錄至 [academic-paper-translator](../.agents/skills/academic-paper-translator/SKILL.md)：新增 [measure_pdf.py](../.agents/skills/academic-paper-translator/scripts/measure_pdf.py)（原 PDF 紙張／邊距／欄數／字型量測、逐頁 PNG 轉檔與 `--auto-figures` / `--crop` 原圖區域高解析裁切）、[html_to_pdf.py](../.agents/skills/academic-paper-translator/scripts/html_to_pdf.py)（跨平台自動偵測本機 Chrome/Edge/Chromium 編譯 PDF 並等待 KaTeX 與字型渲染完成）與 [layout-recipes.md](../.agents/skills/academic-paper-translator/references/layout-recipes.md)（A4／US Letter `@page` 配方、單／雙／跨欄排版、三類表格樣式、多語字體堆疊、KaTeX 向量公式標準與原圖回嵌流程）。已實測於 `2026.wmt-main.160.pdf` 版面量測、`2026-cross-lingual-alignment-moe-routers-bandarkar.pdf` 六張向量圖形自動裁切，以及 HTML 轉 PDF（6 頁輸出驗證無誤）。
+
+## [2026-11-14 15:40] audit | 查核 Rao 等（2026）印度翻譯論文並補齊雙倉庫同步規則 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：回核 Rao 等（2026）原文 pp. 2207–2211，檢查書目、任務方向、方法描述、表 1–5 數值與論文頁 Card 1–6 主要主張；數值與排名大致相符，Card 6 兩處因果與門檻說法超出「過濾回譯對比僅官方語料」的證據，新增 EK-226、將論文頁 verification 設為 issues 並重建網頁。更新 [git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md)，規定每個任務都檢查及同步 Epoch-Kairos 與 Mine-RAW，並於完成後複查兩邊遠端狀態。Crossref OK、卡片檢查 ERROR 0／WARN 0、論文頁建置 ERROR 0／WARN 0、首頁資料一致、全庫 lint ERROR 0／WARN 21（既有提醒）；Mine-RAW 無檔案變更。

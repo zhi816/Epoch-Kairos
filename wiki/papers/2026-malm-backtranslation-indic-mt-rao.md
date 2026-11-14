@@ -18,7 +18,7 @@ key_papers:
   - "Gala et al. (2023) IndicTrans2: Towards high-quality and accessible machine translation models for all 22 scheduled Indian languages. arXiv:2305.16307"
   - "Dettmers et al. (2023) QLoRA: Efficient finetuning of quantized LLMs. NeurIPS 36:10088-10115"
 status: "published"
-verification: "verified"
+verification: "issues"
 my_focus: true
 focus_role: "report"
 focus_languages: ["阿薩姆語", "博多語", "米佐語", "那加梅斯語"]
