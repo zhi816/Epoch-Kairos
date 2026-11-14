@@ -4,9 +4,9 @@
 >
 > 不收：Wiki 內容與原文不符之處（登記於 [issues.md](issues.md)）、美術方向之選擇題（登記於 [DESIGN.md](../DESIGN.md) 第八章）。
 
-### TD-001 | open | wiki | 收錄原始 PDF 已入 raw/ 之 6 個立案條目
-- **內容**：[index.md](index.md) 中下列 `[planned]` 條目之原始 PDF，已於 2026-11-09 由 Antigravity 標準化檔名後置於 `raw/` 根目錄，可依第六章 Ingest 逐篇收錄（Crossref 核驗、證據表、論文頁、概念頁、`card_line`）：MOFs（`1999-metal-organic-frameworks-mof5.pdf`）、Treg（`1995-treg-immune-tolerance.pdf`、`2001-foxp3-scurfin.pdf`）、microRNA（`1993-microrna-lin4-ambros.pdf`、`1993-microrna-lin14-ruvkun.pdf`）、GLP-1（`1987-glp1-receptor-agonist.pdf`）、水稻 QT12（`2025-rice-qt12-thermotolerance.pdf`）、鹼基編輯療法（`2025-in-vivo-base-editing.pdf`）。Soai 不對稱自催化（`1995-soai-asymmetric-autocatalysis`）已於 2026-11-11 由多 AI 協同戰隊完成 S0–S10 收錄上架。這些條目在 index.md 中仍註記「`raw/` 暫無原始檔」，收錄時一併更正。2026-11-10 起一律依 [`paper-pipeline`](../.agents/skills/paper-pipeline/SKILL.md) 之 S0 至 S10 收錄，從原始檔做到首頁上架（含證據表、論文頁、概念頁與索引、卡片、論文頁網頁、星圖與卡片牆），不再只做到論文頁。主題安全性：MOFs（化學）可直接收錄；Treg、FOXP3、microRNA、GLP-1、鹼基編輯療法、水稻 QT12 屬生物醫學或農業，撰寫時回應可能被系統安全機制中止（2026-11-10 使用者指示，可能被攔截之論文先跳過），動工前先問使用者由哪個對話或模型處理。
-- **完成條件**：6 個條目皆依 `paper-pipeline` 收錄完成：`python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug>` 九步皆 OK，index.md 對應條目已改為連結並標 `[published]`，`lint_wiki.py` 無 ERROR。可逐篇進行，每收錄一篇即從本條內容移除該篇。
+### TD-001 | open | wiki | 收錄原始 PDF 已入 raw/ 之 5 個立案條目
+- **內容**：[index.md](index.md) 中下列 `[planned]` 條目之原始 PDF，已於 2026-11-09 由 Antigravity 標準化檔名後置於 `raw/` 根目錄，可依第六章 Ingest 逐篇收錄（Crossref 核驗、證據表、論文頁、概念頁、`card_line`）：Treg（`1995-treg-immune-tolerance.pdf`、`2001-foxp3-scurfin.pdf`）、microRNA（`1993-microrna-lin4-ambros.pdf`、`1993-microrna-lin14-ruvkun.pdf`）、GLP-1（`1987-glp1-receptor-agonist.pdf`）、水稻 QT12（`2025-rice-qt12-thermotolerance.pdf`）、鹼基編輯療法（`2025-in-vivo-base-editing.pdf`）。Soai 不對稱自催化（`1995-soai-asymmetric-autocatalysis`）已於 2026-11-11 由多 AI 協同戰隊完成 S0–S10 收錄上架；MOFs（`1999-metal-organic-frameworks-mof5`）已於 2026-11-14 由 Claude Code 擔任總指揮、調度六個子代理完成 S0–S10 收錄上架。這些條目在 index.md 中仍註記「`raw/` 暫無原始檔」，收錄時一併更正。2026-11-10 起一律依 [`paper-pipeline`](../.agents/skills/paper-pipeline/SKILL.md) 之 S0 至 S10 收錄，從原始檔做到首頁上架（含證據表、論文頁、概念頁與索引、卡片、論文頁網頁、星圖與卡片牆），不再只做到論文頁。主題安全性：Treg、FOXP3、microRNA、GLP-1、鹼基編輯療法、水稻 QT12 屬生物醫學或農業，撰寫時回應可能被系統安全機制中止（2026-11-10 使用者指示，可能被攔截之論文先跳過），動工前先問使用者由哪個對話或模型處理。
+- **完成條件**：5 個條目皆依 `paper-pipeline` 收錄完成：`python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug>` 九步皆 OK，index.md 對應條目已改為連結並標 `[published]`，`lint_wiki.py` 無 ERROR。可逐篇進行，每收錄一篇即從本條內容移除該篇。
 - **來源**：wiki/log.md [2026-11-09 09:18] git（raw/ 檔名標準化）與 index.md 原「待辦與已知問題」一節；2026-11-09 登記，Claude Code by Anthropic。
 
 ### TD-002 | open | web | 論文頁深色重點色寫入 theme.css，其餘 4 篇隨卡片轉為 published
@@ -23,7 +23,7 @@
 ### TD-004 | waiting | wiki | 補填日誌條目之「模型版本」欄
 - **內容**：下列日誌條目之「模型版本」欄為佔位文字「本次工作階段之平台政策禁止將模型型號寫入版控檔案，請使用者自行補填」，不符第九章須載明模型版本之規定：[2026-11-06 22:12] rule、[2026-11-07 22:47] 四筆（rule、fix、update、audit）、[2026-11-08 14:14] git。2026-11-10 TD-014 試跑之工作階段同樣受平台規範限制，[2026-11-10 12:23] ingest、[2026-11-10 12:25] fix 與 [2026-11-10 12:33] rule 三筆之「模型版本」欄、`wiki/evidence/1985-macroscopic-quantum-tunneling.md` 之「查核者」與 `wiki/cards/1985-macroscopic-quantum-tunneling.md` 之「撰寫者」「最後核對」皆以佔位文字代替型號（型號已於對話中告知使用者）。
 - **完成條件**：依使用者決定補填或註記完畢；若決定維持原樣，經同意後刪除本條。
-- **等待**：使用者提供當時之模型型號，並決定直接補入原條目（屬修改舊條目，須使用者明示同意）、另追加更正條目，或維持原樣。
+- **等待**：（2026-11-14 補記：[2026-11-14 22:07] ingest 一筆之總指揮「模型版本」欄同樣以佔位文字代替，型號已於對話中告知使用者。）使用者提供當時之模型型號，並決定直接補入原條目（屬修改舊條目，須使用者明示同意）、另追加更正條目，或維持原樣。
 - **來源**：wiki/log.md [2026-11-07 22:47] audit「待使用者處理」第 1 項；2026-11-09 登記，Claude Code by Anthropic。
 
 ### TD-007 | waiting | wiki | 建立證據表「類型」欄白名單並清點違規列

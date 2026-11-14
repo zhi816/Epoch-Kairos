@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOF-5 金屬有機骨架｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--focus)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#FFB6A3;--deep:#693123;--win:#272222;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.07</span><span>化學</span></div><div class="win"><i style="left:59.7%;top:44.6%;width:1px;height:1px;opacity:0.58"></i><i style="left:67.1%;top:25.5%;width:1.5px;height:1.5px;opacity:0.42"></i><i style="left:94.6%;top:39.1%;width:1px;height:1px;opacity:0.40"></i><i style="left:66.9%;top:23.7%;width:1px;height:1px;opacity:0.37"></i><i style="left:64.4%;top:30.7%;width:1px;height:1px;opacity:0.47"></i><i style="left:86.1%;top:30.0%;width:1px;height:1px;opacity:0.36"></i><i style="left:22.0%;top:22.6%;width:1px;height:1px;opacity:0.38"></i><i style="left:65.9%;top:39.2%;width:1px;height:1px;opacity:0.38"></i><i style="left:92.5%;top:32.3%;width:1px;height:1px;opacity:0.31"></i><i style="left:45.2%;top:7.9%;width:1px;height:1px;opacity:0.76"></i><i style="left:5.3%;top:40.3%;width:1px;height:1px;opacity:0.56"></i><i style="left:80.3%;top:21.3%;width:1px;height:1px;opacity:0.66"></i><i style="left:93.0%;top:42.3%;width:1px;height:1px;opacity:0.33"></i><i style="left:23.9%;top:42.6%;width:1px;height:1px;opacity:0.77"></i><span class="rep award"></span><span class="line"><span>合成金屬有機骨架，</span><span>抽乾溶劑仍維持孔洞</span></span></div><div class="tags">化學、材料與能源・#材料科學 #化學合成</div><div class="name">MOF-5 金屬有機骨架</div><div class="lead">把剛性的鋅氧團簇和有機二羧酸接起來，做出三維骨架；抽乾溶劑之後孔洞仍在，不必靠客體分子撐著。</div><div class="yrs">1999 發表 ｜ 2025 諾貝爾化學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">抽乾溶劑，<br>孔洞還留得住嗎？</span><div class="rows"><div class="row"><b>沸石</b><span>傳統使用的微孔無機材料；有機骨架有潛力做到更彈性的理性設計</span></div><div class="row"><b>開放骨架</b><span>少了客體分子支撐，就無法維持孔隙而坍塌</span></div><div class="row gap"><b>設計策略</b><span>缺一套不靠客體分子也能維持孔洞的方法</span></div></div><span class="ft" style="color:var(--ink)">要有一種不靠客體、自己撐住孔洞的組裝方式。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">讓剛性單元自己撐起孔洞</span><svg class="dia" viewBox="0 0 300 140" role="img" aria-label="示意：鋅氧團簇當節點、有機支柱當連結，前後兩層疊成簡單立方骨架並留下孔洞。">
+  <line class="k-ink" x1="58" y1="42" x2="122" y2="42"/>
+  <line class="k-ink" x1="122" y1="42" x2="122" y2="106"/>
+  <line class="k-ink" x1="122" y1="106" x2="58" y2="106"/>
+  <line class="k-ink" x1="58" y1="106" x2="58" y2="42"/>
+  <line class="k-ink" x1="82" y1="18" x2="146" y2="18"/>
+  <line class="k-ink" x1="146" y1="18" x2="146" y2="82"/>
+  <line class="k-muted" x1="146" y1="82" x2="82" y2="82"/>
+  <line class="k-muted" x1="82" y1="82" x2="82" y2="18"/>
+  <line class="k-ink" x1="58" y1="42" x2="82" y2="18"/>
+  <line class="k-ink" x1="122" y1="42" x2="146" y2="18"/>
+  <line class="k-ink" x1="122" y1="106" x2="146" y2="82"/>
+  <line class="k-muted" x1="58" y1="106" x2="82" y2="82"/>
+  <circle class="k-line k-ring k-thin" cx="102" cy="62" r="16"/>
+  <circle class="k-accent" cx="58" cy="42" r="4.5"/>
+  <circle class="k-accent" cx="122" cy="42" r="4.5"/>
+  <circle class="k-accent" cx="122" cy="106" r="4.5"/>
+  <circle class="k-accent" cx="58" cy="106" r="4.5"/>
+  <circle class="k-accent" cx="82" cy="18" r="4.5"/>
+  <circle class="k-accent" cx="146" cy="18" r="4.5"/>
+  <circle class="k-accent" cx="146" cy="82" r="4.5"/>
+  <circle class="k-muted" cx="82" cy="82" r="4.5"/>
+  <text class="k-label-accent" x="102" y="66" text-anchor="middle">孔洞</text>
+  <text class="k-label" x="52" y="34" text-anchor="end">鋅氧團簇</text>
+  <text class="k-label" x="102" y="118" text-anchor="middle">有機支柱</text>
+</svg><span class="tx" style="margin-top:auto;color:var(--ink2)">鋅氧團簇當節點、剛性有機二羧酸當支柱，組成三維簡單立方骨架並留下孔洞。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">2,900</span><span class="l">m² g⁻¹ 表觀 Langmuir 值；大孔洞下單層未必成立</span></div><div class="stat"><span class="v">0.59</span><span class="l">g cm⁻³ 脫溶劑晶體密度，結晶材料中最低之一</span></div><div class="stat"><span class="v">300 °C</span><span class="l">脫溶劑後空氣加熱 24 h 仍為單晶，晶胞參數同加熱前</span></div><div class="stat"><span class="v">80%</span><span class="l">重疊凡得瓦球置於原子位置，未佔空間佔晶體體積</span></div></div><span class="ft">範圍：Li 1999，單晶繞射與 78 K 氮氣吸附；表面積為 Langmuir 估計</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">孔徑與官能基，<br>可以按設計調整</span><div class="time"><p><b>2002</b><span>Eddaoudi 等做出 16 種骨架，孔徑與官能基可調</span></p><p><b>2003</b><span>Rosi 等量出儲氫量，並指出氫的兩種結合位點</span></p><p><b>2003</b><span>Yaghi 等提出網狀合成，用次級建構單元設計骨架</span></p><p><b>2025</b><span>Kitagawa、Robson 與 Yaghi 獲諾貝爾化學獎</span></p></div><span class="ft">前三項為後續研究，非本篇成果；得獎者含非本篇作者</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">孔洞不是靠溶劑撐出來的，而是靠團簇與支柱的剛性；表面積也要連假設一起讀。</span><span class="shift"><span>靠客體支撐</span><i aria-hidden="true"></i><b>靠剛性組裝</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">1999 發表 ｜ 2025 諾貝爾化學獎</span>
+<h1>MOF-5 金屬有機骨架：具備永久孔隙與高熱穩定性的網狀晶體</h1>
+<p class="en">Design and synthesis of an exceptionally stable and highly porous metal-organic framework</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">把四核鋅氧羧酸團簇接上剛性有機二羧酸連接子，抽乾溶劑甚至加熱至 <span class="m-in" data-tex="300\,{}^\circ\mathrm{C}"></span> 後，晶體骨架依然沒有坍塌，留下了表觀表面積與孔隙體積均高於多數多孔結晶沸石的永久孔隙結構。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>1999 年，Li、Eddaoudi、O'Keeffe 與 Yaghi 在《Nature》報告了一種命名為 <strong>MOF-5</strong> 的三維金屬有機骨架（合成態化學式 <span class="m-in" data-tex="\mathrm{Zn_4O(BDC)_3\cdot(DMF)_8(C_6H_5Cl)}"></span>，p. 277；完全脫溶劑態為 <span class="m-in" data-tex="\mathrm{Zn_4O(BDC)_3}"></span>，p. 278 Fig. 2 圖說）。作者在摘要指出，開放式金屬有機骨架雖在催化、分離、氣體儲存與分子辨識等應用備受期待，且相較於沸石等傳統無機微孔材料更有潛力透過孔洞結構與官能化進行理性設計，但過去這類開放骨架一旦缺乏溶劑等客體分子支撐便會坍塌，無法維持永久孔隙（p. 276）。</p>
+<p>本篇借鏡金屬羧酸鹽團簇化學，將四核超四面體鋅氧羧酸團簇作為剛性次級建構單元（secondary building unit），以剛性、平面且呈發散幾何的 1,4-苯二甲酸（BDC）二羧酸連接子組裝成簡單立方拓撲的三維骨架（pp. 276–278）。單晶 X 光繞射證實，MOF-5 在完全移除客體溶劑後以及在空氣中加熱至 <span class="m-in" data-tex="300\,{}^\circ\mathrm{C}"></span> 維持 <span class="m-in" data-tex="24\,\mathrm{h}"></span> 仍保有單晶結構與結晶性（pp. 276, 278–279），並呈現可逆 I 型氣體與有機蒸氣吸附等溫線，其表觀比表面積與孔隙體積高於多數多孔結晶沸石（pp. 277, 279）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：沸石的設計限制與早期開放骨架的坍塌</h2></div>
+<p>依據原文摘要與結構對照段（pp. 276–278），當時多孔結晶材料的設計面臨的瓶頸與待轉換的前例如下：</p>
+<ul><li><strong>傳統無機微孔材料（沸石，zeolites）</strong>：沸石為傳統使用的微孔無機材料，作者指出相較之下，有機骨架具備透過孔洞構型控制與官能化進行更彈性理性設計的潛力（"potential for more flexible rational design"，p. 276）；同時沸石的莫耳質量通常高於 <span class="m-in" data-tex="\mathrm{Zn_4O(BDC)_3}"></span>，孔隙體積介於方沸石（analcime）<span class="m-in" data-tex="0.18\,\mathrm{cm^3\,cm^{-3}}"></span> 至沸石 A（zeolite A）<span class="m-in" data-tex="0.47\,\mathrm{cm^3\,cm^{-3}}"></span>（引用 Breck 1974，p. 279）。</li><li><strong>先前的開放式金屬有機骨架（open metal–organic frameworks，refs 14–15）</strong>：此前文獻中的開放式金屬有機骨架無法在缺少溶劑等客體分子時支撐永久孔隙並避免骨架坍塌，這項穩定性缺陷阻礙了該領域的進一步推進（p. 276）。</li><li><strong>可參照但待轉換的無機團簇骨架（磷酸鋅，zinc phosphate，ref. 17）</strong>：文獻中已知一種與本篇結構相關的磷酸鋅骨架，其中以 <span class="m-in" data-tex="\mathrm{PO_4}"></span> 四面體的 <span class="m-in" data-tex="\mathrm{P}"></span> 原子取代 <span class="m-in" data-tex="\mathrm{C}"></span> 原子來連接團簇（p. 278，ref. 17）；本篇將其中的 <span class="m-in" data-tex="\mathrm{O_2-P-O_2}"></span> 磷酸橋聯替換為剛性有機二羧酸 <span class="m-in" data-tex="\mathrm{O_2-C-C_6H_4-C-O_2}"></span>（BDC）「支柱」（struts），以形成具備三維交叉孔道系統（相鄰團簇中心距 <span class="m-in" data-tex="12.94\,\text{\AA}"></span>）的延伸網絡（p. 278）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：超四面體次級建構單元與網狀支柱組裝</h2></div>
+<p>原文沒有編號公式或展示公式（僅在孔隙體積計算時提及使用 Dubinin–Raduskhvich 方程式，p. 279），本篇的合成與結構原理可歸納為四個步驟（pp. 277–279）：</p>
+<ol><li><strong>以四核鋅氧羧酸團簇作為剛性次級建構單元（SBU）</strong>：借鏡乙酸鹽、苯甲酸鹽與新戊酸鹽等金屬羧酸鹽團簇（ref. 16），由單個中心氧原子（<span class="m-in" data-tex="\mathrm{O}^{2-}"></span>）與四個鋅離子（<span class="m-in" data-tex="\mathrm{Zn}^{2+}"></span>）鍵結形成正 <span class="m-in" data-tex="\mathrm{Zn_4O}"></span> 四面體，該四面體的六條邊各由一個羧酸根 <span class="m-in" data-tex="-\mathrm{CO_2}"></span> 基團封端橋聯，構成對稱且剛性的 <span class="m-in" data-tex="\mathrm{Zn_4(O)(CO_2)_6}"></span> 超四面體團簇（pp. 277–278，Fig. 1）。</li><li><strong>以二羧酸連接子取代單羧酸封端並合成晶體</strong>：作者以剛性、平面、雙向發散的 1,4-苯二甲酸（<span class="m-in" data-tex="\mathrm{H_2BDC}"></span>）取代原先形成離散團簇的單羧酸，在硝酸鋅與 <span class="m-in" data-tex="\mathrm{H_2BDC}"></span> 的 <span class="m-in" data-tex="N,N&#x27;"></span>-二甲基甲醯胺（DMF）／氯苯溶液中加入少量過氧化氫（促進團簇中心 <span class="m-in" data-tex="\mathrm{O}^{2-}"></span> 形成），並使三乙胺擴散進入溶液使其去質子化並配位自組裝，析出無色立方晶體 MOF-5（<span class="m-in" data-tex="\mathrm{Zn_4O(BDC)_3\cdot(DMF)_8(C_6H_5Cl)}"></span>，p. 277）。</li><li><strong>簡單立方六連接（simple cubic six-connected）拓撲構築</strong>：從拓撲上看，MOF-5 由簡單立方六連接網絡兩階段衍生——先以 <span class="m-in" data-tex="\mathrm{Zn_4(O)(CO_2)_6}"></span> 團簇取代網絡頂點，再以 <span class="m-in" data-tex="\mathrm{O_2-C-C_6H_4-C-O_2}"></span>（BDC）有限長度的剛性「支柱」（struts）取代邊（對應將相關磷酸鋅骨架 ref. 17 的 <span class="m-in" data-tex="\mathrm{O_2-P-O_2}"></span> 橋聯替換為 BDC），形成相鄰團簇中心距 <span class="m-in" data-tex="12.94\,\text{\AA}"></span> 的三維交叉孔道系統（pp. 277–278，Fig. 1–2）。</li><li><strong>溫和客體交換與真空脫溶劑</strong>：由於孔道內客體具有高移動性，作者先以氯仿（<span class="m-in" data-tex="\mathrm{CHCl_3}"></span>）完全交換出原始的 DMF 與氯苯，再於室溫與 <span class="m-in" data-tex="5 \times 10^{-5}\,\mathrm{torr}"></span> 抽真空 <span class="m-in" data-tex="3\,\mathrm{h}"></span> 內將氯仿完全抽離；接著以元素微分析、固態 <span class="m-in" data-tex="^{13}\mathrm{C}"></span> NMR、質譜與熱重分析確認無客體殘留，以光學顯微鏡顯示晶體維持透明、形貌與結晶性，再以單晶 X 光繞射證實完全脫溶劑態仍呈單晶性且晶胞參數與原子位置和合成態一致（pp. 278–279）。</li></ol>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Li et al. 1999）之核心證據</h3>
+<ul><li><strong>單晶 X 光繞射與熱穩定性（Fig. 2 圖說，p. 278；p. 279）</strong>：合成態 <span class="m-in" data-tex="\mathrm{Zn_4O(BDC)_3\cdot(DMF)_8(C_6H_5Cl)}"></span> 單晶於 <span class="m-in" data-tex="213 \pm 2\,\mathrm{K}"></span> 屬立方晶系、空間群 <span class="m-in" data-tex="Fm\bar{3}m"></span>，<span class="m-in" data-tex="a = 25.6690(3)\,\text{\AA}"></span>、<span class="m-in" data-tex="V = 16,913.2(3)\,\text{\AA}^3"></span>（原文圖說印為 Å）、<span class="m-in" data-tex="Z = 8"></span>（元素分析實測／計算：C 43.25% / 44.21%、H 5.29% / 5.02%、N 7.56% / 7.64%、Zn 17.04% / 17.82%）。完全脫溶劑態 <span class="m-in" data-tex="\mathrm{Zn_4O(BDC)_3}"></span>（實驗式 <span class="m-in" data-tex="\mathrm{C_{24}H_{12}O_{13}Zn_4}"></span>）於 <span class="m-in" data-tex="169 \pm 2\,\mathrm{K}"></span> 測得空間群仍為 <span class="m-in" data-tex="Fm\bar{3}m"></span>，<span class="m-in" data-tex="a = 25.8849(3)\,\text{\AA}"></span>、<span class="m-in" data-tex="V = 17,343.6(8)\,\text{\AA}^3"></span>、<span class="m-in" data-tex="Z = 8"></span>（<span class="m-in" data-tex="R = 0.023"></span>、<span class="m-in" data-tex="R_w = 0.026"></span>；元素分析實測／計算：C 36.94% / 37.45%、H 1.66% / 1.57%、N 0.26% / 0.00%）。完全脫溶劑晶體於空氣中在 <span class="m-in" data-tex="300\,{}^\circ\mathrm{C}"></span> 加熱 <span class="m-in" data-tex="24\,\mathrm{h}"></span> 後，形貌與單晶性不變，於 <span class="m-in" data-tex="149 \pm 2\,\mathrm{K}"></span> 測得空間群仍為 <span class="m-in" data-tex="Fm\bar{3}m"></span>、<span class="m-in" data-tex="a = 25.8496(3)\,\text{\AA}"></span>；熱重分析（TGA）顯示至 <span class="m-in" data-tex="410\,{}^\circ\mathrm{C}"></span> 無重量損失，固態 <span class="m-in" data-tex="^{13}\mathrm{C}"></span> NMR 與質譜（<span class="m-in" data-tex="22\text{–}350\,{}^\circ\mathrm{C}"></span>）均無客體訊號。差值傅立葉（<span class="m-in" data-tex="\Delta F"></span>）電子密度圖最高峰與最低谷由合成態之 <span class="m-in" data-tex="1.56"></span> 與 <span class="m-in" data-tex="-0.45\,\mathrm{e/\text{\AA}^3}"></span> 降至脫溶劑態之 <span class="m-in" data-tex="0.25"></span> 與 <span class="m-in" data-tex="-0.17\,\mathrm{e/\text{\AA}^3}"></span>。</li><li><strong>極低晶體密度與雙尺寸孔穴幾何（pp. 277–279）</strong>：脫溶劑晶體密度為 <span class="m-in" data-tex="0.59\,\mathrm{g\,cm^{-3}}"></span>，作者指出這在當時所有結晶材料中屬於最低紀錄之一（"among the lowest recorded for any crystalline material"，p. 279）。將具凡得瓦半徑的重疊球（<span class="m-in" data-tex="\mathrm{Zn}\,1.5\,\text{\AA}"></span>、<span class="m-in" data-tex="\mathrm{H}\,1.2\,\text{\AA}"></span>、<span class="m-in" data-tex="\mathrm{C}\,1.7\,\text{\AA}"></span>、<span class="m-in" data-tex="\mathrm{O}\,1.5\,\text{\AA}"></span>）置於原子位置計，晶體中未被骨架原子佔據的空間佔比達 <span class="m-in" data-tex="80\%"></span>（pp. 278–279）。非骨架空間分為兩種由 C、H 原子圍成的孔穴：較大孔穴可容納直徑 <span class="m-in" data-tex="15.1\,\text{\AA}"></span> 的球體（72 個 <span class="m-in" data-tex="\mathrm{C}"></span> 原子距中心 <span class="m-in" data-tex="9.26\,\text{\AA}"></span>、48 個 <span class="m-in" data-tex="\mathrm{H}"></span> 原子距中心 <span class="m-in" data-tex="9.47\,\text{\AA}"></span>；Fig. 1 以接觸 72 個 <span class="m-in" data-tex="\mathrm{C}"></span> 原子尺度標示直徑 <span class="m-in" data-tex="18.5\,\text{\AA}"></span> 黃球），較小孔穴可容納直徑 <span class="m-in" data-tex="11.0\,\text{\AA}"></span> 的球體（24 個 <span class="m-in" data-tex="\mathrm{H}"></span> 原子距中心 <span class="m-in" data-tex="7.10\,\text{\AA}"></span>、24 個 <span class="m-in" data-tex="\mathrm{C}"></span> 原子距中心 <span class="m-in" data-tex="7.97\,\text{\AA}"></span>），連通孔口可讓直徑 <span class="m-in" data-tex="8.0\,\text{\AA}"></span> 的球體通過（8 個 <span class="m-in" data-tex="\mathrm{H}"></span> 原子距中心 <span class="m-in" data-tex="5.10\,\text{\AA}"></span>、8 個 <span class="m-in" data-tex="\mathrm{C}"></span> 原子距中心 <span class="m-in" data-tex="5.70\,\text{\AA}"></span>）；原始客體 <span class="m-in" data-tex="8 \times (8\,\mathrm{DMF} + 1\,\mathrm{C_6H_5Cl})"></span> 依液體莫耳體積計佔 <span class="m-in" data-tex="9,512\,\text{\AA}^3"></span>（晶胞體積之 <span class="m-in" data-tex="55\%"></span>）（p. 279）。</li><li><strong><span class="m-in" data-tex="\mathrm{N_2}"></span> 吸附等溫線與表觀 Langmuir 比表面積（Fig. 3，p. 278；p. 279）</strong>：以 Cahn 1000 電微量天平測量（<span class="m-in" data-tex="0.2\,\mathrm{mm}"></span> 大晶體與 <span class="m-in" data-tex="30\,\mu\mathrm{m}"></span> 微晶結果一致），<span class="m-in" data-tex="\mathrm{N_2}"></span> 於 <span class="m-in" data-tex="78\,\mathrm{K}"></span>（<span class="m-in" data-tex="P_0 = 746\,\mathrm{torr}"></span>）呈現可逆 I 型等溫線且脫附無遲滯（Fig. 3）。假設 <span class="m-in" data-tex="\mathrm{N_2}"></span> 單層覆蓋下，表觀 Langmuir 比表面積估計為 <span class="m-in" data-tex="2,900\,\mathrm{m^2\,g^{-1}}"></span>；原文明確保留指出，「對如此巨大的孔穴而言，單層覆蓋假設未必嚴格成立」（"which may not be strictly correct with such large cavities"，p. 279）。</li><li><strong>氣體與有機蒸氣吸附（Table 1，p. 277；p. 279）</strong>：以 Dubinin–Raduskhvich 方程式算得各種吸附質的孔隙自由體積為 <span class="m-in" data-tex="0.54\text{–}0.61\,\mathrm{cm^3\,cm^{-3}}"></span>，結果近乎一致（對客體物種可及空間為 <span class="m-in" data-tex="55\text{–}61\%"></span>），顯示孔洞均一，且高於文獻所引沸石範圍（方沸石 <span class="m-in" data-tex="0.18\,\mathrm{cm^3\,cm^{-3}}"></span> 至沸石 A <span class="m-in" data-tex="0.47\,\mathrm{cm^3\,cm^{-3}}"></span>，ref. 19）。Table 1 逐列量測結果如下：<ul><li><strong><span class="m-in" data-tex="\mathrm{Ar}"></span>（<span class="m-in" data-tex="T = -194\,{}^\circ\mathrm{C}"></span>）</strong>：吸附量 <span class="m-in" data-tex="1,492\,\mathrm{mg\,g^{-1}}"></span>，每晶胞 <span class="m-in" data-tex="230"></span> 個分子，自由體積 <span class="m-in" data-tex="1.03\,\mathrm{cm^3\,g^{-1}}"></span>（<span class="m-in" data-tex="0.61\,\mathrm{cm^3\,cm^{-3}}"></span>）。</li><li><strong><span class="m-in" data-tex="\mathrm{N_2}"></span>（<span class="m-in" data-tex="T = -194\,{}^\circ\mathrm{C}"></span>）</strong>：吸附量 <span class="m-in" data-tex="831\,\mathrm{mg\,g^{-1}}"></span>，每晶胞 <span class="m-in" data-tex="183"></span> 個分子，自由體積 <span class="m-in" data-tex="1.04\,\mathrm{cm^3\,g^{-1}}"></span>（<span class="m-in" data-tex="0.61\,\mathrm{cm^3\,cm^{-3}}"></span>）。</li><li><strong><span class="m-in" data-tex="\mathrm{CH_2Cl_2}"></span>（<span class="m-in" data-tex="T = 22\,{}^\circ\mathrm{C}"></span>）</strong>：吸附量 <span class="m-in" data-tex="1,211\,\mathrm{mg\,g^{-1}}"></span>，每晶胞 <span class="m-in" data-tex="88"></span> 個分子，自由體積 <span class="m-in" data-tex="0.93\,\mathrm{cm^3\,g^{-1}}"></span>（<span class="m-in" data-tex="0.55\,\mathrm{cm^3\,cm^{-3}}"></span>）。</li><li><strong><span class="m-in" data-tex="\mathrm{CHCl_3}"></span>（<span class="m-in" data-tex="T = 22\,{}^\circ\mathrm{C}"></span>）</strong>：吸附量 <span class="m-in" data-tex="1,367\,\mathrm{mg\,g^{-1}}"></span>，每晶胞 <span class="m-in" data-tex="71"></span> 個分子，自由體積 <span class="m-in" data-tex="0.94\,\mathrm{cm^3\,g^{-1}}"></span>（<span class="m-in" data-tex="0.55\,\mathrm{cm^3\,cm^{-3}}"></span>）。</li><li><strong><span class="m-in" data-tex="\mathrm{C_6H_6}"></span>（<span class="m-in" data-tex="T = 22\,{}^\circ\mathrm{C}"></span>）</strong>：吸附量 <span class="m-in" data-tex="802\,\mathrm{mg\,g^{-1}}"></span>，每晶胞 <span class="m-in" data-tex="63"></span> 個分子，自由體積 <span class="m-in" data-tex="0.94\,\mathrm{cm^3\,g^{-1}}"></span>（<span class="m-in" data-tex="0.55\,\mathrm{cm^3\,cm^{-3}}"></span>）。</li><li><strong><span class="m-in" data-tex="\mathrm{CCl_4}"></span>（<span class="m-in" data-tex="T = 22\,{}^\circ\mathrm{C}"></span>）</strong>：吸附量 <span class="m-in" data-tex="1,472\,\mathrm{mg\,g^{-1}}"></span>，每晶胞 <span class="m-in" data-tex="59"></span> 個分子，自由體積 <span class="m-in" data-tex="0.94\,\mathrm{cm^3\,g^{-1}}"></span>（<span class="m-in" data-tex="0.56\,\mathrm{cm^3\,cm^{-3}}"></span>）。</li><li><strong><span class="m-in" data-tex="\mathrm{C_6H_{12}}"></span>（<span class="m-in" data-tex="T = 22\,{}^\circ\mathrm{C}"></span>）</strong>：吸附量 <span class="m-in" data-tex="703\,\mathrm{mg\,g^{-1}}"></span>，每晶胞 <span class="m-in" data-tex="51"></span> 個分子，自由體積 <span class="m-in" data-tex="0.92\,\mathrm{cm^3\,g^{-1}}"></span>（<span class="m-in" data-tex="0.54\,\mathrm{cm^3\,cm^{-3}}"></span>）。</li></ul></li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>同網狀 MOF 系列孔徑調控與甲烷儲存（2002，依摘要）</strong>：Eddaoudi et al. (2002), <em>Science</em> 295:469–472（doi:10.1126/science.1067208）。以 MOF-5 為原型，將苯環以 <span class="m-in" data-tex="-\mathrm{Br}"></span>、<span class="m-in" data-tex="-\mathrm{NH_2}"></span>、<span class="m-in" data-tex="-\mathrm{OC_3H_7}"></span>、<span class="m-in" data-tex="-\mathrm{OC_5H_{11}}"></span>、<span class="m-in" data-tex="-\mathrm{C_2H_4}"></span>、<span class="m-in" data-tex="-\mathrm{C_4H_4}"></span> 等基團官能化，並以聯苯、四氫芘、芘、聯三苯等長分子支柱擴展，合成出 16 種維持相同骨架拓撲之同網狀金屬有機骨架（IRMOFs）；其開放空間最高達晶體體積之 <span class="m-in" data-tex="91.1\%"></span>、週期性孔徑可漸進調控於 <span class="m-in" data-tex="3.8"></span> 至 <span class="m-in" data-tex="28.8\,\text{\AA}"></span>，其中一員於常溫與 <span class="m-in" data-tex="36\,\mathrm{atm}"></span> 下甲烷儲存量達 <span class="m-in" data-tex="240\,\mathrm{cm^3\,STP\,g^{-1}}"></span>，另數員室溫晶體密度低至 <span class="m-in" data-tex="0.41\text{–}0.21\,\mathrm{g\,cm^{-3}}"></span>。</li><li><strong>MOF-5 與同網狀骨架之儲氫性能與結合位點（2003，依摘要）</strong>：Rosi et al. (2003), <em>Science</em> 300:1127–1129（doi:10.1126/science.1083440）。測得 MOF-5（<span class="m-in" data-tex="\mathrm{Zn_4O(BDC)_3}"></span>）在 <span class="m-in" data-tex="78\,\mathrm{K}"></span> 下儲氫量達 <span class="m-in" data-tex="4.5\,\mathrm{wt\%}"></span>（每式量單元 <span class="m-in" data-tex="17.2"></span> 個 <span class="m-in" data-tex="\mathrm{H_2}"></span> 分子），在室溫與 <span class="m-in" data-tex="20\,\mathrm{bar}"></span> 下為 <span class="m-in" data-tex="1.0\,\mathrm{wt\%}"></span>；非彈性中子散射顯示存在兩類結合位點（分別對應結合至鋅與 BDC 連接子）；初步研究顯示，同拓撲之 IRMOF-6 與 IRMOF-8 於室溫與 <span class="m-in" data-tex="10\,\mathrm{bar}"></span> 下吸氫量約為 MOF-5 之兩倍與四倍（<span class="m-in" data-tex="2.0\,\mathrm{wt\%}"></span>）。</li><li><strong>網狀合成（Reticular Synthesis）方法論系統化（2003，依摘要）</strong>：Yaghi et al. (2003), <em>Nature</em> 423:705–714（doi:10.1038/nature01650）。系統提出「網狀合成」概念，以次級建構單元引導組裝具備預設結構、組成與性質之有序晶態多孔骨架，闡述強金屬—氧—碳鍵所構建之骨架在超大比表面積、氣體儲存與孔徑官能化設計上的通則。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>證實完全脫溶劑與高溫加熱下仍維持單晶永久孔隙</strong>：針對此前開放式金屬有機骨架在缺乏客體分子時無法維持永久孔隙並避免坍塌、進而阻礙領域進展的困難（p. 276，refs 14–15），本篇以四核鋅氧羧酸鹽次級建構單元與剛性 BDC 連接子構築 MOF-5，直接以單晶 X 光繞射證實其在完全移除溶劑後以及在空氣中加熱至 <span class="m-in" data-tex="300\,{}^\circ\mathrm{C}"></span> 維持 <span class="m-in" data-tex="24\,\mathrm{h}"></span> 後仍保有單晶性與晶胞參數，並測得可逆 I 型氣體與有機蒸氣吸附等溫線（表觀 Langmuir 比表面積估計為 <span class="m-in" data-tex="2,900\,\mathrm{m^2\,g^{-1}}"></span>，孔隙自由體積 <span class="m-in" data-tex="0.54\text{–}0.61\,\mathrm{cm^3\,cm^{-3}}"></span>，pp. 276–279）。</li><li><strong>從單一材料設計邁向同網狀擴展與氣體儲存研究</strong>：本篇在結論性質的摘要段自述，該「簡單且具潛在通用性的設計策略」正被推進於新相、複合材料與氣體儲存應用（p. 277）；這些後續發展由後續獨立論文具體實現，包括 Eddaoudi 等（2002）系統化合成 16 種 IRMOFs 與常溫甲烷儲存量測、Rosi 等（2003）量測 MOF-5 與 IRMOF-6/8 之儲氫性能及位點解析，以及 Yaghi 等（2003）系統化闡述的「網狀合成」（上述各項均依摘要並載於 Card 4 後續，不混記為 1999 年本篇之直接成果）。</li><li><strong>2025 年諾貝爾化學獎與早期相關論文</strong>：2025 年諾貝爾化學獎共同授予 Susumu Kitagawa、Richard Robson 與 Omar M. Yaghi，表彰「for the development of metal–organic frameworks」（<a href="https://www.nobelprize.org/prizes/chemistry/2025/summary/">NobelPrize.org</a>）。本頁於 <code>key_papers</code> 另選列另外兩位得獎者早於 1999 年的兩篇論文（僅依論文題名）：Hoskins &amp; Robson（1989）題為〈由三維連接的連桿狀片段構成的無限聚合骨架〉（"Infinite polymeric frameworks consisting of three dimensionally linked rod-like segments"），以及 Kondo、Kitagawa 等（1997）題為〈具小分子通道空腔的三維骨架〉（"Three-Dimensional Framework with Channeling Cavities for Small Molecules"）；本篇原文文獻目錄亦引用 Kitagawa 等（1991，ref. 2）與 Abrahams、Hoskins &amp; Robson（1991，ref. 3）。本篇僅反映 Yaghi 團隊 1999 年 MOF-5 的實驗貢獻，獎項表彰範圍不等於單篇論文。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>以下為 Wiki 詮釋：</p>
+<ol><li><strong>將幾何剛性建立於「剛性次級建構單元與剛性支柱的結合」</strong>：先前文獻中的開放式金屬有機骨架在缺少溶劑等客體分子時無法維持永久孔隙並避免坍塌（p. 276，refs 14–15）；MOF-5 的關鍵設計在於借鏡羧酸鹽團簇化學，將原本以單羧酸封端生成的四核超四面體 <span class="m-in" data-tex="\mathrm{Zn_4(O)(CO_2)_6}"></span> 團簇作為剛性次級建構單元，改以平面、剛性且雙向發散的 BDC 二羧酸連接子組裝（pp. 276–278），藉團簇單元與連接子雙方的剛性來支撐三維開放骨架的穩定性。</li><li><strong>同時報告高指標與量測模型假設的適用邊界</strong>：本篇在給出 <span class="m-in" data-tex="2,900\,\mathrm{m^2\,g^{-1}}"></span> 表觀 Langmuir 比表面積的同時，於同一句以括號主動註明「對如此巨大的孔穴而言，單層覆蓋假設未必嚴格成立」（p. 279），並以多種分子尺寸的吸附實驗交叉驗證一致的孔隙自由體積（<span class="m-in" data-tex="0.54\text{–}0.61\,\mathrm{cm^3\,cm^{-3}}"></span>，Table 1）。這提醒材料研究者在對比跨時代多孔指標時，應一併檢視表面積計算模型的前提與實際晶胞體積證據。</li></ol>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>1999</b><span>發表・Nature</span></div>
+    <div class="yr award"><b>2025</b><span>諾貝爾化學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Hailian Li<br>Mohamed Eddaoudi<br>M. O&#x27;Keeffe<br>Omar M. Yaghi</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Susumu Kitagawa<br>Richard Robson<br>Omar M. Yaghi</span><span class="note">Kitagawa、Robson 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Nature, 402(6759), 276-279</span><a href="https://doi.org/10.1038/46248">doi:10.1038/46248</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#材料科學</span><span class="chip">#化學合成</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>金屬有機骨架</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1021/ja00197a079" title="Hoskins, B. F. &amp; Robson, R. (1989) Infinite polymeric frameworks consisting of three dimensionally linked rod-like segments. J. Am. Chem. Soc. 111:5962-5964.">Hoskins 與 Robson（1989）</a><a href="https://doi.org/10.1002/anie.199717251" title="Kondo, M., Yoshitomi, T., Matsuzaka, H., Kitagawa, S. &amp; Seki, K. (1997) Three-Dimensional Framework with Channeling Cavities for Small Molecules: {[M2(4,4&#x27;-bpy)3(NO3)4]·xH2O}n (M = Co, Ni, Zn). Angew. Chem. Int. Ed. Engl. 36:1725-1727.">Kondo 等（1997）</a><a href="https://doi.org/10.1038/46248" title="Li, H., Eddaoudi, M., O&#x27;Keeffe, M. &amp; Yaghi, O. M. (1999) Design and synthesis of an exceptionally stable and highly porous metal-organic framework. Nature 402:276-279.">Li 等（1999）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2025 年諾貝爾化學獎授予 Susumu Kitagawa、Richard Robson 與 Omar M. Yaghi，表彰三人對金屬有機骨架（MOFs）發展之貢獻。本頁以 Li、Eddaoudi、O'Keeffe 與 Yaghi 於 1999 年發表在《Nature》的 MOF-5 論文為主軸；Kitagawa 與 Robson 並非本篇作者，其相關早期論文由 Wiki 選列於 <code>key_papers</code>，不混記為本篇結果。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok">已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

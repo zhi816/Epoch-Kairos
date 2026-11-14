@@ -33,8 +33,8 @@
 
 ## 二、2025 年諾貝爾獎與重大突破
 
-* `2025` ｜ 金屬有機骨架（MOFs）奈米多孔晶體 ｜ `#材料科學` ｜ `[2025 諾貝爾化學獎]` ｜ `[planned]`
-  * 代表文獻：Li, Eddaoudi, O'Keeffe & Yaghi (1999) *Nature* 402:276-279，https://doi.org/10.1038/46248（出版社付費牆，`raw/` 暫無原始檔）。
+* `2025` ｜ [MOF-5 金屬有機骨架：具備永久孔隙與高熱穩定性的網狀晶體](papers/1999-metal-organic-frameworks-mof5.md) ｜ `#材料科學` `#化學合成` ｜ *1999 發表 ｜ 2025 諾貝爾化學獎* ｜ `[published]`
+  * 得獎者：Susumu Kitagawa, Richard Robson, Omar M. Yaghi。原始文獻：`raw/1999-metal-organic-frameworks-mof5.pdf`（Li et al. (1999) *Nature* 402(6759):276-279，https://doi.org/10.1038/46248）。
 * `2025` ｜ [超導電路巨觀能階量子化：電流偏壓約瑟夫森接面零電壓態之能階](papers/1985-macroscopic-quantum-tunneling.md) ｜ `#量子物理` ｜ *1985 發表 ｜ 2025 諾貝爾物理學獎* ｜ `[published]`
   * 得獎者：John Clarke, Michel H. Devoret, John M. Martinis（即本篇三位作者）。原始文獻：`raw/1985-macroscopic-quantum-tunneling.pdf`（Martinis et al. (1985) *Physical Review Letters* 55(15):1543-1546，https://doi.org/10.1103/PhysRevLett.55.1543）。
 * `2025` ｜ 調節性 T 細胞（Treg）與周邊免疫耐受 ｜ `#免疫學` ｜ `[2025 諾貝爾生理學或醫學獎]` ｜ `[planned]`
@@ -103,6 +103,7 @@
 * [臺灣南島語計算語言學與構詞解析](concepts/formosan-computational-linguistics.md) ｜ `#計算語言學` `#自然語言處理` `#人工智慧`
 * [低資源神經機器翻譯與檢索增強生成](concepts/low-resource-machine-translation.md) ｜ `#自然語言處理` `#深度學習` `#人工智慧` `#計算語言學`
 * [手性對稱破缺與分子同手性](concepts/chiral-symmetry-breaking.md) ｜ `#化學合成` `#材料科學`
+* [金屬有機骨架](concepts/metal-organic-frameworks.md) ｜ `#材料科學` `#化學合成`
 
 ---
 
