@@ -12,8 +12,9 @@
 # 1. 量測原論文規格並輸出對照圖
 python .agents/skills/academic-paper-translator/scripts/measure_pdf.py raw/<檔名>.pdf --render-dir work/<slug>/orig_pages --dpi 180
 
-# 2. 產生譯文 HTML 後編譯為 PDF（不寫死瀏覽器路徑）
-python .agents/skills/academic-paper-translator/scripts/html_to_pdf.py work/<slug>/translated.html <目標輸出路徑>.pdf
+# 2. 由同一份 HTML 產出雙版本 PDF（不寫死瀏覽器路徑）
+python .agents/skills/academic-paper-translator/scripts/html_to_pdf.py work/<slug>/translated.html <目標輸出路徑>_原版翻譯.pdf
+python .agents/skills/academic-paper-translator/scripts/html_to_pdf.py work/<slug>/translated.html <目標輸出路徑>_單欄翻譯.pdf --mode mobile
 
 # 3. 轉出譯本逐頁 PNG 做兩階段視覺核對
 python .agents/skills/academic-paper-translator/scripts/measure_pdf.py <目標輸出路徑>.pdf --render-dir work/<slug>/out_pages --dpi 180
@@ -287,3 +288,19 @@ h1, h2, h3, .sec, .subsec {
    </figure>
    ```
    * **圖內文字原則（遵守 `SKILL.md` 第 20 條）**：預設維持原圖影像不任意塗改重繪，把重點術語對照寫進下方繁體中文 `<figcaption>` 或正文即可；若使用者明確要求改寫圖內英文標籤，只可在逐項核對座標與數值無誤後疊加覆蓋層，並於交付說明中明確列出改動之圖號與項目。
+
+---
+
+## 八、雙版本輸出：手機單欄大字 CSS 配方（`_單欄翻譯`）
+
+為兼顧「紙本列印／原稿左右對照（`_原版翻譯.pdf`）」與「手機直螢幕無縮放閱讀（`_單欄翻譯.pdf`）」，同一份已核對完畢的 `translated.html` 可直接以 `--mode mobile` 編譯第二份單欄 PDF，免除重翻與雙份內容分歧：
+
+```bash
+python .agents/skills/academic-paper-translator/scripts/html_to_pdf.py work/<slug>/translated.html <目標輸出路徑>_單欄翻譯.pdf --mode mobile
+```
+
+### 核心覆寫原則（已內建於 `html_to_pdf.py` 之 `MOBILE_OVERRIDE_CSS`）
+1. **強制單欄與連續流式排版**：將 `.two-col`、`.two-col-auto` 設為 `column-count: 1 !important`，移除 `.span-all` / `.col-span-all` 跨欄設定，並將原稿對齊分頁用的 `.page-break` 設為 `display: none !important`，避免單欄出現半頁留白。
+2. **手機可讀性字級與邊距**：改為 `@page { size: A4 portrait; margin: 12mm 14mm 15mm 14mm; }`，內文放大至 `13.5pt`、`line-height: 1.65`（手機直向每行約 32–36 中文字，無需兩指縮放），標題與參考文獻等比放大。
+3. **寬表格與原圖保護**：`table.acl` 等表格採 `width: 100%` 與 `10pt` 字級配合 `break-inside: avoid` 與 `thead { display: table-header-group }`，讓原雙欄寬表在 A4 單欄幅寬中維持清晰不擠壓且不輕易拆斷；`figure.fig-wrap img` 放大至單欄滿寬展示。
+4. **首頁出處欄轉分隔帶**：原位於第 1 頁底部的 `.venue-footer` 改為上下細線分隔之置中資訊帶，在連續單欄閱讀時自然區隔首頁註腳與後續章節；若特定論文仍需微調單欄字級或表格行距，可另傳入 `--css custom_mobile.css` 疊加覆寫。

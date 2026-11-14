@@ -443,7 +443,7 @@ def raw_files():
     for dirpath, dirs, files in os.walk(RAW):
         dirs[:] = [d for d in dirs if d not in ('.git', '.md')]
         for f in files:
-            if f.lower().endswith('.pdf') and '繁體中文翻譯' not in f:
+            if f.lower().endswith('.pdf') and not any(tag in f for tag in ('繁體中文翻譯', '原版翻譯', '單欄翻譯')):
                 out.append(os.path.relpath(os.path.join(dirpath, f), ROOT).replace('\\', '/'))
     return sorted(out)
 

@@ -136,5 +136,5 @@ IIIT Hyderabad 團隊提出的 **Decepticons-IIITH** 系統以 **MALM（Morpholo
 * **原始權威文獻**：
   * 官方學術出處：Rao, S., Taneja, S., Chaitanya, K., & Mamidi, R. (2026). Decepticons-IIITH : Morphology-Aware Lexicon Filtering of Back-Translated Data for Low-Resource English-to-Indic Translation. *Proceedings of the Eleventh Conference on Machine Translation*, pp. 2207–2212. DOI: [10.18653/2026.wmt-main.160](https://doi.org/10.18653/2026.wmt-main.160)
   * 原文網頁索引：[ACL Anthology 2026.wmt-main.160](https://aclanthology.org/2026.wmt-main.160/)（本篇程式碼與模型權重未於原文釋出公開網址）
-  * 原始檔典藏：`raw/my-focus/報告論文題材/2026.wmt-main.160.pdf`（同目錄附繁體中文全譯本 `2026.wmt-main.160_繁體中文翻譯.pdf`，不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/報告論文題材/2026.wmt-main.160.pdf`（同目錄附雙版本繁體中文全譯本 `2026.wmt-main.160_原版翻譯.pdf` 與 `2026.wmt-main.160_單欄翻譯.pdf`，不納入主倉庫，由私有倉庫 Mine-RAW 版控）
   * 證據表：[evidence/2026-malm-backtranslation-indic-mt-rao.md](../evidence/2026-malm-backtranslation-indic-mt-rao.md)
