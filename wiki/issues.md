@@ -1229,7 +1229,8 @@
 - **發現於**：2026-11-11 子代理迴圈試跑（測試分支 test/subagent-loop），由 OpenCode（DeepSeek V4.1 Flash 免費版）審查時提出，Claude Code by Anthropic 回原文確認。
 - **處理**：2026-11-11，Claude Code by Anthropic（claude-fable-5-2）。論文頁改為「B5 的 (S)-1 總量放大 942 倍、其新生成物 e.e. 為 88% (S)；B3–B5 新生成物 e.e. 依序為 89%、90%、88% (S)」，證據表第 12 行同步並補上欄位名稱；重建論文頁網頁。卡片 Card 4 原已寫 Run B5 之 88% e.e.，無須修改。
 
-### EK-225 | open | papers/1992-creative-destruction-aghion.md | Card 5 第 2–3 點 | 未能核實
-- **問題**：Card 5 第 2 點稱後續研究使宏觀經濟學能直接以專利引用、企業進出率及職位創造／毀滅資料診斷國家經濟活力；第 3 點稱既得利益者面對通用目的技術時會遊說政府築起監管高牆，並因此造成中等收入陷阱與長期停滯。頁面未提供這兩項主張的第一手來源或精確位置。證據表的後續研究列僅概述 Aghion et al. (2005)、Klette & Kortum (2004)、Akcigit & Kerr (2018) 的競爭與企業創新研究；唯一 Card 5 列記錄 Cunningham et al. (2021) 的扼殺式收購延伸，均未對應上述指標與因果主張。在補上直接來源或改為清楚標示的有限詮釋前，全頁不宜標為 `verified`。
-- **來源**：[論文頁 Card 5](papers/1992-creative-destruction-aghion.md)；[證據表](evidence/1992-creative-destruction-aghion.md) 中 Card 4 後續研究列與唯一 Card 5 列。現有紀錄未列上述主張的第一手來源位置。
+### EK-225 | fixed | papers/1992-creative-destruction-aghion.md | Card 4–5 後續研究歸因 | 未能核實
+- **問題**：Card 5 原第 2 點稱後續研究使宏觀經濟學能直接以專利引用、企業進出率及職位創造／毀滅資料診斷國家經濟活力；原第 3 點稱既得利益者面對通用目的技術時會遊說政府築起監管高牆，並因此造成中等收入陷阱與長期停滯，兩者均未列第一手來源或精確位置。複核另發現 Card 4 將 Klette & Kortum (2004) 與 Akcigit & Kerr (2018) 合併描述成使用美國人口普查資料、量化新創企業與既有大企業對總體 TFP 的貢獻比例；前者來源是企業創新的一般均衡理論模型，後者工作論文版區分探索型與利用型研發並以企業及專利資料檢驗模型預測，原列未支持該歸因與 TFP 貢獻比例說法。
+- **來源**：[論文頁 Card 4–5](papers/1992-creative-destruction-aghion.md)；[證據表](evidence/1992-creative-destruction-aghion.md)；[Klette & Kortum NBER WP 8819](https://www.nber.org/papers/w8819) 摘要、§1；[Akcigit & Kerr NBER WP 16443](https://www.nber.org/papers/w16443) 摘要、§1、§3.1。NBER 書目頁分別列出 JPE 2004 與 2018 發表版本；本次未取得兩篇正式版全文，論文頁明示依據工作論文版本的主張。
 - **發現於**：wiki/log.md [2026-11-14 11:05] audit（Codex by OpenAI）。
+- **處理**：2026-11-14，Codex by OpenAI（GPT-6）。移除 Card 5 無直接來源的國家活力診斷，以及既得利益者遊說導致中等收入陷阱與長期停滯之因果主張；重寫 Card 4，分開記錄 Klette & Kortum 的企業創新一般均衡模型，以及 Akcigit & Kerr 工作論文版的探索型／利用型研發、資料來源與專利引用結果，移除未被支持的企業類型 TFP 貢獻比例。同步修訂 Card 5 里程碑、證據表與論文頁，將 verification 設為 partial；正式 JPE 全文未取得，現行文字已明示所採工作論文版本，詳見證據表。

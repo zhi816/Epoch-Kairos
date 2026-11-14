@@ -12,7 +12,7 @@ domain: "econ"
 domain_tags: ["#宏觀經濟學", "#制度經濟學"]
 concepts: ["institutions-and-macro-dynamics"]
 status: "published"
-verification: "issues"
+verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.2307/2951599"
 key_papers:
@@ -97,16 +97,16 @@ $$AGR = \lambda \varphi(\hat{n}) \ln \gamma, \qquad VGR = \lambda \varphi(\hat{n
 * **福利效果的方向取決於多種扭曲**：社會計畫者的折現率為 $r-\lambda\varphi(n)(\gamma-1)$，而私人專利估值的折現率為 $r+\lambda\varphi(n)$。業務竊取、壟斷扭曲、可占有性與跨期外溢的效果彼此牴觸，因此自由放任下的成長可能高於或低於社會最適；在線性 Cobb–Douglas 例中，當市場力量較大（$\alpha$ 接近 0）且創新幅度不大時，業務竊取效應可主導並導致過度研發。
 * **自由放任下的創新幅度偏小**：第 6 節讓研究企業同時選擇創新頻率與幅度；在顛覆性創新情形下，私人企業選擇的創新幅度低於社會最適。非顛覆性創新下，利潤率誘因會部分抵銷這一傾向；總體成長效果方向仍不確定。
 
-### 後續領域關鍵實證（非本篇成果，標註出處）
+### 後續領域關鍵研究（非本篇成果，標註出處）
 * **競爭與創新的倒 U 型曲線（Inverted-U Relationship）**：Aghion, Bloom, Blundell, Griffith & Howitt (2005), *Quarterly Journal of Economics* 120(2):701-728，結合英國面板專利數據與熊彼特模型，實證發現在頸部競爭（Neck-and-Neck）產業中，適度競爭會激發「逃離競爭效應（Escape-Competition Effect）」，而過度競爭則抑制落後者的創新回報，整體呈顯著倒 U 型。
-* **企業動態與創造性破壞的微觀量化**：Klette & Kortum (2004), *Journal of Political Economy* 112(5):986-1018 與 Akcigit & Kerr (2018), *Journal of Political Economy* 126(4):1374-1443，利用美國人口普查局微觀企業數據，量化驗證新創企業的激進創新（External Creative Destruction）與既有大企業的內部改良對總體 TFP 成長的貢獻比例。
+* **企業動態與總體技術變遷**：Klette & Kortum 的 2002 年 NBER 工作論文（後刊於 2004 年 JPE）建立創新企業的一般均衡模型，納入個別企業動態與產業同時進入、退出，並連結企業、產業及總體技術變遷。
+* **探索型與利用型研發**：Akcigit & Kerr 的 2010 年 NBER 工作論文（後刊於 2018 年 JPE）區分探索型研發（取得新產品線）與利用型研發（改良現有產品線）。該版本以美國人口普查局的 Longitudinal Business Database、NSF Survey of Industrial Research and Development 與 NBER Patent Database 檢驗模型預測；其專利引用測試顯示，新進與小型企業的相對成長外溢較高。
 
 ---
 
 ## Card 5 ｜ 時代典範轉移 (The Revolution)
 * **啟發動態反壟斷與產業競爭政策框架**：為產業組織學提供分析動態市場進入與技術取代的微觀基礎。隨後的政策與文獻將其延伸至現代反壟斷審查（例如 Cunningham, Ederer & Ma (2021, *Journal of Political Economy*) 針對預防性收購以扼殺潛在創新競爭者的「扼殺式收購 Killer Acquisitions」研究），利用創造性破壞架構評估專利壟斷保護與動態競爭激勵之間的權衡（非 1992 原始論文之直接檢驗結果）。
-* **微觀企業數據與宏觀成長的統一**：使宏觀經濟學得以直接利用專利引用、企業出生率（Entry Rate）、退出率（Exit Rate）與職位創造/毀滅（Job Reallocation）數據來診斷國家經濟活力。
-* **制度政治經濟學的延伸**：解釋了為何既得利益集團（Incumbents）在面對通用目的技術（如蒸汽機、電力、人工智慧）時，會遊說政府築起監管高牆以阻止「創造性破壞」，從而導致中等收入陷阱與長期停滯。
+* **企業創新與總體成長分析**：Klette & Kortum 把企業異質性、創新及進出納入總體技術變遷模型；Akcigit & Kerr 隨後區分探索型與利用型研發，並以美國企業及專利資料檢驗模型預測。這是後續研究的延伸，不是 Aghion & Howitt (1992) 的直接實證結果。
 
 ---
 

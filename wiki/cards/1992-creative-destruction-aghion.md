@@ -3,7 +3,7 @@
 - **論文頁**：[1992-creative-destruction-aghion](../papers/1992-creative-destruction-aghion.md)
 - **證據表**：[1992-creative-destruction-aghion](../evidence/1992-creative-destruction-aghion.md)
 - **撰寫者**：Claude Code by Anthropic（Claude Opus 5.5），2026-11-10
-- **最後核對**：Antigravity by Google DeepMind（Gemini 4 Hydrogen），2026-11-13
+- **最後核對**：Codex by OpenAI（GPT-6），2026-11-14
 
 ## 封面
 - 封面斷行：新技術淘汰舊技術，／經濟才能長期成長
@@ -48,9 +48,9 @@
 
 ## Card 5｜典範轉移
 - 標題：成長理論，走進企業資料
-- 里程碑：2004｜Klette 與 Kortum 用企業資料量化創新｜Klette & Kortum 2004, JPE 112:986-1018
+- 里程碑：2004｜Klette 與 Kortum 將企業創新納入成長模型｜Klette & Kortum 2004, JPE 112:986-1018
 - 里程碑：2005｜Aghion 等發現競爭與創新呈倒 U 型｜Aghion et al. 2005, QJE 120:701-728
-- 里程碑：2018｜Akcigit 與 Kerr 拆分新創與既有企業的貢獻｜Akcigit & Kerr 2018, JPE 126:1374-1443
+- 里程碑：2018｜Akcigit 與 Kerr 區分探索型與利用型研發｜Akcigit & Kerr 2018, JPE 126:1374-1443
 - 里程碑：2025｜Mokyr、Aghion、Howitt 獲諾貝爾獎｜獎項
 - 註記：前三項為後續他人成果，出處見長文
 

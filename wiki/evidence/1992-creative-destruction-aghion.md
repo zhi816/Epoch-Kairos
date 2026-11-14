@@ -1,6 +1,6 @@
 # 證據表：1992-creative-destruction-aghion
 - **採用版本**：Aghion & Howitt (1992), *Econometrica*, 60(2), 323–351；DOI: https://doi.org/10.2307/2951599；封存版本見 `raw/1992-creative-destruction-aghion.pdf`（JSTOR 正式版掃描全本，2026-11-13 經使用者授權自 Wayback Machine 存檔 `https://web.econ.ku.dk/dalgaard/growth/growth07/AghionHowitt.pdf` 取得並取代原誤放之 Bertola 1991 檔案）。
-- **查核者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-09；重核者：Codex by OpenAI（GPT-6），2026-11-09；掃描頁影像與公式逐式覆核：Antigravity by Google DeepMind（Gemini 4 Hydrogen），2026-11-13
+- **查核者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-09；重核者：Codex by OpenAI（GPT-6），2026-11-09；掃描頁影像與公式逐式覆核：Antigravity by Google DeepMind（Gemini 4 Hydrogen），2026-11-13；後續研究歸因覆核：Codex by OpenAI（GPT-6），2026-11-14
 
 | 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |
 |---|---|---|---|---|
@@ -16,6 +16,8 @@
 | Card 4 | 業務竊取效應傾向使 laissez-faire 研發／成長高於最適，壟斷扭曲與跨期外溢等效果方向相反，整體可能高於或低於最適；Cobb–Douglas 特例在 $\alpha$ 接近 0 且創新幅度不大時可過度研發 | 本篇研究結果 | §4, pp. 338–339, 式 (4.3)–(4.5)（PDF pp. 17–18） | 符合來源 |
 | Card 4 | 自由放任下創新幅度偏小；非顛覆性創新之利潤率誘因部分抵銷此傾向 | 本篇研究結果 | §6, pp. 342–343, 式 (6.3)–(6.7)（PDF pp. 21–22） | 符合來源 |
 | Card 4 | Aghion et al. (2005) 競爭與創新倒 U 型曲線 | 後續研究 | QJE 120(2):701–728 (2005)，DOI: 10.1093/qje/120.2.701 | 符合來源 |
-| Card 4 | Klette & Kortum (2004) 與 Akcigit & Kerr (2018) 企業微觀數據動態量化 | 後續研究 | JPE 112(5):986–1018 (2004), DOI: 10.1086/422563; JPE 126(4):1374–1443 (2018), DOI: 10.1086/697901 | 符合來源 |
+| Card 4；Card 5 | Klette & Kortum (2004) 建立創新企業的一般均衡模型，納入個別企業動態與產業同時進入、退出，並連結企業、產業及總體技術變遷 | 後續研究 | [NBER WP 8819](https://www.nber.org/papers/w8819) 摘要；§1，印刷 pp. 2–3（PDF pp. 3–4）；NBER 書目頁列明 2004 年 JPE 112(5):986–1018，DOI: https://doi.org/10.1086/422563 | 支持模型描述；所核版本為 2002 年 NBER 工作論文，未比對 JPE 全文，也不支持舊頁所述 Census/TFP 貢獻比例 |
+| Card 4；Card 5 | Akcigit & Kerr (2018) 區分探索型研發（取得新產品線）與利用型研發（改良現有產品線）；2010 年 NBER 工作論文版使用 Longitudinal Business Database、NSF Survey of Industrial Research and Development、NBER Patent Database 檢驗模型預測，並以專利引用測試成長外溢 | 後續研究 | [NBER WP 16443](https://www.nber.org/papers/w16443) 摘要（PDF p. 2）；§1，印刷 p. 2（PDF p. 3）；§3.1 Data Development，印刷 p. 23（PDF p. 24）；NBER 書目頁列明 2018 年 JPE 126(4):1374–1443，DOI: https://doi.org/10.1086/697901 | 支持明確限定之 2010 年工作論文版內容；摘要稱新進與小型企業的相對成長外溢較高，未報告其對總體 TFP 的貢獻比例；未比對正式版全文 |
 | Card 5 | 啟發反壟斷動態競爭評估；科技巨頭扼殺式收購（Killer Acquisitions）為後續政策延伸 | 後續研究 / Wiki 詮釋 | Cunningham, Ederer & Ma (2021), JPE 129(3):649–702, DOI: 10.1086/712506；頁面已標記為後續政策文獻延伸（修正 EK-004） | 符合來源 |
+| Card 5 | 後續企業創新研究把企業異質性、創新與進出連到總體技術變遷，並進一步區分探索型與利用型研發、以企業與專利資料檢驗模型預測 | 後續研究 | Klette & Kortum, NBER WP 8819 (2002), 摘要及 §1，後刊於 JPE 112(5):986–1018 (2004), DOI: 10.1086/422563；Akcigit & Kerr, NBER WP 16443 (2010), 摘要、§1 與 §3.1，後刊於 JPE 126(4):1374–1443 (2018), DOI: 10.1086/697901 | 支持研究脈絡描述；工作論文版本已明示，未主張 Aghion & Howitt (1992) 直接造成後續實證結果 |
 | Card 6 | 局部舊結構淘汰為全局演化前提、預期壽命決定當下創造力 | Wiki 詮釋 | 跨界思維反思，已標明為哲學啟發 | 不適用 |

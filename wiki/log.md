@@ -2328,3 +2328,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：依使用者指示確立「我的關注」與公開索引之隱私分流：（1）`raw/`（Mine-RAW）：將 `raw/my-focus/研究主題索引.md` 更名為 `raw/my-focus/my-index.md`。（2）`Epoch-Kairos`：更新 `.agents/skills/paper-pipeline/scripts/pipeline_status.py`，使 `my_focus: true` 之論文於 S5 改查私有 `raw/my-focus/my-index.md`（未 clone `raw/` 時回報 `--`），其餘群星論文維持檢查 `wiki/index.md`；同步更新 [AGENTS.md](../AGENTS.md)、[.agents/skills/paper-pipeline/SKILL.md](../.agents/skills/paper-pipeline/SKILL.md)、[concepts-and-index.md](../.agents/skills/paper-pipeline/references/concepts-and-index.md)、[publish.md](../.agents/skills/paper-pipeline/references/publish.md) 與 [wiki/todo.md](todo.md)（TD-029 檔名引用），並新增單元測試 `tools/tests/test_pipeline_index_privacy.py`。（3）驗證：`python3 -m unittest discover -s tools/tests` 16 項全數通過；`lint_wiki.py` ERROR 0、WARN 21；`pipeline_status.py` 全庫 24 篇 `my_focus` 論文 S5 全數通過（全部步驟完成篇數由 2 升至 18）。
+
+## [2026-11-14 12:32] fix | 修正 Aghion 後續研究歸因並完成瀏覽器驗證 | #宏觀經濟學 #制度經濟學
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6
+- **具體變更**：完成 EK-225：依 Klette & Kortum 及 Akcigit & Kerr 的 NBER 工作論文來源，修訂 Aghion & Howitt 1992 的 Card 4–5 後續研究歸因、卡片與證據表，並將論文頁核實狀態設為 `partial`。Chrome `verify_page.js` 桌面 1440 x 900 與手機 375 x 812 均 PASS、WARN 0；人工檢視 Card 1–6、返回群星連結。`verify_wall.js` 六組尺寸與模式 PASS，指定卡片僅一張；全牆有 27 項截斷 WARN，無 FAIL。更新 TD-021 進度；其餘論文與手機捲動後卡片保留狀態仍待補驗。卡片檢查 ERROR 0、WARN 0；論文頁及首頁建置 ERROR 0、WARN 0；`lint_wiki.py --errors-only` ERROR 0；首頁 `--check` 一致。
