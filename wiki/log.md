@@ -2413,3 +2413,8 @@
   - `html_to_pdf.py` 與 [`measure_pdf.py`](../.agents/skills/academic-paper-translator/scripts/measure_pdf.py)：本機 Python 無 PyMuPDF 時自動改用 `.venv-mineru` 之 Python 重新執行，與 `paper-pdf-parser` 一致（macOS 系統 Python 無 PyMuPDF，原本直接執行會失敗）。
   - [`SKILL.md`](../.agents/skills/academic-paper-translator/SKILL.md) 與 [`layout-recipes.md`](../.agents/skills/academic-paper-translator/references/layout-recipes.md)：補上述檢查、`keep-mobile` 與 grid／flex 分欄不受覆寫之限制；逐頁核對指令改為兩個新檔名；刪去與實測不符之「無縮放、每行 32-36 字」描述（實測約 38 字）；新增第 7 步，2026-11-14 以前之 `_繁體中文翻譯.pdf` 仍為有效譯本，重新產檔時改出雙版本，舊檔由使用者決定是否刪除。
   - **檢查結果**：`raw/my-focus/報告論文題材/` 既有 8 份雙版本 PDF 以 `--check` 檢查全數通過（單欄版 12.5pt 以上文字 30-57%、右半起始行 0-4%）；原版 PDF 以 mobile 模式檢查會被擋下（右半起始行約 50%）。暫存 HTML 測試確認：非 `.two-col` 之多欄 class 已轉為單欄、未渲染之 `\frac`/`$$` 使產檔失敗（結束代碼 3）、`keep-mobile` 分頁保留（2 頁對 1 頁）。`measure_pdf.py` 以系統 python3 執行成功。未改動 `raw/`。
+
+## [2026-11-15 13:46] fix | academic-paper-translator 單欄版原圖寬度改回滿寬 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依使用者指示，撤回 [2026-11-15 13:43] 對單欄版原圖之調整：[`html_to_pdf.py`](../.agents/skills/academic-paper-translator/scripts/html_to_pdf.py) 之 `figure.fig-wrap img` 改回 `width: 100%`，[`layout-recipes.md`](../.agents/skills/academic-paper-translator/references/layout-recipes.md) 第八節第 3 點之說明一併改回。同次其他修正不變。

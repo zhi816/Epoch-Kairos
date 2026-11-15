@@ -219,11 +219,9 @@ table tr { break-inside: avoid; page-break-inside: avoid; }
 figure.fig-wrap {
     margin: 14pt 0 !important;
 }
-/* 不強制拉滿寬：300 DPI 擷取之原圖本身寬於版心，會自然佔滿；小圖維持原尺寸，避免放大糊掉 */
 figure.fig-wrap img {
-    width: auto !important;
+    width: 100% !important;
     max-width: 100% !important;
-    height: auto !important;
 }
 figcaption.fig-caption {
     font-size: 11pt !important;
