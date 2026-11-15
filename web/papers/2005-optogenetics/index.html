@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>光遺傳學｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--focus)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#9BDCB1;--deep:#1A4F2C;--win:#1D2524;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.02</span><span>生醫</span></div><div class="win"><i style="left:66.5%;top:19.3%;width:1.5px;height:1.5px;opacity:0.78"></i><i style="left:53.4%;top:10.7%;width:1px;height:1px;opacity:0.50"></i><i style="left:9.6%;top:34.9%;width:1px;height:1px;opacity:0.70"></i><i style="left:41.2%;top:16.5%;width:1px;height:1px;opacity:0.55"></i><i style="left:53.9%;top:10.2%;width:1px;height:1px;opacity:0.48"></i><i style="left:86.2%;top:19.4%;width:1px;height:1px;opacity:0.37"></i><i style="left:81.0%;top:13.1%;width:1px;height:1px;opacity:0.76"></i><i style="left:59.7%;top:34.1%;width:1px;height:1px;opacity:0.38"></i><i style="left:72.2%;top:25.8%;width:1.5px;height:1.5px;opacity:0.58"></i><i style="left:52.3%;top:13.2%;width:1px;height:1px;opacity:0.72"></i><i style="left:36.2%;top:43.2%;width:1.5px;height:1.5px;opacity:0.49"></i><i style="left:52.0%;top:32.7%;width:1.5px;height:1.5px;opacity:0.72"></i><i style="left:78.2%;top:22.5%;width:1.5px;height:1.5px;opacity:0.41"></i><i style="left:4.2%;top:17.0%;width:1px;height:1px;opacity:0.75"></i><span class="rep award"></span><span class="line"><span>用一道藍光，</span><span>開關大腦裡</span><span>特定的神經元</span></span></div><div class="tags">生醫與生命科技・#神經科學 #生物科技</div><div class="name">光遺傳學</div><div class="lead">將綠藻光敏離子通道基因導入哺乳動物神經元，以短促藍光脈衝直接控制神經元放電與突觸傳遞。</div><div class="yrs">2005 發表 ｜ 2026 諾貝爾生理學或醫學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">毫秒精度與細胞專一性難以兼得</span><div class="rows"><div class="row"><b>電刺激</b><span>反應雖達毫秒級，電流擴散卻會無差別激活周圍各類神經元</span></div><div class="row"><b>化學藥物</b><span>透過受體精確作用特定細胞，但擴散代謝需數秒至數十分鐘</span></div><div class="row gap"><b>光控開關</b><span>缺乏同時具備細胞專一性與毫秒級動態調控的遺傳工具</span></div></div><span class="ft" style="color:var(--ink)">系統神經研究亟盼以光精密操控迴路的工具。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">一道藍光驅動單一微生物離子通道</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 180" role="img" aria-label="示意：藍光照射導入神經元的單一光敏感通道蛋白後，陽離子迅速內流促使去極化，短脈衝即可精準誘發動作電位。">
+  <rect class="k-ink k-ring" x="24" y="20" width="64" height="30" rx="4"/>
+  <text class="k-label-accent" x="56" y="39" text-anchor="middle">藍光</text>
+  <line class="k-accent" x1="88" y1="35" x2="124" y2="56"/>
+  <polyline class="k-accent" points="116,58 124,56 121,49"/>
+  <line class="k-muted k-dash" x1="20" y1="74" x2="120" y2="74"/>
+  <line class="k-muted k-dash" x1="180" y1="74" x2="280" y2="74"/>
+  <rect class="k-soft" x="120" y="54" width="60" height="40" rx="6"/>
+  <rect class="k-line k-ring" x="120" y="54" width="60" height="40" rx="6"/>
+  <text class="k-label" x="150" y="78" text-anchor="middle">離子通道</text>
+  <line class="k-accent" x1="150" y1="94" x2="150" y2="122"/>
+  <polyline class="k-accent" points="146,116 150,122 154,116"/>
+  <text class="k-label-accent" x="88" y="114" text-anchor="middle">陽離子</text>
+  <rect class="k-ink k-ring" x="108" y="128" width="84" height="32" rx="4"/>
+  <text class="k-label" x="150" y="148" text-anchor="middle">去極化</text>
+  <line class="k-ink" x1="192" y1="144" x2="220" y2="144"/>
+  <polyline class="k-ink" points="214,140 220,144 214,148"/>
+  <rect class="k-soft" x="224" y="128" width="62" height="32" rx="4"/>
+  <rect class="k-line k-ring" x="224" y="128" width="62" height="32" rx="4"/>
+  <text class="k-label-accent" x="255" y="148" text-anchor="middle">動作電位</text>
+  <text class="k-label" x="234" y="39" text-anchor="middle">神經元</text>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">將單一光敏感通道蛋白導入神經元，藍光照射開啟陽離子內流並於毫秒內誘發放電。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">496 pA</span><span class="l">藍光誘發全細胞向內峰值電流均值（穩態 193 pA）</span></div><div class="stat"><span class="v">0.5 ms</span><span class="l">穩定光照首個動作電位之跨試驗平均時間抖動</span></div><div class="stat"><span class="v">&gt;95%</span><span class="l">相同帕松脈衝序列重複刺激之跨試驗一致率</span></div><div class="stat"><span class="v">30 Hz</span><span class="l">穩定驅動神經元跟隨光脈衝放電之測試上限頻率</span></div></div><span class="ft">範圍：Boyden 等 2005，大鼠海馬體離體培養神經元實驗</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">大腦研究從觀察推進至因果操控</span><div class="time"><p><b>2007</b><span>Aravanis 等以植入光纖在清醒小鼠實現活體光控</span></p><p><b>2009</b><span>Gradinaru 等以光控釐清帕金森深腦刺激作用標的</span></p><p><b>2012</b><span>Liu 等藉光控海馬體細胞實現特定恐懼記憶召回</span></p><p><b>2026</b><span>Deisseroth、Hegemann 與 Nagel 獲諾貝爾獎</span></p></div><span class="ft">前三項為後續他人成果，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">單細胞綠藻演化出的光敏開關，意外成為解鎖大腦毫秒尺度因果關係的分子鑰匙。</span><span class="shift"><span>觀察相關性</span><i aria-hidden="true"></i><b>光控因果關係</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2005 發表 ｜ 2026 諾貝爾生理學或醫學獎</span>
+<h1>光遺傳學（Optogenetics）：以光精準控制大腦神經元</h1>
+<p class="en">Millisecond-timescale, genetically targeted optical control of neural activity</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">在 2005 年之前，控制大腦神經元就像在精密的瑞士手錶裡敲鐵鎚；光遺傳學的誕生，讓科學家終於擁有了由光線驅動的分子雷射筆。</p>
+<p>在 2005 年以前，神經科學能「看見」大腦活動，卻無法「指定」某一類神經元在某一毫秒放電。這篇論文讓單一類型的神經元變成一個可以用光開關的電路元件，把大腦研究從觀察相關性，推進到操控因果。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：神經科學的兩難死局</h2></div>
+<p>在探索「意識、情感與腦部疾病」的大腦迴路時，神經科學界長期受困於時空尺度的不可調和矛盾：</p>
+<ul><li><strong>電刺激的空間混亂（無專一性）</strong>：微電極刺激能達到毫秒級速度，但電流在腦組織擴散時，會無差別地激活電極周圍所有的興奮性、抑制性神經元及過路軸突，導致因果關係完全無法拆解。</li><li><strong>化學藥物的時間遲緩（無即時性）</strong>：藥理學能透過專一受體精確作用於特定神經元，但藥物擴散與代謝需耗時數秒至數十分鐘，根本無法捕捉大腦以千分之一秒（毫秒）進行的思考與神經電訊號。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>Nagel 與 Hegemann 在 2002 與 2003 年證明，綠藻的光敏感通道蛋白（Channelrhodopsin）本身就是一個直接受光閘控的離子通道；Boyden、Zhang 與 Deisseroth 在 2005 年將其表達於哺乳動物神經元，造出兼具「細胞專一」與「毫秒響應」的光控開關。</p>
+<ol><li><strong>光敏感通道蛋白-2（Channelrhodopsin-2, ChR2）</strong><ul><li>源自單細胞綠藻 <em>Chlamydomonas reinhardtii</em>，兼具感光與離子通道功能。ChR2 需要全反式視黃醛；本篇實驗未額外添加，作者認為培養環境中的背景來源可能足夠（p.1267）。</li><li><strong>藍光（約 470 nm）激發</strong>：光照瞬間觸發通道構型翻轉，陽離子（<span class="m-in" data-tex="\mathrm{Na}^+"></span>、<span class="m-in" data-tex="\mathrm{Ca}^{2+}"></span>、<span class="m-in" data-tex="\mathrm{H}^+"></span>）內流，細胞去極化，誘發動作電位（Action Potential）。</li></ul></li><li><strong>嗜鹽菌紫紅質（Halorhodopsin, NpHR）的配對抑制</strong><ul><li><strong>黃光（約 580 nm）抑制</strong>：光驅動氯離子（<span class="m-in" data-tex="\mathrm{Cl}^-"></span>）泵入引發超極化，將過度活躍的神經元「靜音」。此雙向配對由 Zhang et al. (2007) 建立，非 2005 年該篇成果。</li></ul></li><li><strong>病毒載體與細胞表現（Lentiviral Expression）</strong><ul><li>本篇使用慢病毒載體，將 ChR2 融合蛋白導入培養的海馬體神經元；作者另將細胞類型特異性啟動子與活體研究列為未來可能方向，而非本篇已完成的實驗（pp.1264、1267）。</li></ul></li></ol>
+<h3>本篇的觀察與模型界線</h3>
+<p>作者在培養神經元中觀察到光照引發的向內光電流，並以短促光脈衝誘發神經元放電（p.1264、Fig. 1）。這篇是實驗技術報告；逐頁檢視全文後，未見先前列於此處的光電流、三態光循環或 Hodgkin–Huxley 整合展示方程。若另行介紹理論模型，應引用該模型的原始來源，不應歸為本篇原文公式。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Boyden et al. 2005）之核心證據</h3>
+<ul><li><strong>快速大電流與上升動力學</strong>：以藍光（450–490 nm）照射表現 ChR2 的培養大鼠海馬體神經元，於光照開始後 <code>2.3 ± 1.1 ms</code> 內達到最大上升速率 <code>160 ± 111 pA/ms</code>；全細胞向內峰值電流達 <code>496 ± 336 pA</code>、穩態電流 <code>193 ± 177 pA</code>（<span class="m-in" data-tex="n = 18"></span>，p. 1264、Fig. 1b）。</li><li><strong>單一動作電位低延遲與亞毫秒級抖動</strong>：於穩定光照起始即可快速誘發單一動作電位（至波峰平均延遲 <code>8.0 ± 1.9 ms</code>，<span class="m-in" data-tex="n = 10"></span>），且多次重複刺激的放電時間抖動（Jitter）僅 <strong><code>0.5 ± 0.3 ms</code></strong>（pp. 1264–1265、Fig. 1d）。</li><li><strong>帕松與固定頻率脈衝序列之高重複性</strong>：以 10–15 ms 短脈衝序列（Poisson 間隔 <span class="m-in" data-tex="\lambda = 100"></span> 或 <span class="m-in" data-tex="200\text{ ms}"></span>，<span class="m-in" data-tex="n = 7"></span>）驅動放電，跨試驗重複一致率達 <strong><code>&gt;95%</code></strong>（傳遞保真度分別為 <code>76%</code> 與 <code>85%</code>）；在 <strong><code>5–30 Hz</code></strong> 頻率測試（<span class="m-in" data-tex="n = 13"></span>）中，全程時間抖動典型低於 <code>5 ms</code>（p. 1265、Figs. 2–3）。</li><li><strong>未額外添加外源全反式視黃醛即可穩定作用</strong>：本篇在培養基與記錄液中均未額外添加全反式視黃醛，神經元仍可維持穩定光電流（1 小時脈衝光照振幅不變）；作者指出背景視黃醛與培養基 B-27 所含 retinyl acetate 可能足以支持 ChR2 作用（pp. 1264, 1267）。</li><li><strong>電生理活性與細胞健康對照</strong>：未照射下，表現 ChR2 與否不顯著影響膜電阻、靜息電位或碘化丙啶細胞死亡率（p. 1266、Fig. 5）。</li></ul>
+<blockquote><strong>範圍界定</strong>：本篇為離體（in vitro）培養神經元的概念驗證，未包含活體行為實驗。</blockquote>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>活體光纖植入與運動控制</strong>：Aravanis et al. (2007), <em>J Neural Eng</em> 4:S143-S156，首次以植入光纖在清醒小鼠實現活體光控。</li><li><strong>睡眠與甦醒迴路</strong>：Adamantidis et al. (2007), <em>Nature</em> 450:420-424，光控下視丘食慾素（Hypocretin）神經元誘發甦醒。</li><li><strong>帕金森氏症迴路解構</strong>：Gradinaru et al. (2009), <em>Science</em> 324:354-359，釐清深腦刺激（DBS）之真正有效作用標的。</li><li><strong>杏仁核與焦慮的雙向控制</strong>：Tye et al. (2011), <em>Nature</em> 471:358-362，證實杏仁核特定投射可雙向、可逆地調控焦慮行為。</li><li><strong>記憶印痕（Engram）操控</strong>：Liu et al. (2012), <em>Nature</em> 484:381-385 與 Ramirez et al. (2013), <em>Science</em> 341:387-391，利根川進團隊實現恐懼記憶召回與偽記憶植入。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>神經連接圖譜（Connectomics）功能化</strong>：過去解剖學只能繪製靜態大腦結構圖，光遺傳學使全腦動態因果功能圖譜的測繪成為可能。</li><li><strong>攻克神經與精神頑疾</strong>：<ul><li><strong>帕金森氏症</strong>：鎖定丘腦底核（STN）與基底核的失調迴路，修正了深腦刺激（DBS）療效機制的既有理解。</li><li><strong>憂鬱症與成癮</strong>：解析多巴胺中腦邊緣系統獎勵迴路的微觀調控，為靶向治療提供理論依據。</li><li><strong>記憶操縱</strong>：MIT 利根川進實驗室實現人工記憶標記、恐懼記憶召回與偽記憶植入。</li></ul></li><li><strong>臨床轉譯</strong>：光遺傳學原理已進入視網膜疾病的臨床研究階段，為基因治療與神經調控開啟新路徑。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>光遺傳學的真正震撼，在於它並非在實驗室憑空創造全新的物理元件，而是將單細胞綠藻演化十億年的趨光分子開關，跨界嫁接至哺乳動物大腦最精密的思考神經元之中。</p>
+<p>這項突破帶來兩個跨領域啟示：</p>
+<ol><li><strong>跨學科維度的降維打擊</strong>：困擾神經科學近百年的時空精度死局，最終的解答不在神經科學內部，而在單細胞微生物學的冷門角落。</li><li><strong>因果關係的工程化閉環</strong>：科學認知從「觀察現象（Observation）」的相關性，升級為「精確操控（Intervention）」的因果判定。</li></ol>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2005</b><span>發表・Nature Neuroscience</span></div>
+    <div class="yr award"><b>2026</b><span>諾貝爾生理學或醫學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Edward S. Boyden<br>Feng Zhang<br>Ernst Bamberg<br>Georg Nagel<br>Karl Deisseroth</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Karl Deisseroth<br>Peter Hegemann<br>Georg Nagel</span><span class="note">Hegemann 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Nature Neuroscience, 8(9), 1263-1268</span><a href="https://doi.org/10.1038/nn1525">doi:10.1038/nn1525</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#神經科學</span><span class="chip">#生物科技</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>神經迴路因果解耦</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>腦機介面與神經編碼</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>可編程細胞與基因工程</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1126/science.1072068" title="Nagel et al. (2002) Channelrhodopsin-1: a light-gated proton channel in green algae. Science 296:2395-2398.">Nagel 等（2002）</a><a href="https://doi.org/10.1073/pnas.1936192100" title="Nagel et al. (2003) Channelrhodopsin-2, a directly light-gated cation-selective membrane channel. PNAS 100:13940-13945.">Nagel 等（2003）</a><a href="https://doi.org/10.1038/nn1525" title="Boyden et al. (2005) Millisecond-timescale, genetically targeted optical control of neural activity. Nat Neurosci 8:1263-1268.">Boyden 等（2005）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2026 年諾貝爾生理學或醫學獎表彰的是一系列工作，而非單一論文。本頁以 Boyden et al. (2005) 為主軸，並在 Frontmatter 的 <code>key_papers</code> 中列出 Nagel 與 Hegemann 於 2002、2003 年關於光控離子通道的奠基論文。獎項由 Deisseroth、Hegemann、Nagel 三人共享；Hegemann 並非 2005 年該篇論文的作者。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -2481,3 +2481,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：回原文 PDF（`raw/2025-nerve-mito-cancer.pdf` p. 16、pp. 256–261 與 Figs. 1, 5）逐項核對全文無編號公式、Card 4 四筆數據（`5.4%`、`27.3%`、`46.0%`、`420 bp`）及 Discussion 限制與公開資料／程式碼庫（Addgene `greletlab`、NCBI GEO `GSE288069`/`GSE292157`、GitHub `mtDNA-heteroplasmy`/`DAPI-count`），補寫至 `wiki/papers/2025-nerve-mito-cancer.md` 與 `wiki/evidence/2025-nerve-mito-cancer.md`；撰寫無公式＋新論文模式卡片檔 `wiki/cards/2025-nerve-mito-cancer.md`（ERROR 0、WARN 0），建置論文頁 `web/papers/2025-nerve-mito-cancer/index.html`（`status: "published"`）、重建並更新首頁 `web/index.html` 星圖與卡片牆（`No.09`），完成桌面／手機瀏覽器驗證（`verify_page.js`、`verify_wall.js`、`verify_star.js` 皆 PASS），並更新 `wiki/todo.md` `TD-008` 進度為完成 3/4。
+
+## [2026-11-15 16:56] update | 補寫光遺傳學卡片並完成 TD-008 全數上架（4/4） | #神經科學 #生物科技
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：回原文 PDF（`raw/2005-optogenetics.pdf` pp. 1263–1266 與 Figs. 1–3）逐頁核對並修正 OCR 誤讀（如 `50 µs`、`>95%`、`< 5 ms`），同時以 Crossref API 核實全數後續研究（Aravanis 2007、Gradinaru 2009、Liu 2012）書目，將 `wiki/evidence/2005-optogenetics.md` 由 4 列擴充至 12 列並補齊 `wiki/papers/2005-optogenetics.md` Card 4 精確實驗數據（`160 ± 111 pA/ms`、`2.3 ± 1.1 ms`、`496 ± 336 pA`、`193 ± 177 pA`、`8.0 ± 1.9 ms`、`0.5 ± 0.3 ms`、`>95%`、`5–30 Hz`、無外加全反式視黃醛）；撰寫無公式模式卡片檔 `wiki/cards/2005-optogenetics.md`（ERROR 0、WARN 0），建置論文頁 `web/papers/2005-optogenetics/index.html`（`status: "published"`），重建並更新首頁 `web/index.html` 星圖與卡片牆（`No.02`；群星 20 顆星、我的關注 28 篇，全庫 48 篇全數上牆），桌面與手機瀏覽器驗證（`verify_page.js`、`verify_wall.js`、`verify_star.js`）全數 PASS；執行 `check_cards.py --missing`（48 個、ERROR 0）、`build_paper_prototype.py`（48 篇皆 ERROR 0、WARN 0）及 `lint_wiki.py --errors-only`（ERROR 0）確認完成條件後，刪除 `wiki/todo.md` `TD-008` 與 `TD-002` 並將 `TD-009` 改為 `open` 記錄待全牆掃描事項。
