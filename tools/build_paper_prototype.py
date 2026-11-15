@@ -40,18 +40,21 @@ cc = load('check_cards', os.path.join(ROOT, '.agents', 'skills', 'paper-card-wri
 
 DOMAIN = {k: dict(short=s, full=f, shape=p) for k, s, f, _a, p in home.DOMAINS}
 ROLE = dict(home.ROLES)
-# 星光色以 web/assets/css/theme.css 之 --color-<domain> 為準；深色重點色尚未寫入 theme.css，
-# 暫依 DESIGN.md 第七章色表（實作正式論文頁時改讀 --deep-<domain>）。
-DEEP = {'bio': '#1A4F2C', 'ai': '#204960', 'physics': '#4D2E8B', 'econ': '#53401C', 'chem': '#693123', 'human': '#6D244D'}
+# 星光色與深色重點色皆以 web/assets/css/theme.css 之 --color-<domain>、--deep-<domain> 為準。
 FOCUS = {'human': '#F2B3D6'}            # 我的關注封面之重點色：藍，human 用玫瑰粉（DESIGN.md 第二章第 3 節）
 FOCUS_DEFAULT = '#8FD5FD'
 CARD_NAMES = ['時代銘文', '世紀瓶頸', '突破原理', '決定性數據', '典範轉移', 'Kairos']
 VERIFY_TEXT = '已逐項對照原文查核'   # 只在 verification 為 verified 時顯示（DESIGN.md 第八章第 15 項）
 
 
-def star_colors():
+def theme_colors():
+    """自 web/assets/css/theme.css 讀取各學科星光色與深色重點色。"""
     css = open(os.path.join(ROOT, 'web', 'assets', 'css', 'theme.css'), encoding='utf-8').read()
-    return {k: re.search(r'--color-%s:\s*(#[0-9A-Fa-f]{6})' % k, css).group(1) for k in DOMAIN}
+
+    def pick(prefix):
+        return {k: re.search(r'(?:^|[\s;])--%s-%s:\s*(#[0-9A-Fa-f]{6})' % (prefix, k), css).group(1) for k in DOMAIN}
+
+    return pick('color'), pick('deep')
 
 
 def esc(s):
@@ -492,7 +495,7 @@ BACK_STARS = ('../../index.html', '回到群星')
 BACK_FOCUS = ('../../index.html#my-constellation', '回到我的星系')
 
 
-def build(slug, papers, concepts_zh, colors, tpl, nums):
+def build(slug, papers, concepts_zh, colors, deeps, tpl, nums):
     card_path = os.path.join(WIKI, 'cards', slug + '.md')
     if home.is_redirect(card_path) or home.is_redirect(os.path.join(WIKI, 'papers', slug + '.md')):
         print('ERROR %s：這是舊路徑轉介，請使用新論文頁的 slug' % slug)
@@ -512,7 +515,7 @@ def build(slug, papers, concepts_zh, colors, tpl, nums):
     d = fm['domain']
     star = colors[d]
     focus_c = FOCUS.get(d, FOCUS_DEFAULT)
-    vars_ = '--star:%s;--deep:%s;--win:%s;--focus:%s' % (star, DEEP[d], mix(star, '#0F1114', 0.1), focus_c)
+    vars_ = '--star:%s;--deep:%s;--win:%s;--focus:%s' % (star, deeps[d], mix(star, '#0F1114', 0.1), focus_c)
     cards = '\n'.join([cover(fm, f, nums[slug], colors), card2(f), card3(f, svg), card4(f), card5(f), card6(f)])
     art, scope = article(fm, body)
     page = (tpl.replace('{{PAGE_TITLE}}', esc(home.short_name(fm['title_zh'])))
@@ -600,8 +603,9 @@ def main():
     slugs = sys.argv[1:] or sorted(os.path.basename(p)[:-3] for p in glob.glob(os.path.join(WIKI, 'cards', '*.md'))
                                    if not home.is_redirect(p))
     tpl = open(TEMPLATE, encoding='utf-8').read()
-    colors, nums = star_colors(), home.card_numbers(papers)   # 編號與首頁卡片牆共用
-    ok = all([build(s, papers, concepts_zh, colors, tpl, nums) for s in slugs])
+    colors, deeps = theme_colors()
+    nums = home.card_numbers(papers)   # 編號與首頁卡片牆共用
+    ok = all([build(s, papers, concepts_zh, colors, deeps, tpl, nums) for s in slugs])
     sys.exit(0 if ok else 1)
 
 

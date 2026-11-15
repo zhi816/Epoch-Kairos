@@ -2442,3 +2442,12 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：依使用者指示，於 [git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 第三章第 3 節補充 Antigravity 提交時之 `Co-authored-by: Antigravity (Gemini) <176961590+gemini-code-assist[bot]@users.noreply.github.com>` 標註慣例（供 GitHub 顯示 Gemini 四角星頭像），並以本筆提交實測。
+
+## [2026-11-15 14:48] design | 將論文頁深色重點色寫入 theme.css 並改由建置腳本讀取（完成 TD-002 第 1 項） | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：
+  - 於 [theme.css](../web/assets/css/theme.css) 新增六個深色重點色變數（`--deep-bio: #1A4F2C`、`--deep-ai: #204960`、`--deep-physics: #4D2E8B`、`--deep-econ: #53401C`、`--deep-chem: #693123`、`--deep-human: #6D244D`），並同步更新 [AGENTS.md](../AGENTS.md) 第二章色表與 [DESIGN.md](../DESIGN.md) 第七章說明。
+  - 修改 [build_paper_prototype.py](../tools/build_paper_prototype.py)：移除寫死之 `DEEP` 對照表，改以 `theme_colors()` 自 `theme.css` 讀取星光色與深色重點色；重建全部 44 篇論文頁，自我檢查皆為 `ERROR 0` 且與改動前產出完全相同（`git diff --ignore-cr-at-eol web/papers/` 無任何差異）。
+  - 因 `theme.css` 內容雜湊變更，執行 `python tools/build_home.py` 更新 [web/index.html](../web/index.html) 內之 `?v=` 參數（`--check` 通過）。
+  - 更新 [待辦清單](todo.md) 之 `TD-002`（改為 `waiting`，僅餘等待 `TD-008` 之 4 篇論文轉為 `published`）。

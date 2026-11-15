@@ -11,6 +11,7 @@
  *
  * 2026-11-09：學科色改用柔和「星光色」（DESIGN.md 第七章），原霓虹值保留為 --neon-* 備用變數，
  * 切回時把 --color-* / --glow-* / --border-* 改指向 --neon-* 即可。
+ * 2026-11-15：新增 --deep-*（卡組丁於星光色卡片底上之深色重點色，DESIGN.md 第七章）。
  */
 
 :root {
@@ -43,31 +44,37 @@
   --color-bio: #9BDCB1;
   --glow-bio: rgba(155, 220, 177, 0.16);
   --border-bio: rgba(155, 220, 177, 0.35);
+  --deep-bio: #1A4F2C;
 
   /* 2. AI, Computation & Mathematics */
   --color-ai: #8FD5FD;
   --glow-ai: rgba(143, 213, 253, 0.16);
   --border-ai: rgba(143, 213, 253, 0.35);
+  --deep-ai: #204960;
 
   /* 3. Physics, Astronomy & Earth Science */
   --color-physics: #D3BEFD;
   --glow-physics: rgba(211, 190, 253, 0.20);
   --border-physics: rgba(211, 190, 253, 0.40);
+  --deep-physics: #4D2E8B;
 
   /* 4. Macroeconomics & Governance */
   --color-econ: #E6C686;
   --glow-econ: rgba(230, 198, 134, 0.16);
   --border-econ: rgba(230, 198, 134, 0.35);
+  --deep-econ: #53401C;
 
   /* 5. Chemistry, Materials & Energy */
   --color-chem: #FFB6A3;
   --glow-chem: rgba(255, 182, 163, 0.16);
   --border-chem: rgba(255, 182, 163, 0.35);
+  --deep-chem: #693123;
 
   /* 6. Language, Mind & Society（暫定，見 DESIGN.md 第七章） */
   --color-human: #F2B3D6;
   --glow-human: rgba(242, 179, 214, 0.16);
   --border-human: rgba(242, 179, 214, 0.35);
+  --deep-human: #6D244D;
 
   /* Discipline Accent Glows：霓虹色（備用，未使用） */
   --neon-color-bio: #00E599;

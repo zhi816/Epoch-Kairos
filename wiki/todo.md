@@ -9,10 +9,11 @@
 - **完成條件**：5 個條目皆依 `paper-pipeline` 收錄完成：`python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug>` 九步皆 OK，index.md 對應條目已改為連結並標 `[published]`，`lint_wiki.py` 無 ERROR。可逐篇進行，每收錄一篇即從本條內容移除該篇。
 - **來源**：wiki/log.md [2026-11-09 09:18] git（raw/ 檔名標準化）與 index.md 原「待辦與已知問題」一節；2026-11-09 登記，Claude Code by Anthropic。
 
-### TD-002 | open | web | 論文頁深色重點色寫入 theme.css，其餘 4 篇隨卡片轉為 published
-- **內容**：2026-11-10 使用者決定論文頁原型即正式論文頁：`tools/build_paper_prototype.py` 改輸出 `web/papers/<slug>/index.html`，首頁卡片牆改連 `papers/<slug>/`，舊 `web/prototypes/paper-v1/` 已刪除，已有卡片檔之 38 篇論文頁 `status` 改為 `published`（Claude Code by Anthropic）。剩下兩件事：（1）深色重點色仍寫死於 `tools/build_paper_prototype.py` 之 `DEEP` 對照表，應依 DESIGN.md 第七章寫入 `web/assets/css/theme.css`（`--deep-<domain>`），建置腳本改讀之，並同步 AGENTS.md 第二章色表；改完重建全部論文頁，產出應與現行相同。（2）`2005-optogenetics`、`2012-crispr-cas9`、`2023-drugclip`、`2025-nerve-mito-cancer` 尚無卡片檔，維持 `status: "wiki"`，待 TD-008 寫完卡片後依 `paper-pipeline` S8 建置並改為 `published`。
-- **完成條件**：`theme.css` 有六個 `--deep-<domain>`，`build_paper_prototype.py` 不再寫死色碼，全部論文頁重建後與改動前相同（或差異經說明）；42 篇論文頁皆為 `published`，`lint_wiki.py` 無 ERROR。
-- **來源**：wiki/log.md [2026-11-07 22:47] audit「延後處理」與 index.md 原「待辦與已知問題」一節；2026-11-09 登記，2026-11-10 更新（論文頁轉正式），Claude Code by Anthropic。
+### TD-002 | waiting | web | 其餘 4 篇論文頁隨卡片補寫轉為 published
+- **內容**：2026-11-10 使用者決定論文頁原型即正式論文頁：`tools/build_paper_prototype.py` 改輸出 `web/papers/<slug>/index.html`，首頁卡片牆改連 `papers/<slug>/`，舊 `web/prototypes/paper-v1/` 已刪除，已有卡片檔之論文頁 `status` 改為 `published`（Claude Code by Anthropic）。2026-11-15 已完成原第（1）項：六個深色重點色 `--deep-<domain>` 已寫入 `web/assets/css/theme.css` 並同步 `AGENTS.md` 第二章色表、`DESIGN.md` 第七章，`build_paper_prototype.py` 改由 `theme.css` 讀取（重建全部 44 篇論文頁產出零差異）。現僅餘原第（2）項：`2005-optogenetics`、`2012-crispr-cas9`、`2023-drugclip`、`2025-nerve-mito-cancer` 尚無卡片檔，維持 `status: "wiki"`，待 TD-008 寫完卡片後依 `paper-pipeline` S8 建置並改為 `published`。
+- **完成條件**：上述 4 篇完成建置且全庫論文頁皆為 `published`（現行共 48 篇），`lint_wiki.py` 無 ERROR。
+- **等待**：TD-008 決定上述 4 篇由哪個對話／模型補寫卡片檔。
+- **來源**：wiki/log.md [2026-11-07 22:47] audit「延後處理」與 index.md 原「待辦與已知問題」一節；2026-11-09 登記，2026-11-10、2026-11-15 更新，Claude Code by Anthropic / Antigravity by Google DeepMind。
 
 ### TD-003 | waiting | raw | 取得光遺傳學頁奠基論文 Nagel et al. (2002) 原始 PDF
 - **內容**：[2005-optogenetics](papers/2005-optogenetics.md) 之 `key_papers` 列有 Nagel et al. (2002) *Science* 296:2395-2398（https://doi.org/10.1126/science.1072068），`raw/` 尚無原始檔（Nagel et al. (2003) *PNAS* 已存為 `raw/2003-channelrhodopsin2.pdf`）。依第五章，AI 不得擅自寫入 `raw/`。
