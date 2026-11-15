@@ -2456,3 +2456,8 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6 (Codex)
 - **具體變更**：依使用者確認，於 [git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 第三章第 3 節補充 `Co-authored-by: Codex <267193182+codex@users.noreply.github.com>` 慣例，並以本筆提交實測 GitHub 共同作者歸屬。
+
+## [2026-11-15 14:59] fix | 更正 Codex 共同作者標註以包含實際模型型號 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6 (Codex)
+- **具體變更**：依使用者指示，將 [git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 中的 Codex 共同作者範例更正為 `Co-authored-by: Codex (GPT-6) <267193182+codex@users.noreply.github.com>`，並說明名稱中的型號須與日誌一致；前一筆未含型號之提交保留不改。
