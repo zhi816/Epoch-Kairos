@@ -2428,3 +2428,12 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：經使用者同意，於 [AGENTS.md](../AGENTS.md) 第十章新增第 8 條「平行 worktree 作業」：總指揮可讓多個會改檔的代理各在獨立 worktree 同時收錄論文，動工前劃分檔案歸屬（各篇自己的論文頁、證據表、卡片檔與論文頁網頁；日誌、問題清單、待辦、索引、既有概念頁、首頁與他篇論文頁歸總指揮），worktree 內不提交、不寫日誌，收回後仍逐篇提交；第十章前言「六項鐵律」改為「各項鐵律」，第六章 Skill 一覽之 subagent-dispatch 列補上指向第 8 條。同步於 [paper-pipeline](../.agents/skills/paper-pipeline/SKILL.md) 硬規則第 3 條與 [paper-card-writer](../.agents/skills/paper-card-writer/SKILL.md) 第七節第 1 條加註同一例外。配套工具（使用者層級之 subagent-dispatch：worktree.sh、互審迴圈第二版之留言板與對話接續）不在本倉庫。
+
+## [2026-11-15 14:13] config | 清除 Windows WSL2 舊 MinerU 殘留並實測確認本機 .venv-mineru 版本基線（完成 TD-032） | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：
+  - 檢查 Windows WSL2 Ubuntu 發現 2026-11-09 已撤回之 `magic-pdf`（MinerU 1.x）殘留檔案，已清除 `~/.mineru-env`（6.4G）、`~/.cache/magic-pdf`（2.6G）、`~/.cache/huggingface`（682M）、`~/.cache/uv`（2.5G）、`~/.cache/matplotlib`、`~/.config/Ultralytics`、`~/.config/matplotlib` 及 `~/download_models.py`、`~/download_ocr.py`、`~/magic-pdf.json`，WSL2 磁碟使用量由 14G 降至 1.9G（釋放約 12.1G）。
+  - 於倉庫根目錄執行 `python .agents/skills/paper-pdf-parser/scripts/setup_env.py` 實測：Windows（AMD64）、Python 3.12.16（`.venv-mineru\Scripts\python.exe`）、`PyMuPDF` 2.1、`pymupdf4llm` 2.1、`mineru` 4.2.0、`MinerU basic` 模型齊全（`%USERPROFILE%\.mineru\models\MinerU-4_models_onnx`，目錄總計約 838.6 MB）、`DirectML（ONNX Runtime）`（`onnxruntime-directml` 1.24.4）。版本與 [paper-pdf-parser](../.agents/skills/paper-pdf-parser/SKILL.md) 第四章版本基線表完全一致，已將 Windows 11 列確認日期更新為 `2026-11-15（setup_env.py 實測）`。
+  - 實測 [measure_pdf.py](../.agents/skills/academic-paper-translator/scripts/measure_pdf.py) `--help` 與 [html_to_pdf.py](../.agents/skills/academic-paper-translator/scripts/html_to_pdf.py) `--help`：系統 Python 與無 site-packages 觸發自動重執行（`python -S` 切換至 `.venv-mineru\Scripts\python.exe`）皆正常通過。
+  - 完成並自 [待辦清單](todo.md) 刪除 `TD-032`。

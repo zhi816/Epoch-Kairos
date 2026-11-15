@@ -90,7 +90,7 @@ uv pip install pymupdf pymupdf4llm --python .venv-mineru\Scripts\python.exe
 | 平台 | Python | `pymupdf` / `pymupdf4llm` | `mineru` | 模型／硬體後端 | 確認日期 |
 |---|---|---|---|---|---|
 | macOS（Apple Silicon） | 3.12 | `2.1` / `2.1` | `4.1.7` | `basic`（PyTorch / MPS） | 2026-11-15（`setup_env.py` 實測） |
-| Windows 11（AMD64） | 3.12 | `2.1` / `2.1` | `4.2.0` | `MinerU-4_models_onnx`（DirectML / ONNX） | 2026-11-10（實測紀錄） |
+| Windows 11（AMD64） | 3.12 | `2.1` / `2.1` | `4.2.0` | `MinerU-4_models_onnx`（DirectML / ONNX） | 2026-11-15（`setup_env.py` 實測） |
 
 **更新時必做**：日後任一機器建立、升級或重裝 `.venv-mineru`（包括升級 Python、PyMuPDF、`pymupdf4llm`、MinerU 或重新下載模型）時，須：
 1. 執行 `python .agents/skills/paper-pdf-parser/scripts/setup_env.py` 確認環境與實際版本；

@@ -100,9 +100,3 @@
 - **完成條件**：使用者看過置中效果後決定是否重畫及重畫哪幾篇；重畫者 `check_cards.py` 與 `verify_page.js` 皆通過。
 - **等待**：使用者看過手機版效果後決定。
 - **來源**：使用者指示（2026-11-15）；2026-11-15 登記，Claude Code by Anthropic。
-
-### TD-032 | waiting | skill | 檢查 Windows 端 WSL2 舊 MinerU 殘留與本機 .venv-mineru 實測版本
-- **內容**：使用者將前往 Windows 電腦檢查兩件事：（1）確認 WSL2 Ubuntu 內是否仍殘留 2026-11-09 已撤回之舊版 `magic-pdf`（MinerU 1.x）虛擬環境（`~/.mineru-env`）與模型／PaddleOCR 權重快取（見 `wiki/log.md` [2026-11-09 15:20]、[2026-11-09 15:29]），若無其他用途可清除以釋放空間；（2）在倉庫根目錄執行 `python .agents/skills/paper-pdf-parser/scripts/setup_env.py`，確認現行本機 `.venv-mineru` 與 `%USERPROFILE%\.mineru\models` 狀態及實際套件版本，核對是否與 [paper-pdf-parser/SKILL.md](../.agents/skills/paper-pdf-parser/SKILL.md) 第四章「雙機 `.venv-mineru` 版本基線」一致（若有差異或順便升級，依該節規則更新表格並記於 `wiki/log.md`）。另可順帶確認 `academic-paper-translator` 兩支腳本（`measure_pdf.py --help`、`html_to_pdf.py --help`）在 Windows 端能由系統 Python 自動切至 `.venv-mineru`。
-- **完成條件**：確認 WSL2 舊環境已檢查／清理，且 Windows 端 `setup_env.py` 輸出與 `paper-pdf-parser/SKILL.md` 第四章版本基線表一致（或已更新表與日誌）。
-- **等待**：使用者於 Windows 電腦檢查後回報或交由 Windows 端代理接手核對。
-- **來源**：使用者指示（2026-11-15）；2026-11-15 登記，Antigravity by Google DeepMind（Gemini 4 Hydrogen）。
