@@ -2461,3 +2461,8 @@
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6 (Codex)
 - **具體變更**：依使用者指示，將 [git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 中的 Codex 共同作者範例更正為 `Co-authored-by: Codex (GPT-6) <267193182+codex@users.noreply.github.com>`，並說明名稱中的型號須與日誌一致；前一筆未含型號之提交保留不改。
+
+## [2026-11-15 15:00] fix | Antigravity 共同作者標註規則補寫真實模型型號 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依使用者指示並對齊 Codex 標註格式，更新 [git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 第三章第 3 節之 Antigravity 共同作者標註規範：括號內須與日誌一致寫明真實模型型號（如 `Antigravity (Gemini 4 Hydrogen)`），並註明 Antigravity 於 GitHub 上無獨立官方 User／Bot 帳號（`google-antigravity` 為組織帳號），故續用官方 `gemini-code-assist[bot]` 信箱。

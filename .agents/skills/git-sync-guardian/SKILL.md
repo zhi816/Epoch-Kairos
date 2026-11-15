@@ -111,7 +111,7 @@ python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "<提交訊�
   4. 日誌衝突由 `merge_log.py` 排解；合併提交失敗會明確中止，不回報成功。推送後確認 `Ahead: 0`，並列出工作目錄中仍未提交（屬於他人）的檔案。
 * 兩個倉庫都有修改時，分別執行 `main` 與 `raw` 各一次（各自列出檔案），以滿足雙倉庫一體化。
 * 需要 Python 3.7 以上（僅用標準函式庫）。`.py` 版直接以當前 Python 執行並自動將標準輸出設為 UTF-8；`.sh` 版會自動依序試 `python3`、`python`、`py`，取第一個成功者。
-* **Antigravity 共同作者標註（2026-11-15 依使用者偏好訂定）**：Antigravity 提交主倉庫或 `raw/` 時，可於 `<提交訊息>` 結尾附帶空行與 `Co-authored-by: Antigravity (Gemini) <176961590+gemini-code-assist[bot]@users.noreply.github.com>`，以顯示 Gemini 四角星共同作者圖示；日誌中的執行代理與模型型號仍須依 `AGENTS.md` 如實填寫。
+* **Antigravity 共同作者標註（2026-11-15 依使用者偏好訂定）**：Antigravity 目前在 GitHub 上無獨立官方 User／Bot 帳號（`google-antigravity` 為組織帳號），提交主倉庫或 `raw/` 時，可於 `<提交訊息>` 結尾附帶空行與含本次實際模型型號的署名，例如 `Co-authored-by: Antigravity (Gemini 4 Hydrogen) <176961590+gemini-code-assist[bot]@users.noreply.github.com>`（括號內須與日誌一致寫明真實模型型號，不得只寫 `Gemini`），以顯示 Google 官方 Gemini 四角星共同作者圖示；日誌中的執行代理與模型型號仍須依 `AGENTS.md` 如實填寫。
 * **Codex 共同作者標註（2026-11-15 依使用者確認）**：Codex 提交主倉庫或 `raw/` 時，可於 `<提交訊息>` 結尾附帶空行與含本次實際模型型號的署名，例如 `Co-authored-by: Codex (GPT-6) <267193182+codex@users.noreply.github.com>`；模型型號須與日誌一致，讓 GitHub 將共同作者連結至 Codex 帳號並顯示其頭像。
 
 ### 4. 日誌與待辦工具
