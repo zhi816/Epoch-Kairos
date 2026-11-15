@@ -2404,3 +2404,12 @@
   - 重建 44 篇論文頁：18 篇有公式者僅多三行 CSS，25 篇無公式者另改 Card 3 一行，MOF-5 另含新圖。
   - 扁長示意圖是否重畫為較高比例，待使用者看過效果再定，登記 TD-031。
   - **檢查結果**：`check_cards.py` ERROR 0；`build_paper_prototype.py` 44 篇自我檢查皆 ERROR 0、WARN 0；`build_home.py --check` 一致；`lint_wiki.py` ERROR 0；`verify_page.js` 於 26 篇無公式論文頁與 AlphaFold 3、Hopfield 兩篇有公式頁（1440 x 900 與 375 x 812）皆 PASS。
+
+## [2026-11-15 13:43] fix | academic-paper-translator 雙版本 PDF 產檔檢查與文件修正 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：審查 2026-11-14 Antigravity 新增之雙版本輸出（`_原版翻譯`／`_單欄翻譯`）後修正下列缺陷；單欄版之 A4 紙張與 13.5pt 字級經使用者確認維持不變。
+  - [`html_to_pdf.py`](../.agents/skills/academic-paper-translator/scripts/html_to_pdf.py)：產檔後新增檢查，PDF 中殘留 TeX 原始碼（公式未渲染）即失敗；`--mode mobile` 另查 12.5pt 以上文字至少 20%、從頁面右半開始之文字行不超過 15%，未通過時結束代碼 3。新增 `--check <PDF>` 可單獨檢查既有 PDF。單欄覆寫改為對所有元素取消多欄，不再依賴 `.two-col` 等 class 名稱；`.page-break.keep-mobile` 之分頁保留；原圖改 `width: auto; max-width: 100%`，小圖不再被放大；`--no-sandbox` 僅於 Linux 加上。
+  - `html_to_pdf.py` 與 [`measure_pdf.py`](../.agents/skills/academic-paper-translator/scripts/measure_pdf.py)：本機 Python 無 PyMuPDF 時自動改用 `.venv-mineru` 之 Python 重新執行，與 `paper-pdf-parser` 一致（macOS 系統 Python 無 PyMuPDF，原本直接執行會失敗）。
+  - [`SKILL.md`](../.agents/skills/academic-paper-translator/SKILL.md) 與 [`layout-recipes.md`](../.agents/skills/academic-paper-translator/references/layout-recipes.md)：補上述檢查、`keep-mobile` 與 grid／flex 分欄不受覆寫之限制；逐頁核對指令改為兩個新檔名；刪去與實測不符之「無縮放、每行 32-36 字」描述（實測約 38 字）；新增第 7 步，2026-11-14 以前之 `_繁體中文翻譯.pdf` 仍為有效譯本，重新產檔時改出雙版本，舊檔由使用者決定是否刪除。
+  - **檢查結果**：`raw/my-focus/報告論文題材/` 既有 8 份雙版本 PDF 以 `--check` 檢查全數通過（單欄版 12.5pt 以上文字 30-57%、右半起始行 0-4%）；原版 PDF 以 mobile 模式檢查會被擋下（右半起始行約 50%）。暫存 HTML 測試確認：非 `.two-col` 之多欄 class 已轉為單欄、未渲染之 `\frac`/`$$` 使產檔失敗（結束代碼 3）、`keep-mobile` 分頁保留（2 頁對 1 頁）。`measure_pdf.py` 以系統 python3 執行成功。未改動 `raw/`。

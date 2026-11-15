@@ -16,8 +16,9 @@ python .agents/skills/academic-paper-translator/scripts/measure_pdf.py raw/<檔�
 python .agents/skills/academic-paper-translator/scripts/html_to_pdf.py work/<slug>/translated.html <目標輸出路徑>_原版翻譯.pdf
 python .agents/skills/academic-paper-translator/scripts/html_to_pdf.py work/<slug>/translated.html <目標輸出路徑>_單欄翻譯.pdf --mode mobile
 
-# 3. 轉出譯本逐頁 PNG 做兩階段視覺核對
-python .agents/skills/academic-paper-translator/scripts/measure_pdf.py <目標輸出路徑>.pdf --render-dir work/<slug>/out_pages --dpi 180
+# 3. 轉出譯本逐頁 PNG 做兩階段視覺核對（原版逐頁；單欄版抽檢首頁、寬表、圖表公式與換頁接縫）
+python .agents/skills/academic-paper-translator/scripts/measure_pdf.py <目標輸出路徑>_原版翻譯.pdf --render-dir work/<slug>/out_pages --dpi 180
+python .agents/skills/academic-paper-translator/scripts/measure_pdf.py <目標輸出路徑>_單欄翻譯.pdf --render-dir work/<slug>/out_pages_mobile --dpi 180
 ```
 
 ---
@@ -293,14 +294,15 @@ h1, h2, h3, .sec, .subsec {
 
 ## 八、雙版本輸出：手機單欄大字 CSS 配方（`_單欄翻譯`）
 
-為兼顧「紙本列印／原稿左右對照（`_原版翻譯.pdf`）」與「手機直螢幕無縮放閱讀（`_單欄翻譯.pdf`）」，同一份已核對完畢的 `translated.html` 可直接以 `--mode mobile` 編譯第二份單欄 PDF，免除重翻與雙份內容分歧：
+為兼顧「紙本列印／原稿左右對照（`_原版翻譯.pdf`）」與「手機直向單欄閱讀（`_單欄翻譯.pdf`）」，同一份已核對完畢的 `translated.html` 可直接以 `--mode mobile` 編譯第二份單欄 PDF，免除重翻與雙份內容分歧：
 
 ```bash
 python .agents/skills/academic-paper-translator/scripts/html_to_pdf.py work/<slug>/translated.html <目標輸出路徑>_單欄翻譯.pdf --mode mobile
 ```
 
 ### 核心覆寫原則（已內建於 `html_to_pdf.py` 之 `MOBILE_OVERRIDE_CSS`）
-1. **強制單欄與連續流式排版**：將 `.two-col`、`.two-col-auto` 設為 `column-count: 1 !important`，移除 `.span-all` / `.col-span-all` 跨欄設定，並將原稿對齊分頁用的 `.page-break` 設為 `display: none !important`，避免單欄出現半頁留白。
-2. **手機可讀性字級與邊距**：改為 `@page { size: A4 portrait; margin: 12mm 14mm 15mm 14mm; }`，內文放大至 `13.5pt`、`line-height: 1.65`（手機直向每行約 32–36 中文字，無需兩指縮放），標題與參考文獻等比放大。
-3. **寬表格與原圖保護**：`table.acl` 等表格採 `width: 100%` 與 `10pt` 字級配合 `break-inside: avoid` 與 `thead { display: table-header-group }`，讓原雙欄寬表在 A4 單欄幅寬中維持清晰不擠壓且不輕易拆斷；`figure.fig-wrap img` 放大至單欄滿寬展示。
+1. **強制單欄與連續流式排版**：對所有元素設定 `columns: auto !important`，不論 HTML 用哪個 class 名稱分欄都會取消多欄，並移除 `.span-all` / `.col-span-all` 跨欄設定。原稿為對齊雙欄而加之 `.page-break` 一律 `display: none`，避免單欄出現半頁留白；有意義之分頁（如附錄、補充材料前）寫成 `<div class="page-break keep-mobile"></div>` 才會保留。以 grid 或 flex 排成兩欄之版面不受此覆寫影響，翻譯 HTML 時一律以 CSS 多欄（`column-count`）分欄。
+2. **字級與邊距**：維持 `@page { size: A4 portrait; margin: 12mm 14mm 15mm 14mm; }`，內文放大至 `13.5pt`、`line-height: 1.65`（每行約 38 個中文字），標題與參考文獻等比放大。
+3. **寬表格與原圖保護**：`table.acl` 等表格採 `width: 100%` 與 `10pt` 字級配合 `break-inside: avoid` 與 `thead { display: table-header-group }`，讓原雙欄寬表在 A4 單欄幅寬中維持清晰不擠壓且不輕易拆斷；`figure.fig-wrap img` 設 `width: auto; max-width: 100%`：依本檔第七節以 300 DPI 擷取之原圖本身寬於版心，自然佔滿單欄寬；小圖維持原尺寸，不被放大到模糊。
 4. **首頁出處欄轉分隔帶**：原位於第 1 頁底部的 `.venue-footer` 改為上下細線分隔之置中資訊帶，在連續單欄閱讀時自然區隔首頁註腳與後續章節；若特定論文仍需微調單欄字級或表格行距，可另傳入 `--css custom_mobile.css` 疊加覆寫。
+5. **產檔後自動檢查**：`html_to_pdf.py` 產檔後檢查 PDF 中有無 TeX 原始碼殘留（兩種模式皆查），`--mode mobile` 另查字級 12.5pt 以上之文字至少 20%、從頁面右半開始之文字行不超過 15%。未通過時結束代碼為 3，須修正 HTML 後重新產檔，不得交付。門檻依 2026-11-14 產出之四份單欄版（12.5pt 以上文字 30-57%、右半起始行 0-4%）與原版（0%、雙欄約 50%）訂定。

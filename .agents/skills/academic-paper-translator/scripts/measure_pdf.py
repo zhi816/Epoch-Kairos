@@ -16,8 +16,38 @@ import argparse
 from collections import Counter
 import json
 import os
+import platform
 import re
+import subprocess
 import sys
+
+
+# 本機 Python 沒有 PyMuPDF 時（macOS 系統 Python 通常沒有），改用倉庫根目錄 .venv-mineru 之 Python 重新執行，
+# 與 paper-pdf-parser 之 parse_pdf.py 相同；Windows 與 macOS 皆適用。
+REEXEC_FLAG = 'EK_TRANSLATOR_REEXEC'
+ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '..'))
+VENV_PY = os.path.join(ROOT, '.venv-mineru', 'Scripts' if platform.system() == 'Windows' else 'bin',
+                       'python.exe' if platform.system() == 'Windows' else 'python')
+
+
+def _has_pymupdf():
+    try:
+        import pymupdf  # noqa: F401
+        return True
+    except ImportError:
+        try:
+            import fitz  # noqa: F401
+            return True
+        except ImportError:
+            return False
+
+
+if not _has_pymupdf():
+    if not os.environ.get(REEXEC_FLAG) and os.path.exists(VENV_PY):
+        sys.exit(subprocess.run([VENV_PY, os.path.abspath(__file__)] + sys.argv[1:],
+                                env=dict(os.environ, **{REEXEC_FLAG: '1'})).returncode)
+    sys.stderr.write('錯誤：找不到 PyMuPDF。請依 paper-pdf-parser 說明建立 .venv-mineru，或以 pip install pymupdf 安裝。\n')
+    sys.exit(1)
 
 try:
     import pymupdf
