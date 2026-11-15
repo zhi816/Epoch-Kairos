@@ -2437,3 +2437,8 @@
   - 於倉庫根目錄執行 `python .agents/skills/paper-pdf-parser/scripts/setup_env.py` 實測：Windows（AMD64）、Python 3.12.16（`.venv-mineru\Scripts\python.exe`）、`PyMuPDF` 2.1、`pymupdf4llm` 2.1、`mineru` 4.2.0、`MinerU basic` 模型齊全（`%USERPROFILE%\.mineru\models\MinerU-4_models_onnx`，目錄總計約 838.6 MB）、`DirectML（ONNX Runtime）`（`onnxruntime-directml` 1.24.4）。版本與 [paper-pdf-parser](../.agents/skills/paper-pdf-parser/SKILL.md) 第四章版本基線表完全一致，已將 Windows 11 列確認日期更新為 `2026-11-15（setup_env.py 實測）`。
   - 實測 [measure_pdf.py](../.agents/skills/academic-paper-translator/scripts/measure_pdf.py) `--help` 與 [html_to_pdf.py](../.agents/skills/academic-paper-translator/scripts/html_to_pdf.py) `--help`：系統 Python 與無 site-packages 觸發自動重執行（`python -S` 切換至 `.venv-mineru\Scripts\python.exe`）皆正常通過。
   - 完成並自 [待辦清單](todo.md) 刪除 `TD-032`。
+
+## [2026-11-15 14:41] rule | 新增 Antigravity 提交之 Gemini 共同作者標註慣例 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依使用者指示，於 [git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 第三章第 3 節補充 Antigravity 提交時之 `Co-authored-by: Antigravity (Gemini) <176961590+gemini-code-assist[bot]@users.noreply.github.com>` 標註慣例（供 GitHub 顯示 Gemini 四角星頭像），並以本筆提交實測。
