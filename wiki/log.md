@@ -2451,3 +2451,8 @@
   - 修改 [build_paper_prototype.py](../tools/build_paper_prototype.py)：移除寫死之 `DEEP` 對照表，改以 `theme_colors()` 自 `theme.css` 讀取星光色與深色重點色；重建全部 44 篇論文頁，自我檢查皆為 `ERROR 0` 且與改動前產出完全相同（`git diff --ignore-cr-at-eol web/papers/` 無任何差異）。
   - 因 `theme.css` 內容雜湊變更，執行 `python tools/build_home.py` 更新 [web/index.html](../web/index.html) 內之 `?v=` 參數（`--check` 通過）。
   - 更新 [待辦清單](todo.md) 之 `TD-002`（改為 `waiting`，僅餘等待 `TD-008` 之 4 篇論文轉為 `published`）。
+
+## [2026-11-15 14:56] rule | 新增 Codex GitHub 共同作者標註慣例 | 全域
+- **執行代理**：Codex by OpenAI
+- **模型版本**：GPT-6 (Codex)
+- **具體變更**：依使用者確認，於 [git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 第三章第 3 節補充 `Co-authored-by: Codex <267193182+codex@users.noreply.github.com>` 慣例，並以本筆提交實測 GitHub 共同作者歸屬。

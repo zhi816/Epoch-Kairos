@@ -112,6 +112,7 @@ python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "<提交訊�
 * 兩個倉庫都有修改時，分別執行 `main` 與 `raw` 各一次（各自列出檔案），以滿足雙倉庫一體化。
 * 需要 Python 3.7 以上（僅用標準函式庫）。`.py` 版直接以當前 Python 執行並自動將標準輸出設為 UTF-8；`.sh` 版會自動依序試 `python3`、`python`、`py`，取第一個成功者。
 * **Antigravity 共同作者標註（2026-11-15 依使用者偏好訂定）**：Antigravity 提交主倉庫或 `raw/` 時，可於 `<提交訊息>` 結尾附帶空行與 `Co-authored-by: Antigravity (Gemini) <176961590+gemini-code-assist[bot]@users.noreply.github.com>`，以顯示 Gemini 四角星共同作者圖示；日誌中的執行代理與模型型號仍須依 `AGENTS.md` 如實填寫。
+* **Codex 共同作者標註（2026-11-15 依使用者確認）**：Codex 提交主倉庫或 `raw/` 時，可於 `<提交訊息>` 結尾附帶空行與 `Co-authored-by: Codex <267193182+codex@users.noreply.github.com>`，讓 GitHub 將共同作者連結至 Codex 帳號並顯示其頭像；日誌中的執行代理與模型型號仍須依 `AGENTS.md` 如實填寫。
 
 ### 4. 日誌與待辦工具
 ```bash
