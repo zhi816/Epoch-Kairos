@@ -21,3 +21,7 @@
 | Card 4 | LIT-PCBA 基準：$\text{EF}_{1\%} = 5.51$、$\text{BEDROC} = 6.23\%$、$\text{AUROC} = 57.17\%$ | Table 3 (p. 8) | 核實更正。原文 Table 3 載明 DrugCLIP 之 $\text{EF}_{0.5\%}=8.56$、$\text{EF}_{1\%}=5.51$、$\text{EF}_{5\%}=2.27$、AUROC 57.17%、BEDROC 6.23%。更正先前將 10.66%（DUD-E EF@5%）錯標為 LIT-PCBA BEDROC 之問題。 |
 | Card 4 | HomoAug 消融驗證：DUD-E 上 BEDROC 從 45.81% 提升至 50.52%，EF 1% 從 29.12 提升至 31.89 | Table 5 (p. 9) | 核實更正。Table 5 顯示加入 HomoAug 使 DUD-E BEDROC 由 45.81% 升至 50.52%，EF@1% 由 29.12 升至 31.89。刪除非原文表格之「LIT-PCBA 4.21 到 5.51」陳述。 |
 | Card 4 | 專家雙盲評估：ChemDiv 庫 5 個靶點中 4 個傾向選擇 DrugCLIP | §4.5 (p. 9), Table 8 (p. 19) | 核實符合。五個靶點中專家偏好 DrugCLIP 比例在四個靶點高於 Glide（Table 8）。 |
+| Card 4 後續 | Feng 等（2025）提出 LigUnity 共享口袋—配體空間模型 | *Patterns* 6(10):101371, [DOI](https://doi.org/10.1016/j.patter.2025.101371) | 核實符合（後續研究）。OpenAlex 確認引用 DrugCLIP；摘要載明結合骨架辨識與藥效團排序，統一虛擬篩選與苗頭至先導化合物優化。 |
+| Card 4 後續 | Jia 等（2026）完成全基因組篩選、NET（$15\%$）與 TRIP12（$17.5\%$）濕實驗驗證及 GenomeScreenDB | *Science* 391(6781):eads9530, [DOI](https://doi.org/10.1126/science.ads9530) | 核實符合（後續研究）。PubMed 41505557 摘要載明 NET $15\%$ 命中率與 2 個冷凍電鏡複合物結構、TRIP12 僅以 AlphaFold2 結構達 $17.5\%$ 命中率、GenomeScreenDB 涵蓋約 10,000 個人類蛋白質與 5 億化合物。 |
+| Card 4 後續 | He 等（2026）提出 S²Drug 融合 ESM2 序列與 3D 口袋對比學習 | *AAAI* 40(1):354–362, [DOI](https://doi.org/10.1609/aaai.v40i1.36997) | 核實符合（後續研究）。論文摘要載明兩階段框架結合 ESM2 序列預訓練與殘基閘控融合及結合位點輔助任務。 |
+| Card 4 後續 | Zhang（2026）專文評述 DrugCLIP 與 GenomeScreenDB | *Drug Development Research* 87(5):e70351, [DOI](https://doi.org/10.1002/ddr.70351) | 核實符合（後續研究）。OpenAlex 確認引用 DrugCLIP；摘要綜述其對後 AlphaFold 時代藥物探索之影響與功能活性、PPI 等限制。 |

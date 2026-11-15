@@ -2466,3 +2466,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：依使用者指示並對齊 Codex 標註格式，更新 [git-sync-guardian](../.agents/skills/git-sync-guardian/SKILL.md) 第三章第 3 節之 Antigravity 共同作者標註規範：括號內須與日誌一致寫明真實模型型號（如 `Antigravity (Gemini 4 Hydrogen)`），並註明 Antigravity 於 GitHub 上無獨立官方 User／Bot 帳號（`google-antigravity` 為組織帳號），故續用官方 `gemini-code-assist[bot]` 信箱。
+
+## [2026-11-15 15:28] update | 補寫 DrugCLIP 卡片、修正後續研究並上架首頁（TD-008 1/4） | #人工智慧 #計算生物
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依 `wiki-content-audit`、原文 PDF（`raw/2023-drugclip.pdf`）與 Crossref / OpenAlex / PubMed 第一手書目核對，發現 `wiki/papers/2023-drugclip.md` Card 4 後續研究缺乏出處且部分描述與 Jia et al. (2026) *Science* 原文摘要不符，登記並修正 `EK-227`，補齊四筆附 DOI 之後續研究（Feng et al. 2025 *Patterns*、Jia et al. 2026 *Science*、He et al. 2026 *AAAI*、Zhang 2026 *Drug Dev. Res.*）並增補 `wiki/evidence/2023-drugclip.md`；撰寫卡片檔 `wiki/cards/2023-drugclip.md`（雙塔對比幾何檢索示意圖與總對比損失式，Card 4 四數值全經 Table 1/3/8 原文核對），建置論文頁 `web/papers/2023-drugclip/index.html`（`status: "published"`）、更新 `web/index.html` 星圖與卡片牆（`No.16`）並完成桌面／手機瀏覽器驗證（`verify_page.js`、`verify_wall.js`、`verify_star.js` 皆 PASS），將 `wiki/todo.md` `TD-008` 改為 `doing`（完成 1/4）。

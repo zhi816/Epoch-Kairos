@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DrugCLIP｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--focus)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#8FD5FD;--deep:#204960;--win:#1C252B;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.16</span><span>AI</span></div><div class="win"><i style="left:59.2%;top:4.3%;width:1.5px;height:1.5px;opacity:0.55"></i><i style="left:10.0%;top:13.0%;width:1px;height:1px;opacity:0.47"></i><i style="left:66.6%;top:13.3%;width:1px;height:1px;opacity:0.32"></i><i style="left:84.9%;top:41.4%;width:1px;height:1px;opacity:0.60"></i><i style="left:33.9%;top:14.8%;width:1px;height:1px;opacity:0.46"></i><i style="left:38.6%;top:6.2%;width:1px;height:1px;opacity:0.69"></i><i style="left:58.6%;top:44.5%;width:1px;height:1px;opacity:0.41"></i><i style="left:61.8%;top:6.5%;width:1px;height:1px;opacity:0.35"></i><i style="left:88.1%;top:43.0%;width:1px;height:1px;opacity:0.33"></i><i style="left:63.2%;top:21.0%;width:1px;height:1px;opacity:0.63"></i><i style="left:28.8%;top:22.2%;width:1px;height:1px;opacity:0.48"></i><i style="left:19.0%;top:11.0%;width:1px;height:1px;opacity:0.47"></i><i style="left:41.7%;top:18.4%;width:1.5px;height:1.5px;opacity:0.52"></i><i style="left:36.9%;top:13.1%;width:1px;height:1px;opacity:0.78"></i><span class="rep"></span><span class="line"><span>不再逐一模擬，</span><span>從海量分子中</span><span>快速挑出候選藥</span></span></div><div class="tags">人工智慧、計算與數學・#人工智慧 #計算生物</div><div class="name">DrugCLIP</div><div class="lead">把蛋白質口袋與小分子映進同一三維向量空間，靠預先編碼的向量比對高速篩藥，不必逐一對接。</div><div class="yrs">2023 發表 ｜ NeurIPS</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">物理對接太慢，<br>回歸模型難泛化</span><div class="rows"><div class="row"><b>分子對接</b><span>須逐一採樣三維結合姿態，篩選十億級化合物庫動輒耗時數千年</span></div><div class="row"><b>親和力回歸</b><span>實驗結合力資料稀少且缺負樣本，模型易死記骨架而難跨靶點</span></div><div class="row gap"><b>方法</b><span>缺乏既不依賴姿態採樣、又能跨靶點排序候選分子的表徵方法</span></div></div><span class="ft" style="color:var(--ink)">虛擬篩選需要直接對齊口袋與分子的檢索架構。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">把篩藥變成口袋與分子的向量配對</span><svg class="dia" viewBox="0 0 300 128" role="img" aria-label="示意：分子編碼器與口袋編碼器將結構映為向量後計算內積，在嵌入空間拉近正樣本對、推開負樣本。">
+  <rect class="k-ink k-ring" x="10" y="18" width="84" height="32" rx="4"/>
+  <text class="k-label" x="52" y="38" text-anchor="middle">分子編碼器</text>
+  <rect class="k-ink k-ring" x="10" y="78" width="84" height="32" rx="4"/>
+  <text class="k-label" x="52" y="98" text-anchor="middle">口袋編碼器</text>
+  <line class="k-ink" x1="94" y1="34" x2="132" y2="52"/>
+  <polyline class="k-ink" points="125,54 132,52 129,45"/>
+  <line class="k-ink" x1="94" y1="94" x2="132" y2="76"/>
+  <polyline class="k-ink" points="129,83 132,76 125,74"/>
+  <rect class="k-soft" x="138" y="16" width="152" height="96" rx="4"/>
+  <rect class="k-line k-ring" x="138" y="16" width="152" height="96" rx="4"/>
+  <text class="k-label-accent" x="214" y="34" text-anchor="middle">向量內積</text>
+  <circle class="k-accent" cx="164" cy="58" r="4.5"/>
+  <circle class="k-accent" cx="192" cy="58" r="4.5"/>
+  <line class="k-line" x1="169" y1="58" x2="187" y2="58"/>
+  <text class="k-label-accent" x="244" y="62" text-anchor="middle">正樣本對</text>
+  <circle class="k-muted k-ring" cx="156" cy="88" r="4"/>
+  <circle class="k-muted k-ring" cx="200" cy="88" r="4"/>
+  <line class="k-muted k-dash" x1="162" y1="88" x2="194" y2="88"/>
+  <text class="k-label" x="244" y="92" text-anchor="middle">負樣本</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\mathcal{L} = \frac{1}{2} \sum_{k=1}^N \left( \mathcal{L}_k^p + \mathcal{L}_k^m \right)"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">平均雙向對比損失讓互補口袋與分子在嵌入空間靠近，推論期僅需計算向量內積。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">31.89</span><span class="l">DUD-E 零樣本 EF 1%，對照 Glide-SP 為 16.18</span></div><div class="stat"><span class="v">50.52%</span><span class="l">DUD-E 零樣本 BEDROC，對照 Glide-SP 為 40.70%</span></div><div class="stat"><span class="v">5.51</span><span class="l">LIT-PCBA 零樣本 EF 1%，對照 Gnina 為 4.63</span></div><div class="stat"><span class="v">4/5</span><span class="l">ChemDiv 盲篩中專家評審偏好 DrugCLIP 之靶點比例</span></div></div><span class="ft">範圍：Gao 等 2023，兩項零樣本虛擬篩選基準與 60 億庫測時</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">對比檢索走向全基因組與濕實驗</span><div class="time"><p><b>2025</b><span>Feng 等提出 LigUnity，串接篩選與親和力排序</span></p><p><b>2026</b><span>Jia 等擴展至全人類基因組並取得濕實驗命中率</span></p><p><b>2026</b><span>He 等結合蛋白質序列預訓練與三維口袋對比學習</span></p><p><b>2026</b><span>Zhang 評述 DrugCLIP 與全基因組藥物探索挑戰</span></p></div><span class="ft">以上皆為後續延伸與獨立研究，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">把口袋與小分子看作兩種語言，用對比排序取代逐一算結合能，才能在百億空間裡篩藥。</span><span class="shift"><span>逐一模擬結合</span><i aria-hidden="true"></i><b>向量空間排序</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2023 發表 ｜ NeurIPS</span>
+<h1>DrugCLIP：以蛋白質—分子三維對比學習實現超高速虛擬藥物篩選</h1>
+<p class="en">DrugCLIP: Contrastive Protein-Molecule Representation Learning for Virtual Screening</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">傳統分子對接像是拿著十億把鑰匙逐一插進鎖孔反覆轉動試探；DrugCLIP 則是在高維幾何空間裡直接讀懂『鎖與鑰匙的互補語言』，在一瞬間完成十億次精準配對。</p>
+<p>在現代新藥研發中，如何從包含數十億至數百億個類藥小分子的超大型化學空間（如 ZINC、REAL 資料庫）中，找出能與目標致病蛋白質靶點（Protein Pocket）緊密結合的候選藥物？傳統分子對接（Molecular Docking，如 AutoDock Vina、Glide）必須針對每一個小分子在靶點口袋內反覆採樣成千上萬種三維構型與旋轉角度，單一化合物即需數秒至數十秒 CPU 時間，篩選十億個分子需耗費數百年算力。高博文、強博、蘭艷艷與馬維英等人提出的 <strong>DrugCLIP</strong>，將虛擬篩選重構為「蛋白質口袋與小分子的三維對比表徵學習（Contrastive Representation Learning）」，透過預先編碼的單次向量內積檢索，將篩選速度提升超過 <strong><span class="m-in" data-tex="10^5"></span> 倍</strong>，同時在 DUD-E 與 LIT-PCBA 兩大權威基準上大幅刷新零樣本篩選精度。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：構型採樣的算力高牆與監督回歸的過擬合陷阱</h2></div>
+<p>計算機輔助藥物設計（CADD）長期受困於「速度」與「泛化能力」的兩難：</p>
+<ul><li><strong>分子對接（Docking）的構型搜索瓶頸</strong>：物理與經驗打分函數依賴精確的「蛋白質—配體結合姿態（Binding Pose）」，必須透過蒙地卡羅或遺傳演算法在連續六維剛體空間加分子內可旋轉鍵空間中進行昂貴的迭代優化，無法擴展至十億級（Ultra-Large）虛擬化合物庫。</li><li><strong>親和力回歸模型（Affinity Regression）的嚴重偽相關與過擬合</strong>：既有深度學習方法多將問題視為預測結合自由能 <span class="m-in" data-tex="\Delta G"></span>（或 <span class="m-in" data-tex="\mathrm{p}K_d"></span>）的監督式回歸任務。然而，PDBbind 等實驗結晶資料庫中「具有結合力之正樣本加上實測親和力」總量僅約萬筆，且缺乏龐大的未結合負樣本（Decoys），導致回歸模型極易記憶訓練集分子骨架偏差，在面對全新蛋白質靶點（Zero-Shot Unseen Targets）時表現甚至不如傳統物理對接。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>DrugCLIP 跳脫了「先預測結合姿態、再回歸結合能」的傳統範式，將虛擬篩選重新定義為跨模態密集檢索（Dense Retrieval）問題：</p>
+<ol><li><strong>雙塔 <span class="m-in" data-tex="\mathrm{SE}(3)"></span> 三維幾何編碼器（Dual 3D Geometric Encoders）</strong>：<ul><li>基於 Uni-Mol 預訓練三維分子表徵框架，分別建立獨立的<strong>蛋白質口袋編碼器 <span class="m-in" data-tex="g_\phi"></span></strong>（以殘基原子與空間距離矩陣為輸入）與<strong>小分子編碼器 <span class="m-in" data-tex="f_\theta"></span></strong>（以三維分子原子坐標與類型為輸入），將兩者映射至同一個正規化超球面嵌入空間。由於推理階段雙塔完全解耦，小分子的向量表徵可離線預先算好並建立索引；當面對新靶點時，僅需對蛋白質口袋做一次前向編碼，即可透過 GPU 向量內積高速完成檢索（十億級化合物庫約在數小時內完成，詳見 Card 4）。</li></ul></li><li><strong>雙向對稱 InfoNCE 對比損失（Symmetric Contrastive Learning）</strong>：<ul><li>在同一個訓練批次（Batch）中，真實結合的「蛋白質口袋—配體」晶體複合物構成正樣本對，而同批次內與其他蛋白質配對的分子自然構成海量負樣本（In-Batch Negatives），直接塑造出高判別力的排序邊界。</li></ul></li><li><strong>生物同源演化與 AlphaFold 資料增強（HomoAug）</strong>：<ul><li>為克服 PDB 實驗複合物結構有限（僅數萬筆）的瓶頸，作者提出 <strong>HomoAug</strong>：使用 Jackhmmer 在經 MMseqs（50% 序列一致性聚類）與高可信度過濾（殘基 pLDDT <span class="m-in" data-tex="&gt; 70"></span> 佔比 <span class="m-in" data-tex="&gt; 90\%"></span>）之 AlphaFold 蛋白質結構庫（約 845 萬條序列）中檢索同源蛋白；以 TMalign 進行三維結構對齊，保留結構相似（TM-score <span class="m-in" data-tex="\ge 0.4"></span>）且結合口袋對齊率 <span class="m-in" data-tex="\ge 40\%"></span> 的配對，擷取配體 <span class="m-in" data-tex="6\,\text{Å}"></span> 範圍內的殘基構建新口袋，成功擴增出 758,107 個全新口袋—配體訓練對（擴增了 51% 的 PDBbind 實例）。</li></ul></li></ol>
+<h3>1. 雙塔三維距離感知自注意力編碼 (3D Distance-Aware Representation)</h3>
+<p>對於蛋白質口袋 <span class="m-in" data-tex="x^p = \{c_p, t_p\}"></span> 或小分子構型 <span class="m-in" data-tex="x^m = \{c_m, t_m\}"></span>（其中 <span class="m-in" data-tex="t"></span> 為原子類型，<span class="m-in" data-tex="c \in \mathbb{R}^{L \times 3}"></span> 為原子三維坐標），編碼器利用原子間相對歐氏距離 <span class="m-in" data-tex="d_{ij} = \|c_i - c_j\|_2"></span> 初始化成對表徵 <span class="m-in" data-tex="q_{ij}^0"></span>，並在 Transformer 層間作為注意力偏置持續更新節點表徵 <span class="m-in" data-tex="h_i^{(l)}"></span>：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\operatorname{Attention}(Q_i^l, K_j^l, V_j^l) &amp;= \operatorname{softmax}_j\left( \frac{Q_i^l (K_j^l)^\top}{\sqrt{d}} + q_{ij}^l \right) V_j^l \\
+q_{ij}^{l+1} &amp;= q_{ij}^l + \frac{Q_i^l (K_j^l)^\top}{\sqrt{d}}
+\end{aligned}"></span>
+<p>由於輸入依賴內部成對距離矩陣，輸出的口袋嵌入向量 <span class="m-in" data-tex="g_\phi(x^p)"></span> 與分子嵌入向量 <span class="m-in" data-tex="f_\theta(x^m)"></span> 對全域剛體旋轉與平移完全不變（<span class="m-in" data-tex="\mathrm{SE}(3)"></span>-Invariant），無須在篩選前預先對齊空間坐標。</p>
+<h3>2. 對稱雙向 InfoNCE 對比學習目標函數 (Symmetric Contrastive Loss)</h3>
+<p>給定包含 <span class="m-in" data-tex="N"></span> 個「蛋白質口袋—活性分子」正樣本對 <span class="m-in" data-tex="\{(x_k^p, x_k^m)\}_{k=1}^N"></span> 的訓練批次，定義兩者的相似度為 <span class="m-in" data-tex="s(x_i^p, x_j^m) = g_\phi(x_i^p)^\top f_\theta(x_j^m)"></span>（可採點積或正規化餘弦相似度）。DrugCLIP 同時最小化「以口袋檢索分子（Pocket-to-Mol）」與「以分子檢索口袋（Mol-to-Pocket）」的雙向損失：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+\mathcal{L}_k^p &amp;= -\frac{1}{N} \log \frac{\exp\left( s(x_k^p, x_k^m) / \tau \right)}{\displaystyle\sum_{i=1}^N \exp\left( s(x_k^p, x_i^m) / \tau \right)} \\
+\mathcal{L}_k^m &amp;= -\frac{1}{N} \log \frac{\exp\left( s(x_k^p, x_k^m) / \tau \right)}{\displaystyle\sum_{i=1}^N \exp\left( s(x_i^p, x_k^m) / \tau \right)} \\
+\mathcal{L} &amp;= \frac{1}{2} \sum_{k=1}^N \left( \mathcal{L}_k^p + \mathcal{L}_k^m \right)
+\end{aligned}"></span>
+<p>其中 <span class="m-in" data-tex="\tau &gt; 0"></span> 為可學習之溫度參數。</p>
+<h3>3. 化學模擬噪聲注入與訓練—測試不一致性消除 (Conformation Simulation for Generalization)</h3>
+<p>虛擬篩選面臨晶體結合態（Holo）與未結合游離態（Apo）構型差異的「訓練—測試不一致性」。DrugCLIP 在訓練期直接利用 RDKit 生成分子模擬構型作為帶噪聲輸入 <span class="m-in" data-tex="\tilde{x}^m = \{c_m + \delta, h_m\}"></span>。作者在 Proposition 1 中證明：雙塔距離編碼架構的評分偏差在一階泰勒展開下與距離擾動成正比，當模擬構型與結合構型接近時（存在剛體旋轉 <span class="m-in" data-tex="R"></span> 與平移 <span class="m-in" data-tex="t"></span> 滿足 <span class="m-in" data-tex="(c + \delta)R^\top + t = c"></span>），內部距離矩陣偏差為零，即：</p>
+<span class="m-disp" data-tex="\lim_{\delta \to 0} \{ s(\tilde{x}_m, x_p) - s(x_m, x_p) \} = 0"></span>
+<p>相較之下，傳統單塔親和力回歸模型因混入跨分子相對距離項，即使分子內部構型逼真，仍必須依賴分子對接演算法求出旋轉平移參數才能預測。DrugCLIP 藉此完全解耦相對空間坐標，在推論期僅需計算單一口袋向量與候選分子向量的點積或餘弦相似度。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Gao et al. 2023, NeurIPS）之核心證據</h3>
+<ul><li><strong>DUD-E 基準零樣本早期富集因子翻倍超越物理對接</strong>：在涵蓋 102 個靶點、22,886 個活性分子與對應誘餌分子的 DUD-E 零樣本測試（嚴格剔除訓練集同源靶點）中，DrugCLIP 零樣本模型（<span class="m-in" data-tex="\text{DrugCLIP}_{\text{ZS}}"></span>）的前 <span class="m-in" data-tex="1\%"></span> 富集因子（<span class="m-in" data-tex="\text{EF}_{1\%}"></span>）達到 <strong><span class="m-in" data-tex="31.89"></span></strong>（<span class="m-in" data-tex="\text{EF}_{0.5\%} = 38.07"></span>、<span class="m-in" data-tex="\text{EF}_{5\%} = 10.66"></span>、<span class="m-in" data-tex="\text{AUROC} = 80.93\%"></span>、<span class="m-in" data-tex="\text{BEDROC} = 50.52\%"></span>），大幅超越商業級物理對接軟體 Glide-SP（<span class="m-in" data-tex="\text{EF}_{1\%} = 16.18"></span>、<span class="m-in" data-tex="\text{BEDROC} = 40.70\%"></span>）、AutoDock Vina（<span class="m-in" data-tex="\text{EF}_{1\%} = 7.32"></span>）以及既有深度學習方法 Planet（<span class="m-in" data-tex="\text{EF}_{1\%} = 8.83"></span>）、Pafnucy（<span class="m-in" data-tex="\text{EF}_{1\%} = 3.86"></span>）（Table 1, p. 7）。</li><li><strong>更嚴苛無偏差基準 LIT-PCBA 之全面領先</strong>：在專為消除人工誘餌偏差、基於 PubChem 劑量效應實驗構建的 LIT-PCBA 基準（15 個靶點、7,844 個活性分子與 407,381 個非活性分子）上，DrugCLIP 取得 <strong><span class="m-in" data-tex="\text{EF}_{1\%} = 5.51"></span></strong>、<span class="m-in" data-tex="\text{EF}_{0.5\%} = 8.56"></span>、<span class="m-in" data-tex="\text{EF}_{5\%} = 2.27"></span>、<span class="m-in" data-tex="\text{BEDROC} = 6.23\%"></span>、<span class="m-in" data-tex="\text{AUROC} = 57.17\%"></span>，顯著擊敗 Glide-SP（<span class="m-in" data-tex="\text{EF}_{1\%} = 3.41"></span>、<span class="m-in" data-tex="\text{BEDROC} = 4.00\%"></span>）、Surflex（<span class="m-in" data-tex="\text{EF}_{1\%} = 2.50"></span>）、Planet（<span class="m-in" data-tex="\text{EF}_{1\%} = 3.87"></span>）、Gnina（<span class="m-in" data-tex="\text{EF}_{1\%} = 4.63"></span>）與監督式親和力回歸模型 DeepDTA（<span class="m-in" data-tex="\text{EF}_{1\%} = 1.47"></span>、<span class="m-in" data-tex="\text{BEDROC} = 2.53\%"></span>）（Table 3, p. 8）。</li><li><strong>超大規模分子庫檢索效率突破</strong>：在包含 60 億（<span class="m-in" data-tex="6 \times 10^9"></span>）個分子的 Enamine 超大型庫篩選實驗中（§4.3, p. 8），候選分子預先離線編碼後，DrugCLIP 完成單靶點全庫檢索耗時小於 10,000 秒（約 2.78 小時；原文括號誤註為約 30 小時）。相較之下，商業對接軟體 Glide 若在單核 CPU 篩選 100 億分子估計需耗時約 3,000 年（約 80 萬美元），單塔深度學習方法 Planet 在靶點數增加至 600 個時耗時擴增至 2 年以上。</li><li><strong>HomoAug 與構型模擬消融驗證</strong>：在 DUD-E 消融實驗中（Table 5, p. 9），未使用 RDKit 構型與 HomoAug 時 BEDROC 為 <span class="m-in" data-tex="38.13\%"></span>、<span class="m-in" data-tex="\text{EF}_{1\%}"></span> 為 <span class="m-in" data-tex="23.86"></span>；加入 RDKit 構型後升至 <span class="m-in" data-tex="45.81\%"></span> 與 <span class="m-in" data-tex="29.12"></span>；進一步加入 HomoAug 後 BEDROC 提升至 <strong><span class="m-in" data-tex="50.52\%"></span></strong>、<span class="m-in" data-tex="\text{EF}_{1\%}"></span> 達到 <strong><span class="m-in" data-tex="31.89"></span></strong>（<span class="m-in" data-tex="\text{EF}_{0.5\%} = 38.07"></span>），證明同源增強能有效提升模型泛化力。</li><li><strong>專家雙盲評估</strong>：在 ChemDiv 化合物庫中選取 5 個靶點進行虛擬篩選（§4.5, Table 8），由具備藥物設計經驗的專家對 DrugCLIP 與 Glide 篩選出的候選結構進行雙盲評審，在 4 個靶點中專家偏好選擇 DrugCLIP 之分子結構。</li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>共享空間向親和力排序延伸（Feng 等，2025）</strong>：Feng 等於 <em>Patterns</em>（6(10):101371，<a href="https://doi.org/10.1016/j.patter.2025.101371">DOI</a>）引用 DrugCLIP 對比檢索框架並提出 LigUnity，在共享口袋—配體空間中整合粗粒度活性篩選與細粒度藥效團親和力排序，橋接虛擬篩選與苗頭至先導化合物優化。</li><li><strong>全基因組虛擬篩選、濕實驗命中率與 GenomeScreenDB（Jia 等，2026）</strong>：原研究團隊（Jia、Gao、Lan 等）於 <em>Science</em>（391(6781):eads9530，<a href="https://doi.org/10.1126/science.ads9530">DOI</a>）將 DrugCLIP 擴展至全人類基因組尺度並釋出公開資料庫 GenomeScreenDB（預計算約 10,000 個人類蛋白質對 5 億個化合物之篩選結果）；濕實驗於去甲腎上腺素轉運體（NET）取得 <span class="m-in" data-tex="15\%"></span> 命中率並解析出兩個抑制劑之冷凍電鏡複合物結構，於缺乏實驗複合物結構之 TRIP12 靶點僅依賴 AlphaFold2 預測結構亦取得 <span class="m-in" data-tex="17.5\%"></span> 命中率。</li><li><strong>融合蛋白質序列預訓練與三維結構對比學習（He 等，2026）</strong>：He、Gao、Lan 等於 <em>AAAI</em>（40(1):354–362，<a href="https://doi.org/10.1609/aaai.v40i1.36997">DOI</a>）提出 S²Drug，在三維口袋—分子對比架構上引入 ESM2 蛋白質序列預訓練與殘基閘控融合及結合位點預測輔助任務，改善虛擬篩選與結合殘基定位表現。</li><li><strong>對比學習虛擬篩選範式專文評述（Zhang，2026）</strong>：Zhang 於 <em>Drug Development Research</em>（87(5):e70351，<a href="https://doi.org/10.1002/ddr.70351">DOI</a>）專文評述 DrugCLIP 與 GenomeScreenDB 對後 AlphaFold 時代全基因組藥物發現的影響，並指出結合預測轉化為功能活性與蛋白—蛋白交互作用靶點等待解挑戰。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>虛擬篩選從「物理模擬（Simulation）」邁向「語義與幾何檢索（Retrieval）」</strong>：正如搜尋引擎以向量嵌入取代逐字正規表達式比對，DrugCLIP 證明藥物篩選的第一階段無須昂貴地還原每一個原子的接觸力，而可透過高維度幾何對比空間直接完成超大規模粗篩與精排。</li><li><strong>AlphaFold 結構庫與藥物發現的無縫閉環</strong>：HomoAug 展示了如何將 AlphaFold2 釋出的兩億個預測蛋白質結構轉化為藥物篩選模型的訓練燃料，解決了 PDB 實驗複合物結構稀缺的長期瓶頸。</li><li><strong>開啟百億級按需合成化學空間（Make-on-Demand Chemical Space）</strong>：過去藥物化學家只能在數百萬個現成庫存分子中挑選；如今結合 DrugCLIP 的超高速檢索，科學家可直接探索 Enamine REAL 等高達數百億個可合成虛擬分子的廣袤空間。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>DrugCLIP 的核心突破源自一次極具洞察力的<strong>「問題重構（Problem Reframing）」</strong>：</p>
+<ol><li><strong>排序（Ranking）比回歸（Regression）更契合科學篩選的本質</strong>：新藥篩選的目標並非把每個不結合分子的自由能算到小數點後第三位，而是從十億個分子中把最可能結合的前 100 個排到最前面。InfoNCE 對比損失將算力100%集中於「區分活性分子與海量背景誘餌」的決策邊界上。</li><li><strong>跨領域架構遷移（From Vision-Language CLIP to Pocket-Ligand CLIP）</strong>：OpenAI 的 CLIP 將「圖片」與「文字」對齊在同一向量空間；DrugCLIP 則將「蛋白質口袋」與「小分子配體」視作生命語言中的兩個互補模態，證明對比表徵學習是連接不同物理實體的通用數學語言。</li></ol>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2023</b><span>發表・NeurIPS</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Bowen Gao<br>Bo Qiang<br>Haichuan Tan<br>Yinjun Jia<br>Minsi Ren<br>Minsi Lu<br>Jingjing Liu<br>Wei-Ying Ma<br>Yanyan Lan</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Advances in Neural Information Processing Systems (NeurIPS), 36, 44595-44614</span><a href="https://arxiv.org/abs/2310.06367">https://arxiv.org/abs/2310.06367</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#人工智慧</span><span class="chip">#計算生物</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>AI 驅動之結構生物學與分子設計</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://arxiv.org/abs/2103.00020" title="Radford, A. et al. (2021) Learning Transferable Visual Models From Natural Language Supervision (CLIP). ICML 2021, PMLR 139:8748-8763.">Radford 等（2021）</a><a href="https://openreview.net/forum?id=6K2RM6wVqKu" title="Zhou, G. et al. (2023) Uni-Mol: A Universal 3D Molecular Representation Learning Framework. ICLR 2023.">Zhou 等（2023）</a><a href="https://arxiv.org/abs/2310.06367" title="Gao, B., Qiang, B., Tan, H., Jia, Y., Ren, M., Lu, M., Liu, J., Ma, W.-Y., &amp; Lan, Y. (2023) DrugCLIP: Contrastive Protein-Molecule Representation Learning for Virtual Screening. NeurIPS 36:44595-44614.">Gao 等（2023）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">本條目對應 <code>raw/2023-drugclip.pdf</code>，經 arXiv API 與 NeurIPS 論文集核驗，為清華大學智能產業研究院（AIR）蘭艷艷、馬維英團隊與北京大學合作於 2023 年發表於 NeurIPS 36 之奠基論文（arXiv:2310.06367）。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok">已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

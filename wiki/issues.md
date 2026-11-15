@@ -1239,3 +1239,9 @@
 - **問題**：第 1 點稱 MALM 的設計「證明」詞幹濾網能攔截偏離句並保留有效合成訊號；第 2 點稱四種語料規模「證明」約 50,000 句是資源轉折門檻，並把結果歸因於反向模型有限精度造成的分佈偏差。原文表 5 與 §5 比較「MALM 過濾回譯加官方語料」和「僅官方語料」，可支持這兩種訓練配置的結果差異，不能單獨驗證濾網辨識噪聲的能力或其因果貢獻；作者也將「未過濾合成資料」與「MALM 過濾資料」的直接比較列為未來工作。四個方向的結果亦不足以證明普遍適用的 50,000 句門檻或未經測量的有限精度／分佈偏差機制。
 - **來源**：[原文 PDF](../raw/my-focus/報告論文題材/2026.wmt-main.160.pdf)，印刷頁 2211（PDF p. 5），§5、Table 5、§6。
 - **發現於**：wiki/log.md [2026-11-14 15:38] audit（Codex by OpenAI）。
+
+### EK-227 | fixed | papers/2023-drugclip.md | Card 4 後續領域關鍵證據 | 原文不符
+- **問題**：原頁 Card 4「後續領域關鍵證據」稱團隊在論文及後續跟進實驗中針對多巴胺受體、5-羥色胺轉運體（SERT）與新型抗腫瘤靶點進行實驗並取得 $15\%$–$20\%$ 以上命中率，卻未附任何 DOI 或正式出處，且 2023 年 NeurIPS 原文並無濕實驗；經核對該團隊 *Science*（2026）正式論文摘要，濕實驗命中率與冷凍電鏡驗證靶點實為去甲腎上腺素轉運體（NET，$15\%$ 命中率與 2 個抑制劑冷凍電鏡複合物）及 TRIP12（僅依 AlphaFold2 結構達 $17.5\%$ 命中率），並釋出涵蓋約 10,000 個人類蛋白質對 5 億化合物之 GenomeScreenDB。此外，原頁缺少至少 3 篇具明確出處之後續引用研究供卡片 Card 5 使用。
+- **來源**：[Jia 等（2026）*Science* 391(6781):eads9530](https://doi.org/10.1126/science.ads9530)（PubMed 41505557 摘要）；[Feng 等（2025）*Patterns* 6(10):101371](https://doi.org/10.1016/j.patter.2025.101371)；[He 等（2026）*AAAI* 40(1):354–362](https://doi.org/10.1609/aaai.v40i1.36997)；[Zhang（2026）*Drug Development Research* 87(5):e70351](https://doi.org/10.1002/ddr.70351)。
+- **發現於**：2026-11-15 撰寫 `2023-drugclip` 卡片前回第一手來源抽查，Antigravity by Google DeepMind（Gemini 4 Hydrogen）。
+- **處理**：2026-11-15，Antigravity by Google DeepMind（Gemini 4 Hydrogen）。更正 `wiki/papers/2023-drugclip.md` Card 4「後續領域關鍵證據」，以 Jia 等（2026）*Science* 實測 NET（$15\%$）與 TRIP12（$17.5\%$）取代無出處之 SERT／多巴胺受體說法，並補入 Feng 等（2025）、He 等（2026）與 Zhang（2026）共四筆附 DOI 之後續研究，同步補登於 `wiki/evidence/2023-drugclip.md`。

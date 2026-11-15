@@ -9,7 +9,7 @@ venue: "Advances in Neural Information Processing Systems (NeurIPS), 36, 44595-4
 domain: "ai"
 domain_tags: ["#人工智慧", "#計算生物"]
 concepts: ["ai-for-structural-biology"]
-status: "wiki"
+status: "published"
 verification: "verified"
 my_focus: false
 doi_url: "https://arxiv.org/abs/2310.06367"
@@ -97,7 +97,10 @@ $$\lim_{\delta \to 0} \{ s(\tilde{x}_m, x_p) - s(x_m, x_p) \} = 0$$
 * **專家雙盲評估**：在 ChemDiv 化合物庫中選取 5 個靶點進行虛擬篩選（§4.5, Table 8），由具備藥物設計經驗的專家對 DrugCLIP 與 Glide 篩選出的候選結構進行雙盲評審，在 4 個靶點中專家偏好選擇 DrugCLIP 之分子結構。
 
 ### 後續領域關鍵證據（非本篇成果，標註出處）
-* **真實世界濕實驗靶點驗證與超高通量命中率**：蘭艷艷與高博文團隊在論文及後續跟進實驗中，針對多巴胺受體、5-羥色胺轉運體（SERT）與新型抗腫瘤靶點進行百萬至十億級化學庫實戰篩選並合成測試，在細胞與體外結合實驗中獲得高達 $15\%$–$20\%$ 以上之微莫耳至奈莫耳級（$\text{nM}$）高活性先導化合物命中率，並解析出冷凍電鏡複合物結構驗證其結合位點。
+* **共享空間向親和力排序延伸（Feng 等，2025）**：Feng 等於 *Patterns*（6(10):101371，[DOI](https://doi.org/10.1016/j.patter.2025.101371)）引用 DrugCLIP 對比檢索框架並提出 LigUnity，在共享口袋—配體空間中整合粗粒度活性篩選與細粒度藥效團親和力排序，橋接虛擬篩選與苗頭至先導化合物優化。
+* **全基因組虛擬篩選、濕實驗命中率與 GenomeScreenDB（Jia 等，2026）**：原研究團隊（Jia、Gao、Lan 等）於 *Science*（391(6781):eads9530，[DOI](https://doi.org/10.1126/science.ads9530)）將 DrugCLIP 擴展至全人類基因組尺度並釋出公開資料庫 GenomeScreenDB（預計算約 10,000 個人類蛋白質對 5 億個化合物之篩選結果）；濕實驗於去甲腎上腺素轉運體（NET）取得 $15\%$ 命中率並解析出兩個抑制劑之冷凍電鏡複合物結構，於缺乏實驗複合物結構之 TRIP12 靶點僅依賴 AlphaFold2 預測結構亦取得 $17.5\%$ 命中率。
+* **融合蛋白質序列預訓練與三維結構對比學習（He 等，2026）**：He、Gao、Lan 等於 *AAAI*（40(1):354–362，[DOI](https://doi.org/10.1609/aaai.v40i1.36997)）提出 S²Drug，在三維口袋—分子對比架構上引入 ESM2 蛋白質序列預訓練與殘基閘控融合及結合位點預測輔助任務，改善虛擬篩選與結合殘基定位表現。
+* **對比學習虛擬篩選範式專文評述（Zhang，2026）**：Zhang 於 *Drug Development Research*（87(5):e70351，[DOI](https://doi.org/10.1002/ddr.70351)）專文評述 DrugCLIP 與 GenomeScreenDB 對後 AlphaFold 時代全基因組藥物發現的影響，並指出結合預測轉化為功能活性與蛋白—蛋白交互作用靶點等待解挑戰。
 
 ---
 
