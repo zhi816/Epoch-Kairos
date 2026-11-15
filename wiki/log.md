@@ -2418,3 +2418,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依使用者指示，撤回 [2026-11-15 13:43] 對單欄版原圖之調整：[`html_to_pdf.py`](../.agents/skills/academic-paper-translator/scripts/html_to_pdf.py) 之 `figure.fig-wrap img` 改回 `width: 100%`，[`layout-recipes.md`](../.agents/skills/academic-paper-translator/references/layout-recipes.md) 第八節第 3 點之說明一併改回。同次其他修正不變。
+
+## [2026-11-15 14:00] config | 記錄雙機 .venv-mineru 版本基線與更新紀錄規則 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依使用者指示，於 [paper-pdf-parser](../.agents/skills/paper-pdf-parser/SKILL.md) 第四章新增「雙機 `.venv-mineru` 版本基線與更新紀錄規則」，記錄 macOS（`setup_env.py` 實測：`pymupdf` 2.1、`pymupdf4llm` 2.1、`mineru` 4.1.7 / MPS）與 Windows 11（2026-11-10 實測紀錄：`pymupdf` 2.1、`pymupdf4llm` 2.1、`mineru` 4.2.0 / DirectML）之環境版本，並訂定日後建立、升級或重裝 `.venv-mineru` 時須同步更新該表與追加 `wiki/log.md`；同步於 [academic-paper-translator](../.agents/skills/academic-paper-translator/SKILL.md) 第三步補上索引參照。

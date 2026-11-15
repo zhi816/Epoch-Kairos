@@ -83,6 +83,20 @@ uv pip install pymupdf pymupdf4llm --python .venv-mineru\Scripts\python.exe
 4. 無法使用時直接報錯（未下載模型時直接退出碼 1 報錯，絕不默默改用其他引擎）。
 5. 依原則二抽樣對照原 PDF 頁面，並於第六章記錄日期、平台、引擎版本與發現的錯誤。
 
+### 雙機 `.venv-mineru` 版本基線與更新紀錄規則
+
+`.venv-mineru` 與 `~/.mineru/models` 不進 Git 版控（各自存於本機），雙機實測版本基線如下表，供問題追查對照：
+
+| 平台 | Python | `pymupdf` / `pymupdf4llm` | `mineru` | 模型／硬體後端 | 確認日期 |
+|---|---|---|---|---|---|
+| macOS（Apple Silicon） | 3.12 | `2.1` / `2.1` | `4.1.7` | `basic`（PyTorch / MPS） | 2026-11-15（`setup_env.py` 實測） |
+| Windows 11（AMD64） | 3.12 | `2.1` / `2.1` | `4.2.0` | `MinerU-4_models_onnx`（DirectML / ONNX） | 2026-11-10（實測紀錄） |
+
+**更新時必做**：日後任一機器建立、升級或重裝 `.venv-mineru`（包括升級 Python、PyMuPDF、`pymupdf4llm`、MinerU 或重新下載模型）時，須：
+1. 執行 `python .agents/skills/paper-pdf-parser/scripts/setup_env.py` 確認環境與實際版本；
+2. 同步更新上表對應平台之版本與確認日期；
+3. 於 `wiki/log.md` 追加一筆 `config` 紀錄，寫明更新前後版本、平台與實測結果（勿忘依本專案規範在日誌記下執行代理與模型版本）。
+
 ## 五、用法
 
 ```bash
