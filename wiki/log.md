@@ -2423,3 +2423,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：依使用者指示，於 [paper-pdf-parser](../.agents/skills/paper-pdf-parser/SKILL.md) 第四章新增「雙機 `.venv-mineru` 版本基線與更新紀錄規則」，記錄 macOS（`setup_env.py` 實測：`pymupdf` 2.1、`pymupdf4llm` 2.1、`mineru` 4.1.7 / MPS）與 Windows 11（2026-11-10 實測紀錄：`pymupdf` 2.1、`pymupdf4llm` 2.1、`mineru` 4.2.0 / DirectML）之環境版本，並訂定日後建立、升級或重裝 `.venv-mineru` 時須同步更新該表與追加 `wiki/log.md`；同步於 [academic-paper-translator](../.agents/skills/academic-paper-translator/SKILL.md) 第三步補上索引參照。
+
+## [2026-11-15 14:06] rule | 新增平行 worktree 作業規則 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：經使用者同意，於 [AGENTS.md](../AGENTS.md) 第十章新增第 8 條「平行 worktree 作業」：總指揮可讓多個會改檔的代理各在獨立 worktree 同時收錄論文，動工前劃分檔案歸屬（各篇自己的論文頁、證據表、卡片檔與論文頁網頁；日誌、問題清單、待辦、索引、既有概念頁、首頁與他篇論文頁歸總指揮），worktree 內不提交、不寫日誌，收回後仍逐篇提交；第十章前言「六項鐵律」改為「各項鐵律」，第六章 Skill 一覽之 subagent-dispatch 列補上指向第 8 條。同步於 [paper-pipeline](../.agents/skills/paper-pipeline/SKILL.md) 硬規則第 3 條與 [paper-card-writer](../.agents/skills/paper-card-writer/SKILL.md) 第七節第 1 條加註同一例外。配套工具（使用者層級之 subagent-dispatch：worktree.sh、互審迴圈第二版之留言板與對話接續）不在本倉庫。

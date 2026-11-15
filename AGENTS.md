@@ -171,7 +171,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 > | [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | Ingest 第 1 步與查核時，將 `raw/` 論文 PDF 抽成附頁碼標記之文字，以搜尋主張出處；預設用 PyMuPDF，MinerU 僅用於純圖片、亂碼 PDF 或抄寫長公式；輸出一律只當草稿，須回原 PDF 核對，且只可在本機解析 |
 > | [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 任何 Git 同步、提交與推送（見第十章） |
 > | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | Ingest 第 4 步、回填或修訂卡片時：撰寫 `wiki/cards/<slug>.md`（首頁封面卡與論文頁 Card 1–6 之文字、Card 3 示意圖），並建置論文頁、放上首頁卡片牆且兩者皆驗證；`references/` 須逐份讀完，附 `check_cards.py` 檢查腳本、`venue_short_lookup.py` 期刊簡稱查詢腳本與 `verify_page.js`、`verify_wall.js` 瀏覽器驗證腳本 |
-> | `subagent-dispatch`（使用者層級，不在本倉庫） | 僅 Claude Code 於使用者的 Mac 上擔任總指揮時使用，正本位於該機之 `~/.claude/skills/subagent-dispatch/`，其他 AI 與其他機器讀不到，亦無須讀取。Claude Code 可能依此把工作派給本機的外部命令列代理（Antigravity Gemini、OpenCode 之 MiniMax、GLM、DeepSeek、Codex 等），並採「子代理交叉驗證數輪，再由總指揮回原文查核、退回修正」之迴圈，故提交、日誌與問題清單之處理紀錄可能出現子代理署名。子代理仍須遵守本檔全部規範（第五章 `raw/` 唯讀、第九章日誌身分標註、第十章只提交自己的修改）；其結論由總指揮核對後才算完成 |
+> | `subagent-dispatch`（使用者層級，不在本倉庫） | 僅 Claude Code 於使用者的 Mac 上擔任總指揮時使用，正本位於該機之 `~/.claude/skills/subagent-dispatch/`，其他 AI 與其他機器讀不到，亦無須讀取。Claude Code 可能依此把工作派給本機的外部命令列代理（Antigravity Gemini、OpenCode 之 MiniMax、GLM、DeepSeek、Codex 等），並採「子代理交叉驗證數輪，再由總指揮回原文查核、退回修正」之迴圈，故提交、日誌與問題清單之處理紀錄可能出現子代理署名。子代理仍須遵守本檔全部規範（第五章 `raw/` 唯讀、第九章日誌身分標註、第十章只提交自己的修改）；其結論由總指揮核對後才算完成。多個代理同時改檔時，一律依第十章第 8 條各用獨立 worktree |
 
 ### 1. Ingest（收錄新來源）
 當使用者在 `raw/` 放入新文件或指令收錄一篇論文時，AI 必須依 [`paper-pipeline`](./.agents/skills/paper-pipeline/SKILL.md) 之 S0 至 S10 逐步執行，每一步以其完成條件之指令確認後才進下一步；`python .agents/skills/paper-pipeline/scripts/pipeline_status.py <slug>` 九步皆 OK 才算收錄完成。以下 5 個步驟為該流程之摘要：
@@ -469,7 +469,7 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
 > **協作背景**：
 > 本專案採用多代理人（Multi-AI）異步協同開發架構，包括 Anthropic Claude Code、OpenAI Codex / GPT、Google Antigravity / Gemini 等多個前沿 AI 系統同時參與本專案之程式開發、論文翻譯與知識庫維護。
 > 同時，專案存在嚴格的雙倉庫拓撲：公開主倉庫（`Epoch-Kairos`）與私有原始資料倉庫（`raw/` 內的 `Mine-RAW`）。
-> 由於多個 AI 在不同環境提交內容，為徹底根絕「分支分岔（Divergent branches）」、「本機遺留 commit 未推送導致狀態脫節」、「遠端衝突覆蓋」、「誤提交他人修改」、「日誌寫入後遲未提交」等結構性混亂，全專案所有 AI 代理人必須嚴格遵守以下六項鐵律：
+> 由於多個 AI 在不同環境提交內容，為徹底根絕「分支分岔（Divergent branches）」、「本機遺留 commit 未推送導致狀態脫節」、「遠端衝突覆蓋」、「誤提交他人修改」、「日誌寫入後遲未提交」等結構性混亂，全專案所有 AI 代理人必須嚴格遵守以下各項鐵律：
 
 1. **「提交必含推送（Commit Implies Push）」原子操作鐵律**：
    - 只要使用者指示「提交」、「commit」或當 AI 完成某一階段性任務進行版本固化時，**必須將 `git commit` 與 `git push` 視為單一不可分割的原子操作**。
@@ -498,3 +498,9 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
    - 專案已建立專屬 Skill `.agents/skills/git-sync-guardian/`，內建狀態審計、安全合流與推送腳本（同時提供跨平台 Python 版 `scripts/status.py`、`scripts/sync.py`、`scripts/safe_commit_push.py` 與 Bash 版 `scripts/status.sh`、`scripts/sync.sh`、`scripts/safe_commit_push.sh`；Windows PowerShell 或沙盒環境優先使用 `.py` 版以省去啟動外部 Bash 之權限耗時）及日誌工具（`scripts/log_time.py` 取得日誌標題時間、`scripts/stage_log.py` 逐條暫存自己的日誌、`scripts/stage_issues.py` 逐條暫存自己修改的問題條目、`scripts/stage_todo.py` 逐條暫存自己修改的待辦條目並提供下一個編號、`scripts/log_tail.py` 依條目讀取日誌最後幾筆、`scripts/merge_log.py` 依 append-only 自動排解日誌衝突），各 AI 應主動調用該工具鏈以確保版控一致性。`safe_commit_push.py` / `safe_commit_push.sh` 須明確列出要提交的檔案並以 `--agent` 指定執行代理名稱。`stage_log.py` 暫存之條目順序一律跟隨工作目錄，不依時間重排，以免提交後日誌持續顯示為已修改。其餘專屬 Skill 見第六章開頭之 Skill 一覽。
    - `safe_commit_push.py` / `.sh` 只接受倉庫內單一相對檔案路徑，拒絕資料夾與路徑跳脫，並以 literal pathspec 暫存；執行前須確認目前分支為 `main`，且先成功 fetch 才能暫存或建立提交。`status.py` / `.sh` 的本機 Git 查詢失敗必須回報未知狀態及非零退出碼；日誌衝突的合併提交失敗不得回報成功。
 
+8. **「平行 worktree 作業（Parallel Worktrees）」**（2026-11-15 經使用者同意）：
+   - 總指揮（目前為使用者 Mac 上之 Claude Code，依 `subagent-dispatch`）可讓多個會改檔的代理同時工作，例如同時收錄數篇論文。每個代理各用一個由該 Skill 之 `worktree.sh create` 建立之獨立 worktree（detached，不開分支），不在主倉庫工作目錄內改檔。`raw/` 與 `.venv-mineru` 以符號連結指向主倉庫那份，`raw/` 仍依第五章唯讀。
+   - **動工前劃分檔案歸屬**，寫入任務書：每個代理只能改自己那篇之 `wiki/papers/<slug>.md`、`wiki/evidence/<slug>.md`、`wiki/cards/<slug>.md`、`web/papers/<slug>/`，以及任務書指名之新概念頁。其餘皆為共用檔案，由總指揮負責：`wiki/log.md`、`wiki/issues.md`、`wiki/todo.md`、`wiki/index.md`、既有概念頁、`web/index.html`、他篇論文頁（含因卡片編號後移而需重建者）、`raw/my-focus/my-index.md`。代理為了驗證而在 worktree 中重建首頁等共用檔案無妨，但這些改動不收回。
+   - **worktree 內不提交、不推送、不寫日誌**；`safe_commit_push` 只能在 `main` 執行，於 detached worktree 中本即無法提交。代理要登記之問題或待辦寫在回覆中，不直接改 `wiki/issues.md`、`wiki/todo.md`；編號由總指揮於收回時統一分配。
+   - **收回與提交**：外圈查核通過後，總指揮以 `worktree.sh harvest --apply` 把歸屬內之改動套回主倉庫工作目錄（主倉庫同一檔有他人未提交之修改或補丁套不上時，腳本拒絕套用）；共用檔案之改動另存補丁，由總指揮逐項判斷後手動處理。之後逐篇完成概念頁與索引、首頁重建、編號後移之他篇論文頁重建，並依第 5、6 條一篇一個提交、一筆日誌，不得把多篇合併為一個提交。
+   - 背景：此前規定同一時間只有一個會寫檔之代理，收錄數篇論文只能逐篇排隊；改為各篇在獨立 worktree 平行進行、由總指揮逐篇收回，既可加速，又不違反第 5 條（只提交自己的修改）與一篇一個提交之原則。
