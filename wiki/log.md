@@ -2476,3 +2476,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：回原文手稿（`raw/2012-crispr-cas9.pdf`）與 Crossref 書目逐項抽查確認全文無編號公式、Card 4 四筆數據（PAM 上游 `3 bp` 平末端斷裂、近 PAM `13 bp` 種子區、`6 處`遠端錯配容忍、`5/5` GFP 嵌合體切割）與三筆後續研究出處（Cong et al. 2013、Mali et al. 2013、Komor et al. 2016、Anzalone et al. 2019）；撰寫無公式模式卡片檔 `wiki/cards/2012-crispr-cas9.md`（ERROR 0、WARN 0），建置論文頁 `web/papers/2012-crispr-cas9/index.html`（`status: "published"`），重建並更新首頁 `web/index.html` 星圖與卡片牆（`No.20`），桌面／手機瀏覽器驗證（`verify_page.js`、`verify_wall.js`、`verify_star.js`）全數 PASS（手機星圖 1 WARN 依點擊先放大再點星設計目視確認），並更新 `wiki/todo.md` `TD-008` 進度為完成 2/4。
+
+## [2026-11-15 16:31] update | 補寫神經元向癌細胞轉移粒線體卡片並上架首頁（TD-008 3/4） | #神經科學 #生物科技 #分子生物
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：回原文 PDF（`raw/2025-nerve-mito-cancer.pdf` p. 16、pp. 256–261 與 Figs. 1, 5）逐項核對全文無編號公式、Card 4 四筆數據（`5.4%`、`27.3%`、`46.0%`、`420 bp`）及 Discussion 限制與公開資料／程式碼庫（Addgene `greletlab`、NCBI GEO `GSE288069`/`GSE292157`、GitHub `mtDNA-heteroplasmy`/`DAPI-count`），補寫至 `wiki/papers/2025-nerve-mito-cancer.md` 與 `wiki/evidence/2025-nerve-mito-cancer.md`；撰寫無公式＋新論文模式卡片檔 `wiki/cards/2025-nerve-mito-cancer.md`（ERROR 0、WARN 0），建置論文頁 `web/papers/2025-nerve-mito-cancer/index.html`（`status: "published"`）、重建並更新首頁 `web/index.html` 星圖與卡片牆（`No.09`），完成桌面／手機瀏覽器驗證（`verify_page.js`、`verify_wall.js`、`verify_star.js` 皆 PASS），並更新 `wiki/todo.md` `TD-008` 進度為完成 3/4。

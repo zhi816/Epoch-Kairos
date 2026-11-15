@@ -16,3 +16,5 @@
 | Card 4 | 人類癌細胞共培養與小鼠腫瘤分選後的 Nanopore 分析 | Extended Data Figure 4c；p. 256, Figure 2f–g；Methods, Nanopore mtDNA sequencing | 人類癌細胞轉移實驗與小鼠 4T1 腫瘤分選後的 Nanopore 分析為不同實驗；後者測量區分宿主及癌細胞的變異點附近約 420 bp，非完整基因組或單細胞測序（EK-039）。 |
 | Card 4 | 去神經化模型的宿主來源粒線體 DNA；MitoTRACER 在不同模型的富集 | p. 256, Figure 2f–g；p. 260, Figure 5b–f | 前者測宿主來源 mtDNA 比例，未直接量測去神經化對遠端轉移灶的影響；混合球體原發、肺、腦比例分別為 5.4%、27.3%、46.0%，宿主神經追蹤模型另見 Figure 5f（EK-039、EK-197）。 |
 | Card 5, Card 6 | 「劫持」比喻與治療展望的詮釋邊界 | pp. 260–261, Discussion | 癌細胞偽裝受損組織並誘使神經修復並非原文所證實或明示之作者假說；作為 Wiki 比喻說明。治療方向屬展望，非臨床療效（EK-041）。 |
+| Card 5 | 公開質體庫（Addgene `greletlab`）、轉錄組資料（NCBI GEO `GSE288069`、`GSE292157`）與分析程式（GitHub `GreletLab/mtDNA-heteroplasmy`、`GreletLab/DAPI-count`） | PDF p. 16, Methods (Data availability & Code availability) | 核實符合。原文明列質體、定序與微陣列資料及兩項分析程式碼庫。 |
+| Card 5 | 作者明列機制限制：轉移之確切分子機制仍不明朗，且尚待釐清主因是代謝效率抑或轉移頻率 | p. 261, Discussion | 核實符合。原文討論明確陳述 "exact molecular mechanisms remain unclear" 及需進一步釐清屬內在代謝效率或最高轉移頻率所致。 |
