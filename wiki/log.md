@@ -2471,3 +2471,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：依 `wiki-content-audit`、原文 PDF（`raw/2023-drugclip.pdf`）與 Crossref / OpenAlex / PubMed 第一手書目核對，發現 `wiki/papers/2023-drugclip.md` Card 4 後續研究缺乏出處且部分描述與 Jia et al. (2026) *Science* 原文摘要不符，登記並修正 `EK-227`，補齊四筆附 DOI 之後續研究（Feng et al. 2025 *Patterns*、Jia et al. 2026 *Science*、He et al. 2026 *AAAI*、Zhang 2026 *Drug Dev. Res.*）並增補 `wiki/evidence/2023-drugclip.md`；撰寫卡片檔 `wiki/cards/2023-drugclip.md`（雙塔對比幾何檢索示意圖與總對比損失式，Card 4 四數值全經 Table 1/3/8 原文核對），建置論文頁 `web/papers/2023-drugclip/index.html`（`status: "published"`）、更新 `web/index.html` 星圖與卡片牆（`No.16`）並完成桌面／手機瀏覽器驗證（`verify_page.js`、`verify_wall.js`、`verify_star.js` 皆 PASS），將 `wiki/todo.md` `TD-008` 改為 `doing`（完成 1/4）。
+
+## [2026-11-15 15:56] update | 補寫 CRISPR-Cas9 卡片並建置上架首頁（TD-008 2/4） | #基因工程 #生物科技
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：回原文手稿（`raw/2012-crispr-cas9.pdf`）與 Crossref 書目逐項抽查確認全文無編號公式、Card 4 四筆數據（PAM 上游 `3 bp` 平末端斷裂、近 PAM `13 bp` 種子區、`6 處`遠端錯配容忍、`5/5` GFP 嵌合體切割）與三筆後續研究出處（Cong et al. 2013、Mali et al. 2013、Komor et al. 2016、Anzalone et al. 2019）；撰寫無公式模式卡片檔 `wiki/cards/2012-crispr-cas9.md`（ERROR 0、WARN 0），建置論文頁 `web/papers/2012-crispr-cas9/index.html`（`status: "published"`），重建並更新首頁 `web/index.html` 星圖與卡片牆（`No.20`），桌面／手機瀏覽器驗證（`verify_page.js`、`verify_wall.js`、`verify_star.js`）全數 PASS（手機星圖 1 WARN 依點擊先放大再點星設計目視確認），並更新 `wiki/todo.md` `TD-008` 進度為完成 2/4。

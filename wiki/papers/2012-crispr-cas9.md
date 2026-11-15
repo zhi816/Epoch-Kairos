@@ -11,7 +11,7 @@ honor: "2020 諾貝爾化學獎（表彰基因組編輯方法之開發）"
 domain: "bio"
 domain_tags: ["#基因工程", "#生物科技"]
 concepts: ["programmable-cellular-engineering", "ai-for-structural-biology"]
-status: "wiki"
+status: "published"
 verification: "partial"
 my_focus: false
 doi_url: "https://doi.org/10.1126/science.1225829"

@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRISPR-Cas9 基因剪刀誕生｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--focus)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#9BDCB1;--deep:#1A4F2C;--win:#1D2524;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.20</span><span>生醫</span></div><div class="win"><i style="left:16.1%;top:16.0%;width:1px;height:1px;opacity:0.46"></i><i style="left:56.9%;top:17.2%;width:1px;height:1px;opacity:0.31"></i><i style="left:4.6%;top:23.9%;width:1px;height:1px;opacity:0.48"></i><i style="left:51.9%;top:23.4%;width:1px;height:1px;opacity:0.75"></i><i style="left:69.0%;top:34.9%;width:1.5px;height:1.5px;opacity:0.82"></i><i style="left:76.7%;top:31.2%;width:1px;height:1px;opacity:0.61"></i><i style="left:10.5%;top:11.0%;width:1px;height:1px;opacity:0.67"></i><i style="left:46.4%;top:25.7%;width:1px;height:1px;opacity:0.68"></i><i style="left:35.2%;top:5.9%;width:1px;height:1px;opacity:0.72"></i><i style="left:89.8%;top:30.1%;width:1px;height:1px;opacity:0.64"></i><i style="left:50.6%;top:39.2%;width:1px;height:1px;opacity:0.85"></i><i style="left:91.0%;top:7.0%;width:1px;height:1px;opacity:0.55"></i><i style="left:76.4%;top:36.2%;width:1px;height:1px;opacity:0.66"></i><i style="left:83.9%;top:22.6%;width:1px;height:1px;opacity:0.84"></i><span class="rep award"></span><span class="line"><span>把細菌免疫蛋白，</span><span>變成能指定位置的</span><span>基因剪刀</span></span></div><div class="tags">生醫與生命科技・#基因工程 #生物科技</div><div class="name">CRISPR-Cas9 基因剪刀誕生</div><div class="lead">將雙 RNA 融合成單鏈嵌合體，只需更換導向序列，即可精準剪斷鄰近特定辨識基序的雙股 DNA。</div><div class="yrs">2012 發表 ｜ 2020 諾貝爾化學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">每換一個基因位點，<br>就得重造蛋白</span><div class="rows"><div class="row"><b>鋅指核酸酶</b><span>靠蛋白質結構域辨識鹼基，每次換靶點都得重製蛋白</span></div><div class="row"><b>細菌基因組</b><span>雖知免疫系統靠雙 RNA 運作，最小充要組件與分工未明</span></div><div class="row gap"><b>目標序列</b><span>缺乏只改短核酸片段、不重造酵素即可鎖定的通用剪刀</span></div></div><span class="ft" style="color:var(--ink)">基因編輯亟盼與目標序列解耦的通用剪刀。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">把雙股剪刀的導航濃縮成一條 RNA</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 180" role="img" aria-label="示意：核酸酶與單鏈嵌合導引核酸結合，於鄰近基序上游解開雙股，分別切斷非互補股與互補股造成平末端斷裂。">
+  <rect class="k-soft" x="14" y="10" width="272" height="160" rx="10"/>
+  <rect class="k-line k-ring" x="14" y="10" width="272" height="160" rx="10"/>
+  <text class="k-label" x="30" y="28">核酸酶</text>
+  <line class="k-muted k-dash" x1="162" y1="36" x2="162" y2="140"/>
+  <path class="k-ink" d="M 24 68 L 72 68 Q 86 52 104 52 L 194 52 Q 210 52 220 68 L 276 68"/>
+  <text class="k-label" x="50" y="58" text-anchor="middle">非互補股</text>
+  <rect class="k-ink k-ring" x="86" y="74" width="110" height="22" rx="4"/>
+  <text class="k-label-accent" x="141" y="89" text-anchor="middle">導向序列</text>
+  <line class="k-accent" x1="196" y1="85" x2="218" y2="85"/>
+  <rect class="k-soft" x="218" y="74" width="54" height="22" rx="11"/>
+  <rect class="k-line k-ring" x="218" y="74" width="54" height="22" rx="11"/>
+  <path class="k-ink" d="M 24 122 L 72 122 Q 86 136 104 136 L 194 136 Q 210 136 220 122 L 276 122"/>
+  <text class="k-label" x="50" y="142" text-anchor="middle">互補股</text>
+  <rect class="k-soft" x="218" y="102" width="54" height="20" rx="4"/>
+  <rect class="k-line k-ring" x="218" y="102" width="54" height="20" rx="4"/>
+  <text class="k-label-accent" x="245" y="116" text-anchor="middle">鄰近基序</text>
+  <text class="k-label-accent" x="150" y="156" text-anchor="middle">平末端斷裂</text>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">單鏈嵌合引導核酸帶領酵素辨識鄰近基序並解開雙股，分別切斷兩股。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">3 bp</span><span class="l">質體 DNA 於鄰近基序上游產生平末端斷裂之距離</span></div><div class="stat"><span class="v">13 bp</span><span class="l">近鄰近基序種子區高效切割所需連續互補長度下限</span></div><div class="stat"><span class="v">6 處</span><span class="l">遠離鄰近基序前端最多可容忍之連續錯配數</span></div><div class="stat"><span class="v">5/5</span><span class="l">針對綠色螢光蛋白五條嵌合核酸測試全數切割</span></div></div><span class="ft">範圍：Jinek 等 2012，純化蛋白體外切割與細菌質體維持試驗</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">從細菌免疫走進人類細胞與醫療</span><div class="time"><p><b>2013</b><span>Cong 與 Mali 在人類與小鼠細胞實現編輯</span></p><p><b>2016</b><span>Komor 以單股切口酶融合脫氨酶開創單鹼基編輯</span></p><p><b>2019</b><span>Anzalone 等發展先導編輯實現精準序列寫入</span></p><p><b>2020</b><span>Charpentier 與 Doudna 獲諾貝爾化學獎</span></p></div><span class="ft">前三項為後續他人成果，出處見長文</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">當核酸酶成為通用硬體、短引導序列化為軟體，改寫基因不再需要針對每個位點重製蛋白。</span><span class="shift"><span>重造辨識蛋白</span><i aria-hidden="true"></i><b>更換導向序列</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2012 發表 ｜ 2020 諾貝爾化學獎</span>
+<h1>CRISPR-Cas9 基因剪刀誕生：可編程雙 RNA 引導之 DNA 核酸內切酶</h1>
+<p class="en">A Programmable Dual-RNA–Guided DNA Endonuclease in Adaptive Bacterial Immunity</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">生命演化了三十億年的細菌抗病毒防衛武器，在被解構為『單一核酸酶 ＋ 單一引導 RNA』的瞬間，成為人類改寫生命法典的通用文字處理器。</p>
+<p>在 2012 年之前，若想修改生物體內的某個特定基因，科學家必須針對每一段目標 DNA 重新設計並改造一顆全新的蛋白質（如 ZFN 或 TALEN），耗時數月且成本高昂。Jinek、Doudna 與 Charpentier 團隊在 2012 年證明，化膿性鏈球菌（<em>Streptococcus pyogenes</em>）的第 II 型 CRISPR-Cas9 系統是一個由雙 RNA 引導的 DNA 內切酶，並進一步將兩條 RNA 融合成單一嵌合引導 RNA（sgRNA）。從此，靶向含有簡短 PAM 基序（<span class="m-in" data-tex="\text{5&#x27;-NGG-3&#x27;}"></span>）之任意目標基因位點，只需更換一段 20 個核苷酸的 RNA 導向序列。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：蛋白質識別密碼的工程死局</h2></div>
+<p>早期靶向基因組編輯技術受困於「蛋白質—DNA 構型識別」的高昂門檻：</p>
+<ul><li><strong>鋅指核酸酶（ZFNs）與類轉錄激活因子效應物核酸酶（TALENs）的剛性束縛</strong>：這兩類工具依賴蛋白質結構域與 DNA 鹼基對的物理結合。每更換一個目標基因位點，就必須重新進行複雜的蛋白質工程組裝、篩選與結構驗證，無法實現高通量或普及化應用。</li><li><strong>細菌 CRISPR 系統的機制迷霧</strong>：雖然科學家自 1987 年起便在細菌基因組發現規律成簇間隔短回文重複序列（CRISPR），並於 2007 年確認其為細菌適應性免疫系統，但第 II 型系統中 Cas9 蛋白究竟如何協同 crRNA 與 tracrRNA 識別並切割雙股 DNA，其最小充要生化組件始終未被拆解。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理</h2></div>
+<p>作者透過純化重組 Cas9 蛋白與體外（in vitro）切割實驗，完整拆解了 Cas9 的分子機制，並完成決定性的工程簡化：</p>
+<ol><li><strong>三元複合物充要性與雙 RNA 協同機制（crRNA + tracrRNA）</strong>：<ul><li>僅需 Cas9 蛋白、成熟的 CRISPR RNA（crRNA，含 20 nt 與目標互補之導向序列）以及反式激活 crRNA（tracrRNA）三者，在鎂離子（<span class="m-in" data-tex="\mathrm{Mg}^{2+}"></span>）存在下即可精準切割目標雙股 DNA（dsDNA），無需任何其他細菌宿主因子。</li></ul></li><li><strong>雙結構域分工切割（HNH 與 RuvC-like 結構域）</strong>：<ul><li>Cas9 包含兩個不同的核酸酶催化結構域：<strong>HNH 結構域</strong>負責切割與 crRNA 互補配對的目標股（Complementary Strand），<strong>RuvC-like 結構域</strong>則負責切割非互補股（Noncomplementary Strand），共同在距離 PAM 上游 3 個鹼基對處產生平末端雙股斷裂（Blunt-ended DSB）。</li></ul></li><li><strong>PAM 位點識別與單鏈嵌合 RNA（sgRNA）工程化</strong>：<ul><li>切割啟動的絕對前提是非互補股目標序列 3' 端緊鄰一個簡短的原間隔序列鄰近基序（PAM，化膿性鏈球菌 Cas9 為 <span class="m-in" data-tex="\text{5&#x27;-NGG-3&#x27;}"></span>）。作者將 crRNA 的 3' 端與 tracrRNA 的 5' 端以四核苷酸環（Tetraloop, <span class="m-in" data-tex="\text{GAAA}"></span>）連接，創造出單一嵌合引導 RNA（Single-Guide RNA, sgRNA），將三元系統簡化為「Cas9 蛋白 ＋ sgRNA」二元可編程系統。</li></ul></li></ol>
+<h3>1. RNA 引導辨識與 R-loop</h3>
+<p>作者以細菌質體維持、體外切割及結合試驗，檢查導引 RNA 與目標 DNA 的配對及鄰近序列對辨識的影響。原文根據這些觀察，提出辨識過程可能涉及 DNA 雙股局部解開與 RNA–DNA 雜交的 R-loop。</p>
+<h3>2. 兩個催化結構域的分工</h3>
+<p>作者比較各催化結構域的突變體與原始 Cas9，觀察到兩個結構域對切割不同 DNA 股的貢獻，支持兩者分工的解釋。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Jinek et al. 2012）之核心證據</h3>
+<ul><li><strong>雙催化位點點突變驗證（<span class="m-in" data-tex="\text{D10A}"></span> 與 <span class="m-in" data-tex="\text{H840A}"></span>）</strong>：在質體與寡核苷酸體外切割實驗中，野生型 Cas9 產生線性化雙股斷裂（DSB）；<span class="m-in" data-tex="\text{Cas9(D10A)}"></span> 僅切割互補股、<span class="m-in" data-tex="\text{Cas9(H840A)}"></span> 僅切割非互補股，均只產生開環單股切口質體（Nicked Open Circular Plasmid）；雙突變體 <span class="m-in" data-tex="\text{Cas9(D10A/H840A)}"></span> 則完全喪失切割活性，嚴格鎖定兩結構域的催化分工。</li><li><strong>切割位點鹼基級定位（PAM 上游 3 bp）</strong>：透過高解析度變性聚丙烯醯胺凝膠電泳（Denaturing PAGE）定序，確認 HNH 與 RuvC 均精準在距離 <span class="m-in" data-tex="\text{5&#x27;-NGG-3&#x27;}"></span> PAM 上游第 3 個核苷酸處切斷磷酸二酯鍵。</li><li><strong>種子區（Seed Sequence）特異性窗口與連續配對需求</strong>：系統性分析目標序列突變對體外切割與體內質體消除之影響（Figure 3D–E），證實距離 PAM 最近的原間隔序列 3' 端存在關鍵「種子區」：高效切割嚴格要求 crRNA 與緊鄰 PAM 的目標 DNA 位點間維持<strong>至少 13 個連續鹼基對的完全互補</strong>；而在遠離 PAM 的 5' 端區域，即使存在多達 6 個連續錯配（Mismatches）仍可容忍切割活性，推翻了單一任意錯配必然完全廢除切割的簡化假設。</li><li><strong>多目標編程與 GFP 切割</strong>：作者測試 5 條針對綠色螢光蛋白（GFP）基因不同位置的嵌合 RNA；原文報告五個測試均在預期位置產生切割。</li></ul>
+<blockquote><strong>範圍界定</strong>：本篇包含細菌細胞內質體維持試驗，以及純化蛋白的體外 DNA 切割與結合試驗；單一嵌合 RNA 的切割測試屬體外實驗。作者在文末提出用於真核生物基因組編輯的可能性，並未在本篇完成該應用。</blockquote>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>哺乳動物與人類細胞基因組編輯之首次實現</strong>：Cong et al. (2013)（張鋒團隊）,<em>Science</em> 339:819-823 與 Mali et al. (2013)（George Church 團隊）,<em>Science</em> 339:823-826，於 2013 年 1 月同步證明將 Cas9 與 sgRNA 導入人類與小鼠細胞後，可高效誘發非同源末端接合（NHEJ）或同源重組修復（HDR），實現多基因同步編輯。</li><li><strong>鹼基編輯（Base Editing）與先導編輯（Prime Editing）</strong>：Komor et al. (2016), <em>Nature</em> 533:420-424 與 Anzalone et al. (2019), <em>Nature</em> 576:149-157（David Liu 團隊），利用本篇發現之 <span class="m-in" data-tex="\text{Cas9(D10A)}"></span> 單股切口酶（Nickase）融合脫氨酶或反轉錄酶，在不產生雙股斷裂（DSB）的前提下實現單一鹼基轉換與任意序列寫入。</li><li><strong>首款獲批上市之 CRISPR 臨床基因療法</strong>：Frangoul et al. (2021), <em>NEJM</em> 384:252-260，基於 CRISPR-Cas9 編輯 <em>BCL11A</em> 增強子之療法 Casgevy（exagamglogene autotemcel）於 2023 年底獲英國、美國 FDA 批准治療鐮刀型紅血球疾病與輸血依賴型 <span class="m-in" data-tex="\beta"></span>-地中海貧血。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>生命科學研究的民主化與普及化</strong>：將基因敲除、敲入與全基因組功能篩選（CRISPR KO/CRISPRi/CRISPRa 篩選庫）的時間從數月縮短至數天，成本降至數十美元，重塑了全球每一個分子生物學實驗室的日常工作流。</li><li><strong>衍生工具生態系的爆發</strong>：本篇透過催化位點突變（<span class="m-in" data-tex="\text{D10A}"></span> 與 <span class="m-in" data-tex="\text{H840A}"></span>）鑑定的單股切口酶（<span class="m-in" data-tex="\text{nCas9}"></span>）與雙突變去催化蛋白（後續稱為 <span class="m-in" data-tex="\text{dCas9}"></span>），為後續工具開發奠定了分子底盤。後續學者將其進一步擴展為通用平台：例如 Qi et al. (2013, <em>Cell</em>) 首次利用 dCas9 建立可編程轉錄抑制（CRISPRi）調控系統，David Liu 團隊等則以 nCas9 融合催化結構域開創鹼基編輯與先導編輯，推動了整個 CRISPR 技術家族的繁榮（此屬後續應用生態之重大延伸）。</li><li><strong>農業育種與臨床遺傳病根治</strong>：從抗病耐旱作物的非轉基因精準育種，到鐮刀型貧血、轉甲狀腺素蛋白澱粉樣變性（ATTR）及罕見代謝疾病之體內（in vivo）基因療法，人類正式邁入「可編寫基因組」時代。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>CRISPR-Cas9 的誕生展示了科學史上最優雅的<strong>「軟硬體解耦（Hardware-Software Decoupling）」</strong>：</p>
+<ol><li><strong>從「專用硬體」到「通用處理器 ＋ 軟體腳本」</strong>：ZFN 與 TALEN 時代如同早期每算一道題就要重新焊接電路的專用機；Cas9 則是通用 CPU，而 20 nt 的 sgRNA 就是可隨時載入的軟體程式碼。</li><li><strong>基礎微生物學的無用之用</strong>：這項改寫人類醫學與農業的萬億級技術，最初只是為了回答一個純粹的好奇心問題：「優格裡的細菌與鏈球菌究竟如何記住並抵抗噬菌體病毒的入侵？」</li></ol>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2012</b><span>發表・Science</span></div>
+    <div class="yr award"><b>2020</b><span>諾貝爾化學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Martin Jinek<br>Krzysztof Chylinski<br>Ines Fonfara<br>Michael Hauer<br>Jennifer A. Doudna<br>Emmanuelle Charpentier</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Emmanuelle Charpentier<br>Jennifer A. Doudna</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Science, 337(6096), 816-821</span><a href="https://doi.org/10.1126/science.1225829">doi:10.1126/science.1225829</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#基因工程</span><span class="chip">#生物科技</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>可編程細胞與基因工程</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>AI 驅動之結構生物學與分子設計</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1038/nature09886" title="Deltcheva, E. et al. (2011) CRISPR RNA maturation by trans-encoded small RNA and host factor RNase III. Nature 471:602-607.">Deltcheva 等（2011）</a><a href="https://doi.org/10.1126/science.1225829" title="Jinek, M., Chylinski, K., Fonfara, I., Hauer, M., Doudna, J. A., &amp; Charpentier, E. (2012) A Programmable Dual-RNA–Guided DNA Endonuclease in Adaptive Bacterial Immunity. Science 337(6096):816-821.">Jinek 等（2012）</a><a href="https://doi.org/10.1126/science.1231143" title="Cong, L. et al. (2013) Multiplex Genome Engineering Using CRISPR/Cas Systems. Science 339(6121):819-823.">Cong 等（2013）</a><a href="https://doi.org/10.1126/science.1232033" title="Mali, P. et al. (2013) RNA-Guided Human Genome Engineering via Cas9. Science 339(6121):823-826.">Mali 等（2013）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2020 年諾貝爾化學獎頒予 Emmanuelle Charpentier 與 Jennifer A. Doudna，表彰兩人開發 CRISPR-Cas9 基因組編輯方法。本頁以 Jinek et al. (2012) 發表於《Science》之生化機制與單鏈引導 RNA（sgRNA）工程化奠基論文為主軸，並於 <code>key_papers</code> 列出 Deltcheva et al. (2011) 發現 tracrRNA 之先驅工作，以及 Cong et al. (2013) 與 Mali et al. (2013) 首次在真核與人類細胞實現基因組編輯之關鍵延伸論文。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
