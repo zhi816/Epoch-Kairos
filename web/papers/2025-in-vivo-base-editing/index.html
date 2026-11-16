@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>客製化鹼基編輯療法｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--focus)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#9BDCB1;--deep:#1A4F2C;--win:#1D2524;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.11</span><span>生醫</span></div><div class="win"><i style="left:23.7%;top:14.3%;width:1px;height:1px;opacity:0.30"></i><i style="left:73.0%;top:8.3%;width:1px;height:1px;opacity:0.58"></i><i style="left:6.2%;top:24.3%;width:1px;height:1px;opacity:0.40"></i><i style="left:18.5%;top:26.1%;width:1px;height:1px;opacity:0.30"></i><i style="left:31.6%;top:43.6%;width:1px;height:1px;opacity:0.46"></i><i style="left:78.0%;top:34.5%;width:1px;height:1px;opacity:0.66"></i><i style="left:85.2%;top:16.2%;width:1px;height:1px;opacity:0.33"></i><i style="left:71.7%;top:35.5%;width:1px;height:1px;opacity:0.52"></i><i style="left:41.8%;top:16.7%;width:1px;height:1px;opacity:0.47"></i><i style="left:4.8%;top:22.6%;width:1px;height:1px;opacity:0.42"></i><i style="left:66.4%;top:32.0%;width:1px;height:1px;opacity:0.76"></i><i style="left:65.0%;top:11.9%;width:1px;height:1px;opacity:0.39"></i><i style="left:18.7%;top:17.8%;width:1px;height:1px;opacity:0.38"></i><i style="left:77.3%;top:42.1%;width:1px;height:1px;opacity:0.72"></i><span class="rep"></span><span class="line"><span>為一名病嬰，</span><span>訂做專屬的</span><span>基因編輯療法</span></span></div><div class="tags">生醫與生命科技・#基因工程 #生物科技 #分子生物</div><div class="name">客製化鹼基編輯療法</div><div class="lead">病童因先天代謝缺陷無法處理體內的氨，作者先以替代細胞篩選編輯器，再以包裹藥物的微粒送入肝臟，屬單一患者的未核准用藥。</div><div class="yrs">2025 發表 ｜ NEJM</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">資源集中於常見變異，<br>獨有的呢？</span><div class="rows"><div class="row"><b>藥物開發</b><span>所需資源龐大，多集中於少數較常見遺傳疾病的復發性變異</span></div><div class="row"><b>肝臟移植</b><span>能改善預後，但嬰兒常在可移植前即有高血氨危象與不可逆神經損傷</span></div><div class="row"><b>人類肝細胞</b><span>取不到帶此變異的細胞，難以可靠評估編輯效果</span></div><div class="row gap"><b>方法</b><span>超罕見或獨有的變異，缺少快速開發客製療法的流程</span></div></div><span class="ft" style="color:var(--ink)">超罕見變異的病人，需要快速客製化的療法。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">替代細胞先篩選，<br>動物支撐起始劑量</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 140" role="img" aria-label="示意：先在替代細胞篩選編輯器與引導 RNA，再以動物試驗支撐劑量，最後為病童給藥。">
+  <rect class="k-accent k-ring" x="4" y="28" width="90" height="84" rx="4"/>
+  <rect class="k-ink k-ring" x="106" y="28" width="88" height="84" rx="4"/>
+  <rect class="k-ink k-ring" x="206" y="28" width="90" height="84" rx="4"/>
+  <line class="k-ink" x1="94" y1="70" x2="104" y2="70"/>
+  <polyline class="k-ink" points="98,65 104,70 98,75"/>
+  <line class="k-ink" x1="194" y1="70" x2="204" y2="70"/>
+  <polyline class="k-ink" points="198,65 204,70 198,75"/>
+  <text class="k-label-accent" x="49" y="74" text-anchor="middle">替代細胞篩選</text>
+  <text class="k-label" x="150" y="74" text-anchor="middle">動物試驗</text>
+  <text class="k-label" x="251" y="74" text-anchor="middle">病童給藥</text>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">把變異片段放入人類細胞株，篩選編輯器與引導 RNA，再由動物試驗支撐起始劑量。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">42%</span><span class="l">小鼠全肝矯正編輯最高值，單次給藥</span></div><div class="stat"><span class="v">≤1%</span><span class="l">小鼠目標位點的插入或缺失突變率，各劑量組</span></div><div class="stat"><span class="v">23→13</span><span class="l">血氨中位數 µmol/L，兩劑間 9，作者稱治療相關差異</span></div><div class="stat"><span class="v">減半</span><span class="l">氮清除劑每日量降至 5 mL/m²，次劑後 2 週</span></div></div><span class="ft">範圍：Musunuru 2025，單一病童追蹤 7 週、小鼠試驗；未做肝臟切片</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">流程走完，<br>療效仍待答</span><div class="time"><p><b>2025</b><span>計畫書與補充附錄隨全文提供，未提及公開程式碼</span></p><p><b>2025</b><span>作者列追蹤時間短、生殖細胞編輯未評估</span></p><p><b>2025</b><span>作者稱未來必要時病人可再接受更多次或更高劑量</span></p><p><b>2026</b><span>Li 等回顧區分已有證據與仍屬推測之事項</span></p></div><span class="ft">前三項出自本篇，Li 等為他人回顧</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">作者預期脂質配方可共用、小鼠與獼猴試驗或可省，但本篇未證實。</span><span class="shift"><span>從頭開發</span><i aria-hidden="true"></i><b>共用底盤構想</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2025 發表 ｜ NEJM</span>
+<h1>客製化鹼基編輯療法：為一名罕病嬰兒設計的體內基因編輯</h1>
+<p class="en">Patient-Specific In Vivo Gene Editing to Treat a Rare Genetic Disease</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">這篇報告把基因編輯的開發周期壓縮進一名嬰兒出生後的幾個月：先以替代細胞模型挑出編輯器與引導 RNA，再以小鼠與獼猴資料支撐起始劑量，最後把脂質奈米顆粒送進一名帶有超罕見變異的病嬰體內。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>2025 年，Musunuru、Grandinette 與同事在《New England Journal of Medicine》報告一名新生兒期發病的 carbamoyl phosphate synthetase 1（CPS1）缺乏症病童。CPS1 缺乏症是影響尿素循環的先天性代謝異常，發生率為 1:1,300,000，嬰兒早期死亡率估計為 50%（p. 2）。病童在出生 48 小時內出現嗜睡與呼吸窘迫，血氨超過 1,000 μmol/L（正常 9–33 μmol/L），隨即接受連續性腎臟替代治療；基因檢測找到兩個截短型變異，父源 c.1003C&gt;T（p.Gln335Ter，Q335X）、母源 c.2140G&gt;T（p.Glu714Ter，E714X）（p. 3）。</p>
+<p>作者把這項工作定位為一條工作流程，用以為帶有超罕見或獨有 N-of-1 變異的病人快速開發客製化矯正型基因編輯療法（原文："We developed a workflow for the rapid development of customized, corrective gene-editing therapies for patients with ultra-rare or unique N-of-1 variants"，p. 2），並具體做出以脂質奈米顆粒在體內遞送至肝細胞的鹼基編輯療法（p. 2）。作者也為這個組合命名：脂質奈米顆粒療法所用的引導 RNA 為 kayjayguran，表現腺嘌呤鹼基編輯器的 mRNA 為 abengcemeran，療法簡稱 k-abe（p. 4）。病童在出生第 208 天接受第一次靜脈輸注 0.1 mg/kg，22 天後接受第二次 0.3 mg/kg（p. 5）。</p>
+<p>報告描述的觀察是：第一次給藥後可放寬飲食蛋白攝取，且於呼吸道病毒感染期間未發生高血氨危象（該次病程中仍依常規接受靜脈輸液，並有 1 天採無蛋白飲食，p. 5）；第二次給藥 2 週後可耐受氮清除劑減半，第二次給藥後 4 週內的兩次病毒感染也都未發生危象（p. 5）。作者同時寫明「需要更長期追蹤以評估安全性與療效」（p. 2，摘要），因此本頁不把這些觀察寫成療效已證實。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：資源集中於常見變異，而移植前的高血氨危機無法等待</h2></div>
+<p>依作者在引言、方法與結果中的敘述，這項工作面對的是四項彼此扣連的條件：</p>
+<ul><li><strong>編輯工具的開發資源集中在少數常見疾病的復發性變異</strong>：作者指出，基因編輯療法已逐步改善鐮刀型紅血球疾病、β-地中海型貧血與遺傳性血管性水腫等少數疾病患者的生活，且精確矯正型 CRISPR 技術（胞嘧啶鹼基編輯、腺嘌呤鹼基編輯、先導編輯）「可能」處理超過 90% 的致病變異，但任何一項療法從開發到上市所需資源龐大，使藥物開發多集中在少數相對常見遺傳疾病的復發性變異（p. 2）。像 Q335X 這類未見於 gnomAD、僅曾見於單一病例報告的超罕見變異（p. 3），正落在這段敘述所指的資源空檔裡（此句為依原文推得的 Wiki 詮釋）。</li><li><strong>CPS1 缺乏症的臨床現實是移植前的空窗</strong>：肝臟移植可提供功能性尿素循環並改善預後，但嬰兒常在長到足以接受移植之前就發生高血氨危象與不可逆神經損傷（p. 2）。本篇病童即在 5 個月大時被列入肝臟移植名單（p. 3）。</li><li><strong>沒有帶病人變異的人類肝細胞可用</strong>：作者明言，可靠評估 CPS1 Q335X 變異的鹼基編輯理想上需使用帶有該變異的人類肝細胞，但當時取得不到，只能以培養的人類 HuH-7 細胞株作為替代（p. 3）。這使編輯器與引導 RNA 的篩選只能先在人工建構的片段上進行（此句為依原文方法的 Wiki 整理）。</li><li><strong>免疫與給藥條件不利</strong>：病童屬 CRIM-negative（cross-reactive immunologic material 陰性），可能對全長 CPS1 蛋白產生免疫反應，因此先給予 sirolimus 與 tacrolimus 預防性免疫抑制；作者選擇不含類固醇的方案，因為皮質類固醇可能誘發 CPS1 缺乏症患者高血氨（p. 5）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：以替代細胞挑編輯器，用小鼠與獼猴資料支撐起始劑量</h2></div>
+<p>原文在全文（PDF 5 頁與 PMC 全文）沒有編號公式或展示式，機制與流程全部以文字敘述，因此本頁不放區塊公式。工作流程可整理為五步（pp. 3–5）：</p>
+<ol><li><strong>以慢病毒卡匣建立替代細胞模型</strong>：把含 CPS1 Q335X 變異的 100-bp 人類基因組片段（另含病童另一變異與兩個 PAH 參考變異作陽性對照）裝入慢病毒載體，轉導 HuH-7 細胞插入基因組；此步於病童出生 1 個月後完成（p. 3）。</li><li><strong>篩選鹼基編輯器與引導 RNA</strong>：以覆蓋 Q335X 位點的 gRNA 搭配多種腺嘌呤鹼基編輯器（ABE）篩選，選定偏好 NGC 原間隔相鄰基序的 NGC-ABE8e-V106W，以及讓目標腺嘌呤落在 protospacer 第 8 位的那一條 gRNA；目標以外的腺嘌呤雖有旁觀編輯，但全部為同義變異（p. 4）。此步於出生 2 個月後完成。</li><li><strong>小鼠體內編輯效率</strong>：以 CRISPR 試劑把同一個含 CPS1 Q335X 等四個約 100-bp 片段的卡匣插入小鼠 Rosa26 safe harbor 位點，建立 Rosa26-Q335X 小鼠，以毒理批次 k-abe 做限量劑量反應試驗，觀察到全肝最高 42% 的矯正編輯，且最低劑量 0.1 mg/kg 即可見編輯（p. 4）。圖說另載明各劑量組於目標位點的 indel 突變率 ≤1%，每隻小鼠取 8 個分布全肝的樣本（PMC 全文，Fig. 2 圖說 Panel B）。</li><li><strong>食蟹獼猴單劑毒理與給藥間隔</strong>：靜脈給予總 RNA 1.5 mg/kg，無臨床徵象，ALT 與 AST 暫時升至正常上限數倍；治療兩週後血漿脂質賦形劑由峰值下降超過 99.5%，支持以間隔大於 2 週再給藥；此試驗支持 0.1 mg/kg 作為病童潛在安全的初始臨床劑量（"a potentially safe initial clinical dose"，p. 4）。</li><li><strong>脫靶評估與臨床給藥</strong>：以重組 NGC-ABE8e-V106W 蛋白與 kayjayguran 進行 ONE-seq 與 CHANGE-seq-BE，另以核酸酶版本編輯器進行改良式 GUIDE-seq，並以個別標的擴增定序驗證目標位點與 21 個提名脫靶位點（p. 4；其中 16 個成功定序呈現於 Fig. 2D）。其後在單一患者擴充使用 IND 下，於出生第 208 天給 0.1 mg/kg，22 天後給 0.3 mg/kg（p. 5）。</li></ol>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Musunuru et al. 2025）之核心證據</h3>
+<ul><li><strong>臨床起點（p. 3）</strong>：出生 48 小時內出現嗜睡與呼吸窘迫；血氨大於 1,000 μmol/L（正常 9–33 μmol/L）；血漿胺基酸分析見麩醯胺酸嚴重升高、citrulline 測不到、尿液乳清酸正常，指向近端尿素循環缺陷；基因型為父源 Q335X 與母源 E714X 兩個截短型變異。</li><li><strong>替代細胞的編輯器篩選（p. 4）</strong>：選定 NGC-ABE8e-V106W 與目標腺嘌呤位於 protospacer 第 8 位的 gRNA；目標腺嘌呤以外的旁觀編輯全部為同義變異。</li><li><strong>小鼠全肝矯正編輯（p. 4；PMC 全文 Fig. 2 圖說 Panel B）</strong>：以毒理批次 k-abe 單次治療 1–2 個月大 Rosa26-Q335X 幼鼠，全肝矯正編輯最高 42%；最低劑量 0.1 mg/kg 即可見編輯；各劑量組於目標位點的 indel 突變率 ≤1%；每隻小鼠取 8 個分布全肝的樣本，於治療後數日解剖，以次世代定序分析卡匣。</li><li><strong>獼猴毒理與再給藥間隔（p. 4）</strong>：靜脈總 RNA 1.5 mg/kg，無臨床徵象；ALT 與 AST 暫時升至正常上限數倍；治療兩週後血漿脂質賦形劑較峰值下降超過 99.5%，支持間隔大於 2 週再給藥。</li><li><strong>脫靶（p. 4–5；PMC 全文 Fig. 2 圖說 Panel D）</strong>：以 ONE-seq、CHANGE-seq-BE 與改良式 GUIDE-seq 提名脫靶位點；優先驗證目標位點與 21 個提名位點，其中 16 個成功定序；處理條件為處理後 3 天、培養基 1000 ng/mL，細胞為 Q335X 慢病毒轉導 HuH-7 與三位捐贈者的原代人類肝細胞（13 個月男、7 週男、6 個月男）。內源性野生型 CPS1 位點在所有四個細胞批次均可見低度同義旁觀編輯，與 gRNA 對野生型序列有 1 個鹼基錯配相符；僅於 HuH-7 的 ATP7B 內含子位點觀察到極低程度（minimal）脫靶編輯，三個原代肝細胞批次皆無。作者判斷該位點不具生物風險，理由是 ATP7B 編碼銅轉運蛋白、其功能喪失未被連結至致癌性（p. 5）。</li><li><strong>兩次給藥與不良事件（p. 2 摘要、p. 5）</strong>：出生第 208 天給 0.1 mg/kg；因生化矯正不完全，依臨床試驗計畫於 22 天後給 0.3 mg/kg；唯一不良事件是第二次輸注期間咳嗽，經鼻部抽吸後緩解；第二次給藥後數日 ALT 與 AST 暫時上升，數週後於病毒感染期間再次出現；整個 7 週追蹤期間無嚴重不良事件（"no serious adverse events"，p. 2 摘要）。</li><li><strong>生化與臨床指標（p. 5；PMC 全文 Results 末句、Fig. 3E–F）</strong>：<ul><li>血氨中位數：第一次給藥前（3 個月大至第 1 劑，Fig. 3E）23 μmol/L（四分位距 14–48）、兩次給藥之間 9 μmol/L（9–19）、第二次給藥後 13 μmol/L（9–28）。原文的表述是這些數值「支持與治療相關的差異」（support a treatment-related difference），未宣稱療效確立。</li><li>尿液乳清酸中位數：治療前 1.7 mmol/mol-Cr（四分位距 1.6–1.8）；兩次治療後穩態分別為 2.4 mmol/mol-Cr（2.0–3.0）與 2.6 mmol/mol-Cr（2.0–3.6），多為正常偏高或高於正常（Fig. 3F）。</li><li>體重由第一次給藥前（出生第 207 天）的第 9 百分位升至出生第 256 天（7 週追蹤結束）的第 26 百分位。</li><li>蛋白攝取：第一次給藥後可放寬飲食蛋白；病程中因病毒感染曾接受靜脈輸液，並於出生第 225 天採無蛋白飲食 1 天。</li><li>氮清除劑：glycerol phenylbutyrate 於第一次給藥後曾由 10.1 降至 8.1 mL/m²/day，因麩醯胺酸上升而回復原劑量；第二次給藥 2 週後可耐受減半至 5 mL/m²/day。</li><li>病毒感染：第二次輸注後 4 週內發生兩次病毒感染（各伴嘔吐與腹瀉），皆未發生高血氨危象，且可維持全蛋白飲食；相較給藥前曾發生的一次腸胃炎，此次在病程中未發生高血氨危象且能維持全蛋白飲食。</li></ul></li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>同行的評論定位（2025，依摘要）</strong>：Yang（2025），<em>Neuron</em> 113(22):3697–3702（doi:10.1016/j.neuron.2025.10.023），稱這份報告為「landmark report」，並討論把個人化 CRISPR 編輯推展至遺傳性腦部疾病的挑戰與機會。此為評論，不是新的臨床試驗結果。</li><li><strong>回顧文章的轉述（2026，依摘要）</strong>：Li、Li 與 Li（2026），<em>Cureus</em> 18(8):e114354（doi:10.7759/cureus.114354），其摘要稱此例為 first reported recipient of a customized in vivo gene-editing medicine（首位接受客製化體內基因編輯藥物者），並把單一病人已證明的事項與仍屬推測的事項分開討論。本篇原文沒有「首例」字樣，本頁因此不把它寫成本篇的主張。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<p>本篇是單一病例報告，作者自己的結論即為「需要更長期追蹤以評估安全性與療效」（p. 2，摘要），因此本節依新論文模式寫本篇公開的資源、作者明列的限制與作者所述的下一步，不另立療效結論；另附兩筆可查的評論與回顧。</p>
+<ul><li><strong>公開的資源</strong>：臨床試驗計畫書隨全文於 NEJM.org 提供（p. 3）；細胞研究、動物研究與脫靶評估的完整描述在補充附錄（p. 2），正文中引用圖 S1–S19 與表 S1–S6（pp. 3–5），PMC 另列 Supplementary Appendix 1（pdf）、Supplementary Appendix 2（xlsx）與 Clinical Treatment Protocol（pdf）。原文未提及公開的程式碼、資料集或模型；本頁亦未取得補充附錄檔案，故不引用附錄內的數字。</li><li><strong>作者明列的限制</strong>：追蹤時間短，需更長期追蹤評估 k-abe 的安全性與療效；因對嬰兒風險不可接受，未做肝臟切片確認編輯效率；k-abe 造成生殖細胞編輯的可能性未能評估，作者引用其他脂質奈米顆粒基因編輯藥物在非人靈長類精子未檢出編輯、雌鼠未見生殖系傳遞作為旁證（PMC 全文 Discussion 第 1 段）。</li><li><strong>作者所述的下一步</strong>：脂質奈米顆粒療法可重複給藥，這點與因免疫原性而不宜重複給藥的 AAV 載體不同；作者說明先以極低劑量評估嬰兒安全性、再給中等較高劑量，必要時病人未來可再接受更多次或更高劑量（PMC 全文 Discussion 第 2 段）。作者並預期類似療法可為數百種肝臟先天性代謝異常開發，脂質奈米顆粒配方與 mRNA 可共用、gRNA 依病人變異客製，且快速部署將成為許多遺傳疾病的常規；作者也認為未來病人專屬治療未必需要小鼠與非人靈長類研究，或許細胞研究即足夠（PMC 全文 Discussion 第 3、4 段）。這些都是作者的預期，不是已實現的事實。</li><li><strong>監管狀態的界線</strong>：本療法是在單一患者擴充使用（single-patient expanded-access）IND 下、作為臨床照護的一部分給藥，IND 於病童 6 個月大時送出、1 週後獲准（p. 2–3、p. 5）。依美國聯邦法規 21 CFR 312.310，單一患者擴充使用 IND 係授權未核准之試驗性藥物供個案使用，屬個案用藥許可，不是上市核准；本頁沒有、也不應有「已核准療法」的敘述。</li><li><strong>兩筆可查的後續文獻</strong>：Yang（2025）的 <em>Neuron</em> 評論依 Europe PMC 所載摘要引用（未取得全文）；Li 等（2026）的 <em>Cureus</em> 回顧已核對 Europe PMC 摘要與開放取用全文（PMC13460412）。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>以下為 Wiki 詮釋：</p>
+<ol><li><strong>區分「共用底盤構想」與「本個案實際走過的步驟」</strong>：作者在討論段提出的平台構想，是把「脂質奈米顆粒配方與編輯器 mRNA」當成共用底盤，只把 gRNA 依病人的變異換掉（PMC 全文 Discussion 第 3 段），並認為未來或許只需細胞研究而不必重複小鼠與非人靈長類試驗（Discussion 第 4 段）。不過在本篇單一個案中，團隊仍依序於出生後 1 個月建立替代細胞模型、2 個月選定編輯器與 gRNA、5 個月完成小鼠與獼猴臨床前試驗及臨床批次脫靶分析，並經單一患者擴充使用 IND 審查後，才於出生第 208 天首次給藥（pp. 3–5）；未來各環節能否簡化或沿用，本篇尚未證實（此對照分析為 Wiki 詮釋）。</li><li><strong>單一個案的證據強度，取決於作者願意留下多少「不知道」</strong>：這篇報告沒有肝臟切片數據，療效證據是血氨、乳清酸、蛋白攝取與生長百分位等間接指標的組合，作者在 p. 5 僅以「支持與治療相關的差異」描述血氨變化，同時於摘要（p. 2）與討論首段明言需要更長期追蹤評估安全性與療效，並在討論中列出追蹤過短、未做切片、生殖細胞編輯未評估三項限制。對照 Card 4 的數字，讀者該記住的不是某一個中位數下降，而是這組觀察是在沒有直接組織證據的條件下取得的。</li></ol>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2025</b><span>發表・NEJM</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Kiran Musunuru<br>Sarah A. Grandinette<br>Xiao Wang<br>Taylor R. Hudson<br>Kevin Briseno<br>Anne Marie Berry<br>Julia L. Hacker<br>Alvin Hsu<br>Rachel A. Silverstein<br>Logan T. Hille<br>Aysel N. Ogul<br>Nancy A. Robinson-Garvin<br>Juliana C. Small<br>Sarah McCague<br>Samantha M. Burke<br>Christina M. Wright<br>Sarah Bick<br>Venkata Indurthi<br>Shweta Sharma<br>Michael Jepperson<br>Christopher A. Vakulskas<br>Michael Collingwood<br>Katie Keogh<br>Ashley Jacobi<br>Morgan Sturgeon<br>Christian Brommel<br>Ellen Schmaljohn<br>Gavin Kurgan<br>Thomas Osborne<br>He Zhang<br>Kyle Kinney<br>Garrett Rettig<br>Christopher J. Barbosa<br>Sean C. Semple<br>Ying K. Tam<br>Cathleen Lutz<br>Lindsey A. George<br>Benjamin P. Kleinstiver<br>David R. Liu<br>Kim Ng<br>Sadik H. Kassim<br>Petros Giannikopoulos<br>Mohamad-Gabriel Alameh<br>Fyodor D. Urnov<br>Rebecca C. Ahrens-Nicklas</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>New England Journal of Medicine, 392(22), 2235-2243</span><a href="https://doi.org/10.1056/NEJMoa2504747">doi:10.1056/NEJMoa2504747</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#基因工程</span><span class="chip">#生物科技</span><span class="chip">#分子生物</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>可編程細胞與基因工程</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">本頁只涵蓋 Musunuru 等（2025）這一篇單一病例報告，沒有獎項，也沒有把後續評論或回顧的觀點混記為本篇結果。<code>raw/</code> 中的原始檔是 NIHMS 作者手稿的 PDF 前 5 頁（內文止於「Treatment of the Patient」第二段末尾的 "(Fig." 處），其餘 Results、Discussion 與圖說以 PMC 上同一份手稿之全文核對；補充附錄未能取得，故本頁不引用附錄內的任何數字。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok">已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

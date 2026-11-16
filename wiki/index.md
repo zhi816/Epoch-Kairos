@@ -26,8 +26,8 @@
   * 得獎者：Robert E. Hall, Michael Woodford。原始文獻：`raw/2007-woodford-inflation-dynamics.pdf`（Woodford (2007) NBER Working Paper No. 13329，https://doi.org/10.3386/w13329）。
 * `2026` ｜ 勞動市場波動與均衡工資僵固性（Robert E. Hall） ｜ `#宏觀經濟學` ｜ *2005 發表 ｜ 2026 諾貝爾經濟學獎* ｜ `[planned]`
   * 得獎者：Robert E. Hall, Michael Woodford。原始文獻：`raw/2005-hall-wage-stickiness.pdf`（Hall (2005) *American Economic Review* 95(1):50-65，https://doi.org/10.1257/0002828053828482）。
-* `2026` ｜ GLP-1 受體促效劑奠基性研究 ｜ `#生物科技` ｜ `[2026 引文桂冠獎]` ｜ `[planned]`
-  * 奠基文獻：Drucker et al. (1987) *PNAS* 84:3434-3438，https://doi.org/10.1073/pnas.84.10.3434（PMC 對 PDF 下載設有 proof-of-work 關卡，`raw/` 暫無原始檔）。
+* `2026` ｜ [GLP-1 刺激胰島素基因表現：大鼠胰島細胞株中 cAMP 上升與胰島素釋放](papers/1987-glp1-insulinotropin.md) ｜ `#分子生物` `#生物科技` ｜ *1987 發表 ｜ 2026 引文桂冠獎* ｜ `[wiki]`
+  * 得獎者：Daniel J. Drucker, Jens Juul Holst, Svetlana Mojsov（三位中 Drucker 與 Mojsov 為本篇作者）。原始文獻：`raw/1987-glp1-receptor-agonist.pdf`（Drucker et al. (1987) *PNAS* 84(10):3434-3438，https://doi.org/10.1073/pnas.84.10.3434）。
 
 ---
 
@@ -37,20 +37,20 @@
   * 得獎者：Susumu Kitagawa, Richard Robson, Omar M. Yaghi。原始文獻：`raw/1999-metal-organic-frameworks-mof5.pdf`（Li et al. (1999) *Nature* 402(6759):276-279，https://doi.org/10.1038/46248）。
 * `2025` ｜ [超導電路巨觀能階量子化：電流偏壓約瑟夫森接面零電壓態之能階](papers/1985-macroscopic-quantum-tunneling.md) ｜ `#量子物理` ｜ *1985 發表 ｜ 2025 諾貝爾物理學獎* ｜ `[published]`
   * 得獎者：John Clarke, Michel H. Devoret, John M. Martinis（即本篇三位作者）。原始文獻：`raw/1985-macroscopic-quantum-tunneling.pdf`（Martinis et al. (1985) *Physical Review Letters* 55(15):1543-1546，https://doi.org/10.1103/PhysRevLett.55.1543）。
-* `2025` ｜ 調節性 T 細胞（Treg）與周邊免疫耐受 ｜ `#免疫學` ｜ `[2025 諾貝爾生理學或醫學獎]` ｜ `[planned]`
-  * 原始文獻為 Sakaguchi et al. (1995) *Journal of Immunology* 155:1151-1164，https://doi.org/10.4049/jimmunol.155.3.1151（Cloudflare 關卡，`raw/` 暫無原始檔）與 Brunkow et al. (2001) *Nature Genetics* 27:68-73，https://doi.org/10.1038/83784（出版社付費牆）；檔名依實際發表年份。
+* `2025` ｜ [調節性 T 細胞與免疫耐受：CD25 與 Foxp3 確立周邊免疫耐受機制](papers/1995-treg-immune-tolerance.md) ｜ `#免疫學` `#分子生物` ｜ *1995 發表 ｜ 2025 諾貝爾生理學或醫學獎* ｜ `[wiki]`
+  * 得獎者：Mary E. Brunkow, Fred Ramsdell, Shimon Sakaguchi。原始文獻：`raw/1995-treg-immune-tolerance.pdf`（Sakaguchi et al. (1995) *The Journal of Immunology* 155(3):1151-1164，https://doi.org/10.4049/jimmunol.155.3.1151）與 `raw/2001-foxp3-scurfin.pdf`（Brunkow et al. (2001) *Nature Genetics* 27(1):68-73，https://doi.org/10.1038/83784）。
 * `2025` ｜ [創造性破壞與內生經濟成長模型（Aghion-Howitt 熊彼特成長理論）](papers/1992-creative-destruction-aghion.md) ｜ `#宏觀經濟學` `#制度經濟學` ｜ *1992 發表 ｜ 2025 諾貝爾經濟學獎* ｜ `[published]`
   * 得獎者：Joel Mokyr, Philippe Aghion, Peter Howitt。原始文獻：`raw/1992-creative-destruction-aghion.pdf`（Aghion & Howitt (1992) *Econometrica* 60(2):323-351，https://doi.org/10.2307/2951599）。
 * `2025` ｜ [DeepSeek-R1：以純強化學習激發大型語言模型之自我反思與長鏈推理湧現](papers/2025-deepseek-r1.md) ｜ `#人工智慧` `#強化學習` `#深度學習` ｜ `[published]`
   * 原始文獻：`raw/2025-deepseek-r1.pdf`（DeepSeek-AI (2025) arXiv:2501.12948，https://arxiv.org/abs/2501.12948）。
 * `2025` ｜ [神經元向癌細胞轉移粒線體：探索腫瘤代謝與遠端轉移](papers/2025-nerve-mito-cancer.md) ｜ `#神經科學` `#生物科技` `#分子生物` ｜ `[wiki]`
   * 原始文獻：`raw/2025-nerve-mito-cancer.pdf`（Hoover et al. (2025) "Nerve-to-cancer transfer of mitochondria during cancer metastasis", *Nature* 644(8075):252-262，https://doi.org/10.1038/s41586-025-09176-8）。
-* `2025` ｜ 抗極端高溫水稻基因 QT12 ｜ `#農業科技` ｜ `[planned]`
-  * 原始文獻：Li et al. (2025) "A natural gene on-off system confers field thermotolerance for grain quality and yield in rice", *Cell* 188:3661-3678.e21，https://doi.org/10.1016/j.cell.2025.04.011（出版社付費牆，`raw/` 暫無原始檔）。
+* `2025` ｜ [水稻耐熱負調控基因 QT12](papers/2025-rice-qt12-thermotolerance.md) ｜ `#農業科技` `#分子生物` `#基因工程` ｜ `[wiki]`
+  * 原始文獻：`raw/2025-rice-qt12-thermotolerance.pdf`（Li et al. (2025) "A natural gene on-off system confers field thermotolerance for grain quality and yield in rice", *Cell* 188(14):3661-3678.e21，https://doi.org/10.1016/j.cell.2025.04.011）。
 * `2025` ｜ 「龍人」頭骨確認為丹尼索瓦人 ｜ `#古人類學` ｜ `[planned]`
   * 原始文獻：Fu et al. (2025) "The proteome of the late Middle Pleistocene Harbin individual", *Science* 389:704-707，https://doi.org/10.1126/science.adu9677（出版社付費牆，`raw/` 暫無原始檔）。另有同團隊牙結石粒線體 DNA 之 *Cell* 論文，DOI 待查證。
-* `2025` ｜ 首例客製化鹼基編輯療法拯救罕病嬰兒 ｜ `#基因工程` ｜ `[planned]`
-  * 2025 年 5 月發表於 *NEJM*，技術為鹼基編輯（Base Editing），非傳統 CRISPR 切割。原始文獻：Musunuru et al. (2025) "Patient-Specific In Vivo Gene Editing to Treat a Rare Genetic Disease", *New England Journal of Medicine* 392:2235-2243，https://doi.org/10.1056/NEJMoa2504747（NEJM 設有 Cloudflare 關卡、PMC 設有 proof-of-work 關卡，`raw/` 暫無原始檔）。
+* `2025` ｜ [客製化鹼基編輯療法：為一名罕病嬰兒設計的體內基因編輯](papers/2025-in-vivo-base-editing.md) ｜ `#基因工程` `#生物科技` `#分子生物` ｜ `[wiki]`
+  * 原始文獻：`raw/2025-in-vivo-base-editing.pdf`（Musunuru et al. (2025) "Patient-Specific In Vivo Gene Editing to Treat a Rare Genetic Disease", *New England Journal of Medicine* 392(22):2235-2243，https://doi.org/10.1056/NEJMoa2504747）；單一病例報告，療法在單一患者擴充使用 IND 下給藥，非上市核准療法。
 
 ---
 
@@ -62,8 +62,8 @@
   * 原始文獻：`raw/2024-alphafold3.pdf`（Abramson et al. (2024) "Accurate structure prediction of biomolecular interactions with AlphaFold 3", *Nature* 630(8016):493-500，https://doi.org/10.1038/s41586-024-07487-w）。
 * `2024` ｜ [Hopfield 神經網絡：人工神經網絡與聯想記憶的統計物理基礎](papers/1982-hopfield-network.md) ｜ `#統計物理` `#人工智慧` ｜ *1982 發表 ｜ 2024 諾貝爾物理學獎* ｜ `[published]`
   * 得獎者：John J. Hopfield, Geoffrey E. Hinton。原始文獻：`raw/1982-hopfield-network.pdf`（Hopfield (1982) *PNAS* 79(8):2554-2558，https://doi.org/10.1073/pnas.79.8.2554）。
-* `2024` ｜ microRNA 發現與轉錄後基因調控 ｜ `#分子生物` ｜ `[2024 諾貝爾生理學或醫學獎]` ｜ `[planned]`
-  * 原始文獻為 Lee, Feinbaum & Ambros (1993) *Cell* 75:843-854，https://doi.org/10.1016/0092-8674(93)90529-Y 與 Wightman, Ha & Ruvkun (1993) *Cell* 75:855-862，https://doi.org/10.1016/0092-8674(93)90530-4（均為出版社付費牆，`raw/` 暫無原始檔）。
+* `2024` ｜ [microRNA 與轉錄後調控：線蟲 lin-4 反義小 RNA 抑制 lin-14](papers/1993-microrna-lin4.md) ｜ `#分子生物` ｜ *1993 發表 ｜ 2024 諾貝爾生理學或醫學獎* ｜ `[wiki]`
+  * 得獎者：Victor Ambros, Gary Ruvkun。原始文獻：`raw/1993-microrna-lin4-ambros.pdf`（Lee, Feinbaum & Ambros (1993) *Cell* 75(5):843-854，https://doi.org/10.1016/0092-8674(93)90529-Y）與 `raw/1993-microrna-lin14-ruvkun.pdf`（Wightman, Ha & Ruvkun (1993) *Cell* 75(5):855-862，https://doi.org/10.1016/0092-8674(93)90530-4）。
 * `2024` ｜ [比較發展的殖民起源：制度形成與國家長期繁榮成因](papers/2001-colonial-origins-acemoglu.md) ｜ `#制度經濟學` `#宏觀經濟學` ｜ *2001 發表 ｜ 2024 諾貝爾經濟學獎* ｜ `[published]`
   * 得獎者：Daron Acemoglu, Simon Johnson, James A. Robinson。原始文獻：`raw/2001-colonial-origins-acemoglu.pdf`（Acemoglu, Johnson & Robinson (2001) *American Economic Review* 91(5):1369-1401，https://doi.org/10.1257/aer.91.5.1369）。
 * `2024` ｜ [Sora 與世界模型時空物理模擬：基於擴散轉換器（DiT）與時空圖塊的視覺生成湧現](papers/2024-sora-world-simulator.md) ｜ `#計算機視覺` `#人工智慧` `#深度學習` ｜ `[published]`
@@ -104,6 +104,10 @@
 * [低資源神經機器翻譯與檢索增強生成](concepts/low-resource-machine-translation.md) ｜ `#自然語言處理` `#深度學習` `#人工智慧` `#計算語言學`
 * [手性對稱破缺與分子同手性](concepts/chiral-symmetry-breaking.md) ｜ `#化學合成` `#材料科學`
 * [金屬有機骨架](concepts/metal-organic-frameworks.md) ｜ `#材料科學` `#化學合成`
+* [免疫耐受與調節性 T 細胞](concepts/immune-tolerance.md) ｜ `#免疫學` `#分子生物`
+* [非編碼 RNA 與轉錄後基因調控](concepts/rna-gene-regulation.md) ｜ `#分子生物`
+* [作物氣候韌性與耐逆育種](concepts/crop-climate-resilience.md) ｜ `#農業科技` `#分子生物` `#基因工程`
+* [腸泌素與代謝疾病療法](concepts/incretin-metabolic-therapeutics.md) ｜ `#分子生物` `#生物科技`
 
 ---
 

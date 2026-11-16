@@ -3,7 +3,7 @@ title: "Programmable Cellular & Genetic Engineering"
 title_zh: "可編程細胞與基因工程"
 domain: "bio"
 domain_tags: ["#基因工程", "#生物科技", "#分子生物", "#神經科學"]
-papers: ["2005-optogenetics", "2012-crispr-cas9", "2021-alphafold2", "2024-alphafold3", "2025-nerve-mito-cancer"]
+papers: ["2005-optogenetics", "2012-crispr-cas9", "2021-alphafold2", "2024-alphafold3", "2025-in-vivo-base-editing", "2025-nerve-mito-cancer"]
 related_concepts: ["neural-circuits", "brain-machine-interface", "ai-for-structural-biology"]
 verification: "verified"
 ---
@@ -26,6 +26,8 @@ verification: "verified"
   * 詳見核心論文：[CRISPR-Cas9 基因剪刀誕生（2012 發表 ｜ 2020 諾貝爾化學獎）](../papers/2012-crispr-cas9.md)
 * **蛋白質與全生物分子結構預測引擎（2021, 2024）**：AlphaFold2 與 AlphaFold 3 為定制基因編輯酶、病毒衣殼載體與合成受體提供原子級三維結構藍圖。
   * 詳見核心論文：[AlphaFold2（2021 發表 ｜ 2024 諾貝爾化學獎）](../papers/2021-alphafold2.md)、[AlphaFold 3（2024 發表）](../papers/2024-alphafold3.md)
+* **客製化體內鹼基編輯（k-abe, 2025）**：為單一帶有超罕見 CPS1 變異的病嬰，以偏好 NGC 原間隔相鄰基序的腺嘌呤鹼基編輯器 NGC-ABE8e-V106W 與客製引導 RNA kayjayguran 組成 k-abe，透過脂質奈米顆粒在體內遞送至肝細胞；於出生第 208 天給 0.1 mg/kg、22 天後再給 0.3 mg/kg，報告觀察到病嬰可耐受較多飲食蛋白、氮清除劑得以減量且未發生嚴重不良事件，作者明言仍需更長期追蹤評估安全性與療效，屬單一病人擴充使用 IND 下之個案用藥，非上市核准療法。
+  * 詳見核心論文：[客製化鹼基編輯療法（2025 發表 ｜ NEJM）](../papers/2025-in-vivo-base-editing.md)
 * **跨細胞胞器轉移之合成譜系追蹤器（MitoTRACER, 2025）**：利用粒線體靶向 Cre 重組酶與受體細胞 LoxP 螢光開關，將瞬時的「神經—腫瘤跨細胞粒線體轉移事件」永久記錄為受體癌細胞核基因組中的遺傳印記。
   * 詳見核心論文：[神經元向癌細胞轉移粒線體（2025 發表）](../papers/2025-nerve-mito-cancer.md)
 
