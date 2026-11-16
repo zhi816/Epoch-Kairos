@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>microRNA 與轉錄後調控｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--focus)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#9BDCB1;--deep:#1A4F2C;--win:#1D2524;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.15</span><span>生醫</span></div><div class="win"><i style="left:89.6%;top:41.5%;width:1px;height:1px;opacity:0.51"></i><i style="left:53.6%;top:21.5%;width:1.5px;height:1.5px;opacity:0.57"></i><i style="left:11.5%;top:5.8%;width:1px;height:1px;opacity:0.67"></i><i style="left:21.5%;top:16.2%;width:1.5px;height:1.5px;opacity:0.32"></i><i style="left:73.4%;top:26.9%;width:1px;height:1px;opacity:0.32"></i><i style="left:15.2%;top:21.2%;width:1px;height:1px;opacity:0.69"></i><i style="left:30.5%;top:23.4%;width:1.5px;height:1.5px;opacity:0.48"></i><i style="left:4.0%;top:32.5%;width:1px;height:1px;opacity:0.50"></i><i style="left:28.8%;top:15.8%;width:1.5px;height:1.5px;opacity:0.42"></i><i style="left:13.0%;top:29.0%;width:1px;height:1px;opacity:0.32"></i><i style="left:77.9%;top:25.1%;width:1px;height:1px;opacity:0.58"></i><i style="left:86.4%;top:35.7%;width:1px;height:1px;opacity:0.50"></i><i style="left:25.8%;top:37.0%;width:1.5px;height:1.5px;opacity:0.43"></i><i style="left:77.2%;top:30.5%;width:1px;height:1px;opacity:0.36"></i><span class="rep award"></span><span class="line"><span>這段基因不造蛋白，</span><span>靠短序列下調目標</span></span></div><div class="tags">生醫與生命科技・#分子生物</div><div class="name">線蟲 lin-4 反義小 RNA 抑制 lin-14</div><div class="lead">一個控制發育時序的基因不產生蛋白，它轉錄出的小 RNA 被推測靠序列互補，在轉錄後壓低另一個基因的蛋白量。</div><div class="yrs">1993 發表 ｜ 2024 諾貝爾生理學或醫學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">管發育時序的基因，<br>產物是什麼？</span><div class="rows"><div class="row"><b>上位性</b><span>能定出 lin-4 在 lin-14 上游，卻說不出它的產物</span></div><div class="row"><b>遺傳篩選</b><span>只見單一等位基因 e912，同類小基因可能難辨識</span></div><div class="row gap"><b>產物</b><span>不知 lin-4 編碼什麼，也不知它如何作用於 lin-14</span></div></div><span class="ft" style="color:var(--ink)">缺的是一段指出產物與作用方式的實驗證據。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">以互補短序列，<br>對準目標的尾端</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 120" role="img" aria-label="示意：小 RNA 被推測與 mRNA 非轉譯區互補，蛋白下降。">
+  <rect class="k-accent k-ring" x="2" y="40" width="50" height="40" rx="4"/>
+  <text class="k-label-accent" x="27" y="65" text-anchor="middle">小 RNA</text>
+  <line class="k-ink" x1="52" y1="60" x2="86" y2="60"/>
+  <polyline class="k-ink" points="80,55 86,60 80,65"/>
+  <text class="k-label" x="69" y="30" text-anchor="middle">互補</text>
+  <rect class="k-line k-ring" x="88" y="40" width="90" height="40" rx="4"/>
+  <text class="k-label" x="133" y="65" text-anchor="middle">mRNA 非轉譯區</text>
+  <line class="k-ink" x1="178" y1="60" x2="212" y2="60"/>
+  <polyline class="k-ink" points="206,55 212,60 206,65"/>
+  <text class="k-label" x="195" y="30" text-anchor="middle">轉錄後</text>
+  <rect class="k-muted k-ring" x="214" y="40" width="84" height="40" rx="4"/>
+  <text class="k-label" x="256" y="65" text-anchor="middle">蛋白下降</text>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">lin-4 小 RNA 被推測與 lin-14 3&#x27; 非轉譯區互補；野生型後期蛋白下降，mRNA 量不變。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">693 bp</span><span class="l">可挽救 e912 缺陷的 SalI 片段，正反向皆有效</span></div><div class="stat"><span class="v">約 22 nt</span><span class="l">lin-4S 長度，Northern 與 RNase 保護估計 20 ± 2</span></div><div class="stat"><span class="v">99 ± 33</span><span class="l">整合株 β-半乳糖苷酶 L1/L4 比；lin-4 株 4 ± 3</span></div><div class="stat"><span class="v">0.1</span><span class="l">野生型 lin-14 蛋白晚期/早期比；mRNA 比為 1.0</span></div></div><span class="ft">範圍：Lee 1993 高拷貝陣列；Wightman 1993 3&#x27; 非轉譯區報導基因、L1/L4</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">從線蟲的小 RNA，<br>到 microRNA 之名</span><div class="time"><p><b>1999</b><span>Olsen 與 Ambros 報告 lin-4 作用於轉譯起始後</span></p><p><b>2000</b><span>Reinhart 等報告 let-7 RNA 調控發育時序</span></p><p><b>2000</b><span>Pasquinelli 等在多個動物門類檢出 let-7 RNA</span></p><p><b>2001</b><span>Lau 等將 lin-4 與 let-7 歸為 microRNA 一類</span></p><p><b>2024</b><span>Ambros 與 Ruvkun 獲諾貝爾生理學或醫學獎</span></p></div><span class="ft">前四項為後續研究，部分含本篇作者</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">不經蛋白質編譯，短序列即可為已轉錄的 mRNA 定址。</span><span class="shift"><span>蛋白質編譯</span><i aria-hidden="true"></i><b>短序列定址</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">1993 發表 ｜ 2024 諾貝爾生理學或醫學獎</span>
+<h1>microRNA 與轉錄後調控：線蟲 lin-4 反義小 RNA 抑制 lin-14</h1>
+<p class="en">The C. elegans heterochronic gene lin-4 encodes small RNAs with antisense complementarity to lin-14</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">一段不翻譯成蛋白質的基因，轉錄出約 22 與 61 核苷酸的兩段小 RNA，依反義互補模型經由目標 mRNA 的 3' 非轉譯區在轉錄後下調發育時序蛋白（作用之細胞內位置當時仍未確定，直接鹼基配對亦尚待補償性突變確認）。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>1993 年 12 月，Rosalind Lee、Rhonda Feinbaum 與 Victor Ambros 在 <em>Cell</em> 發表論文，指出秀麗隱桿線蟲（<em>Caenorhabditis elegans</em>）的異時（heterochronic）發育基因 <em>lin-4</em> 的功能觀察與蛋白質產物不一致，而是轉錄出約 22 核苷酸的 <code>lin-4S</code> 與約 61 核苷酸的 <code>lin-4L</code> 兩段小 RNA，並提出與目標基因 <em>lin-14</em> 的 3'UTR 具有反義序列互補的模型（直接鹼基配對仍待補償性突變確認）。同期刊登的 Bruce Wightman、Ilho Ha 與 Gary Ruvkun 論文則證實，<em>lin-4</em> 並未降低 <em>lin-14</em> mRNA 的穩定態含量，而是透過 <em>lin-14</em> 3'UTR 在轉錄後階段顯著壓低 LIN-14 蛋白量，並於該 3'UTR 中鑑定出 7 個與 <em>lin-4</em> 互補的保守元件，支持反義 RNA 雙股調控模型。這兩項研究共同支持不經蛋白質產物、由小非編碼 RNA 參與的轉錄後調控模型；後續研究於 2001 年將此類小 RNA 定名為 microRNA（miRNA），並由諾貝爾委員會於 2024 年授予 Ambros 與 Ruvkun 諾貝爾生理學或醫學獎。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：科學困境與未解之謎</h2></div>
+<p>秀麗隱桿線蟲的幼蟲發育分為四個時期（L1 至 L4），每個階段均有嚴格時序的細胞分裂譜系。兩篇 1993 年論文之引言引述前人研究指出（Chalfie et al. 1981；Ambros &amp; Horvitz 1984、1987；Ambros 1989；Ruvkun &amp; Giusto 1989；Arasu et al. 1991）：<em>lin-4</em> 與 <em>lin-14</em> 是控制發育時鐘的異時基因，<em>lin-4</em> 功能缺失突變株 <code>lin-4(e912)</code> 會在後續幼蟲期重複 L1 專屬的細胞譜系，進行額外蛻皮、缺乏正常成蟲角質層與陰門且不能產卵；相反地，<em>lin-14(0)</em> 缺失突變會導致早熟發育且對 <em>lin-4(lf)</em> 具上位性（epistatic），而 <em>lin-14</em> 功能獲得突變（<code>lin-14(gf)</code>）則出現與 <code>lin-4(e912)</code> 類似的遲滯表型。前人研究亦已觀察到，在 <code>lin-4</code> 突變株中，LIN-14 蛋白會在發育後期維持異常高濃度，提示 <em>lin-4</em> 是 <em>lin-14</em> 的上游負向調控因子。</p>
+<p>然而，在 1993 年之前，「<em>lin-4</em> 究竟編碼什麼產物」以及「該產物如何負向調控 <em>lin-14</em>」始終懸而未決。傳統遺傳篩選長期僅獲得單一個 <em>lin-4</em> 等位基因 <code>e912</code>；Lee 等人（p. 851）並指出，像 <em>lin-4</em> 這類位於其他基因內含子（intron）中的小 RNA 基因，因不影響宿主基因的突變靶區極小，加上基因體序列多缺乏明顯可辨識特徵，可能增加透過標準遺傳方法識別其他同類基因的難度。同時，已知 <em>lin-14(gf)</em> 突變缺失該基因的 3'UTR 區域，卻尚不清楚這段 3' 非轉譯區如何介導細胞內的 LIN-14 蛋白時間梯度。</p>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：理論推導與方法突破</h2></div>
+<p>（註：本條目依兩篇 1993 年實驗論文撰寫，兩篇原文均未提出數學或物理公式。）</p>
+<p>面對蛋白假說的僵局，Lee et al. (1993) 與 Wightman et al. (1993) 分別從基因體選殖與報導基因功能分析切入，得出並合流出一幅全新的調控機制圖像：</p>
+<p><strong>一、<em>lin-4</em> 基因選殖與小非編碼 RNA 的鑑定（Lee, Feinbaum &amp; Ambros 1993）</strong></p>
+<ol><li><strong>染色體步移與最小挽救片段</strong>：Lee 等人將 <em>lin-4</em> 定位於第二號染色體（LGII）上 <code>bli-3</code>（重組率約 <code>2%</code>）與 <code>dpy-10</code>（重組率約 <code>0.5%</code>）之間，借助多型性標記 <code>maP12</code>（約 <code>0.1%</code>）鎖定黏粒 <code>ZK459</code> 與酵母人工染色體 <code>Y18C1</code>，並發現 <code>e912</code> 突變株缺少一段 <code>5 kb</code> <em>Eco</em>RI 片段。研究團隊利用顯微注射轉殖挽救 <code>lin-4(e912)</code> 表型，將功能區域由 <code>5 kb</code>（<code>pVT2D</code>）、<code>3.2 kb</code>（<code>pVT2DCla</code>）一路縮小至僅 <strong><code>693 bp</code></strong> 的 <em>Sal</em>I 片段（<code>pVTSal3</code> 與反方向的 <code>pVTSal6</code>），正反方向皆可完全恢復線蟲發育。<code>693 bp</code> 序列主要位於一個未知功能宿主基因的內含子內（<code>bp 682</code> 處為保守的 <code>TTTCAG</code>，可能為該宿主基因外顯子的 3' 剪接接受位點，其後僅餘 <code>8</code> 個宿主編碼鹼基），正反方向挽救結果支持完整 <em>lin-4</em> 基因座位於這段以內含子序列為主的 <code>693 bp</code> 片段內（唯實驗採高拷貝染色體外陣列而未測單拷貝整合，作者亦註明不能完全排除其他序列對完整活性的需求，pp. 845–846、849）。</li><li><strong>四物種比對與定點突變檢驗蛋白質假說</strong>：Lee 等人進一步選殖另外三種線蟲（<em>C. briggsae</em>、<em>C. remanei</em> 與 <em>C. vulgaris</em>）的同源片段，四個物種之片段全數能在 <em>C. elegans</em> <code>lin-4(e912)</code> 中達成跨物種功能挽救。序列比對指出兩個保守區間（約位於 <code>pVTSal3</code> 之 <code>bp 85–350</code> 與 <code>bp 500–600</code>），卻找不到具有第三密碼子簡併性或保守剪接位的開放閱讀框。對最長 143 胺基酸候選 ORF 進行的一系列破壞實驗——包含插入 <code>82 bp</code>（圖說標 <code>81 bp</code>）、於 <code>bp 259</code> 造成 <code>1 bp</code> 移碼、引入兩個終止密碼子，以及將保守 <code>ATG</code> 突變為 <code>ACG</code>——全部仍可完全挽救 <code>lin-4(e912)</code>；作者指出這些觀察與 LIN-4 蛋白質產物不一致（若仍由該基因座編碼保守蛋白，則須仰賴非常規的轉譯起始與終止訊號，pp. 846、849）。</li><li><strong>鑑定小 RNA 並提出反義互補模型</strong>：Northern 雜交與 RNase 保護實驗在野生型中偵測到兩段由同股轉錄的短 RNA：<strong><code>lin-4L</code>（約 <code>61 nt</code>）</strong> 與更豐富的 <strong><code>lin-4S</code>（約 <code>22 nt</code>）</strong>，而在 <code>lin-4(e912)</code> 中完全消失。同時，大規模非互補篩選在超過 <code>20,000</code> 個誘變基因組中分離出新點突變等位基因 <strong><code>lin-4(ma161)</code></strong>，剛好落在 <code>lin-4S</code> 與 <code>lin-4L</code> 的第 <code>5</code> 個鹼基（<code>bp 517</code>，<code>C</code> 突變為 <code>T</code>）。比對該段小 RNA 序列後，Lee 等人發現其 <code>5'</code> 端序列（<code>5'-GUUCCCUGAG-3'</code>）及另一區段（<code>5'-AAGUGUGAG-3'</code>，位於 <code>lin-4L</code> 內部與 <code>lin-4S</code> 之 <code>3'</code> 端，唯 <code>lin-4S</code> 末端的 <code>3'</code> <code>G</code> 可能缺失）可與 <em>lin-14</em> 3'UTR 中<strong>重複 7 次</strong>的保守元件提出反義鹼基配對模型，中間夾著一段保守的 <code>5 nt</code> 非互補序列 <code>5'-ACCUC-3'</code>（pp. 848、850，Fig. 8）。</li></ol>
+<p><strong>二、<em>lin-14</em> 3'UTR 轉錄後調控的證明（Wightman, Ha &amp; Ruvkun 1993）</strong></p>
+<ol><li><strong>蛋白下降而 mRNA 不變</strong>：Wightman 等人以西方墨點法與 RNase 保護實驗平行追蹤發育早、晚期內源性 <em>lin-14</em> 表現，確認野生型線蟲的 LIN-14 蛋白在晚期下降 <code>10</code> 倍，但 <em>lin-14</em> mRNA 穩定態含量卻維持不變（晚期/早期比值 <code>1.0</code>）；在 <code>lin-4(e912)</code> 與 <code>lin-14(gf)</code> 突變株中蛋白下降受阻（惟仍見殘餘下降），mRNA 卻依然未減少，證明此調控發生於轉錄後步驟，而非轉錄關閉或 mRNA 大量降解。</li><li><strong>3'UTR 融合報導系統與多點互補模型</strong>：Wightman 等人將 <em>lin-14</em> 的 3'UTR 接上表皮啟動子驅動的 <em>lacZ</em> 報導基因（<code>col-10–lacZ–lin-14</code>），證明該段 3'UTR 足以將發育時序下調能力賦予異源基因，且在 <em>lin-4</em> 缺失株中喪失絕大部分調控（L1:L4 下調比值由 <code>99 ± 33</code> 降至 <code>4 ± 3</code>，僅剩野生型約 <code>4%</code>）。將 <em>C. elegans</em> 與 <em>C. briggsae</em> 之 <em>lin-14</em> 3'UTR 比對後，他們鎖定 7 段保守的 <code>14–19 nt</code> 元件（其中 <code>2</code> 處含完整 <code>9 nt</code> 核心 <code>CUCAGGGAA</code>、<code>4</code> 處為 <code>8 nt</code> 單鹼基變異、<code>1</code> 處為 <code>7 nt</code> 核心，並含上游 <code>5–9 nt</code> 互補區，p. 858），並指出這些位點正是 <code>lin-14(n355gf)</code>（缺失全部 7 個）與 <code>lin-14(n536gf)</code>（缺失 5 個）所失去的區段。在所提出的 <em>lin-4</em>–<em>lin-14</em> RNA 雙股模型中，這 7 個位點與 <code>lin-4</code> 序列的匹配程度不盡相同：僅 <code>3</code> 個位點在核心區完全互補（位點 <code>3, 5, 7</code>），其餘 <code>4</code> 個位點（位點 <code>1, 2, 4, 6</code>）則需使 <em>lin-4</em> 上一個保守 <code>C</code> 鹼基凸出（bulge）方能配對（p. 860，Fig. 5）。</li></ol>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<p>兩篇論文透過互為表裡的分子生物與轉殖遺傳實驗，為這個全新的小 RNA 反義調控模型提供了定量證據（所有數值嚴格依原文區分歸屬）：</p>
+<h3>本篇論文（Lee et al. 1993）之核心證據</h3>
+<ul><li><strong>小 RNA 長度、端點與點突變證據</strong>：<ul><li>Northern 雜交與 RNase 保護測得 <code>lin-4S</code> 估計長度為 <code>20 ± 2 nt</code>（約 <code>22 nt</code>）、<code>lin-4L</code> 約 <code>61 nt</code>（誤差 <code>±2 nt</code>），且野生型 N2 中 <code>lin-4S</code> 遠較 <code>lin-4L</code> 豐富（pp. 846–847，Figs. 4–5）。</li><li>引子延伸（<code>49 nt</code> 產物，<code>±1 nt</code>）與 S1 核酸酶定位將 <code>lin-4L</code> 定於 <code>pVTSal3</code> 之 <code>bp 513</code>（<code>5'</code> 端 <code>T</code>）至 <code>bp 573</code>（<code>3'</code> 端 <code>C</code>），全長 <code>61 nt</code>；巢式 RNase 保護（<code>5 nt</code> 切位偏移）與 S1 定位（15 °C 得 <code>19–22 nt</code>，37 °C 主要受保護產物為 <code>17–21 nt</code>）顯示 <code>lin-4S</code> 與 <code>lin-4L</code> 共用同一 <code>5'</code> 端（<code>bp 513</code>），對應 <code>lin-4L</code> 前約 <code>22 nt</code>（pp. 847–848，Figs. 6–7；<code>lin-4S</code> 末端 <code>3'</code> <code>G</code> 可能缺失，見 p. 848 與 Fig. 8A）。</li><li><code>lin-4(ma161)</code>（篩選逾 <code>20,000</code> 個誘變基因組所得唯一點突變）將 <code>bp 517</code>（小 RNA 第 5 位）由 <code>C</code> 改為 <code>T</code>，恰好破壞了 <code>lin-4</code> 與 <em>lin-14</em> 3'UTR 反義配對中一段最長達 <code>10 nt</code> 的連續互補區（pp. 848, 850–851，Fig. 8）。</li></ul></li></ul>
+<h3>本篇論文（Wightman et al. 1993）之核心證據</h3>
+<ul><li><strong>內源性蛋白與 mRNA 量化比較（Fig. 1）</strong>：<ul><li>比較早期（71%–89% L1）與晚期（78%–94% L2/L3）樣本並以咽肌球蛋白 <code>myo-1</code>（<code>223 kDa</code>）標準化後，Lin-14p（<code>67 kDa</code> 與 <code>70 kDa</code> 條帶）晚期/早期蛋白比值為：野生型 <strong><code>0.1</code></strong>（下降 <code>10</code> 倍）、<code>lin-4(e912)</code> 為 <strong><code>0.4</code></strong>（下降 <code>2.3</code> 倍）、<code>lin-14(n355gf)</code> 為 <strong><code>0.7</code></strong>（下降 <code>1.3</code> 倍）、<code>lin-14(n536gf)</code> 為 <strong><code>0.4</code></strong>（下降 <code>2.3</code> 倍）；於晚期階段，突變株之 Lin-14p 蛋白相對野生型高出 <strong><code>4</code> 倍</strong>（<code>e912</code> 與 <code>n536gf</code>）至 <strong><code>7</code> 倍</strong>（<code>n355gf</code>）（pp. 856, 859）。</li><li>同樣樣本經 RNase 保護測定之 <em>lin-14</em> mRNA 晚期/早期比值分別為：野生型 <strong><code>1.0</code></strong>、<code>lin-4(e912)</code> <strong><code>0.91</code></strong>、<code>lin-14(n355gf)</code> <strong><code>1.5</code></strong>、<code>lin-14(n536gf)</code> <strong><code>1.2</code></strong>，證實穩態 mRNA 並不隨發育下降（p. 856，Fig. 1B）。</li></ul></li><li><strong><code>col-10–lacZ–lin-14</code> 3'UTR 報導基因實驗（Table 1、Fig. 3）</strong>：<ul><li>染色體整合株測量 L1 與 L4 期 β-半乳糖苷酶活性（<span class="m-in" data-tex="\mathrm{OD}_{574}"></span> / 分 / 毫克蛋白）：含 <em>lin-14</em> 3'UTR 之野生型 <code>WT(int)</code> L1:L4 下調比值達 <strong><code>99 ± 33 (n = 4)</code></strong>（L1 為 <code>1.6 ± 0.9</code>、L4 為 <code>0.02 ± 0.02</code>），但在 <code>lin-4(e912)</code> 背景下 <code>lin-4(int)</code> 比值下降至 <strong><code>4 ± 3 (n = 9)</code></strong>（L1 <code>1.0 ± 0.9</code>、L4 <code>0.4 ± 0.4</code>，僅剩野生型約 <code>4%</code>）；改用對照 <code>unc-54</code> 3'UTR 時，野生型比值僅 <strong><code>7 ± 4 (n = 4)</code></strong>，<code>lin-4</code> 突變株為 <strong><code>2 ± 1 (n = 2)</code></strong>（pp. 856–858，Table 1）。</li><li>染色體外高表現陣列 <code>WT(Ex)high</code>（注射 DNA 增加 <code>50</code> 倍、酵素表現升高 <code>60–80</code> 倍）仍保有 <strong><code>104 ± 15 (n = 3)</code></strong> 倍下調（相對於標準 <code>WT(Ex)</code> 之 <code>182 ± 60 (n = 3)</code>），顯示細胞內 <em>lin-4</em> 調控機制並未飽和；只保留含全部 <code>7</code> 個位點之 <code>802 nt</code> 片段或僅保留 <code>3</code> 個互補位點（位點 <code>3, 4, 5</code>）之 <code>124 nt</code> 片段，下調比值皆仍維持 <strong><code>72 ± 16</code></strong>（分別為 <code>n = 3</code> 與 <code>n = 2</code>）。同時，轉殖株報導基因的 L1:L4 mRNA 比值經 <em>myo-1</em> 標準化後為 <strong><code>0.9</code></strong>（pp. 857–859，Table 1、Fig. 2、Fig. 3）。</li><li>依熱力學參數推算（Wightman et al. 1993 p. 860，引述 Turner et al. 1988），<code>lin-4(ma161)</code> 之 <code>C</code> 轉 <code>U</code> 突變會使三個完美互補的 <code>GGG/CCC</code> RNA 雙股（位點 <code>3, 5, 7</code>）各自降低 <strong><code>2.6 kcal/mol</code></strong> 之自由能，並使各自的結合常數下降 <strong><code>100</code> 倍</strong>。</li></ul></li></ul>
+<h3>方法學邊界與未決問題（兩篇原文自述限制）</h3>
+<p>兩篇 1993 年論文在文末均標出了當時尚未突破的邊界條件：(1) Lee 等人的基因挽救實驗主要依賴高拷貝染色體外陣列，且 <code>lin-4S</code> 的 RNA 序列係由 DNA 定序結合核酸酶端點定位（具 <code>±1–2 nt</code> 誤差）所推導，非直接定序小 RNA 本體；(2) <code>lin-4L</code> 與 <code>lin-4S</code> 的生源加工關係及精確結構細節尚未釐清（Lee et al. p. 849）；(3) 轉錄區上游約 <code>140–420 bp</code> 之保守區在反轉後僅能部分挽救，其角色當時未明（Lee et al. p. 849）；(4) Wightman 等人指出在鹼基配對區未觀察到演化變異，因此無法運用演化共變（covariation）資料佐證雙股模型（p. 860）；兩組團隊均指出，欲從遺傳上證明 <em>lin-4</em> 與 <em>lin-14</em> 之間的直接鹼基配對，仍需建構補償性鹼基配對突變（Lee et al. p. 850，並指出仍需對體內複合物進行直接測試；Wightman et al. p. 860 並指出需針對 3'UTR 多個互補位點建構多重補償性突變）；(5) <code>lin-4(e912)</code> 背景中仍可見微弱殘餘蛋白下降（內源比值 <code>0.4</code>、報導比值 <code>4 ± 3</code>），加上 3'UTR 另有其他保守序列（且只含 <code>7</code> 個互補位點的 <code>802 nt</code> 片段僅呈現部分梯度活性），提示可能有不依賴 <em>lin-4</em> 的其他因子或位點參與部分時間梯度形成（Wightman et al. pp. 856、861）；(6) <em>lin-4</em> 在細胞核抑或細胞質作用，以及阻斷轉譯起始、延長抑或聚腺苷酸化的具體分子步驟，於 1993 年尚未確定（Lee et al. pp. 848–851；Wightman et al. pp. 856, 860–861）。</p>
+<h3>後續領域關鍵證據（非本篇成果；1999–2001 年文獻僅核對 Crossref 書目與 PubMed 摘要，全文細節尚未核實）</h3>
+<ul><li><strong>轉譯起始後阻斷</strong>：Olsen, P. H. &amp; Ambros, V. (1999), <em>Developmental Biology</em> 216(2):671–680（doi:10.1006/dbio.1999.9523）。PubMed PMID <code>10642801</code> 摘要指出 <em>lin-4</em> 不改變 <em>lin-14</em> mRNA 之合成速率、多聚腺苷酸化狀態、細胞質豐度或多聚核糖體（polysome）沉降分布，而是在轉譯起始之後（如延長或穩定蛋白釋放階段）抑制 LIN-14 蛋白合成。</li><li><strong>第二個異時小 RNA <code>let-7</code> 與跨門類保守性</strong>：Reinhart, B. J. et al. (2000), <em>Nature</em> 403(6772):901–906（doi:10.1038/35002607）；Pasquinelli, A. E. et al. (2000), <em>Nature</em> 408(6808):86–89（doi:10.1038/35040556）。Reinhart 等人鑑定受時序調控之 <code>21 nt</code> <code>let-7</code> RNA 可與 <em>lin-14</em>、<em>lin-28</em>、<em>lin-41</em>、<em>lin-42</em> 及 <em>daf-12</em> 之 3'UTR 互補並依賴 <code>let-7</code> 調控 <em>lin-41</em> 3'UTR 報導基因（PMID <code>10706289</code> 摘要）；Pasquinelli 等人於脊椎動物、尾索動物、半索動物、軟體動物、環節動物與節肢動物檢出 <code>~21 nt</code> <code>let-7</code> RNA（於刺胞動物、海綿、酵母、大腸桿菌與阿拉伯芥樣本未檢出），同一批跨物種樣本中未檢出 <code>lin-4</code> RNA（PMID <code>11081512</code> 摘要）。</li><li><strong>「microRNA」定名與家族擴展</strong>：Lee, R. C. &amp; Ambros, V. (2001), <em>Science</em> 294(5543):862–864（doi:10.1126/science.1065329）；Lau, N. C. et al. (2001), <em>Science</em> 294(5543):858–862（doi:10.1126/science.1065062）；Lagos-Quintana, M. et al. (2001), <em>Science</em> 294(5543):853–858（doi:10.1126/science.1064921）。三篇論文於摘要中均將這類調控小 RNA 稱為 <strong>microRNAs（miRNAs）</strong>：Lee &amp; Ambros 於線蟲鑑定出 <code>15</code> 個新 miRNA 基因（其中 <code>3</code> 個具哺乳類或昆蟲同源物），Lau 等人於線蟲鑑定出 <code>55</code> 個先前未知之 <code>21–24 nt</code> miRNA，Lagos-Quintana 等人則於無脊椎動物與脊椎動物鑑定出多種 <code>21–22 nt</code> 表現型 microRNA，並指出其中部分高度保守（PMID <code>11679672</code>、<code>11679671</code>、<code>11679670</code> 摘要）。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<p>1993 年的 <em>lin-4</em> 與 <em>lin-14</em> 發現最初在線蟲學界以外顯得像是物種特例——後續研究進一步解析其抑制步驟，並在多個兩側對稱動物門類中發現保守的小調控 RNA（以下 1999–2001 年文獻僅核對 Crossref 書目與 PubMed 摘要，尚未取得全文核對完整實驗細節與研究限制）：</p>
+<ol><li><strong>轉譯起始後抑制機制之檢驗（1999）</strong>：Philip H. Olsen 與 Victor Ambros 於 1999 年在 <em>Developmental Biology</em> 發表研究，摘要指出 <code>lin-4</code> 並不改變 <em>lin-14</em> mRNA 的合成速率、多聚腺苷酸化狀態、細胞質豐度或多聚核糖體（polysome）沉降分布，進而推論其容許正常的轉譯起始，並抑制<strong>轉譯起始之後</strong>的步驟（例如轉譯延長或穩定 LIN-14 蛋白之釋放）。</li><li><strong>第二個異時小 RNA <code>let-7</code> 與跨門類保守性（2000）</strong>：2000 年 2 月，Brenda J. Reinhart、Gary Ruvkun 等人在 <em>Nature</em> 報導第二個線蟲異時調控基因 <code>let-7</code> 同樣編碼一段受發育時序控制的 <code>21 nt</code> 小 RNA，與 <em>lin-14</em>、<em>lin-28</em>、<em>lin-41</em>、<em>lin-42</em> 及 <em>daf-12</em> 的 3'UTR 互補，並依賴 <code>let-7</code> 調控 <em>lin-41</em> 3'UTR 報導基因。同年 11 月，Amy E. Pasquinelli、Ruvkun 等人進一步在 <em>Nature</em> 報導，約 <code>21 nt</code> 的 <code>let-7</code> RNA 序列及其發育期表現圖譜見於脊椎動物、尾索動物、半索動物、軟體動物、環節動物與節肢動物等多個動物門類（而在刺胞動物、海綿、酵母、大腸桿菌與阿拉伯芥樣本未檢出 <code>let-7</code>，同一批跨物種樣本中亦未檢出 <code>lin-4</code> RNA），並提出 <code>let-7</code> 調控 RNA 可能跨越動物演化譜系控制晚期發育轉換。</li><li><strong>「microRNA」定名與基因家族建立（2001）</strong>：2001 年 10 月，<em>Science</em> 同期刊登了三篇論文（Lee &amp; Ambros 2001；Lagos-Quintana et al. 2001；Lau et al. 2001），均在摘要中將這類內源性非編碼調控小 RNA 稱為 <strong>microRNAs（miRNAs）</strong>：Lee &amp; Ambros 於線蟲鑑定出 <code>15</code> 個新 miRNA 基因（其中 <code>3</code> 個在哺乳類或／與昆蟲具明顯同源序列）；Lau 等人於線蟲鑑定出 <code>55</code> 個先前未知的 <code>21–24 nt</code> miRNA（數個在果蠅與人類基因體具潛在直系同源物）；Lagos-Quintana 等人則於無脊椎動物與脊椎動物中鑑定出多種 <code>21–22 nt</code> 表現型 microRNA，並指出其中部分類似 <code>let-7</code> 般高度保守。</li><li><strong>2024 年諾貝爾生理學或醫學獎</strong>：2024 年 10 月 7 日，卡羅琳斯卡學院諾貝爾大會宣布將 2024 年諾貝爾生理學或醫學獎授予 Victor Ambros 與 Gary Ruvkun，表彰兩人「發現 microRNA 及其在轉錄後基因調控中的角色」，官方新聞稿指出此一發現揭示了對多細胞生物（包含人類）發育與功能具有根本重要性的全新基因調控原則。</li></ol>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>以下為 Wiki 詮釋：</p>
+<p>從資訊架構與控制理論的視角來看，細胞在進行基因表現時面對一個經典的「重編譯延遲」問題：傳統轉錄因子必須先經歷「DNA 轉錄為 mRNA <span class="m-in" data-tex="\to"></span> 輸出至細胞質 <span class="m-in" data-tex="\to"></span> 核糖體轉譯為蛋白 <span class="m-in" data-tex="\to"></span> 蛋白折疊並重返細胞核結合 DNA」的完整循環，才能啟動下一級基因抑制，既消耗胺基酸與能量資源，又必須從上游關閉新 mRNA 合成。</p>
+<p><em>lin-4</em> 所展現的策略，更接近一種<strong>「輕量級標記攔截器（Lightweight Post-Transcriptional Patch）」</strong>：位於宿主基因內含子區段的這段序列不需進入耗時的蛋白質編譯路徑，而是以短序列小 RNA 作為定址識別碼（其中較豐富的 <code>lin-4S</code> 約 <code>22 nt</code> 可能扮演主要角色，但 <code>lin-4L</code> 或兩者亦可能有活性，見 Lee et al. 1993 pp. 849–850），依反義互補模型掛鉤已經轉錄待機的 <em>lin-14</em> mRNA 尾端（3'UTR）。在同一段 <em>lin-14</em> 3'UTR 上配置多個重複互補位點（Wightman et al. 1993 中的 7 個位點），作者在合作討論的模型中推測多分子協同結合可於轉譯端塑造更陡峭的蛋白時間梯度，也提供了一套不額外佔用蛋白編碼空間的發育時間閘門設計思路。</p>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>1993</b><span>發表・Cell</span></div>
+    <div class="yr award"><b>2024</b><span>諾貝爾生理學或醫學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Rosalind C. Lee<br>Rhonda L. Feinbaum<br>Victor Ambros</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Victor Ambros<br>Gary Ruvkun</span><span class="note">Ruvkun 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Cell, 75(5), 843-854</span><a href="https://doi.org/10.1016/0092-8674(93)90529-Y">doi:10.1016/0092-8674(93)90529-Y</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#分子生物</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>非編碼 RNA 與轉錄後基因調控</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1016/0092-8674(93)90529-Y" title="Lee, R. C., Feinbaum, R. L., &amp; Ambros, V. (1993) The C. elegans heterochronic gene lin-4 encodes small RNAs with antisense complementarity to lin-14. Cell 75(5):843-854.">Lee、Feinbaum 與 Ambros（1993）</a><a href="https://doi.org/10.1016/0092-8674(93)90530-4" title="Wightman, B., Ha, I., &amp; Ruvkun, G. (1993) Posttranscriptional regulation of the heterochronic gene lin-14 by lin-4 mediates temporal pattern formation in C. elegans. Cell 75(5):855-862.">Wightman、Ha 與 Ruvkun（1993）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">本條目將 1993 年 12 月同期刊載於 <em>Cell</em> 第 75 卷的兩篇論文整合於一頁，以 <strong>Lee, Feinbaum &amp; Ambros (1993)</strong>（<em>Cell</em> 75(5):843–854）為主軸，並將 <strong>Wightman, Ha &amp; Ruvkun (1993)</strong>（<em>Cell</em> 75(5):855–862）並列於 <code>key_papers</code>。兩篇同期論文分別報告不同實驗結果（兩組實驗室曾透過合作分享未發表資料共同注意到序列互補，見 Lee et al. p. 853 與 Wightman et al. p. 862 致謝），下文中區分各篇結果與貢獻：Lee 等人選殖 <em>lin-4</em> 基因並鑑定出兩段小非編碼 RNA（<code>lin-4S</code> 與 <code>lin-4L</code>）；Wightman 等人證明 <em>lin-4</em> 經由 <em>lin-14</em> mRNA 之 3' 非轉譯區（3'UTR）在轉錄後下調 LIN-14 蛋白表現，並於其中鑑定出 7 個保守互補元件。此外，兩篇 1993 年原文均只稱其為「small RNAs」或「small <em>lin-4</em> RNAs」，「microRNA」一詞直至 2001 年才於後續論文中提出。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
