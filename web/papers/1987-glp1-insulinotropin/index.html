@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GLP-1 刺激胰島素基因表現｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--star)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--star);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--star) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--star)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注封面：深色卡＋藍框（human 用玫瑰粉），代表星為空心星 */
+.cover.focus{background:#121519;color:#EAE6DF;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--focus) 28%,transparent)}
+.cover.focus .ph,.cover.focus .tags,.cover.focus .yrs{color:var(--subtle)}
+.cover.focus .win{background:#0C0E11}
+.cover.focus .line{color:var(--focus)}
+.cover.focus .name{color:var(--fg-strong)}
+.cover.focus .lead{color:var(--body)}
+.cover.focus .yrs{border-top-color:rgba(234,230,223,.14)}
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--focus),0 0 3cqw .6cqw color-mix(in srgb,var(--focus) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--focus) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--focus)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+</style>
+</head>
+<body style="--star:#9BDCB1;--deep:#1A4F2C;--win:#1D2524;--focus:#8FD5FD">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.01</span><span>生醫</span></div><div class="win"><i style="left:33.8%;top:36.5%;width:1.5px;height:1.5px;opacity:0.44"></i><i style="left:63.3%;top:41.7%;width:1.5px;height:1.5px;opacity:0.65"></i><i style="left:65.6%;top:27.1%;width:1.5px;height:1.5px;opacity:0.47"></i><i style="left:65.6%;top:8.3%;width:1.5px;height:1.5px;opacity:0.35"></i><i style="left:31.1%;top:22.5%;width:1px;height:1px;opacity:0.77"></i><i style="left:29.5%;top:39.3%;width:1px;height:1px;opacity:0.44"></i><i style="left:61.1%;top:5.2%;width:1.5px;height:1.5px;opacity:0.76"></i><i style="left:27.0%;top:31.1%;width:1px;height:1px;opacity:0.70"></i><i style="left:42.3%;top:31.4%;width:1px;height:1px;opacity:0.77"></i><i style="left:55.0%;top:33.8%;width:1.5px;height:1.5px;opacity:0.36"></i><i style="left:5.1%;top:5.6%;width:1.5px;height:1.5px;opacity:0.37"></i><i style="left:27.4%;top:29.6%;width:1px;height:1px;opacity:0.59"></i><i style="left:32.1%;top:10.5%;width:1px;height:1px;opacity:0.32"></i><i style="left:63.0%;top:34.9%;width:1px;height:1px;opacity:0.41"></i><span class="rep award"></span><span class="line"><span>比較長短胜肽，</span><span>測出短的更能</span><span>促胰島素生成</span></span></div><div class="tags">生醫與生命科技・#分子生物 #生物科技</div><div class="name">GLP-1 刺激胰島素基因表現</div><div class="lead">在高糖培養的細胞裡並排比較同一前驅蛋白的長短兩形式，短的一種同時推高 cAMP（細胞內訊號分子）、胰島素基因表現與分泌。</div><div class="yrs">1987 發表 ｜ 2026 引文桂冠獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">腸道激素已有證據，<br>哪種形式有效？</span><div class="rows"><div class="row"><b>類似物</b><span>市售醯胺化形式，葡萄糖存在下微弱刺激離體大鼠胰島釋放胰島素</span></div><div class="row"><b>胰島素釋放</b><span>前人證據涉及釋放與 cAMP，未及基因表現</span></div><div class="row gap"><b>加工形式</b><span>哪種加工形式有效尚未確定，市售類似物在細胞株與組織萃取物未偵測到</span></div></div><span class="ft" style="color:var(--ink)">需要同一條件下直接比較各形式的效力。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">切掉前 6 個胺基酸，<br>效力看來較強</span><div class="dia-fill"><svg class="dia" viewBox="0 0 300 160" role="img" aria-label="示意：長形式的前 6 個胺基酸可能遮蔽氨基端活性位點；短形式沒有這一段。">
+  <text class="k-label" x="76" y="20" text-anchor="middle">氨基端</text>
+  <text class="k-label" x="52" y="46" text-anchor="end">長形式</text>
+  <rect class="k-line k-ring" x="60" y="30" width="220" height="24" rx="5"/>
+  <rect class="k-ink" x="60" y="30" width="32" height="24" rx="5"/>
+  <text class="k-label" x="84" y="68" text-anchor="end">遮蔽</text>
+  <line class="k-muted k-dash k-thin" x1="92" y1="54" x2="92" y2="98"/>
+  <text class="k-label" x="52" y="114" text-anchor="end">短形式</text>
+  <rect class="k-line k-ring" x="92" y="98" width="188" height="24" rx="5"/>
+  <circle class="k-accent" cx="92" cy="110" r="6"/>
+  <text class="k-label-accent" x="92" y="136" text-anchor="middle">活性位點</text>
+</svg></div><span class="tx" style="margin-top:auto;color:var(--ink2)">同一株細胞比較，短形式看來較強；作者推測部分因前 6 個胺基酸遮蔽氨基端活性位點。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">134.0</span><span class="l">cAMP fmol，5 nM 時短形式高於長形式（長 24.3）</span></div><div class="stat"><span class="v">50 pM</span><span class="l">短形式 cAMP 23.9，仍顯著高於對照 15.4 fmol</span></div><div class="stat"><span class="v">3 倍</span><span class="l">24 小時胰島素 mRNA，短形式高於對照</span></div><div class="stat"><span class="v">381</span><span class="l">1 小時胰島素 µU/mL，0.5 µM 短形式（對照 166）</span></div></div><span class="ft">範圍：Drucker 1987，體外大鼠胰島素瘤細胞株，mRNA 與分泌限高糖</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">從細胞株讀數，<br>到病人身上的試驗</span><div class="time"><p><b>1992</b><span>Thorens 以表現選殖取得 GLP-1 受體</span></p><p><b>1993</b><span>Nauck 等測第二型糖尿病人對 GIP 與 GLP-1 反應</span></p><p><b>2002</b><span>Zander 等 6 週 GLP-1 輸注降第二型糖尿病血糖</span></p><p><b>2021</b><span>Wilding 等 semaglutide 讓過重或肥胖成人減重</span></p><p><b>2026</b><span>Drucker、Holst 與 Mojsov 獲引文桂冠獎</span></p></div><span class="ft">前四項為後續他人成果，末項為獎項</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">把長短兩形式放進同一批細胞對照，結論仍止於「可能」。</span><span class="shift"><span>只問有無</span><i aria-hidden="true"></i><b>同批比長短</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">1987 發表 ｜ 2026 引文桂冠獎</span>
+<h1>GLP-1 刺激胰島素基因表現：大鼠胰島細胞株中 cAMP 上升與胰島素釋放</h1>
+<p class="en">Glucagon-like peptide I stimulates insulin gene expression and increases cyclic AMP levels in a rat islet cell line</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">同一條 proglucagon 上的序列，被切成長短兩種胜肽之後，短的那一種在胰島細胞株裡同時推高了 cAMP、胰島素 mRNA 與分泌量。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>1987 年，Drucker、Philippe、Mojsov、Chick 與 Habener 在《PNAS》報告：proglucagon 經加工產生的 31 個胺基酸形式 GLP-I-(7-37)，在源自大鼠胰島 insulinoma 的 RIN 1046-38 細胞株中，同時提高細胞內 cAMP、胰島素 mRNA 與培養液中的胰島素（pp. 3434–3437）。作者在摘要把結論寫成「GLP-I 可能是胰島素基因表現的生理調節者」（"may be a physiologic modulator of insulin gene expression"，p. 3434）。</p>
+<p>本篇的特點是把 proglucagon 的兩種天然加工形式並排比較：全長的 GLP-I-(1-37) 與切除第 1 至 6 個胺基酸後的 GLP-I-(7-37)，另加一個市售的醯胺化類似物 GLP-I-(1-36)-NH2。作者指出，後者在細胞株與組織萃取物中都沒有被偵測到（p. 3435）。結果是短的那一種胜肽在 cAMP 與胰島素 mRNA 兩項指標上都明顯較強，且胰島素分泌在加入胜肽 1 小時內即上升（pp. 3435–3437）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：incretin 概念與「哪一種加工形式有活性」</h2></div>
+<p>作者在引言鋪陳三條當時的線索與缺口（pp. 3434–3435）：</p>
+<ul><li><strong>incretin 概念已有，但分子身分未定</strong>：作者指出腸道來源的 insulinotropic factors（incretins）之存在已有證據（ref 3），entero-insular axis 的概念則源自「口服葡萄糖比等量靜脈注射更能刺激胰島素分泌」的觀察（ref 4，p. 3434）。同一段也指出，GLP-I 的胺基酸序列在鮟鱇魚（anglerfish）與哺乳類的 preproglucagon 之間高度保守、在大鼠／倉鼠／人類／牛 cDNA 解碼結果完全相同，且由 glucagon 基因中獨立的一個 exon 編碼，因此被推測有獨立的功能（p. 3434）。</li><li><strong>既有活性證據來自被修飾的類似物，其對胰島素釋放的效力微弱</strong>：合成的 GLP-I-(1-36)-NH2 可刺激腦與垂體膜的 adenylate cyclase（ref 18，p. 3434 右欄）；作者在討論中進一步引述 Hoosein 與 Gurd 的結果——該類似物在 1 nM 對腦膜 adenylate cyclase 達最大刺激，更高劑量（0.01–1 µM）反而使刺激下降（ref 18，p. 3436 右欄末段）。同一醯胺化類似物在葡萄糖存在下只能「微弱地（weakly）」刺激離體大鼠胰島的胰島素釋放（ref 17，p. 3434 右欄）。作者另指出，這個類似物雖可購得，卻未在細胞株與組織萃取物中被偵測到（p. 3435）；並在討論中寫明，使用氨基端延伸胜肽的 GLP-I 活性研究「可能低估此胜肽真正的生物效力」（p. 3436 右欄第 3 段末句）。</li><li><strong>未測的環節是基因表現</strong>：先前工作測的是 cAMP 與分泌，本篇要問的是 GLP-I 是否也作用在胰島素 mRNA 的層次，以及哪一種加工形式才是較有效的那一個（p. 3434 右欄末段）；本篇的讀數則涵蓋 cAMP、胰島素 mRNA 與分泌三項（pp. 3435、3437）。</li></ul>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：胜肽合成、細胞株與三層讀數</h2></div>
+<p>原文沒有編號公式或展示公式（全文 5 頁，僅有 Table 1 至 Table 3 與 Fig. 1、Fig. 2；本頁因此不設區塊公式）。方法可整理為四個步驟：</p>
+<ol><li><strong>取得並界定三種胜肽</strong>：以化學合成取得 GLP-I-(1-37) 與 GLP-I-(7-37)（合成方法見 ref 11），另用市售 GLP-I-(1-36)-NH2；作者註明第三種在細胞株與組織萃取物中均未偵測到（pp. 3434–3435）。選用 RIN 1046-38 細胞株，即源自大鼠胰島 insulinoma 的細胞株（pp. 3434–3435）。</li><li><strong>cAMP 讀數</strong>：每 well 接種 <span class="m-in" data-tex="5 \times 10^{5}"></span> 細胞、長至 50% 滿度，於含 4.5 g/L 葡萄糖與 0.1% 牛血清白蛋白之 DMEM 中以胜肽作用 10 分鐘後，以冰的 95% 乙醇終止；每條件至少 4 wells、每次實驗至少重複 3 次，通常取 1/50 well 內容物以 radioimmunoassay 測定，統計用 unpaired two-tailed t test（p. 3435 左欄）。</li><li><strong>胰島素 mRNA 讀數</strong>：以 guanidinium isothiocyanate 裂解、CsCl 離心取總 RNA，glyoxal 變性後跑 agarose 電泳、轉 nylon 膜，用 <span class="m-in" data-tex="^{32}\mathrm{P}"></span> 端標記之大鼠 insulin-I cDNA 探針（<span class="m-in" data-tex="5 \times 10^{5}"></span> cpm/ml）雜交；同一張膜再以 actin cDNA 雜交校正上樣量，以雷射密度計定量（p. 3435 左欄）。</li><li><strong>分泌與胜肽穩定性</strong>：以 radioimmunoassay 測培養液中的胰島素（Table 3）；另將 GLP-I-(1-37) 置於含 0.1% 牛血清白蛋白的 conditioned medium（RIN 1046-38 細胞預先培養 24 小時取得）中培養 24 小時，以 ion-exchange HPLC 分離後再以 radioimmunoassay 測定，檢查是否被切成 GLP-I-(7-37)（pp. 3435–3437、Fig. 2）。</li></ol>
+<p>作者對機制的解釋是：較短的胜肽效力較高，部分可由前 6 個胺基酸「遮蔽（blocking）」氨基端活性位點解釋；依 glucagon 的結構功能研究，氨基端參與訊號傳遞與生物效力、羧基端主要負責受體辨識與結合（ref 25），因此 GLP-I-(1-37) 可能是需要再加工的非活性前驅物（p. 3436 右欄第 3 段）。作者同時指出，量效關係呈雙相，高劑量時 cAMP 刺激反而下降（p. 3436 右欄末段接 p. 3437 左欄首行）。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Drucker et al. 1987）之核心證據</h3>
+<ul><li><strong>cAMP 的濃度效應與高劑量比較（Table 1 Exp. 1–2，p. 3435；單位為 fmol / 1/50 plate 細胞萃取物）</strong>：Exp. 1（對照 8 plates，15.4 ± 0.7 fmol；各胜肽組均 5 plates）中，GLP-I-(7-37) 於 <span class="m-in" data-tex="5 \times 10^{-12}"></span> M 為 21.9 ± 2.0（P &lt; 0.05）、<span class="m-in" data-tex="5 \times 10^{-11}"></span> M 為 23.9 ± 1.0（P &lt; 0.001）、<span class="m-in" data-tex="5 \times 10^{-10}"></span> M 為 45.2 ± 5.9（P &lt; 0.001）、<span class="m-in" data-tex="5 \times 10^{-9}"></span> M 為 148.0 ± 15.0（P &lt; 0.001）；同濃度的 glucagon 依序為 18.7 ± 2.2（NS）、13.2 ± 1.0（NS）、16.5 ± 2.0（NS）、20.1 ± 2.5（P &lt; 0.05）。Exp. 2（各組均 4 plates；對照 43.6 ± 4.1 fmol）中，GLP-I-(7-37) 於 <span class="m-in" data-tex="5 \times 10^{-8}"></span> 與 <span class="m-in" data-tex="5 \times 10^{-7}"></span> M 為 78.3 ± 3.4（P &lt; 0.001）與 83.0 ± 2.1（P &lt; 0.001）；同濃度 glucagon 為 44.8 ± 1.6（NS）與 93.1 ± 2.9（P &lt; 0.001）。原文據此稱 5 nM 時 cAMP 至少上升 4 倍，50 pM 仍有作用（p. 3435 右欄）。</li><li><strong>GLP-I-(7-37) 與 GLP-I-(1-37) 之比較（Table 1 Exp. 3，p. 3435；各組均 5 plates）</strong>：對照為 34.4 ± 5.2 fmol；GLP-I-(7-37) 於 <span class="m-in" data-tex="5 \times 10^{-10}"></span>、<span class="m-in" data-tex="5 \times 10^{-9}"></span>、<span class="m-in" data-tex="5 \times 10^{-8}"></span> M 分別為 70.8 ± 5.2（P &lt; 0.05）、134.0 ± 25.6（P &lt; 0.01）、69.6 ± 7.0（P &lt; 0.01）；GLP-I-(1-37) 於同三濃度為 27.6 ± 4.6、24.3 ± 1.9、30.8 ± 2.8（皆 NS），至 <span class="m-in" data-tex="5 \times 10^{-7}"></span> M 才達 69.9 ± 2.6（P &lt; 0.001）。（該列 GLP-I-(7-37) 儲存格原文空白。）</li><li><strong>醯胺化類似物的獨立測量（正文，p. 3435 右欄）</strong>：未列入 Table 1 的 0.5 µM GLP-I-(1-36)-NH2 實驗，對照 41.3 ± 7.1 fmol、胜肽組 70.2 ± 2.8 fmol（n = 4，P &lt; 0.01）。</li><li><strong>胰島素 mRNA（Table 2，p. 3437；arbitrary densitometric units）</strong>：Exp. 1（<span class="m-in" data-tex="5 \times 10^{-7}"></span> M，24 h）之胰島素訊號為對照 1.28 ± 0.18、GLP-I-(1-37) 1.87 ± 0.35、GLP-I-(7-37) 4.23 ± 0.77（P &lt; 0.02）、GLP-I-(1-36)-NH2 2.78 ± 0.51（P &lt; 0.05）；actin 依序為 0.68 ± 0.03、0.48 ± 0.06、0.72 ± 0.16、0.87 ± 0.19。Exp. 3（<span class="m-in" data-tex="5 \times 10^{-7}"></span> M）胰島素為對照 5.56 ± 0.43、GLP-I-(7-37) 13.87 ± 0.40（P &lt; 0.001），actin 為 3.29 ± 0.08 與 4.36 ± 0.44。Exp. 2 為二重複（括號內個別值）：胰島素對照 5.90（6.86, 4.99），<span class="m-in" data-tex="5 \times 10^{-11}"></span>、<span class="m-in" data-tex="5 \times 10^{-10}"></span>、<span class="m-in" data-tex="5 \times 10^{-9}"></span>、<span class="m-in" data-tex="5 \times 10^{-8}"></span> M 之 GLP-I-(7-37) 依序為 7.00（5.58, 8.41）、6.70（7.92, 5.50）、8.50（7.59, 9.38）、7.90（8.40, 7.40）；actin 對照 2.69（3.23, 2.15），四組依序為 2.11（1.86, 2.36）、2.09（2.38, 1.79）、2.46（2.01, 2.92）、1.99（2.24, 1.74）。原文稱 24 小時時胰島素 mRNA 為對照的 3 倍（p. 3435 右欄）。</li><li><strong>胰島素釋放（Table 3，p. 3437）</strong>：<span class="m-in" data-tex="10^{6}"></span> 細胞、三次獨立測定；1 小時對照 166 ± 7、0.5 µM GLP-I-(7-37) 381 ± 63 microunits/mL（P &lt; 0.03）；24 小時對照 2778 ± 178、胜肽組 5164 ± 54 microunits/mL（P &lt; 0.001）。作者指出作用在加入胜肽 1 小時內即可見，故認為是刺激分泌而非僅刺激生合成；GLP-II 則無此作用（p. 3436 左欄末至右欄首）。</li><li><strong>葡萄糖條件與專一性（pp. 3435–3436）</strong>：對胰島素 mRNA 與釋放的刺激作用見於高濃度（25 mM）而非低濃度（5.5 mM）葡萄糖。GLP-I-(7-37) 對 actin 與 angiotensinogen mRNA 的影響可忽略；glucagon 與 GLP-II 對胰島素 mRNA 無影響；加入 1056A（glucagon 生成細胞株）與 GH4（prolactin）、AtT-20（corticotropin）兩株垂體細胞株後，對各自 mRNA 亦無影響（data not shown）。</li><li><strong>胜肽在培養液中的轉換（Fig. 2，p. 3437）</strong>：GLP-I-(1-37) 在含 0.1% 牛血清白蛋白的 conditioned medium（RIN 1046-38 細胞預先培養 24 小時取得）中培養 24 小時後出現少量 GLP-I-(7-37) 波峰；圖說載明 4 至 12 分鐘區間的免疫活性佔總免疫活性 1.2%。</li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>受體選殖（1992）</strong>：Thorens (1992), <em>PNAS</em> 89(18):8641–8645（doi:10.1073/pnas.89.18.8641）。以大鼠胰島 cDNA 庫在 COS 細胞表現選殖取得 GLP-1 受體，受體對 GLP-1 高親和力結合並偶聯 adenylate cyclase 活化，不結合 glucagon、GIP、VIP 或 secretin；受體長 463 個胺基酸、含七個 transmembrane domain（依摘要）。</li><li><strong>第二型糖尿病病人的反應（1993）</strong>：Nauck et al. (1993), <em>J. Clin. Invest.</em> 91(1):301–307（doi:10.1172/JCI116186）。9 位病人與 9 位配對正常人在 8.75 mmol/L 高血糖 clamp 下，GIP 在病人的最大效果比正常人低 54%（P &lt; 0.05）；GLP-1[7-36 amide] 在病人仍達到正常人 C-peptide 增量的 71%（差異不顯著），並降低兩組的 glucagon（依摘要）。</li><li><strong>連續輸注 6 週（2002）</strong>：Zander, Madsbad, Madsen &amp; Holst (2002), <em>Lancet</em> 359(9309):824–830（doi:10.1016/S0140-6736(02)07952-7）。20 位第二型糖尿病病人交替分派接受 GLP-1（n = 10）或生理食鹽水（n = 10，1 人因無可用靜脈排除而分析 9 人）皮下連續輸注 6 週；GLP-1 組空腹與 8 小時平均血糖分別下降 4.3 與 5.5 mmol/L（p &lt; 0.0001），HbA1c 下降 1.3%（p = 0.003）（依摘要）。</li><li><strong>每週一次 semaglutide 於過重或肥胖成人（2021）</strong>：Wilding et al. (2021), <em>N. Engl. J. Med.</em> 384(11):989–1002（doi:10.1056/NEJMoa2032183）。STEP 1 雙盲試驗納入 1961 位無糖尿病且 BMI ≥ 30（或 ≥ 27 且至少具一項體重相關共病）之成人，隨機 2:1 接受 semaglutide 2.4 mg 或安慰劑 68 週；體重平均變化 −14.9% 對 −2.4%，估計治療差 −12.4 個百分點（95% CI −13.4 至 −11.5，P &lt; 0.001）（依摘要）。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<ul><li><strong>把「同一前驅物的不同加工形式」變成可比較的實驗變因</strong>：本篇以化學合成的 GLP-I-(1-37)、GLP-I-(7-37) 與市售 GLP-I-(1-36)-NH2 並排處理同一株細胞，在同一組讀數（cAMP、胰島素 mRNA、分泌）上比較，得出短形式較強的結論（Table 1 至 Table 3，pp. 3435、3437）。作者另以 HPLC 與 radioimmunoassay 檢查 GLP-I-(1-37) 在含 0.1% 牛血清白蛋白的培養液中 24 小時後是否出現 GLP-I-(7-37)，結果測得少量波峰，並註明此切割「在這些實驗條件下」發生（Fig. 2，p. 3437）。</li><li><strong>同期獨立器官層次研究（1987 年 1 月與 2 月發表，本篇已引為 ref 32 與 ref 24，非本篇成果）</strong>：Mojsov, Weir &amp; Habener (1987年2月, <em>J. Clin. Invest.</em> 79(2):616–619, doi:10.1172/JCI112855) 以合成胜肽報告在 6.6 mM 葡萄糖下，GLP-I(7-37) 於低至 <span class="m-in" data-tex="5 \times 10^{-11}"></span> M 即為離體灌流大鼠胰臟胰島素分泌的強效刺激者（為基礎值 3 至 10 倍），而 GLP-I(1-37) 在 <span class="m-in" data-tex="5 \times 10^{-7}"></span> M 仍無效（依摘要）；本篇在討論亦引述此結論（ref 24，p. 3436）。Holst, Orskov, Nielsen &amp; Schwartz (1987年1月, <em>FEBS Lett.</em> 211(2):169–174, doi:10.1016/0014-5793(87)81430-8) 自豬腸道黏膜分離出對應 proglucagon 78–107 的胜肽，顯示天然與合成形式皆劑量依存地增加離體灌流豬胰臟的胰島素分泌（依摘要）；本篇「Note Added in Proof」引述 Holst 等（ref 32）報告 <code>GLP-I-(7-37)-NH2</code>（原文如此）在 0.1 nM 即增加灌流豬胰臟的胰島素分泌（p. 3438）。</li><li><strong>作者自述的未決問題，其後有獨立研究分別處理</strong>：本篇結尾明列兩項待定——GLP-I 是經獨立於 glucagon 的受體作用，或本身是 glucagon 受體的強效促效劑；以及 GLP-I 對 incretin effect 的貢獻與其在非胰島素依賴型糖尿病中的角色（p. 3438）。Thorens (1992) 以表現選殖取得對 GLP-1 具高親和力、不結合 glucagon 的受體（doi:10.1073/pnas.89.18.8641），Nauck et al. (1993) 則在第二型糖尿病病人身上比較 GIP 與 GLP-1 的反應（doi:10.1172/JCI116186）；兩篇均為各自獨立的研究，本頁不主張其直接引用本篇。</li><li><strong>從細胞株讀數到臨床給藥</strong>：Zander et al. (2002) 以 6 週連續皮下輸注 GLP-1 測試第二型糖尿病人的血糖控制（doi:10.1016/S0140-6736(02)07952-7）；Wilding et al. (2021) 的 STEP 1 試驗則以每週一次 semaglutide 2.4 mg 在 1961 位無糖尿病之過重或肥胖成人中測得體重平均變化 −14.9%（doi:10.1056/NEJMoa2032183）。這些是各自獨立的後續研究，非本篇結果。</li><li><strong>獎項</strong>：2026 年 Clarivate 引文桂冠獎（Physiology or Medicine）頒給 Daniel J. Drucker、Jens Juul Holst 與 Svetlana Mojsov，事由為 GLP-1 之鑑定與特徵化及其生物活性研究（<a href="https://clarivate.com/citation-laureates/physiology-medicine/">Clarivate Citation Laureates</a>）。2024 年 Lasker~DeBakey 臨床醫學研究獎頒給 Joel Habener、Svetlana Mojsov 與 Lotte Bjerre Knudsen，表彰 GLP-1 類藥物之發現與開發（<a href="https://laskerfoundation.org/winners/2024-winners/">Lasker Foundation 2024 Winners</a>）。兩份名單都含本篇作者以外的人（Holst、Knudsen），故得獎者另記於 <code>laureates</code>，未併入 <code>authors</code>。</li></ul>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>以下為 Wiki 詮釋：</p>
+<ol><li><strong>把「前驅物—產物」的關係設計成同一次實驗裡的對照</strong>：本篇沒有停在「GLP-I 有活性」，而是把同一條 proglucagon 上的長短兩種形式放進同一批細胞、同一組讀數裡比較。實驗中以酸水解後胺基酸分析與培養液 radioimmunoassay 測定加入培養液的胜肽濃度（Fig. 1 圖說，p. 3436），並以 HPLC 與 radioimmunoassay 追蹤長形式在培養液中的轉換——培養前未測得 GLP-I-(7-37)，於含 0.1% 牛血清白蛋白的 conditioned medium 培養 24 小時後出現少量 GLP-I-(7-37) 波峰，4 至 12 分鐘區間佔總免疫活性 1.2%（pp. 3436–3437、Fig. 2）。</li><li><strong>把限制寫進結論，而不是留給讀者補</strong>：作者在討論中明說細胞內 cAMP 上升與胰島素 mRNA 上升之間是否有因果關係仍未知，並指出 RIN 1046-38 的胰島素釋放與生合成不回應葡萄糖，因此以此細胞株評估 GLP-I 可能低估其效力（p. 3437）。這使本篇的適用範圍寫得很窄：證據層級是體外細胞株，不能直接推論到人體療效；文中「GLP-I 可能是胰島素基因表現的生理調節者」也止於「可能」（abstract，p. 3434）。</li></ol>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>1987</b><span>發表・PNAS</span></div>
+    <div class="yr award"><b>2026</b><span>引文桂冠獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Daniel J. Drucker<br>Jacques Philippe<br>Svetlana Mojsov<br>William L. Chick<br>Joel F. Habener</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Daniel J. Drucker<br>Jens Juul Holst<br>Svetlana Mojsov</span><span class="note">Holst 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>Proceedings of the National Academy of Sciences, 84(10), 3434-3438</span><a href="https://doi.org/10.1073/pnas.84.10.3434">doi:10.1073/pnas.84.10.3434</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#分子生物</span><span class="chip">#生物科技</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>腸泌素與代謝疾病療法</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1073/pnas.84.10.3434" title="Drucker, D. J., Philippe, J., Mojsov, S., Chick, W. L. &amp; Habener, J. F. (1987) Glucagon-like peptide I stimulates insulin gene expression and increases cyclic AMP levels in a rat islet cell line. PNAS 84:3434-3438.">Drucker 等（1987）</a><a href="https://doi.org/10.1172/JCI112855" title="Mojsov, S., Weir, G. C. &amp; Habener, J. F. (1987) Insulinotropin: glucagon-like peptide I (7-37) co-encoded in the glucagon gene is a potent stimulator of insulin release in the perfused rat pancreas. J. Clin. Invest. 79:616-619.">Mojsov、Weir 與 Habener（1987）</a><a href="https://doi.org/10.1016/0014-5793(87)81430-8" title="Holst, J. J., Orskov, C., Nielsen, O. V. &amp; Schwartz, T. W. (1987) Truncated glucagon-like peptide I, an insulin-releasing hormone from the distal gut. FEBS Lett. 211:169-174.">Holst 等（1987）</a></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2026 年 Clarivate 引文桂冠獎（Physiology or Medicine）頒給 Daniel J. Drucker、Jens Juul Holst 與 Svetlana Mojsov，表彰事由為 GLP-1 之鑑定與特徵化及其生物活性研究（<a href="https://clarivate.com/citation-laureates/physiology-medicine/">Clarivate 官方頁面</a>）。三位得獎者中 Drucker 與 Mojsov 為本篇作者，Holst 不是；Holst 同年的獨立論文與 Mojsov 等 1987 年的灌流胰臟研究由 Wiki 選列於 <code>key_papers</code>，不混記為本篇結果。2024 年 Lasker~DeBakey 臨床醫學研究獎另頒給 Joel Habener、Svetlana Mojsov 與 Lotte Bjerre Knudsen，表揚 GLP-1 類藥物之發現與開發（<a href="https://laskerfoundation.org/winners/2024-winners/">Lasker Foundation 2024 Winners</a>）；Habener 與 Mojsov 為本篇作者，Knudsen 不是。本頁只以 1987 年這篇細胞株實驗為主軸。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok">已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
