@@ -14,7 +14,7 @@
   --muted: #9A958C;
   --subtle: #88837A;
   --line: rgba(232, 228, 218, 0.12);
-  --mine: var(--color-focus); /* 我的星系主題色：同 --color-focus（2026-11-18 暫定青檸） */
+  --mine: var(--color-focus); /* 我的星系主題色：同 --color-focus（2026-11-18 暫定青碧） */
   --panel-h: clamp(600px, calc(100vh - 32px), 900px);
   --gutter: max(16px, env(safe-area-inset-left, 0px));
 }
@@ -51,9 +51,9 @@ button:focus-visible, a:focus-visible, .panel:focus-visible { outline: 1px solid
 .all { display: inline-flex; align-items: baseline; gap: 6px; min-height: 28px; padding: 0 0 2px; border-bottom: 1px solid transparent; font-family: var(--font-serif-zh); font-size: 13px; letter-spacing: 0.1em; color: var(--muted); }
 .all b { font-family: var(--font-serif); font-weight: 400; font-size: 18px; letter-spacing: 0; }
 .all[aria-pressed="true"] { color: var(--fg-strong); border-bottom-color: rgba(244, 241, 234, 0.7); }
-body[data-mode="focus"] .all[aria-pressed="true"] { border-bottom-color: rgba(var(--mine-rgb, 201, 226, 101), 0.8); }
+body[data-mode="focus"] .all[aria-pressed="true"] { border-bottom-color: rgba(var(--mine-rgb, 60, 200, 180), 0.8); }
 .strands { display: flex; justify-content: space-between; align-items: flex-start; background: linear-gradient(90deg, rgba(232, 228, 218, 0.32), rgba(232, 228, 218, 0.06)) top left / 100% 1px no-repeat; }
-body[data-mode="focus"] .strands { background-image: linear-gradient(90deg, rgba(var(--mine-rgb, 201, 226, 101), 0.45), rgba(232, 228, 218, 0.06)); }
+body[data-mode="focus"] .strands { background-image: linear-gradient(90deg, rgba(var(--mine-rgb, 60, 200, 180), 0.45), rgba(232, 228, 218, 0.06)); }
 .strand { display: flex; align-items: flex-start; gap: 6px; padding: 0 0 4px; transition: opacity 0.2s ease; }
 .strand .str { display: flex; flex-direction: column; align-items: center; width: 14px; }
 .strand .ln { width: 1px; height: 6px; background: var(--sl); }
@@ -71,8 +71,8 @@ body[data-mode="focus"] .strands { background-image: linear-gradient(90deg, rgba
 .vert-zh { writing-mode: vertical-rl; font-family: var(--font-serif-zh); font-size: 18px; letter-spacing: 0.55em; color: var(--fg-ivory); }
 .secret { width: 24px; height: 24px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .secret i { display: block; width: 3px; height: 3px; border-radius: 50%; background: #FFFDF8; box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.3); animation: beacon 7s ease-in-out infinite; transition: width 0.3s, height 0.3s, box-shadow 0.3s; }
-.secret:hover i, .secret:focus-visible i, .secret[data-armed="true"] i { width: 5px; height: 5px; animation: none; box-shadow: 0 0 0 3px var(--ink), 0 0 0 4px rgba(var(--mine-rgb, 201, 226, 101), 0.85), 0 0 12px 4px rgba(var(--mine-rgb, 201, 226, 101), 0.45); }
-body[data-mode="focus"] .secret i { width: 10px; height: 10px; animation: none; background: radial-gradient(circle, #FFFDF8 0 1.3px, rgba(255, 253, 248, 0) 1.8px); box-shadow: inset 0 0 0 1px var(--mine), 0 0 10px 2px rgba(var(--mine-rgb, 201, 226, 101), 0.55); }
+.secret:hover i, .secret:focus-visible i, .secret[data-armed="true"] i { width: 5px; height: 5px; animation: none; box-shadow: 0 0 0 3px var(--ink), 0 0 0 4px rgba(var(--mine-rgb, 60, 200, 180), 0.85), 0 0 12px 4px rgba(var(--mine-rgb, 60, 200, 180), 0.45); }
+body[data-mode="focus"] .secret i { width: 10px; height: 10px; animation: none; background: radial-gradient(circle, #FFFDF8 0 1.3px, rgba(255, 253, 248, 0) 1.8px); box-shadow: inset 0 0 0 1px var(--mine), 0 0 10px 2px rgba(var(--mine-rgb, 60, 200, 180), 0.55); }
 /* 桌面滑過句末之星不出現文字，只有星點轉亮與聚焦框（2026-11-09 使用者決定） */
 
 /* 星圖面板 */
@@ -83,7 +83,7 @@ body[data-mode="focus"] .secret i { width: 10px; height: 10px; animation: none; 
 .hair.hx { width: 100%; height: 1px; background: linear-gradient(90deg, var(--hl), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
 .hair.hy { width: 1px; height: 100%; background: linear-gradient(180deg, var(--hl), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
 .panel { --hl: rgba(232, 228, 218, 0.22); }
-body[data-mode="focus"] .panel { --hl: rgba(var(--mine-rgb, 201, 226, 101), 0.32); }
+body[data-mode="focus"] .panel { --hl: rgba(var(--mine-rgb, 60, 200, 180), 0.32); }
 .cross { position: absolute; }
 .cross path { stroke: rgba(232, 228, 218, 0.4); stroke-width: 1; fill: none; }
 .cross.c1 { right: 10px; top: 10px; }
@@ -93,7 +93,7 @@ body[data-mode="focus"] .panel { --hl: rgba(var(--mine-rgb, 201, 226, 101), 0.32
 .panel-head h2 { letter-spacing: 0.12em; }
 body[data-mode="focus"] .panel-head h2 { color: var(--mine); }
 .back { display: inline-flex; align-items: center; gap: 7px; min-height: 32px; padding: 0 0 1px; border-bottom: 1px solid rgba(232, 228, 218, 0.4); font-size: 12px; letter-spacing: 0.08em; color: var(--fg); }
-body[data-mode="focus"] .back { border-bottom-color: rgba(var(--mine-rgb, 201, 226, 101), 0.5); color: var(--mine); }
+body[data-mode="focus"] .back { border-bottom-color: rgba(var(--mine-rgb, 60, 200, 180), 0.5); color: var(--mine); }
 .back .bstar { width: 5px; height: 5px; border-radius: 50%; background: #FFFDF8; box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.6); }
 .mapbox { position: relative; width: 100%; height: 100%; min-height: 0; display: flex; align-items: center; justify-content: center; }
 .map { position: relative; width: min(100%, calc((var(--panel-h) - 84px) * var(--ar, 1))); aspect-ratio: var(--ar, 1); }
@@ -155,12 +155,12 @@ body[data-mode="focus"] .back { border-bottom-color: rgba(var(--mine-rgb, 201, 2
 
 /* ---------- 群星檔案（卡片牆，DESIGN.md 第二章第 3 節 F 版型「星窗＋一句話」） ----------
  * 卡片固定 3:4，以容器寬度 cqw 等比縮放：尺寸容器宣告在外層 .wc，內距放在內層 .cv（DESIGN.md 第二章第 5 節實作注意）。
- * 群星：學科星光色底、深墨字；我的關注：同版型，主題色底（--color-focus，暫定青檸）、深墨字，代表星為空心星，星窗左上為研究語言或研究類型。
+ * 群星：學科星光色底、深墨字；我的關注：同版型，主題色底（--color-focus，暫定青碧）、深墨字，代表星為空心星，星窗左上為研究語言或研究類型。
  * 星窗與一句話之樣式與論文頁原型 Card 1（tools/paper_template.html .cover）一致，字級依 DESIGN.md 第二章第 5 節。 */
 .stage { container: stage / inline-size; }
 .archive { position: relative; margin-top: 44px; padding-top: 16px; }
 .archive::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, rgba(232, 228, 218, 0.22), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
-body[data-mode="focus"] .archive::before { background: linear-gradient(90deg, rgba(var(--mine-rgb, 201, 226, 101), 0.32), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
+body[data-mode="focus"] .archive::before { background: linear-gradient(90deg, rgba(var(--mine-rgb, 60, 200, 180), 0.32), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
 .arch-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; }
 .arch-head h2 { letter-spacing: 0.12em; }
 body[data-mode="focus"] .arch-head h2 { color: var(--mine); }

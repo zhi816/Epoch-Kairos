@@ -2546,3 +2546,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：使用者對暖灰不滿意，先後比較四種藍與十個配色方向後，暫定青檸 `#C9E265`。[theme.css](../web/assets/css/theme.css) 之 `--color-focus` 改為 `#C9E265`、`--deep-focus` 依規則推算為 `#46501B`（對比 6.0:1）；[starmap.js](../web/assets/js/starmap.js)、[starmap.css](../web/assets/css/starmap.css) 後備色值同步；[build_paper_prototype.py](../tools/build_paper_prototype.py) 連結底線改為只在主題色低彩度時加，青檸不加。重建首頁與 53 篇論文頁（ERROR 0），`verify_wall.js` PASS（WARN 36 為既有截斷）、`verify_page.js` 於 2026-hybrid-dictionary-rag-llm-paiwan-wang PASS；群星論文頁不變。[DESIGN.md](../DESIGN.md) 第二、四、五、七、十章、[AGENTS.md](../AGENTS.md) 第二章與 `paper-card-writer` 之 card-wall.md、diagram.md 同步改寫，青檸標為暫定。
+
+## [2026-11-18 23:57] fix | 我的關注主題色更正為青碧 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者更正上一筆：要的是青碧不是青檸。[theme.css](../web/assets/css/theme.css) 之 `--color-focus` 改為 `#3CC8B4`、`--deep-focus` 依規則推算為 `#133A35`（對比 6.0:1）；[starmap.js](../web/assets/js/starmap.js)、[starmap.css](../web/assets/css/starmap.css) 後備色值同步。重建首頁與 53 篇論文頁（ERROR 0），`verify_wall.js` PASS（WARN 36 為既有截斷）、`verify_page.js` 於 2026-hybrid-dictionary-rag-llm-paiwan-wang PASS。[DESIGN.md](../DESIGN.md)、[AGENTS.md](../AGENTS.md) 與 card-wall.md 同步改為青碧（暫定），DESIGN.md 第十章記下先青檸後更正。
