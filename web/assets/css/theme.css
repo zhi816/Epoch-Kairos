@@ -76,6 +76,11 @@
   --border-human: rgba(242, 179, 214, 0.35);
   --deep-human: #6D244D;
 
+  /* 我的關注卡片：暖灰，不分學科（2026-11-18 使用者選定，DESIGN.md 第二章第 3 節、第四章）。
+     首頁卡片牆與論文頁 Card 1 至 6 共用；--deep-focus 依 --deep-* 規則推算（同色相、飽和度 50%、對比 6:1 以上） */
+  --color-focus: #CDC6BB;
+  --deep-focus: #523D1B;
+
   /* Discipline Accent Glows：霓虹色（備用，未使用） */
   --neon-color-bio: #00E599;
   --neon-glow-bio: rgba(0, 229, 153, 0.16);

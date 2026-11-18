@@ -2531,3 +2531,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：使用者逐項確認 [DESIGN.md](../DESIGN.md) 第二章第 3 節「卡片牆實作細節」四項，由暫定改為已定。全牆最終檢查：`verify_wall.js`（不設 `EK_SLUG`，內建瀏覽器，1920 x 1080、1440 x 900、375 x 812，群星與我的星系六組）結果 PASS，牆上 53 張（群星 25、我的關注 28），WARN 36 項皆為研究語言標籤與 Findings of ACL／EMNLP 會議名截斷，依 `card-wall.md` 第六節保留。`build_home.py --check` 一致。完成 TD-009，刪除該條。
+
+## [2026-11-18 21:44] design | 我的關注卡片改為暖灰 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者要求重新設計我的關注封面：與群星卡同版型，只換成灰色。以樣稿比較五種灰後，使用者選定 B 暖灰 `#CDC6BB`，窗內一句話用暖灰，論文頁 Card 2 至 6 也跟著暖灰。[theme.css](../web/assets/css/theme.css) 新增 `--color-focus`、`--deep-focus`（`#523D1B`，依深色重點色規則推算，對比 6.1:1）；[build_home.py](../tools/build_home.py) 我的關注卡改用 `--color-focus`，[starmap.css](../web/assets/css/starmap.css) 刪去深色卡覆寫；[paper_template.html](../tools/paper_template.html) 與 [build_paper_prototype.py](../tools/build_paper_prototype.py) 新增 `--card` 變數，卡片底色、星窗與卡內重點色改用 `--card`，長文與資訊欄仍用學科色。重建 53 篇論文頁（自我檢查皆 ERROR 0）與首頁（`--check` 一致）。`verify_wall.js` PASS（WARN 36 項為既有之標籤與會議名截斷），`verify_page.js` 抽驗 2026-hybrid-dictionary-rag-llm-paiwan-wang 與 2005-optogenetics 皆 PASS。同步 [DESIGN.md](../DESIGN.md)（第二、四、五、七、八、九、十章）、[AGENTS.md](../AGENTS.md) 第二章、`paper-card-writer` 之 card-wall.md 與 diagram.md。

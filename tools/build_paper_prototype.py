@@ -40,19 +40,18 @@ cc = load('check_cards', os.path.join(ROOT, '.agents', 'skills', 'paper-card-wri
 
 DOMAIN = {k: dict(short=s, full=f, shape=p) for k, s, f, _a, p in home.DOMAINS}
 ROLE = dict(home.ROLES)
-# 星光色與深色重點色皆以 web/assets/css/theme.css 之 --color-<domain>、--deep-<domain> 為準。
-FOCUS = {'human': '#F2B3D6'}            # 我的關注封面之重點色：藍，human 用玫瑰粉（DESIGN.md 第二章第 3 節）
-FOCUS_DEFAULT = '#8FD5FD'
+# 星光色與深色重點色皆以 web/assets/css/theme.css 之 --color-<domain>、--deep-<domain> 為準；
+# 我的關注論文之 Card 1 至 6 不分學科，一律用 --color-focus（暖灰）與 --deep-focus（DESIGN.md 第二章第 3 節）。
 CARD_NAMES = ['時代銘文', '世紀瓶頸', '突破原理', '決定性數據', '典範轉移', 'Kairos']
 VERIFY_TEXT = '已逐項對照原文查核'   # 只在 verification 為 verified 時顯示（DESIGN.md 第八章第 15 項）
 
 
 def theme_colors():
-    """自 web/assets/css/theme.css 讀取各學科星光色與深色重點色。"""
+    """自 web/assets/css/theme.css 讀取各學科星光色與深色重點色，另含我的關注卡片色（鍵 focus）。"""
     css = open(os.path.join(ROOT, 'web', 'assets', 'css', 'theme.css'), encoding='utf-8').read()
 
     def pick(prefix):
-        return {k: re.search(r'(?:^|[\s;])--%s-%s:\s*(#[0-9A-Fa-f]{6})' % (prefix, k), css).group(1) for k in DOMAIN}
+        return {k: re.search(r'(?:^|[\s;])--%s-%s:\s*(#[0-9A-Fa-f]{6})' % (prefix, k), css).group(1) for k in list(DOMAIN) + ['focus']}
 
     return pick('color'), pick('deep')
 
@@ -513,9 +512,11 @@ def build(slug, papers, concepts_zh, colors, deeps, tpl, nums):
     body = re.split(r'^---\s*$', text, maxsplit=2, flags=re.M)[2]
     f, svg = card_fields(card_path, slug)
     d = fm['domain']
-    star = colors[d]
-    focus_c = FOCUS.get(d, FOCUS_DEFAULT)
-    vars_ = '--star:%s;--deep:%s;--win:%s;--focus:%s' % (star, deeps[d], mix(star, '#0F1114', 0.1), focus_c)
+    star = colors[d]   # 長文、資訊欄與連結之重點色：學科星光色
+    # 卡片底色、星窗與深色重點色：群星用學科色；我的關注一律暖灰
+    k = 'focus' if fm.get('my_focus') is True else d
+    card_c = colors[k]
+    vars_ = '--star:%s;--card:%s;--deep:%s;--win:%s' % (star, card_c, deeps[k], mix(card_c, '#0F1114', 0.1))
     cards = '\n'.join([cover(fm, f, nums[slug], colors), card2(f), card3(f, svg), card4(f), card5(f), card6(f)])
     art, scope = article(fm, body)
     page = (tpl.replace('{{PAGE_TITLE}}', esc(home.short_name(fm['title_zh'])))

@@ -730,7 +730,7 @@ def build_wall(P, tag_dom, cards, protos, nums):
         line_html = ''.join('<span>%s</span>' % esc(x) for x in lines)
         if focus:
             head = roles.get(f.get('focus_role'), '')
-            color = 'human' if d == 'human' else 'ai'
+            color = 'focus'   # 我的關注卡不分學科，一律暖灰 --color-focus（DESIGN.md 第二章第 3 節）
             label = '%s：%s。%s：%s，%s，%s，開啟論文頁' % (
                 title, f['card_line'], '研究語言' if f.get('focus_languages') else '研究類型', tag, years, head)
             win = '%s<span class="tag">%s</span><span class="rep"></span>' % (sky, esc(tag))
