@@ -39,8 +39,8 @@
     DOM[d.key] = d;
   });
   var IV = '244,241,234';
-  /* 我的星系主題色：暖灰 --color-focus，星圖、索引、標題漸層、說明框一律用此色，不分學科（DESIGN.md 第四章，2026-11-18） */
-  var MINE_C = css.getPropertyValue('--color-focus').trim() || '#CDC6BB';
+  /* 我的星系主題色：--color-focus（青檸，暫定），星圖、索引、說明框一律用此色，不分學科（DESIGN.md 第四章，2026-11-18） */
+  var MINE_C = css.getPropertyValue('--color-focus').trim() || '#C9E265';
   var MINE = rgbOf(MINE_C);
   document.documentElement.style.setProperty('--mine-rgb', MINE);
   var RING = 'M0.8 5 A4.2 4.2 0 1 0 9.2 5 A4.2 4.2 0 1 0 0.8 5 Z M4.1 5 A0.9 0.9 0 1 0 5.9 5 A0.9 0.9 0 1 0 4.1 5 Z';

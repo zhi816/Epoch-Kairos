@@ -2541,3 +2541,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：使用者指出卡片改暖灰後，我的星系星圖、索引與論文頁長文仍為藍色，要求主題色統一；並要求首頁標題「Epoch Kairos」在兩種模式皆取消漸層、改為全白。[starmap.js](../web/assets/js/starmap.js) 我的星系主題色改讀 `--color-focus`（取消 AI 藍與 `human` 玫瑰粉），不再於切換模式時改標題色；[starmap.css](../web/assets/css/starmap.css) `--blue` 改名 `--mine` 指向暖灰；[home_template.html](../tools/home_template.html) 刪去標題漸層，改填 `#EAE6DF`；[build_paper_prototype.py](../tools/build_paper_prototype.py) 與 [paper_template.html](../tools/paper_template.html) 我的關注論文頁長文與資訊欄重點色改暖灰，連結加淡底線。重建 53 篇論文頁（ERROR 0）與首頁（`--check` 一致）；`verify_wall.js` PASS（WARN 36 項為既有截斷），`verify_page.js` 抽驗 2026-context-volume-rag-domain-shift-setiawan 與 2017-attention-is-all-you-need 皆 PASS；群星論文頁未變。同步 [DESIGN.md](../DESIGN.md) 第二、四、五、九、十章與 [AGENTS.md](../AGENTS.md) 第二章。
+
+## [2026-11-18 23:55] design | 我的關注主題色暫定改為青檸 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者對暖灰不滿意，先後比較四種藍與十個配色方向後，暫定青檸 `#C9E265`。[theme.css](../web/assets/css/theme.css) 之 `--color-focus` 改為 `#C9E265`、`--deep-focus` 依規則推算為 `#46501B`（對比 6.0:1）；[starmap.js](../web/assets/js/starmap.js)、[starmap.css](../web/assets/css/starmap.css) 後備色值同步；[build_paper_prototype.py](../tools/build_paper_prototype.py) 連結底線改為只在主題色低彩度時加，青檸不加。重建首頁與 53 篇論文頁（ERROR 0），`verify_wall.js` PASS（WARN 36 為既有截斷）、`verify_page.js` 於 2026-hybrid-dictionary-rag-llm-paiwan-wang PASS；群星論文頁不變。[DESIGN.md](../DESIGN.md) 第二、四、五、七、十章、[AGENTS.md](../AGENTS.md) 第二章與 `paper-card-writer` 之 card-wall.md、diagram.md 同步改寫，青檸標為暫定。

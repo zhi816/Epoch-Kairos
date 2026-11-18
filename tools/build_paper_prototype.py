@@ -15,6 +15,7 @@
 建置前先以 paper-card-writer 之 check_cards.py 檢查卡片檔，有 ERROR 即不產生。
 本腳本只用 Python 標準函式庫。
 """
+import colorsys
 import glob
 import html
 import importlib.util
@@ -41,7 +42,7 @@ cc = load('check_cards', os.path.join(ROOT, '.agents', 'skills', 'paper-card-wri
 DOMAIN = {k: dict(short=s, full=f, shape=p) for k, s, f, _a, p in home.DOMAINS}
 ROLE = dict(home.ROLES)
 # 星光色與深色重點色皆以 web/assets/css/theme.css 之 --color-<domain>、--deep-<domain> 為準；
-# 我的關注論文之 Card 1 至 6 不分學科，一律用 --color-focus（暖灰）與 --deep-focus（DESIGN.md 第二章第 3 節）。
+# 我的關注論文之 Card 1 至 6 不分學科，一律用 --color-focus 與 --deep-focus（DESIGN.md 第二章第 3 節）。
 CARD_NAMES = ['時代銘文', '世紀瓶頸', '突破原理', '決定性數據', '典範轉移', 'Kairos']
 VERIFY_TEXT = '已逐項對照原文查核'   # 只在 verification 為 verified 時顯示（DESIGN.md 第八章第 15 項）
 
@@ -58,6 +59,12 @@ def theme_colors():
 
 def esc(s):
     return html.escape(str(s), quote=True)
+
+
+def sat(h):
+    """HSL 飽和度（0 至 1）。"""
+    r, g, b = (int(h[i:i + 2], 16) / 255 for i in (1, 3, 5))
+    return colorsys.rgb_to_hls(r, g, b)[2]
 
 
 def mix(hex1, hex2, k):
@@ -512,12 +519,12 @@ def build(slug, papers, concepts_zh, colors, deeps, tpl, nums):
     body = re.split(r'^---\s*$', text, maxsplit=2, flags=re.M)[2]
     f, svg = card_fields(card_path, slug)
     d = fm['domain']
-    # 群星用學科色；我的關注之卡片、長文與資訊欄一律暖灰（DESIGN.md 第二章第 3 節、第四章，2026-11-18）
+    # 群星用學科色；我的關注之卡片、長文與資訊欄一律用 --color-focus（DESIGN.md 第二章第 3 節、第四章，2026-11-18）
     k = 'focus' if fm.get('my_focus') is True else d
     star = colors[k]
     vars_ = '--star:%s;--card:%s;--deep:%s;--win:%s' % (star, star, deeps[k], mix(star, '#0F1114', 0.1))
-    if k == 'focus':
-        # 暖灰與內文字色相近，連結另加底線才辨識得出
+    if k == 'focus' and sat(star) < 0.3:
+        # 低彩度主題色（如先前之暖灰）與內文字色相近，連結另加底線才辨識得出
         vars_ += ';--link-deco:underline rgba(%s,.45)' % ','.join(str(int(star[i:i + 2], 16)) for i in (1, 3, 5))
     cards = '\n'.join([cover(fm, f, nums[slug], colors), card2(f), card3(f, svg), card4(f), card5(f), card6(f)])
     art, scope = article(fm, body)
