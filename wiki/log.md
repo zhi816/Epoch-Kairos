@@ -2516,3 +2516,8 @@
 - **執行代理**：Claude Code by Anthropic（總指揮）
 - **模型版本**：Claude Opus 5
 - **具體變更**：TD-001 之 5 篇（microRNA、Treg、GLP-1、水稻 QT12、鹼基編輯療法）已全數依 `paper-pipeline` 完成 S1 至 S10，`pipeline_status.py` 九步皆 OK，故自 `wiki/todo.md` 刪除 TD-001。另於使用者層級 Skill `subagent-dispatch` 之 `status.md` 新增一節，記錄 2026-11-16 Command Code 週額度用盡之經過與三點教訓：（一）判斷迴圈是否仍在工作不能只看輸出檔是否變大，須檢查尾部是否為 429／RATE_LIMIT 之重試；（二）代理回報撞到額度時須先確認其走哪一份額度（DSH、Codex、Spark、GLM 走 Command Code，Haiku 走 Claude 訂閱，MiniMax 先走 OpenCode）；（三）`agent-override.txt` 寫 `review-dsh=skip` 實際為改派下一位可用審查者而非真正跳過。替代路線實測可行：Haiku 5.5 當作者、MiniMax M3.1 Flash 當審查者。
+
+## [2026-11-18 21:12] update | 完成 TD-018、TD-024、TD-030，依使用者決定刪除 TD-031 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：完成 TD-018：[2005-optogenetics](papers/2005-optogenetics.md)「原始權威文獻」補寫奠基論文原始檔 `raw/2003-channelrhodopsin2.pdf`，`pipeline_status.py --new` 改列為已引用。完成 TD-024：依使用者確認，2007 Woodford 論文 `title_zh` 改為「全球化與貨幣控制」，同步 [index.md](index.md) 與概念頁 [institutions-and-macro-dynamics](concepts/institutions-and-macro-dynamics.md) 連結文字（`honor` 之表彰事由不動）。完成 TD-030：`tools/build_home.py` 之 `STUDY_TYPE` 補 `2026-data-centric-continual-pretraining-ji: 多語預訓練`。TD-031 經使用者決定不重畫，刪除。重建兩篇論文頁（自我檢查 ERROR 0、WARN 0）與首頁（`--check` 一致），`lint_wiki.py` ERROR 0。另發現 `web/prototypes/mobile-v2-src/data.py` 現行即無法建置（AttributeError，與本次無關），原型 `mobile-v2.html` 未重建，仍為舊譯名。

@@ -35,11 +35,6 @@
 - **等待**：回報者補充重現情境，或使用者決定關閉。
 - **來源**：第二批卡片回填 B 組最後回報、首頁卡片牆實作者回報（使用者轉貼，2026-11-10）；2026-11-10 登記，2026-11-10 更新，Claude Code by Anthropic。
 
-### TD-018 | open | wiki | 在光遺傳學頁補寫奠基論文之原始檔路徑
-- **內容**：`raw/2003-channelrhodopsin2.pdf`（Nagel et al. 2003, PNAS）是 [2005-optogenetics](papers/2005-optogenetics.md) 之奠基論文，論文頁 `key_papers` 只寫 DOI，「知識網絡與文獻出處」沒有寫此原始檔路徑，`pipeline_status.py --new` 因而把它歸為「已列待辦」（TD-003 順帶提到它）而非「已引用」。依 `paper-pipeline` 之 `references/intake.md` 第三節，在該頁「原始權威文獻」另起一行寫明奠基論文原始檔路徑（不得改動「原始檔典藏」一行，S1 以第一個「原始檔典藏」判斷主軸原始檔）。此頁之卡片撰寫尚待使用者決定由誰處理（TD-008），本項只補一行路徑，不涉及內容撰寫。
-- **完成條件**：`pipeline_status.py --new` 將 `raw/2003-channelrhodopsin2.pdf` 列為「已引用」；`lint_wiki.py` ERROR 0。
-- **來源**：TD-014 試跑（2026-11-10）發現；2026-11-10 登記，Claude Code by Anthropic。
-
 ### TD-019 | waiting | wiki | 決定已公開論文頁正文中之 raw/ 原始檔路徑是否改寫
 - **內容**：GitHub Pages 已上線（2026-11-10），下列 6 篇論文頁之正文或資訊欄以文字寫有私有倉庫之原始檔路徑（如 `raw/2025-deepseek-r1.pdf`），公開網頁上讀者看得到檔名但無法開啟：`2025-deepseek-r1`、`2007-woodford-globalization-monetary-control`、`2023-jwst-massive-galaxies`、`2024-fault-tolerant-quantum`（2 處）、`2024-alphafold3`、`2024-sora-world-simulator`。路徑多為說明「本頁採用哪一版本」（正式版、arXiv 版、補充資料），改寫時須保留版本資訊，改以 DOI 或 arXiv 版號表述。論文頁「知識網絡與文獻出處」之「原始檔典藏」一行為 `paper-pipeline` S1 所需，是否同樣出現在網頁上須一併確認。
 - **完成條件**：使用者決定保留或改寫；改寫者依 `wiki-content-audit` 修改論文頁，重建論文頁並推送，網頁正文不再出現 `raw/`。
@@ -64,20 +59,3 @@
 - **完成條件**：`raw/` 內存在新檔名之 PDF（或使用者決定之檔名）；`pipeline_status.py 2007-woodford-globalization-monetary-control` 之 S1 指向新檔名且 OK；`lint_wiki.py` 無 ERROR。
 - **等待**：使用者親自更名 `raw/2007-woodford-inflation-dynamics.pdf`。
 - **來源**：wiki/log.md [2026-11-11 12:27] fix（slug 改名）；2026-11-11 登記，Claude Code by Anthropic。
-
-### TD-024 | waiting | wiki | 決定 2007 Woodford 論文之中文譯名（title_zh）
-- **內容**：`wiki/papers/2007-woodford-globalization-monetary-control.md` 之 `title_zh` 為「宏觀經濟穩定政策的微觀基礎：通膨動態、預期錨定與貨幣控制」，與原文題名 *Globalization and Monetary Control*（NBER Working Paper No. 13329）不符；卡片封面與英文 `title` 皆指向全球化主題。此中文名連動 `wiki/index.md` 標題、首頁卡片牆與星圖之中文名稱，以及 `web/prototypes/mobile-v2-src/data.py`、`mobile-v2.html` 之標題。建議譯名「全球化與貨幣控制」，使用者確定後由 Claude Code 修改並重建論文頁與首頁。
-- **完成條件**：使用者確認譯名；論文頁 `title_zh`、`wiki/index.md` 標題、首頁與論文頁網頁一致；`lint_wiki.py` 無 ERROR。
-- **等待**：使用者決定譯名（建議「全球化與貨幣控制」，或另擬）。
-- **來源**：2026-11-11 改名核對時發現（wiki/log.md [2026-11-11 12:27] fix「另發現」一項）；2026-11-11 登記，Claude Code by Anthropic。
-
-### TD-030 | open | web | 補齊 tools/build_home.py STUDY_TYPE 對照表之研究類型
-- **內容**：[2026-data-centric-continual-pretraining-ji](papers/2026-data-centric-continual-pretraining-ji.md) 為 `focus_languages: []` 之論文，卡片檔（[2026-data-centric-continual-pretraining-ji.md](cards/2026-data-centric-continual-pretraining-ji.md)）已填寫 `研究類型：多語預訓練`，但首頁星圖說明框目前仍讀取 `tools/build_home.py` 之 `STUDY_TYPE` 對照表（預設回退 `'綜述'`），導致兩處標籤不一致（見 `cover.md` 第七節）。
-- **完成條件**：將 `'2026-data-centric-continual-pretraining-ji': '多語預訓練'` 補入 `tools/build_home.py` `STUDY_TYPE`（或依 TD-008 規劃改由卡片檔統一讀取），重建 `web/index.html` 且 `build_home.py --check` 一致。
-- **來源**：2026-11-14 收錄 Ji et al. (2026) 依 `cover.md` 第七節登記，Antigravity by Google DeepMind（Gemini 4 Hydrogen）。
-
-### TD-031 | waiting | wiki | 決定無公式卡之扁長示意圖是否重畫為較高比例
-- **內容**：2026-11-15 起 Card 3 無公式模式之示意圖置中並佔滿空出空間、viewBox 高度上限放寬至 240（見 `DESIGN.md` 第五章第 2 節）。MOF-5 已重畫為 300 x 236。其餘 25 篇無公式卡之圖多為扁長（如 IceCube、Sora、Soai），寬度已撐滿，只會上下置中而不會變大；若要更大，須依 `diagram.md` 逐篇重畫為較高比例（例如 Soai 三框改上下三角排列）。
-- **完成條件**：使用者看過置中效果後決定是否重畫及重畫哪幾篇；重畫者 `check_cards.py` 與 `verify_page.js` 皆通過。
-- **等待**：使用者看過手機版效果後決定。
-- **來源**：使用者指示（2026-11-15）；2026-11-15 登記，Claude Code by Anthropic。

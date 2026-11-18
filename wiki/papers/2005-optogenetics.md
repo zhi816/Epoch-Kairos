@@ -111,4 +111,5 @@ Nagel 與 Hegemann 在 2002 與 2003 年證明，綠藻的光敏感通道蛋白�
 * **原始權威文獻**：
   * 官方學術出處：Boyden, E. S., Zhang, F., Bamberg, E., Nagel, G., & Deisseroth, K. (2005). Nature Neuroscience, 8(9), 1263-1268. DOI: [10.1038/nn1525](https://doi.org/10.1038/nn1525)
   * 原始檔典藏：`raw/2005-optogenetics.pdf`（不納入本倉庫，由私有倉庫 Mine-RAW 版控）
+  * 奠基論文原始檔：`raw/2003-channelrhodopsin2.pdf`（Nagel et al. 2003, PNAS，見 `key_papers`；不納入本倉庫）
   * 獎項通告：[Nobel Prize in Physiology or Medicine 2026](https://www.nobelprize.org/prizes/medicine/2026/)

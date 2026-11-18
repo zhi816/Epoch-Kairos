@@ -88,7 +88,7 @@ ROLES = [('senior-thesis', '學長姐論文'), ('report', '報告題材'), ('tai
 # 我的星系中心星：不對應任何 Wiki 頁面，只顯示名稱與狀態，不公開題目與內容（DESIGN.md 第四章、第八章第 13 項）。
 THESIS = {'name': '我的碩論', 'status': '進行中', 'statusEn': 'IN PROGRESS'}
 # 未針對特定語言之研究，於說明中顯示的研究類型。
-STUDY_TYPE = {'2023-low-resource-nmt-survey-ranathunga': '綜述', '2025-indigenous-tek-ai-revitalization-wang': '文化復振'}
+STUDY_TYPE = {'2023-low-resource-nmt-survey-ranathunga': '綜述', '2025-indigenous-tek-ai-revitalization-wang': '文化復振', '2026-data-centric-continual-pretraining-ji': '多語預訓練'}
 
 # ---------------------------------------------------------------- 讀取
 
