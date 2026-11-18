@@ -512,11 +512,13 @@ def build(slug, papers, concepts_zh, colors, deeps, tpl, nums):
     body = re.split(r'^---\s*$', text, maxsplit=2, flags=re.M)[2]
     f, svg = card_fields(card_path, slug)
     d = fm['domain']
-    star = colors[d]   # 長文、資訊欄與連結之重點色：學科星光色
-    # 卡片底色、星窗與深色重點色：群星用學科色；我的關注一律暖灰
+    # 群星用學科色；我的關注之卡片、長文與資訊欄一律暖灰（DESIGN.md 第二章第 3 節、第四章，2026-11-18）
     k = 'focus' if fm.get('my_focus') is True else d
-    card_c = colors[k]
-    vars_ = '--star:%s;--card:%s;--deep:%s;--win:%s' % (star, card_c, deeps[k], mix(card_c, '#0F1114', 0.1))
+    star = colors[k]
+    vars_ = '--star:%s;--card:%s;--deep:%s;--win:%s' % (star, star, deeps[k], mix(star, '#0F1114', 0.1))
+    if k == 'focus':
+        # 暖灰與內文字色相近，連結另加底線才辨識得出
+        vars_ += ';--link-deco:underline rgba(%s,.45)' % ','.join(str(int(star[i:i + 2], 16)) for i in (1, 3, 5))
     cards = '\n'.join([cover(fm, f, nums[slug], colors), card2(f), card3(f, svg), card4(f), card5(f), card6(f)])
     art, scope = article(fm, body)
     page = (tpl.replace('{{PAGE_TITLE}}', esc(home.short_name(fm['title_zh'])))

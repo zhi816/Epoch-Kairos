@@ -19,7 +19,7 @@
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
-a{color:var(--star);text-decoration:none}a:hover{text-decoration:underline}
+a{color:var(--star);text-decoration:var(--link-deco,none);text-underline-offset:3px}a:hover{text-decoration:underline}
 button,a,section{-webkit-tap-highlight-color:transparent}
 button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
 button:disabled{cursor:default;opacity:.3}

@@ -14,7 +14,7 @@
   --muted: #9A958C;
   --subtle: #88837A;
   --line: rgba(232, 228, 218, 0.12);
-  --blue: var(--color-ai);
+  --mine: var(--color-focus); /* 我的星系主題色：暖灰（2026-11-18） */
   --panel-h: clamp(600px, calc(100vh - 32px), 900px);
   --gutter: max(16px, env(safe-area-inset-left, 0px));
 }
@@ -42,7 +42,6 @@ button:focus-visible, a:focus-visible, .panel:focus-visible { outline: 1px solid
 /* Playfair Display 之「Epoch Kairos」自然寬度約 5.93em；字級取略小於 textLength 可容納者，讓 textLength 只微調字距、不擠壓字形 */
 .title-text { font-family: var(--font-display); font-weight: 400; font-size: 133px; }
 .title-h .title-text { font-size: 58px; }
-.tf0 { transition: stop-color 0.8s ease; }
 .col { display: flex; flex-direction: column; justify-content: space-between; width: clamp(230px, 17.5vw, 340px); padding: 6px 6px 4px 0; }
 
 /* 懸星索引 */
@@ -52,9 +51,9 @@ button:focus-visible, a:focus-visible, .panel:focus-visible { outline: 1px solid
 .all { display: inline-flex; align-items: baseline; gap: 6px; min-height: 28px; padding: 0 0 2px; border-bottom: 1px solid transparent; font-family: var(--font-serif-zh); font-size: 13px; letter-spacing: 0.1em; color: var(--muted); }
 .all b { font-family: var(--font-serif); font-weight: 400; font-size: 18px; letter-spacing: 0; }
 .all[aria-pressed="true"] { color: var(--fg-strong); border-bottom-color: rgba(244, 241, 234, 0.7); }
-body[data-mode="focus"] .all[aria-pressed="true"] { border-bottom-color: rgba(var(--blue-rgb, 143, 213, 253), 0.8); }
+body[data-mode="focus"] .all[aria-pressed="true"] { border-bottom-color: rgba(var(--mine-rgb, 205, 198, 187), 0.8); }
 .strands { display: flex; justify-content: space-between; align-items: flex-start; background: linear-gradient(90deg, rgba(232, 228, 218, 0.32), rgba(232, 228, 218, 0.06)) top left / 100% 1px no-repeat; }
-body[data-mode="focus"] .strands { background-image: linear-gradient(90deg, rgba(var(--blue-rgb, 143, 213, 253), 0.45), rgba(232, 228, 218, 0.06)); }
+body[data-mode="focus"] .strands { background-image: linear-gradient(90deg, rgba(var(--mine-rgb, 205, 198, 187), 0.45), rgba(232, 228, 218, 0.06)); }
 .strand { display: flex; align-items: flex-start; gap: 6px; padding: 0 0 4px; transition: opacity 0.2s ease; }
 .strand .str { display: flex; flex-direction: column; align-items: center; width: 14px; }
 .strand .ln { width: 1px; height: 6px; background: var(--sl); }
@@ -72,8 +71,8 @@ body[data-mode="focus"] .strands { background-image: linear-gradient(90deg, rgba
 .vert-zh { writing-mode: vertical-rl; font-family: var(--font-serif-zh); font-size: 18px; letter-spacing: 0.55em; color: var(--fg-ivory); }
 .secret { width: 24px; height: 24px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .secret i { display: block; width: 3px; height: 3px; border-radius: 50%; background: #FFFDF8; box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.3); animation: beacon 7s ease-in-out infinite; transition: width 0.3s, height 0.3s, box-shadow 0.3s; }
-.secret:hover i, .secret:focus-visible i, .secret[data-armed="true"] i { width: 5px; height: 5px; animation: none; box-shadow: 0 0 0 3px var(--ink), 0 0 0 4px rgba(var(--blue-rgb, 143, 213, 253), 0.85), 0 0 12px 4px rgba(var(--blue-rgb, 143, 213, 253), 0.45); }
-body[data-mode="focus"] .secret i { width: 10px; height: 10px; animation: none; background: radial-gradient(circle, #FFFDF8 0 1.3px, rgba(255, 253, 248, 0) 1.8px); box-shadow: inset 0 0 0 1px var(--blue), 0 0 10px 2px rgba(var(--blue-rgb, 143, 213, 253), 0.55); }
+.secret:hover i, .secret:focus-visible i, .secret[data-armed="true"] i { width: 5px; height: 5px; animation: none; box-shadow: 0 0 0 3px var(--ink), 0 0 0 4px rgba(var(--mine-rgb, 205, 198, 187), 0.85), 0 0 12px 4px rgba(var(--mine-rgb, 205, 198, 187), 0.45); }
+body[data-mode="focus"] .secret i { width: 10px; height: 10px; animation: none; background: radial-gradient(circle, #FFFDF8 0 1.3px, rgba(255, 253, 248, 0) 1.8px); box-shadow: inset 0 0 0 1px var(--mine), 0 0 10px 2px rgba(var(--mine-rgb, 205, 198, 187), 0.55); }
 /* 桌面滑過句末之星不出現文字，只有星點轉亮與聚焦框（2026-11-09 使用者決定） */
 
 /* 星圖面板 */
@@ -84,7 +83,7 @@ body[data-mode="focus"] .secret i { width: 10px; height: 10px; animation: none; 
 .hair.hx { width: 100%; height: 1px; background: linear-gradient(90deg, var(--hl), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
 .hair.hy { width: 1px; height: 100%; background: linear-gradient(180deg, var(--hl), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
 .panel { --hl: rgba(232, 228, 218, 0.22); }
-body[data-mode="focus"] .panel { --hl: rgba(var(--blue-rgb, 143, 213, 253), 0.32); }
+body[data-mode="focus"] .panel { --hl: rgba(var(--mine-rgb, 205, 198, 187), 0.32); }
 .cross { position: absolute; }
 .cross path { stroke: rgba(232, 228, 218, 0.4); stroke-width: 1; fill: none; }
 .cross.c1 { right: 10px; top: 10px; }
@@ -92,9 +91,9 @@ body[data-mode="focus"] .panel { --hl: rgba(var(--blue-rgb, 143, 213, 253), 0.32
 .cross.c3 { left: 10px; bottom: 10px; }
 .panel-head { position: absolute; left: 16px; right: 32px; top: 6px; z-index: 7; display: flex; justify-content: space-between; align-items: center; min-height: 32px; gap: 12px; }
 .panel-head h2 { letter-spacing: 0.12em; }
-body[data-mode="focus"] .panel-head h2 { color: var(--blue); }
+body[data-mode="focus"] .panel-head h2 { color: var(--mine); }
 .back { display: inline-flex; align-items: center; gap: 7px; min-height: 32px; padding: 0 0 1px; border-bottom: 1px solid rgba(232, 228, 218, 0.4); font-size: 12px; letter-spacing: 0.08em; color: var(--fg); }
-body[data-mode="focus"] .back { border-bottom-color: rgba(var(--blue-rgb, 143, 213, 253), 0.5); color: var(--blue); }
+body[data-mode="focus"] .back { border-bottom-color: rgba(var(--mine-rgb, 205, 198, 187), 0.5); color: var(--mine); }
 .back .bstar { width: 5px; height: 5px; border-radius: 50%; background: #FFFDF8; box-shadow: 0 0 4px 1px rgba(255, 255, 255, 0.6); }
 .mapbox { position: relative; width: 100%; height: 100%; min-height: 0; display: flex; align-items: center; justify-content: center; }
 .map { position: relative; width: min(100%, calc((var(--panel-h) - 84px) * var(--ar, 1))); aspect-ratio: var(--ar, 1); }
@@ -127,9 +126,9 @@ body[data-mode="focus"] .back { border-bottom-color: rgba(var(--blue-rgb, 143, 2
 .hublbl.r { left: 16px; } .hublbl.l { right: 16px; }
 .hublbl sup { font-size: 11px; margin-left: 3px; }
 .hublbl.vt { left: 0; top: 18px; transform: translateX(-50%); writing-mode: vertical-rl; letter-spacing: 0.3em; }
-.hublbl.vt b { display: inline-block; padding-top: 6px; font-family: var(--font-serif); font-weight: 400; font-size: 12px; letter-spacing: 0; color: var(--blue); text-combine-upright: all; }
+.hublbl.vt b { display: inline-block; padding-top: 6px; font-family: var(--font-serif); font-weight: 400; font-size: 12px; letter-spacing: 0; color: var(--mine); text-combine-upright: all; }
 .hublbl.dn { left: 0; top: 22px; transform: translateX(-50%); font-size: 12px; }
-.hublbl.dn b { font-family: var(--font-serif); font-weight: 400; color: var(--blue); margin-left: 3px; }
+.hublbl.dn b { font-family: var(--font-serif); font-weight: 400; color: var(--mine); margin-left: 3px; }
 .star { left: -13px; top: -13px; width: 26px; height: 26px; padding: 0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .star .ring { position: absolute; left: 5px; top: 5px; width: 16px; height: 16px; border-radius: 50%; animation: pulse 4.2s ease-in-out infinite; }
 .star .core { border-radius: 50%; background: #FFFDF8; transition: width 0.2s, height 0.2s; }
@@ -143,7 +142,7 @@ body[data-mode="focus"] .back { border-bottom-color: rgba(var(--blue-rgb, 143, 2
 .klbl { left: 0; top: 30px; transform: translateX(-50%); font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.34em; color: var(--muted); }
 .yr { left: 0; top: 0; transform: translateY(-50%); font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; color: var(--subtle); text-shadow: none; }
 .colh { left: 0; top: 0; transform: translate(-50%, -50%); white-space: nowrap; font-size: 10.5px; letter-spacing: 0.14em; color: var(--subtle); }
-.colh b { margin-left: 5px; font-family: var(--font-serif); font-weight: 400; font-size: 13px; letter-spacing: 0; color: var(--blue); }
+.colh b { margin-left: 5px; font-family: var(--font-serif); font-weight: 400; font-size: 13px; letter-spacing: 0; color: var(--mine); }
 
 /* 桌面說明框：星點旁浮出之毛玻璃框 */
 .tip { position: absolute; left: 0; top: 0; z-index: 6; display: flex; flex-direction: column; gap: 4px; width: max-content; max-width: 240px; padding: 9px 12px 10px; border-radius: 8px; border: 1px solid var(--tb, rgba(232, 228, 218, 0.3)); background: rgba(11, 12, 14, 0.55); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35); transition: opacity 0.2s ease; }
@@ -161,10 +160,10 @@ body[data-mode="focus"] .back { border-bottom-color: rgba(var(--blue-rgb, 143, 2
 .stage { container: stage / inline-size; }
 .archive { position: relative; margin-top: 44px; padding-top: 16px; }
 .archive::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: linear-gradient(90deg, rgba(232, 228, 218, 0.22), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
-body[data-mode="focus"] .archive::before { background: linear-gradient(90deg, rgba(var(--blue-rgb, 143, 213, 253), 0.32), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
+body[data-mode="focus"] .archive::before { background: linear-gradient(90deg, rgba(var(--mine-rgb, 205, 198, 187), 0.32), rgba(232, 228, 218, 0.04) 60%, rgba(232, 228, 218, 0)); }
 .arch-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px 16px; }
 .arch-head h2 { letter-spacing: 0.12em; }
-body[data-mode="focus"] .arch-head h2 { color: var(--blue); }
+body[data-mode="focus"] .arch-head h2 { color: var(--mine); }
 .arch-info { font-size: 12px; line-height: 1.6; color: var(--subtle); }
 /* 桌面四欄、欄距 36、列距 44（2026-11-10 使用者自間距比較三版中選定 C）；右欄較窄時依下方容器查詢改三欄、兩欄 */
 .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 36px; row-gap: 44px; margin-top: 22px; }
@@ -202,7 +201,7 @@ body[data-mode="focus"] .arch-head h2 { color: var(--blue); }
   .motto { display: flex; align-items: center; flex-wrap: wrap; min-height: 44px; }
   .motto .zh { font-family: var(--font-serif-zh); font-size: 17px; letter-spacing: 0.5em; color: var(--fg-ivory); }
   .motto .secret { width: 44px; height: 44px; margin-left: -10px; }
-  .hint { font-size: 12px; line-height: 1.5; color: var(--blue); }
+  .hint { font-size: 12px; line-height: 1.5; color: var(--mine); }
 
   .panel { height: auto; margin-top: 26px; padding: 0; display: block; background: none; box-shadow: none; overflow: visible; }
   .hair.hy, .cross, .panel-foot { display: none; }
@@ -253,6 +252,6 @@ body[data-mode="focus"] .arch-head h2 { color: var(--blue); }
 
 @media (prefers-reduced-motion: reduce) {
   .secret i, .star .ring, .flow, .desk .star.p, .map.warp { animation: none; }
-  .tf0, .lbl, .strand, .tip, .star .core, .secret i, .wc { transition: none; }
+  .lbl, .strand, .tip, .star .core, .secret i, .wc { transition: none; }
   .wc:hover { transform: none; }
 }

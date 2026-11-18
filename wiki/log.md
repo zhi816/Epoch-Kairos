@@ -2536,3 +2536,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：使用者要求重新設計我的關注封面：與群星卡同版型，只換成灰色。以樣稿比較五種灰後，使用者選定 B 暖灰 `#CDC6BB`，窗內一句話用暖灰，論文頁 Card 2 至 6 也跟著暖灰。[theme.css](../web/assets/css/theme.css) 新增 `--color-focus`、`--deep-focus`（`#523D1B`，依深色重點色規則推算，對比 6.1:1）；[build_home.py](../tools/build_home.py) 我的關注卡改用 `--color-focus`，[starmap.css](../web/assets/css/starmap.css) 刪去深色卡覆寫；[paper_template.html](../tools/paper_template.html) 與 [build_paper_prototype.py](../tools/build_paper_prototype.py) 新增 `--card` 變數，卡片底色、星窗與卡內重點色改用 `--card`，長文與資訊欄仍用學科色。重建 53 篇論文頁（自我檢查皆 ERROR 0）與首頁（`--check` 一致）。`verify_wall.js` PASS（WARN 36 項為既有之標籤與會議名截斷），`verify_page.js` 抽驗 2026-hybrid-dictionary-rag-llm-paiwan-wang 與 2005-optogenetics 皆 PASS。同步 [DESIGN.md](../DESIGN.md)（第二、四、五、七、八、九、十章）、[AGENTS.md](../AGENTS.md) 第二章、`paper-card-writer` 之 card-wall.md 與 diagram.md。
+
+## [2026-11-18 21:48] design | 我的星系主題色統一為暖灰，首頁標題改單色白 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者指出卡片改暖灰後，我的星系星圖、索引與論文頁長文仍為藍色，要求主題色統一；並要求首頁標題「Epoch Kairos」在兩種模式皆取消漸層、改為全白。[starmap.js](../web/assets/js/starmap.js) 我的星系主題色改讀 `--color-focus`（取消 AI 藍與 `human` 玫瑰粉），不再於切換模式時改標題色；[starmap.css](../web/assets/css/starmap.css) `--blue` 改名 `--mine` 指向暖灰；[home_template.html](../tools/home_template.html) 刪去標題漸層，改填 `#EAE6DF`；[build_paper_prototype.py](../tools/build_paper_prototype.py) 與 [paper_template.html](../tools/paper_template.html) 我的關注論文頁長文與資訊欄重點色改暖灰，連結加淡底線。重建 53 篇論文頁（ERROR 0）與首頁（`--check` 一致）；`verify_wall.js` PASS（WARN 36 項為既有截斷），`verify_page.js` 抽驗 2026-context-volume-rag-domain-shift-setiawan 與 2017-attention-is-all-you-need 皆 PASS；群星論文頁未變。同步 [DESIGN.md](../DESIGN.md) 第二、四、五、九、十章與 [AGENTS.md](../AGENTS.md) 第二章。

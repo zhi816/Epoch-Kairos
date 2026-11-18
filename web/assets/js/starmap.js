@@ -39,9 +39,10 @@
     DOM[d.key] = d;
   });
   var IV = '244,241,234';
-  var BLUE = DOM.ai.rgb;
-  var BLUE_C = DOM.ai.color;
-  document.documentElement.style.setProperty('--blue-rgb', BLUE);
+  /* 我的星系主題色：暖灰 --color-focus，星圖、索引、標題漸層、說明框一律用此色，不分學科（DESIGN.md 第四章，2026-11-18） */
+  var MINE_C = css.getPropertyValue('--color-focus').trim() || '#CDC6BB';
+  var MINE = rgbOf(MINE_C);
+  document.documentElement.style.setProperty('--mine-rgb', MINE);
   var RING = 'M0.8 5 A4.2 4.2 0 1 0 9.2 5 A4.2 4.2 0 1 0 0.8 5 Z M4.1 5 A0.9 0.9 0 1 0 5.9 5 A0.9 0.9 0 1 0 4.1 5 Z';
   var DIAMOND2 = 'M5 0.3 L9.7 5 L5 9.7 L0.3 5 Z M5 2.7 L7.3 5 L5 7.3 L2.7 5 Z';
   var TH = '__thesis';
@@ -62,8 +63,8 @@
   });
   /* 論文是否屬於某學科篩選：本身學科相同，或帶有該學科之標籤 */
   function paperIn(p, k) { return p.d === k || p.tags.some(function (t) { return D.tags[t].d === k; }); }
-  function fRgb(p) { return p.d === 'human' ? DOM.human.rgb : BLUE; }
-  function fCol(p) { return p.d === 'human' ? DOM.human.color : BLUE_C; }
+  function fRgb() { return MINE; }
+  function fCol() { return MINE_C; }
   function fMatch(p, key) { return key === 'all' || key === 'role:' + p.role || (key.indexOf('con:') === 0 && p.con.indexOf(key.slice(4)) >= 0); }
   function hubOf(k) { return FO.hubs.filter(function (h) { return h.key === k; })[0]; }
   var linkCount = D.domains.length + Object.keys(D.tags).length;
@@ -409,19 +410,19 @@
     setAR(G.w / G.h);
     nodes = [];
     var ny = mobile ? Math.round(G.h * 0.52) : 600, nr = mobile ? 420 : 300;
-    var h = '<svg class="bg" viewBox="0 0 ' + G.w + ' ' + G.h + '" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs><radialGradient id="nbf"><stop offset="0" stop-color="rgba(' + BLUE + ',0.11)"/><stop offset="0.5" stop-color="rgba(' + BLUE + ',0.045)"/><stop offset="1" stop-color="rgba(' + BLUE + ',0)"/></radialGradient></defs>';
+    var h = '<svg class="bg" viewBox="0 0 ' + G.w + ' ' + G.h + '" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs><radialGradient id="nbf"><stop offset="0" stop-color="rgba(' + MINE + ',0.11)"/><stop offset="0.5" stop-color="rgba(' + MINE + ',0.045)"/><stop offset="1" stop-color="rgba(' + MINE + ',0)"/></radialGradient></defs>';
     h += '<g class="nebs"><circle data-k="F" cx="' + (mobile ? 330 : 310) + '" cy="' + ny + '" r="' + nr + '" fill="url(#nbf)"/><circle data-k="L" cx="' + (mobile ? 670 : 690) + '" cy="' + ny + '" r="' + nr + '" fill="url(#nbf)"/></g>';
     var on = '', off = '';
     G.rows.forEach(function (r) { if (r[2]) on += 'M60 ' + r[1] + ' H960 '; else off += 'M60 ' + r[1] + ' H960 '; });
-    h += '<path d="' + on + '" fill="none" stroke="rgba(' + BLUE + ',0.10)" vector-effect="non-scaling-stroke"/>';
+    h += '<path d="' + on + '" fill="none" stroke="rgba(' + MINE + ',0.10)" vector-effect="non-scaling-stroke"/>';
     if (off) h += '<path d="' + off + '" fill="none" stroke="rgba(232,228,218,0.05)" stroke-dasharray="1 6" vector-effect="non-scaling-stroke"/>';
-    h += '<path d="M60 ' + G.now + ' H960" fill="none" stroke="rgba(' + BLUE + ',0.24)" stroke-dasharray="3 5" vector-effect="non-scaling-stroke"/>';
+    h += '<path d="M60 ' + G.now + ' H960" fill="none" stroke="rgba(' + MINE + ',0.24)" stroke-dasharray="3 5" vector-effect="non-scaling-stroke"/>';
     var dx1 = mobile ? 345 : 405, dx2 = mobile ? 655 : 595, dy0 = mobile ? 225 : 56;
     h += '<path d="M' + dx1 + ' ' + dy0 + ' V' + (G.now - 54) + ' M' + dx2 + ' ' + dy0 + ' V' + (G.now - 54) + '" fill="none" stroke="rgba(232,228,218,0.05)" stroke-dasharray="1 4" vector-effect="non-scaling-stroke"/><g class="edges"></g></svg>';
     map.innerHTML = h;
 
     G.rows.forEach(function (r) { addNode(mk('<span class="lbl yr" aria-hidden="true" style="opacity:' + (r[2] ? 1 : 0.45) + '">' + r[0] + '</span>'), 12, r[1]); });
-    addNode(mk('<span class="lbl yr" aria-hidden="true" style="color:var(--blue)">NOW</span>'), 12, G.now);
+    addNode(mk('<span class="lbl yr" aria-hidden="true" style="color:var(--mine)">NOW</span>'), 12, G.now);
     FO.cols.forEach(function (c) {
       var w = mk('<span class="lbl colh" aria-hidden="true">' + esc(c.label) + '<b>' + c.count + '</b></span>');
       w.dataset.col = c.key;
@@ -429,14 +430,14 @@
     });
     FO.hubs.forEach(function (hb) {
       var w = mk('<button type="button" class="hub" data-fhub="' + hb.key + '" aria-label="' + esc('篩選概念：' + hb.full + '，' + hb.count + ' 篇') + '"><span class="halo"></span>' +
-        shapeSvg(DIAMOND2, '#EAE6DF', mobile ? 14 : 16, 0.8) + (mobile ? '' : '<span class="hc" style="box-shadow:0 0 5px 1px ' + BLUE_C + '"></span>') + '</button>' +
+        shapeSvg(DIAMOND2, '#EAE6DF', mobile ? 14 : 16, 0.8) + (mobile ? '' : '<span class="hc" style="box-shadow:0 0 5px 1px ' + MINE_C + '"></span>') + '</button>' +
         '<span class="hublbl lbl ' + (mobile ? 'dn' : 'vt') + '" data-fhub="' + hb.key + '" aria-hidden="true">' + esc(hb.name) + '<b>' + hb.count + '</b></span>');
       w.dataset.fk = hb.key;
       if (!mobile) hoverable(w.querySelector('button'), function () { setHoverD('con:' + hb.key); }, function () { setHoverD(null); });
       addNode(w, hb[pk][0], hb[pk][1]);
     });
-    var th = mk('<button type="button" class="star thesis" data-thesis="1" aria-label="' + esc(FO.thesis.name + '，' + FO.thesis.status) + '"><span class="ring" aria-hidden="true" style="border:1px dashed rgba(' + BLUE + ',.85)"></span><span class="core" aria-hidden="true" style="width:4px;height:4px"></span></button>' +
-      '<span class="lbl r" aria-hidden="true" style="left:20px"><span style="font-family:var(--font-serif-zh);font-size:' + (mobile ? 13 : 14) + 'px;letter-spacing:.08em">' + esc(FO.thesis.name) + '</span><br><span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;color:var(--blue)">' + esc(FO.thesis.statusEn) + '</span></span>');
+    var th = mk('<button type="button" class="star thesis" data-thesis="1" aria-label="' + esc(FO.thesis.name + '，' + FO.thesis.status) + '"><span class="ring" aria-hidden="true" style="border:1px dashed rgba(' + MINE + ',.85)"></span><span class="core" aria-hidden="true" style="width:4px;height:4px"></span></button>' +
+      '<span class="lbl r" aria-hidden="true" style="left:20px"><span style="font-family:var(--font-serif-zh);font-size:' + (mobile ? 13 : 14) + 'px;letter-spacing:.08em">' + esc(FO.thesis.name) + '</span><br><span style="font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;color:var(--mine)">' + esc(FO.thesis.statusEn) + '</span></span>');
     th.dataset.th = '1';
     if (!mobile) hoverable(th.querySelector('button'), function () { setHover(TH); }, scheduleHoverClear);
     addNode(th, G.thesisAt[0], G.thesisAt[1]);
@@ -472,13 +473,13 @@
         var pressed = S.ffilter === 'con:' + ds.fk, ha = (pressed || S.hoverD === 'con:' + ds.fk) ? 0.5 : 0.3;
         el.style.opacity = conOn(ds.fk) ? 1 : 0.35;
         el.querySelector('button').setAttribute('aria-pressed', pressed ? 'true' : 'false');
-        el.querySelector('.halo').style.background = 'radial-gradient(closest-side,rgba(' + BLUE + ',' + ha + '),rgba(' + BLUE + ',' + (ha * 0.3).toFixed(3) + ') 45%,rgba(' + BLUE + ',0) 100%)';
+        el.querySelector('.halo').style.background = 'radial-gradient(closest-side,rgba(' + MINE + ',' + ha + '),rgba(' + MINE + ',' + (ha * 0.3).toFixed(3) + ') 45%,rgba(' + MINE + ',0) 100%)';
       } else if (ds.col) {
         el.style.opacity = (ds.col === 'F' && ff === 'con:L') || (ds.col === 'L' && ff === 'con:F') ? 0.35 : 1;
       } else if (ds.th) {
         var tc = el.querySelector('.core'), tr = el.querySelector('.ring');
-        tc.style.boxShadow = thSel ? '0 0 8px 3px rgba(' + BLUE + ',.85),0 0 22px 8px rgba(' + BLUE + ',.3)' : '0 0 8px 2px rgba(' + BLUE + ',.7)';
-        tr.style.borderColor = thSel ? 'rgba(' + BLUE + ',1)' : 'rgba(' + BLUE + ',.7)';
+        tc.style.boxShadow = thSel ? '0 0 8px 3px rgba(' + MINE + ',.85),0 0 22px 8px rgba(' + MINE + ',.3)' : '0 0 8px 2px rgba(' + MINE + ',.7)';
+        tr.style.borderColor = thSel ? 'rgba(' + MINE + ',1)' : 'rgba(' + MINE + ',.7)';
         /* 桌面選中碩論時由說明框顯示名稱與狀態，星旁名稱暫時收起以免重複 */
         el.querySelector('.lbl').style.opacity = thSel && !mobile ? 0 : 1;
         el.querySelector('button').setAttribute('aria-pressed', S.fsel === TH ? 'true' : 'false');
@@ -487,7 +488,7 @@
     gid = 0;
     var s = '', G = mobile ? FO.mob : FO.desk, pk = mobile ? 'mob' : 'desk';
     FO.hubs.forEach(function (hb) {
-      s += edge({ x1: hb[pk][0], y1: hb[pk][1], x2: G.thesisAt[0], y2: G.thesisAt[1], c1: BLUE, c2: IV, a: thSel ? 0.6 : (sel && sel.con.indexOf(hb.key) >= 0 ? 0.42 : (conOn(hb.key) ? 0.26 : 0.05)), fade: 0.9, w: thSel ? 1.6 : 1.1 }); /* 碩論連線選中時只轉亮、不流光（2026-11-09 使用者決定） */
+      s += edge({ x1: hb[pk][0], y1: hb[pk][1], x2: G.thesisAt[0], y2: G.thesisAt[1], c1: MINE, c2: IV, a: thSel ? 0.6 : (sel && sel.con.indexOf(hb.key) >= 0 ? 0.42 : (conOn(hb.key) ? 0.26 : 0.05)), fade: 0.9, w: thSel ? 1.6 : 1.1 }); /* 碩論連線選中時只轉亮、不流光（2026-11-09 使用者決定） */
     });
     FO.papers.forEach(function (p) {
       p.con.forEach(function (k) {
@@ -527,7 +528,7 @@
     } else {
       var fs = S.hover || S.fsel;
       if (fs === TH) {
-        t = { nm: FO.thesis.name, yr: FO.thesis.status, mt: '', ln: '', doi: '', rgb: BLUE, col: BLUE_C };
+        t = { nm: FO.thesis.name, yr: FO.thesis.status, mt: '', ln: '', doi: '', rgb: MINE, col: MINE_C };
         anchor = nodeOf('th', '1');
       } else if (fs && byF[fs]) {
         var f = byF[fs];
@@ -598,7 +599,7 @@
         var mine = FO.papers.filter(function (p) { return p.role === r[0]; });
         h += '<button type="button" class="strand" data-strand="role:' + r[0] + '" aria-label="' + esc('篩選類別：' + r[1] + '，' + mine.length + ' 篇') + '"><span class="str" aria-hidden="true"><span class="ln top"></span>';
         mine.forEach(function (p) { h += '<span class="bd" data-b="' + p.slug + '"></span><span class="ln"></span>'; });
-        h += shapeSvg(RING, BLUE_C, 13, 1) + '<span class="ct" style="color:' + BLUE_C + '">' + mine.length + '</span><span class="ix">' + ('0' + (i + 1)) + '</span></span><span class="nm" aria-hidden="true" style="color:' + BLUE_C + '">' + esc(r[1]) + '</span></button>';
+        h += shapeSvg(RING, MINE_C, 13, 1) + '<span class="ct" style="color:' + MINE_C + '">' + mine.length + '</span><span class="ix">' + ('0' + (i + 1)) + '</span></span><span class="nm" aria-hidden="true" style="color:' + MINE_C + '">' + esc(r[1]) + '</span></button>';
       });
     }
     var box = $('strands');
@@ -621,7 +622,7 @@
         rgb = d.rgb; pressed = S.filter === key; active = !fx || fx === key; empty = !d.count;
         b.style.opacity = active ? (empty && !pressed ? 0.62 : 1) : 0.38;
       } else {
-        rgb = BLUE; pressed = S.ffilter === key;
+        rgb = MINE; pressed = S.ffilter === key;
         var mine = FO.papers.filter(function (p) { return 'role:' + p.role === key; });
         active = fx === 'all' || fx === key || (fx.indexOf('con:') === 0 && mine.some(function (p) { return fMatch(p, fx); }));
         b.style.opacity = active ? 1 : 0.38;
@@ -660,7 +661,7 @@
     } else {
       h += chipHtml('all', '全部', FO.papers.length, '#EAE6DF', '232,228,218', false);
       FO.roles.forEach(function (r) {
-        h += chipHtml('role:' + r[0], r[1], FO.papers.filter(function (p) { return p.role === r[0]; }).length, BLUE_C, BLUE, false, RING);
+        h += chipHtml('role:' + r[0], r[1], FO.papers.filter(function (p) { return p.role === r[0]; }).length, MINE_C, MINE, false, RING);
       });
     }
     $('chips').innerHTML = h;
@@ -698,7 +699,7 @@
       }
     } else {
       var f = S.fsel && S.fsel !== TH ? byF[S.fsel] : null;
-      rgb = BLUE;
+      rgb = MINE;
       if (f) {
         rgb = fRgb(f);
         var cl = f.con.length > 1 ? FO.hubs.map(function (x) { return x.name; }).join(' × ') : (f.con.length ? hubOf(f.con[0]).full : '');
@@ -743,7 +744,6 @@
   /* ---------- 模式文字、圖例與返回 ---------- */
   function modeTexts() {
     var f = S.mode === 'focus';
-    document.querySelectorAll('.tf0').forEach(function (s) { s.setAttribute('stop-color', f ? 'rgba(' + BLUE + ',0.85)' : 'rgba(234,230,223,0.6)'); });
     document.querySelectorAll('.tagline').forEach(function (s) { s.textContent = f ? 'A PERSONAL CONSTELLATION' : 'THE KAIROS OF HUMAN THOUGHT'; });
     $('mapLabel').textContent = f ? 'MY CONSTELLATION ｜ 我的星系' : 'CONSTELLATION ｜ 知識星圖';
     $('archLabel').textContent = f ? 'ARCHIVE ｜ 我的星系檔案' : 'ARCHIVE ｜ 群星檔案';
@@ -751,15 +751,15 @@
     $('index').setAttribute('aria-label', f ? '我的星系索引' : '學科索引');
     var leg = '';
     if (f) {
-      leg = '<span><span class="lg-dot" style="width:9px;height:9px;background:radial-gradient(circle,#FFFDF8 0 1.2px,rgba(255,253,248,0) 1.7px);box-shadow:inset 0 0 0 1px rgba(' + BLUE + ',.95)"></span>我的關注</span>' +
+      leg = '<span><span class="lg-dot" style="width:9px;height:9px;background:radial-gradient(circle,#FFFDF8 0 1.2px,rgba(255,253,248,0) 1.7px);box-shadow:inset 0 0 0 1px rgba(' + MINE + ',.95)"></span>我的關注</span>' +
         '<span>' + shapeSvg(DIAMOND2, '#EAE6DF', 9, 1) + '概念頁</span>' +
-        '<span><span class="lg-dot" style="width:10px;height:10px;background:none;border:1px dashed rgba(' + BLUE + ',.85)"></span>' + esc(FO.thesis.name) + '</span>' +
+        '<span><span class="lg-dot" style="width:10px;height:10px;background:none;border:1px dashed rgba(' + MINE + ',.85)"></span>' + esc(FO.thesis.name) + '</span>' +
         '<span>列＝發表年　欄＝所屬概念</span>';
       $('stats').textContent = FO.papers.length + ' 顆星・' + FO.hubs.length + ' 個概念・' + fLinkCount + ' 條連線';
     } else {
       leg = '<span><span style="display:inline-flex;gap:3px">' + D.domains.map(function (d) { return shapeSvg(d.shape, d.color, 8, 1.2); }).join('') + '</span>學科</span>' +
         '<span><span class="lg-dot" style="width:3px;height:3px;box-shadow:0 0 4px 1px rgba(' + DOM.bio.rgb + ',.8)"></span>標籤</span>' +
-        '<span><span class="lg-dot" style="width:4px;height:4px;box-shadow:0 0 4px 1px rgba(' + BLUE + ',.9)"></span>論文</span>' +
+        '<span><span class="lg-dot" style="width:4px;height:4px;box-shadow:0 0 4px 1px rgba(' + MINE + ',.9)"></span>論文</span>' +
         '<span><span style="width:10px;height:10px;border-radius:50%;border:1px dashed rgba(244,241,234,.6);display:inline-flex;align-items:center;justify-content:center"><span class="lg-dot" style="width:3px;height:3px"></span></span>諾貝爾獎</span>' +
         '<span><span style="width:6px;height:6px;border:1px solid #EAE6DF;transform:rotate(45deg)"></span>概念頁</span>';
       $('stats').textContent = starStats();
