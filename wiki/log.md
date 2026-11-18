@@ -2526,3 +2526,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：TD-010（手機論文頁 .stage 偏移 96px）始終無法重現，使用者決定關閉；日後再有偏移由 `verify_page.js` 第 9b 項偵測。刪除 wiki/todo.md 之 TD-010。
+
+## [2026-11-18 21:18] design | 卡片牆實作細節改為已定，完成 TD-009 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者逐項確認 [DESIGN.md](../DESIGN.md) 第二章第 3 節「卡片牆實作細節」四項，由暫定改為已定。全牆最終檢查：`verify_wall.js`（不設 `EK_SLUG`，內建瀏覽器，1920 x 1080、1440 x 900、375 x 812，群星與我的星系六組）結果 PASS，牆上 53 張（群星 25、我的關注 28），WARN 36 項皆為研究語言標籤與 Findings of ACL／EMNLP 會議名截斷，依 `card-wall.md` 第六節保留。`build_home.py --check` 一致。完成 TD-009，刪除該條。
