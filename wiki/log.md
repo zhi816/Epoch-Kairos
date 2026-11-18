@@ -2521,3 +2521,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：完成 TD-018：[2005-optogenetics](papers/2005-optogenetics.md)「原始權威文獻」補寫奠基論文原始檔 `raw/2003-channelrhodopsin2.pdf`，`pipeline_status.py --new` 改列為已引用。完成 TD-024：依使用者確認，2007 Woodford 論文 `title_zh` 改為「全球化與貨幣控制」，同步 [index.md](index.md) 與概念頁 [institutions-and-macro-dynamics](concepts/institutions-and-macro-dynamics.md) 連結文字（`honor` 之表彰事由不動）。完成 TD-030：`tools/build_home.py` 之 `STUDY_TYPE` 補 `2026-data-centric-continual-pretraining-ji: 多語預訓練`。TD-031 經使用者決定不重畫，刪除。重建兩篇論文頁（自我檢查 ERROR 0、WARN 0）與首頁（`--check` 一致），`lint_wiki.py` ERROR 0。另發現 `web/prototypes/mobile-v2-src/data.py` 現行即無法建置（AttributeError，與本次無關），原型 `mobile-v2.html` 未重建，仍為舊譯名。
+
+## [2026-11-18 21:14] update | 依使用者決定關閉 TD-010 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：TD-010（手機論文頁 .stage 偏移 96px）始終無法重現，使用者決定關閉；日後再有偏移由 `verify_page.js` 第 9b 項偵測。刪除 wiki/todo.md 之 TD-010。
