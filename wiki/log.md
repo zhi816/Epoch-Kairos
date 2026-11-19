@@ -2551,3 +2551,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：使用者更正上一筆：要的是青碧不是青檸。[theme.css](../web/assets/css/theme.css) 之 `--color-focus` 改為 `#3CC8B4`、`--deep-focus` 依規則推算為 `#133A35`（對比 6.0:1）；[starmap.js](../web/assets/js/starmap.js)、[starmap.css](../web/assets/css/starmap.css) 後備色值同步。重建首頁與 53 篇論文頁（ERROR 0），`verify_wall.js` PASS（WARN 36 為既有截斷）、`verify_page.js` 於 2026-hybrid-dictionary-rag-llm-paiwan-wang PASS。[DESIGN.md](../DESIGN.md)、[AGENTS.md](../AGENTS.md) 與 card-wall.md 同步改為青碧（暫定），DESIGN.md 第十章記下先青檸後更正。
+
+## [2026-11-19 21:31] design | 我的關注主題色暫定改為晴空藍 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：使用者看過青碧上線後覺得不好看，另比較深色寶石卡與霧面淺色後，選定樣稿「藍色候選」之晴空藍 `#5AAEFF`（接受與 AI 青同屬藍色）。`web/assets/css/theme.css` 之 `--color-focus` 改 `#5AAEFF`、`--deep-focus` 改 `#162D42`（同色相、飽和度 50%、對比 6.0:1）；`starmap.js`、`starmap.css` 後備色值與註解、`tools/paper_template.html` 註解、`paper-card-writer` 之 `references/card-wall.md` 同步；`DESIGN.md` 第二、四、五章與色表改記晴空藍並新增版本歷程，順帶改正前一筆歷程中誤寫之「青碧、青碧」為「青碧、青檸」；`AGENTS.md` 第二章參考色值同步。首頁與 53 篇論文頁重建（ERROR 0），`build_home.py --check` 一致，`lint_wiki.py` ERROR 0，`verify_wall.js` PASS（WARN 36 為既有截斷），`verify_page.js` 於排灣語論文頁 PASS。
