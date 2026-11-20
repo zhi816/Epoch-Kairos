@@ -2716,3 +2716,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2026-tao-filipino-nmt-macayan` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。改寫由 DeepSeek Harness（DeepSeek V4.1 Flash）擔任作者，Command Code 之 MiniMax M3.1 Flash 與 GLM-5.3 Flash 審查兩輪，於獨立 worktree 進行；總指揮回原文核對表 1 後，修正證據表三列之位置欄（巴丹語群改 Card 2、三指標改 Card 4、Card 5、作者結論改 Card 5），並補列各語言聖經版本一列。
+
+## [2026-11-20 20:42] update | 我的關注新六章改寫：Lumbantobing 2026 南島語音節分詞 | #人工智慧 #自然語言處理 #計算語言學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2026-tokenizations-austronesian-lms-lumbantobing` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。改寫由 DeepSeek Harness（DeepSeek V4.1 Flash）擔任作者，於獨立 worktree 進行；作者逾時致審查未執行，改由總指揮全頁回原文核對：英語 TPC 之 0.63 與 0.2–0.25 原文正文未給數值，卡片刪除該列、論文頁標明依 Fig. 2 判讀，GPT-2 地方語 TPC 改依原文寫為與音節分詞相近；卡片 05 指標說明與 06 限制同步改寫。登記並修正 EK-232（原頁「已失落」「零樣本」「神經分詞」等原文沒有之說法）。
