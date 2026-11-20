@@ -2596,3 +2596,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2023-low-resource-nmt-survey-ranathunga` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。綜述論文，05 用結論模式，03 寫作者的整理流程（界定、分類、趨勢、選擇流程），原文唯一公式為篩選離群值用，03 不放公式；原 Card 5 三筆後續研究與 LLM 範圍註記移至 06，原 Card 6 移至延伸想法。回原文抽查 §2.1（p. 229:4，50 萬與 10 萬句門檻且非絕對）、§11 與圖 7（p. 229:20–21，少於 50 萬句之建議與迭代過程）、§10 註 13 與註 18（2021 年 1 月、2022 年 6 月）、§14 三項建議，皆相符。證據表新增一列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 16:04] update | 我的關注新六章改寫：Sälevä 與 Lignos 2024 芬蘭語至北薩米語翻譯 | #自然語言處理 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2024-finnish-northern-sami-mt-saleva` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 4 表 3–5 移至 05、原 Card 5 結論與正譯解釋併入 05、限制與公開資源移至 06，原 Card 6 移至延伸想法；03 放 KL 正則項（原卡片同一行，81 字元，check_cards WARN：verify_page.js 已量公式框不需水平捲動，保留）。回原文抽查表 5（p. 12953：26.86、41.75、41.71、8.43、19.20）、§4.3（19.20 對 14.96，+4.24）、表 2（25,106 句）、§1（GitHub j0ma/sami-translation）、Limitations（單一語言對、單次執行），皆相符。check_cards ERROR 0、WARN 1（如上）；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
