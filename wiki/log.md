@@ -2556,3 +2556,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：使用者看過青碧上線後覺得不好看，另比較深色寶石卡與霧面淺色後，選定樣稿「藍色候選」之晴空藍 `#5AAEFF`（接受與 AI 青同屬藍色）。`web/assets/css/theme.css` 之 `--color-focus` 改 `#5AAEFF`、`--deep-focus` 改 `#162D42`（同色相、飽和度 50%、對比 6.0:1）；`starmap.js`、`starmap.css` 後備色值與註解、`tools/paper_template.html` 註解、`paper-card-writer` 之 `references/card-wall.md` 同步；`DESIGN.md` 第二、四、五章與色表改記晴空藍並新增版本歷程，順帶改正前一筆歷程中誤寫之「青碧、青碧」為「青碧、青檸」；`AGENTS.md` 第二章參考色值同步。首頁與 53 篇論文頁重建（ERROR 0），`build_home.py --check` 一致，`lint_wiki.py` ERROR 0，`verify_wall.js` PASS（WARN 36 為既有截斷），`verify_page.js` 於排灣語論文頁 PASS。
+
+## [2026-11-20 14:43] update | 重整 my-focus 資料夾分類與同步規範網頁 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依使用者確認與授權重整 `raw/my-focus/` 分類並同步主倉庫：將 `raw/my-focus/英文論文/llm 輔助/` 獨立拆至外層 `raw/my-focus/大模型輔助/`；依「技術優先」原則將臺東大學 [2025-indigenous-tek-ai-revitalization-wang](papers/2025-indigenous-tek-ai-revitalization-wang.md)（及其原檔與譯本）從 `英文論文/` 移至 `大模型輔助/`並將 `focus_role` 改為 `llm-assisted`，將中研院 [2025-formosanbench-llm-benchmark-lin](papers/2025-formosanbench-llm-benchmark-lin.md)（及其原檔與譯本）從 `英文論文/` 移至 `台灣相關論文/`並將 `focus_role` 改為 `taiwan-linguistics`；`學長姐論文/`（確認皆為國立臺灣海洋大學碩士論文）、`報告論文題材/` 與 `每日推介/`（Gemini 排程下載區）維持不動。同步更新 [AGENTS.md](../AGENTS.md)、[intake.md](../.agents/skills/paper-pipeline/references/intake.md)、`raw/my-focus/my-index.md`、7 篇受影響論文頁與證據表之原始檔路徑；重建首頁 [web/index.html](../web/index.html) 及受影響論文頁（7 篇重整相關頁均 ERROR 0、WARN 0），`build_home.py --check` 一致，`lint_wiki.py --errors-only` ERROR 0，`tools/tests` 16 項測試全數通過。

@@ -12,7 +12,7 @@ concepts: ["formosan-computational-linguistics", "low-resource-machine-translati
 status: "published"
 verification: "verified"
 my_focus: true
-focus_role: "international"
+focus_role: "taiwan-linguistics"
 focus_languages: ["阿美語", "泰雅語", "排灣語"]
 doi_url: "https://doi.org/10.18653/v1/2025.findings-emnlp.897"
 hook: "首個涵蓋阿美語、泰雅語、排灣語的多任務基準，評測機器翻譯、語音辨識與摘要：現有大型語言模型在三項任務上都表現很差，10-shot 與微調只帶來有限改善，語音辨識微調後改善最明顯。"
@@ -113,5 +113,5 @@ card_line: "出一套族語考題，測大型語言模型懂多少"
   * [低資源神經機器翻譯與檢索增強生成](../concepts/low-resource-machine-translation.md)
 * **原始權威文獻**：
   * 官方學術出處：Lin, K. K., Chen, H., & Zhang, H. (2025). FormosanBench: Benchmarking Low-Resource Austronesian Languages in the Era of Large Language Models. In *Findings of the Association for Computational Linguistics: EMNLP 2025* (pp. 16527-16539). DOI: [10.18653/v1/2025.findings-emnlp.897](https://doi.org/10.18653/v1/2025.findings-emnlp.897)
-  * 原始檔典藏：`raw/my-focus/英文論文/FormosanBench Benchmarking Low-Resource Austronesian Languages in the Era of Large Language Models _ 2025.findings-emnlp.897.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/台灣相關論文/FormosanBench Benchmarking Low-Resource Austronesian Languages in the Era of Large Language Models _ 2025.findings-emnlp.897.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
   * 證據表：[evidence/2025-formosanbench-llm-benchmark-lin.md](../evidence/2025-formosanbench-llm-benchmark-lin.md)

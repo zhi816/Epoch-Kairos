@@ -163,5 +163,5 @@ card_line: "檢索相似片段當例句，讓大模型翻譯拉定語"
 * **原始權威文獻**：
   * 官方學術出處：Frontull, S., & Ströhle, T. (2025). Compensating for Data with Reasoning: Low-Resource Machine Translation with LLMs. *arXiv preprint arXiv:2505.22293*. DOI/arXiv: [2505.22293](https://arxiv.org/abs/2505.22293)
   * 開源程式碼與檢索庫：[github.com/schtailmuel/llm-lrlmt](https://github.com/schtailmuel/llm-lrlmt)；PyPI 套件: [fragmentshot](https://pypi.org/project/fragmentshot/)
-  * 原始檔典藏：`raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/大模型輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
   * 證據表：[evidence/2025-fragment-shot-reasoning-mt-frontull.md](../evidence/2025-fragment-shot-reasoning-mt-frontull.md)

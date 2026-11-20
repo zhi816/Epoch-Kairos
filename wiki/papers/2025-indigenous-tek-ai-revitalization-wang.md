@@ -12,7 +12,7 @@ concepts: ["formosan-computational-linguistics"]
 status: "published"
 verification: "partial"
 my_focus: true
-focus_role: "international"
+focus_role: "llm-assisted"
 focus_languages: ["排灣語"]
 doi_url: "https://doi.org/10.3390/socsci15010007"
 hook: "以臺灣排灣族傳統生態知識（TEK）與五年祭儀式為實證基礎，將 Nonaka SECI 擴展為四層知識矩陣與 12 階段雙向循環模型，並設計五層知識管理架構（LKM）與 Plan–Act–Observe–Adjust 代理迴圈，提出兼顧部落數據主權與情境推理的 AI 文化復振系統設計。"
@@ -125,5 +125,5 @@ Agent 採取使用者中心動態推理，依據 **Plan（規劃）$\to$ Act（�
   * [臺灣南島語計算語言學與構詞解析](../concepts/formosan-computational-linguistics.md)
 * **原始權威文獻**：
   * 官方學術出處：Wang, R.-C., Hsieh, M.-C., & Lai, L.-C. (2025). From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization: Modeling Knowledge Cycles in Indigenous Cultural Systems. *Social Sciences*, 15(1), 7:1-7:21. DOI: [10.3390/socsci15010007](https://doi.org/10.3390/socsci15010007)
-  * 原始檔典藏：`raw/my-focus/英文論文/From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization Modeling Knowledge Cycles in Indigenous Cultural Systems_socsci-15-00007.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/大模型輔助/From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization Modeling Knowledge Cycles in Indigenous Cultural Systems_socsci-15-00007.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
   * 證據表：[evidence/2025-indigenous-tek-ai-revitalization-wang.md](../evidence/2025-indigenous-tek-ai-revitalization-wang.md)

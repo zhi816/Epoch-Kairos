@@ -145,5 +145,5 @@ card_line: "精挑語料、分段訓練，俄譯吉爾吉斯語奪冠"
   * 官方學術出處：Novokshanov, D. (2026). Data-Centric Approach at the LoResMT 2026 Turkic Translation Challenge: Russian-Kyrgyz. In *Proceedings for the Ninth Workshop on Technologies for Machine Translation of Low Resource Languages (LoResMT 2026)* (pp. 225-230). DOI: [10.18653/v1/2026.loresmt-1.22](https://doi.org/10.18653/v1/2026.loresmt-1.22)
   * 開源模型權重：[Hugging Face / Novokshanov/ru-ky-mt0-loresmt2026](https://huggingface.co/Novokshanov/ru-ky-mt0-loresmt2026)
   * 開源合成語料：[Hugging Face / datasets/Novokshanov/ru-ky-synthetic-loresmt2026](https://huggingface.co/datasets/Novokshanov/ru-ky-synthetic-loresmt2026)
-  * 原始檔典藏：`raw/my-focus/英文論文/llm 輔助/Data-Centric Approach at the LoResMT 2026 Turkic Translation.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/大模型輔助/Data-Centric Approach at the LoResMT 2026 Turkic Translation.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
   * 證據表：[evidence/2026-data-centric-russian-kyrgyz-mt-novokshanov.md](../evidence/2026-data-centric-russian-kyrgyz-mt-novokshanov.md)

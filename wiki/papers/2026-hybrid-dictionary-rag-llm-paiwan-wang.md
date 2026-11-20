@@ -143,5 +143,5 @@ card_line: "先查辭典再交給大模型，把排灣語譯成華語"
   * [低資源神經機器翻譯與檢索增強生成](../concepts/low-resource-machine-translation.md)
 * **原始權威文獻**：
   * 官方學術出處：Wang, R.-C., Yang, C.-K., Yang, T.-C., & Tseng, Y.-X. (2026). Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation. *Engineering Proceedings*, 120(1), 52:1-52:9. DOI: [10.3390/engproc2025120052](https://doi.org/10.3390/engproc2025120052)
-  * 原始檔典藏：`raw/my-focus/英文論文/llm 輔助/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/大模型輔助/Hybrid Dictionary–Retrieval-Augmented Generation–Large Language Model for Low-Resource Translation _ engproc-120-00052.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
   * 證據表：[evidence/2026-hybrid-dictionary-rag-llm-paiwan-wang.md](../evidence/2026-hybrid-dictionary-rag-llm-paiwan-wang.md)

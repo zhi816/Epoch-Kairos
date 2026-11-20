@@ -1,5 +1,5 @@
 # 證據表：2025-fragment-shot-reasoning-mt-frontull
-- **採用版本**：*arXiv:2505.22293v1* [cs.CL]，2025-05-28；封存於 `raw/my-focus/英文論文/llm 輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`。
+- **採用版本**：*arXiv:2505.22293v1* [cs.CL]，2025-05-28；封存於 `raw/my-focus/大模型輔助/Compensating for Data with Reasoning Low-Resource Machine Translation with LLMs.pdf`。
 - **查核者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-09；2026-11-10 增補（Claude Code by Anthropic，Claude Opus 5.5）：表 1 數值逐一列出，Card 1、2 改照原文，補列 Card 5 公開資源、限制與未來工作（EK-172）；檢索語料句數、表 2、表 3 與 §7 弱點改照原文（EK-173）
 
 | 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |

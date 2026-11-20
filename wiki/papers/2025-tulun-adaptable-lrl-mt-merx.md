@@ -142,5 +142,5 @@ card_line: "讓大模型參考詞彙表與舊譯文，修潤譯稿"
   * 官方學術出處：Merx, R., Suominen, H., Hong, L., Thieberger, N., Cohn, T., & Vylomova, E. (2025). TULUN: Transparent and Adaptable Low-resource Machine Translation. In *Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 3: System Demonstrations)* (pp. 129-139). DOI: [10.18653/v1/2025.acl-demo.13](https://doi.org/10.18653/v1/2025.acl-demo.13)
   * 開源專案儲存庫：[github.com/raphaelmerx/tulun](https://github.com/raphaelmerx/tulun)（MIT 授權）
   * 線上展示與系統影片：[bislama-trans.rapha.dev](https://bislama-trans.rapha.dev)；展示影片: [youtu.be/fQFwOxzR4MI](https://youtu.be/fQFwOxzR4MI)
-  * 原始檔典藏：`raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/大模型輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
   * 證據表：[evidence/2025-tulun-adaptable-lrl-mt-merx.md](../evidence/2025-tulun-adaptable-lrl-mt-merx.md)

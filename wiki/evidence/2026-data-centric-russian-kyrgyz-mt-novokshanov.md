@@ -1,5 +1,5 @@
 # 證據表：2026-data-centric-russian-kyrgyz-mt-novokshanov
-- **採用版本**：*LoResMT 2026*, pp. 225–230 正式版，DOI: 10.18653/v1/2026.loresmt-1.22（ACL Anthology 2026.loresmt-1.22）；封存於 `raw/my-focus/英文論文/llm 輔助/Data-Centric Approach at the LoResMT 2026 Turkic Translation.pdf`。
+- **採用版本**：*LoResMT 2026*, pp. 225–230 正式版，DOI: 10.18653/v1/2026.loresmt-1.22（ACL Anthology 2026.loresmt-1.22）；封存於 `raw/my-focus/大模型輔助/Data-Centric Approach at the LoResMT 2026 Turkic Translation.pdf`。
 - **查核者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-09
 
 | 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |

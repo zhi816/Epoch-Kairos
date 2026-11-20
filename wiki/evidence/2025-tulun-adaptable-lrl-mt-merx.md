@@ -1,5 +1,5 @@
 # 證據表：2025-tulun-adaptable-lrl-mt-merx
-- **採用版本**：*ACL 2025 System Demonstrations*, pp. 129–139 正式版，DOI: 10.18653/v1/2025.acl-demo.13（ACL Anthology 2025.acl-demo.13）；封存於 `raw/my-focus/英文論文/llm 輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`（PDF 第 1 頁即 p. 129）。
+- **採用版本**：*ACL 2025 System Demonstrations*, pp. 129–139 正式版，DOI: 10.18653/v1/2025.acl-demo.13（ACL Anthology 2025.acl-demo.13）；封存於 `raw/my-focus/大模型輔助/TULUN Transparent and Adaptable Low-resource Machine Translation.pdf`（PDF 第 1 頁即 p. 129）。
 - **查核者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-09；2026-11-10 由 Claude Code by Anthropic（Claude Opus 5.5）回原文逐項重建（EK-116、EK-117、EK-156）
 
 | 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |

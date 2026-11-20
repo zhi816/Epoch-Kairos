@@ -136,5 +136,5 @@ card_line: "讓大模型參考例句，修補跨領域的達豪語翻譯"
   * [低資源神經機器翻譯與檢索增強生成](../concepts/low-resource-machine-translation.md)
 * **原始權威文獻**：
   * 官方學術出處：Setiawan, D. S., Merx, R., & Lau, J. H. (2026). Context Volume Drives Performance: Tackling Domain Shift in Extremely Low-Resource Translation via RAG. In *Proceedings for the Ninth Workshop on Technologies for Machine Translation of Low Resource Languages (LoResMT 2026)* (pp. 87-101). DOI: [10.18653/v1/2026.loresmt-1.7](https://doi.org/10.18653/v1/2026.loresmt-1.7)
-  * 原始檔典藏：`raw/my-focus/英文論文/llm 輔助/Context Volume Drives Performance Tackling Domain Shift in Extremely.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
+  * 原始檔典藏：`raw/my-focus/大模型輔助/Context Volume Drives Performance Tackling Domain Shift in Extremely.pdf`（不納入主倉庫，由私有倉庫 Mine-RAW 版控）
   * 證據表：[evidence/2026-context-volume-rag-domain-shift-setiawan.md](../evidence/2026-context-volume-rag-domain-shift-setiawan.md)

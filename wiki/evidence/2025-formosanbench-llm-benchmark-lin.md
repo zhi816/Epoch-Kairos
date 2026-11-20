@@ -1,5 +1,5 @@
 # 證據表：2025-formosanbench-llm-benchmark-lin
-- **採用版本**：*Findings of EMNLP 2025*, pp. 16527–16539 正式版，DOI 10.18653/v1/2025.findings-emnlp.897；封存於 `raw/my-focus/英文論文/FormosanBench ... _ 2025.findings-emnlp.897.pdf`。
+- **採用版本**：*Findings of EMNLP 2025*, pp. 16527–16539 正式版，DOI 10.18653/v1/2025.findings-emnlp.897；封存於 `raw/my-focus/台灣相關論文/FormosanBench ... _ 2025.findings-emnlp.897.pdf`。
 - **查核者**：Claude Code by Anthropic（Claude Opus 5.5），2026-11-09
 
 | 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |

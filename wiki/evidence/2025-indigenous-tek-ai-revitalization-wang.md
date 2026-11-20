@@ -1,5 +1,5 @@
 # 證據表：2025-indigenous-tek-ai-revitalization-wang
-- **採用版本**：*Social Sciences*, 15(1), 7, pp. 1–21（線上發表：2025-12-23，卷期號為 2026 年 15 卷 7 篇），DOI: 10.3390/socsci15010007；封存於 `raw/my-focus/英文論文/From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization Modeling Knowledge Cycles in Indigenous Cultural Systems_socsci-15-00007.pdf`。
+- **採用版本**：*Social Sciences*, 15(1), 7, pp. 1–21（線上發表：2025-12-23，卷期號為 2026 年 15 卷 7 篇），DOI: 10.3390/socsci15010007；封存於 `raw/my-focus/大模型輔助/From Tacit Knowledge Distillation to AI-Enabled Culture Revitalization Modeling Knowledge Cycles in Indigenous Cultural Systems_socsci-15-00007.pdf`。
 - **查核者**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-09
 
 | 位置 | 主張 | 類型 | 第一手來源與精確位置 | 判定 |
