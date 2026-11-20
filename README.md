@@ -3,9 +3,9 @@
 > **"The Kairos of human thought and research horizons."**  
 > 在漫長的客觀時間（Chronos）中，唯有那些改變人類文明軌跡的決定性時刻（Kairos），宛如夜空中驟然閃耀的群星。
 
-本專案是一個**跨領域時代權威論文、諾貝爾獎導讀與個人研究關注知識庫**，基於 **Andrej Karpathy 的 LLM Wiki 架構** 打造，由多 AI 代理人協同維護，結合可追溯第一手來源的證據審查、KaTeX 公式排版與互動式網頁展示。全專案嚴格維持出版級學術風格，全站禁止任何表情符號。
+本專案是一個**跨領域時代權威論文、諾貝爾獎導讀與個人研究關注知識庫**，基於 **Andrej Karpathy 的 LLM Wiki 架構** 打造，由多 AI 代理人協同維護，結合可追溯第一手來源的證據審查、KaTeX 公式排版與互動式網頁展示。全專案嚴格維持出版級學術風格。
 
-> **完整規範請見 [`AGENTS.md`](./AGENTS.md)**：本 README 僅提供專案概覽；Frontmatter 欄位、標籤白名單、LaTeX 準則、證據表與待辦格式、日誌格式、Lint 檢查項與多 AI 版控協定之唯一權威定義皆在 `AGENTS.md`，美術方向紀錄見 [`DESIGN.md`](./DESIGN.md)。各文件與 `AGENTS.md` 若有出入，一律以 `AGENTS.md` 為準。
+ **完整規範請見 [`AGENTS.md`](./AGENTS.md)**
 
 ---
 
@@ -61,7 +61,6 @@ python tools/build_home.py [--card <slug>]
 python tools/build_home.py --check
 ```
 
-若修改 `web/assets/` 內的 CSS 或 JS，亦須重跑 `build_home.py` 以更新首頁引用的內容雜湊參數（`?v=`）。
 
 ### 原始層採雙倉庫分離（Dual-Repository Split）
 
@@ -73,7 +72,7 @@ python tools/build_home.py --check
 | 內容 | `AGENTS.md`、`DESIGN.md`、`.agents/skills/`、`wiki/`、`tools/`、`web/` | `raw/` 之原始 PDF、繁中翻譯 PDF、個人筆記與 `my-focus/my-index.md` |
 | 規範來源 | 本倉庫 [`AGENTS.md`](./AGENTS.md) | 同左；其倉庫內 `AGENTS.md` 僅為指回本倉庫之摘要 |
 
-**給 AI 代理與協作者的重要提醒**：在本倉庫執行任何 Git 指令永遠不會觸及 `raw/`。若 `raw/` 內容有變動，須另行對 `raw/` 倉庫單獨提交與推送，兩邊無自動連動。專案內建 [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) 工具鏈（`status.py`、`sync.py`、`safe_commit_push.py`）可同時檢查並同步雙倉庫，且嚴格只暫存自己修改的檔案。完整規範見 [`AGENTS.md`](./AGENTS.md) 第五、十章。
+**代理與協作的提醒**：專案內建 [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) 工具鏈（`status.py`、`sync.py`、`safe_commit_push.py`）可同時檢查並同步雙倉庫，且嚴格只暫存自己修改的檔案。完整規範見 [`AGENTS.md`](./AGENTS.md) 第五、十章。
 
 新機器完整還原兩層：
 
