@@ -2636,3 +2636,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2025-fragment-shot-reasoning-mt-frontull` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 3 方法細節保留於 03 並在前面加白話四步；原 Card 4 實驗設定移至 04、表 1 至表 3 移至 05、弱點移至 06「要留意」；原 Card 5 主張分置 05 結果與 06 限制、公開、下一步，原 Card 6 移至延伸想法；原文無公式。05 以 DeepSeek-R1 零樣本與片段例句對照（義大利語→Val Badia 6.31→14.22、Val Badia→Gherdëina 13.11→28.60）。回原文抽查表 1（p. 6）上述數值、摘要 GitHub 網址、註 1 PyPI 套件、§4 與 Limitations 之 175 句測試集，皆相符。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 16:22] update | 我的關注新六章改寫：王任慶等 2025 排灣族傳統知識與 AI 復振架構 | #人工智慧 #計算語言學 #社會學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2025-indigenous-tek-ai-revitalization-wang` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。概念與系統設計論文，05 用結論模式（四層知識、五層系統、三項設計原則）；原 Card 4 研究性質與治理機制分置 03、04，原 Card 5 之 Wiki 加強表述改為作者主張之三項設計原則（p. 19），限制、公開與未來工作移至 06，原 Card 6 移至延伸想法；原文無公式。回原文抽查 p. 7（授權、共識、撤回）、p. 14（第一手紀錄較高權重；第 4 層模型）、p. 17（原型介面）、p. 19（三項原則與限制）、p. 20（資料不公開）相符；另發現原頁三處原文沒有之細節（手指感知土壤濕度、Mamazangiljan、Mistral），更正並登記 EK-230（fixed），證據表新增四列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。

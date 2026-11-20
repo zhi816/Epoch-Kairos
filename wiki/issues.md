@@ -1257,3 +1257,9 @@
 - **來源**：[原文 PDF](../raw/my-focus/台灣相關論文/台灣南島語「說」動詞語義現象初探_謝富惠.pdf)，第 1 節，p. 55。
 - **發現於**：2026-11-20 改寫為我的關注新六章時回原文抽查，Claude Code by Anthropic（Claude Opus 5.5）。
 - **處理**：2026-11-20，Claude Code by Anthropic（Claude Opus 5.5）。論文頁 01 速覽、04 語料來源與 06 改依原文 p. 55，證據表新增一列。
+
+### EK-230 | fixed | papers/2025-indigenous-tek-ai-revitalization-wang.md | 原 Card 2、Card 3 | 原文未支持
+- **問題**：原頁三處細節原文沒有：Card 2 稱長老「藉手指感知土壤濕度」（原文只寫憑數十年親身觀察具有判斷土壤濕度的默會知識）；Card 2 稱通用大模型缺乏對排灣族社會階級制（Mamazangiljan）之理解（全文無此詞）；Card 3 第 4 層稱使用 LLaMA、Mistral 系列開源模型微調（原文列 OpenAI、LLaMA、Gemini，未提 Mistral）。另原 Card 5「證明文化保存不能僅靠靜態向量資料庫」「確立終身管轄權」等為 Wiki 加強之表述，原文為作者主張之三項設計原則。
+- **來源**：[原文 PDF](../raw/my-focus/大模型輔助/From%20Tacit%20Knowledge%20Distillation%20to%20AI-Enabled%20Culture%20Revitalization%20Modeling%20Knowledge%20Cycles%20in%20Indigenous%20Cultural%20Systems_socsci-15-00007.pdf)，p. 4、p. 8、p. 14、p. 19。
+- **發現於**：2026-11-20 改寫為我的關注新六章時回原文抽查，Claude Code by Anthropic（Claude Opus 5.5）。
+- **處理**：2026-11-20，Claude Code by Anthropic（Claude Opus 5.5）。改寫論文頁：土壤濕度、模型問題與第 4 層模型改依原文 p. 8、p. 4、p. 14；結果改寫為作者主張之三項設計原則（p. 19）；證據表新增四列。
