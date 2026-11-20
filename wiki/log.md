@@ -2641,3 +2641,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2025-indigenous-tek-ai-revitalization-wang` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。概念與系統設計論文，05 用結論模式（四層知識、五層系統、三項設計原則）；原 Card 4 研究性質與治理機制分置 03、04，原 Card 5 之 Wiki 加強表述改為作者主張之三項設計原則（p. 19），限制、公開與未來工作移至 06，原 Card 6 移至延伸想法；原文無公式。回原文抽查 p. 7（授權、共識、撤回）、p. 14（第一手紀錄較高權重；第 4 層模型）、p. 17（原型介面）、p. 19（三項原則與限制）、p. 20（資料不公開）相符；另發現原頁三處原文沒有之細節（手指感知土壤濕度、Mamazangiljan、Mistral），更正並登記 EK-230（fixed），證據表新增四列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 16:24] update | 我的關注新六章改寫：Pei 等 2025 滿語上下文翻譯 | #自然語言處理 #計算語言學 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2025-manchu-in-context-mt-pei` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 3 方法細節保留於 03 並在前面加白話五步；原 Card 4 表 1–5、加密、人工評估與合成資料移至 05，原 Card 5 結論併入 05、限制與公開移至 06，原 Card 6 移至延伸想法；原文無公式。05 以 GPT-4o 直接提示與加詞典、例句對照（BLEU 3.44→8.84、SBERT 34.21→61.35）。回原文抽查 p. 8767 註 1 GitHub、表 1–2（3.44、7.55、8.84）、表 5（12.35）、表 7（64.47）、§3（337 句、Google 翻譯轉譯），皆相符。證據表新增一列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
