@@ -2691,3 +2691,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：更新 [README.md](../README.md) 反映最新專案架構與規範（對齊 [AGENTS.md](../AGENTS.md) 與 [DESIGN.md](../DESIGN.md)）：補齊目錄樹中之 `DESIGN.md`、`.agents/skills/`、`.claude/skills/`、`wiki/issues.md`、`wiki/todo.md`、`wiki/evidence/`、`wiki/cards/`、`tools/` 各建置與測試腳本及 `raw/my-focus/my-index.md`；更新 `build_paper_prototype.py` 與 `build_home.py` 建置指令；補列 6 套專屬作業技能與四大工作流（S0–S10 `paper-pipeline`、Query、11 項 Lint、Handoff 與多 AI 協同）；補充 `verification` 四態、「我的星系」`focus_role`（六類）／`focus_direction`（五大優化方向）／`--color-focus`（晴空藍）及群星／我的關注雙模式六張卡架構，並附上常用檢查指令。驗證：`README.md` 17 條相對路徑連結全部有效，`lint_wiki.py --errors-only` ERROR 0、`tools/tests` 16 項測試全數通過。
+
+## [2026-11-20 19:05] update | 精簡 README.md 移除我的星系欄位細節與部分設計來源說明 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依使用者指示移除 [README.md](../README.md) 中「我的星系」`my_focus` 欄位與新六章細節，以及 Evil Rabbit Deimos 與 Shopify Editions 參考來源段落，並同步精簡對應項目與 3:4 六張圖卡結構敘述。驗證：17 條相對路徑連結有效，`lint_wiki.py --errors-only` ERROR 0。
