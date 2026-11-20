@@ -334,8 +334,8 @@ def is_v2(f):
     return any(sec == '02｜要解決的問題' for sec, _k in f)
 
 
-def v2_head(n):
-    return '<span class="kc">%02d ｜ %s</span><span class="hd">%s</span>' % (n, V2_NAMES[n - 1], V2_QUESTIONS[n - 1])
+def v2_head(n, question=None):
+    return '<span class="kc">%02d ｜ %s</span><span class="hd">%s</span>' % (n, V2_NAMES[n - 1], question or V2_QUESTIONS[n - 1])
 
 
 def v2_rows(items, cls=''):
@@ -382,7 +382,9 @@ def cards_v2(f):
             for n, d, b, o, _src in (v.split('｜') for v in f.get((s, '指標'), [])))
     else:
         body = '<div class="concl">%s</div>' % ''.join('<p>%s</p>' % card_inline(v.split('｜')[0]) for v in f.get((s, '結論'), []))
-    out.append(wrap(V2_NAMES[4], '%s%s<span class="ft">%s</span>' % (v2_head(5), body, esc(one(f, s, '註記')))))
+    # 結論模式（語言描寫、綜述等沒有基準可比者）之大標題改為「發現了什麼？」（references/focus/05-results.md）
+    q5 = None if one(f, s, '模式') == '對照' else '發現了什麼？'
+    out.append(wrap(V2_NAMES[4], '%s%s<span class="ft">%s</span>' % (v2_head(5, q5), body, esc(one(f, s, '註記')))))
     s = '06｜限制與可用性'
     items = [('限制', one(f, s, '限制'))]
     if one(f, s, '留意'):

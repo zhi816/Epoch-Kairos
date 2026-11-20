@@ -1251,3 +1251,9 @@
 - **來源**：[原文 PDF](../raw/my-focus/英文論文/Generalized%20Data%20Augmentation%20for%20Low-Resource%20Translation_P19-1579.pdf)，p. 5786 註 1。
 - **發現於**：2026-11-20 改寫為我的關注新六章時回原文抽查，Claude Code by Anthropic（Claude Opus 5.5）。
 - **處理**：2026-11-20，Claude Code by Anthropic（Claude Opus 5.5）。論文頁 01 速覽與 06 公開程度補記程式碼公開，證據表新增一列。
+
+### EK-229 | fixed | papers/2022-formosan-say-verbs-hsieh.md | 原 Card 4 研究範圍 | 原文不符
+- **問題**：原頁寫「例句取自臺灣南島語言叢書、原住民族語言線上辭典與已出版文獻」。原文寫明語料來自原民會 2018 年再版之十六族語言語法概論、即將出版之詞類及其教學叢書、原住民族語言線上辭典，以及作者本人的田野調查，且未標出處者出自田調；原頁漏記田調並以「已出版文獻」概括。
+- **來源**：[原文 PDF](../raw/my-focus/台灣相關論文/台灣南島語「說」動詞語義現象初探_謝富惠.pdf)，第 1 節，p. 55。
+- **發現於**：2026-11-20 改寫為我的關注新六章時回原文抽查，Claude Code by Anthropic（Claude Opus 5.5）。
+- **處理**：2026-11-20，Claude Code by Anthropic（Claude Opus 5.5）。論文頁 01 速覽、04 語料來源與 06 改依原文 p. 55，證據表新增一列。
