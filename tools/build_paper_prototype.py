@@ -44,6 +44,9 @@ ROLE = dict(home.ROLES)
 # 星光色與深色重點色皆以 web/assets/css/theme.css 之 --color-<domain>、--deep-<domain> 為準；
 # 我的關注論文之 Card 1 至 6 不分學科，一律用 --color-focus 與 --deep-focus（DESIGN.md 第二章第 3 節）。
 CARD_NAMES = ['時代銘文', '世紀瓶頸', '突破原理', '決定性數據', '典範轉移', 'Kairos']
+# 我的關注新六章（2026-11-20 使用者決定；paper-card-writer 之 references/focus/）：卡片頂端名稱與白話問句標題
+V2_NAMES = ['一句話看懂', '要解決的問題', '方法流程', '資料與實驗', '結果', '限制與可用性']
+V2_QUESTIONS = ['', '原本卡在哪裡？', '一步一步怎麼做？', '用什麼資料、怎麼測？', '到底有沒有比較好？', '能不能拿來用？']
 VERIFY_TEXT = '已逐項對照原文查核'   # 只在 verification 為 verified 時顯示（DESIGN.md 第八章第 15 項）
 
 
@@ -325,6 +328,71 @@ def card6(f):
     return wrap(CARD_NAMES[5], inner)
 
 
+# ---------------------------------------------------------------- 我的關注新六章
+
+def is_v2(f):
+    return any(sec == '02｜要解決的問題' for sec, _k in f)
+
+
+def v2_head(n):
+    return '<span class="kc">%02d ｜ %s</span><span class="hd">%s</span>' % (n, V2_NAMES[n - 1], V2_QUESTIONS[n - 1])
+
+
+def v2_rows(items, cls=''):
+    return ''.join('<div class="row%s"><b>%s</b><span>%s</span></div>' % (cls, esc(a), esc(b)) for a, b in items)
+
+
+def cover_v2(fm, f, no):
+    """封面同群星版型（星窗＋一句話＋論文名），導語與學科標籤改為速覽（references/focus/01-overview.md）。"""
+    stars = ''.join('<i style="left:%.1f%%;top:%.1f%%;width:%spx;height:%spx;opacity:%.2f"></i>' % (x, y, sz, sz, op)
+                    for x, y, sz, op in home.cover_sky(fm))
+    lines = ''.join('<span>%s</span>' % esc(x) for x in one(f, '封面', '封面斷行').split('／'))
+    langs = fm.get('focus_languages') or []
+    tag = '、'.join(langs) if langs else one(f, '封面', '研究類型')
+    title = one(f, '封面', '封面標題') or home.short_name(fm['title_zh'])
+    facts = ''.join('<b>%s</b><span>%s</span>' % tuple(esc(x) for x in v.split('｜')) for v in f.get(('封面', '速覽'), []))
+    inner = ('<div class="ph"><span>%s</span><span>%s</span></div>'
+             '<div class="win"><span class="lang" title="%s">%s</span>%s<span class="rep"></span><span class="line">%s</span></div>'
+             '<div class="name">%s</div><div class="facts">%s</div><div class="yrs">%s</div>') % (
+        esc(no), esc(ROLE.get(fm.get('focus_role'), '')), esc(tag), esc(tag), stars, lines,
+        esc(title), facts, esc(years_full(fm)))
+    return wrap(V2_NAMES[0], inner, ' cover focus v2')
+
+
+def cards_v2(f):
+    out = []
+    s = '02｜要解決的問題'
+    rows = v2_rows(v.split('｜') for v in f.get((s, '對照'), [])) + v2_rows((v.split('｜') for v in f.get((s, '缺口'), [])), ' gap')
+    out.append(wrap(V2_NAMES[1], '%s<div class="rows">%s</div><span class="ft" style="color:var(--ink)">這篇的想法：%s</span>' % (
+        v2_head(2), rows, esc(one(f, s, '想法')))))
+    s = '03｜方法流程'
+    steps = ''.join('<p><b>%s</b><em>：%s</em></p>' % tuple(esc(x) for x in v.split('｜')) for v in f.get((s, '步驟'), []))
+    flow = '<p class="io"><b>輸入</b>%s</p>%s<p class="io"><b>輸出</b>%s</p>' % (esc(one(f, s, '輸入')), steps, esc(one(f, s, '輸出')))
+    fx = one(f, s, '公式')
+    fbox = '<div class="fbox"><span class="m-disp" data-tex="%s"></span></div>' % esc(fx) if fx else ''
+    out.append(wrap(V2_NAMES[2], '%s<div class="flow">%s</div>%s' % (v2_head(3), flow, fbox)))
+    s = '04｜資料與實驗'
+    out.append(wrap(V2_NAMES[3], '%s<div class="rows tight">%s</div>' % (v2_head(4), v2_rows(v.split('｜') for v in f.get((s, '項目'), [])))))
+    s = '05｜結果'
+    if one(f, s, '模式') == '對照':
+        base, ours = one(f, s, '對照組').split('｜')
+        body = '<div class="cmp">%s</div>' % ''.join(
+            '<div class="m"><span class="mt">%s<em>%s</em></span><p><span>%s</span><b class="lo">%s</b></p><p><span>%s</span><b>%s</b></p></div>' % (
+                card_inline(n), card_inline(d), esc(base), card_inline(b), esc(ours), card_inline(o))
+            for n, d, b, o, _src in (v.split('｜') for v in f.get((s, '指標'), [])))
+    else:
+        body = '<div class="concl">%s</div>' % ''.join('<p>%s</p>' % card_inline(v.split('｜')[0]) for v in f.get((s, '結論'), []))
+    out.append(wrap(V2_NAMES[4], '%s%s<span class="ft">%s</span>' % (v2_head(5), body, esc(one(f, s, '註記')))))
+    s = '06｜限制與可用性'
+    items = [('限制', one(f, s, '限制'))]
+    if one(f, s, '留意'):
+        items.append(('要留意', one(f, s, '留意')))
+    items.append(('公開程度', one(f, s, '公開')))
+    rows = v2_rows(items) + v2_rows([('適合報告', one(f, s, '報告'))], ' ok')
+    out.append(wrap(V2_NAMES[5], '%s<div class="rows tight">%s</div>' % (v2_head(6), rows)))
+    return out
+
+
 # ---------------------------------------------------------------- 長文與資訊欄
 
 def article(fm, body):
@@ -357,11 +425,12 @@ def article(fm, body):
                 '<button type="button" id="m-full" aria-pressed="false">全文</button></div>')
     head.append('</header>')
     # 六段包在 .body 內：手機版把頁首（雙年份、標題、開關）移到卡片上方，.body 留在卡片下方（DESIGN.md 第五章第 1 節）
-    out = ['\n'.join(head), '<div class="body">']
+    v2 = bool(sections) and sections[0][1].startswith(V2_NAMES[0])
+    out = ['\n'.join(head), '<div class="body%s">' % (' v2' if v2 else '')]
     for k, (num, name, body_lines) in enumerate(sections):
         # 樣稿「論文頁 F」：論文頁開頭之引言（> 「……」）不放在標題下，改為 01 時代銘文之第一段，去掉引號
         lead = ''
-        if k == 0 and epigraph:
+        if k == 0 and epigraph and not v2:   # 我的關注新六章不放引言，01 段以白話摘要開頭
             lead = '<p class="epigraph">%s%s</p>\n' % (
                 inline(epigraph[0]), '<span class="src">%s</span>' % inline(epigraph[1]) if epigraph[1] else '')
         out.append('<section data-card="%d"><div class="sh"><span class="num" aria-hidden="true">%02d</span><h2>%s</h2></div>\n%s%s\n</section>'
@@ -526,7 +595,10 @@ def build(slug, papers, concepts_zh, colors, deeps, tpl, nums):
     if k == 'focus' and sat(star) < 0.3:
         # 低彩度主題色（如先前之暖灰）與內文字色相近，連結另加底線才辨識得出
         vars_ += ';--link-deco:underline rgba(%s,.45)' % ','.join(str(int(star[i:i + 2], 16)) for i in (1, 3, 5))
-    cards = '\n'.join([cover(fm, f, nums[slug], colors), card2(f), card3(f, svg), card4(f), card5(f), card6(f)])
+    if is_v2(f):
+        cards = '\n'.join([cover_v2(fm, f, nums[slug])] + cards_v2(f))
+    else:
+        cards = '\n'.join([cover(fm, f, nums[slug], colors), card2(f), card3(f, svg), card4(f), card5(f), card6(f)])
     art, scope = article(fm, body)
     page = (tpl.replace('{{PAGE_TITLE}}', esc(home.short_name(fm['title_zh'])))
             .replace('{{VARS}}', vars_)
@@ -540,7 +612,7 @@ def build(slug, papers, concepts_zh, colors, deeps, tpl, nums):
     with open(out, 'w', encoding='utf-8', newline='\n') as fh:
         fh.write(page)
     print('已產生 %s' % os.path.relpath(out, ROOT))
-    return selfcheck(slug, page, fm, body)
+    return selfcheck(slug, page, fm, body, is_v2(f))
 
 
 # ---------------------------------------------------------------- 產生後自我檢查
@@ -548,7 +620,7 @@ def build(slug, papers, concepts_zh, colors, deeps, tpl, nums):
 VENUE_LINE_MAX = 17   # 資訊欄「發表・期刊」約每行 8.5 字寬（1440 x 900 實測），超過兩行即提示補 venue_short
 
 
-def selfcheck(slug, page, fm, body):
+def selfcheck(slug, page, fm, body, v2=False):
     """檢查產生的網頁有沒有把論文頁或卡片檔轉壞（paper-card-writer 第五節第 7 步）。
     只做靜態檢查；公式能否渲染、卡片有沒有溢出，須另以瀏覽器執行 verify_page.js。ERROR 時回傳 False。"""
     issues = []
@@ -575,7 +647,14 @@ def selfcheck(slug, page, fm, body):
         if re.search('[㐀-鿿]', html.unescape(tex)):
             add('ERROR', '公式內含中文字元（AGENTS.md 第三章）：%s' % html.unescape(tex)[:60])
     pre = body.split('\n## Card 1')[0]
-    if not re.search(r'^>\s*「', pre, re.M):
+    page_v2 = bool(re.search(r'^## Card 1\s*｜\s*%s' % V2_NAMES[0], body, re.M))
+    if v2 != page_v2:
+        add('ERROR', '卡片檔與論文頁章節不一致：%s（我的關注新六章須兩者同時改，論文頁六段標題依 paper-pipeline 之 paper-page-template.md）'
+            % ('卡片檔為新六章，論文頁仍為舊段落' if v2 else '論文頁為新六章，卡片檔仍為舊區段'))
+    if v2:
+        if re.findall(r'<h2>([^<：]+)', page)[:6] != V2_NAMES:
+            add('ERROR', '長文六段標題須依序為：' + '、'.join(V2_NAMES))
+    elif not re.search(r'^>\s*「', pre, re.M):
         add('ERROR', '論文頁標題下沒有開頭引言（> 「……」），長文 01 段將缺第一段')
     elif '<p class="epigraph">' not in page:
         add('ERROR', '論文頁有開頭引言，網頁 01 段卻沒有：引言格式須為單獨一段之 > 「……」')

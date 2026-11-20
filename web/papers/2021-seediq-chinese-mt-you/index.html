@@ -186,6 +186,38 @@ button:disabled{cursor:default;opacity:.3}
   .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
 }
 @media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+
+/* ---------------- 我的關注新六章（2026-11-20；paper-card-writer 之 references/focus/、DESIGN.md 第五章第 2 節） */
+.cover.v2 .in{gap:2.6cqw}
+.cover.v2 .win{min-height:40cqw}
+.cover.v2 .line{font-size:6.6cqw}
+.cover .facts{display:grid;grid-template-columns:11cqw minmax(0,1fr);column-gap:2.6cqw;row-gap:1.1cqw;padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.4cqw;line-height:1.45}
+.cover .facts b{font-weight:500;color:var(--deep)}
+.cover .facts span{color:var(--ink)}
+.flow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;counter-reset:st}
+.flow p{position:relative;margin:0;padding:0 0 3.6cqw 11cqw;font-size:3.9cqw;line-height:1.5;color:var(--ink)}
+.flow p:last-child{padding-bottom:0}
+.flow p::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:-.2cqw;width:6.6cqw;height:6.6cqw;box-sizing:border-box;border-radius:50%;border:1px solid var(--deep);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:3.6cqw;color:var(--deep)}
+.flow p::after{content:"";position:absolute;left:3.3cqw;top:6.6cqw;bottom:.4cqw;width:1px;background:color-mix(in srgb,var(--deep) 45%,transparent)}
+.flow p:last-child::after{display:none}
+.flow p.io::before{content:"";width:2.6cqw;height:2.6cqw;left:2cqw;top:1.2cqw;background:var(--deep);border:none}
+.flow p.io::after{top:3.8cqw}
+.flow p b{font-weight:500;margin-right:1.6cqw}
+.flow p em{font-style:normal;color:var(--ink2)}
+.flow p:not(.io) b{margin-right:0}
+.cmp{flex:1;display:flex;flex-direction:column;justify-content:center;gap:7cqw}
+.cmp .m{border-top:1px solid rgba(15,16,19,.35);padding-top:3cqw;display:flex;flex-direction:column;gap:1.4cqw}
+.cmp .mt{font-size:3.9cqw;font-weight:500}
+.cmp .mt em{font-style:normal;font-weight:400;color:var(--ink2);margin-left:2cqw;font-size:3.4cqw}
+.cmp p{margin:0;display:flex;align-items:baseline;justify-content:space-between;gap:3cqw}
+.cmp p span{font-size:3.6cqw;color:var(--ink2)}
+.cmp p b{font-family:var(--serif);font-weight:300;font-size:9.6cqw;line-height:1.15;color:var(--deep);white-space:nowrap}
+.cmp p b.lo{font-size:6.6cqw;color:var(--ink2)}
+.rows.tight{gap:2.2cqw}.rows.tight .row{padding:2.6cqw 3cqw}
+.row.ok{background:rgba(255,255,255,.26);border:1px solid color-mix(in srgb,var(--deep) 55%,transparent)}
+.row.ok b,.row.ok span{color:var(--deep)}
+.body.v2 section[data-card="1"] > p:first-of-type{padding:1em 1.2em;border-left:2px solid var(--star);background:rgba(255,255,255,.03)}
+.body.v2 section[data-card="6"] h3{margin-top:2.2em;padding-top:1.2em;border-top:1px dashed rgba(255,255,255,.18)}
 </style>
 </head>
 <body style="--star:#5AAEFF;--card:#5AAEFF;--deep:#162D42;--win:#16212C">

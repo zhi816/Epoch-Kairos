@@ -99,12 +99,14 @@ focus_role: "<依 intake.md 第四節第 3 點之資料夾對照>"
 focus_languages: ["<研究對象之低資源語言>"]
 ```
 
+* **正文改用新六章**（2026-11-20 起，`paper-card-writer` 之 `references/focus/`）：不寫開頭引言；六段標題依序為
+  `## Card 1 ｜ 一句話看懂`、`## Card 2 ｜ 要解決的問題`、`## Card 3 ｜ 方法流程`、`## Card 4 ｜ 資料與實驗`、`## Card 5 ｜ 結果`、`## Card 6 ｜ 限制與可用性`（不加英文括號；可加「：副標」）。各段寫法見 `focus/` 各章之「長文」一節；舊 Card 6 之個人研究映射改寫在 Card 6 末尾之 `### 延伸想法`。範例：`wiki/papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md`。
 * 雙年份行寫 `**<paper_year> 發表 ｜ 個人核心研究關注**`。
 * 學位論文之「本頁範圍」寫學校、系所、年月與指導教授；有會議版本時一併寫明（範例：`wiki/papers/2021-seediq-chinese-mt-you.md`）。
 * `doi_url` 沒有時整行刪除，在「原始權威文獻」寫出原文連結或典藏處（例如國家圖書館臺灣博碩士論文知識加值系統）。
-* Card 6 的個人研究映射，不得寫出使用者碩論的題目、資料或結果（`paper-card-writer` 第二節第 13 條）。
+* 延伸想法不得寫出使用者碩論的題目、資料、結果或具體做法（`paper-card-writer` 第二節第 13 條）。
 
-範例頁：群星看 `wiki/papers/2016-ligo-gravitational-waves.md`（2026-11-10 依本流程逐項核對）；我的關注看 `wiki/papers/2021-seediq-chinese-mt-you.md`。只看格式，內容不得套用。
+範例頁：群星看 `wiki/papers/2016-ligo-gravitational-waves.md`（2026-11-10 依本流程逐項核對）；我的關注看 `wiki/papers/2026-hybrid-dictionary-rag-llm-paiwan-wang.md`（新六章）。只看格式，內容不得套用。
 
 ## 二、Frontmatter 逐欄
 
@@ -150,7 +152,7 @@ focus_languages: ["<研究對象之低資源語言>"]
 | Card 6 | 開頭寫「以下為 Wiki 詮釋：」，一至兩點具體到本篇的啟發，可附原文依據；我的關注論文可寫與使用者公開研究方向（概念頁名稱）之關聯 | Card 6 結語與轉變 | 換到任何一篇都成立的金句；透露碩論題目、資料或結果 |
 | 知識網絡與文獻出處 | 概念頁連結、官方出處、**原始檔典藏路徑（`pipeline_status.py` 之 S1 依此檢查）**、證據表連結、獎項通告 | 網頁資訊欄、`pipeline_status.py` | 寫 `file:///` 本機路徑；漏寫原始檔典藏 |
 
-格式要求（建置腳本與 `lint_wiki.py` 會檢查）：六段標題依序為 `## Card 1 ｜ 時代銘文 (The Hook)` 至 `## Card 6 ｜ 跨界思維與啟發 (The Kairos)`，可在中文名後加「：副標」；粗體成對；正文金額寫「美元」；化學離子用 `\mathrm{}`；長公式用 `aligned`；公式內不得有中文；全文不得有 Emoji 與驚嘆號。
+格式要求（建置腳本與 `lint_wiki.py` 會檢查）：群星六段標題依序為 `## Card 1 ｜ 時代銘文 (The Hook)` 至 `## Card 6 ｜ 跨界思維與啟發 (The Kairos)`（我的關注改用第一節之新六章，上表各段改依 `paper-card-writer` 之 `references/focus/`），可在中文名後加「：副標」；粗體成對；正文金額寫「美元」；化學離子用 `\mathrm{}`；長公式用 `aligned`；公式內不得有中文；全文不得有 Emoji 與驚嘆號。
 
 ## 四、寫完之後（S4 完成條件）
 

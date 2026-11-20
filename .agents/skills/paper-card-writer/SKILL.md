@@ -10,6 +10,8 @@ description: >-
 
 > 寫這份規範的原因：卡片是讀者最先看到、也最常被截圖分享的內容，又是 41 篇以上逐篇手寫的工作，最容易被偷工。過去已出現的問題包括：為了填滿版面硬湊數字、把後續他人成果寫成本篇成果、整段照抄長文塞不進卡片、批次作業時把前一篇的語言名或數字帶進下一篇。本 Skill 的每一條規則都對應這類問題，**不得以「大致符合」為由省略任何一步**。
 
+> **我的關注論文先看這裡（2026-11-20 起）**：`my_focus: true` 之論文改用新六章「一句話看懂、要解決的問題、方法流程、資料與實驗、結果、限制與可用性」，各卡寫法改讀 [`references/focus/`](references/focus/README.md)，檔案格式見 `references/file-format.md` 第七節。本檔其餘規則（硬規則、作業流程、交付說明、檢查與驗證、偷工自查）照常適用；凡提到「Card 2 至 6」各卡細則之處，我的關注論文改讀 `focus/` 對應章。群星論文不受影響。
+
 ## 一、適用時機
 
 1. **收錄新論文**（`AGENTS.md` 第六章 Ingest）：論文頁與證據表完成、`lint_wiki.py` 無 ERROR 之後，同一輪內撰寫卡片文字檔。收錄的整體順序依 [`paper-pipeline`](../paper-pipeline/SKILL.md)：本 Skill 是其 S7（卡片檔）、S8（論文頁網頁）與 S9（卡片牆部分）；星圖或我的星系之上架驗證與整篇提交清單見該 Skill 之 `references/publish.md`。
@@ -23,7 +25,7 @@ description: >-
 2. **卡片不得出現論文頁與證據表都沒有的事實**。卡片只做「挑選、濃縮、改寫成白話」，不新增數字、年份、人名、機制、因果或評價。改寫後的意思不得比來源更強。
 3. **數字只能來自證據表**。Card 4 的每個數字都要在證據表找得到，並寫出第一手來源的頁、表或圖；不得四捨五入到與原文不同的精度，不得把「約」拿掉，也不得自行加上「約」。
 4. **公式只能抄自論文頁**。Card 3 的公式必須與論文頁某一條區塊公式（或 `aligned` 中的某一行）逐字相同。論文頁沒有公式時，回原文確認：原文有表達本篇機制的公式，先依 `wiki-content-audit` 補進論文頁再寫卡片；原文只有評估指標公式、只有資料處理公式（篩選、切分、統計用）或完全沒有公式，才可用無公式模式（`references/card-03-secret.md` 第四節第 5 條）。論文頁的公式本身也要回原文確認出處（式號或頁碼）；不是原文公式（Wiki 自擬的流程式、改過符號或漏項的式子）時不得取用，依 `card-03-secret.md` 第四節第 6 條處理。
-5. **每篇 Card 3 都必須有示意圖**（2026-11-09 使用者決定），且圖要畫出 Card 3 所講的機制，不得用與內容無關的裝飾圖、不得假裝成數據圖。規格見 [`references/diagram.md`](references/diagram.md)。
+5. **每篇 Card 3 都必須有示意圖**（2026-11-09 使用者決定；我的關注新六章以 03 方法流程取代，不畫示意圖），且圖要畫出 Card 3 所講的機制，不得用與內容無關的裝飾圖、不得假裝成數據圖。規格見 [`references/diagram.md`](references/diagram.md)。
 6. **歸屬分清楚**。Card 4 只放本篇研究結果（或明確標示的「依原文數據計算」）；後續他人成果只能放 Card 5，且每筆都要有出處；獎項只能用 Frontmatter 的 `honor` 與 `award_year`。作者與得獎者不混寫。
 7. **每個欄位都有字數上限**，上限依卡片在手機 330px 寬時不爆版計算，不得以「桌面放得下」為由超過。字數計法見 [`references/style.md`](references/style.md) 第一節。
 8. **放不下就換內容，不得硬改事實**。字數超過時，改寫說明、換一個數字或換一個里程碑；不得為了縮短而刪掉語言方向、指標名稱、資料集、條件或限定語。
@@ -31,7 +33,7 @@ description: >-
 10. **檢查腳本的 ERROR 必須全部排除**才可交付；WARN 須逐條判斷並在交付說明交代處理方式。
 11. **不得修改 `raw/`**；需要原文時只讀（`AGENTS.md` 第五章）。
 12. **全檔禁止 Emoji、驚嘆號與評價形容詞**（開創性、顛覆性、革命性、劃時代等，完整清單見 `references/style.md`）。
-13. **我的關注（`my_focus: true`）論文的 Card 6 不得透露使用者碩論的題目、資料或結果**（`DESIGN.md` 第八章第 13 項），只能連結到公開的研究方向（概念頁名稱）。
+13. **我的關注（`my_focus: true`）論文不得透露使用者碩論的題目、資料或結果**（`DESIGN.md` 第八章第 13 項）：卡片任何欄位不得有第一人稱或碩論；06「適合報告」只寫論文本身；長文「延伸想法」可連到已公開的研究，不得寫碩論的具體做法（`references/focus/06-usability.md`）。
 14. **每篇都要建出論文頁、放上首頁卡片牆，兩者都要驗證**（第五節第 7 步，細則見 [`references/paper-page.md`](references/paper-page.md) 與 [`references/card-wall.md`](references/card-wall.md)）：論文頁建置自我檢查與卡片牆自我檢查 ERROR 皆為 0；有瀏覽器工具時，`verify_page.js` 與 `verify_wall.js` 結果皆須為 PASS。沒有實際執行就不得宣稱已驗證。`web/index.html` 只能由 `python tools/build_home.py` 產生，不得手改。
 15. **不得改檢查工具去遷就內容**：撰寫卡片時不得修改 `check_cards.py`、`tools/build_paper_prototype.py`、`tools/paper_template.html`、`verify_page.js`、`tools/build_home.py`、`tools/home_template.html`、`web/assets/css/starmap.css`、`web/assets/js/starmap.js`、`verify_wall.js`、本 Skill 的 `references/` 與兩份範例卡片檔，也不得調高門檻或加例外。認為工具誤判時，登記 `wiki/todo.md`（範圍 `skill`）並告知使用者，該篇維持未交付。
 16. **不得為了讓卡片過關而改來源**：論文頁、證據表、`card_line`、`title_zh` 只能依 `wiki-content-audit`（或 `AGENTS.md` 對應規則）修改，且修改本身須有第一手來源支持並在交付說明交代。第 4 條「論文頁沒有公式時先補公式」也必須走 `wiki-content-audit`：公式要有原文頁碼與式號、登記於證據表。不得未經這套流程，就為了讓 Card 3 公式比對通過而在論文頁加公式，或為了讓 Card 4 數字通過而在證據表加列。
@@ -43,12 +45,12 @@ description: >-
 |---|---|
 | `AGENTS.md` 第三章、第七章第 1、3、4 節 | LaTeX 規範、Frontmatter 欄位、`card_line` 規則、六張卡節奏、證據表格式 |
 | `DESIGN.md` 第二章第 3 節、第五章 | 封面卡 F 版型、論文頁版面與卡組丁 |
-| 本 Skill 全部 `references/`（共 11 份，含 `paper-page.md` 與 `card-wall.md`） | 各卡欄位、字數、範例與反例；論文頁與首頁卡片牆如何產生與驗證 |
+| 本 Skill 全部 `references/`（共 11 份，含 `paper-page.md` 與 `card-wall.md`；我的關注論文另讀 `references/focus/` 全部 7 份，並可略過 `card-02` 至 `card-06` 與 `diagram.md`） | 各卡欄位、字數、範例與反例；論文頁與首頁卡片牆如何產生與驗證 |
 | `wiki/papers/<slug>.md` 全文 | 卡片內容的唯一文字來源 |
 | `wiki/evidence/<slug>.md` 全文 | 數字與強斷言的唯一依據 |
 | `wiki/issues.md` 中本頁條目 | 是否有尚未修正的問題影響卡片 |
-| 範例 `wiki/cards/1982-hopfield-network.md`（群星）、`wiki/cards/2021-seediq-chinese-mt-you.md`（我的關注） | 完整格式範例；只看格式，**內容不得套用到其他論文** |
-| 參考網頁 `web/papers/1982-hopfield-network/index.html`、`2021-seediq-chinese-mt-you/index.html` | 上述兩份卡片檔實際做成論文頁的樣子（`python tools/build_paper_prototype.py <slug>` 產生）。開工前在瀏覽器打開看過，知道每個欄位最後出現在哪裡、多大；寫完自己那篇**必須**用同一指令建置並驗證（第五節第 7 步） |
+| 範例 `wiki/cards/1982-hopfield-network.md`（群星）、`wiki/cards/2026-hybrid-dictionary-rag-llm-paiwan-wang.md`（我的關注新六章） | 完整格式範例；只看格式，**內容不得套用到其他論文** |
+| 參考網頁 `web/papers/1982-hopfield-network/index.html`、`2026-hybrid-dictionary-rag-llm-paiwan-wang/index.html` | 上述兩份卡片檔實際做成論文頁的樣子（`python tools/build_paper_prototype.py <slug>` 產生）。開工前在瀏覽器打開看過，知道每個欄位最後出現在哪裡、多大；寫完自己那篇**必須**用同一指令建置並驗證（第五節第 7 步） |
 | 首頁 `web/index.html` 下方「群星檔案」與 `#my-constellation`「我的星系檔案」 | 封面卡在首頁卡片牆上的樣子（桌面 4 欄，右欄較窄時 3 欄或 2 欄；手機 2 欄；比論文頁 Card 1 小）。開工前以本機伺服器打開看過；寫完自己那篇**必須**以 `python tools/build_home.py --card <slug>` 放上牆並驗證（第五節第 7 步） |
 
 ## 四、卡片總覽
@@ -62,7 +64,9 @@ description: >-
 | Card 5 典範轉移 | 之後發生了什麼 | 論文頁 Card 4「後續」與 Card 5、Frontmatter 獎項 | [`references/card-05-revolution.md`](references/card-05-revolution.md) |
 | Card 6 Kairos | 跨領域的一句啟發 | 論文頁 Card 6 | [`references/card-06-kairos.md`](references/card-06-kairos.md) |
 
-檔案格式（區段、欄位名稱、分隔符號、公式與 SVG 寫法）見 [`references/file-format.md`](references/file-format.md)；用字、標點、字數計法與禁用詞見 [`references/style.md`](references/style.md)。
+我的關注論文之六章見 [`references/focus/README.md`](references/focus/README.md)。
+
+檔案格式（區段、欄位名稱、分隔符號、公式與 SVG 寫法；我的關注新六章見第七節）見 [`references/file-format.md`](references/file-format.md)；用字、標點、字數計法與禁用詞見 [`references/style.md`](references/style.md)。
 
 ## 五、作業流程
 
@@ -171,6 +175,7 @@ description: >-
 `python .agents/skills/paper-card-writer/scripts/check_cards.py [slug ...]`（Python 3.7 以上、只用標準函式庫，於倉庫根目錄執行）：
 
 * 不帶參數時檢查 `wiki/cards/` 全部檔案；`--missing` 另列出尚無卡片檔的論文。
+* 依區段自動判斷群星六段或我的關注新六章；我的關注論文仍為舊六段時報 WARN，群星論文用新六章報 ERROR。
 * 檢查項目：區段與欄位是否齊全且依序、每個欄位的字數上限、封面斷行與 `card_line` 是否一致、`title_zh` 短名與導語長度、禁用詞與 Emoji、半形標點、Card 3 公式是否逐字出自論文頁（無公式模式：論文頁確實沒有區塊公式、理由欄格式）、示意圖 SVG 的元素與屬性白名單與標籤、Card 4 數字是否出現在證據表且附來源位置、Card 5 年份順序與出處作者是否出現在論文頁（新論文模式：發表兩年內、本篇列附位置且年份等於發表年、註記寫明出自本篇；一般模式不得全部出自本篇）、我的關注之研究類型欄位、跨檔重複句。
 * ERROR 須修正；WARN 為啟發式提醒，須人工判斷。腳本只能檢查形式與可機械比對的部分，**不能代替第五節第 8 步的人工複核**。
 

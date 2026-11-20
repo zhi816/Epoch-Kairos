@@ -32,11 +32,22 @@ SPEC = {
     'Card 5｜典範轉移': [('模式', 0, 1), ('標題', 1, 1), ('里程碑', 2, 5), ('註記', 1, 1)],
     'Card 6｜Kairos': [('結語', 1, 1), ('轉變', 1, 1)],
 }
+# 我的關注新六章（2026-11-20 使用者決定；references/focus/）：快速看懂流程、決定要不要拿來報告。群星仍用上面六段。
+V2_SECTIONS = ['封面', '02｜要解決的問題', '03｜方法流程', '04｜資料與實驗', '05｜結果', '06｜限制與可用性']
+V2_SPEC = {
+    '封面': [('封面斷行', 1, 1), ('封面標題', 0, 1), ('研究類型', 0, 1), ('速覽', 4, 5)],
+    '02｜要解決的問題': [('對照', 2, 3), ('缺口', 1, 1), ('想法', 1, 1)],
+    '03｜方法流程': [('輸入', 1, 1), ('步驟', 2, 4), ('輸出', 1, 1), ('公式', 0, 1)],
+    '04｜資料與實驗': [('項目', 3, 4)],
+    '05｜結果': [('模式', 1, 1), ('對照組', 0, 1), ('指標', 0, 2), ('結論', 0, 3), ('註記', 1, 1)],
+    '06｜限制與可用性': [('限制', 1, 1), ('留意', 0, 1), ('公開', 1, 1), ('報告', 1, 1)],
+}
+V2_OPTIONAL_COUNT = {('05｜結果', '對照組'), ('05｜結果', '指標'), ('05｜結果', '結論')}   # 依模式另行檢查筆數
 HEADER_KEYS = ['論文頁', '證據表', '撰寫者', '最後核對']
 MATH_OK = {('Card 3｜突破原理', '說明'), ('Card 4｜決定性數據', '數字'), ('Card 4｜決定性數據', '結論')}
-NO_TEXT_CHECK = {('Card 3｜突破原理', '公式')}
+NO_TEXT_CHECK = {('Card 3｜突破原理', '公式'), ('03｜方法流程', '公式')}
 SOURCE_FIELDS = {('Card 5｜典範轉移', '里程碑'), ('Card 4｜決定性數據', '數字'), ('Card 4｜決定性數據', '結論'), ('Card 3｜突破原理', '圖來源'),
-                 ('Card 3｜突破原理', '無公式理由')}
+                 ('Card 3｜突破原理', '無公式理由'), ('05｜結果', '指標'), ('05｜結果', '結論')}
 # Card 3 無公式模式：「公式」填「無」，「無公式理由」以下列其一開頭（card-03-secret.md 第四節）
 NO_FORMULA_REASONS = ('原文無公式：', '原文僅有評估指標公式：', '原文僅有資料處理公式：')  # card-03-secret.md 第四節第 5 條
 # Card 5 新論文模式只適用於發表兩年內之論文（card-05-revolution.md 第六節）
@@ -402,7 +413,7 @@ def parse_card(path, slug):
             continue
         if line.startswith('#'):
             m = re.match(r'^## (.+)$', line)
-            if not m or m.group(1) not in SECTIONS:
+            if not m or (m.group(1) not in SECTIONS and m.group(1) not in V2_SECTIONS):
                 report('ERROR', path, i, '未定義的標題：%s' % line)
                 continue
             sec = m.group(1)
@@ -452,14 +463,22 @@ def check_card(path, slug, all_cards):
     for k in ('撰寫者', '最後核對'):
         if k in header and not re.search(r'（.+）.*\d{4}-\d{2}-\d{2}$', header[k][0]):
             report('ERROR', path, header[k][1], '「%s」須寫成「執行代理（模型版本），YYYY-MM-DD」' % k)
-    if order != [s for s in SECTIONS if s in order] or set(order) != set(SECTIONS):
-        missing = [s for s in SECTIONS if s not in order]
+    v2 = any(s in V2_SECTIONS[1:] for s in order)
+    secs, specs = (V2_SECTIONS, V2_SPEC) if v2 else (SECTIONS, SPEC)
+    if v2 and any(s in SECTIONS[1:] for s in order):
+        report('ERROR', path, 1, '新舊區段混用：我的關注新六章（02｜要解決的問題 等）不得與 Card 2 至 6 舊區段並存')
+    if v2 and fm.get('my_focus') is not True:
+        report('ERROR', path, 1, '新六章（02｜要解決的問題 等）只用於我的關注論文（my_focus: true）；群星論文用 Card 2 至 6')
+    if not v2 and fm.get('my_focus') is True:
+        report('WARN', path, 1, '我的關注論文尚未改用新六章（references/focus/）；改寫進度見 wiki/todo.md')
+    if order != [s for s in secs if s in order] or set(order) != set(secs):
+        missing = [s for s in secs if s not in order]
         report('ERROR', path, 1, '六個區段須齊全且依序排列' + ('；缺少：' + '、'.join(missing) if missing else ''))
 
     vals = {}
-    for sec in SECTIONS:
+    for sec in secs:
         fields = sections.get(sec, [])
-        spec = SPEC[sec]
+        spec = specs[sec]
         names = [s[0] for s in spec]
         last = -1
         for key, value, ln in fields:
@@ -477,7 +496,7 @@ def check_card(path, slug, all_cards):
             vals.setdefault((sec, key), []).append((value, ln))
         for key, lo, hi in spec:
             n = len(vals.get((sec, key), []))
-            if not lo <= n <= hi and not (sec == 'Card 4｜決定性數據' and key in ('數字', '結論')):
+            if not lo <= n <= hi and not (sec == 'Card 4｜決定性數據' and key in ('數字', '結論')) and (sec, key) not in V2_OPTIONAL_COUNT:
                 report('ERROR', path, 1, '%s「%s」須有 %s 筆，目前 %d 筆' % (sec, key, str(lo) if lo == hi else '%d 至 %d' % (lo, hi), n))
 
     one = lambda sec, key: (vals.get((sec, key)) or [('', 1)])[0]
@@ -522,6 +541,8 @@ def check_card(path, slug, all_cards):
         if any(width(r) <= 2 for r in rows if r) and len(rows) > 1:
             report('WARN', path, ln, '封面斷行有只剩一到兩字的行，請確認是否能更平均')
     lead, ln = one('封面', '導語')
+    if not v2 and not lead:
+        pass  # 筆數錯誤已於上方報告
     if lead:
         limit(path, ln, '導語', lead, 60)
         if not lead.endswith('。'):
@@ -543,6 +564,9 @@ def check_card(path, slug, all_cards):
         report('ERROR', path, ln, '只有我的關注且 focus_languages 為空時才可填「研究類型」')
     if study:
         limit(path, ln, '研究類型', study, 6)
+    if v2:
+        check_v2(path, vals, one, paper, evidence, all_cards)
+        return
 
     # ---------- Card 2
     s = 'Card 2｜世紀瓶頸'
@@ -754,6 +778,126 @@ def check_card(path, slug, all_cards):
             limit(path, ln, '轉變的後半', b, 6)
 
     for key in (('Card 2｜世紀瓶頸', '標題'), ('Card 2｜世紀瓶頸', '結語'), ('Card 5｜典範轉移', '標題'), ('Card 6｜Kairos', '結語')):
+        value, ln = one(*key)
+        if value:
+            all_cards.setdefault(key, []).append((value, path, ln))
+
+
+def check_v2(path, vals, one, paper, evidence, all_cards):
+    """我的關注新六章之欄位檢查（references/focus/ 與 file-format.md 第七節）。"""
+    def parts_of(sec, key, n, limits, label):
+        out = []
+        for value, ln in vals.get((sec, key), []):
+            parts = split_parts(path, ln, '%s「%s」' % (label, key), value, n)
+            if not parts:
+                continue
+            for (name, lim), part in zip(limits, parts):
+                if lim:
+                    limit(path, ln, '%s「%s」%s' % (label, key, name), part, lim)
+            out.append((parts, ln))
+        return out
+
+    def no_first_person(sec, key, label):
+        for value, ln in vals.get((sec, key), []):
+            if re.search(r'我|碩論|碩士論文', value):
+                report('ERROR', path, ln, '%s「%s」不得使用第一人稱或提及碩論' % (label, key))
+
+    # 封面：速覽
+    rows = parts_of('封面', '速覽', 2, [('名稱', 3), ('內容', 16)], '封面')
+    names = [p[0] for p, _l in rows]
+    if rows and '公開' not in names:
+        report('ERROR', path, rows[0][1], '封面「速覽」須有一列「公開」（資料、程式是否公開）')
+    if rows and names[-1] != '公開':
+        report('ERROR', path, rows[-1][1], '封面「速覽」最後一列須為「公開」')
+    if rows and '方法' not in names:
+        report('WARN', path, rows[0][1], '封面「速覽」沒有「方法」列，請確認')
+    if len(set(names)) != len(names):
+        report('ERROR', path, rows[0][1] if rows else 1, '封面「速覽」名稱不得重複')
+
+    # 02
+    s = '02｜要解決的問題'
+    for key, lim in (('對照', 30), ('缺口', 32)):
+        for parts, ln in parts_of(s, key, 2, [('名稱', 5), ('說明', lim)], '02'):
+            if key == '對照' and parts[0] not in paper:
+                report('WARN', path, ln, '02 對照名稱「%s」在論文頁中找不到，名稱須是論文頁提到的做法或資源' % parts[0])
+    v, ln = one(s, '想法')
+    if v:
+        limit(path, ln, '02「想法」', v, 20)
+        if not v.endswith('。'):
+            report('ERROR', path, ln, '02「想法」須以全形句號結尾')
+        if v.startswith(('這篇', '本篇')):
+            report('ERROR', path, ln, '02「想法」前面網頁會自動加「這篇的想法：」，不要再寫「這篇」')
+    no_first_person(s, '想法', '02')
+
+    # 03
+    s = '03｜方法流程'
+    v, ln = one(s, '輸入')
+    if v:
+        limit(path, ln, '03「輸入」', v, 12)
+    v, ln = one(s, '輸出')
+    if v:
+        limit(path, ln, '03「輸出」', v, 14)
+    parts_of(s, '步驟', 2, [('名稱', 8), ('說明', 22)], '03')
+    f, ln = one(s, '公式')
+    formulas = wiki_formulas(paper)
+    if f:
+        if '$' in f or CJK.search(f) or 'aligned' in f or '\\\\' in f:
+            report('ERROR', path, ln, '03 公式不得加 $、不得含中文、aligned 或換行')
+        if len(f) > 70:
+            report('WARN', path, ln, '03 公式原始碼 %d 字元，超過 70，手機上可能需要捲動' % len(f))
+        if norm_tex(f) not in formulas:
+            report('ERROR', path, ln, '03 公式須逐字取自論文頁的區塊公式（或 aligned 其中一行）')
+    elif formulas:
+        report('WARN', path, 1, '論文頁有區塊公式，03 可放一條表達核心步驟的公式（references/focus/03-method.md）')
+
+    # 04
+    parts_of('04｜資料與實驗', '項目', 2, [('名稱', 5), ('說明', 30)], '04')
+
+    # 05
+    s = '05｜結果'
+    mode, ln = one(s, '模式')
+    groups, metrics, concl = vals.get((s, '對照組'), []), vals.get((s, '指標'), []), vals.get((s, '結論'), [])
+    if mode not in ('對照', '結論'):
+        report('ERROR', path, ln, '05「模式」只能是「對照」或「結論」')
+    elif mode == '對照':
+        if concl:
+            report('ERROR', path, concl[0][1], '對照模式不得有「結論」')
+        if len(groups) != 1:
+            report('ERROR', path, ln, '對照模式須有 1 列「對照組」')
+        if not 1 <= len(metrics) <= 2:
+            report('ERROR', path, ln, '對照模式須有 1 或 2 列「指標」，目前 %d 列' % len(metrics))
+        parts_of(s, '對照組', 2, [('基準', 8), ('本篇', 8)], '05')
+        for parts, mln in parts_of(s, '指標', 5, [('名稱', 8), ('說明', 18), ('基準值', 11), ('本篇值', 11), ('來源位置', 40)], '05'):
+            if not SRC_MARK.search(parts[4]):
+                report('ERROR', path, mln, '05 指標來源位置須寫出頁、表、圖或節')
+            for val in parts[2:4]:
+                for n in re.findall(r'\d+(?:\.\d+)?', plain(val)):
+                    if (len(n) >= 2 or '.' in n) and evidence and n not in evidence:
+                        report('ERROR', path, mln, '05 數字「%s」在證據表中找不到；數字只能取自證據表' % n)
+    else:
+        if groups or metrics:
+            report('ERROR', path, ln, '結論模式不得有「對照組」或「指標」')
+        if not 2 <= len(concl) <= 3:
+            report('ERROR', path, ln, '結論模式須有 2 或 3 條「結論」，目前 %d 條' % len(concl))
+        for parts, cln in parts_of(s, '結論', 2, [('內容', 26), ('來源位置', 40)], '05'):
+            if not SRC_MARK.search(parts[1]):
+                report('ERROR', path, cln, '05 結論來源位置須寫出頁、表、圖或節')
+            for n in re.findall(r'\d+(?:\.\d+)?', plain(parts[0])):
+                if (len(n) >= 2 or '.' in n) and evidence and n not in evidence:
+                    report('ERROR', path, cln, '05 數字「%s」在證據表中找不到；數字只能取自證據表' % n)
+    v, ln = one(s, '註記')
+    if v:
+        limit(path, ln, '05「註記」', v, 30)
+
+    # 06
+    s = '06｜限制與可用性'
+    for key in ('限制', '留意', '公開', '報告'):
+        v, ln = one(s, key)
+        if v:
+            limit(path, ln, '06「%s」' % key, v, 30)
+        no_first_person(s, key, '06')
+
+    for key in (('02｜要解決的問題', '想法'), ('06｜限制與可用性', '報告')):
         value, ln = one(*key)
         if value:
             all_cards.setdefault(key, []).append((value, path, ln))

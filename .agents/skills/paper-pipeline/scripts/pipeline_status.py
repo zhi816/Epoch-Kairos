@@ -309,7 +309,8 @@ def check(slug, ctx):
 
     # S4 論文頁
     why = []
-    if not re.search(r'(?m)^> 「', page):
+    # 我的關注新六章（01 一句話看懂）不放開頭引言（paper-page-template.md 第一節）
+    if not re.search(r'(?m)^## Card 1 ｜ 一句話看懂', page) and not re.search(r'(?m)^> 「', page):
         why.append('標題下缺開頭引言（> 「……」）')
     for n in range(1, 7):
         if not re.search(r'(?m)^## Card %d ｜' % n, page):
