@@ -2721,3 +2721,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2026-tokenizations-austronesian-lms-lumbantobing` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。改寫由 DeepSeek Harness（DeepSeek V4.1 Flash）擔任作者，於獨立 worktree 進行；作者逾時致審查未執行，改由總指揮全頁回原文核對：英語 TPC 之 0.63 與 0.2–0.25 原文正文未給數值，卡片刪除該列、論文頁標明依 Fig. 2 判讀，GPT-2 地方語 TPC 改依原文寫為與音節分詞相近；卡片 05 指標說明與 06 限制同步改寫。登記並修正 EK-232（原頁「已失落」「零樣本」「神經分詞」等原文沒有之說法）。
+
+## [2026-11-20 20:43] update | 完成我的關注 28 篇改寫為新六章 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：完成 TD-033。我的關注 28 篇論文頁與卡片檔皆已改為新六章（各篇一個提交，見前列日誌）；最後 4 篇由 DeepSeek Harness 於獨立 worktree 改寫、Command Code 之 MiniMax 與 GLM 審查，總指揮回原文核對後收回。`check_cards.py` 全庫 ERROR 0，`build_home.py --check` 與建置結果一致。自 `wiki/todo.md` 刪除 TD-033。
