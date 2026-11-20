@@ -2566,3 +2566,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依使用者指示，我的關注論文之卡片與論文頁長文改為「一句話看懂、要解決的問題、方法流程、資料與實驗、結果、限制與可用性」六章，以便快速看懂流程、決定是否拿來報告；群星不變。規範：`paper-card-writer` 新增 `references/focus/`（總覽與六章細則），`SKILL.md` 加分流與第二節第 5、13 條修訂，`file-format.md` 新增第七節，`card-06-kairos.md` 註記；`paper-pipeline` 之 `paper-page-template.md` 加我的關注新六章骨架；`AGENTS.md` 第七章第 3 節、`DESIGN.md` 第五章第 4 節與版本歷程同步。工具：`check_cards.py` 依區段判斷新舊格式並檢查新六章欄位（我的關注仍為舊格式報 WARN），`build_paper_prototype.py` 與 `tools/paper_template.html` 新增新六章之卡片（速覽、編號流程、基準對照）與長文樣式並檢查卡片檔與論文頁章節一致，`pipeline_status.py` 不再要求新六章之開頭引言。範例：F.07 `2026-hybrid-dictionary-rag-llm-paiwan-wang` 之卡片檔與論文頁改寫為新六章（內容取自原論文頁與證據表，未新增原文以外之事實；舊 Card 6 個人研究映射移至 06 末「延伸想法」），證據表「位置」欄改為新章。模板變更故 53 篇論文頁全部重建（ERROR 0）；`check_cards.py` ERROR 0（WARN 43，其中 27 條為尚未改寫之我的關注）；`lint_wiki.py` ERROR 0；`build_home.py --check` 一致；`verify_page.js` 於 F.07 與 Hopfield 皆 PASS。新增 TD-033：其餘 27 篇逐篇改寫。
+
+## [2026-11-20 15:49] update | 我的關注新六章改寫：Xia 等 2019 泛化資料增強 | #自然語言處理 #深度學習 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2019-generalized-data-augmentation-xia` 之論文頁、卡片檔改為我的關注新六章（刪開頭引言；01 白話摘要與速覽、02 三種既有做法、03 四步流程並放 Procrustes 目標式、04 資料與實驗、05 表 2 與作者歸納、06 限制與可用性及原 Card 5 之三筆後續研究，原 Card 6 移至延伸想法）。回原文抽查表 2 第 1、12 列（p. 5791）、§1 之 1.5 至 8 BLEU、§4.1 資料、§7 未來工作，皆相符；另發現 p. 5786 註 1 程式碼公開於 GitHub 而論文頁未記，補記並登記 EK-228（fixed），證據表新增兩列、「位置」欄改為新章。focus/06-usability.md 與 README 補充後續研究之放法與改寫時抽查。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。

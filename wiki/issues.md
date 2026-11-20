@@ -1245,3 +1245,9 @@
 - **來源**：[Jia 等（2026）*Science* 391(6781):eads9530](https://doi.org/10.1126/science.ads9530)（PubMed 41505557 摘要）；[Feng 等（2025）*Patterns* 6(10):101371](https://doi.org/10.1016/j.patter.2025.101371)；[He 等（2026）*AAAI* 40(1):354–362](https://doi.org/10.1609/aaai.v40i1.36997)；[Zhang（2026）*Drug Development Research* 87(5):e70351](https://doi.org/10.1002/ddr.70351)。
 - **發現於**：2026-11-15 撰寫 `2023-drugclip` 卡片前回第一手來源抽查，Antigravity by Google DeepMind（Gemini 4 Hydrogen）。
 - **處理**：2026-11-15，Antigravity by Google DeepMind（Gemini 4 Hydrogen）。更正 `wiki/papers/2023-drugclip.md` Card 4「後續領域關鍵證據」，以 Jia 等（2026）*Science* 實測 NET（$15\%$）與 TRIP12（$17.5\%$）取代無出處之 SERT／多巴胺受體說法，並補入 Feng 等（2025）、He 等（2026）與 Zhang（2026）共四筆附 DOI 之後續研究，同步補登於 `wiki/evidence/2023-drugclip.md`。
+
+### EK-228 | fixed | papers/2019-generalized-data-augmentation-xia.md | 公開程度（原 Card 5、Card 6） | 原文不符
+- **問題**：原文第 1 頁註 1 寫明程式碼公開（"Code is available at https://github.com/xiamengzhou/DataAugForLRL"），論文頁與證據表均未記載，讀者會以為未公開。
+- **來源**：[原文 PDF](../raw/my-focus/英文論文/Generalized%20Data%20Augmentation%20for%20Low-Resource%20Translation_P19-1579.pdf)，p. 5786 註 1。
+- **發現於**：2026-11-20 改寫為我的關注新六章時回原文抽查，Claude Code by Anthropic（Claude Opus 5.5）。
+- **處理**：2026-11-20，Claude Code by Anthropic（Claude Opus 5.5）。論文頁 01 速覽與 06 公開程度補記程式碼公開，證據表新增一列。
