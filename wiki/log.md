@@ -2706,3 +2706,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2026-formosanmt-parallel-corpus-scheppat` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。改寫由 DeepSeek Harness（DeepSeek V4.1 Flash）擔任作者，Command Code 之 MiniMax M3.1 Flash 與 GLM-5.3 Flash 審查兩輪，於獨立 worktree 進行；總指揮回原文核對後修正本頁範圍之語言數（16 個語言名、15 個代碼，雅美語不屬臺灣南島語群）、§3.1 共享特徵之主語限於臺灣南島語群，卡片 05 改以白話標示對照組並註明阿美語→英語從頭訓練反而較高。補記原頁漏寫之 mBART 與 GPT-5 初步實驗、分詞器兩條路徑與 JSON 報告、倫理考量與資料授權。登記並修正 EK-233。
+
+## [2026-11-20 20:42] update | 我的關注新六章改寫：Rao 2026 MALM 過濾回譯 | #人工智慧 #深度學習 #自然語言處理 #計算語言學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2026-malm-backtranslation-indic-mt-rao` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。改寫由 DeepSeek Harness（DeepSeek V4.1 Flash）擔任作者，Command Code 之 MiniMax M3.1 Flash 與 GLM-5.3 Flash 審查兩輪，於獨立 worktree 進行；總指揮回原文核對表 3、表 5 與 §5 排名後，將表 5 說明改為不引用卡片之自足句並補出處、改正一處第一人稱、卡片 02 缺口改名「缺自建篩法」、卡片 05 註記補「阿薩姆語反降」、證據表第 14 列位置改為 Card 5、Card 6。作者回報之表 3 下界錯誤經核對不成立（博多語為 0.00%），未採用。修正 EK-226，verification 改為 verified。
