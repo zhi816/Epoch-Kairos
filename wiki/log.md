@@ -2711,3 +2711,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2026-malm-backtranslation-indic-mt-rao` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。改寫由 DeepSeek Harness（DeepSeek V4.1 Flash）擔任作者，Command Code 之 MiniMax M3.1 Flash 與 GLM-5.3 Flash 審查兩輪，於獨立 worktree 進行；總指揮回原文核對表 3、表 5 與 §5 排名後，將表 5 說明改為不引用卡片之自足句並補出處、改正一處第一人稱、卡片 02 缺口改名「缺自建篩法」、卡片 05 註記補「阿薩姆語反降」、證據表第 14 列位置改為 Card 5、Card 6。作者回報之表 3 下界錯誤經核對不成立（博多語為 0.00%），未採用。修正 EK-226，verification 改為 verified。
+
+## [2026-11-20 20:42] update | 我的關注新六章改寫：Macayan 2026 達悟語－他加祿語翻譯 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2026-tao-filipino-nmt-macayan` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。改寫由 DeepSeek Harness（DeepSeek V4.1 Flash）擔任作者，Command Code 之 MiniMax M3.1 Flash 與 GLM-5.3 Flash 審查兩輪，於獨立 worktree 進行；總指揮回原文核對表 1 後，修正證據表三列之位置欄（巴丹語群改 Card 2、三指標改 Card 4、Card 5、作者結論改 Card 5），並補列各語言聖經版本一列。
