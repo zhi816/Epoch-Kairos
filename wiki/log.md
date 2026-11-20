@@ -2626,3 +2626,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2025-atayalic-oov-enumeration-yang` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 4 已知詞與未知詞結果移至 05，原 Card 5 落差與中文語意特徵條件移至 06，原 Card 6 前兩點移至延伸想法（上限分析併入 06「適合報告」）；原文無公式。05 以賽德克語已知詞與兩個未知詞測試集對照。回原文抽查摘要與第五章（90.50%、90.88%、93.09%、63.88%、72.12%、仍有不小的挑戰）、§4.2.1（94.08%＝3,989/4,240、4,374/4,637）、表 15（524、172），皆相符；原文未提資料或程式是否公開。證據表新增三列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 16:16] update | 我的關注新六章改寫：Lin 等 2025 FormosanBench 臺灣南島語評測基準 | #自然語言處理 #計算語言學 #人工智慧
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2025-formosanbench-llm-benchmark-lin` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 4 三項任務結果移至 05，原 Card 5 結論併入 05、限制與 Wiki 註記移至 06，原 Card 6 前兩點移至延伸想法（分數尺度併入 06「要留意」）；原文無公式。05 以語音辨識零樣本最佳與微調後之 WER 對照（越低越好），註記交代翻譯分數。回原文抽查 p. 16527 GitHub 網址、表 2（0.1506）、§6.1（不到 40%、少於 10%）、表 4（0.522→0.296、0.937→0.315）、Limitations，皆相符。證據表新增一列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；build_home --check 一致；verify_page.js PASS。
