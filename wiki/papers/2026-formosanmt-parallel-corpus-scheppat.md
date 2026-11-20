@@ -13,6 +13,7 @@ status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "international"
+focus_direction: "data-corpus"
 focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.63317/3ut33xim33nt"
 hook: "波士頓學院等團隊於 LREC 2026 發布 FormosanMT：涵蓋臺灣 15 種原住民族語言、近 50 萬句對之族語與華語、英語平行語料，並公開抽取與過濾腳本、相容 NLLB 之繁體中文分詞器，以及雙向基準模型。"

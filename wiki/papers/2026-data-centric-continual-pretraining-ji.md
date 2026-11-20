@@ -8,6 +8,8 @@ domain: "ai"
 domain_tags: ["#人工智慧", "#深度學習", "#自然語言處理", "#計算語言學"]
 my_focus: true
 focus_role: "report"
+focus_tags: ["llm-assisted"]
+focus_direction: "data-corpus"
 focus_languages: []
 authors: "Shaoxiong Ji, Zihao Li, Jaakko Paavola, Hengyu Luo, Jörg Tiedemann"
 venue: "Findings of the Association for Computational Linguistics: ACL 2026, 18776-18807"

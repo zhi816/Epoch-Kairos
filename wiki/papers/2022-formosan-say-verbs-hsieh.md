@@ -13,7 +13,8 @@ concepts: ["formosan-computational-linguistics"]
 status: "published"
 verification: "partial"
 my_focus: true
-focus_role: "taiwan-linguistics"
+focus_role: "taiwan-research"
+focus_direction: "linguistics-eval"
 focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.6710/JTLL.202204_17(1).0002"
 hook: "比較 16 種台灣南島語的「說」動詞，發現它們都從「說」延伸到「想」，且其中 12 種同時兼有「如此、像、做或去」等語義；作者據此主張這些「說」動詞源自同時具有「說」與「做」語義的施為動詞。"

@@ -13,6 +13,8 @@ status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "report"
+focus_tags: ["llm-assisted"]
+focus_direction: "transfer-align"
 focus_languages: ["泰盧固語", "吉爾吉斯語", "康納達語", "泰語", "越南語", "僧伽羅語", "匈牙利語"]
 doi_url: "https://arxiv.org/abs/2610.01921"
 hook: "將混合專家（MoE）模型中間層路由器的序列平均激活權重作為序列級表徵，於持續預訓練階段以 KL 散度輔助損失對齊平行句對，在 4 個開源 MoE 模型與 7 種語言共 14 組設定中，13 組優於純語言模型基線且最高提升 2.1 平均分，同時提升底層隱狀態相似度。"

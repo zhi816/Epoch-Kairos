@@ -13,6 +13,7 @@ status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "senior-thesis"
+focus_direction: "morphology"
 focus_languages: ["排灣語", "布農語"]
 hook: "把泛泰雅語的構詞解析與翻譯做法移植到排灣語與布農語：構詞解析另加排灣語重疊與布農語音韻規則；翻譯則疊加預訓練嵌入、多語言、遷移式學習、正弦位置嵌入與 BERT，但未使用構詞資訊。"
 card_line: "拆解排灣語、布農語的詞，並與中文互譯"

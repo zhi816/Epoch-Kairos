@@ -13,6 +13,8 @@ status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "llm-assisted"
+focus_tags: ["taiwan-research"]
+focus_direction: "llm-rag"
 focus_languages: ["排灣語"]
 doi_url: "https://doi.org/10.3390/socsci15010007"
 hook: "以臺灣排灣族傳統生態知識（TEK）與五年祭儀式為實證基礎，將 Nonaka SECI 擴展為四層知識矩陣與 12 階段雙向循環模型，並設計五層知識管理架構（LKM）與 Plan–Act–Observe–Adjust 代理迴圈，提出兼顧部落數據主權與情境推理的 AI 文化復振系統設計。"

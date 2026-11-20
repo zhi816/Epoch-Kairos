@@ -13,6 +13,7 @@ status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "senior-thesis"
+focus_direction: "transfer-align"
 focus_languages: ["泰雅語", "賽德克語", "太魯閣語"]
 hook: "把泰雅語、賽德克語、太魯閣語的語料合併，以共享 BPE 子詞與語言別標籤訓練多語言 Transformer，再以馬來語、印尼語父模型做遷移式學習，在交叉驗證中六個翻譯方向全數提升。"
 card_line: "合併泰雅、賽德克、太魯閣語，一起訓練翻譯"

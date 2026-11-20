@@ -14,6 +14,8 @@ status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "llm-assisted"
+focus_tags: ["taiwan-research"]
+focus_direction: "llm-rag"
 focus_languages: ["排灣語"]
 doi_url: "https://doi.org/10.3390/engproc2025120052"
 hook: "臺東大學團隊於 ICKII 2025 / Eng. Proc. 提出排灣語－華語混合翻譯管線：以記憶體 JSON 雜湊表詞典做預翻譯（未命中則 Fallback 至 Qdrant 向量檢索），再交由指令微調 LLM（GPT-4o mini、Llama 3.1、Gemma 3、DeepSeek-R1-Distill）進行語序重構與後編輯，在 250 句排灣語譯華語測試集上，使 BLEU 由 1.7–4.4 提高到 40.8–51.9。"

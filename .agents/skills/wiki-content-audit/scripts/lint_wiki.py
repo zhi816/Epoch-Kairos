@@ -155,14 +155,20 @@ def load_schema(root):
             if m:
                 whitelist[m.group(1)] = set(re.findall(r'`(#[^`]+)`', m.group(2)))
     roles = set()
-    m = re.search(r'\*\*`focus_role`\*\*(.*?)\*\*`focus_languages`\*\*', text, re.S)
+    m = re.search(r'\*\*`focus_role`\*\*(.*?)\*\*`focus_tags`\*\*', text, re.S)
     if m:
         roles = set(re.findall(r'^>\s*\|\s*`([a-z-]+)`\s*\|', m.group(1), re.M))
+    directions = set()
+    m = re.search(r'\*\*`focus_direction`\*\*(.*?)\*\*`focus_languages`\*\*', text, re.S)
+    if m:
+        directions = set(re.findall(r'^>\s*\|\s*`([a-z-]+)`\s*\|', m.group(1), re.M))
     if not whitelist:
         report('ERROR', 'AGENTS.md', 0, '無法從第八章讀出標籤白名單表格')
     if not roles:
         report('ERROR', 'AGENTS.md', 0, '無法從第七章第 1 節讀出 focus_role 鍵值表格')
-    return whitelist, roles
+    if not directions:
+        report('ERROR', 'AGENTS.md', 0, '無法從第七章第 1 節讀出 focus_direction 鍵值表格')
+    return whitelist, roles, directions
 
 
 # ---------------------------------------------------------------- content checks
@@ -374,7 +380,7 @@ def main():
     args = ap.parse_args()
 
     root = repo_root()
-    whitelist, roles = load_schema(root)
+    whitelist, roles, directions = load_schema(root)
     domains = set(whitelist)
     all_tags = set().union(*whitelist.values()) if whitelist else set()
 
@@ -474,10 +480,27 @@ def main():
             if fm.get('focus_role') not in roles:
                 report('ERROR', rel, where.get('focus_role', where.get('my_focus', 1)),
                        'focus_role 須取第七章第 1 節之鍵值：' + str(fm.get('focus_role')))
+            if 'focus_tags' in fm:
+                ft = fm.get('focus_tags')
+                if not isinstance(ft, list):
+                    report('ERROR', rel, where.get('focus_tags', 1), 'focus_tags 須為陣列')
+                else:
+                    for t in ft:
+                        if t not in roles:
+                            report('ERROR', rel, where.get('focus_tags', 1),
+                                   'focus_tags 須取第七章第 1 節之角色鍵值：' + str(t))
+                        elif t == fm.get('focus_role'):
+                            report('ERROR', rel, where.get('focus_tags', 1),
+                                   'focus_tags 不得重複列出主分類 focus_role：' + str(t))
+            if fm.get('focus_direction') not in directions:
+                report('ERROR', rel, where.get('focus_direction', where.get('my_focus', 1)),
+                       'focus_direction 須取第七章第 1 節之優化方向鍵值：' + str(fm.get('focus_direction')))
             if not isinstance(fm.get('focus_languages'), list):
                 report('ERROR', rel, where.get('my_focus', 1), 'my_focus 為 true 時須有 focus_languages 陣列')
-        elif 'focus_role' in fm:
-            report('WARN', rel, where['focus_role'], 'my_focus 不為 true，卻填了 focus_role')
+        else:
+            for extra in ('focus_role', 'focus_tags', 'focus_direction'):
+                if extra in fm:
+                    report('WARN', rel, where[extra], 'my_focus 不為 true，卻填了 ' + extra)
         if fm.get('laureates') and fm.get('authors') and fm['laureates'] == fm['authors']:
             report('WARN', rel, where.get('laureates', 1), 'laureates 與 authors 相同；第七章規定此欄僅於兩者不同時填寫')
         for c in fm.get('concepts') or []:

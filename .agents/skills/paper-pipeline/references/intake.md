@@ -69,11 +69,14 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new
 | `raw/` 根目錄 | 群星 | `false` | 不填 |
 | `raw/my-focus/學長姐論文/` | 我的關注 | `true` | `senior-thesis` |
 | `raw/my-focus/報告論文題材/` | 我的關注 | `true` | `report` |
-| `raw/my-focus/台灣相關論文/` | 我的關注 | `true` | `taiwan-linguistics` |
+| `raw/my-focus/台灣相關論文/` | 我的關注 | `true` | `taiwan-research` |
 | `raw/my-focus/英文論文/` | 我的關注 | `true` | `international` |
 | `raw/my-focus/大模型輔助/` | 我的關注 | `true` | `llm-assisted` |
+| `raw/my-focus/每日推介/` | 我的關注 | `true` | `daily-picks` |
 
-* 分類優先序（2026-11-20 使用者確認）：核心屬於 LLM／RAG／Agentic AI 技術架構者，不限作者單位一律優先歸入 `raw/my-focus/大模型輔助/`；臺灣大專院校與學研機構（如中研院）之語言學及南島語評測論文歸入 `raw/my-focus/台灣相關論文/`；`raw/my-focus/每日推介/` 為自動排程下載區、`raw/my-focus/報告論文題材/` 維持用途分類、`raw/my-focus/學長姐論文/` 為海洋大學碩士論文。
+* 兼屬標籤與優化方向（2026-11-20 使用者確認）：
+  * `focus_tags`（選填）：可加註同時符合之其他角色類別（取同六個鍵值，不得與 `focus_role` 重複），例如臺灣機構之 LLM 論文歸入 `大模型輔助/` 時填 `focus_role: "llm-assisted"`、`focus_tags: ["taiwan-research"]`；報告題材中之 LLM 論文填 `focus_role: "report"`、`focus_tags: ["llm-assisted"]`；`每日推介/` 之 LLM 論文填 `focus_role: "daily-picks"`、`focus_tags: ["llm-assisted"]`。
+  * `focus_direction`（必填）：依翻譯優化或研究方向取 `AGENTS.md` 第七章第 1 節五值之一（`morphology` / `data-corpus` / `transfer-align` / `llm-rag` / `linguistics-eval`），決定「我的星系」環狀分團位置。
 
 群星論文出現在首頁星圖；我的關注論文出現在我的星系（`#my-constellation`），兩者的封面卡都上卡片牆（分屬群星檔案與我的星系檔案）。`focus_languages` 之寫法見 `paper-page-template.md` 第二節。
 

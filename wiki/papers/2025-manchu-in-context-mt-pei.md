@@ -13,6 +13,8 @@ status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "report"
+focus_tags: ["llm-assisted"]
+focus_direction: "llm-rag"
 focus_languages: ["滿語"]
 doi_url: "https://doi.org/10.18653/v1/2025.acl-long.429"
 hook: "以滿語譯英語逐一檢驗上下文翻譯的各項資源：高品質詞典與相似的平行例句最有幫助，語法書幾乎沒有幫助，思維鏈提示反而使分數下降；字母替換實驗顯示模型主要依賴上下文學習。"

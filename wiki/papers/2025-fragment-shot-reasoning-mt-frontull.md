@@ -13,6 +13,7 @@ status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "llm-assisted"
+focus_direction: "llm-rag"
 focus_languages: ["拉定語"]
 doi_url: "https://arxiv.org/abs/2505.22293"
 hook: "提出片段少樣本（Fragment-Shot）與樞紐片段（Pivoted Fragment-Shot）提示法：以 7 至 1 個詞的滑動視窗檢索平行句，大幅超越零樣本與隨機少樣本；在缺乏平行資料的拉定語變體間，推理模型（如 DeepSeek-R1）能透過義大利語樞紐進行多跳推理補償數據。"

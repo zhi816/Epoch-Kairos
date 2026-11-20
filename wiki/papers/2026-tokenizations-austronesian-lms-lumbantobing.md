@@ -13,6 +13,8 @@ status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "report"
+focus_tags: ["llm-assisted"]
+focus_direction: "morphology"
 focus_languages: ["印尼南島諸語"]
 doi_url: "https://arxiv.org/abs/2602.06998"
 hook: "借鏡印尼群島傳統音素音節文字（aksara / abugida）的消元音（virama）與複輔音書寫規則，建構僅 2,843 詞元的音節切分框架，在 NusaX 十種印尼南島語上以 ~0.4 穩定字元詞元比大幅降低碎片化，並使跨語言局部序列相似度較 GPT-2 BPE 平均高出約 21%。"

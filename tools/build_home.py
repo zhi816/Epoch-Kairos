@@ -83,8 +83,23 @@ DESK_TAG_ORDER = {
 # AI 論文最多（6 篇），但學科中心右側只剩約 215 單位，開口朝右會擠成一團；改朝右上，用上方與生醫之間的空處。
 DESK_OPEN = {'ai': 310}
 # focus_role 鍵值與名稱（AGENTS.md 第七章第 1 節）。
-ROLES = [('senior-thesis', '學長姐論文'), ('report', '報告題材'), ('taiwan-linguistics', '臺灣語言學'),
-         ('international', '國際文獻'), ('llm-assisted', '大模型輔助')]
+ROLES = [
+    ('senior-thesis', '學長姐論文'),
+    ('report', '報告題材'),
+    ('taiwan-research', '國內研究'),
+    ('international', '國際文獻'),
+    ('llm-assisted', '大模型LLM'),
+    ('daily-picks', '每日推介'),
+]
+# 我的星系五大翻譯優化／研究方向（AGENTS.md 第七章第 1 節、DESIGN.md 第四章）：
+# (key, 短名, 全名, 方位角, 10x10 SVG 路徑, 桌面中心, 桌面展開角)
+FOCUS_DIRS = [
+    ('morphology', '構詞與分詞', '構詞解析與分詞切分', 216, 'M1 1 H9 V9 H1 Z', (275, 285), 216),
+    ('data-corpus', '資料與語料', '資料增強與平行語料', 324, 'M5 0.6 L9.6 9.2 L0.4 9.2 Z', (725, 285), 324),
+    ('llm-rag', '大模型與檢索', '大模型推理與檢索輔助', 36, 'M5 0.4 L9.2 2.8 L9.2 7.2 L5 9.6 L0.8 7.2 L0.8 2.8 Z', (735, 595), 25),
+    ('transfer-align', '遷移與對齊', '跨語言遷移與表徵對齊', 90, 'M5 0.3 L9.7 5 L5 9.7 L0.3 5 Z', (500, 725), 90),
+    ('linguistics-eval', '語言與評測', '語言學本體與評測基準', 144, 'M0.8 5 A4.2 4.2 0 1 0 9.2 5 A4.2 4.2 0 1 0 0.8 5 Z', (265, 595), 155),
+]
 # 我的星系中心星：不對應任何 Wiki 頁面，只顯示名稱與狀態，不公開題目與內容（DESIGN.md 第四章、第八章第 13 項）。
 THESIS = {'name': '我的碩論', 'status': '進行中', 'statusEn': 'IN PROGRESS'}
 # 未針對特定語言之研究，於說明中顯示的研究類型。
@@ -474,63 +489,79 @@ def build_focus(P, C):
     keys = ['F', 'L'][:len(hubs)]
     con_key = dict(zip(hubs, keys))
 
-    def zone(f):
-        con = [con_key[c] for c in f.get('concepts', []) if c in con_key]
-        return 'B' if len(con) != 1 else con[0]
-
-    years = sorted({int(f['paper_year']) for f in fp.values()} | {2017})
-    y0, y1 = years[0], years[-1]
-
-    # 桌面（1000 x 920，樣稿 v5）：每年一條橫線，概念中心在左右兩側。
-    step = 702 / max(1, y1 - y0)
-    drow = {y: round(80 + (y - y0) * step) for y in range(y0, y1 + 1)}
-    dzone = {'F': (300, 170, 410), 'B': (500, 420, 580), 'L': (710, 590, 840)}
-    # 手機（1000 x H，原型 mobile-v2）：只排有論文的年份，概念中心在頂端。
-    mrow = {y: 250 + i * 110 for i, y in enumerate(years)}
-    mzone = {'F': (190, 60, 340), 'B': (500, 360, 640), 'L': (800, 660, 945)}
-    mh = mrow[y1] + 200
-
-    cells = {}
-    for s, f in fp.items():
-        cells.setdefault((int(f['paper_year']), zone(f)), []).append(s)
-    dpos, mpos = {}, {}
-    for (y, z), ss in cells.items():
-        ss.sort()
-        n = len(ss)
-        for i, (s, x) in enumerate(zip(ss, spread(n, dzone[z][0], 66, dzone[z][1], dzone[z][2]))):
-            dpos[s] = [round(x), drow[y] + ((7 if i % 2 else -7) if n > 1 else 0)]
-        for i, (s, x) in enumerate(zip(ss, spread(n, mzone[z][0], 86 if n <= 3 else 78, mzone[z][1], mzone[z][2]))):
-            mpos[s] = [round(x), mrow[y] + ((8 if i % 2 else -8) if n > 1 else 0)]
-
     roles = dict(ROLES)
-    papers = []
-    for s, f in sorted(fp.items(), key=lambda kv: (int(kv[1]['paper_year']), kv[0])):
+    dir_map = {k: (name, full, a, shape, dk, op) for k, name, full, a, shape, dk, op in FOCUS_DIRS}
+    for s, f in fp.items():
         if f.get('focus_role') not in roles:
-            raise SystemExit('%s 之 focus_role 不在五個鍵值內' % s)
+            raise SystemExit('%s 之 focus_role 不在六個鍵值內' % s)
+        for t in f.get('focus_tags') or []:
+            if t not in roles or t == f.get('focus_role'):
+                raise SystemExit('%s 之 focus_tags 無效或重複主分類：%s' % (s, t))
+        if f.get('focus_direction') not in dir_map:
+            raise SystemExit('%s 之 focus_direction 不在五個鍵值內' % s)
+
+    c_desk, c_mob = DESK['c'], (500, 500)
+    dir_dk = {k: list(dk) for k, _n, _f, _a, _sh, dk, _op in FOCUS_DIRS}
+    dir_mob = {k: [round(v) for v in pol(a, 220, c_mob)] for k, _n, _f, a, _sh, _dk, _op in FOCUS_DIRS}
+
+    # 兩個概念菱形置於內圈左右（桌面半徑 125、手機半徑 115）
+    con_dk = {k: [round(v) for v in pol(180 if k == 'F' else 0, 125, c_desk)] for k in keys}
+    con_mob = {k: [round(v) for v in pol(180 if k == 'F' else 0, 115, c_mob)] for k in keys}
+
+    # 桌面：論文依所屬優化方向中心向外展開，再以 relax_free 互相推開並避開中心、概念與方向中心
+    by_dir = {k: [] for k in dir_map}
+    for s, f in sorted(fp.items(), key=lambda kv: (-int(kv[1]['paper_year']), kv[0])):
+        by_dir[f['focus_direction']].append(s)
+
+    dpos, mpos = {}, {}
+    for k, _n, _f, mob_ang, _sh, dk, op in FOCUS_DIRS:
+        ss = by_dir[k]
+        n = len(ss)
+        if not n:
+            continue
+        offs = spread(n, 0, 32, -85, 85)
+        for i, s in enumerate(ss):
+            a = op + offs[i]
+            r = 108 if i % 2 == 0 else 152
+            dpos[s] = pol(a, min(r, reach(dk, a, PBOX)), dk)
+        moffs = spread(n, 0, 14, -28, 28)
+        for i, s in enumerate(ss):
+            mpos[s] = pol(mob_ang + moffs[i], 355 + (i % 2) * 55, c_mob)
+
+    def keep_near_dir(s, xy):
+        h = dir_dk[fp[s]['focus_direction']]
+        a = ang(*xy, c=h)
+        r = math.hypot(xy[0] - h[0], xy[1] - h[1])
+        return pol(a, min(max(r, 78), 215), h)
+
+    fixed_desk = [list(c_desk)] + list(con_dk.values()) + list(dir_dk.values())
+    relax_free(dpos, sorted(dpos), fixed_desk, 56, 54, PBOX, 400, keep=keep_near_dir)
+    relax(mpos, sorted(mpos), 72, 330, 465, 400)
+
+    papers = []
+    for s, f in sorted(fp.items(), key=lambda kv: (-int(kv[1]['paper_year']), kv[0])):
         venue = venue_of(f)
         papers.append(dict(
             slug=s, name=short_name(f['title_zh']), titleZh=f['title_zh'], title=f['title'], d=f['domain'],
-            year=int(f['paper_year']), role=f['focus_role'], langs=f.get('focus_languages') or [],
+            year=int(f['paper_year']), role=f['focus_role'], ftags=f.get('focus_tags') or [],
+            dir=f['focus_direction'], langs=f.get('focus_languages') or [],
             langText=langs_text(f, s), con=[con_key[c] for c in f.get('concepts', []) if c in con_key],
             venue=venue, years=years_line(f, venue), cardLine=f['card_line'], doi=f.get('doi_url', ''),
-            desk=dpos[s], mob=mpos[s]))
-    zcount = {'F': 0, 'B': 0, 'L': 0}
-    for f in fp.values():
-        zcount[zone(f)] += 1
+            desk=[round(dpos[s][0]), round(dpos[s][1])], mob=[round(mpos[s][0]), round(mpos[s][1])]))
+    dirs_out = [
+        dict(key=k, name=name, full=full, shape=shape, count=len(by_dir[k]), dk=dir_dk[k], hub=dir_mob[k])
+        for k, name, full, _a, shape, _dk, _op in FOCUS_DIRS
+    ]
     hub_out = []
     for c, k in zip(hubs, keys):
         name = C[c]['title_zh'] if c in C else c
         hub_out.append(dict(key=k, slug=c, name=name.split('與')[0], full=name,
                             count=sum(1 for p in papers if k in p['con']),
-                            desk=[95, 380] if k == 'F' else [905, 380], mob=[190, 70] if k == 'F' else [810, 70]))
-    cols = [dict(key='F', label='僅南島語', count=zcount['F']), dict(key='B', label='兩者交集', count=zcount['B']),
-            dict(key='L', label='僅低資源翻譯', count=zcount['L'])]
+                            desk=con_dk[k], mob=con_mob[k]))
     return dict(
-        hubs=hub_out, papers=papers, roles=[list(r) for r in ROLES], cols=cols, thesis=THESIS,
-        desk=dict(w=1000, h=920, rows=[[y, drow[y], y in years] for y in range(y0, y1 + 1)], now=866,
-                  thesisAt=[500, 866], colX={'F': 300, 'B': 500, 'L': 710}, colY=40),
-        mob=dict(w=1000, h=mh, rows=[[y, mrow[y], True] for y in years], now=mrow[y1] + 120,
-                 thesisAt=[500, mrow[y1] + 120], colX={'F': 190, 'B': 500, 'L': 810}, colY=205))
+        hubs=hub_out, dirs=dirs_out, papers=papers, roles=[list(r) for r in ROLES], thesis=THESIS,
+        desk=dict(w=DESK['w'], h=DESK['h'], c=list(c_desk)),
+        mob=dict(w=1000, h=1000, c=list(c_mob)))
 
 
 # ---------------------------------------------------------------- 卡片（首頁卡片牆與論文頁原型共用）
@@ -730,9 +761,10 @@ def build_wall(P, tag_dom, cards, protos, nums):
         line_html = ''.join('<span>%s</span>' % esc(x) for x in lines)
         if focus:
             head = roles.get(f.get('focus_role'), '')
+            all_roles = [head] + [roles[t] for t in (f.get('focus_tags') or []) if t in roles and t != f.get('focus_role')]
             color = 'focus'   # 我的關注卡不分學科，一律用 --color-focus（DESIGN.md 第二章第 3 節）
             label = '%s：%s。%s：%s，%s，%s，開啟論文頁' % (
-                title, f['card_line'], '研究語言' if f.get('focus_languages') else '研究類型', tag, years, head)
+                title, f['card_line'], '研究語言' if f.get('focus_languages') else '研究類型', tag, years, '、'.join(all_roles))
             win = '%s<span class="tag">%s</span><span class="rep"></span>' % (sky, esc(tag))
             attrs = 'class="wc focus" data-set="focus" hidden'
         else:

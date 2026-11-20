@@ -13,6 +13,7 @@ status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "senior-thesis"
+focus_direction: "morphology"
 focus_languages: ["泰雅語", "賽德克語", "太魯閣語"]
 hook: "以構詞與音韻規則窮舉詞根的各種變化來挑選候選詞根，再以成對比較的隨機森林分類器投票選出詞根；已知詞驗證資料正確率逾九成，真實未知詞則為 64% 至 72%。"
 card_line: "窮舉構詞變化，替沒見過的泰雅語群詞找詞根"

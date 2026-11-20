@@ -13,6 +13,7 @@ status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "report"
+focus_direction: "data-corpus"
 focus_languages: ["北薩米語"]
 doi_url: "https://doi.org/10.18653/v1/2024.findings-acl.768"
 hook: "以約 2.5 萬句平行語料的芬蘭語→北薩米語為例，比較回譯、標記回譯、正譯與語言模型先驗：充分訓練的基線即比前人高近 8 BLEU，最佳回譯模型達 41.75 BLEU，但各技術的效果隨測試領域而不同。"

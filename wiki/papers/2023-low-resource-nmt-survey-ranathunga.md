@@ -14,6 +14,7 @@ status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "international"
+focus_direction: "linguistics-eval"
 focus_languages: []
 doi_url: "https://doi.org/10.1145/3567592"
 hook: "整理低資源神經機器翻譯的技術：資料增強、無監督、半監督、多語言、遷移學習與零樣本翻譯，並以平行語料規模（建議以 50 萬句為參考，非硬性門檻）提出技術選擇流程圖。"

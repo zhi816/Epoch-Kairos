@@ -96,6 +96,8 @@ timeline_year: <同 paper_year>
 （刪除 laureates、honor 兩行）
 my_focus: true
 focus_role: "<依 intake.md 第四節第 3 點之資料夾對照>"
+focus_tags: []
+focus_direction: "<依 AGENTS.md 第七章第 1 節五大優化方向擇一>"
 focus_languages: ["<研究對象之低資源語言>"]
 ```
 
@@ -128,7 +130,9 @@ focus_languages: ["<研究對象之低資源語言>"]
 | `status` | 是 | 撰寫時一律 `"wiki"`；S8 產生 `web/papers/<slug>/index.html` 後改為 `"published"`（2026-11-10 起，`pipeline_status.py` 之 S8 會檢查） | 網頁尚未產生就先標 `published`（`lint_wiki.py` 報 ERROR）；網頁已產生卻仍為 `wiki` |
 | `verification` | 是 | 寫作時先填 `"unverified"`，S6 核對後依結果改為 `verified` 或 `partial` | 一寫完就標 `verified` |
 | `my_focus` | 是 | 依 `intake.md` 第四節第 3 點 | 依主題判斷 |
-| `focus_role` | 我的關注必填 | 依資料夾對照，五值擇一 | 依內容自行判斷 |
+| `focus_role` | 我的關注必填 | 依資料夾對照，六值擇一 | 依內容自行判斷 |
+| `focus_tags` | 我的關注選填 | 兼屬之其他角色鍵值（同六值，不重複 `focus_role`） | 重複填入 `focus_role` |
+| `focus_direction` | 我的關注必填 | 依研究／翻譯優化方向，五值擇一 | 漏填 |
 | `focus_languages` | 我的關注必填 | 研究所針對之低資源語言，以中文語言名書寫（`賽德克語`、`北薩米語`）；不列中文、英文等高資源或樞紐語言；同語族五種以上寫語族名（臺灣南島語寫 `臺灣南島諸語`）；綜述或不針對特定語言者填 `[]`（此時卡片檔須填「研究類型」） | 列入中文、英文；寫「原住民語」 |
 | `doi_url` | 有 DOI 必填 | `https://doi.org/<DOI>`；arXiv 寫 arXiv 網址；學位論文無 DOI 者刪除此行 | 指向非本篇之版本 |
 | `key_papers` | 獎項表彰多篇工作時必填 | 每筆一行：`<作者> (<年份>) <標題>. <期刊> <卷>:<頁>. <網址>`；建置腳本從第一個 `(年份)` 之前擷取作者姓氏 | 格式不一致，資訊欄顯示錯的姓氏 |

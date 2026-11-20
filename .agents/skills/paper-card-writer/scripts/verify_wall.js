@@ -129,7 +129,11 @@
           btn.click(); await wait(900);
           const want = mode === 'stars'
             ? mine.filter(c => c.dataset.in.split(' ').includes(key))
-            : mine.filter(c => data.focus.papers.find(p => p.slug === c.dataset.slug).role === key.slice(5));
+            : mine.filter(c => {
+                const fp = data.focus.papers.find(p => p.slug === c.dataset.slug);
+                const rk = key.slice(5);
+                return fp && (fp.role === rk || (fp.ftags || []).includes(rk));
+              });
           const now = all.filter(c => !c.hidden);
           const same = now.length === want.length && want.every(c => !c.hidden);
           out(same, tag, '篩選「' + key + '」：顯示 ' + now.length + ' 張，應為 ' + want.length + ' 張（' + d.getElementById('archInfo').textContent + '）');

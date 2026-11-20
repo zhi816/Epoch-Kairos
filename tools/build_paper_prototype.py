@@ -41,6 +41,7 @@ cc = load('check_cards', os.path.join(ROOT, '.agents', 'skills', 'paper-card-wri
 
 DOMAIN = {k: dict(short=s, full=f, shape=p) for k, s, f, _a, p in home.DOMAINS}
 ROLE = dict(home.ROLES)
+DIR_NAME = {k: full for k, _n, full, _a, _sh, _dk, _op in home.FOCUS_DIRS}
 # 星光色與深色重點色皆以 web/assets/css/theme.css 之 --color-<domain>、--deep-<domain> 為準；
 # 我的關注論文之 Card 1 至 6 不分學科，一律用 --color-focus 與 --deep-focus（DESIGN.md 第二章第 3 節）。
 CARD_NAMES = ['時代銘文', '世紀瓶頸', '突破原理', '決定性數據', '典範轉移', 'Kairos']
@@ -499,8 +500,16 @@ def side(fm, concepts, scope=''):
         parts.append('<div class="blk"><span class="lab">得獎者</span><span>%s</span>%s</div>' % ('<br>'.join(esc(a) for a in laur), note))
     if fm.get('my_focus') is True:
         langs = fm.get('focus_languages') or []
-        parts.append('<div class="blk"><span class="lab">我的關注</span><span>%s</span>%s</div>' % (
-            esc(ROLE.get(fm.get('focus_role'), '')), '<span class="note">研究語言：%s</span>' % esc('、'.join(langs)) if langs else ''))
+        all_roles = [fm['focus_role']] + [t for t in (fm.get('focus_tags') or []) if t != fm['focus_role']]
+        role_chips = ''.join('<span class="chip">%s</span>' % esc(ROLE.get(r, r)) for r in all_roles)
+        dir_label = DIR_NAME.get(fm.get('focus_direction'), '')
+        notes = []
+        if dir_label:
+            notes.append('<span class="note">優化方向：%s</span>' % esc(dir_label))
+        if langs:
+            notes.append('<span class="note">研究語言：%s</span>' % esc('、'.join(langs)))
+        parts.append('<div class="blk"><span class="lab">我的關注</span><div class="chips">%s</div>%s</div>' % (
+            role_chips, ''.join(notes)))
     doi = fm.get('doi_url') or ''
     parts.append('<div class="blk"><span class="lab">期刊</span><span>%s</span>%s</div>' % (
         esc(fm['venue']), '<a href="%s">%s</a>' % (esc(doi), esc(doi.replace('https://doi.org/', 'doi:'))) if doi else ''))

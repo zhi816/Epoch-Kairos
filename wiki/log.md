@@ -2681,3 +2681,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2026-epark-formosan-dialectometry-gagnier` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。05 用結論模式；原 Card 3 細節保留於 03 並加白話四步，原 Card 4 語料統計移至 04、相似度表、分群發現與篇章影響移至 05（「精確重現」改為「相符」），原 Card 5 結論、限制、建議、公開與未來方向分置 05、06，原 Card 6 移至延伸想法；原文無公式。回原文抽查表 2（賽德克語 0.820、泰雅語 0.605）、§3.1（獨有詞 53.8% 至 79.2%）、表 1（泰雅語 71.0%）、§2.1（2,680,175 詞元）、§2.3 GitHub 網址，皆相符。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 18:50] design | 我的星系改為五大優化方向環狀分團與六類多標籤篩選 | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：依使用者決定實作組合 A：將「我的星系」角色擴為六類（`學長姐論文`、`報告題材`、`國內研究`、`國際文獻`、`大模型LLM`、`每日推介`，`taiwan-linguistics` 改名 `taiwan-research`），新增選填多選 `focus_tags`（跨類篩選與並列顯示）及必填 `focus_direction`（五大優化方向：`構詞與分詞`、`資料與語料`、`大模型與檢索`、`遷移與對齊`、`語言與評測`）。更新 [AGENTS.md](../AGENTS.md)、[DESIGN.md](../DESIGN.md)、[intake.md](../.agents/skills/paper-pipeline/references/intake.md)、[paper-page-template.md](../.agents/skills/paper-pipeline/references/paper-page-template.md)、[lint_wiki.py](../.agents/skills/wiki-content-audit/scripts/lint_wiki.py) 與 [verify_wall.js](../.agents/skills/paper-card-writer/scripts/verify_wall.js)；為 28 篇我的關注論文補齊新 Frontmatter（含 7 篇跨類論文之 `focus_tags`）；改寫 [build_home.py](../tools/build_home.py)、[build_paper_prototype.py](../tools/build_paper_prototype.py) 與 [starmap.js](../web/assets/js/starmap.js)，使「我的星系」桌面與手機均以「我的碩論」為中心展開五大優化方向環狀分團、內圈置雙概念菱形、左欄與手機篩選列呈現六類並聯動 `focus_tags`，論文頁資訊欄以膠囊並列所有角色與優化方向。重建 [web/index.html](../web/index.html) 與全數 28 篇我的關注論文頁（均 `ERROR 0、WARN 0`）；`build_home.py --check`、`lint_wiki.py --errors-only`、`node --check` 與 `tools/tests` 16 項測試全數通過；本機 Chrome DevTools 未啟用，瀏覽器目視驗證待補。

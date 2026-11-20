@@ -13,6 +13,7 @@ status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "senior-thesis"
+focus_direction: "morphology"
 focus_languages: ["泰雅語", "太魯閣語"]
 hook: "把賽德克語的構詞結構解析流程移植到泰雅語與太魯閣語，並因兩語書寫形式無法歸納出轉換規則，改以三條比對規則與考慮邊界的前綴機率模型完成解析。"
 card_line: "讓電腦拆解泰雅語與太魯閣語的詞根與詞綴"

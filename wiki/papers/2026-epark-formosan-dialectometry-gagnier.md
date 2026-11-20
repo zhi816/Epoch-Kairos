@@ -13,6 +13,7 @@ status: "published"
 verification: "partial"
 my_focus: true
 focus_role: "international"
+focus_direction: "linguistics-eval"
 focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.63317/4scoopyavtvi"
 hook: "作者自述首次以「族語 E 樂園（ePark）」語料計算臺灣南島語方言相似度並評估該語料：在 16 族 42 種方言中，對 7 個多方言族語以詞級 TF-IDF 餘弦相似度、Jaccard 詞彙重疊與 Levenshtein 距離量化方言之間的關係，多數結果與既有分群相符。"

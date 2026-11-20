@@ -21,6 +21,7 @@ status: "published"
 verification: "issues"
 my_focus: true
 focus_role: "report"
+focus_direction: "morphology"
 focus_languages: ["阿薩姆語", "博多語", "米佐語", "那加梅斯語"]
 doi_url: "https://doi.org/10.18653/2026.wmt-main.160"
 hook: "僅憑官方平行語料歸納詞彙表，結合借詞擴充與 Morfessor 詞幹子字串比對過濾回譯噪聲，使僅有 2,000 平行句對的那加梅斯語與 15,214 句對的博多語均獲 WMT 2026 主系統第一名。"

@@ -13,6 +13,7 @@ status: "published"
 verification: "verified"
 my_focus: true
 focus_role: "international"
+focus_direction: "data-corpus"
 focus_languages: ["臺灣南島諸語"]
 doi_url: "https://doi.org/10.18653/v1/2024.findings-acl.670"
 hook: "把原住民族語言線上辭典的詞條直接當成平行資料加入訓練，16 種臺灣南島語與華語的翻譯全部提升；再搭配以詞典替換詞彙產生的偽平行資料，平均提升 5.55 BLEU、10.33 chrF。"

@@ -12,7 +12,9 @@ concepts: ["formosan-computational-linguistics", "low-resource-machine-translati
 status: "published"
 verification: "verified"
 my_focus: true
-focus_role: "taiwan-linguistics"
+focus_role: "taiwan-research"
+focus_tags: ["llm-assisted"]
+focus_direction: "linguistics-eval"
 focus_languages: ["阿美語", "泰雅語", "排灣語"]
 doi_url: "https://doi.org/10.18653/v1/2025.findings-emnlp.897"
 hook: "首個涵蓋阿美語、泰雅語、排灣語的多任務基準，評測機器翻譯、語音辨識與摘要：現有大型語言模型在三項任務上都表現很差，10-shot 與微調只帶來有限改善，語音辨識微調後改善最明顯。"
