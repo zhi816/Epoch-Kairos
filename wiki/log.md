@@ -2606,3 +2606,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2024-formosan-mt-bilingual-lexicon-zheng` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 4 各實驗移至 05、原 Card 5 結論、限制、公開資料集與表 9 疑似誤植移至 05、06，原 Card 6 移至延伸想法；原文無公式。05 以表 9 排灣語兩方向對照。回原文抽查摘要（5.55 BLEU、10.33 chrF）、表 2 與 §5（3.37、6.06）、表 9 排灣語列（3.80、10.64、10.94、1.73、9.46）、§3 資料集網址、Limitations（未請母語者），皆相符；證據表新增表 9 排灣語列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 16:08] update | 我的關注新六章改寫：林鴻瑞 2024 台灣南島語時間詞比較 | #語言學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2024-formosan-temporal-words-lim` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。語言學論文，05 用結論模式；原 Card 4 泛泰雅語四詞與標記移至 05、賽夏語歸類不一致移至 06「要留意」，原 Card 5 啟示與比較移至 05、06，原 Card 6 移至延伸想法；原文無公式。回原文抽查第 1 節（p. 3，16 族 42 方言、學習詞表與學者紀錄）、摘要分類、§5.2.2「有待進一步研究」與第 6 節三點啟示，皆相符。證據表新增一列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
