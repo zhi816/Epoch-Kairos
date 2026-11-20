@@ -2656,3 +2656,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2025-tulun-adaptable-lrl-mt-merx` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 3 系統細節保留於 03 並在前面加白話四步；原 Card 4 表 1–2 與問卷移至 05、資料設定另寫 04；原 Card 5 公開資源、限制、未來方向、作者主張與 54B 說明移至 06，原 Card 6 移至延伸想法；原文無公式。05 以表 1 MADLAD 基線與 TULUN 對照（德頓語 35.78→47.87、比斯拉馬語 15.22→47.94）。回原文抽查表 1（p. 133）、§4.1.2（SUS 81.25）、§4.2（2.83、2.15）、p. 130 註 2（GitHub、MIT），皆相符。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 16:30] update | 我的關注新六章改寫：Setiawan 等 2026 達豪語跨領域翻譯與檢索例句量 | #自然語言處理 #人工智慧 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2026-context-volume-rag-domain-shift-setiawan` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 3 細節保留於 03 並加白話四步；原 Card 4 表 1–7 移至 05，原 Card 5 之「證明」等強化表述改為作者 §6 結論與 §5.5 建議，原 Card 6 移至延伸想法；原文無公式。05 以表 2 舊約測試對照（chrF++ 27.11→35.21、spBLEU 7.66→19.88）。回原文抽查摘要與 §1（25.9% 未登錄詞）、表 1（26.62）、表 2（35.21、19.88、7.66）、§6 結論、Limitations 兩項、Ethical Considerations（CC BY-ND、開放取用、未附程式碼），皆相符。證據表新增四列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
