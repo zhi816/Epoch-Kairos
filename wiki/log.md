@@ -2676,3 +2676,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2026-data-centric-russian-kyrgyz-mt-novokshanov` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 3 細節保留於 03 並加白話四步；原 Card 4 資料規模移至 04、消融與 FLORES 表、官方成績移至 05；原 Card 5 之強化表述改為作者 §4 結論，原 Card 6 移至延伸想法；原文無公式。05 以 FLORES 表 3 之 NLLB-200 54B 與本文模型對照（41.7→44.9、73.4→80.5）。回原文抽查摘要與 §3.2（49.1 chrF++、第一名）、表 3（p. 228）、§2.1.1（回譯過濾）、§2.3.3（四階段）、§3.3 公開資源、§4 結論，皆相符；另發現原頁漏記 §3.3 公開之模型、資料與展示，且 02 有原文沒有之「毒化」等說法，更正並登記 EK-231（fixed），證據表新增四列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 16:40] update | 我的關注新六章改寫：Gagnier 2026 族語 E 樂園方言計量分析 | #計算語言學 #自然語言處理
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2026-epark-formosan-dialectometry-gagnier` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。05 用結論模式；原 Card 3 細節保留於 03 並加白話四步，原 Card 4 語料統計移至 04、相似度表、分群發現與篇章影響移至 05（「精確重現」改為「相符」），原 Card 5 結論、限制、建議、公開與未來方向分置 05、06，原 Card 6 移至延伸想法；原文無公式。回原文抽查表 2（賽德克語 0.820、泰雅語 0.605）、§3.1（獨有詞 53.8% 至 79.2%）、表 1（泰雅語 71.0%）、§2.1（2,680,175 詞元）、§2.3 GitHub 網址，皆相符。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
