@@ -2666,3 +2666,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2026-cross-lingual-alignment-moe-routers-bandarkar` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。全頁改為白話：01 摘要、02 三個困難、03 五步流程並保留式 (1) 與總目標式、04 沿用原實驗配置、05 保留 Table 1 兩張表與消融、06 作者三項限制、公開程式碼，原 Card 6 前兩點移至延伸想法。回原文抽查 §5.2（13 勝 1 平、平均 0.9、最多 2.1；Marco-Nano 匈牙利語 37.4→36.9 對 38.1）、Table 1（46.3、45.6 等）、§4.1（200k 平行樣本）、p. 10 程式碼網址，皆相符。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 16:35] update | 我的關注新六章改寫：Ji 等 2026 五百餘語言雙語持續預訓練 | #人工智慧 #深度學習 #自然語言處理 #計算語言學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2026-data-centric-continual-pretraining-ji` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。全頁改為白話：01 摘要、02 三個困難、03 加白話五步並保留原方法細節、04 語料規模與訓練、05 保留 FLORES 表與其他基準結果、06 作者三項限制與公開資源，原 Card 6 移至延伸想法；原文無公式。證據表以編號對應，無須改位置，只補註記。回原文抽查摘要（MaLA-LM 語料、模型、GitHub）、Table 11 與 p. 23（24.08→42.15）、Table 3（25.84、45.22）、Table 4（88.18%）、Table 5（−17.78）、Limitations（不適合部署），皆相符。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。

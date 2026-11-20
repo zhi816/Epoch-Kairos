@@ -4,7 +4,7 @@
 
 - **第一手來源**：Shaoxiong Ji, Zihao Li, Jaakko Paavola, Hengyu Luo, and Jörg Tiedemann (2026), *Data-Centric Continual Pre-training for 500+ Languages: A New Bilingual Translation Corpus and Multilingual Models*, *Findings of the Association for Computational Linguistics: ACL 2026*, pp. 18776–18807（DOI: `10.18653/v1/2026.findings-acl.937`；原始檔 `raw/my-focus/報告論文題材/2026-data-centric-continual-pretraining-ji.pdf`）。
 - **查核範圍**：全篇書目、MaLA 雙語翻譯語料統計、雙語與單語混合配方、全參數持續預訓練超參數、低資源與全基準評測結果、模型可適應性限制。
-- **查核者**：Antigravity by Google DeepMind（Gemini 4 Hydrogen）
+- **查核者**：Antigravity by Google DeepMind（Gemini 4 Hydrogen）；2026-11-20 論文頁改為我的關注新六章（本表以編號對應，無須改位置），主張與出處未變（Claude Code by Anthropic（Claude Opus 5.5））
 
 | 編號 | 頁面主張摘要 | 第一手來源 | 頁碼／圖表位置 | 原文依據與核對備忘 | 類型 |
 |---|---|---|---|---|---|
