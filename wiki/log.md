@@ -2661,3 +2661,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2026-context-volume-rag-domain-shift-setiawan` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 3 細節保留於 03 並加白話四步；原 Card 4 表 1–7 移至 05，原 Card 5 之「證明」等強化表述改為作者 §6 結論與 §5.5 建議，原 Card 6 移至延伸想法；原文無公式。05 以表 2 舊約測試對照（chrF++ 27.11→35.21、spBLEU 7.66→19.88）。回原文抽查摘要與 §1（25.9% 未登錄詞）、表 1（26.62）、表 2（35.21、19.88、7.66）、§6 結論、Limitations 兩項、Ethical Considerations（CC BY-ND、開放取用、未附程式碼），皆相符。證據表新增四列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 16:33] update | 我的關注新六章改寫：Bandarkar 等 2026 混合專家路由器跨語言對齊 | #人工智慧 #深度學習 #自然語言處理
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2026-cross-lingual-alignment-moe-routers-bandarkar` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。全頁改為白話：01 摘要、02 三個困難、03 五步流程並保留式 (1) 與總目標式、04 沿用原實驗配置、05 保留 Table 1 兩張表與消融、06 作者三項限制、公開程式碼，原 Card 6 前兩點移至延伸想法。回原文抽查 §5.2（13 勝 1 平、平均 0.9、最多 2.1；Marco-Nano 匈牙利語 37.4→36.9 對 38.1）、Table 1（46.3、45.6 等）、§4.1（200k 平行樣本）、p. 10 程式碼網址，皆相符。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
