@@ -2601,3 +2601,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2024-finnish-northern-sami-mt-saleva` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 4 表 3–5 移至 05、原 Card 5 結論與正譯解釋併入 05、限制與公開資源移至 06，原 Card 6 移至延伸想法；03 放 KL 正則項（原卡片同一行，81 字元，check_cards WARN：verify_page.js 已量公式框不需水平捲動，保留）。回原文抽查表 5（p. 12953：26.86、41.75、41.71、8.43、19.20）、§4.3（19.20 對 14.96，+4.24）、表 2（25,106 句）、§1（GitHub j0ma/sami-translation）、Limitations（單一語言對、單次執行），皆相符。check_cards ERROR 0、WARN 1（如上）；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 16:06] update | 我的關注新六章改寫：Zheng 等 2024 以雙語詞典改善臺灣南島語翻譯 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2024-formosan-mt-bilingual-lexicon-zheng` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 4 各實驗移至 05、原 Card 5 結論、限制、公開資料集與表 9 疑似誤植移至 05、06，原 Card 6 移至延伸想法；原文無公式。05 以表 9 排灣語兩方向對照。回原文抽查摘要（5.55 BLEU、10.33 chrF）、表 2 與 §5（3.37、6.06）、表 9 排灣語列（3.80、10.64、10.94、1.73、9.46）、§3 資料集網址、Limitations（未請母語者），皆相符；證據表新增表 9 排灣語列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
