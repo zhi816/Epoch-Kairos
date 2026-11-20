@@ -2571,3 +2571,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依 TD-033 將 `2019-generalized-data-augmentation-xia` 之論文頁、卡片檔改為我的關注新六章（刪開頭引言；01 白話摘要與速覽、02 三種既有做法、03 四步流程並放 Procrustes 目標式、04 資料與實驗、05 表 2 與作者歸納、06 限制與可用性及原 Card 5 之三筆後續研究，原 Card 6 移至延伸想法）。回原文抽查表 2 第 1、12 列（p. 5791）、§1 之 1.5 至 8 BLEU、§4.1 資料、§7 未來工作，皆相符；另發現 p. 5786 註 1 程式碼公開於 GitHub 而論文頁未記，補記並登記 EK-228（fixed），證據表新增兩列、「位置」欄改為新章。focus/06-usability.md 與 README 補充後續研究之放法與改寫時抽查。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
+
+## [2026-11-20 15:53] update | 我的關注新六章改寫：游景勝 2021 賽德克語－中文機器翻譯 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2021-seediq-chinese-mt-you` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。原 Card 4 數字移至 05、原 Card 5 實驗室後續研究移至 06、原 Card 6 移至延伸想法；03 放前綴一元機率公式 (2)。回原文抽查表 11（p. 38，PDF 第 47 頁）21.03／25.10／22.28／12.09、第六章（p. 45）6,069／885 句與資料不足之未來工作，皆相符；另確認翻譯實驗之構詞結構取自人工標記（§4.1.1 p. 29、§4.2.3 p. 31、§5.3.3 p. 39），寫入 06「要留意」並於證據表新增四列。check_cards ERROR 0、WARN 0；論文頁建置 ERROR 0、WARN 0；lint ERROR 0；verify_page.js PASS。
