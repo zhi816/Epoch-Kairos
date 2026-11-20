@@ -2696,3 +2696,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：依使用者指示移除 [README.md](../README.md) 中「我的星系」`my_focus` 欄位與新六章細節，以及 Evil Rabbit Deimos 與 Shopify Editions 參考來源段落，並同步精簡對應項目與 3:4 六張圖卡結構敘述。驗證：17 條相對路徑連結有效，`lint_wiki.py --errors-only` ERROR 0。
+
+## [2026-11-20 19:22] update | 新增首頁星圖、卡片牆與雙欄論文頁截圖至 README.md | 全域
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 4 Hydrogen
+- **具體變更**：經使用者確認後，以本機伺服器與 Chrome 截取三張公開群星展示畫面並壓縮為 WebP 置於 `docs/screenshots/`：[starmap-home.webp](../docs/screenshots/starmap-home.webp)（`1440 x 900` @1.5x，132.7 KB，呈現群星知識星圖與 `2016-ligo-gravitational-waves` 星點光暈及說明框）、[card-wall.webp](../docs/screenshots/card-wall.webp)（`1600 x 1020` @1.5x，242.3 KB，呈現四欄群星檔案卡片牆）與 [paper-page.webp](../docs/screenshots/paper-page.webp)（`1440 x 900` @1.5x，201.9 KB，呈現 `2016-ligo-gravitational-waves` Card 3 公式與干涉儀示意圖及右側 KaTeX 長文排版），並嵌於 [README.md](../README.md)「畫面預覽」章節及補列於目錄樹。經目視檢視三張截圖均無裁切或排版錯位；`README.md` 19 條相對路徑連結全部有效，`lint_wiki.py --errors-only` ERROR 0。

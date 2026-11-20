@@ -9,6 +9,18 @@
 
 ---
 
+## 畫面預覽
+
+| 首頁知識星圖（群星模式） | 群星檔案卡片牆 |
+|---|---|
+| ![Epoch-Kairos 首頁知識星圖](./docs/screenshots/starmap-home.webp) | ![Epoch-Kairos 群星檔案卡片牆](./docs/screenshots/card-wall.webp) |
+
+**雙欄論文頁（3:4 知識圖卡 ＋ KaTeX 學術長文）**
+
+![Epoch-Kairos 雙欄論文頁範例：LIGO 雙黑洞重力波直接探測](./docs/screenshots/paper-page.webp)
+
+---
+
 ## 核心架構來源
 
 * **Andrej Karpathy - LLM Wiki 架構**（[gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)）：三層資料架構——不可變原始資料 `raw/`、結構化編譯知識 `wiki/`、代理人運作規範 `AGENTS.md`。
@@ -41,6 +53,7 @@ Epoch-Kairos/
 │   ├── paper_template.html    # 論文頁 HTML 範本（「論文頁 F」雙欄與手機版）
 │   ├── wiki_redirects.py      # 舊路徑轉介檔辨識輔助
 │   └── tests/                 # 建置與流程回歸測試
+├── docs/screenshots/          # README 展示用靜態截圖（不上站）
 └── web/                       # 【Web Presentation】GitHub Pages 成果展示層
     ├── index.html             # 知識星圖首頁（群星知識星圖＋卡片牆；隱藏機關進入「我的星系」#my-constellation）
     ├── assets/                # CSS、JS（theme.css 為全站色碼唯一真實來源；starmap.css、starmap.js 為首頁樣式與互動）
