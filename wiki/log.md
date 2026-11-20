@@ -2701,3 +2701,8 @@
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 4 Hydrogen
 - **具體變更**：經使用者確認後，以本機伺服器與 Chrome 截取三張公開群星展示畫面並壓縮為 WebP 置於 `docs/screenshots/`：[starmap-home.webp](../docs/screenshots/starmap-home.webp)（`1440 x 900` @1.5x，132.7 KB，呈現群星知識星圖與 `2016-ligo-gravitational-waves` 星點光暈及說明框）、[card-wall.webp](../docs/screenshots/card-wall.webp)（`1600 x 1020` @1.5x，242.3 KB，呈現四欄群星檔案卡片牆）與 [paper-page.webp](../docs/screenshots/paper-page.webp)（`1440 x 900` @1.5x，201.9 KB，呈現 `2016-ligo-gravitational-waves` Card 3 公式與干涉儀示意圖及右側 KaTeX 長文排版），並嵌於 [README.md](../README.md)「畫面預覽」章節及補列於目錄樹。經目視檢視三張截圖均無裁切或排版錯位；`README.md` 19 條相對路徑連結全部有效，`lint_wiki.py --errors-only` ERROR 0。
+
+## [2026-11-20 20:42] update | 我的關注新六章改寫：Scheppat 2026 FormosanMT 平行語料庫 | #自然語言處理 #計算語言學 #深度學習
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 TD-033 將 `2026-formosanmt-parallel-corpus-scheppat` 之論文頁、卡片檔改為我的關注新六章，證據表「位置」欄改為新章。改寫由 DeepSeek Harness（DeepSeek V4.1 Flash）擔任作者，Command Code 之 MiniMax M3.1 Flash 與 GLM-5.3 Flash 審查兩輪，於獨立 worktree 進行；總指揮回原文核對後修正本頁範圍之語言數（16 個語言名、15 個代碼，雅美語不屬臺灣南島語群）、§3.1 共享特徵之主語限於臺灣南島語群，卡片 05 改以白話標示對照組並註明阿美語→英語從頭訓練反而較高。補記原頁漏寫之 mBART 與 GPT-5 初步實驗、分詞器兩條路徑與 JSON 報告、倫理考量與資料授權。登記並修正 EK-233。

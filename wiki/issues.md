@@ -1269,3 +1269,9 @@
 - **來源**：[原文 PDF](../raw/my-focus/大模型輔助/Data-Centric%20Approach%20at%20the%20LoResMT%202026%20Turkic%20Translation.pdf)，§2.1.1, p. 226；§2.3.3, p. 227；§3.3 與 §4, p. 228。
 - **發現於**：2026-11-20 改寫為我的關注新六章時回原文抽查，Claude Code by Anthropic（Claude Opus 5.5）。
 - **處理**：2026-11-20，Claude Code by Anthropic（Claude Opus 5.5）。改寫論文頁：02 改依原文 §2.1.1、§2.3.3；06 補公開資源；05 改為作者 §4 結論；證據表新增四列。
+
+### EK-233 | fixed | papers/2026-formosanmt-parallel-corpus-scheppat.md | 原 Card 4、本頁範圍 | 過度表述
+- **問題**：原頁寫「表 2 每種語言都列有族語－英語句對」，但表 2 有兩組皆標為 xnb、未見 ckv；寫 NLLB 整體優於 OpenNMT、例外只有阿美語，但表 3 中魯凱語→華語亦為 OpenNMT 較高（21.70 對 19.97）；本頁範圍寫「15 種南島語言（含雅美／達悟語）」，原文 §3.1 明言雅美語不屬臺灣南島語群，表 1 為 16 個語言名、15 個 ISO 639-3 代碼。
+- **來源**：[原文 PDF](../raw/my-focus/英文論文/FormosanMT%20A%20Multilingual%20Parallel%20Corpus_2026.lrec-1.273.pdf)，表 1 與 §3.1, p. 3447；表 2, p. 3450；表 3, p. 3451。
+- **發現於**：2026-11-20 改寫為我的關注新六章時，DeepSeek Harness（DeepSeek V4.1 Flash）與 Command Code（MiniMax M3.1 Flash）提出，Claude Code by Anthropic（Claude Opus 5.5）核對。
+- **處理**：2026-11-20，Claude Code by Anthropic（Claude Opus 5.5）。論文頁三處依原文改寫，證據表同步。
