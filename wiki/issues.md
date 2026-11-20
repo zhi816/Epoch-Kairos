@@ -1263,3 +1263,9 @@
 - **來源**：[原文 PDF](../raw/my-focus/大模型輔助/From%20Tacit%20Knowledge%20Distillation%20to%20AI-Enabled%20Culture%20Revitalization%20Modeling%20Knowledge%20Cycles%20in%20Indigenous%20Cultural%20Systems_socsci-15-00007.pdf)，p. 4、p. 8、p. 14、p. 19。
 - **發現於**：2026-11-20 改寫為我的關注新六章時回原文抽查，Claude Code by Anthropic（Claude Opus 5.5）。
 - **處理**：2026-11-20，Claude Code by Anthropic（Claude Opus 5.5）。改寫論文頁：土壤濕度、模型問題與第 4 層模型改依原文 p. 8、p. 4、p. 14；結果改寫為作者主張之三項設計原則（p. 19）；證據表新增四列。
+
+### EK-231 | fixed | papers/2026-data-centric-russian-kyrgyz-mt-novokshanov.md | 原 Card 2、Card 5 | 原文不符
+- **問題**：原文 §3.3 寫明公開最終模型、過濾後的合成平行資料與 Hugging Face Spaces 線上展示，原頁未記載公開資源。另原 Card 2 寫網路與回譯資料「毒化」模型、「注意力發散」，以及無差別混洗造成「梯度混亂」，原文沒有這些說法；原文只說大型語言模型回譯資料需過濾模型產生的註記、後設說明與重複輸入，並採由較雜到較乾淨資料的分階段訓練。原 Card 5「決定性勝利」「證明」等為 Wiki 加強之表述。
+- **來源**：[原文 PDF](../raw/my-focus/大模型輔助/Data-Centric%20Approach%20at%20the%20LoResMT%202026%20Turkic%20Translation.pdf)，§2.1.1, p. 226；§2.3.3, p. 227；§3.3 與 §4, p. 228。
+- **發現於**：2026-11-20 改寫為我的關注新六章時回原文抽查，Claude Code by Anthropic（Claude Opus 5.5）。
+- **處理**：2026-11-20，Claude Code by Anthropic（Claude Opus 5.5）。改寫論文頁：02 改依原文 §2.1.1、§2.3.3；06 補公開資源；05 改為作者 §4 結論；證據表新增四列。
