@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>分詞器比較究竟量到什麼｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:var(--link-deco,none);text-underline-offset:3px}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--card)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--card);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--card) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--card)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注：Card 1 至 6 與群星同版型，--card 為 --color-focus（2026-11-19 暫定晴空藍，DESIGN.md 第二章第 3 節）；代表星為空心星，星窗左上為研究語言 */
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--card),0 0 3cqw .6cqw color-mix(in srgb,var(--card) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--card) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--card)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+
+/* ---------------- 我的關注新六章（2026-11-20；paper-card-writer 之 references/focus/、DESIGN.md 第五章第 2 節） */
+.cover.v2 .in{gap:2.6cqw}
+.cover.v2 .win{min-height:40cqw}
+.cover.v2 .line{font-size:6.6cqw}
+.cover .facts{display:grid;grid-template-columns:11cqw minmax(0,1fr);column-gap:2.6cqw;row-gap:1.1cqw;padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.4cqw;line-height:1.45}
+.cover .facts b{font-weight:500;color:var(--deep)}
+.cover .facts span{color:var(--ink)}
+.flow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;counter-reset:st}
+.flow p{position:relative;margin:0;padding:0 0 3.6cqw 11cqw;font-size:3.9cqw;line-height:1.5;color:var(--ink)}
+.flow p:last-child{padding-bottom:0}
+.flow p::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:-.2cqw;width:6.6cqw;height:6.6cqw;box-sizing:border-box;border-radius:50%;border:1px solid var(--deep);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:3.6cqw;color:var(--deep)}
+.flow p::after{content:"";position:absolute;left:3.3cqw;top:6.6cqw;bottom:.4cqw;width:1px;background:color-mix(in srgb,var(--deep) 45%,transparent)}
+.flow p:last-child::after{display:none}
+.flow p.io::before{content:"";width:2.6cqw;height:2.6cqw;left:2cqw;top:1.2cqw;background:var(--deep);border:none}
+.flow p.io::after{top:3.8cqw}
+.flow p b{font-weight:500;margin-right:1.6cqw}
+.flow p em{font-style:normal;color:var(--ink2)}
+.flow p:not(.io) b{margin-right:0}
+.cmp{flex:1;display:flex;flex-direction:column;justify-content:center;gap:7cqw}
+.cmp .m{border-top:1px solid rgba(15,16,19,.35);padding-top:3cqw;display:flex;flex-direction:column;gap:1.4cqw}
+.cmp .mt{font-size:3.9cqw;font-weight:500}
+.cmp .mt em{font-style:normal;font-weight:400;color:var(--ink2);margin-left:2cqw;font-size:3.4cqw}
+.cmp p{margin:0;display:flex;align-items:baseline;justify-content:space-between;gap:3cqw}
+.cmp p span{font-size:3.6cqw;color:var(--ink2)}
+.cmp p b{font-family:var(--serif);font-weight:300;font-size:9.6cqw;line-height:1.15;color:var(--deep);white-space:nowrap}
+.cmp p b.lo{font-size:6.6cqw;color:var(--ink2)}
+.rows.tight{gap:2.2cqw}.rows.tight .row{padding:2.6cqw 3cqw}
+.row.ok{background:rgba(255,255,255,.26);border:1px solid color-mix(in srgb,var(--deep) 55%,transparent)}
+.row.ok b,.row.ok span{color:var(--deep)}
+.body.v2 section[data-card="1"] > p:first-of-type{padding:1em 1.2em;border-left:2px solid var(--star);background:rgba(255,255,255,.03)}
+.body.v2 section[data-card="6"] h3{margin-top:2.2em;padding-top:1.2em;border-top:1px dashed rgba(255,255,255,.18)}
+</style>
+</head>
+<body style="--star:#5AAEFF;--card:#5AAEFF;--deep:#162D42;--win:#16212C">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html#my-constellation" aria-label="回到我的星系"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover focus v2" data-name="一句話看懂" aria-label="一句話看懂" aria-hidden="true"><div class="in"><div class="ph"><span>F.11</span><span>每日推介</span></div><div class="win"><span class="lang" title="阿姆哈拉語、豪薩語">阿姆哈拉語、豪薩語</span><i style="left:82.6%;top:37.5%;width:1.5px;height:1.5px;opacity:0.31"></i><i style="left:39.8%;top:24.6%;width:1px;height:1px;opacity:0.68"></i><i style="left:71.8%;top:35.0%;width:1.5px;height:1.5px;opacity:0.43"></i><i style="left:69.4%;top:40.7%;width:1px;height:1px;opacity:0.82"></i><i style="left:7.7%;top:14.7%;width:1px;height:1px;opacity:0.43"></i><i style="left:46.2%;top:18.4%;width:1px;height:1px;opacity:0.34"></i><i style="left:42.5%;top:16.9%;width:1px;height:1px;opacity:0.72"></i><i style="left:11.0%;top:35.6%;width:1px;height:1px;opacity:0.32"></i><i style="left:21.1%;top:30.5%;width:1px;height:1px;opacity:0.62"></i><i style="left:12.7%;top:31.3%;width:1px;height:1px;opacity:0.58"></i><i style="left:28.9%;top:32.8%;width:1px;height:1px;opacity:0.55"></i><i style="left:73.6%;top:15.7%;width:1px;height:1px;opacity:0.84"></i><i style="left:72.4%;top:39.3%;width:1px;height:1px;opacity:0.59"></i><i style="left:51.1%;top:17.3%;width:1px;height:1px;opacity:0.34"></i><span class="rep"></span><span class="line"><span>拆解分詞比較，</span><span>分清粒度與詞根，</span><span>再看讀出</span></span></div><div class="name">分詞器比較究竟量到什麼</div><div class="facts"><b>語言</b><span>阿姆哈拉語與豪薩語</span><b>任務</b><span>命名實體辨識為主</span><b>方法</b><span>詞根對照加粒度讀出交叉</span><b>測試</b><span>MasakhaNER 與小型翻譯</span><b>公開</b><span>未提程式或模型釋出</span></div><div class="yrs">2026 發表 ｜ arXiv</div></div></section>
+      <section class="card" data-name="要解決的問題" aria-label="要解決的問題" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 要解決的問題</span><span class="hd">原本卡在哪裡？</span><div class="rows"><div class="row"><b>統計子詞法</b><span>按語料頻率合併片段，詞根不見得共用記號</span></div><div class="row"><b>只看總分</b><span>只比兩組分數，粒度與讀出都跟著變</span></div><div class="row"><b>首詞元讀出</b><span>詞標只從首片段取，切得越碎越易失真</span></div><div class="row gap"><b>歸因依據</b><span>缺一套一次只改一項的對照設計</span></div></div><span class="ft" style="color:var(--ink)">這篇的想法：加對照一次只改一項，再看增益歸誰。</span></div></section>
+      <section class="card" data-name="方法流程" aria-label="方法流程" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 方法流程</span><span class="hd">一步一步怎麼做？</span><div class="flow"><p class="io"><b>輸入</b>阿姆哈拉語與豪薩語詞句</p><p><b>詞根分解</b><em>：字形拆成輔音列與元音序，輸出詞根模板記號</em></p><p><b>打亂對照</b><em>：只換詞根記號，另做保留詞頻的置換</em></p><p><b>粒度掃描</b><em>：五種詞表大小，補齊詞表讓參數相同</em></p><p><b>讀出交叉</b><em>：每個分詞器都跑首詞元與平均池化</em></p><p class="io"><b>輸出</b>粒度、詞根與讀出三項差值</p></div><div class="fbox"><span class="m-disp" data-tex="\Delta_{\mathrm{read}} = \Gamma(T) - \Gamma(B)"></span></div></div></section>
+      <section class="card" data-name="資料與實驗" aria-label="資料與實驗" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 資料與實驗</span><span class="hd">用什麼資料、怎麼測？</span><div class="rows tight"><div class="row"><b>資料</b><span>MasakhaNER 1.0 的新聞語料</span></div><div class="row"><b>阿姆哈拉語</b><span>訓練 1,750、驗證 250、測試 500 句</span></div><div class="row"><b>豪薩語</b><span>訓練 1,912、驗證 276、測試 552 句</span></div><div class="row"><b>評分</b><span>標籤與字元重疊自動計分，無人工評分；五種子（預訓練三）</span></div></div></div></section>
+      <section class="card" data-name="結果" aria-label="結果" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 結果</span><span class="hd">到底有沒有比較好？</span><div class="cmp"><div class="m"><span class="mt">從頭首詞元 F1<em>實體標籤命中比例，滿分 100</em></span><p><span>子詞基線</span><b class="lo">14.73</b></p><p><span>詞根模板分詞</span><b>12.47</b></p></div><div class="m"><span class="mt">從頭池化 F1<em>實體標籤命中比例，滿分 100</em></span><p><span>子詞基線</span><b class="lo">16.74</b></p><p><span>詞根模板分詞</span><b>25.85</b></p></div></div><span class="ft">從頭模型五個種子，預訓練三個；反向結果見長文</span></div></section>
+      <section class="card" data-name="限制與可用性" aria-label="限制與可用性" aria-hidden="true"><div class="in"><span class="kc">06 ｜ 限制與可用性</span><span class="hd">能不能拿來用？</span><div class="rows tight"><div class="row"><b>限制</b><span>詞根結果只測阿姆哈拉語，模型小、絕對 F1 偏低</span></div><div class="row"><b>要留意</b><span>五種子下單一跑次可主導，多項結論未重現</span></div><div class="row"><b>公開程度</b><span>未提程式或模型公開，倫理段稱模型不作工具</span></div><div class="row ok"><b>適合報告</b><span>適合當分詞比較方法學案例，示範三因子拆解</span></div></div></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2026 發表 ｜ arXiv</span>
+<h1>分詞器比較究竟量到什麼：阿姆哈拉語與豪薩語的粒度、詞根與讀出拆解</h1>
+<p class="en">What Do Tokenizer Comparisons Measure? Disentangling Granularity, Root Assignment, and Word-Level Readout across Amharic and Hausa</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body v2">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>一句話看懂</h2></div>
+<p>這篇問的是：當一個形態感知分詞器比 BPE 得分高，增益到底來自語言結構，還是來自它切得更細、以及詞標從哪個片段讀出。作者在阿姆哈拉語上做出一套無損的詞根與模板分詞器，再用打亂詞根、詞頻結構保留的置換對照、容量匹配的粒度掃描和兩種讀出方式，一次只改一項來拆開三種效果；豪薩語因沒有詞根分析資源，只做粒度與讀出對照（摘要 p. 1；§3–§4, pp. 3–7）。兩次獨立實作都看到真詞根優於打亂詞根，但從頭訓練的模型換個讀出方式就能翻轉與 BPE 的比較方向，粒度效果還會跨語言、跨實作變號（§4.2–§4.4, pp. 5–7；Table 1, p. 8）。</p>
+<ul><li><strong>語言</strong>：阿姆哈拉語（吉茲字母，閃語族）為主；豪薩語（拉丁字母，乍得語族）作書寫對照（§1, p. 1）</li><li><strong>任務</strong>：以詞級命名實體辨識為主；另做 English→阿姆哈拉語／豪薩語翻譯，但翻譯只支持粒度結論（§4.1–§4.5, pp. 5–7）</li><li><strong>方法</strong>：詞根與模板因式分解，加上打亂詞根、置換詞根、容量匹配 BPE 粒度掃描、首詞元與平均池化交叉（§3, pp. 3–5）</li><li><strong>模型與測試</strong>：Study I 用約 0.97M 參數的兩層編碼器從頭訓練；Study II 用 1.95M 參數編碼器，另微調 XLM-R base 與 AfroXLM-R base（§4.1, p. 5）</li><li><strong>資料</strong>：MasakhaNER 1.0 的新聞語料；阿姆哈拉語 1,750/250/500 句，豪薩語 1,912/276/552 句（§4.1, p. 5）</li><li><strong>公開</strong>：原文未聲明程式、資料或模型公開；倫理段稱研究用小模型不作工具釋出（p. 9；全文核查）</li><li><strong>出處</strong>：Antall 與 Saha，arXiv:2611.14818v1，2026-11-10 投稿，19 頁、6 圖、7 表（PDF p. 1；arXiv 官方頁）</li></ul>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>要解決的問題</h2></div>
+<p>阿姆哈拉語以詞根與模板構詞，同一個輔音詞根插進不同元音模板後，字形不共享可見字串；吉茲字母又把輔音與元音熔在一個字形裡，所以任何只看字元子串的分詞器，在每種詞表大小下都拿不到跨詞形共用的詞根（§1, p. 1；Appendix B, Theorem 1, p. 13）。作者指出三種既有做法各有盲點：</p>
+<ul><li><strong>統計子詞法</strong>：BPE 與 unigram 按語料壓縮需求合併片段，不保證同詞根的詞形共用記號；用到資料稀少語言時，切出的片段也未必對應構詞單位（§1, pp. 1–2；§2, p. 3）。</li><li><strong>只看總分</strong>：把形態分詞器與 BPE 各訓練一個模型、比一個總分，就歸因給語言結構；但兩個分數無法分辨增益來自粒度、詞根還是讀出，任何拆分都與這兩個數相容（§3.1, p. 3；Proposition 1, p. 12）。</li><li><strong>首詞元讀出</strong>：詞級任務通常只從一個詞的第一個子詞取標籤；詞被切得越碎，這個預設讀出越可能丟掉其餘片段的資訊，而論文多半不報告這項選擇（§2, p. 3；§3.4, p. 4）。</li></ul>
+<p>這篇的想法是：訓練只改一項的參考分詞器，把總分拆成粒度、詞根與讀出三份再歸因。</p>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>方法流程</h2></div>
+<p>研究流程是先造出能明確標出詞根的分詞器，再準備一系列只差一個因子的對照組，最後在每個分詞器上交叉兩種讀出（§3, pp. 3–5）。</p>
+<ol><li><strong>詞根分解</strong>：把吉茲字形拆成輔音列與元音序，ROOTPAT 對可分析詞輸出至多四個記號：前綴、詞根、模板、後綴；無分析者走子詞加位元組退回。此分解在同音正規化下無損（§3.5, p. 4；Appendix B, Theorem 2, p. 13）。</li><li><strong>打亂對照</strong>：保留前綴、模板、後綴與整個詞表，只替換詞根記號；另做保留每個詞根詞型數量的置換與分層置換，用來區分詞根身份與詞頻結構（§3.2, pp. 3–4）。</li><li><strong>粒度掃描</strong>：每種語言訓練五種 BPE 詞表大小，embedding table 全部補到最大，讓參數量相同而只有切分粗細不同；阿姆哈拉語掃到 1.00 至 2.42 倍 fertility，豪薩語到 1.00 至 2.27 倍（§3.3, p. 4；§4.1, p. 5）。</li><li><strong>讀出交叉</strong>：每個分詞器都跑首詞元與所有子詞平均池化兩種讀出，並先看每個分詞器自己的讀出增益，再看它污染了多少比較（§3.4, p. 4）。</li></ol>
+<p>原文把總效果拆成粒度與詞根兩項（§3.1, p. 3, 式 (1)）：</p>
+<span class="m-disp" data-tex="\begin{aligned}
+S(T) - S(B) &amp;= \underbrace{S(T^{\circ}) - S(B)}_{\Delta_{\mathrm{gran}}} \\
+&amp;\quad + \underbrace{S(T) - S(T^{\circ})}_{\Delta_{\mathrm{root}}}
+\end{aligned}"></span>
+<p>其中 <span class="m-in" data-tex="T^{\circ}"></span> 是與 <span class="m-in" data-tex="T"></span> 同詞表、同 fertility 但不按形態指派詞根的參考分詞器；<span class="m-in" data-tex="S(X)"></span> 是用分詞器 <span class="m-in" data-tex="X"></span> 訓練後之期望測試分數。讀出污染則定義為（§3.4, p. 4, 式 (2)）：</p>
+<span class="m-disp" data-tex="\Delta_{\mathrm{read}} = \Gamma(T) - \Gamma(B)"></span>
+<p>其中 <span class="m-in" data-tex="\Gamma(X) = S_{\mathrm{pool}}(X) - S_{\mathrm{first}}(X)"></span>，也就是平均池化減首詞元讀出之差。作者另以片段偏移與雜訊模型推導式 (3)，說明何時池化有幫助、何時反而有害、何時讀出幾乎不重要（§3.4, p. 4）。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>資料與實驗</h2></div>
+<ul><li><strong>資料</strong>：命名實體辨識用 MasakhaNER 1.0 的新聞語料，九種 BIO 標籤（PER、LOC、ORG、DATE）；翻譯用過濾後的 OPUS-100（§4.1, p. 5）。</li><li><strong>阿姆哈拉語</strong>：命名實體辨識訓練 1,750、開發 250、測試 500 句；Study I 翻譯訓練 20,000、開發 1,000、測試 1,000 對，詞形表單來自 UniMorph 的 2,461 個阿姆哈拉語詞條（lemmas），分析器 HornMorpho 也僅用於 Study I；Study II 改用 60,000 對 en→am 語料與不含 HornMorpho 的詞形典誘導詞根（§4.1, p. 5；Appendix D, p. 16；Table 4, p. 18）。</li><li><strong>豪薩語</strong>：命名實體辨識訓練 1,912、開發 276、測試 552 句；沒有詞根分析資源，因此只有 BPE、unigram 與粒度對照，沒有詞根對照組（§4.1, p. 5）。</li><li><strong>評分</strong>：命名實體用詞級 entity-level micro-F1（乘 100 後報告，滿分 100），翻譯用 chrF++ 並以 sacreBLEU 檢查，兩者都是自動指標，原文未描述人工評分；Study I 與 Study II 從頭模型每設定五個 seeds，兩個預訓練編碼器各三個 seeds；差異用 2,000 次句子層配對 bootstrap 與 Holm 校正，等價 margin 預先訂為 F1 的 1 與 2 點、chrF++ 的 0.5 點（§3.6, p. 5；§4.1, p. 5；Table 4, p. 18；Table 7, p. 19）。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>結果</h2></div>
+<p>以 Study I 阿姆哈拉語命名實體辨識為例，<strong>子詞基線</strong>與 <strong>詞根模板分詞</strong> 的優劣會隨讀出反轉（Table 5, p. 19）：</p>
+<table><thead><tr><th>讀出方式</th><th>子詞基線 BPE 的 F1</th><th>詞根模板分析器 F1</th><th>差額</th></tr></thead><tbody><tr><td>首詞元</td><td>14.73 ± 1.18</td><td>12.47 ± 0.58</td><td>−2.26</td></tr><tr><td>平均池化</td><td>16.74 ± 1.49</td><td>25.85 ± 1.94</td><td>+9.11</td></tr></tbody></table>
+<ul><li><strong>詞根指派確實有額外貢獻</strong>：Study I 中真詞根減打亂詞根為 +4.86 F1 [3.14, 6.69]，而打亂對照已重現分析器相對 BPE 增益的 47%（+4.25 F1）；Study II 用不同分析器重做，真詞根減打亂仍為 +4.65 F1 [3.01, 6.33]，五個 seeds 全為正（§4.2, pp. 5–6；Fig. 2, p. 6）。</li><li><strong>但詞頻結構與單一跑次都可能干擾</strong>：Study II 真詞根減普通置換 +2.92、減分層置換 +5.21 雖在句子層顯著，各有一個 seed 為負；剔除那個 29.4 的高分 seed 後，這兩項降為 +1.73 與 +3.59。分層置換減打亂的 −0.56 F1 在 2 點 margin 下等價於零，普通置換減打亂 +1.73 仍屬 inconclusive（§4.2, p. 6；Table 6, p. 19）。</li><li><strong>讀出是從頭模型裡最大的單一效果</strong>：Study I 首詞元讀出下每個詞根模板組看起來都比 BPE 差（−0.47 至 −2.50，校正後不顯著）；池化後每個都顯著較佳（+7.07 至 +9.11）。分析器的讀出增益 Γ 為 +13.38 F1，BPE 只有 +2.01，兩者相減的 +11.4 F1 污染大於比較本身（§4.3, p. 6；Table 5, p. 19）。</li><li><strong>讀出增益隨 fertility（每詞詞元數）增長的說法未重現</strong>：Study I 五組的 Γ 從 BPE 的 +2.01 升到分析器的 +13.38，相關 r = 0.99；Study II 在 0.64 詞元的 fertility 對比下，各分詞器對 BPE 的讀出交互作用為 +0.40、−1.56、−0.05、−1.19 F1（pHolm ≥ 0.61），Table 1（p. 8）標為 not reproduced。原文明確說這條趨勢不應被當作 scaling law（§4.3, p. 6；Table 1, p. 8）。</li><li><strong>預訓練模型是另一種訓練體制</strong>：在 fertility 2.20 的 XLM-R 與 AfroXLM-R 上，讀出增益只有 +0.72 與 +0.54 F1，分別是 inconclusive 與 2 點 margin 下等價於零，小於所有同 fertility 的從頭模型（§4.3, p. 6；Table 7, p. 19）。</li><li><strong>豪薩語是相反的讀出體制</strong>：BPE fertility 1.19 時，首詞元與池化讀出只差 −0.10 F1（不顯著）；對較細的 fertility 匹配 BPE 與 unigram，池化反而變差（−2.98 F1，pHolm = 0.009；unigram −4.11 F1）。F1 首詞元／池化分別是 BPE 48.01/47.90、unigram 48.04/43.93、fertility 匹配 BPE 42.11/39.13（§4.3, p. 6；Appendix F.1, p. 17）。</li><li><strong>粒度效果會變號</strong>：同容量 BPE 在阿姆哈拉語切到 1.97 倍 fertility 時比基準高 +7.7 F1，2.42 倍時回到 +0.2；豪薩語則每一檔都下降，最低 −10.7 F1。ROOTPAT 的粒度步驟本身也從 Study I 的 +4.25 變成 Study II 的 −3.39 F1（§4.4, p. 7；Fig. 4, p. 7；Fig. 2, p. 6）。</li><li><strong>翻譯只支持粒度代價，詞根效果未獲確認</strong>：Study I 的 BPE 翻譯為 16.9（阿姆哈拉語）與 31.1 chrF++（豪薩語），兩方向各訓練 20,000 對；目標切得更細時，阿姆哈拉語各 ROOTPAT 組掉 0.95 至 1.47，豪薩語同 fertility BPE 掉 1.52。Study I 真詞根與打亂在翻譯上差 −0.05 chrF++（pHolm = 0.30），分析器只覆蓋 59.7% MT 詞型。Study II 的翻譯是另一套設定：只做 en→am、60,000 對、4.06M 參數模型與共享詞典解碼器；其真詞根減打亂在句子層是 +0.19 chrF++ [0.07, 0.31]（p = 0.002），但種子層不顯著（+0.31，pseed = 0.11），五套系統都只有 7.2 至 8.2 chrF++。該共享詞典解碼器使 ROOTPAT 各組相對 BPE 受罰，故 ROOTPAT 與 BPE 之間的 MT 絕對分數不可直接比較，只有對覆蓋率的依賴可解讀（Appendix D, p. 16；Table 3, p. 18 註）。Table 1（p. 8）把「翻譯無詞根效果」判定為 null not confirmed，也就是既未確認也未推翻，不是已證明無效果或已證明有效（§4.5, p. 7；Appendix D, p. 16；Table 4, p. 18；Appendix F.1, p. 17；Table 1, p. 8）。</li><li><strong>不是所有設計都成功</strong>：Study I 看到的編碼器特徵通道增益 +1.83 F1，到 Study II 變成 −0.42 且等價於零；同詞根注意力偏置雖把目標詞對的注意力提高 1.65 至 2.44 倍，分數變化絕對值不超過 0.12 F1（Table 1, p. 8；Appendix C, pp. 15–16）。</li><li><strong>一個被閘門擋下的發散 run</strong>：Study II 有一次 XLM-R 池化微調從頭到尾 F1 為零；若把它算進去，句子 bootstrap 會誤報 −13.5 F1 的讀出效果。作者以開發分數閘門剔除並如實揭露（§4.3, p. 6；Appendix F.2, p. 17）。</li><li><strong>Study II 的總比較反而看不到增益</strong>：真詞根減 BPE 只有 +1.25 F1 且 inconclusive（pHolm = 0.15）；分解後才看見 +4.65 的詞根增益被 −3.39 的粒度損失抵消（Fig. 2b, p. 6；Table 6, p. 19）。</li></ul>
+<p><strong>重現帳本（Table 1, p. 8）</strong>：原文把 Study I 的六項結論逐項送進 Study II 檢驗，結果是兩項重現、三項未重現，翻譯的 null 未被確認或推翻（§4.6, p. 8）。</p>
+<table><thead><tr><th>Study I 結論</th><th>Study I</th><th>Study II</th><th>判定</th></tr></thead><tbody><tr><td>真詞根勝過打亂詞根（NER）</td><td>+4.86 F1</td><td>+4.65 F1，5/5 seeds 為正</td><td>reproduced</td></tr><tr><td>每組讀出增益為正</td><td>+2.0 至 +13.4 F1</td><td>+2.7 至 +4.7 F1；預訓練小於 1 點</td><td>reproduced in sign</td></tr><tr><td>讀出增益隨 fertility 增長</td><td>r = 0.99（5 組）</td><td>交互作用測不到</td><td>not reproduced</td></tr><tr><td>ROOTPAT 粒度步驟有幫助</td><td>+4.25 F1</td><td>−3.39 F1</td><td>not reproduced</td></tr><tr><td>編碼器通道在 BPE 後有幫助</td><td>+1.83 F1</td><td>−0.42 F1，等價於零</td><td>not reproduced</td></tr><tr><td>翻譯無詞根效果</td><td>−0.05 chrF++</td><td>+0.19 chrF++（句子層），pseed = 0.11</td><td>null not confirmed</td></tr></tbody></table>
+<p>此外，重現帳本之外尚有四項 Study I 預測失敗；九個 null 在預先設定的 margin 下屬等價，其餘 null 僅為 inconclusive（§4.6, pp. 7–8；Appendix F.2, p. 18）。</p>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>限制與可用性</h2></div>
+<ul><li><strong>作者說的限制</strong>：詞根結果只測一種語言、兩套分析器；因沒有命名實體語料，提格利尼亞語擴充未能進行；效果只在約 1M 至 2M 參數、1,750 句從頭訓練的小模型上量到，絕對 F1 偏低（Limitations, pp. 8–9）。</li><li><strong>讀的時候要留意</strong>：五個 seeds 下單一 run 可主導對照，真詞根對置換對照在句子層顯著但種子層不顯著，且未做同時重抽 seeds 與句子的兩層 bootstrap；粒度變號原因未找出，分解音流上的 BPE 中介基線也沒測（Limitations, p. 9）。翻譯語料約 44% 宗教文本、貪心解碼，Study II 翻譯系統接近底部且原因未診斷（§4.5, p. 7；Limitations, p. 9）。</li><li><strong>公開程度</strong>：原文未聲明程式、資料或模型公開發布；倫理段說研究用小模型不作工具釋出，語料以記錄的 SHA-256 哈希取得（p. 9；Appendix E, p. 17；全文核查）。</li><li><strong>作者的下一步</strong>：作者把大規模預訓練下詞根因式分解是否仍有益列為開放問題，並建議比較時報告 per-seed 分數、等價判定與讀出（§5, p. 8；§4.7, p. 8）。</li><li><strong>適合拿來報告的點</strong>：這篇適合當分詞比較方法學的入門案例：用打亂詞根對照與容量匹配粒度掃描示範怎麼把「形態分詞比較好」這句話拆成可檢驗的三件事；約 78% 的分析器增益可由詞形表單獨取得的觀察，也適合討論資源門檻（§4.7, p. 8；Wiki 詮釋）。</li><li><strong>引用本篇之後續研究</strong>：（尚無可附出處之後續研究；本頁不把作者的未來建議寫成他人成果）</li></ul>
+<h3>延伸想法</h3>
+<p>以下為延伸思考（Wiki 推測），不是原文主張。</p>
+<ol><li>式 (1) 的骨架可以直接搬到別的分詞器比較：先訓練一個只改粒度的參考系統，再問語言結構是否還有額外貢獻；原文只在阿姆哈拉語命名實體辨識與兩個翻譯方向上做過（§3.1, p. 3；§4, pp. 5–7）。</li><li>同一套對照若換到預訓練模型，必須重新量讀出：這篇的兩款編碼器讀出效果都小於一點，而從頭模型可達 +13.38 F1，兩種訓練體制不能互推（§4.3, p. 6；Table 5, p. 19；Table 7, p. 19）。</li></ol>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2026</b><span>發表・arXiv</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Abdul Rehman Antall<br>Baidya Nath Saha</span></div>
+    <div class="blk"><span class="lab">我的關注</span><div class="chips"><span class="chip">每日推介</span></div><span class="note">優化方向：構詞解析與分詞切分</span><span class="note">研究語言：阿姆哈拉語、豪薩語</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>arXiv preprint arXiv:2611.14818v1</span><a href="https://arxiv.org/abs/2611.14818">https://arxiv.org/abs/2611.14818</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#人工智慧</span><span class="chip">#自然語言處理</span><span class="chip">#計算語言學</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>低資源神經機器翻譯與檢索增強生成</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">本頁只覆蓋 Antall 與 Saha 的 arXiv:2611.14818v1 預印本（2026-11-10 投稿）全文 19 頁。Study I 與 Study II 是同一篇論文內的兩次獨立實作，數字分開呈現，不合併平均。本頁最近核對：2026-11-21。</span></div>
+    <div class="blk"><span class="lab">核實狀態</span><span class="ok">已逐項對照原文查核</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

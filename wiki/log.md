@@ -2726,3 +2726,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：完成 TD-033。我的關注 28 篇論文頁與卡片檔皆已改為新六章（各篇一個提交，見前列日誌）；最後 4 篇由 DeepSeek Harness 於獨立 worktree 改寫、Command Code 之 MiniMax 與 GLM 審查，總指揮回原文核對後收回。`check_cards.py` 全庫 ERROR 0，`build_home.py --check` 與建置結果一致。自 `wiki/todo.md` 刪除 TD-033。
+
+## [2026-11-21 17:28] ingest | 收錄我的關注新六章論文：阿姆哈拉語與豪薩語分詞器比較之拆解（Antall & Saha 2026） | #人工智慧 #自然語言處理 #計算語言學
+- **執行代理**：Claude Code by Anthropic（總指揮）；論文頁、證據表與卡片檔由 Hy4 Flash（Command Code，騰訊）於獨立 worktree 起草，經 DeepSeek Harness 與 Command Code 之 MiniMax 互審 5 輪後通過
+- **模型版本**：Claude Sonnet 5.5（總指揮）；Hy4 Flash（作者）；DeepSeek Harness 與 MiniMax M3.1 Flash（審查者）
+- **具體變更**：新增 `wiki/papers/2026-tokenizer-comparisons-amharic-hausa-antall.md`、`wiki/evidence/` 同名證據表（58 行）、`wiki/cards/` 同名卡片檔與 `web/papers/2026-tokenizer-comparisons-amharic-hausa-antall/index.html`，我的關注（`focus_role: daily-picks`、`focus_direction: morphology`），`verification: verified`。書目以 arXiv 頁核對（題名、作者、2026-11-10 投稿、arXiv:2611.14818）；`crossref_check.py` 因無 DOI 跳過。連至 `low-resource-machine-translation`（雙向登記並於「構詞特徵增強」一條補本篇，該頁維持 `partial`）；`raw/my-focus/my-index.md` 另於 Mine-RAW 提交。總指揮回原文核對 Table 5、翻譯、豪薩語反向讀出與 seeds 數等數字皆在 PDF 中。`check_cards.py` 與 `build_paper_prototype.py` 皆 ERROR 0、WARN 0；`verify_page.js` 桌面與手機 PASS；`verify_wall.js` PASS（本篇僅語言標籤被截斷一項 WARN，依規範保留）；`verify_star.js` PASS；`build_home.py --check` 一致。卡片編號後移，重建 18 篇論文頁各一行編號，另 `2026-malm-backtranslation-indic-mt-rao` 網頁補上先前落後之核實狀態一行。未決事項：無。
