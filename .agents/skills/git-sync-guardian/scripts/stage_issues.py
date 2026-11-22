@@ -16,7 +16,7 @@ wiki/issues.md 與日誌一樣由多個 AI 共用，工作目錄常同時含有�
 用法（於倉庫任意位置執行）：
     python .agents/skills/git-sync-guardian/scripts/stage_issues.py EK-069 EK-070
     python .agents/skills/git-sync-guardian/scripts/stage_issues.py EK-088 --dry-run
-    python .agents/skills/git-sync-guardian/scripts/stage_issues.py --next-id
+    python .agents/skills/git-sync-guardian/scripts/stage_issues.py --next-id   # 掃描 issues.md、歸檔與日誌
     python .agents/skills/git-sync-guardian/scripts/stage_issues.py ARCHIVED
 
 結束代碼：0 成功，1 錯誤（例如指定的編號不存在，或已提交的條目在工作目錄被刪除）。
@@ -93,6 +93,11 @@ def next_id(root):
             with open(p, encoding='utf-8') as fh:
                 nums += [int(x[3:]) for x in ISSUE.findall(fh.read())]
     nums += [int(x[3:]) for x in closed_ids(root)]
+    # 日誌中出現過之編號也算：曾被刪除的條目，其編號不會因此被重新取用（2026-11-10 EK-204 即因此重號）
+    log = os.path.join(root, 'wiki', 'log.md')
+    if os.path.exists(log):
+        with open(log, encoding='utf-8') as fh:
+            nums += [int(n) for n in re.findall(r'EK-(\d{3,})', fh.read())]
     return 'EK-%03d' % (max(nums) + 1 if nums else 1)
 
 
@@ -105,7 +110,7 @@ def main():
     ap = argparse.ArgumentParser(description='只暫存 wiki/issues.md 中指定編號的條目')
     ap.add_argument('ids', nargs='*', help='要提交的問題編號（例如 EK-069）；PREAMBLE 代表檔頭前言；ARCHIVED 代表歸檔搬移')
     ap.add_argument('--dry-run', action='store_true', help='只列出結果，不寫入暫存區')
-    ap.add_argument('--next-id', action='store_true', help='印出下一個可用編號（同時掃描 issues.md 與歸檔資料夾）')
+    ap.add_argument('--next-id', action='store_true', help='印出下一個可用編號（同時掃描 issues.md、歸檔資料夾與日誌）')
     a = ap.parse_args()
 
     root = git('rev-parse', '--show-toplevel').decode().strip()

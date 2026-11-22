@@ -2129,6 +2129,20 @@
 - **模型版本**：GPT-6
 - **具體變更**：處理 TD-011 時比對正式版線上文字，發現論文頁部分公式形式待原文影像確認，登記 EK-203，核實狀態改為 issues 並重建論文頁；建置與 lint ERROR 0。公式逐式核對及瀏覽器驗證仍分別留在 TD-011、TD-021。
 
+## [2026-11-10 22:40] ingest | 光遺傳學 2005-optogenetics 證據表、卡片檔與網頁上架 | #神經科學 #生物科技
+- **補記**：2026-11-22，Claude Code by Anthropic 經使用者同意放回原位。本條曾於提交 `0a17f2f`（2026-11-10 23:19，回退本次收錄，當時未寫日誌）連同原問題條目一併自日誌刪除；所述變更均已被該提交回退，光遺傳學其後之收錄見 [2026-11-11 13:57] fix 等後續條目。原問題條目之全文併入 EK-219 之「前身」行（[歸檔](issues/closed/papers/2005-optogenetics.md)）。本次收錄初始提交 `eb85be2` 用 EK-203，合流提交 `b2dbc80` 改為 EK-204。
+- **執行代理**：Antigravity by Google DeepMind
+- **模型版本**：Gemini 3.8 Flash
+- **具體變更**：
+  - [wiki/evidence/2005-optogenetics.md](evidence/2005-optogenetics.md)：依原文 Nature Neuroscience 8(9):1263–1268 建立完整證據表（24 列），涵蓋病毒表現、光電流動力學、動作電位延遲與突觸傳遞，並回原文逐一核對數據。
+  - [wiki/issues.md](issues.md)：登記並關閉 EK-204（舊號，此問題今以 EK-219 追蹤；EK-204 現指另一問題），指出原論文頁 Card 3 列出之光電流方程、馬可夫動力學與 HH 微分方程未見於 2005 年實驗報告，改以作者實測之光電流動力學數據文字說明呈現。
+  - [wiki/papers/2005-optogenetics.md](papers/2005-optogenetics.md)：依 EK-204（舊號）修訂 Card 3，將未見於原文之展示式改為實驗動力學條列說明，補註奠基論文 `raw/2003-channelrhodopsin2.pdf` 路徑，狀態改為 `published`，核實狀態改為 `verified`。
+  - [wiki/cards/2005-optogenetics.md](cards/2005-optogenetics.md)：依 `paper-card-writer` 規範撰寫完整六張卡片；Card 3 採無公式模式並附 Type F 空間示意圖（藍光、質膜、光敏通道與離子內流），Card 4 提取 4 項核心實驗數值（$8.0\text{ ms}$、$<\!5\text{ ms}$、$496\text{ pA}$、$5.1\text{ s}$），Card 5 登記 4 項里程碑（Aravanis 2007、Gradinaru 2009、Liu 2012 與 2026 諾貝爾獎）。
+  - [web/papers/2005-optogenetics/index.html](../web/papers/2005-optogenetics/index.html)：以 `tools/build_paper_prototype.py` 產生正式雙欄頁面，自我檢查 ERROR 0、WARN 0。
+  - [web/index.html](../web/index.html)：以 `tools/build_home.py --card 2005-optogenetics` 重建首頁，完成卡片牆上架（No.01），自我檢查 ERROR 0、WARN 0。
+  - [wiki/todo.md](todo.md)：完成並移除 TD-018（奠基論文原始檔路徑已補齊並列為已引用）。
+  - 驗證：`check_cards.py` ERROR 0、`build_paper_prototype.py` ERROR 0、`build_home.py --check` 一致、`lint_wiki.py` ERROR 0。
+
 ## [2026-11-10 23:28] config | 驗證 Windows 端 paper-pdf-parser 之 MinerU 環境並完成實測 | 全域
 - **執行代理**：Antigravity by Google DeepMind
 - **模型版本**：Gemini 3.8 Flash
@@ -2268,7 +2282,7 @@
 ## [2026-11-11 13:49] fix | 修復日誌追溯、舊路徑與核實狀態 | 全域
 - **執行代理**：Codex by OpenAI
 - **模型版本**：GPT-6
-- **具體變更**：將 `0a17f2f` 刪除之光遺傳學日誌與原 EK-204 問題全文，依 Git 差異保存於 [回退前歷史紀錄](history/2026-11-10-optogenetics-reverted-records.md)；說明合流改號及回退，不將歷史快照當作現況。原 EK-204 後被用於 Soai，故以 EK-219 恢復光遺傳學公式問題追蹤。EK-212 因 2001 原文仍未核對而重開；相關論文與概念頁、光遺傳學頁之 `verification` 改為 `issues`。
+- **具體變更**：將 `0a17f2f` 刪除之光遺傳學日誌與原 EK-204 問題全文，依 Git 差異保存於回退前歷史紀錄（原為 `wiki/history/` 之單獨檔案；2026-11-22 經使用者同意，日誌條目放回 [2026-11-10 22:40] ingest 原位，原問題全文併入 [EK-219 歸檔](issues/closed/papers/2005-optogenetics.md)之「前身」行，該檔隨之刪除）；說明合流改號及回退，不將歷史快照當作現況。原 EK-204 後被用於 Soai，故以 EK-219 恢復光遺傳學公式問題追蹤。EK-212 因 2001 原文仍未核對而重開；相關論文與概念頁、光遺傳學頁之 `verification` 改為 `issues`。
 - **歷史澄清**：`d9abe83` 曾直接更改 02:36 日誌標題，後續一律保留既有條目並追加更正。10:28 記載之待提交狀態是當時快照，相關工作已見提交 `ac8878e`。使用者於本次工作確認 Soai 卡片初稿撰寫者為 Antigravity by Google DeepMind（Gemini 3.8 Flash）；02:34 條目所述 Claude Haiku 為審查與編排，GLM-5.3 Flash 為示意圖設計，現有卡片撰寫者署名維持不變。
 - **相容路徑**：Woodford 舊論文、證據表與卡片路徑改為連到新檔的 Markdown 轉介；舊網頁網址提供轉址及文字連結。建置、Lint、卡片與流程工具辨識明確標記的轉介檔，避免重複收錄；舊日誌未改寫。
 - **原文複核**：Soai 原 PDF 印刷頁 768 Table 1 的 Run A5 同列載新生成物 90% e.e. 與 1,674 倍，故 EK-216 所稱跨系列誤併不成立；論文頁、證據表與問題處理記錄已明確標示 A5。Run D 正文改為「以外消旋 1 為催化劑」，不稱無手性種子。
@@ -2746,3 +2760,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：經使用者同意，問題清單與待辦清單維持分工，補上固定互指方式：待辦新增選填之「關聯」欄，問題之「關聯」欄可寫待辦編號。`lint_wiki.py` 新增互指檢查：所列 EK 編號須存在於 `wiki/issues.md` 或歸檔，TD 編號須存在於 `wiki/todo.md` 或日誌（已完成刪除者），不存在報 ERROR；問題仍為 open 而關聯之待辦已刪除時報 WARN，提醒可以動手修正；原「關聯指向不存在之問題編號」由 WARN 改為 ERROR。`issues_for.py` 一併列出提到本頁 slug 或關聯到本頁問題之待辦（例如查 2007 Woodford 可見 TD-023）。`AGENTS.md` 第七章第 4、5 節與 `wiki-content-audit` 新增規則：問題須等使用者決定、補檔或同意才能修時，問題維持 open，另開 waiting 待辦，兩邊以「關聯」互指。以複製之倉庫寫入錯誤編號測試，ERROR 與 WARN 均如預期；全庫 lint ERROR 0，tools/tests 3 組 OK。
+
+## [2026-11-22 12:15] fix | 放回誤刪之光遺傳學日誌與問題，刪除 wiki/history，並防止以回退刪除紀錄 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：經使用者同意（一次性放寬日誌 append-only、已歸檔條目不修改、日誌須經 stage_log.py 暫存三項規則）：將 2026-11-10 提交 `0a17f2f` 誤刪之 [2026-11-10 22:40] ingest 條目放回原時間位置，內容照原文，加「補記」行說明其所述變更已被回退，並於舊號 EK-204 後加括號註明今以 EK-219 追蹤；原 EK-204 問題全文併入 `wiki/issues/closed/papers/2005-optogenetics.md` 之 EK-219「前身」行，不另給編號；[2026-11-11 13:49] fix 條目與 EK-219「來源」行中指向 `wiki/history/` 之連結改指新位置；刪除 `wiki/history/`。防止再發生：`AGENTS.md` 第十章新增第 9 條、`git-sync-guardian` 新增第 7 條鐵律，撤回工作不得以 git revert／reset 回退整個提交，日誌、問題、待辦一律保留並另寫日誌；`lint_wiki.py` 新增歷史比對，曾提交之日誌條目（依標題時間）或問題編號不見即報 ERROR 並指出刪除之提交（以未修正之舊版複本實測，正確指出 `0a17f2f`；模擬直接刪除並提交亦報出）；問題欄位新增「前身」；`stage_issues.py --next-id` 連日誌中出現過之編號一併排除。全庫歷史比對另見 3 筆日誌標題曾被直接更正（02:36 等，條目仍在）與 Woodford 改名之 7 筆路徑變更，均非刪除。lint ERROR 0、tools/tests 3 組 OK、pipeline_status 2005-optogenetics 全部完成。

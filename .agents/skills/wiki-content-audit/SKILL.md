@@ -161,7 +161,7 @@ description: >-
 
 兩支腳本只用 Python 標準函式庫（3.7 以上），於倉庫根目錄執行：
 
-- `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：機械檢查 Frontmatter 必填欄位、檔名年份、`domain` 與標籤白名單、`focus_role`、概念雙向對應、`status: published` 之網頁目錄、Emoji、`file:///`、`[[...]]`、相對連結、公式內中文、化學式正體、長公式斷行、日誌標題格式、控制字元（ERROR，多半是 shell 吃掉 LaTeX 反斜線所致）、`card_line` 能否切成 3 行以內之封面斷行（WARN）、證據表只寫「表 N 各數值」而未列出數字之列（WARN），以及 `verification` 與問題清單、證據表的一致性；問題清單與歸檔檔之標題格式、欄位、編號重複（含歸檔）、分節標題與歸檔路徑；問題與待辦「關聯」所列編號是否存在。`--errors-only` 只顯示錯誤。ERROR 必須修正；WARN 為啟發式提醒，須人工判斷。日誌為 append-only，其舊條目之問題只列為 WARN。
+- `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：機械檢查 Frontmatter 必填欄位、檔名年份、`domain` 與標籤白名單、`focus_role`、概念雙向對應、`status: published` 之網頁目錄、Emoji、`file:///`、`[[...]]`、相對連結、公式內中文、化學式正體、長公式斷行、日誌標題格式、控制字元（ERROR，多半是 shell 吃掉 LaTeX 反斜線所致）、`card_line` 能否切成 3 行以內之封面斷行（WARN）、證據表只寫「表 N 各數值」而未列出數字之列（WARN），以及 `verification` 與問題清單、證據表的一致性；問題清單與歸檔檔之標題格式、欄位、編號重複（含歸檔）、分節標題與歸檔路徑；問題與待辦「關聯」所列編號是否存在；以及比對 Git 歷史，曾提交之日誌條目與問題編號是否仍在（只能追加，見 `AGENTS.md` 第十章第 9 條）。`--errors-only` 只顯示錯誤。ERROR 必須修正；WARN 為啟發式提醒，須人工判斷。日誌為 append-only，其舊條目之問題只列為 WARN。
 - `python .agents/skills/wiki-content-audit/scripts/issues_for.py <slug>`：列出某頁在 `wiki/issues.md` 中的條目、`wiki/issues/closed/` 中已歸檔的舊紀錄（含改名前的舊名字），以及 `wiki/todo.md` 中提到本頁或關聯到本頁問題之待辦；`--open` 不列歸檔，`--list` 只列標題。
 - `python .agents/skills/wiki-content-audit/scripts/archive_issues.py [--apply --agent "<代理名稱>"]`：把已結案條目搬到歸檔資料夾並立即提交推送；條件不符即拒絕執行（見〈問題歸檔〉）。
 - `python .agents/skills/wiki-content-audit/scripts/crossref_check.py [slug ...]`：向 Crossref 查詢 `doi_url`，比對年份、作者姓氏與期刊名稱；不帶參數時查全部論文頁。腳本只能確認書目，不能確認內容。

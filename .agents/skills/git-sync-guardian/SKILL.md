@@ -23,9 +23,9 @@ description: >-
 
 ---
 
-## 二、六大鐵律規範
+## 二、七大鐵律規範
 
-所有參與專案之 AI 代理人，在執行任何版本控制操作時必須嚴格遵守以下六項鐵律：
+所有參與專案之 AI 代理人，在執行任何版本控制操作時必須嚴格遵守以下七項鐵律：
 
 ### 1. 提交必含推送（Commit Implies Push）
 - 只要使用者指示「提交」、「commit」或當 AI 完成階段性任務進行版本固化時，**必須將 `commit` 與 `push` 視為單一不可分割的原子操作（Atomic Operation）**。
@@ -56,6 +56,10 @@ description: >-
 - 工作尚未完成、或使用者要求先不提交時，**先不要寫日誌**；進度與交接事項登記於 `wiki/todo.md`（`AGENTS.md` 第七章第 5 節），完成後再寫日誌、一次提交。不得以日誌條目充當交接清單。
 - 寫日誌一律**追加於檔尾**（例如以附加模式開檔），不得把整份日誌讀進來再整檔寫回，以免覆蓋他人剛追加、尚未提交的條目；亦不得改動他人條目。
 - **標題時間一律以指令取得**：寫標題前先執行 `python .agents/skills/git-sync-guardian/scripts/log_time.py`，把輸出的臺北時間原樣填入 `## [YYYY-MM-DD HH:MM]`，不得憑估計、記憶或對話中的時間推算。`stage_log.py` 會擋下晚於現在 5 分鐘以上或早於現在 60 分鐘以上的自己的新條目，`safe_commit_push.sh` 隨即還原本次暫存並中止；僅在條目確實早已寫好（例如推送失敗後重試）時，加 `--allow-stale-log` 放行。被擋下時，修正工作目錄中自己那筆尚未提交的條目標題即可。
+
+### 7. 撤回工作不刪紀錄（Undo Without Erasing Records）
+- 撤回一次收錄或修改時，不得以 `git revert`、`git reset`、`git checkout <舊提交> -- <檔案>` 回退整個提交或整份共用檔：這些指令不經 `safe_commit_push`，`stage_log.py`、`stage_issues.py` 的防刪檢查擋不住。只撤回內容檔；`wiki/log.md`、`wiki/issues.md`（含 `wiki/issues/closed/`）、`wiki/todo.md` 保留，另追加日誌寫明撤回範圍與原因（`AGENTS.md` 第十章第 9 條）。
+- `lint_wiki.py` 比對 Git 歷史，曾提交之日誌條目或問題編號不見時報 ERROR 並指出刪除之提交；誤刪之補救方式見錯誤訊息，須經使用者同意。背景：2026-11-10 提交 `0a17f2f` 以回退整個提交撤回光遺傳學收錄，連帶刪除一筆日誌與 EK-204。
 
 ---
 
@@ -130,7 +134,7 @@ python .agents/skills/git-sync-guardian/scripts/stage_todo.py TD-003 --dry-run
 # 只暫存自己修改的問題條目（提交 wiki/issues.md 時由 safe_commit_push.py / .sh 的 --issue 自動調用）
 python .agents/skills/git-sync-guardian/scripts/stage_issues.py EK-069 EK-070 --dry-run
 
-# 新增問題前取得下一個編號（同時掃描 wiki/issues.md 與 wiki/issues/closed/）
+# 新增問題前取得下一個編號（同時掃描 wiki/issues.md、wiki/issues/closed/ 與日誌）
 python .agents/skills/git-sync-guardian/scripts/stage_issues.py --next-id
 
 # 只暫存自己的日誌條目（--dry-run 只列出不寫入）

@@ -301,7 +301,7 @@ def check_evidence(root):
 
 
 # 問題條目可用之欄位；前三者必填，已結案者另須至少一行「處理」（AGENTS.md 第七章第 4 節）。
-ISSUE_FIELDS = {'問題', '來源', '發現於', '處理', '複核', '重開', '總核', '關聯'}
+ISSUE_FIELDS = {'問題', '來源', '發現於', '處理', '複核', '重開', '總核', '關聯', '前身'}
 ISSUE_REQUIRED = ['問題', '來源', '發現於']
 ISSUES_CLOSED_DIR = 'wiki/issues/closed'
 # wiki/issues.md 中已結案、尚未歸檔之條目達此數時提醒執行 archive_issues.py。
@@ -395,6 +395,48 @@ def load_issues(root):
             elif r not in seen:
                 report('ERROR', rel, ln, '%s 之「關聯」指向不存在之問題編號：%s' % (iid, r))
     return [(iid, state, target) for iid, state, target, _, _, _ in rows]
+
+
+def check_history(root):
+    """日誌與問題清單只能追加：曾經提交過的日誌條目與問題編號，現在都必須還在。
+
+    比對 HEAD 可達之 Git 歷史（淺層 clone 只比對已取得之部分）：
+      * wiki/log.md 曾出現之每個標題時間，現在仍須有同一時間之條目（標題文字經更正者以時間比對，不報錯）；
+      * wiki/issues.md 與 wiki/issues/closed/ 曾出現之每個 EK 編號，現在仍須存在於其中之一（歸檔搬移不算刪除）。
+    以 git revert、git reset 等不經 safe_commit_push 之方式刪除者，提交腳本擋不住，由此處發現。
+    """
+    def history(paths):
+        r = subprocess.run(['git', '-C', root, 'log', '-p', '--format=%x00%h %cs', '--'] + paths,
+                           capture_output=True, text=True, encoding='utf-8', errors='replace')
+        return r.stdout if r.returncode == 0 else ''
+
+    def removed_in(text, pattern):
+        """{鍵: 最近一次刪除該行之提交}；git log 由新到舊，取第一次遇到者。"""
+        out, commit = {}, ''
+        for line in text.split('\n'):
+            if line.startswith('\x00'):
+                commit = line[1:]
+                continue
+            m = re.match(r'^-' + pattern, line)
+            if m and m.group(1) not in out:
+                out[m.group(1)] = commit
+        return out
+
+    log_hist = history(['wiki/log.md'])
+    if log_hist:
+        ever = set(re.findall(r'(?m)^\+## \[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\]', log_hist))
+        now = set(re.findall(r'(?m)^## \[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\]', read(os.path.join(root, 'wiki', 'log.md'))))
+        gone = removed_in(log_hist, r'## \[(\d{4}-\d{2}-\d{2} \d{2}:\d{2})\]')
+        for ts in sorted(ever - now):
+            report('ERROR', 'wiki/log.md', 1, '曾提交之日誌條目 [%s] 已不在日誌中（刪除於提交 %s）；日誌只能追加，'
+                   '若為誤刪，經使用者同意後放回原時間位置並加「補記」行說明' % (ts, gone.get(ts, '不明')))
+    iss_hist = history(['wiki/issues.md', ISSUES_CLOSED_DIR])
+    if iss_hist:
+        ever = set(re.findall(r'(?m)^\+### (EK-\d{3,}) ', iss_hist))
+        gone = removed_in(iss_hist, r'### (EK-\d{3,}) ')
+        for iid in sorted(ever - ALL_ISSUE_IDS, key=lambda x: int(x[3:])):
+            report('ERROR', 'wiki/issues.md', 1, '曾提交之問題 %s 已不在 wiki/issues.md 與歸檔中（刪除於提交 %s）；問題條目不得刪除，'
+                   '若為誤刪，經使用者同意後放回原處；編號已被他筆使用時，併入後繼條目之「前身」行' % (iid, gone.get(iid, '不明')))
 
 
 def load_todo(root):
@@ -493,6 +535,7 @@ def main():
     issues = load_issues(root)
     todos = load_todo(root)
     check_cross_links(root, todos)
+    check_history(root)
     open_by_target = {}
     for iid, state, target in issues:
         if state == 'open':
