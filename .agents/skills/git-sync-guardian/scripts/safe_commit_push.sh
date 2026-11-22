@@ -177,7 +177,18 @@ git diff --cached --stat | sed 's/^/    /'
 if git diff --cached --quiet; then
   echo "    暫存區沒有變更，不建立新提交。"
 else
-  git commit -q -m "$COMMIT_MSG"
+  # 其他 git 程序可能短暫持有 .git/index.lock：遇此錯誤稍候重試，最多 5 次。
+  COMMIT_OK=0
+  for ATTEMPT in 1 2 3 4 5; do
+    if COMMIT_ERR=$(git commit -q -m "$COMMIT_MSG" 2>&1); then COMMIT_OK=1; break; fi
+    case "$COMMIT_ERR" in *index.lock*) sleep "$ATTEMPT" ;; *) break ;; esac
+  done
+  if [ "$COMMIT_OK" -ne 1 ]; then
+    echo "$COMMIT_ERR" >&2
+    reset_paths "${PATHS[@]}" 2>/dev/null || true
+    echo "ERROR: 建立提交失敗（見上方 git 訊息），已還原本次暫存，未提交任何內容；排除原因後重新執行。"
+    exit 1
+  fi
   echo "    已建立提交：$(git log --oneline -1)"
 fi
 

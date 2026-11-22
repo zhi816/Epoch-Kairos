@@ -2770,3 +2770,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依使用者要求，比對兩份文件之目錄樹與實際追蹤之檔案。`AGENTS.md` 第四章：移除從未建立之 `web/assets/css/cards.css` 與 `web/assets/js/cards.js`（論文頁樣式與互動內嵌於 `tools/paper_template.html`），補 `tools/wiki_redirects.py`、`tools/tests/`、`.github/workflows/pages.yml`、`docs/screenshots/`，`web/papers/` 註明由建置腳本產生。`README.md`：目錄樹補 `wiki/issues/closed/` 與 `.github/workflows/`，更新 `issues.md` 說明；技能表 `wiki-content-audit` 補 `issues_for.py`、`archive_issues.py` 與常見錯誤清單；交接流程補 `issues_for.py`。`AGENTS.md` 第六章 Lint 新增第 12 條「檢查紀錄完整性」（只追加之歷史比對與關聯編號），工具分工同步；README 改為「共 12 項」。TD-035 第（3）項標為完成。lint ERROR 0、`build_home.py --check` 一致。
+
+## [2026-11-22 12:46] fix | safe_commit_push 提交失敗時還原暫存並逐行輸出 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：[2026-11-22 12:39] update 第一次提交時，`git commit` 失敗（原因未能留存，推測為一時之暫存區鎖定），腳本直接結束、檔案留在暫存區；且呼叫端以 `tail` 截尾，加上腳本標準輸出在管線中整批延後送出而與 git 訊息錯開，錯誤訊息被截掉，經手動取消暫存後重跑成功。修正 `git-sync-guardian` 之 `safe_commit_push.py` 與 `.sh`：建立提交失敗時印出 git 訊息、還原本次暫存並以非零代碼結束；`.py` 之標準輸出改為逐行送出。提交本條時又遇同一失敗，這次訊息完整顯示為 `.git/index.lock` 已存在（另一個 git 程序短暫持有，數秒後自行解除），故再加入遇 `index.lock` 自動稍候重試最多 5 次：`.py` 版每個 git 指令皆重試，`.sh` 版只在建立提交一步重試。以臨時倉庫測試：pre-commit 掛鉤模擬失敗時兩版皆印出錯誤、暫存還原；鎖檔於執行中出現並 2 秒後移除時兩版皆成功提交；鎖檔於執行前即存在時 `.py` 版成功、`.sh` 版於前段失敗但不留暫存。`SKILL.md` 第三節第 3 點補充說明。

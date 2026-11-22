@@ -111,7 +111,7 @@ python .agents/skills/git-sync-guardian/scripts/safe_commit_push.py "<提交訊�
 * **功能**：
   1. 確認暫存區原本是空的（否則中止，避免帶走他人已暫存的檔案）。
   2. 只暫存 `--` 之後列出的**單一相對檔案路徑**；拒絕資料夾、絕對路徑、路徑跳脫與 pathspec magic，並用 literal pathspec 防止萬用字元展開。`wiki/log.md` 交給 `stage_log.py`、`wiki/issues.md` 交給 `stage_issues.py`（`--issue`）、`wiki/todo.md` 交給 `stage_todo.py`（`--todo`）逐條暫存。若同一代理的多個工作階段同時追加日誌，可重複傳入 `--log-heading "## [YYYY-MM-DD HH:MM] ..."` 精確挑選自己的標題，避免同代理身分造成誤暫存；被選取的條目會依時間插入暫存版，已提交條目順序不變。
-  3. 確認目前分支為 `main`，先 `git fetch`，成功後才暫存與建立提交。提交後以 `git merge --autostash` 與遠端合流；若遠端在前置 fetch 後又前進，push 仍可能被拒，腳本會回報錯誤並保留本機提交供後續同步。
+  3. 確認目前分支為 `main`，先 `git fetch`，成功後才暫存與建立提交。git 指令遇到 `.git/index.lock`（另一個 git 程序暫時鎖住暫存區，例如桌面 App 之背景狀態查詢）時自動稍候重試，最多 5 次（`.py` 版每個 git 指令皆重試；`.sh` 版只在建立提交一步重試，前段步驟遇鎖即失敗但不留暫存，重跑即可，故優先用 `.py` 版）；仍失敗或其他原因導致建立提交失敗時，印出 git 訊息、還原本次暫存並以非零代碼結束，不留下已暫存未提交的檔案；排除原因後重跑即可。腳本逐行輸出，接到管線時訊息順序不錯開；呼叫者不要以 `tail` 截尾，以免看不到錯誤。提交後以 `git merge --autostash` 與遠端合流；若遠端在前置 fetch 後又前進，push 仍可能被拒，腳本會回報錯誤並保留本機提交供後續同步。
   4. 日誌衝突由 `merge_log.py` 排解；合併提交失敗會明確中止，不回報成功。推送後確認 `Ahead: 0`，並列出工作目錄中仍未提交（屬於他人）的檔案。
 * 兩個倉庫都有修改時，分別執行 `main` 與 `raw` 各一次（各自列出檔案），以滿足雙倉庫一體化。
 * 需要 Python 3.7 以上（僅用標準函式庫）。`.py` 版直接以當前 Python 執行並自動將標準輸出設為 UTF-8；`.sh` 版會自動依序試 `python3`、`python`、`py`，取第一個成功者。

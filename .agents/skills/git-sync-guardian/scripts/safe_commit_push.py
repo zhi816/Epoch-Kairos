@@ -12,6 +12,7 @@ Zero emoji constraint strictly enforced.
 import ntpath
 import os
 import subprocess
+import time
 import sys
 from datetime import datetime
 
@@ -40,13 +41,19 @@ def usage():
 
 
 def run_git(cwd, *args, check=False):
-    r = subprocess.run(
-        ['git', '-C', cwd, *args],
-        capture_output=True,
-        text=True,
-        encoding='utf-8',
-        errors='replace',
-    )
+    # 其他 git 程序（例如編輯器或桌面 App 之背景狀態查詢）可能短暫持有 .git/index.lock；
+    # 遇此錯誤時稍候重試，最多 5 次（約 7 秒），其餘錯誤照常回報。
+    for attempt in range(5):
+        r = subprocess.run(
+            ['git', '-C', cwd, *args],
+            capture_output=True,
+            text=True,
+            encoding='utf-8',
+            errors='replace',
+        )
+        if r.returncode == 0 or 'index.lock' not in (r.stderr or ''):
+            break
+        time.sleep(0.5 * (attempt + 1))
     if check and r.returncode != 0:
         if r.stderr:
             sys.stderr.write(r.stderr)
@@ -174,7 +181,8 @@ def parse_cli(argv):
 def main():
     for stream in (sys.stdout, sys.stderr):
         try:
-            stream.reconfigure(encoding='utf-8')
+            # line_buffering：輸出接到管線或檔案時也逐行送出，本腳本訊息與 git、輔助腳本之訊息才不會錯開順序。
+            stream.reconfigure(encoding='utf-8', line_buffering=True)
         except Exception:
             pass
 
@@ -282,7 +290,14 @@ def main():
     if run_git(repo_path, 'diff', '--cached', '--quiet').returncode == 0:
         print('    暫存區沒有變更，不建立新提交。')
     else:
-        run_git(repo_path, 'commit', '-q', '-m', commit_msg, check=True)
+        commit_res = run_git(repo_path, 'commit', '-q', '-m', commit_msg)
+        if commit_res.returncode != 0:
+            for out in (commit_res.stdout, commit_res.stderr):
+                if out:
+                    sys.stderr.write(out)
+            reset_paths(repo_path, paths)
+            print('ERROR: 建立提交失敗（見上方 git 訊息），已還原本次暫存，未提交任何內容；排除原因後重新執行。')
+            sys.exit(1)
         print(f"    已建立提交：{git_out(repo_path, 'log', '--oneline', '-1')}")
 
     # 3. 再與遠端合流。--autostash 會暫時收起工作目錄中其他代理尚未提交的修改，合流後放回。
