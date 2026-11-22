@@ -2765,3 +2765,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：經使用者同意（一次性放寬日誌 append-only、已歸檔條目不修改、日誌須經 stage_log.py 暫存三項規則）：將 2026-11-10 提交 `0a17f2f` 誤刪之 [2026-11-10 22:40] ingest 條目放回原時間位置，內容照原文，加「補記」行說明其所述變更已被回退，並於舊號 EK-204 後加括號註明今以 EK-219 追蹤；原 EK-204 問題全文併入 `wiki/issues/closed/papers/2005-optogenetics.md` 之 EK-219「前身」行，不另給編號；[2026-11-11 13:49] fix 條目與 EK-219「來源」行中指向 `wiki/history/` 之連結改指新位置；刪除 `wiki/history/`。防止再發生：`AGENTS.md` 第十章新增第 9 條、`git-sync-guardian` 新增第 7 條鐵律，撤回工作不得以 git revert／reset 回退整個提交，日誌、問題、待辦一律保留並另寫日誌；`lint_wiki.py` 新增歷史比對，曾提交之日誌條目（依標題時間）或問題編號不見即報 ERROR 並指出刪除之提交（以未修正之舊版複本實測，正確指出 `0a17f2f`；模擬直接刪除並提交亦報出）；問題欄位新增「前身」；`stage_issues.py --next-id` 連日誌中出現過之編號一併排除。全庫歷史比對另見 3 筆日誌標題曾被直接更正（02:36 等，條目仍在）與 Woodford 改名之 7 筆路徑變更，均非刪除。lint ERROR 0、tools/tests 3 組 OK、pipeline_status 2005-optogenetics 全部完成。
+
+## [2026-11-22 12:39] update | 更新 AGENTS.md 與 README 之專案架構與 Lint 項目 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依使用者要求，比對兩份文件之目錄樹與實際追蹤之檔案。`AGENTS.md` 第四章：移除從未建立之 `web/assets/css/cards.css` 與 `web/assets/js/cards.js`（論文頁樣式與互動內嵌於 `tools/paper_template.html`），補 `tools/wiki_redirects.py`、`tools/tests/`、`.github/workflows/pages.yml`、`docs/screenshots/`，`web/papers/` 註明由建置腳本產生。`README.md`：目錄樹補 `wiki/issues/closed/` 與 `.github/workflows/`，更新 `issues.md` 說明；技能表 `wiki-content-audit` 補 `issues_for.py`、`archive_issues.py` 與常見錯誤清單；交接流程補 `issues_for.py`。`AGENTS.md` 第六章 Lint 新增第 12 條「檢查紀錄完整性」（只追加之歷史比對與關聯編號），工具分工同步；README 改為「共 12 項」。TD-035 第（3）項標為完成。lint ERROR 0、`build_home.py --check` 一致。

@@ -97,11 +97,15 @@ Epoch-Kairos/
 ├── DESIGN.md                  # 美術方向紀錄（已定、待決與否決之視覺決策）
 ├── .agents/skills/            # 專屬 Skill 正本（見第六章開頭之 Skill 一覽）
 ├── .claude/skills/            # 供 Claude Code 載入之轉介檔，內容指向 .agents/skills/ 正本
+├── .github/workflows/pages.yml # GitHub Pages 自動發布（web/ 有變動之推送觸發；web/prototypes/ 不上站）
+├── docs/screenshots/          # README 展示用靜態截圖（不上站）
 ├── tools/                     # 建置腳本（不隨 GitHub Pages 公開）
 │   ├── build_home.py          # 自 wiki/ Frontmatter 與已提交之卡片檔產生 web/index.html（知識星圖與卡片牆首頁）
 │   ├── home_template.html     # 首頁 HTML 範本（資料由 build_home.py 內嵌）
 │   ├── build_paper_prototype.py # 自 wiki/cards/ 與 wiki/papers/ 產生論文頁 web/papers/<slug>/index.html，附自我檢查
-│   └── paper_template.html    # 論文頁 HTML 範本（樣稿「論文頁 F」）
+│   ├── paper_template.html    # 論文頁 HTML 範本（樣稿「論文頁 F」；論文頁之卡片、長文與切換互動之樣式與程式皆內嵌於此）
+│   ├── wiki_redirects.py      # 辨識舊路徑轉介檔（第五章第 2 條），供建置與檢查腳本共用
+│   └── tests/                 # 建置與流程腳本之回歸測試（python -m unittest discover -s tools/tests）
 │
 ├── raw/                       # 【第一層：Raw Sources】原始資料層（不可變，Immutable）
 │   ├── my-focus/              # 【使用者專屬關注區】存放個人精選研究、私人筆記與核心關注資料（含私有索引 my-index.md）
@@ -123,13 +127,11 @@ Epoch-Kairos/
     ├── assets/                # 前端靜態資源（CSS、JS、字體）
     │   ├── css/
     │   │   ├── theme.css      # 配色體系與全域變數（色碼唯一真實來源）
-    │   │   ├── starmap.css    # 首頁樣式：星空、左欄懸星索引、知識星圖、群星檔案卡片牆與手機版
-    │   │   └── cards.css      # 3:4 知識圖卡與學術長文雙欄樣式（尚未建立）
+    │   │   └── starmap.css    # 首頁樣式：星空、左欄懸星索引、知識星圖、群星檔案卡片牆與手機版
     │   └── js/
-    │       ├── starmap.js     # 首頁互動：星圖與卡片牆篩選、說明框、我的星系與星空背景
-    │       └── cards.js       # 3:4 卡片左右切換與 KaTeX 連動引擎（尚未建立）
+    │       └── starmap.js     # 首頁互動：星圖與卡片牆篩選、說明框、我的星系與星空背景
     ├── prototypes/            # 樣稿與手機原型（非正式頁面）
-    └── papers/                # 每篇論文之專屬雙欄互動頁（HTML 格式）
+    └── papers/                # 每篇論文之專屬雙欄互動頁（由 tools/build_paper_prototype.py 產生，勿手改）
 ```
 
 ---
@@ -226,8 +228,9 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 9. **檢查核實狀態一致性**：論文頁與概念頁之 `verification` 須與 `wiki/issues.md` 及 `wiki/evidence/` 一致（規則見第七章第 4 節）。
 10. **檢查待辦清單格式**：`wiki/todo.md` 之標題、狀態、範圍與必填欄位合規，且編號不重複（規則見第七章第 5 節）。
 11. **檢查卡片文字檔**：`wiki/cards/` 各檔之欄位、字數、封面斷行、禁用詞、公式出處、示意圖規格、Card 4 數字與證據表、Card 5 出處，均符合 `paper-card-writer`。
+12. **檢查紀錄完整性**：日誌與問題清單只能追加，曾提交過之日誌條目與問題編號現在都須還在（比對 Git 歷史，見第十章第 9 條）；問題與待辦之「關聯」所列編號須存在（見第七章第 4、5 節）。
 
-> **工具分工**：第 1、3、4、5、7、8、9、10 條之可機械判斷部分由 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 執行（公式、化學式與長公式為啟發式檢查，警告須人工判斷）；第 6 條由 `crossref_check.py` 執行（需網路）；第 11 條由 `python .agents/skills/paper-card-writer/scripts/check_cards.py` 執行（`--missing` 另列出尚無卡片檔之論文）；第 2 條與內容事實查核依 `wiki-content-audit` 查核模式人工進行，發現之問題一律登記於 `wiki/issues.md`，不得只寫在日誌。每篇論文從原始檔到上架首頁之各步驟是否完成，以 `python .agents/skills/paper-pipeline/scripts/pipeline_status.py` 檢查（`--new` 列出 `raw/` 中尚未收錄之原始檔）。
+> **工具分工**：第 1、3、4、5、7、8、9、10、12 條之可機械判斷部分由 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 執行（公式、化學式與長公式為啟發式檢查，警告須人工判斷）；第 6 條由 `crossref_check.py` 執行（需網路）；第 11 條由 `python .agents/skills/paper-card-writer/scripts/check_cards.py` 執行（`--missing` 另列出尚無卡片檔之論文）；第 2 條與內容事實查核依 `wiki-content-audit` 查核模式人工進行，發現之問題一律登記於 `wiki/issues.md`，不得只寫在日誌。每篇論文從原始檔到上架首頁之各步驟是否完成，以 `python .agents/skills/paper-pipeline/scripts/pipeline_status.py` 檢查（`--new` 列出 `raw/` 中尚未收錄之原始檔）。
 
 ### 4. Handoff（接手與交接）
 多個 AI 輪流接手同一專案。交接脈絡一律從下列來源取得，不從日誌整份讀取：

@@ -35,12 +35,14 @@ Epoch-Kairos/
 ├── DESIGN.md                  # 美術方向紀錄（已定、暫定、待決與否決之視覺決策）
 ├── .agents/skills/            # 專屬作業技能正本（收錄、查核、寫卡、PDF 解析、繁中翻譯、雙倉庫同步）
 ├── .claude/skills/            # 供 Claude Code 載入之轉介檔（指向 .agents/skills/ 正本）
+├── .github/workflows/         # GitHub Pages 自動發布設定（pages.yml）
 ├── raw/                       # 【Raw Sources】不可變原始素材層（獨立私有倉庫 Mine-RAW，本倉庫不追蹤）
 │   └── my-focus/              # [個人專屬關注區] 個人精選研究、私人筆記與核心關注資料
 ├── wiki/                      # 【The Wiki】AI 維護之知識核心（Markdown）
 │   ├── index.md               # 內容總目錄（按時間線年份與領域組織）
 │   ├── log.md                 # 操作日誌（Append-only，逐筆記載執行代理、模型版本與變更）
-│   ├── issues.md              # 內容問題清單（查核發現與修正狀態追蹤）
+│   ├── issues.md              # 內容問題清單（只放尚未結案之查核發現）
+│   ├── issues/closed/         # 已結案問題歸檔（一頁一檔，查某頁歷史用 issues_for.py）
 │   ├── todo.md                # 待辦清單（交接事項、未完成任務與待確認工作）
 │   ├── evidence/              # 證據表（每頁一檔，強主張、數值與公式逐項對應原文頁碼與表圖）
 │   ├── cards/                 # 卡片文字檔（首頁封面斷行、導語、六張卡文字與 Card 3 SVG 示意圖）
@@ -106,7 +108,7 @@ git clone https://github.com/zhi816/Mine-RAW.git raw
 | 技能 | 職責 |
 |---|---|
 | [`paper-pipeline`](./.agents/skills/paper-pipeline/SKILL.md) | 論文收錄總入口（S0 至 S10 檢查點流程，附 `pipeline_status.py` 進度追蹤與 `verify_star.js`） |
-| [`wiki-content-audit`](./.agents/skills/wiki-content-audit/SKILL.md) | 證據表起草與兩階段（巨觀＋微觀）原文事實查核（附 `lint_wiki.py`、`crossref_check.py`） |
+| [`wiki-content-audit`](./.agents/skills/wiki-content-audit/SKILL.md) | 證據表起草與兩階段（巨觀＋微觀）原文事實查核（附 `lint_wiki.py`、`crossref_check.py`、`issues_for.py`、`archive_issues.py`，以及由已結案問題歸納之常見錯誤清單 `references/common-errors.md`） |
 | [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | 撰寫 `wiki/cards/` 封面、六張卡與 Card 3 SVG 示意圖（附 `check_cards.py`、`verify_page.js`、`verify_wall.js`） |
 | [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | 以 PyMuPDF（或本機 MinerU）抽取附頁碼草稿供查核主張出處 |
 | [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 學術論文繁體中文翻譯與高還原排版 PDF 重建（支援雙欄原版與手機單欄版） |
@@ -116,8 +118,8 @@ git clone https://github.com/zhi816/Mine-RAW.git raw
 
 1. **Ingest（收錄，S0–S10）**：由 `paper-pipeline` 統一編排。從雙倉庫同步領件、Crossref 與原文首頁核對書目、解析 PDF 全文、先建立 `wiki/evidence/` 證據表再起草論文頁、建立或更新 `wiki/concepts/` 雙向連結並登記索引、兩階段核對並更新 `verification`、撰寫 `wiki/cards/` 卡片檔、編譯論文頁並重建首頁、完成桌面／手機瀏覽器驗證，最後追加 `wiki/log.md` 並原子提交推送。
 2. **Query（查詢）**：AI 優先透過 `wiki/index.md`、`wiki/concepts/` 與 `wiki/evidence/` 進行跨領域綜合檢索與引文追溯；具長期價值之洞見可沉澱為新概念頁。
-3. **Lint（健康檢查，共 11 項）**：涵蓋孤島頁面與概念雙向對應、觀點衝突與技術迭代、三層對齊一致性、零表情符號、LaTeX 公式與正體化學式合規、年份與作者真實性、標籤白名單與欄位檢查、相對連結有效性、核實狀態與 `issues.md`／`evidence/` 一致性、`todo.md` 格式、以及卡片文字檔合規。
-4. **Handoff（交接與多 AI 協同）**：接手一律依 `git log --oneline -10`、閱讀 `wiki/todo.md` 與 `wiki/issues.md`，並以 `log_tail.py` 擷取日誌近況（禁止整份讀取 `wiki/log.md`）；支援多代理平行 worktree 作業與 `safe_commit_push.py` 逐條暫存共用檔案（`log.md`、`issues.md`、`todo.md`），日誌寫入即完成該回合原子提交推送。
+3. **Lint（健康檢查，共 12 項）**：涵蓋孤島頁面與概念雙向對應、觀點衝突與技術迭代、三層對齊一致性、零表情符號、LaTeX 公式與正體化學式合規、年份與作者真實性、標籤白名單與欄位檢查、相對連結有效性、核實狀態與 `issues.md`／`evidence/` 一致性、`todo.md` 格式、卡片文字檔合規，以及日誌與問題清單只能追加之紀錄完整性（比對 Git 歷史）。
+4. **Handoff（交接與多 AI 協同）**：接手一律依 `git log --oneline -10`、閱讀 `wiki/todo.md` 與 `wiki/issues.md`（查特定頁面之問題與歷史用 `issues_for.py`），並以 `log_tail.py` 擷取日誌近況（禁止整份讀取 `wiki/log.md`）；支援多代理平行 worktree 作業與 `safe_commit_push.py` 逐條暫存共用檔案（`log.md`、`issues.md`、`todo.md`），日誌寫入即完成該回合原子提交推送。
 
 ---
 
