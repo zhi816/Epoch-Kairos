@@ -169,7 +169,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 > | Skill | 何時使用 |
 > |---|---|
 > | [`paper-pipeline`](./.agents/skills/paper-pipeline/SKILL.md) | **收錄論文之總入口**：`raw/` 出現新原始檔、使用者要求收錄或上架、或要把某篇補到完成時，先讀此 Skill。依 S0 至 S10 規定每一步照哪份 Skill 做、產出哪些檔案、以哪個指令證明完成（從收件、證據表、論文頁、概念頁與索引、核對、卡片、論文頁網頁，到首頁星圖或我的星系與卡片牆、提交）；附 `pipeline_status.py`（全庫與單篇進度、待收錄原始檔）與 `verify_star.js`（瀏覽器確認星圖或我的星系已上架） |
-> | [`wiki-content-audit`](./.agents/skills/wiki-content-audit/SKILL.md) | Ingest 起草前（寫作模式）、Lint 第 2 條與任何事實查核（查核模式）；附 `lint_wiki.py` 與 `crossref_check.py` 兩支檢查腳本 |
+> | [`wiki-content-audit`](./.agents/skills/wiki-content-audit/SKILL.md) | Ingest 起草前（寫作模式）、Lint 第 2 條與任何事實查核（查核模式）；附 `lint_wiki.py`、`crossref_check.py` 兩支檢查腳本，`issues_for.py`（查某頁之問題與歷史）、`archive_issues.py`（已結案問題歸檔），以及 `references/common-errors.md`（由已結案問題歸納之常見錯誤清單，起草與查核前必讀） |
 > | [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 將論文譯為繁體中文或重建 PDF 時 |
 > | [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | Ingest 第 1 步與查核時，將 `raw/` 論文 PDF 抽成附頁碼標記之文字，以搜尋主張出處；預設用 PyMuPDF，MinerU 僅用於純圖片、亂碼 PDF 或抄寫長公式；輸出一律只當草稿，須回原 PDF 核對，且只可在本機解析 |
 > | [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 任何 Git 同步、提交與推送（見第十章） |

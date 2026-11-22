@@ -74,7 +74,7 @@ description: >-
 
 1. **預檢**：依 `git-sync-guardian` 執行 `git fetch origin main` 並確認狀態。確認 `wiki/papers/<slug>.md` 與 `wiki/evidence/<slug>.md` 都存在，且 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 對本頁無 ERROR。執行 `python .agents/skills/wiki-content-audit/scripts/issues_for.py <slug>`（不要讀整份 `wiki/issues.md`），逐條判斷本頁 `open` 條目是否影響要寫的內容，結論寫進交付說明；已歸檔之舊問題順帶看過，同一處不要再寫錯。
 2. **通讀來源**：完整讀論文頁與證據表（不得只讀 Card 段落）。寫下四句話分別回答「這篇做了什麼、怎麼做、證據是什麼、限制是什麼」，每句附論文頁段落或證據表列位置，**寫進交付說明**（第八節第 2 項）。這四句是後續每張卡的對照基準；寫不出限制，代表還沒讀完。
-   * **2-1 回原文抽查**（第二節第 17 條）：先選定 Card 3 要用的公式、Card 4 要用的數字、Card 5 要用的里程碑，再逐項打開第一手來源確認：
+   * **2-1 回原文抽查**（第二節第 17 條）：先讀 `wiki-content-audit` 之 [`references/common-errors.md`](../wiki-content-audit/references/common-errors.md)，知道過去卡片最常錯在哪裡（誇大、自擬公式、方法替換、數字放錯位置、後續研究歸因）。再選定 Card 3 要用的公式、Card 4 要用的數字、Card 5 要用的里程碑，逐項打開第一手來源確認：
      * 公式：在原文（或補充資料）找到同一條式子，記下式號與頁碼，確認符號、各項與條件相同。
      * 數字：在原文的表、圖或正文找到同一個值，記下頁碼與表列、欄位名稱（例如「Table 2，NLLB 54B 列，AVERAGE 欄」），確認語言方向、指標、資料集、基線與「約」相同；同一篇有預印本與正式版時，以論文頁 `doi_url` 指向之版本為準。
      * 里程碑：打開該後續研究的 DOI 或正式頁面，確認作者、年份、發表處，以及卡片要寫的那件事確實是它做的；新論文模式的「本篇」列，在原文找到對應的節或頁。

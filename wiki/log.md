@@ -2736,3 +2736,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：經使用者同意，`wiki/issues.md`（264 KB，197 筆全為 fixed）改為只放尚未結案之問題、不分節；已結案條目一頁一檔歸檔至 `wiki/issues/closed/<相對於 wiki/ 之檔案>`，本次一次搬移 EK-001 至 EK-233 共 197 筆至 57 個歸檔檔（papers、concepts、cards、evidence），逐筆比對內容一致，僅相對連結換算為歸檔檔位置。為避免多代理共用工作目錄時「有人剪走條目未提交、他人提交被擋」，結案當下不搬，改由新腳本 `archive_issues.py` 在問題清單無人修改且本機與遠端一致時一次搬完並立即提交推送；`stage_issues.py` 新增 `--next-id`（含歸檔）與 `ARCHIVED` 暫存模式、移除分節處理；新增 `issues_for.py <slug>` 列出某頁未結問題與已歸檔紀錄，並順著轉介檔找出改名前之紀錄；`lint_wiki.py` 檢查歸檔檔格式、編號重複（含歸檔）、欄位、分節標題、歸檔路徑與 `關聯` 編號，已結案未歸檔達 10 筆時提醒。同步修訂 `AGENTS.md` 第四章、第六章第 4 節、第七章第 4 節、第十章第 5、8 條，`wiki-content-audit`（新增〈問題歸檔〉）、`paper-card-writer`、`git-sync-guardian`，`wiki/issues.md` 檔頭，以及 TD-023 中待改連結之位置。lint ERROR 0、`check_cards.py` ERROR 0、`build_home.py --check` 一致。
+
+## [2026-11-22 11:40] rule | 由 197 筆已結案問題歸納常見錯誤清單 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：經使用者同意，逐筆讀過 `wiki/issues/closed/` 之 197 筆已結案問題（EK-001 至 EK-233），每筆依主要錯誤歸入十二類：誇大 37、公式不是原文的 30、方法寫成常見做法或把未來工作寫成已做 27、數字錯或放錯位置 26、後續或他人成果歸給本篇 24、基本事實與專名 12、版本與出處位置 10、編造背景與細節 8、假說寫成結論 7、修正未同步 7、相近概念混淆 5、漏記 4。新增 `.agents/skills/wiki-content-audit/references/common-errors.md`，每類列出表現、本庫實例編號與檢查方法，末附九題速查。`wiki-content-audit` 規定起草與查核前先讀此清單、微觀審核依速查自問；宏觀審核新增「方法與最佳結果對得上」一項；吸引子表新增「方法替換」「相近概念」兩類；結案複核新增以錯誤原句關鍵字搜尋全庫。`paper-card-writer` 第五節第 2-1 步抽查前先讀此清單。`AGENTS.md` 第六章 Skill 一覽同步更新 `wiki-content-audit` 之附件說明。lint ERROR 0。
