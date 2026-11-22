@@ -2780,3 +2780,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依使用者要求參考主流 README 結構（Standard Readme 與常見開源專案版型）改寫 `README.md`：標題下加網站發布狀態、授權與 Python 版本徽章及線上瀏覽連結；新增目錄、特色、運作方式（Mermaid 流程圖）、快速開始（需求、下載、建置、本機預覽、檢查集中一節）、開發歷程（AGENTS.md 修訂 60 次、日誌 371 筆其中 rule 39 筆、提交 398 個、已結案問題 197 筆，統計至 2026-11-22）、致謝與設計來源（補 Deimos、Shopify Editions、KaTeX）與授權；目錄樹收入可展開區塊；給 AI 代理之交接與暫存細節改為指向 `AGENTS.md`；宣傳性用語改為具體敘述。經使用者選定，新增 `LICENSE`（MIT，程式碼與文字內容皆適用，被介紹之論文原文不在範圍內）。lint ERROR 0。
+
+## [2026-11-22 13:02] update | README 開發歷程補列子代理 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依使用者要求，README「開發歷程」之多代理協作改為兩層：主要執行代理 Claude Code（Claude Opus、Sonnet、Haiku、Fable）、Antigravity（Gemini 3.8 Flash、Gemini 4）、Codex（GPT-6）；子代理 DeepSeek Harness（DeepSeek V4.1 Flash）、經 OpenCode 與 Command Code 執行之 MiniMax M3.1 Flash、GLM-5.3 Flash、Hy4 Flash、Muse Spark 1.3，以及 CodeBuddy Code（Hy4 Preview）。名單取自日誌之「執行代理」「模型版本」欄與條目內文，未列日誌中查無紀錄者；並補述子代理交叉審查、總指揮回原文查核之迴圈。日誌與提交數更新為 372 筆、399 個。
