@@ -2785,3 +2785,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：依使用者要求，README「開發歷程」之多代理協作改為兩層：主要執行代理 Claude Code（Claude Opus、Sonnet、Haiku、Fable）、Antigravity（Gemini 3.8 Flash、Gemini 4）、Codex（GPT-6）；子代理 DeepSeek Harness（DeepSeek V4.1 Flash）、經 OpenCode 與 Command Code 執行之 MiniMax M3.1 Flash、GLM-5.3 Flash、Hy4 Flash、Muse Spark 1.3，以及 CodeBuddy Code（Hy4 Preview）。名單取自日誌之「執行代理」「模型版本」欄與條目內文，未列日誌中查無紀錄者；並補述子代理交叉審查、總指揮回原文查核之迴圈。日誌與提交數更新為 372 筆、399 個。
+
+## [2026-11-22 13:02] update | README 開發歷程刪除提交總數 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依使用者要求，刪除 README「開發歷程」中之倉庫提交總數（399 個），保留日誌筆數與代理名單。

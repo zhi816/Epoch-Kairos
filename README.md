@@ -156,7 +156,7 @@ AI 代理依 [`.agents/skills/`](./.agents/skills) 中的作業技能工作，�
 本專案自 2026-11-04 起由多個 AI 代理在使用者指揮下協作開發，規則隨每次討論迭代，所有過程都留有可查證之紀錄（統計至 2026-11-22）：
 
 - **規則迭代**：[`AGENTS.md`](./AGENTS.md) 經 60 次提交修訂；[日誌](./wiki/log.md)中有 39 筆規範變更（`rule`）紀錄，規則條文多標有「經使用者確認」之日期。
-- **多代理協作**：日誌共 372 筆，逐筆署名執行代理與模型版本；倉庫共 399 個提交。較大的工作採「子代理交叉審查數輪，再由總指揮回原文查核、退回修正」之迴圈。
+- **多代理協作**：日誌共 372 筆，逐筆署名執行代理與模型版本。較大的工作採「子代理交叉審查數輪，再由總指揮回原文查核、退回修正」之迴圈。
   - **主要執行代理**：Claude Code（Anthropic；Claude Opus、Sonnet、Haiku、Fable）、Antigravity（Google DeepMind；Gemini 3.8 Flash、Gemini 4）、Codex（OpenAI；GPT-6）。
   - **子代理**（由總指揮派工，負責起草、交叉審查與示意圖設計）：DeepSeek Harness（DeepSeek V4.1 Flash）；經 OpenCode 與 Command Code 執行之 MiniMax M3.1 Flash、GLM-5.3 Flash、Hy4 Flash 與 Muse Spark 1.3；CodeBuddy Code（騰訊；Hy4 Preview）。
 - **品質追蹤**：已結案問題 197 筆，依頁歸檔於 [`wiki/issues/closed/`](./wiki/issues/closed/)；美術方向之選項、決定與否決理由記於 [`DESIGN.md`](./DESIGN.md)。
