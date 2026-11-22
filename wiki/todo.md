@@ -47,3 +47,17 @@
 - **完成條件**：`raw/` 內存在新檔名之 PDF（或使用者決定之檔名）；`pipeline_status.py 2007-woodford-globalization-monetary-control` 之 S1 指向新檔名且 OK；`lint_wiki.py` 無 ERROR。
 - **等待**：使用者親自更名 `raw/2007-woodford-inflation-dynamics.pdf`。
 - **來源**：wiki/log.md [2026-11-11 12:27] fix（slug 改名）；2026-11-11 登記，Claude Code by Anthropic。
+
+### TD-034 | waiting | rule | 建立 HISTORY.md，集中規則與美術之演進紀錄
+- **內容**：根目錄新增一份 `HISTORY.md`（專案演進紀錄），分兩部分：（1）規則演進：自 `AGENTS.md` 搬出各條規則之「背景」段落與夾在規則中之事件說明（2026-11-22 統計標為「背景」者 10 段），每筆寫日期、遇到之問題、討論過之做法（含未採用者）、最後決定、規則所在章節、相關日誌與提交；（2）美術演進：`DESIGN.md` 第十章「版本歷程」整章搬入（約 20 KB），補上各版對應之樣稿或提交。`AGENTS.md`、`DESIGN.md` 原處保留日期標記（如「2026-11-22 經使用者同意」）、一行指向，以及會影響代理如何執行規則之一句理由；`DESIGN.md` 第八章待決事項與第九章否決紀錄留在原處（否決紀錄為代理動工前必讀）。目的：本專案為使用者之課程作業，評分重點之一為 `AGENTS.md` 經多次討論迭代，集中成按時間排列之紀錄較散在各章更易檢視；且此檔不隨每次對話載入，可減少上下文佔用。首批可收 2026-11-22 之問題清單歸檔、關聯互指、撤回工作不刪紀錄與刪除 `wiki/history/` 之經過。
+- **完成條件**：使用者確認搬移段落清單後，`HISTORY.md` 建立，`AGENTS.md` 與 `DESIGN.md` 對應段落已搬出並留指向；`lint_wiki.py` ERROR 0；`build_home.py --check` 一致。
+- **等待**：使用者於本次作業評分後決定是否執行，以及檔名與格式；動手前先列出每段之搬移位置與原處保留文字供確認。
+- **關聯**：TD-035
+- **來源**：2026-11-22 使用者與 Claude Code 討論 `AGENTS.md` 上下文優化（決定演進紀錄合為一份，不分 AGENTS 與 DESIGN 兩檔）；2026-11-22 登記，Claude Code by Anthropic。
+
+### TD-035 | waiting | rule | 精簡 AGENTS.md：刪除重複、移出網頁細節、修正過時內容、加入口速查
+- **內容**：`AGENTS.md` 約 70 KB，每次對話皆自動載入。依效果由大至小：（1）刪除與 Skill 重複之內容：第六章 Ingest 五步驟（約 7 KB，自述為 `paper-pipeline` 摘要）只留指向與必守原則，其中之日誌格式規則另立一小節；第十章第 1 至 7 條（約 9 KB）與 `git-sync-guardian` 鐵律重複，縮為每條一句並指向 Skill；第九章與他章重複之表情符號、提交必推送、LaTeX 規則合併。（2）只有網頁工作需要者移至 `DESIGN.md`：第一章參考原型（約 1 KB）、第二章色碼表（保留六學科鍵值、範疇與學科邊界，色碼以 `theme.css` 與 `DESIGN.md` 第七章為準）、第三章第 3、4 條網頁公式排版、第七章第 3 節網頁雙欄版面（約 4.6 KB）。（3）修正過時內容：第四章目錄樹之 `cards.css`、`cards.js`「尚未建立」實已由 `tools/paper_template.html` 內嵌樣式取代，另補 `tools/tests/`、`tools/wiki_redirects.py`。（4）開頭加入口速查：做什麼事讀哪些檔，以及五至八條每次必守之事。注意：`lint_wiki.py` 與 `tools/build_home.py` 直接解析第八章標籤白名單表與第七章第 1 節 `focus_role`、`focus_direction` 鍵值表，須原地保留，或同步修改腳本。連同 TD-034 粗估可由 70 KB 降至 40 KB 左右（未逐段計算）。建議先做（1）（3），再做（2）（4）。
+- **完成條件**：使用者確認段落清單後完成上述各項；`lint_wiki.py` ERROR 0、`build_home.py --check` 一致、`tools/tests` 通過；各 Skill 與 `DESIGN.md` 中指向 `AGENTS.md` 章節編號之引用同步更新。
+- **等待**：使用者於本次作業評分後決定是否執行與範圍；動手前先列出刪除、搬移與保留之段落清單供確認。
+- **關聯**：TD-034
+- **來源**：2026-11-22 使用者與 Claude Code 討論 `AGENTS.md` 上下文優化；2026-11-22 登記，Claude Code by Anthropic。
