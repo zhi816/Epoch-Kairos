@@ -300,31 +300,88 @@ def check_evidence(root):
 
 
 
-def load_issues(root):
-    path = os.path.join(root, 'wiki', 'issues.md')
-    issues = []
-    if not os.path.exists(path):
-        return issues
-    text = read(path)
-    seen = set()
-    for m in re.finditer(r'(?m)^### (.+)$', text):
+# 問題條目可用之欄位；前三者必填，已結案者另須至少一行「處理」（AGENTS.md 第七章第 4 節）。
+ISSUE_FIELDS = {'問題', '來源', '發現於', '處理', '複核', '重開', '總核', '關聯'}
+ISSUE_REQUIRED = ['問題', '來源', '發現於']
+ISSUES_CLOSED_DIR = 'wiki/issues/closed'
+# wiki/issues.md 中已結案、尚未歸檔之條目達此數時提醒執行 archive_issues.py。
+ARCHIVE_REMIND = 10
+
+
+def _parse_issue_file(root, rel, text, seen, archived_target=None):
+    """逐條檢查一個問題清單或歸檔檔，回傳 [(編號, 狀態, 檔案, 關聯編號)]。"""
+    out = []
+    heads = list(re.finditer(r'(?m)^##+ .*$', text))
+    for i, m in enumerate(heads):
+        line = m.group(0)
         ln = line_of(text, m.start())
-        parts = [p.strip() for p in m.group(1).split('|')]
+        if not line.startswith('### '):
+            report('ERROR', rel, ln, '問題清單不分節；條目一律以「### EK-編號」為標題')
+            continue
+        parts = [p.strip() for p in line[4:].split('|')]
         if len(parts) != 5 or not re.fullmatch(r'EK-\d{3,}', parts[0]):
-            report('ERROR', 'wiki/issues.md', ln, '問題標題格式應為「EK-編號 | 狀態 | 檔案 | 位置 | 判定」')
+            report('ERROR', rel, ln, '問題標題格式應為「EK-編號 | 狀態 | 檔案 | 位置 | 判定」')
             continue
         iid, state, target, _, verdict = parts
         if iid in seen:
-            report('ERROR', 'wiki/issues.md', ln, '問題編號重複：' + iid)
-        seen.add(iid)
+            report('ERROR', rel, ln, '問題編號重複（含歸檔）：%s，另見 %s' % (iid, seen[iid]))
+        seen.setdefault(iid, rel)
         if state not in ISSUE_STATES:
-            report('ERROR', 'wiki/issues.md', ln, '狀態須為 open / fixed / wontfix：' + state)
+            report('ERROR', rel, ln, '狀態須為 open / fixed / wontfix：' + state)
         if verdict not in VERDICTS:
-            report('ERROR', 'wiki/issues.md', ln, '判定須取 wiki-content-audit 之六種判定：' + verdict)
-        if not os.path.exists(os.path.join(root, 'wiki', target)):
-            report('ERROR', 'wiki/issues.md', ln, '問題指向之檔案不存在：wiki/' + target)
-        issues.append((iid, state, target))
-    return issues
+            report('ERROR', rel, ln, '判定須取 wiki-content-audit 之六種判定：' + verdict)
+        exists = os.path.exists(os.path.join(root, 'wiki', target))
+        if archived_target is None:
+            if not exists:
+                report('ERROR', rel, ln, '問題指向之檔案不存在：wiki/' + target)
+        else:
+            if state == 'open':
+                report('ERROR', rel, ln, '歸檔檔只收已結案條目；%s 為 open，應留在 wiki/issues.md' % iid)
+            if target != archived_target:
+                report('ERROR', rel, ln, '%s 指向 %s，與歸檔檔路徑（%s）不符' % (iid, target, archived_target))
+        body = text[m.end(): heads[i + 1].start() if i + 1 < len(heads) else len(text)]
+        fields = re.findall(r'(?m)^- \*\*([^*]+)\*\*：', body)
+        for f in fields:
+            if f not in ISSUE_FIELDS:
+                report('WARN', rel, ln, '%s 使用了欄位表外之「%s」；可用：%s' % (iid, f, '、'.join(sorted(ISSUE_FIELDS))))
+        for f in ISSUE_REQUIRED:
+            if f not in fields:
+                report('ERROR', rel, ln, '%s 缺少「%s」行' % (iid, f))
+        if state in ('fixed', 'wontfix') and '處理' not in fields:
+            report('ERROR', rel, ln, '%s 已結案但沒有「處理」行' % iid)
+        rel_ids = re.findall(r'EK-\d{3,}', ' '.join(re.findall(r'(?m)^- \*\*關聯\*\*：(.*)$', body)))
+        out.append((iid, state, target, rel_ids, rel, ln))
+    return out
+
+
+def load_issues(root):
+    """檢查 wiki/issues.md 與 wiki/issues/closed/，回傳 [(編號, 狀態, 檔案)]（含歸檔）。"""
+    seen = {}
+    rows = []
+    path = os.path.join(root, 'wiki', 'issues.md')
+    if os.path.exists(path):
+        rows += _parse_issue_file(root, 'wiki/issues.md', read(path), seen)
+    pending = sum(1 for r in rows if r[1] in ('fixed', 'wontfix'))
+    if pending >= ARCHIVE_REMIND:
+        report('WARN', 'wiki/issues.md', 1, '已結案、尚未歸檔之條目 %d 筆；可執行 archive_issues.py 搬到 %s'
+               % (pending, ISSUES_CLOSED_DIR))
+    cdir = os.path.join(root, *ISSUES_CLOSED_DIR.split('/'))
+    for dirpath, _, files in os.walk(cdir):
+        for f in sorted(files):
+            if not f.endswith('.md'):
+                continue
+            full = os.path.join(dirpath, f)
+            rel = os.path.relpath(full, root).replace('\\', '/')
+            target = rel[len(ISSUES_CLOSED_DIR) + 1:]
+            if not os.path.exists(os.path.join(root, 'wiki', target)):
+                report('WARN', rel, 1, '歸檔檔對應之頁面已不存在：wiki/%s；若已改名，請保留轉介檔，'
+                       'issues_for.py 才能從新名找到舊紀錄' % target)
+            rows += _parse_issue_file(root, rel, read(full), seen, archived_target=target)
+    for iid, _, _, rel_ids, rel, ln in rows:
+        for r in rel_ids:
+            if r not in seen:
+                report('WARN', rel, ln, '%s 之「關聯」指向不存在之編號：%s' % (iid, r))
+    return [(iid, state, target) for iid, state, target, _, _, _ in rows]
 
 
 def load_todo(root):
@@ -543,7 +600,7 @@ def main():
             own = 'wiki/%s/%s.md' % (kind, slug)
             linked = any(slug in t for r, t in wiki_texts.items()
                          if r != own and r not in ('wiki/log.md', 'wiki/issues.md', 'wiki/todo.md')
-                         and not r.startswith('wiki/evidence/'))
+                         and not r.startswith('wiki/evidence/') and not r.startswith(ISSUES_CLOSED_DIR + '/'))
             if not linked:
                 report('WARN', own, 1, '孤島頁：索引與其他頁面均未連結本頁')
 
@@ -605,7 +662,7 @@ def main():
     n_err = sum(1 for r in results if r[0] == 'ERROR')
     n_warn = len(results) - n_err
     print('---')
-    print('論文頁 %d、概念頁 %d、問題清單 %d 筆（open %d）、待辦 %d 筆（waiting %d）；ERROR %d、WARN %d'
+    print('論文頁 %d、概念頁 %d、問題 %d 筆（open %d）、待辦 %d 筆（waiting %d）；ERROR %d、WARN %d'
           % (len(papers), len(concepts), len(issues), sum(len(v) for v in open_by_target.values()),
              len(todos), sum(1 for _, s in todos if s == 'waiting'), n_err, n_warn))
     sys.exit(1 if n_err else 0)

@@ -45,7 +45,7 @@ description: >-
 ### 5. 只提交自己的修改（Commit Only Your Own Changes）
 - 嚴禁 `git add -A`、`git add .`、`git commit -a`。提交前先看 `git diff --stat`，只暫存自己修改的檔案；未追蹤的資料夾（如他人的 `work/`）一律不得加入。
 - `wiki/log.md` 只提交「執行代理」為自己的條目：用 `scripts/stage_log.py "<代理名稱>"` 逐條暫存。它以「HEAD 版日誌＋自己的新條目」組出提交內容，工作目錄的檔案不變，別人的條目留給他們自己提交。條目順序與條目之間的空行都跟隨工作目錄，提交後不會留下只差空行的修改。
-- `wiki/issues.md` 同樣是共用檔案，只提交自己修改的問題條目：`safe_commit_push.sh` 列出 `wiki/issues.md` 時必須以 `--issue EK-NNN`（可重複）指定編號，由 `scripts/stage_issues.py` 以「HEAD 版問題清單＋指定條目的工作目錄版本」組出提交內容；未指定的條目（例如其他代理剛改成 `fixed` 的狀態）留在工作目錄。背景：2026-11-09 Claude Code 整檔提交問題清單，誤把 Antigravity 尚未提交的 EK-008 至 EK-011 狀態變更帶入。
+- `wiki/issues.md` 同樣是共用檔案，只提交自己修改的問題條目：`safe_commit_push.sh` 列出 `wiki/issues.md` 時必須以 `--issue EK-NNN`（可重複）指定編號，由 `scripts/stage_issues.py` 以「HEAD 版問題清單＋指定條目的工作目錄版本」組出提交內容；未指定的條目（例如其他代理剛改成 `fixed` 的狀態）留在工作目錄。背景：2026-11-09 Claude Code 整檔提交問題清單，誤把 Antigravity 尚未提交的 EK-008 至 EK-011 狀態變更帶入。問題清單不得刪除條目，工作目錄少了已提交的條目時 `stage_issues.py` 拒絕暫存；已結案條目只能由 `wiki-content-audit` 之 `archive_issues.py` 搬到 `wiki/issues/closed/`，它在問題清單無人修改時一次搬完並立即提交，提交時以特殊編號 `--issue ARCHIVED` 暫存（只從 HEAD 版刪去已結案且已在歸檔檔中的條目）。新編號以 `stage_issues.py --next-id` 取得。
 - `wiki/todo.md` 同樣是共用檔案：`safe_commit_push.sh` 列出 `wiki/todo.md` 時必須以 `--todo TD-NNN`（可重複）指定自己新增、修改或刪除的條目，由 `scripts/stage_todo.py` 組出提交內容。與問題清單不同，待辦完成即刪，故指定的編號若已從工作目錄刪除，即暫存其刪除。
 - 追加日誌時，新條目與前一條之間只留一個空行（即寫入 `\n## [...]`，前一條已以換行結尾）。多打的空行雖會被一併提交，但會讓日誌格式不一致。
 - 合流遠端時用 `git merge --autostash`，讓他人未提交的修改暫時收起、合流後放回，且放回後維持「未暫存」。
@@ -129,6 +129,9 @@ python .agents/skills/git-sync-guardian/scripts/stage_todo.py TD-003 --dry-run
 
 # 只暫存自己修改的問題條目（提交 wiki/issues.md 時由 safe_commit_push.py / .sh 的 --issue 自動調用）
 python .agents/skills/git-sync-guardian/scripts/stage_issues.py EK-069 EK-070 --dry-run
+
+# 新增問題前取得下一個編號（同時掃描 wiki/issues.md 與 wiki/issues/closed/）
+python .agents/skills/git-sync-guardian/scripts/stage_issues.py --next-id
 
 # 只暫存自己的日誌條目（--dry-run 只列出不寫入）
 python .agents/skills/git-sync-guardian/scripts/stage_log.py "Claude Code" --dry-run

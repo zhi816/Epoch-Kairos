@@ -71,7 +71,7 @@ description: >-
 
 ### 5. 修正既有問題時
 
-依 `wiki/issues.md` 修正頁面時，逐筆回原文確認後再改，不可只照問題描述改寫；通過下列結案複核後，將該筆狀態改為 `fixed` 並補「處理」行，最後一筆 `open` 修正後同步更新 `verification`：只修了登記的問題、沒有把整頁 Card 1 至 6 與正文強主張重新逐項核對者，改為 `partial`，不得因為 open 問題清空就改回 `verified`。多個對話平行作業時，新問題的編號依 `wiki/todo.md` 協調規則所分配的區段取號，新條目追加於檔尾。若修正內容涉及概念頁或其他頁面的重述，一併修正並各自登記。提交時以 `safe_commit_push.sh --issue EK-NNN` 列出自己處理的編號，問題清單只會提交這些條目（見 `git-sync-guardian`）。
+動手前先以 `python .agents/skills/wiki-content-audit/scripts/issues_for.py <slug>` 列出本頁未結問題與已歸檔之舊紀錄，看清楚過去改過哪裡、為何改，避免把已修正處改回去。依 `wiki/issues.md` 修正頁面時，逐筆回原文確認後再改，不可只照問題描述改寫；通過下列結案複核後，將該筆狀態改為 `fixed` 並補「處理」行，最後一筆 `open` 修正後同步更新 `verification`：只修了登記的問題、沒有把整頁 Card 1 至 6 與正文強主張重新逐項核對者，改為 `partial`，不得因為 open 問題清空就改回 `verified`。新問題的編號以 `python .agents/skills/git-sync-guardian/scripts/stage_issues.py --next-id` 取得（同時掃描 `wiki/issues.md` 與歸檔資料夾）；多個對話平行作業時，依 `wiki/todo.md` 協調規則所分配的區段取號。新條目追加於檔尾，問題清單不分節。結案條目只改狀態並補「處理」行，留在原處，不要自行搬到歸檔資料夾（見下方〈問題歸檔〉）。若修正內容涉及概念頁或其他頁面的重述，一併修正並各自登記。提交時以 `safe_commit_push.sh --issue EK-NNN` 列出自己處理的編號，問題清單只會提交這些條目（見 `git-sync-guardian`）。
 
 **結案前複核目前內容**：
 
@@ -81,13 +81,24 @@ description: >-
 
 ## 查核模式：審查既有頁面
 
-- 先界定要查的檔案、段落、Card 或主張。若要求整頁或整批審查，逐頁列出覆蓋清單；不得只查醒目的數字或 Card 4 就稱整頁已核實。
+- 先界定要查的檔案、段落、Card 或主張，並以 `issues_for.py <slug>` 讀本頁已歸檔之舊問題：舊問題指出的錯誤類型與位置是本次優先複查之處，已修正處若又出現同類錯誤，照舊另行登記。
+- 若要求整頁或整批審查，逐頁列出覆蓋清單；不得只查醒目的數字或 Card 4 就稱整頁已核實。
 - 查核同樣先宏觀、再微觀：先依寫作模式第 4 步第一階段各項確認頁面整體方向，再逐句核對並做吸引子檢查。宏觀問題（例如整頁把綜述寫成實驗研究）同樣登記於 `wiki/issues.md`。
 - 全頁論文審查至少逐項檢查 Frontmatter、Card 1–6 與正文中的實質主張；概念頁至少檢查核心定義、每個關鍵支柱、跨學科延伸、時間線與引用來源。按段落把複合句拆成可獨立驗證的主張。
 - 大型批次可分頁或分輪完成，但要持續更新清單；未完成項目標成「未查」，不能默認通過。
 - **發現一律登記於 `wiki/issues.md`**（格式依 `AGENTS.md` 第七章第 4 節），並將該頁 `verification` 改為 `issues`；日誌只記查核範圍、完成度與新增的問題編號，不再把完整發現只寫在日誌。查核無問題的頁面，若已逐項建立證據表可標 `verified`，否則標 `partial`。
-- 登記前先搜尋 `wiki/issues.md` 是否已有同一問題，已有者補充來源即可，不重複開立。
+- 登記前先以 `issues_for.py <slug>` 確認是否已有同一問題：`wiki/issues.md` 中已有未結之同一問題者補充來源即可，不重複開立；問題與已歸檔條目相同或相關（例如修正後又壞了）時，不重開舊條目，另開新編號並加一行 `- **關聯**：EK-NNN`。
 - 查核結果不得以百分比或「完全對齊」等措辭概括；只能列出實際核對了哪些主張。
+
+## 問題歸檔：已結案條目搬到 `wiki/issues/closed/`
+
+`wiki/issues.md` 只放尚未結案的問題；已結案（`fixed` / `wontfix`）的條目搬到 `wiki/issues/closed/<相對於 wiki/ 之檔案>`，一頁一檔，例如 `papers/1982-hopfield-network.md` 的舊問題在 `wiki/issues/closed/papers/1982-hopfield-network.md`。查某頁歷史一律用 `issues_for.py <slug>`，不要讀整份問題清單。
+
+- **結案時不搬**：改成 `fixed` 或 `wontfix` 並補「處理」行即可，條目留在 `wiki/issues.md`。多個代理共用同一個工作目錄，有人剪走條目而尚未提交時，其他人提交問題清單會被 `stage_issues.py` 擋下，所以搬移不放進修正流程。
+- **搬移由 `archive_issues.py` 一次做完**：先預覽，再以 `--apply --agent "<代理名稱>"` 執行。它會先 fetch，要求本機與 `origin/main` 一致、暫存區為空、`wiki/issues.md` 與 `wiki/issues/` 沒有任何未提交的修改（否則拒絕執行，等其主人提交後再來），只搬 HEAD 版已結案者，寫檔後立即提交並推送。搬移提交不寫日誌。
+- **誰來搬**：總指揮或使用者指定之代理，在一批工作完成後的空檔執行；`lint_wiki.py` 於已結案未歸檔條目達 10 筆時提醒。平行 worktree 中不得執行（腳本只在 `main` 執行）。
+- **歸檔只追加**：已歸檔條目不再修改（唯一例外：所連檔案改名致連結失效時，可更新連結路徑），`lint_wiki.py` 也不接受歸檔檔中出現 `open`。同一處再出問題時另開新編號並加「關聯」行。
+- **改名**：頁面改名時保留轉介檔（`AGENTS.md` 第五章），歸檔檔留在舊路徑；`issues_for.py` 會順著轉介檔把新舊名字的紀錄一起列出。
 
 ## 證據來源
 
@@ -144,7 +155,9 @@ description: >-
 
 兩支腳本只用 Python 標準函式庫（3.7 以上），於倉庫根目錄執行：
 
-- `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：機械檢查 Frontmatter 必填欄位、檔名年份、`domain` 與標籤白名單、`focus_role`、概念雙向對應、`status: published` 之網頁目錄、Emoji、`file:///`、`[[...]]`、相對連結、公式內中文、化學式正體、長公式斷行、日誌標題格式、控制字元（ERROR，多半是 shell 吃掉 LaTeX 反斜線所致）、`card_line` 能否切成 3 行以內之封面斷行（WARN）、證據表只寫「表 N 各數值」而未列出數字之列（WARN），以及 `verification` 與問題清單、證據表的一致性。`--errors-only` 只顯示錯誤。ERROR 必須修正；WARN 為啟發式提醒，須人工判斷。日誌為 append-only，其舊條目之問題只列為 WARN。
+- `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：機械檢查 Frontmatter 必填欄位、檔名年份、`domain` 與標籤白名單、`focus_role`、概念雙向對應、`status: published` 之網頁目錄、Emoji、`file:///`、`[[...]]`、相對連結、公式內中文、化學式正體、長公式斷行、日誌標題格式、控制字元（ERROR，多半是 shell 吃掉 LaTeX 反斜線所致）、`card_line` 能否切成 3 行以內之封面斷行（WARN）、證據表只寫「表 N 各數值」而未列出數字之列（WARN），以及 `verification` 與問題清單、證據表的一致性；問題清單與歸檔檔之標題格式、欄位、編號重複（含歸檔）、分節標題與歸檔路徑。`--errors-only` 只顯示錯誤。ERROR 必須修正；WARN 為啟發式提醒，須人工判斷。日誌為 append-only，其舊條目之問題只列為 WARN。
+- `python .agents/skills/wiki-content-audit/scripts/issues_for.py <slug>`：列出某頁在 `wiki/issues.md` 中的條目與 `wiki/issues/closed/` 中已歸檔的舊紀錄（含改名前的舊名字）；`--open` 只看未結者，`--list` 只列標題。
+- `python .agents/skills/wiki-content-audit/scripts/archive_issues.py [--apply --agent "<代理名稱>"]`：把已結案條目搬到歸檔資料夾並立即提交推送；條件不符即拒絕執行（見〈問題歸檔〉）。
 - `python .agents/skills/wiki-content-audit/scripts/crossref_check.py [slug ...]`：向 Crossref 查詢 `doi_url`，比對年份、作者姓氏與期刊名稱；不帶參數時查全部論文頁。腳本只能確認書目，不能確認內容。
 
 ### 判定與未決事項

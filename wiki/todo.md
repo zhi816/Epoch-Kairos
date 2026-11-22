@@ -43,7 +43,7 @@
 - **來源**：2026-11-10 問題清單分組複核整合，Codex by OpenAI。
 
 ### TD-023 | waiting | raw | 改名 raw 檔以對應 2007 Woodford 論文之新 slug
-- **內容**：2007 Woodford 論文之 slug 已於提交 a83a66e 改為 `2007-woodford-globalization-monetary-control`，對應英文原題 *Globalization and Monetary Control*。raw 檔仍為 `raw/2007-woodford-inflation-dynamics.pdf`，`paper-pipeline` S1 依 slug 對應 raw 檔名。依 AGENTS.md 第五章，raw 檔名由使用者親自更名，AI 不得改動。更名後需同步更新論文頁「原始檔典藏」行、`wiki/index.md` 原始文獻行，以及 `wiki/issues.md` 內指向舊 raw 檔名之連結。
+- **內容**：2007 Woodford 論文之 slug 已於提交 a83a66e 改為 `2007-woodford-globalization-monetary-control`，對應英文原題 *Globalization and Monetary Control*。raw 檔仍為 `raw/2007-woodford-inflation-dynamics.pdf`，`paper-pipeline` S1 依 slug 對應 raw 檔名。依 AGENTS.md 第五章，raw 檔名由使用者親自更名，AI 不得改動。更名後需同步更新論文頁「原始檔典藏」行、`wiki/index.md` 原始文獻行，以及 `wiki/issues/closed/papers/2007-woodford-globalization-monetary-control.md` 內指向舊 raw 檔名之連結（2026-11-22 已結案問題自 `wiki/issues.md` 歸檔至此；歸檔只追加，但連結因檔案改名失效時可更新連結路徑）。
 - **完成條件**：`raw/` 內存在新檔名之 PDF（或使用者決定之檔名）；`pipeline_status.py 2007-woodford-globalization-monetary-control` 之 S1 指向新檔名且 OK；`lint_wiki.py` 無 ERROR。
 - **等待**：使用者親自更名 `raw/2007-woodford-inflation-dynamics.pdf`。
 - **來源**：wiki/log.md [2026-11-11 12:27] fix（slug 改名）；2026-11-11 登記，Claude Code by Anthropic。

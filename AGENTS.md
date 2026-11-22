@@ -110,7 +110,8 @@ Epoch-Kairos/
 ├── wiki/                      # 【第二層：The Wiki】知識庫核心層（由 AI 讀寫與維護）
 │   ├── index.md               # 內容目錄索引（Content Catalog，按年份與領域組織）
 │   ├── log.md                 # 時間流水帳日誌（Append-only，記錄所有操作）
-│   ├── issues.md              # 內容問題清單（查核發現之待修正事項與處理狀態，見第七章第 4 節）
+│   ├── issues.md              # 內容問題清單（只放尚未結案之查核發現，見第七章第 4 節）
+│   ├── issues/closed/         # 已結案問題之歸檔（一頁一檔，路徑對應 wiki/ 下之頁面，只追加）
 │   ├── todo.md                # 待辦清單（交接事項、未完成任務、待使用者確認之工作，見第七章第 5 節）
 │   ├── papers/                # 結構化論文知識頁（Markdown）
 │   ├── concepts/              # 跨領域核心概念與實體頁（Markdown）
@@ -233,7 +234,7 @@ AI 在協作時，必須嚴格遵循以下四大標準作業程序（SOP）：
 1. **接手順序**：
    1. `git log --oneline -10`：最近完成的工作。每筆日誌條目皆對應一個已推送之提交（第十章第 6 條），提交清單即日誌之精簡目錄。
    2. 整份閱讀 `wiki/todo.md`：尚未完成之工作與等待使用者確認之事項。本檔完成即刪，篇幅維持精簡，可整份讀取。
-   3. 視任務需要，閱讀 `wiki/issues.md` 之 `open` 條目與 `DESIGN.md` 第八章待決事項。
+   3. 視任務需要，閱讀 `wiki/issues.md` 之 `open` 條目與 `DESIGN.md` 第八章待決事項；查特定頁面之問題與歷史，以 `python .agents/skills/wiki-content-audit/scripts/issues_for.py <slug>` 取得。
    4. 仍需日誌細節時，執行 `python .agents/skills/git-sync-guardian/scripts/log_tail.py`：預設輸出最後 3 筆，`-n` 調整筆數，`--grep <關鍵字>` 查特定事項。
 2. **日誌只寫不讀**：不得整份讀取 `wiki/log.md`。日誌為歷史紀錄，其中已被取代之規則與決策不得視為現行指示；現行規範一律以 `AGENTS.md`、`DESIGN.md` 為準。查特定事項以 `log_tail.py --grep` 或搜尋工具取得相關條目。
 3. **交接寫入待辦，不寫入日誌**：工作做到一半、需要他人接手，或須等使用者確認才能動工時，登記於 `wiki/todo.md`（格式見第七章第 5 節），不得以日誌條目充當交接清單。完成時刪除該條目，並於當次日誌條目寫明編號（例如「完成 TD-003」）。
@@ -389,7 +390,7 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
 
    新收錄之頁面，若已依寫作模式完成證據表並逐項核對，可直接標 `verified`；否則標 `unverified`。
 
-2. **問題清單 `wiki/issues.md`**：查核模式之每項發現登記一筆，格式如下，編號流水不重用：
+2. **問題清單 `wiki/issues.md`**：查核模式之每項發現登記一筆，格式如下，編號流水不重用（新編號以 `python .agents/skills/git-sync-guardian/scripts/stage_issues.py --next-id` 取得，同時掃描歸檔）。本檔只放尚未結案之條目，不分節，條目依登記先後排列：
    ```markdown
    ### EK-001 | open | papers/1982-hopfield-network.md | Card 3 | 過度表述
    - **問題**：頁面寫法與原文差異（引用原句或行號）。
@@ -397,7 +398,12 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
    - **發現於**：wiki/log.md [YYYY-MM-DD HH:MM] audit（執行代理）
    ```
    * 第二段狀態取 `open`（待修正）、`fixed`（已修正）、`wontfix`（經使用者同意保留，須加註理由）。第三段為相對於 `wiki/` 之檔案路徑；第五段判定取 `wiki-content-audit` 之六種判定。
-   * 修正時將狀態改為 `fixed`，並追加一行 `- **處理**：日期、執行代理、修正方式`。問題清單非日誌，可就地更新狀態，但不得刪除條目。
+   * 修正時將狀態改為 `fixed`，並追加一行 `- **處理**：日期、執行代理、修正方式`。問題清單非日誌，可就地更新狀態，但不得刪除條目。條目可用之欄位為 `問題`、`來源`、`發現於`（以上必填）、`處理`（已結案者必填）、`複核`、`重開`、`總核`、`關聯`。
+   * **歸檔（2026-11-22 使用者同意）**：已結案（`fixed` / `wontfix`）之條目搬到 `wiki/issues/closed/<相對於 wiki/ 之檔案>`，一頁一檔（例如 `wiki/issues/closed/papers/1982-hopfield-network.md`），內容原封不動，僅相對連結換算為歸檔檔位置；`wiki/issues.md` 因此平常幾乎是空的。規則如下：
+     - 結案當下只改狀態、補「處理」行，條目留在 `wiki/issues.md`，不得自行剪貼搬移。多個代理共用工作目錄，有人剪走條目而未提交時，他人提交問題清單會被 `stage_issues.py` 擋下。
+     - 搬移一律以 `python .agents/skills/wiki-content-audit/scripts/archive_issues.py --apply --agent "<代理名稱>"` 一次完成：本機須與遠端一致，`wiki/issues.md` 與 `wiki/issues/` 須無任何未提交修改（否則拒絕執行），只搬 HEAD 版已結案者，寫檔後立即提交推送，提交不寫日誌。由總指揮或使用者指定之代理於一批工作完成後執行；`lint_wiki.py` 於已結案未歸檔條目達 10 筆時提醒；平行 worktree 中不得執行。
+     - 歸檔只追加，已歸檔條目不再修改（唯一例外：所連檔案改名致連結失效時，可更新連結路徑），歸檔檔不得含 `open`。同一處再出問題時另開新編號，並加一行 `- **關聯**：EK-NNN` 指向舊條目。
+     - 查核、修正或撰寫卡片前，以 `issues_for.py <slug>` 讀本頁未結問題與已歸檔之舊紀錄，不讀整份問題清單。頁面改名時保留轉介檔，歸檔檔留在舊路徑，`issues_for.py` 順著轉介檔一併列出。
    * 頁面最後一筆 `open` 問題修正後，同步將 `verification` 改為 `partial`（或於證據表完成後改為 `verified`）。
 
 3. **證據表 `wiki/evidence/<slug>.md`**：每頁一檔，slug 與論文頁或概念頁檔名相同，格式如下：
@@ -503,7 +509,7 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
 5. **「只提交自己的修改（Commit Only Your Own Changes）」**：
    - 多個 AI 共用同一個工作目錄，工作目錄中常同時存在其他代理尚未提交的修改。嚴禁使用 `git add -A`、`git add .` 或 `git commit -a`；提交前須以 `git diff --stat` 逐檔確認，只暫存自己修改的檔案，未追蹤之資料夾（如他人的 `work/`）一律不得加入。
    - `wiki/log.md` 只可提交「執行代理」為自己的條目，其他代理尚未提交的條目須留在工作目錄，由其主人自行提交；以 `scripts/stage_log.py` 逐條暫存。
-   - `wiki/issues.md` 亦為共用檔案，只可提交自己修改的問題條目：`safe_commit_push.sh` 列出該檔時須以 `--issue EK-NNN` 指定編號，由 `scripts/stage_issues.py` 逐條暫存。
+   - `wiki/issues.md` 亦為共用檔案，只可提交自己修改的問題條目：`safe_commit_push.sh` 列出該檔時須以 `--issue EK-NNN` 指定編號，由 `scripts/stage_issues.py` 逐條暫存。已結案條目之歸檔搬移只能由 `archive_issues.py` 執行，提交時以 `--issue ARCHIVED` 暫存（見第七章第 4 節）。
    - `wiki/todo.md` 亦為共用檔案：`safe_commit_push.sh` 列出該檔時須以 `--todo TD-NNN` 指定自己新增、修改或刪除之條目，由 `scripts/stage_todo.py` 逐條暫存（含刪除）。
    - 合流遠端時以 `git merge --autostash` 暫收他人未提交的修改，合流後放回並維持未暫存狀態；不得把他人的修改併入自己的提交。
    - 背景：2026-11-08 曾發生 Claude Code 以整檔加入 `wiki/log.md`，誤將 Codex 尚未提交的 4 筆審查紀錄帶入自己的提交；舊版 `safe_commit_push.sh` 亦以 `git add -A` 暫存全部檔案。
@@ -519,7 +525,7 @@ verification: "unverified"    # 內容核實狀態，同論文頁（見第七章
 
 8. **「平行 worktree 作業（Parallel Worktrees）」**（2026-11-15 經使用者同意）：
    - 總指揮（目前為使用者 Mac 上之 Claude Code，依 `subagent-dispatch`）可讓多個會改檔的代理同時工作，例如同時收錄數篇論文。每個代理各用一個由該 Skill 之 `worktree.sh create` 建立之獨立 worktree（detached，不開分支），不在主倉庫工作目錄內改檔。`raw/` 與 `.venv-mineru` 以符號連結指向主倉庫那份，`raw/` 仍依第五章唯讀。
-   - **動工前劃分檔案歸屬**，寫入任務書：每個代理只能改自己那篇之 `wiki/papers/<slug>.md`、`wiki/evidence/<slug>.md`、`wiki/cards/<slug>.md`、`web/papers/<slug>/`，以及任務書指名之新概念頁。其餘皆為共用檔案，由總指揮負責：`wiki/log.md`、`wiki/issues.md`、`wiki/todo.md`、`wiki/index.md`、既有概念頁、`web/index.html`、他篇論文頁（含因卡片編號後移而需重建者）、`raw/my-focus/my-index.md`。代理為了驗證而在 worktree 中重建首頁等共用檔案無妨，但這些改動不收回。
+   - **動工前劃分檔案歸屬**，寫入任務書：每個代理只能改自己那篇之 `wiki/papers/<slug>.md`、`wiki/evidence/<slug>.md`、`wiki/cards/<slug>.md`、`web/papers/<slug>/`，以及任務書指名之新概念頁。其餘皆為共用檔案，由總指揮負責：`wiki/log.md`、`wiki/issues.md`（含 `wiki/issues/closed/`）、`wiki/todo.md`、`wiki/index.md`、既有概念頁、`web/index.html`、他篇論文頁（含因卡片編號後移而需重建者）、`raw/my-focus/my-index.md`。代理為了驗證而在 worktree 中重建首頁等共用檔案無妨，但這些改動不收回。
    - **worktree 內不提交、不推送、不寫日誌**；`safe_commit_push` 只能在 `main` 執行，於 detached worktree 中本即無法提交。代理要登記之問題或待辦寫在回覆中，不直接改 `wiki/issues.md`、`wiki/todo.md`；編號由總指揮於收回時統一分配。
    - **收回與提交**：外圈查核通過後，總指揮以 `worktree.sh harvest --apply` 把歸屬內之改動套回主倉庫工作目錄（主倉庫同一檔有他人未提交之修改或補丁套不上時，腳本拒絕套用）；共用檔案之改動另存補丁，由總指揮逐項判斷後手動處理。之後逐篇完成概念頁與索引、首頁重建、編號後移之他篇論文頁重建，並依第 5、6 條一篇一個提交、一筆日誌，不得把多篇合併為一個提交。
    - 背景：此前規定同一時間只有一個會寫檔之代理，收錄數篇論文只能逐篇排隊；改為各篇在獨立 worktree 平行進行、由總指揮逐篇收回，既可加速，又不違反第 5 條（只提交自己的修改）與一篇一個提交之原則。

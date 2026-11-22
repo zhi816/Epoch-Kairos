@@ -48,7 +48,7 @@ description: >-
 | 本 Skill 全部 `references/`（共 11 份，含 `paper-page.md` 與 `card-wall.md`；我的關注論文另讀 `references/focus/` 全部 7 份，並可略過 `card-02` 至 `card-06` 與 `diagram.md`） | 各卡欄位、字數、範例與反例；論文頁與首頁卡片牆如何產生與驗證 |
 | `wiki/papers/<slug>.md` 全文 | 卡片內容的唯一文字來源 |
 | `wiki/evidence/<slug>.md` 全文 | 數字與強斷言的唯一依據 |
-| `wiki/issues.md` 中本頁條目 | 是否有尚未修正的問題影響卡片 |
+| `issues_for.py <slug>` 列出之本頁條目 | 是否有尚未修正的問題影響卡片；已歸檔之舊問題指出過哪些錯，寫卡片時不要重犯 |
 | 範例 `wiki/cards/1982-hopfield-network.md`（群星）、`wiki/cards/2026-hybrid-dictionary-rag-llm-paiwan-wang.md`（我的關注新六章） | 完整格式範例；只看格式，**內容不得套用到其他論文** |
 | 參考網頁 `web/papers/1982-hopfield-network/index.html`、`2026-hybrid-dictionary-rag-llm-paiwan-wang/index.html` | 上述兩份卡片檔實際做成論文頁的樣子（`python tools/build_paper_prototype.py <slug>` 產生）。開工前在瀏覽器打開看過，知道每個欄位最後出現在哪裡、多大；寫完自己那篇**必須**用同一指令建置並驗證（第五節第 7 步） |
 | 首頁 `web/index.html` 下方「群星檔案」與 `#my-constellation`「我的星系檔案」 | 封面卡在首頁卡片牆上的樣子（桌面 4 欄，右欄較窄時 3 欄或 2 欄；手機 2 欄；比論文頁 Card 1 小）。開工前以本機伺服器打開看過；寫完自己那篇**必須**以 `python tools/build_home.py --card <slug>` 放上牆並驗證（第五節第 7 步） |
@@ -72,7 +72,7 @@ description: >-
 
 每篇論文依序完成下列步驟，不得跳步或合併：
 
-1. **預檢**：依 `git-sync-guardian` 執行 `git fetch origin main` 並確認狀態。確認 `wiki/papers/<slug>.md` 與 `wiki/evidence/<slug>.md` 都存在，且 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 對本頁無 ERROR。查 `wiki/issues.md` 中本頁之 `open` 條目，逐條判斷是否影響要寫的內容，結論寫進交付說明。
+1. **預檢**：依 `git-sync-guardian` 執行 `git fetch origin main` 並確認狀態。確認 `wiki/papers/<slug>.md` 與 `wiki/evidence/<slug>.md` 都存在，且 `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py` 對本頁無 ERROR。執行 `python .agents/skills/wiki-content-audit/scripts/issues_for.py <slug>`（不要讀整份 `wiki/issues.md`），逐條判斷本頁 `open` 條目是否影響要寫的內容，結論寫進交付說明；已歸檔之舊問題順帶看過，同一處不要再寫錯。
 2. **通讀來源**：完整讀論文頁與證據表（不得只讀 Card 段落）。寫下四句話分別回答「這篇做了什麼、怎麼做、證據是什麼、限制是什麼」，每句附論文頁段落或證據表列位置，**寫進交付說明**（第八節第 2 項）。這四句是後續每張卡的對照基準；寫不出限制，代表還沒讀完。
    * **2-1 回原文抽查**（第二節第 17 條）：先選定 Card 3 要用的公式、Card 4 要用的數字、Card 5 要用的里程碑，再逐項打開第一手來源確認：
      * 公式：在原文（或補充資料）找到同一條式子，記下式號與頁碼，確認符號、各項與條件相同。
@@ -216,7 +216,7 @@ description: >-
 
 | 偷工方式 | 為什麼不行 | 對應步驟 |
 |---|---|---|
-| 只讀論文頁的 Card 段落，沒讀證據表與 `issues.md` | 證據表才是數字與強斷言的依據；`open` 問題可能正好在要寫的地方 | 第五節第 1、2 步 |
+| 只讀論文頁的 Card 段落，沒讀證據表，也沒跑 `issues_for.py` | 證據表才是數字與強斷言的依據；`open` 問題可能正好在要寫的地方 | 第五節第 1、2 步 |
 | 論文頁標 `verified` 或證據表寫「符合來源」，就不回原文抽查 | 第二批回填時，標 `verified` 的頁面查出數字、版本、公式與後續研究多處不符；證據表也記過「已更正」而頁面沒改 | 第二節第 17 條、第五節第 2-1 步 |
 | 抽查紀錄的「原文所見」照抄證據表或論文頁 | 等於沒有抽查；要寫在原文上實際看到的值與位置 | 第八節第 4 項 |
 | 發現論文頁與原文不符，只在卡片上寫正確值，論文頁照舊 | 卡片與長文同頁並列，讀者會看到兩個數字；問題也沒人追蹤 | 第五節第 2-1 步 |
