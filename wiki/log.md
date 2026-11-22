@@ -2741,3 +2741,8 @@
 - **執行代理**：Claude Code by Anthropic
 - **模型版本**：Claude Opus 5.5
 - **具體變更**：經使用者同意，逐筆讀過 `wiki/issues/closed/` 之 197 筆已結案問題（EK-001 至 EK-233），每筆依主要錯誤歸入十二類：誇大 37、公式不是原文的 30、方法寫成常見做法或把未來工作寫成已做 27、數字錯或放錯位置 26、後續或他人成果歸給本篇 24、基本事實與專名 12、版本與出處位置 10、編造背景與細節 8、假說寫成結論 7、修正未同步 7、相近概念混淆 5、漏記 4。新增 `.agents/skills/wiki-content-audit/references/common-errors.md`，每類列出表現、本庫實例編號與檢查方法，末附九題速查。`wiki-content-audit` 規定起草與查核前先讀此清單、微觀審核依速查自問；宏觀審核新增「方法與最佳結果對得上」一項；吸引子表新增「方法替換」「相近概念」兩類；結案複核新增以錯誤原句關鍵字搜尋全庫。`paper-card-writer` 第五節第 2-1 步抽查前先讀此清單。`AGENTS.md` 第六章 Skill 一覽同步更新 `wiki-content-audit` 之附件說明。lint ERROR 0。
+
+## [2026-11-22 11:55] rule | 問題清單與待辦清單以「關聯」互指 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：經使用者同意，問題清單與待辦清單維持分工，補上固定互指方式：待辦新增選填之「關聯」欄，問題之「關聯」欄可寫待辦編號。`lint_wiki.py` 新增互指檢查：所列 EK 編號須存在於 `wiki/issues.md` 或歸檔，TD 編號須存在於 `wiki/todo.md` 或日誌（已完成刪除者），不存在報 ERROR；問題仍為 open 而關聯之待辦已刪除時報 WARN，提醒可以動手修正；原「關聯指向不存在之問題編號」由 WARN 改為 ERROR。`issues_for.py` 一併列出提到本頁 slug 或關聯到本頁問題之待辦（例如查 2007 Woodford 可見 TD-023）。`AGENTS.md` 第七章第 4、5 節與 `wiki-content-audit` 新增規則：問題須等使用者決定、補檔或同意才能修時，問題維持 open，另開 waiting 待辦，兩邊以「關聯」互指。以複製之倉庫寫入錯誤編號測試，ERROR 與 WARN 均如預期；全庫 lint ERROR 0，tools/tests 3 組 OK。

@@ -80,6 +80,7 @@ description: >-
 - 對照問題的每個子項與第一手來源，重新檢查修正後的實際文字；處理紀錄與舊證據表只用來定位，不是已修好的證明。修正時新增或替換的數值、公式、版本、限定語與強主張也要回原文核對。
 - 檢查受影響的論文頁、卡片、概念頁和證據表是否一致；公式的符號、分隔符與來源位置，以及數值的條件和歸屬須逐項核對。只在相關檔案都已處理、原問題的各子項均有依據後，才將該 issue 標為 `fixed`；有未決之處則保留 `open` 並記明限制。
 - 以錯誤原句的關鍵字搜尋 `wiki/papers`、`wiki/concepts`、`wiki/cards`、`wiki/evidence`，確認同一說法在其他頁都已修正；過去有 12 筆問題是一處修好、另一處沒改（`references/common-errors.md` 第十類）。
+- 修正須等使用者決定、補檔或同意（例如原始檔不是這篇、要保留為 `wontfix`）時，問題維持 `open`，另開一筆 `waiting` 待辦寫明要等什麼，兩邊以 `- **關聯**：` 互指（`AGENTS.md` 第七章第 4 節）；不要只寫在問題的處理行裡。
 - 若原問題已修好但發現獨立的新缺口，先搜尋現有問題：已有相同問題就補充，否則另行登記；不可為了讓舊問題保持結案而忽略新缺口，也不重複計數同一缺口。
 
 ## 查核模式：審查既有頁面
@@ -160,8 +161,8 @@ description: >-
 
 兩支腳本只用 Python 標準函式庫（3.7 以上），於倉庫根目錄執行：
 
-- `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：機械檢查 Frontmatter 必填欄位、檔名年份、`domain` 與標籤白名單、`focus_role`、概念雙向對應、`status: published` 之網頁目錄、Emoji、`file:///`、`[[...]]`、相對連結、公式內中文、化學式正體、長公式斷行、日誌標題格式、控制字元（ERROR，多半是 shell 吃掉 LaTeX 反斜線所致）、`card_line` 能否切成 3 行以內之封面斷行（WARN）、證據表只寫「表 N 各數值」而未列出數字之列（WARN），以及 `verification` 與問題清單、證據表的一致性；問題清單與歸檔檔之標題格式、欄位、編號重複（含歸檔）、分節標題與歸檔路徑。`--errors-only` 只顯示錯誤。ERROR 必須修正；WARN 為啟發式提醒，須人工判斷。日誌為 append-only，其舊條目之問題只列為 WARN。
-- `python .agents/skills/wiki-content-audit/scripts/issues_for.py <slug>`：列出某頁在 `wiki/issues.md` 中的條目與 `wiki/issues/closed/` 中已歸檔的舊紀錄（含改名前的舊名字）；`--open` 只看未結者，`--list` 只列標題。
+- `python .agents/skills/wiki-content-audit/scripts/lint_wiki.py`：機械檢查 Frontmatter 必填欄位、檔名年份、`domain` 與標籤白名單、`focus_role`、概念雙向對應、`status: published` 之網頁目錄、Emoji、`file:///`、`[[...]]`、相對連結、公式內中文、化學式正體、長公式斷行、日誌標題格式、控制字元（ERROR，多半是 shell 吃掉 LaTeX 反斜線所致）、`card_line` 能否切成 3 行以內之封面斷行（WARN）、證據表只寫「表 N 各數值」而未列出數字之列（WARN），以及 `verification` 與問題清單、證據表的一致性；問題清單與歸檔檔之標題格式、欄位、編號重複（含歸檔）、分節標題與歸檔路徑；問題與待辦「關聯」所列編號是否存在。`--errors-only` 只顯示錯誤。ERROR 必須修正；WARN 為啟發式提醒，須人工判斷。日誌為 append-only，其舊條目之問題只列為 WARN。
+- `python .agents/skills/wiki-content-audit/scripts/issues_for.py <slug>`：列出某頁在 `wiki/issues.md` 中的條目、`wiki/issues/closed/` 中已歸檔的舊紀錄（含改名前的舊名字），以及 `wiki/todo.md` 中提到本頁或關聯到本頁問題之待辦；`--open` 不列歸檔，`--list` 只列標題。
 - `python .agents/skills/wiki-content-audit/scripts/archive_issues.py [--apply --agent "<代理名稱>"]`：把已結案條目搬到歸檔資料夾並立即提交推送；條件不符即拒絕執行（見〈問題歸檔〉）。
 - `python .agents/skills/wiki-content-audit/scripts/crossref_check.py [slug ...]`：向 Crossref 查詢 `doi_url`，比對年份、作者姓氏與期刊名稱；不帶參數時查全部論文頁。腳本只能確認書目，不能確認內容。
 

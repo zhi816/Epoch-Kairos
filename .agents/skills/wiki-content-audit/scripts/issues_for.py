@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""issues_for.py: 列出某一頁的全部問題條目：wiki/issues.md 中尚未結案者，加上 wiki/issues/closed/ 中已結案者。
+"""issues_for.py: 列出某一頁的全部問題條目：wiki/issues.md 中尚未結案者、wiki/issues/closed/ 中已結案者，
+以及 wiki/todo.md 中與本頁相關之待辦（提到本頁 slug，或「關聯」到本頁問題編號者）。
 
 查核、修正或撰寫卡片前，用本腳本取得「這頁目前有沒有未結問題、過去錯過哪裡、怎麼改的」，
 不必讀整份 wiki/issues.md，也不必知道歸檔檔的路徑。
@@ -17,6 +18,7 @@
 """
 import argparse
 import os
+import posixpath
 import re
 import subprocess
 import sys
@@ -99,7 +101,7 @@ def main():
         pass
     ap = argparse.ArgumentParser(description='列出某一頁之未結與已歸檔問題條目')
     ap.add_argument('page', help='slug、papers/<slug>.md 或 wiki/papers/<slug>.md')
-    ap.add_argument('--open', action='store_true', help='只列出尚未結案者')
+    ap.add_argument('--open', action='store_true', help='只列出尚未結案之問題與相關待辦，不列歸檔')
     ap.add_argument('--list', action='store_true', help='只列標題，不印條目內容')
     a = ap.parse_args()
 
@@ -112,6 +114,27 @@ def main():
         if os.path.exists(os.path.join(root, PATH)) else []
     print('\n== wiki/issues.md 中本頁條目：%d 筆（open %d） ==' % (len(cur), sum(1 for x in cur if x[1] == 'open')))
     for iid, st, tg, blk in cur:
+        print('\n' + (blk.split('\n', 1)[0] if a.list else blk))
+
+    # 相關待辦：內文提到本頁 slug，或「關聯」到本頁之問題編號
+    page_ids = {x[0] for x in cur}
+    for t in targets:
+        p = os.path.join(root, CLOSED_DIR, t)
+        if os.path.exists(p):
+            page_ids.update(x[0] for x in entries(read(p)))
+    slugs = {posixpath.splitext(posixpath.basename(t))[0] for t in targets}
+    todo_path = os.path.join(root, 'wiki', 'todo.md')
+    related = []
+    if os.path.exists(todo_path):
+        tt = read(todo_path)
+        heads = list(re.finditer(r'(?m)^### TD-\d{3,} .*$', tt))
+        for i, m in enumerate(heads):
+            blk = tt[m.start(): heads[i + 1].start() if i + 1 < len(heads) else len(tt)].strip('\n')
+            links = set(re.findall(r'EK-\d{3,}', ' '.join(re.findall(r'(?m)^- \*\*關聯\*\*：(.*)$', blk))))
+            if links & page_ids or any(re.search(r'(?<![\w-])%s(?![\w-])' % re.escape(sl), blk) for sl in slugs):
+                related.append(blk)
+    print('\n== wiki/todo.md 中相關待辦：%d 筆 ==' % len(related))
+    for blk in related:
         print('\n' + (blk.split('\n', 1)[0] if a.list else blk))
     if a.open:
         return

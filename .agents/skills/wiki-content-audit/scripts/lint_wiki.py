@@ -308,6 +308,16 @@ ISSUES_CLOSED_DIR = 'wiki/issues/closed'
 ARCHIVE_REMIND = 10
 
 
+def link_ids(body):
+    """條目中「- **關聯**：」行所列之 EK-／TD- 編號。"""
+    return re.findall(r'(?:EK|TD)-\d{3,}', ' '.join(re.findall(r'(?m)^- \*\*關聯\*\*：(.*)$', body)))
+
+
+# load_issues 收集，供 check_cross_links 於讀完待辦後檢查問題條目「關聯」中之 TD 編號。
+ISSUE_LINKS = []
+ALL_ISSUE_IDS = set()
+
+
 def _parse_issue_file(root, rel, text, seen, archived_target=None):
     """逐條檢查一個問題清單或歸檔檔，回傳 [(編號, 狀態, 檔案, 關聯編號)]。"""
     out = []
@@ -349,7 +359,7 @@ def _parse_issue_file(root, rel, text, seen, archived_target=None):
                 report('ERROR', rel, ln, '%s 缺少「%s」行' % (iid, f))
         if state in ('fixed', 'wontfix') and '處理' not in fields:
             report('ERROR', rel, ln, '%s 已結案但沒有「處理」行' % iid)
-        rel_ids = re.findall(r'EK-\d{3,}', ' '.join(re.findall(r'(?m)^- \*\*關聯\*\*：(.*)$', body)))
+        rel_ids = link_ids(body)
         out.append((iid, state, target, rel_ids, rel, ln))
     return out
 
@@ -377,10 +387,13 @@ def load_issues(root):
                 report('WARN', rel, 1, '歸檔檔對應之頁面已不存在：wiki/%s；若已改名，請保留轉介檔，'
                        'issues_for.py 才能從新名找到舊紀錄' % target)
             rows += _parse_issue_file(root, rel, read(full), seen, archived_target=target)
-    for iid, _, _, rel_ids, rel, ln in rows:
+    ALL_ISSUE_IDS.update(seen)
+    for iid, state, _, rel_ids, rel, ln in rows:
         for r in rel_ids:
-            if r not in seen:
-                report('WARN', rel, ln, '%s 之「關聯」指向不存在之編號：%s' % (iid, r))
+            if r.startswith('TD-'):
+                ISSUE_LINKS.append((iid, state, r, rel, ln))
+            elif r not in seen:
+                report('ERROR', rel, ln, '%s 之「關聯」指向不存在之問題編號：%s' % (iid, r))
     return [(iid, state, target) for iid, state, target, _, _, _ in rows]
 
 
@@ -421,8 +434,35 @@ def load_todo(root):
         for field in need:
             if '- **%s**：' % field not in body:
                 report('ERROR', rel, ln, '%s 缺少「%s」行' % (tid, field))
+        for r in link_ids(body):
+            TODO_LINKS.append((tid, r, ln))
         todos.append((tid, state))
     return todos
+
+
+TODO_LINKS = []
+
+
+def check_cross_links(root, todos):
+    """問題清單與待辦清單之「關聯」互指（AGENTS.md 第七章第 4、5 節）。
+
+    編號須存在：EK 查 wiki/issues.md 與歸檔；TD 查 wiki/todo.md，已完成而刪除者查日誌。
+    未結問題所關聯之待辦已不在 wiki/todo.md 時提醒：等待的事可能已解決，問題可以動手修了。
+    """
+    live = {t for t, _ in todos}
+    log_path = os.path.join(root, 'wiki', 'log.md')
+    logged = set(re.findall(r'TD-\d{3,}', read(log_path))) if os.path.exists(log_path) else set()
+    for tid, r, ln in TODO_LINKS:
+        if r.startswith('EK-') and r not in ALL_ISSUE_IDS:
+            report('ERROR', 'wiki/todo.md', ln, '%s 之「關聯」指向不存在之問題編號：%s' % (tid, r))
+        if r.startswith('TD-') and r not in live and r not in logged:
+            report('ERROR', 'wiki/todo.md', ln, '%s 之「關聯」指向不存在之待辦編號：%s' % (tid, r))
+    for iid, state, r, rel, ln in ISSUE_LINKS:
+        if r not in live and r not in logged:
+            report('ERROR', rel, ln, '%s 之「關聯」指向不存在之待辦編號：%s' % (iid, r))
+        elif r not in live and state == 'open':
+            report('WARN', rel, ln, '%s 仍為 open，但關聯之 %s 已自 wiki/todo.md 刪除（已完成或放棄）；'
+                   '確認等待之事是否已解決，可以動手修正' % (iid, r))
 
 
 # ---------------------------------------------------------------- main
@@ -452,6 +492,7 @@ def main():
             check_links(root, rel, read(path), False)
     issues = load_issues(root)
     todos = load_todo(root)
+    check_cross_links(root, todos)
     open_by_target = {}
     for iid, state, target in issues:
         if state == 'open':
