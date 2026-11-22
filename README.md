@@ -1,161 +1,173 @@
-# Epoch-Kairos ｜ 人類群星閃耀時
+# Epoch-Kairos｜人類群星閃耀時
 
-> **"The Kairos of human thought and research horizons."**  
+[![Deploy to GitHub Pages](https://github.com/zhi816/Epoch-Kairos/actions/workflows/pages.yml/badge.svg)](https://github.com/zhi816/Epoch-Kairos/actions/workflows/pages.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Python 3.7+](https://img.shields.io/badge/Python-3.7%2B-informational.svg)](#快速開始)
+
 > 在漫長的客觀時間（Chronos）中，唯有那些改變人類文明軌跡的決定性時刻（Kairos），宛如夜空中驟然閃耀的群星。
 
-本專案是一個**跨領域時代權威論文、諾貝爾獎導讀與個人研究關注知識庫**，基於 **Andrej Karpathy 的 LLM Wiki 架構** 打造，由多 AI 代理人協同維護，結合可追溯第一手來源的證據審查、KaTeX 公式排版與互動式網頁展示。全專案嚴格維持出版級學術風格。
+跨學科里程碑論文與個人研究關注的知識庫。以 Andrej Karpathy 的 [LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) 三層架構為基礎，由多個 AI 代理協作維護：每個數字與公式都對應到原文頁碼，再自動編譯成知識星圖首頁與「3:4 知識圖卡＋學術長文」雙欄論文頁。
 
- **完整規範請見 [`AGENTS.md`](./AGENTS.md)**
+**線上瀏覽：[zhi816.github.io/Epoch-Kairos](https://zhi816.github.io/Epoch-Kairos/)**
 
----
-
-## 畫面預覽
-
-| 首頁知識星圖（群星模式） | 群星檔案卡片牆 |
+| 首頁知識星圖 | 群星檔案卡片牆 |
 |---|---|
-| ![Epoch-Kairos 首頁知識星圖](./docs/screenshots/starmap-home.webp) | ![Epoch-Kairos 群星檔案卡片牆](./docs/screenshots/card-wall.webp) |
+| ![首頁知識星圖](./docs/screenshots/starmap-home.webp) | ![群星檔案卡片牆](./docs/screenshots/card-wall.webp) |
 
-**雙欄論文頁（3:4 知識圖卡 ＋ KaTeX 學術長文）**
+![雙欄論文頁範例：LIGO 雙黑洞重力波直接探測](./docs/screenshots/paper-page.webp)
 
-![Epoch-Kairos 雙欄論文頁範例：LIGO 雙黑洞重力波直接探測](./docs/screenshots/paper-page.webp)
+## 目錄
 
----
+- [特色](#特色)
+- [運作方式](#運作方式)
+- [快速開始](#快速開始)
+- [專案結構](#專案結構)
+- [作業技能](#作業技能)
+- [知識條目規則](#知識條目規則)
+- [開發歷程](#開發歷程)
+- [致謝與設計來源](#致謝與設計來源)
+- [授權](#授權)
 
-## 核心架構來源
+## 特色
 
-* **Andrej Karpathy - LLM Wiki 架構**（[gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)）：三層資料架構——不可變原始資料 `raw/`、結構化編譯知識 `wiki/`、代理人運作規範 `AGENTS.md`。
+- **主張可追溯到原文**：寫頁面之前先建立證據表（`wiki/evidence/`），把數值、公式與「首次／證明」等強斷言逐條對應到原文之頁、表、圖；區塊公式只放原文中找得到的式子。
+- **查核問題有追蹤**：查出的錯誤登記於問題清單並追蹤到修正，結案後依頁歸檔；197 筆已結案問題另歸納成[常見錯誤清單](./.agents/skills/wiki-content-audit/references/common-errors.md)，供撰寫與查核前閱讀。
+- **多個 AI 代理協作不互相覆蓋**：共用檔案（日誌、問題清單、待辦）只逐條暫存自己的條目，提交必推送，平行工作各用獨立 worktree。
+- **紀錄只能追加**：日誌與問題清單不得刪改，檢查腳本比對 Git 歷史，曾提交過的條目不見即報錯。
+- **網站全由資料產生**：首頁與論文頁皆由 `wiki/` 編譯，不手寫內容；公式以 KaTeX 向量排版，手機與桌面皆可閱讀。
+- **零依賴的工具鏈**：建置與檢查腳本只用 Python 標準函式庫，不需安裝任何套件。
 
----
+## 運作方式
 
-## 系統架構
+```mermaid
+flowchart LR
+    A["raw/<br>原始論文 PDF<br>（私有倉庫）"] --> B["wiki/evidence/<br>證據表"]
+    B --> C["wiki/papers/<br>wiki/concepts/<br>論文頁與概念頁"]
+    C --> D["wiki/cards/<br>卡片文字"]
+    C --> E["tools/<br>建置腳本"]
+    D --> E
+    E --> F["web/<br>首頁與論文頁"]
+    F --> G["GitHub Pages"]
+    C -. 查核發現 .-> H["wiki/issues.md<br>問題清單"]
+    H -. 修正 .-> C
+```
+
+1. **原始層 `raw/`**：使用者放入的論文原文，唯讀；以獨立私有倉庫 [Mine-RAW](https://github.com/zhi816/Mine-RAW) 版控，不隨本倉庫公開。
+2. **知識層 `wiki/`**：AI 依原文寫成之證據表、論文頁、概念頁與卡片文字，並維護日誌、問題清單與待辦。
+3. **規範層 `AGENTS.md`**：所有 AI 代理共同遵守之格式、流程與版控規則。
+4. **展示層 `web/`**：由 `tools/` 之建置腳本自 `wiki/` 產生，推送後由 GitHub Actions 自動發布。
+
+## 快速開始
+
+**需求**：Python 3.7 以上。建置與檢查腳本皆只用標準函式庫；以下為選用：PDF 解析需 PyMuPDF，書目核對需連網。
+
+```bash
+# 取得本倉庫；有 Mine-RAW 權限者另取原始層，才能做三層對齊檢查與原文查核
+git clone https://github.com/zhi816/Epoch-Kairos.git
+cd Epoch-Kairos
+git clone https://github.com/zhi816/Mine-RAW.git raw   # 選用，私有倉庫
+
+# 建置：重建首頁，或重建指定論文頁（省略 slug 則全部重建）
+python tools/build_home.py
+python tools/build_paper_prototype.py <slug>
+
+# 本機預覽，開啟 http://127.0.0.1:8781/
+python -m http.server 8781 --bind 127.0.0.1 --directory web
+
+# 檢查：知識庫健康檢查、卡片檢查、首頁與資料一致性、回歸測試
+python .agents/skills/wiki-content-audit/scripts/lint_wiki.py
+python .agents/skills/paper-card-writer/scripts/check_cards.py
+python tools/build_home.py --check
+python -m unittest discover -s tools/tests -p "test_*.py"
+
+# 收錄進度：全庫每篇論文 S0 至 S10 各步驟之完成狀態
+python .agents/skills/paper-pipeline/scripts/pipeline_status.py
+```
+
+`web/index.html` 與 `web/papers/` 皆為建置產物，請改 `wiki/` 或 `tools/` 之範本後重建，不要手改。
+
+## 專案結構
+
+<details>
+<summary>展開目錄樹</summary>
 
 ```text
 Epoch-Kairos/
-├── AGENTS.md                  # 【Schema】專案總規範（AI 協作指南、格式標準與多 AI 版控協定）
+├── AGENTS.md                  # 規範層：AI 協作規則、格式標準與多 AI 版控協定
 ├── DESIGN.md                  # 美術方向紀錄（已定、暫定、待決與否決之視覺決策）
-├── .agents/skills/            # 專屬作業技能正本（收錄、查核、寫卡、PDF 解析、繁中翻譯、雙倉庫同步）
+├── LICENSE                    # MIT 授權
+├── .agents/skills/            # 作業技能正本（收錄、查核、寫卡、PDF 解析、翻譯、版控）
 ├── .claude/skills/            # 供 Claude Code 載入之轉介檔（指向 .agents/skills/ 正本）
-├── .github/workflows/         # GitHub Pages 自動發布設定（pages.yml）
-├── raw/                       # 【Raw Sources】不可變原始素材層（獨立私有倉庫 Mine-RAW，本倉庫不追蹤）
-│   └── my-focus/              # [個人專屬關注區] 個人精選研究、私人筆記與核心關注資料
-├── wiki/                      # 【The Wiki】AI 維護之知識核心（Markdown）
-│   ├── index.md               # 內容總目錄（按時間線年份與領域組織）
-│   ├── log.md                 # 操作日誌（Append-only，逐筆記載執行代理、模型版本與變更）
-│   ├── issues.md              # 內容問題清單（只放尚未結案之查核發現）
-│   ├── issues/closed/         # 已結案問題歸檔（一頁一檔，查某頁歷史用 issues_for.py）
-│   ├── todo.md                # 待辦清單（交接事項、未完成任務與待確認工作）
-│   ├── evidence/              # 證據表（每頁一檔，強主張、數值與公式逐項對應原文頁碼與表圖）
-│   ├── cards/                 # 卡片文字檔（首頁封面斷行、導語、六張卡文字與 Card 3 SVG 示意圖）
-│   ├── papers/                # 結構化論文知識頁（檔名以實際發表年份為前綴）
-│   └── concepts/              # 跨學科概念頁（與論文頁雙向連結）
-├── tools/                     # 建置腳本（不上站）
-│   ├── build_home.py          # 自 wiki/ Frontmatter 與已提交卡片檔產生 web/index.html
-│   ├── build_paper_prototype.py # 自 wiki/cards/ 與 wiki/papers/ 編譯 web/papers/<slug>/index.html
-│   ├── home_template.html     # 首頁 HTML 範本
-│   ├── paper_template.html    # 論文頁 HTML 範本（「論文頁 F」雙欄與手機版）
-│   ├── wiki_redirects.py      # 舊路徑轉介檔辨識輔助
-│   └── tests/                 # 建置與流程回歸測試
-├── docs/screenshots/          # README 展示用靜態截圖（不上站）
-└── web/                       # 【Web Presentation】GitHub Pages 成果展示層
-    ├── index.html             # 知識星圖首頁（群星知識星圖＋卡片牆；隱藏機關進入「我的星系」#my-constellation）
-    ├── assets/                # CSS、JS（theme.css 為全站色碼唯一真實來源；starmap.css、starmap.js 為首頁樣式與互動）
-    ├── papers/                # 每篇論文之「3:4 豎版知識圖卡 ＋ KaTeX 學術長文」雙欄網頁
+├── .github/workflows/         # GitHub Pages 自動發布（pages.yml）
+├── raw/                       # 原始層：獨立私有倉庫 Mine-RAW，本倉庫不追蹤
+├── wiki/                      # 知識層
+│   ├── index.md               # 內容總目錄（依年份與學科）
+│   ├── log.md                 # 操作日誌（只追加，逐筆署名執行代理與模型版本）
+│   ├── issues.md              # 問題清單（只放尚未結案之查核發現）
+│   ├── issues/closed/         # 已結案問題歸檔（一頁一檔）
+│   ├── todo.md                # 待辦清單（交接事項與待確認工作）
+│   ├── evidence/              # 證據表（主張與原文頁碼、表、圖之對應）
+│   ├── papers/                # 論文頁（檔名以實際發表年份為前綴）
+│   ├── concepts/              # 跨學科概念頁（與論文頁雙向連結）
+│   └── cards/                 # 卡片文字（封面、六張卡與 Card 3 示意圖）
+├── tools/                     # 建置腳本與範本（不上站）
+│   ├── build_home.py          # 產生首頁 web/index.html
+│   ├── build_paper_prototype.py # 產生論文頁 web/papers/<slug>/index.html
+│   ├── home_template.html     # 首頁範本
+│   ├── paper_template.html    # 論文頁範本
+│   ├── wiki_redirects.py      # 舊路徑轉介檔辨識
+│   └── tests/                 # 回歸測試
+├── docs/screenshots/          # README 截圖
+└── web/                       # 展示層（GitHub Pages）
+    ├── index.html             # 知識星圖首頁
+    ├── assets/                # 樣式與互動（theme.css 為色碼唯一來源）
+    ├── papers/                # 雙欄論文頁
     └── prototypes/            # 樣稿與手機原型（不上站）
 ```
 
-首頁與論文頁皆由資料自動編譯，不手寫條目內容：
+</details>
 
-```bash
-# 編譯指定論文頁（或省略 slug 全部重建），內含 check_cards 與結構自我檢查
-python tools/build_paper_prototype.py <slug>
+## 作業技能
 
-# 重建首頁 web/index.html（卡片牆僅收錄 Git 已提交之 wiki/cards/；未提交之新卡以 --card 帶入）
-python tools/build_home.py [--card <slug>]
+AI 代理依 [`.agents/skills/`](./.agents/skills) 中的作業技能工作，每份技能寫明步驟、完成條件與檢查腳本：
 
-# 檢查現有 web/index.html 是否與 wiki/ 資料一致（不寫檔）
-python tools/build_home.py --check
-```
-
-
-### 原始層採雙倉庫分離（Dual-Repository Split）
-
-`raw/` 已於本倉庫 `.gitignore` 全目錄排除，**不隨本倉庫公開**。自 2026-11-08 起，該層改由獨立私有倉庫 [`zhi816/Mine-RAW`](https://github.com/zhi816/Mine-RAW) 版控，在 `raw/` 目錄內自成一個 Git 工作區（並非 submodule，兩倉庫彼此完全獨立）。
-
-| | Epoch-Kairos（本倉庫） | Mine-RAW |
-|---|---|---|
-| 可見性 | 公開 | 私有 |
-| 內容 | `AGENTS.md`、`DESIGN.md`、`.agents/skills/`、`wiki/`、`tools/`、`web/` | `raw/` 之原始 PDF、繁中翻譯 PDF、個人筆記與 `my-focus/my-index.md` |
-| 規範來源 | 本倉庫 [`AGENTS.md`](./AGENTS.md) | 同左；其倉庫內 `AGENTS.md` 僅為指回本倉庫之摘要 |
-
-**代理與協作的提醒**：專案內建 [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) 工具鏈（`status.py`、`sync.py`、`safe_commit_push.py`）可同時檢查並同步雙倉庫，且嚴格只暫存自己修改的檔案。完整規範見 [`AGENTS.md`](./AGENTS.md) 第五、十章。
-
-新機器完整還原兩層：
-
-```bash
-git clone https://github.com/zhi816/Epoch-Kairos.git
-cd Epoch-Kairos
-git clone https://github.com/zhi816/Mine-RAW.git raw
-```
-
-僅 clone 本倉庫者缺少 `raw/`，無法執行 [`AGENTS.md`](./AGENTS.md) 第六章第 3 節 Lint 之第 3 項（三層對齊檢查）與原文查核。
-
----
-
-## 專屬作業技能與核心工作流
-
-專案於 [`.agents/skills/`](./.agents/skills) 維護 6 套標準化作業技能，覆蓋從論文進件到上站發布的全生命週期：
-
-| 技能 | 職責 |
+| 技能 | 用途 |
 |---|---|
-| [`paper-pipeline`](./.agents/skills/paper-pipeline/SKILL.md) | 論文收錄總入口（S0 至 S10 檢查點流程，附 `pipeline_status.py` 進度追蹤與 `verify_star.js`） |
-| [`wiki-content-audit`](./.agents/skills/wiki-content-audit/SKILL.md) | 證據表起草與兩階段（巨觀＋微觀）原文事實查核（附 `lint_wiki.py`、`crossref_check.py`、`issues_for.py`、`archive_issues.py`，以及由已結案問題歸納之常見錯誤清單 `references/common-errors.md`） |
-| [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | 撰寫 `wiki/cards/` 封面、六張卡與 Card 3 SVG 示意圖（附 `check_cards.py`、`verify_page.js`、`verify_wall.js`） |
-| [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | 以 PyMuPDF（或本機 MinerU）抽取附頁碼草稿供查核主張出處 |
-| [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 學術論文繁體中文翻譯與高還原排版 PDF 重建（支援雙欄原版與手機單欄版） |
-| [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 雙倉庫預檢、日誌時間戳與自動合流、共用檔逐條暫存、原子提交與推送 |
+| [`paper-pipeline`](./.agents/skills/paper-pipeline/SKILL.md) | 收錄論文之總入口：S0 至 S10 檢查點，從收件、證據表、論文頁到上架首頁 |
+| [`wiki-content-audit`](./.agents/skills/wiki-content-audit/SKILL.md) | 依原文撰寫與查核頁面：證據表、先宏觀後微觀之兩階段核對、健康檢查、問題歸檔、常見錯誤清單 |
+| [`paper-card-writer`](./.agents/skills/paper-card-writer/SKILL.md) | 撰寫首頁封面卡與論文頁六張卡，建置論文頁並以瀏覽器驗證版面 |
+| [`paper-pdf-parser`](./.agents/skills/paper-pdf-parser/SKILL.md) | 把論文 PDF 抽成附頁碼之文字，供查找主張出處 |
+| [`academic-paper-translator`](./.agents/skills/academic-paper-translator/SKILL.md) | 學術論文繁體中文翻譯與 PDF 重建 |
+| [`git-sync-guardian`](./.agents/skills/git-sync-guardian/SKILL.md) | 雙倉庫同步、共用檔逐條暫存、提交必推送 |
 
-### 四大核心工作流（見 [`AGENTS.md`](./AGENTS.md) 第六章）
+完整規則見 [`AGENTS.md`](./AGENTS.md)：收錄、查詢、健康檢查與交接四大流程在第六章，多 AI 版控協定在第十章。
 
-1. **Ingest（收錄，S0–S10）**：由 `paper-pipeline` 統一編排。從雙倉庫同步領件、Crossref 與原文首頁核對書目、解析 PDF 全文、先建立 `wiki/evidence/` 證據表再起草論文頁、建立或更新 `wiki/concepts/` 雙向連結並登記索引、兩階段核對並更新 `verification`、撰寫 `wiki/cards/` 卡片檔、編譯論文頁並重建首頁、完成桌面／手機瀏覽器驗證，最後追加 `wiki/log.md` 並原子提交推送。
-2. **Query（查詢）**：AI 優先透過 `wiki/index.md`、`wiki/concepts/` 與 `wiki/evidence/` 進行跨領域綜合檢索與引文追溯；具長期價值之洞見可沉澱為新概念頁。
-3. **Lint（健康檢查，共 12 項）**：涵蓋孤島頁面與概念雙向對應、觀點衝突與技術迭代、三層對齊一致性、零表情符號、LaTeX 公式與正體化學式合規、年份與作者真實性、標籤白名單與欄位檢查、相對連結有效性、核實狀態與 `issues.md`／`evidence/` 一致性、`todo.md` 格式、卡片文字檔合規，以及日誌與問題清單只能追加之紀錄完整性（比對 Git 歷史）。
-4. **Handoff（交接與多 AI 協同）**：接手一律依 `git log --oneline -10`、閱讀 `wiki/todo.md` 與 `wiki/issues.md`（查特定頁面之問題與歷史用 `issues_for.py`），並以 `log_tail.py` 擷取日誌近況（禁止整份讀取 `wiki/log.md`）；支援多代理平行 worktree 作業與 `safe_commit_push.py` 逐條暫存共用檔案（`log.md`、`issues.md`、`todo.md`），日誌寫入即完成該回合原子提交推送。
+## 知識條目規則
 
----
+- **雙年份**：`paper_year`（實際發表年份，決定檔名）與 `award_year`（獲獎年份）分開記載，前台並列，例如「2005 發表｜2026 諾貝爾生理學或醫學獎」。
+- **作者與得獎者分開**：`authors` 只記該篇論文之作者，得獎者另記於 `laureates`。
+- **兩種狀態**：`status` 表示產出進度（`planned`、`wiki`、`published`）；`verification` 表示核實程度（`unverified`、`partial`、`issues`、`verified`），與問題清單、證據表自動比對一致。
+- **六大學科**：`domain` 決定配色與星圖位置（`bio`、`ai`、`physics`、`econ`、`chem`、`human`）；`domain_tags` 限用 `AGENTS.md` 第八章白名單。
+- **六張知識圖卡**：時代銘文、世紀瓶頸、突破架構與原理、決定性數據、時代典範轉移、跨界思維與啟發；原文沒有公式時不自編公式。我的關注論文改用便於判斷是否拿來報告之六章。
+- **公式**：全站以 KaTeX 排版；化學元素用 `\mathrm{}` 正體，長公式以 `aligned` 斷行，手機可橫向捲動。
 
-## 知識條目的關鍵規則
+## 開發歷程
 
-* **雙年份標註**：`paper_year`（實際發表年份，決定檔名）與 `award_year`（獲獎年份）分開記載，前台並列呈現，例如「2005 發表 ｜ 2026 諾貝爾生理學或醫學獎」（首頁簡稱「諾貝爾獎」）。
-* **作者與得獎者分離**：`authors` 僅記該篇論文之實際作者，獎項得獎者另記於 `laureates`；獎項表彰多篇工作時，奠基論文列入 `key_papers`，並為多得主各自收錄代表性論文。
-* **條目產出與核實雙狀態**：
-  * `status` 三態：`planned`（僅立案）、`wiki`（已有 Wiki 頁）、`published`（已產出網頁）。
-  * `verification` 四態：`unverified`（未查核）、`partial`（部分核對且無未結問題）、`issues`（`wiki/issues.md` 尚有 `open` 問題）、`verified`（強主張與公式已於 `wiki/evidence/<slug>.md` 逐項對應原文且無未結問題）。
-* **兩層標籤與六大學科**：`domain` 單選，決定群星配色與幾何標記（`bio` 生醫冷翠綠、`ai` 電能青、`physics` 宇宙紫、`econ` 香檳金、`chem` 珊瑚橙、`human` 玫瑰粉）；`domain_tags` 多選，限用 `AGENTS.md` 第八章白名單。
-* **3:4 六張知識圖卡結構**：Card 1 時代銘文、Card 2 世紀瓶頸、Card 3 突破架構與原理、Card 4 決定性數據、Card 5 時代典範轉移、Card 6 跨界思維與啟發（原文無核心理論公式時，Card 3 改用無公式示意圖模式，不自編公式）。
-* **LaTeX 為最高技術標準**：全站以 KaTeX 向量排版公式，化學元素與離子一律用 `\mathrm{}` 正體，長公式以 `aligned` 斷行並具行動端橫向防溢出，金額須轉義 `\$`。
+本專案自 2026-11-04 起由多個 AI 代理在使用者指揮下協作開發，規則隨每次討論迭代，所有過程都留有可查證之紀錄（統計至 2026-11-22）：
 
----
+- **規則迭代**：[`AGENTS.md`](./AGENTS.md) 經 60 次提交修訂；[日誌](./wiki/log.md)中有 39 筆規範變更（`rule`）紀錄，規則條文多標有「經使用者確認」之日期。
+- **多代理協作**：日誌共 371 筆，逐筆署名執行代理與模型版本，主要為 Claude Code（Anthropic）、Antigravity（Google DeepMind）與 Codex（OpenAI）；倉庫共 398 個提交。
+- **品質追蹤**：已結案問題 197 筆，依頁歸檔於 [`wiki/issues/closed/`](./wiki/issues/closed/)；美術方向之選項、決定與否決理由記於 [`DESIGN.md`](./DESIGN.md)。
 
-## 常用檢查指令
+目前收錄 54 篇論文頁與 17 個概念頁，公開目錄見 [`wiki/index.md`](./wiki/index.md)，待辦見 [`wiki/todo.md`](./wiki/todo.md)。
 
-```bash
-# 檢查雙倉庫遠端狀態與同步
-python .agents/skills/git-sync-guardian/scripts/status.py
+## 致謝與設計來源
 
-# 查看全庫（或指定論文）S0-S10 收錄進度與未收錄原始檔
-python .agents/skills/paper-pipeline/scripts/pipeline_status.py
-python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new
+- **[Andrej Karpathy：LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)**：原始層、知識層、規範層之三層架構。
+- **[Evil Rabbit：Deimos Designer Encyclopedia](https://deimos.evilrabbit.com/)**：雜誌編排式之極簡排版、黑曜石底色與細邊框。
+- **[Shopify Editions Fall '26](https://www.shopify.com/editions/fall2026)**：時間線與學科專屬色碼之微光系統。
+- **[KaTeX](https://katex.org/)**：網頁公式排版。
 
-# 執行知識庫健康檢查、卡片檢查與工具測試
-python .agents/skills/wiki-content-audit/scripts/lint_wiki.py
-python .agents/skills/paper-card-writer/scripts/check_cards.py
-python -m unittest discover -s tools/tests -p "test_*.py"
-```
+## 授權
 
----
-
-## 成果瀏覽
-
-* **GitHub Repository**：[https://github.com/zhi816/Epoch-Kairos](https://github.com/zhi816/Epoch-Kairos)
-* **GitHub Pages 成果展示**：[https://zhi816.github.io/Epoch-Kairos/](https://zhi816.github.io/Epoch-Kairos/)（由 `.github/workflows/pages.yml` 於 `web/` 變動推送至 `main` 時自動發布，`web/prototypes/` 不上站）
-* **目前收錄進度**：群星公開目錄見 [`wiki/index.md`](./wiki/index.md)，待辦與查核問題見 [`wiki/todo.md`](./wiki/todo.md) 與 [`wiki/issues.md`](./wiki/issues.md)；全庫即時步驟狀態可執行 `pipeline_status.py`。
+本倉庫之程式碼與文字內容以 [MIT 授權](./LICENSE)釋出。被介紹之論文原文、圖表與獎項資料之著作權屬原作者或原機構，不在本授權範圍內；網站以 DOI 或官方連結指向原文。
