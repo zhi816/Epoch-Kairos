@@ -61,3 +61,9 @@
 - **等待**：使用者於本次作業評分後決定是否執行與範圍；動手前先列出刪除、搬移與保留之段落清單供確認。
 - **關聯**：TD-034
 - **來源**：2026-11-22 使用者與 Claude Code 討論 `AGENTS.md` 上下文優化；2026-11-22 登記，Claude Code by Anthropic。
+
+### TD-036 | waiting | web | 補齊網站分享預覽圖（og:image）、Favicon 與 GitHub Social Preview
+- **內容**：目前 `tools/home_template.html` 與 `tools/paper_template.html` 之 `<head>` 皆尚未設定 `og:image`、`twitter:image` 與 `favicon`（含 `apple-touch-icon`），公開網址分享至社群或通訊軟體時無預覽縮圖，瀏覽器分頁亦無專屬圖示；GitHub 倉庫（`zhi816/Epoch-Kairos`）之 Social Preview（1280 x 640）亦尚未設定。後續可依 [DESIGN.md](../DESIGN.md) 之深空黑底與星光色視覺規範製作橫式分享預覽圖與方形圖示，放入 `web/assets/`，更新首頁與論文頁範本後重建全站。
+- **完成條件**：使用者確認視覺方向與適用範圍（全站共用一張預覽圖，或論文頁另有規則）後，圖檔存入 `web/assets/`、`tools/home_template.html` 與 `tools/paper_template.html` 補齊 `<meta property="og:image">`、`twitter:card` 與 `favicon` 連結，重建 `web/index.html` 與全部論文頁並通過 `build_home.py --check` 與 `lint_wiki.py`；GitHub 倉庫設定頁由使用者上傳 Social Preview。
+- **等待**：使用者後續討論並確認預覽圖與 Favicon 之視覺設計方向，以及論文頁是否共用首頁預覽圖。
+- **來源**：2026-11-25 使用者討論網站外部視覺缺口時指示先列入待辦、日後再討論；2026-11-25 登記，Antigravity by Google DeepMind（Gemini 4 Carbon）。
