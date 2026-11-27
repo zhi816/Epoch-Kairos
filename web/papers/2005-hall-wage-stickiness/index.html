@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>均衡工資僵固性與就業波動｜Epoch Kairos</title>
+<!-- 由 tools/build_paper_prototype.py 自 wiki/cards/ 與 wiki/papers/ 產生，請勿手改。 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400&family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@400;500&family=Newsreader:ital,wght@0,300;0,400;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<style>
+:root{
+  --bg:#0B0C0E;--fg:#E8E4DA;--fg-strong:#F4F1EA;--body:#D9D5CB;--muted:#B5B0A6;--subtle:#9A958C;--label:#88837A;
+  --hair:rgba(232,228,218,.08);--ink:#0F1013;--ink2:rgba(15,16,19,.74);--ink-line:rgba(15,16,19,.22);
+  --serif-zh:'Noto Serif TC',serif;--sans:'Noto Sans TC','Microsoft JhengHei',sans-serif;--serif:'Newsreader',serif;
+  --mono:'JetBrains Mono',monospace;--display:'Playfair Display',serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}
+a{color:var(--star);text-decoration:var(--link-deco,none);text-underline-offset:3px}a:hover{text-decoration:underline}
+button,a,section{-webkit-tap-highlight-color:transparent}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:1px solid var(--fg-strong);outline-offset:3px}
+button:disabled{cursor:default;opacity:.3}
+
+/* ---------------- 版面：窄導軌｜卡片欄｜長文｜資訊欄（DESIGN.md 第五章第 1 節） */
+.root{height:100vh;min-height:680px;display:grid;grid-template-columns:64px minmax(440px,37%) minmax(0,1fr) 272px;overflow:hidden}
+.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 0 24px;border-right:1px solid var(--hair);min-height:0}
+.rail a.back{display:flex;align-items:center;justify-content:center;width:44px;height:44px;color:var(--fg)}
+.rail .title{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--display);font-size:24px;letter-spacing:.06em;color:#EAE6DF}
+.rail .motto{writing-mode:vertical-rl;font-family:var(--serif-zh);font-size:12px;letter-spacing:.3em;color:var(--subtle)}
+.stage{position:relative;min-height:0;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px 0;border-right:1px solid var(--hair);container-type:size}
+.deck{display:grid;grid-template-rows:minmax(0,1fr);width:min(calc(100cqw - 56px),calc((100cqh - 76px) * .75));aspect-ratio:3/4}
+.ctrl{display:flex;align-items:center;gap:2px}
+.ctrl .arrow{width:44px;height:44px;border:0;background:transparent;color:#EAE6DF;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dots{display:flex;align-items:center}
+.ctrl .dot{width:24px;height:44px;padding:0;border:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ctrl .dot span{width:6px;height:6px;border-radius:3px;background:rgba(232,228,218,.3);transition:width .25s ease,background .25s ease}
+.ctrl .dot[aria-current="true"] span{width:20px;background:var(--card)}
+.ctrl .label{margin-left:12px;min-width:132px;font-family:var(--mono);font-size:12px;letter-spacing:.12em;color:var(--muted)}
+.pane{position:relative;min-height:0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(232,228,218,.16) transparent}
+.side{min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:26px;padding:36px 26px 40px;border-left:1px solid var(--hair);font-size:13.5px;line-height:1.7;color:var(--body)}
+
+/* ---------------- 卡片（3:4，cqw 縮放；外層為尺寸容器，內距在內層，DESIGN.md 第二章第 5 節） */
+.card{grid-area:1/1;display:block;min-height:0;container-type:inline-size;border-radius:2px;overflow:hidden;opacity:0;transform:translateX(3%) scale(.985);pointer-events:none;transition:opacity .4s ease,transform .4s ease;background:var(--card);color:var(--ink)}
+.card.before{transform:translateX(-3%) scale(.985)}
+.card.on{opacity:1;transform:none;pointer-events:auto}
+.in{display:flex;flex-direction:column;width:100%;height:100%;padding:6cqw;gap:4cqw}
+.kc{font-family:var(--mono);font-size:3.6cqw;letter-spacing:.14em;color:var(--deep)}
+.hd{font-family:var(--serif-zh);font-weight:600;font-size:7.4cqw;line-height:1.35;color:var(--ink)}
+.ft{padding-top:3cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.tx{font-size:3.6cqw;line-height:1.6}
+.rows{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:3cqw}
+.row{display:grid;grid-template-columns:20cqw minmax(0,1fr);gap:3cqw;padding:3.2cqw;border-radius:1cqw;background:rgba(15,16,19,.07)}
+.row b{font-size:3.8cqw;font-weight:500;color:var(--ink)}
+.row span{font-size:3.6cqw;line-height:1.6;color:var(--ink2)}
+.row.gap{background:rgba(255,255,255,.22);border:1px dashed color-mix(in srgb,var(--deep) 60%,transparent)}
+.row.gap b{color:var(--deep)}.row.gap span{color:var(--deep)}
+.fbox{overflow-x:auto;padding:4.4cqw 3cqw;border-radius:1cqw;background:#16151C;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--card) 40%,transparent);text-align:center;color:#F4F1EA;font-size:4.2cqw}
+.fbox .katex-display{margin:0}
+.stats{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4cqw}
+.stats.two{grid-template-columns:1fr;align-content:center}
+.stat{display:flex;flex-direction:column;gap:1.6cqw;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35)}
+.stat .v{font-family:var(--serif);font-weight:300;font-size:12cqw;line-height:1;color:var(--deep)}
+.stat .l{font-size:3.6cqw;line-height:1.55;color:var(--ink2)}
+.concl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:3.4cqw}
+.concl p{margin:0;padding-top:3cqw;border-top:1px solid rgba(15,16,19,.35);font-family:var(--serif-zh);font-weight:600;font-size:5cqw;line-height:1.5}
+.time{flex:1;display:flex;flex-direction:column;justify-content:space-around;padding-left:4cqw;border-left:1px solid color-mix(in srgb,var(--deep) 60%,transparent)}
+.time p{margin:0;display:grid;grid-template-columns:12cqw minmax(0,1fr);gap:2cqw;font-size:3.7cqw;line-height:1.5}
+.time p b{font-family:var(--serif);font-weight:400;font-size:4.6cqw;color:var(--deep)}
+.quote{margin-top:auto;font-family:var(--serif-zh);font-weight:600;font-size:6.8cqw;line-height:1.65}
+.shift{display:flex;align-items:center;gap:3cqw;font-size:4cqw;color:var(--ink2)}
+.shift i{flex:1;height:1px;background:var(--deep)}
+.shift b{font-weight:500;color:var(--deep)}
+
+/* 示意圖：顏色只用 class，由卡組套色（paper-card-writer references/diagram.md 第五節） */
+.dia{display:block;width:100%;height:auto;overflow:visible}
+/* 無公式模式：圖佔滿標題與說明之間的空間，上下左右置中，放不下時等比縮小（card-03-secret.md 第一節） */
+.dia-fill{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.dia-fill .dia{width:100%;height:100%;max-height:100%}
+.dia path,.dia line,.dia polyline{fill:none!important}
+.dia *{stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.dia .k-line{stroke:var(--deep);fill:none;stroke-width:1.7}
+.dia .k-accent{stroke:var(--deep);fill:var(--deep)}
+.dia .k-ink{stroke:var(--ink);fill:var(--ink)}
+.dia .k-muted{stroke:rgba(15,16,19,.55);fill:rgba(15,16,19,.55)}
+.dia .k-soft{stroke:none;fill:color-mix(in srgb,var(--deep) 18%,transparent)}
+.dia .k-ring{fill:none!important}
+.dia .k-dash{stroke-dasharray:3 3}
+.dia .k-thin{stroke-width:.9}
+.dia text{stroke:none;font-family:var(--sans);font-size:11px}
+.dia .k-label{fill:rgba(15,16,19,.75)}
+.dia .k-label-accent{fill:var(--deep)}
+
+/* 封面（F 版型，DESIGN.md 第二章第 3 節） */
+.cover .in{gap:3.4cqw}
+.cover .ph{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:3.6cqw;letter-spacing:.1em;color:var(--ink2)}
+.cover .ph span+span{font-family:var(--sans);letter-spacing:.12em}
+.cover .win{position:relative;flex:1;min-height:0;overflow:hidden;border-radius:1px;background:var(--win)}
+.cover .win i{position:absolute;border-radius:50%;background:#fff}
+.cover .rep{position:absolute;left:76%;top:24%;width:2.6cqw;height:2.6cqw;transform:translate(-50%,-50%);border-radius:50%;background:#FFFDF8;box-shadow:0 0 2.4cqw .4cqw rgba(244,241,234,.45)}
+.cover .rep.award{box-shadow:0 0 0 1.4cqw var(--win),0 0 0 1.9cqw rgba(244,241,234,.55),0 0 5cqw 1cqw rgba(244,241,234,.35)}
+.cover .line{position:absolute;left:5.4cqw;right:5.4cqw;bottom:5cqw;display:flex;flex-direction:column;font-family:var(--serif-zh);font-weight:600;font-size:8cqw;line-height:1.4;letter-spacing:.02em;color:var(--card)}
+.cover .tags{font-size:3.5cqw;line-height:1.5;color:var(--ink2)}
+.cover .name{font-family:var(--serif-zh);font-weight:600;font-size:7cqw;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cover .lead{font-size:3.7cqw;line-height:1.65;color:rgba(15,16,19,.82)}
+.cover .yrs{padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.6cqw;color:rgba(15,16,19,.75)}
+/* 我的關注：Card 1 至 6 與群星同版型，--card 為 --color-focus（2026-11-19 暫定晴空藍，DESIGN.md 第二章第 3 節）；代表星為空心星，星窗左上為研究語言 */
+.cover.focus .rep{left:80%;top:22%;width:3cqw;height:3cqw;background:radial-gradient(circle,#FFFDF8 0 .6cqw,rgba(255,253,248,0) .9cqw);box-shadow:inset 0 0 0 .4cqw var(--card),0 0 3cqw .6cqw color-mix(in srgb,var(--card) 40%,transparent)}
+.cover .lang{position:absolute;left:4.4cqw;top:4.4cqw;max-width:58cqw;box-sizing:border-box;padding:.8cqw 2.6cqw;border-radius:999px;border:1px solid color-mix(in srgb,var(--card) 60%,transparent);background:rgba(12,14,17,.85);font-size:3.4cqw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--card)}
+/* 研究語言標籤固定一行，過長以省略號截斷，不得壓到代表星；完整語言列於資訊欄（與卡片牆一致，wiki/todo.md TD-012，2026-11-10 使用者確認） */
+
+/* ---------------- 長文（KaTeX；區塊公式不加框，DESIGN.md 第五章第 3 節） */
+.art{max-width:660px;margin:0 auto;padding:60px 52px 380px;display:flex;flex-direction:column;gap:64px;font-size:16.5px;line-height:1.9;color:var(--body)}
+.art header{display:flex;flex-direction:column;gap:20px}
+.art .body{display:flex;flex-direction:column;gap:64px}
+.art .mode{display:none;align-self:flex-start;gap:2px;padding:3px;border:1px solid rgba(232,228,218,.16);border-radius:999px}
+.art .mode button{min-height:40px;padding:0 18px;border:0;border-radius:999px;background:transparent;font-family:var(--sans);font-size:14px;color:var(--muted);cursor:pointer}
+.art .mode button[aria-pressed="true"]{background:rgba(232,228,218,.12);color:var(--fg-strong)}
+.art .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--star)}
+.art h1{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:32px;line-height:1.42;letter-spacing:.02em;color:var(--fg-strong)}
+.art .en{margin:0;font-family:var(--serif);font-style:italic;font-size:19px;line-height:1.5;color:var(--muted)}
+.art section{display:flex;flex-direction:column;gap:18px}
+.art .sh{display:flex;align-items:baseline;gap:16px}
+.art .num{font-family:var(--serif);font-weight:300;font-size:46px;line-height:1;color:#4A4744;transition:color .3s ease}
+.art section.cur .num{color:var(--star)}
+.art h2{margin:0;font-family:var(--serif-zh);font-weight:600;font-size:24px;line-height:1.45;color:var(--fg-strong)}
+.art h3{margin:10px 0 0;font-size:16px;font-weight:500;line-height:1.6;color:#EAE6DF}
+.art p{margin:0}
+.art ul,.art ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px}
+.art li>ul,.art li>ol{margin-top:8px}
+.art strong{font-weight:500;color:#EAE6DF}
+.art code{font-family:var(--mono);font-size:.86em;color:#EAE6DF;background:rgba(232,228,218,.06);padding:1px 5px;border-radius:3px}
+.art pre{margin:0;overflow-x:auto;padding:14px 16px;border-radius:6px;background:rgba(232,228,218,.04);font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted)}
+.art blockquote{margin:0;padding:14px 18px;border-radius:6px;background:rgba(232,228,218,.04);font-size:14.5px;line-height:1.8;color:var(--muted)}
+/* 01 時代銘文之第一段：論文頁開頭引言（樣稿「論文頁 F」） */
+.art .epigraph{margin:0;font-family:var(--serif-zh);font-size:19px;line-height:1.8;color:#EAE6DF}
+.art .epigraph .src{display:block;margin-top:6px;font-family:var(--sans);font-size:12.5px;color:var(--subtle)}
+.art table{border-collapse:collapse;font-size:14px;line-height:1.6;display:block;overflow-x:auto}
+.art th,.art td{padding:6px 10px;border-bottom:1px solid var(--hair);text-align:left;white-space:nowrap}
+.art th{color:var(--label);font-weight:500}
+.m-disp{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:10px 0;text-align:center;color:var(--fg-strong)}
+.m-disp .katex-display{margin:0}
+.art .katex{font-size:1.06em}
+
+/* ---------------- 資訊欄 */
+.side .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;color:var(--label)}
+.side .blk{display:flex;flex-direction:column;gap:6px}
+.side .yr{display:flex;align-items:baseline;gap:12px}
+.side .yr b{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1;color:var(--fg-strong)}
+.side .yr.award b{color:var(--star)}
+.side .yr span{color:var(--muted)}
+.side .note{font-size:12.5px;color:var(--subtle)}
+.side .note code{font-family:var(--mono);font-size:.92em}
+.side .chips{display:flex;flex-wrap:wrap;gap:6px}
+.side .chip{padding:2px 10px;border-radius:999px;border:1px solid color-mix(in srgb,var(--star) 45%,transparent);color:var(--star);font-size:12.5px}
+.side .con{display:flex;align-items:center;gap:10px;min-height:30px;color:var(--body)}
+
+/* ---------------- 窄螢幕：上下疊放（手機版以手機原型為準） */
+@media (max-width:1100px){.root{grid-template-columns:64px minmax(400px,44%) minmax(0,1fr)}.side{display:none}}
+@media (max-width:900px){
+  /* 手機：頁首（雙年份、標題、隨卡片｜全文）移到卡片上方，卡片正下方即接目前段落，滑卡片立即看到換段
+     （2026-11-10 使用者確認，DESIGN.md 第五章第 1 節）。.pane 與 .art 以 display:contents 攤平，
+     使頁首與 .body 成為 .root 之直接項目，可用 order 排序：頁首、卡片、長文、資訊欄 */
+  .root{display:flex;flex-direction:column;height:auto;overflow:visible}
+  .pane,.art{display:contents}
+  .art header{order:-1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:28px 16px 0;gap:12px}
+  .art h1{font-size:26px;line-height:1.4}
+  .art .en{font-size:16px}
+  .art .body{order:1;width:100%;max-width:660px;margin:0 auto;box-sizing:border-box;padding:8px 16px 64px}
+  .rail{display:none}
+  .stage{container-type:normal;padding:24px 16px;border-right:0}
+  /* 手機：卡片並排，手指左右滑動，每次停在一張（CSS Scroll-Snap，AGENTS.md 第七章第 3 節） */
+  .deck{display:flex;width:min(100%,420px);aspect-ratio:auto;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none}
+  .deck::-webkit-scrollbar{display:none}
+  .card,.card.before{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;scroll-snap-stop:always;opacity:1;transform:none;pointer-events:auto;transition:none}
+  /* 長文顯示方式：隨卡片時只顯示目前卡片之段落；全文時全部顯示，與卡片互不連動 */
+  .art .mode{display:inline-flex}
+  .art.solo section[data-card]:not(.cur){display:none}
+  .side{order:2;display:flex;border-left:0;border-top:1px solid var(--hair)}
+}
+/* 手機寬度：箭頭、圓點與標籤一行約 382px，超出 375px 螢幕之可用寬度，標籤改至下一行置中 */
+@media (max-width:480px){
+  .ctrl{flex-wrap:wrap;justify-content:center}
+  .ctrl .label{flex-basis:100%;margin:0;min-width:0;text-align:center}
+}
+@media (prefers-reduced-motion:reduce){.card,.art .num,.ctrl .dot span{transition:none}}
+
+/* ---------------- 我的關注新六章（2026-11-20；paper-card-writer 之 references/focus/、DESIGN.md 第五章第 2 節） */
+.cover.v2 .in{gap:2.6cqw}
+.cover.v2 .win{min-height:40cqw}
+.cover.v2 .line{font-size:6.6cqw}
+.cover .facts{display:grid;grid-template-columns:11cqw minmax(0,1fr);column-gap:2.6cqw;row-gap:1.1cqw;padding-top:2.6cqw;border-top:1px solid var(--ink-line);font-size:3.4cqw;line-height:1.45}
+.cover .facts b{font-weight:500;color:var(--deep)}
+.cover .facts span{color:var(--ink)}
+.flow{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;counter-reset:st}
+.flow p{position:relative;margin:0;padding:0 0 3.6cqw 11cqw;font-size:3.9cqw;line-height:1.5;color:var(--ink)}
+.flow p:last-child{padding-bottom:0}
+.flow p::before{counter-increment:st;content:counter(st);position:absolute;left:0;top:-.2cqw;width:6.6cqw;height:6.6cqw;box-sizing:border-box;border-radius:50%;border:1px solid var(--deep);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:3.6cqw;color:var(--deep)}
+.flow p::after{content:"";position:absolute;left:3.3cqw;top:6.6cqw;bottom:.4cqw;width:1px;background:color-mix(in srgb,var(--deep) 45%,transparent)}
+.flow p:last-child::after{display:none}
+.flow p.io::before{content:"";width:2.6cqw;height:2.6cqw;left:2cqw;top:1.2cqw;background:var(--deep);border:none}
+.flow p.io::after{top:3.8cqw}
+.flow p b{font-weight:500;margin-right:1.6cqw}
+.flow p em{font-style:normal;color:var(--ink2)}
+.flow p:not(.io) b{margin-right:0}
+.cmp{flex:1;display:flex;flex-direction:column;justify-content:center;gap:7cqw}
+.cmp .m{border-top:1px solid rgba(15,16,19,.35);padding-top:3cqw;display:flex;flex-direction:column;gap:1.4cqw}
+.cmp .mt{font-size:3.9cqw;font-weight:500}
+.cmp .mt em{font-style:normal;font-weight:400;color:var(--ink2);margin-left:2cqw;font-size:3.4cqw}
+.cmp p{margin:0;display:flex;align-items:baseline;justify-content:space-between;gap:3cqw}
+.cmp p span{font-size:3.6cqw;color:var(--ink2)}
+.cmp p b{font-family:var(--serif);font-weight:300;font-size:9.6cqw;line-height:1.15;color:var(--deep);white-space:nowrap}
+.cmp p b.lo{font-size:6.6cqw;color:var(--ink2)}
+.rows.tight{gap:2.2cqw}.rows.tight .row{padding:2.6cqw 3cqw}
+.row.ok{background:rgba(255,255,255,.26);border:1px solid color-mix(in srgb,var(--deep) 55%,transparent)}
+.row.ok b,.row.ok span{color:var(--deep)}
+.body.v2 section[data-card="1"] > p:first-of-type{padding:1em 1.2em;border-left:2px solid var(--star);background:rgba(255,255,255,.03)}
+.body.v2 section[data-card="6"] h3{margin-top:2.2em;padding-top:1.2em;border-top:1px dashed rgba(255,255,255,.18)}
+</style>
+</head>
+<body style="--star:#E6C686;--card:#E6C686;--deep:#53401C;--win:#24231F">
+<div class="root">
+  <nav class="rail" aria-label="網站">
+    <a class="back" href="../../index.html" aria-label="回到群星"><svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></a>
+    <span class="title" aria-hidden="true">Epoch Kairos</span>
+    <span class="motto" aria-hidden="true">人類群星閃耀時</span>
+  </nav>
+
+  <section class="stage" id="stage" tabindex="0" aria-roledescription="輪播" aria-label="知識圖卡，共六張，可用左右方向鍵切換">
+    <div class="deck">
+      <section class="card cover" data-name="時代銘文" aria-label="時代銘文" aria-hidden="true"><div class="in"><div class="ph"><span>No.03</span><span>經濟</span></div><div class="win"><i style="left:60.7%;top:32.2%;width:1px;height:1px;opacity:0.79"></i><i style="left:20.3%;top:36.7%;width:1px;height:1px;opacity:0.62"></i><i style="left:75.8%;top:7.0%;width:1px;height:1px;opacity:0.69"></i><i style="left:46.1%;top:22.2%;width:1px;height:1px;opacity:0.60"></i><i style="left:84.7%;top:10.1%;width:1px;height:1px;opacity:0.81"></i><i style="left:75.5%;top:41.0%;width:1px;height:1px;opacity:0.71"></i><i style="left:17.9%;top:10.2%;width:1px;height:1px;opacity:0.83"></i><i style="left:21.9%;top:14.3%;width:1px;height:1px;opacity:0.42"></i><i style="left:7.8%;top:23.8%;width:1px;height:1px;opacity:0.65"></i><i style="left:19.8%;top:36.1%;width:1.5px;height:1.5px;opacity:0.45"></i><i style="left:83.7%;top:13.7%;width:1px;height:1px;opacity:0.78"></i><i style="left:62.4%;top:45.2%;width:1px;height:1px;opacity:0.75"></i><i style="left:38.9%;top:27.4%;width:1px;height:1px;opacity:0.34"></i><i style="left:55.5%;top:5.6%;width:1px;height:1px;opacity:0.65"></i><span class="rep award"></span><span class="line"><span>工資鎖在議價區間，</span><span>放大失業波動</span></span></div><div class="tags">宏觀經濟與治理・#宏觀經濟學</div><div class="name">均衡工資僵固性與就業波動</div><div class="lead">沿用搜尋與匹配的模型，把工資固定在勞雇雙方都還能接受的區間裡，讓同樣的生產力衝擊帶來更大的就業波動。</div><div class="yrs">2005 發表 ｜ 2026 諾貝爾經濟學獎</div></div></section>
+      <section class="card" data-name="世紀瓶頸" aria-label="世紀瓶頸" aria-hidden="true"><div class="in"><span class="kc">02 ｜ 世紀瓶頸</span><span class="hd">方向對了，<br>幅度卻差太多</span><div class="rows"><div class="row"><b>Nash 議價</b><span>雇主只分到固定比例的剩餘，招募報酬對衝擊不敏感</span></div><div class="row"><b>僵固工資</b><span>被批評為外加的無效率，聰明行為者可以輕易避開</span></div><div class="row"><b>工資規範</b><span>規範若落在議價集合外，可能失去可保住的工作</span></div><div class="row gap"><b>均衡</b><span>缺一個既凍住工資、又不離開議價集合的選擇規則</span></div></div><span class="ft" style="color:var(--ink)">需要一條不離開議價集合的工資規則。</span></div></section>
+      <section class="card" data-name="突破原理" aria-label="突破原理" aria-hidden="true"><div class="in"><span class="kc">03 ｜ 突破原理</span><span class="hd">先圍出議價集合，<br>再挑工資規則</span><svg class="dia" viewBox="0 0 300 140" role="img" aria-label="示意：議價集合的上下緣隨生產力移動，固定工資留在集合內不動。">
+  <path class="k-line" d="M26 24 C 100 20, 200 14, 274 10"/>
+  <path class="k-line" d="M26 112 C 100 108, 200 102, 274 96"/>
+  <line class="k-accent" x1="26" y1="68" x2="274" y2="68"/>
+  <line class="k-muted" x1="34" y1="134" x2="196" y2="134"/>
+  <polyline class="k-muted" points="190,129 196,134 190,139"/>
+  <text class="k-label" x="78" y="84" text-anchor="middle">固定工資</text>
+  <text class="k-label" x="164" y="46" text-anchor="middle">議價集合</text>
+  <text class="k-label" x="206" y="137" text-anchor="start">生產力</text>
+</svg><div class="fbox"><span class="m-disp" data-tex="\lambda \le w \le \min_s \left[1-\beta(1-\delta)\right]\tilde{J}_s"></span></div><span class="tx" style="margin-top:auto;color:var(--ink2)">零利潤開職缺；議價未定選常數；不礙效率配對；工資隨趨勢；取中位 Nash 工資解模型。</span></div></section>
+      <section class="card" data-name="決定性數據" aria-label="決定性數據" aria-hidden="true"><div class="in"><span class="kc">04 ｜ 決定性數據</span><div class="stats"><div class="stat"><span class="v">94</span><span class="l">固定工資模型，職缺／失業比對生產力的彈性</span></div><div class="stat"><span class="v">50%</span><span class="l">求才廣告指數 2000 至 2003 年峰至谷跌幅</span></div><div class="stat"><span class="v">21</span><span class="l">生產力由狀態 3 升到 4，J 每單位 z 的斜率</span></div><div class="stat"><span class="v">1.4</span><span class="l">同一比較改用對稱 Nash 議價，J 每單位 z 的斜率</span></div></div><span class="ft">範圍：Hall 2005，美國職缺與失業資料校準；作者稱非處處適用</span></div></section>
+      <section class="card" data-name="典範轉移" aria-label="典範轉移" aria-hidden="true"><div class="in"><span class="kc">05 ｜ 典範轉移</span><span class="hd">波動謎題，<br>工資設定成爭點</span><div class="time"><p><b>2008</b><span>Hall 與 Milgrom 以可信威脅重寫議價</span></p><p><b>2008</b><span>Hagedorn 與 Manovskii 改從校準解釋波動</span></p><p><b>2009</b><span>Pissarides 檢視工資僵固能否解釋謎題</span></p><p><b>2009</b><span>Gertler 與 Trigari 以交錯工資契約建模</span></p><p><b>2026</b><span>Hall 與 Woodford 獲諾貝爾經濟學獎</span></p></div><span class="ft">首項為 Hall 延伸，其餘他人後續；獎項非表彰本篇</span></div></section>
+      <section class="card" data-name="Kairos" aria-label="Kairos" aria-hidden="true"><div class="in"><span class="kc">06 ｜ KAIROS</span><span class="quote">同一句工資不調整，在議價集合外會阻礙互利配對，在集合內只是把未定分配固定下來。</span><span class="shift"><span>外加限制</span><i aria-hidden="true"></i><b>均衡選擇</b></span></div></section>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="arrow" id="prev" aria-label="上一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 L5 8 L10 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <nav class="dots" id="dots" aria-label="選擇卡片"></nav>
+      <button type="button" class="arrow" id="next" aria-label="下一張卡片"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3 L11 8 L6 13" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></button>
+      <span class="label" id="label" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <main class="pane" id="pane" aria-label="論文長文">
+    <article class="art">
+<header>
+<span class="kicker">2005 發表 ｜ 2026 諾貝爾經濟學獎</span>
+<h1>均衡工資僵固性與就業波動</h1>
+<p class="en">Employment Fluctuations with Equilibrium Wage Stickiness</p>
+
+<div class="mode" role="group" aria-label="長文顯示方式"><button type="button" id="m-card" aria-pressed="true">隨卡片</button><button type="button" id="m-full" aria-pressed="false">全文</button></div>
+</header>
+<div class="body">
+<section data-card="1"><div class="sh"><span class="num" aria-hidden="true">01</span><h2>時代銘文</h2></div>
+<p class="epigraph">工資若只在勞雇雙方都還能接受的區間裡移動，僵固本身就不會浪費任何一組本可成立的勞雇關係；但它會改變雇主在還沒有遇到人之前，願意花多少力氣去找人。<span class="src">（本頁引言為 Wiki 撰寫，非原文）</span></p>
+<p>衰退之後，勞動市場會持續鬆弛：失業率高於常態，職缺與招募努力（以 help-wanted advertising 與職缺數衡量）都偏低。以 Diamond (1982)、Mortensen (1982)、Pissarides (1985) 為起點的 DMP 匹配摩擦模型能解釋這個方向：失業由失去工作與找到工作的兩個流量決定，這條研究路線把失業描述為時間的一種有生產性用途。問題在於幅度。作者指出，DMP 模型把工資當成 Nash 議價的結果、雇主只拿到固定的配對剩餘比例，於是招募的報酬對驅動力不敏感，模型「requires implausibly large shocks to account for the magnitude of observed fluctuations」（摘要，p. 50）；Shimer (2005) 與 Veracierto (2003) 也在 p. 51 強調同一件事：DMP 模型無法對觀察到的波動提供合理的解釋。</p>
+<p>Hall 的做法是把工資僵固性放回均衡裡。他沿用 DMP 的匹配摩擦，但不用 Nash 議價從頭決定每一期的工資，而是設想一組「常數工資」的均衡選擇規則：只要工資還落在議價集合之內，暫時性的環境變動不會推動工資，工資只對非平穩的趨勢成分調整（pp. 51、56–57）。作者稱這樣的僵固性「vastly increases the sensitivity of the model to driving forces」，並且因為工資始終沒有離開議價集合，模型「provides a full answer to the condemnation of sticky-wage models in Robert Barro (1977)」：僵固工資既不干擾效率配對的形成，也不造成無效率的離職（pp. 50–51、56）。作者強調，模型的新意在於工資僵固性對「pre-match recruiting efforts」的影響，而不是配對成立之後的行為（pp. 51、56）。</p>
+</section>
+<section data-card="2"><div class="sh"><span class="num" aria-hidden="true">02</span><h2>世紀瓶頸：方向對、幅度錯的搜尋模型</h2></div>
+<p><strong>Nash 議價固定分配剩餘，招募報酬因此對驅動力不敏感。</strong> DMP 模型把工資決定描述為 Nash bargain，雇主取得固定的配對剩餘比例；作者指出，招募活動的報酬就是雇主分到的那一份剩餘，「is not very sensitive to driving forces」，所以模型「cannot explain the magnitude of movements in recruiting activity」（p. 50）。以對稱 Nash 議價而言，生產力上升會同時抬高勞工的保留工資與雇主的保留工資，幾乎所有新增利潤都進入工資；作者在固定工資與 Nash 議價的對照中算出，生產力由狀態 3 升到 4 時，雇主配對價值 J 的斜率在前者是 21、在後者只有 1.4（p. 60）。</p>
+<p><strong>既有僵固工資模型被批評為訴諸無效率。</strong> Barro (1977) 對僵固工資模型的批評是：它們假設了一種聰明行為者可以輕易避開的無效率（p. 51）。作者把「僵固性被描述成對設定工資或價格能力的一種任意限制」（an essentially arbitrary restriction on the ability to set wages or prices）這種理解，歸給 Calvo (1983) 那類價格模型，並強調自己考慮的僵固性是在經濟均衡中出現（p. 51）。到了工資規範的文獻，作者以 Akerlof et al. (1996) 與 Bewley (1999) 為例，並指出自己的設定不同之處在於「I do not permit the norm to lie outside the bargaining set」：較早的文獻「implied inefficient outcomes, especially the loss of a job under conditions where both worker and employer could have been better off with a wage adjustment」（p. 56）。</p>
+<p><strong>缺口：一個既能凍住工資、又不離開議價集合的均衡。</strong> 作者的做法是讓僵固工資在均衡中出現，同時滿足「no worker-employer pair has an unexploited opportunity for mutual improvement」這個條件（摘要 p. 50、pp. 51、56）。他明言自己「do not venture into the territory of explaining why the economy appears to choose sticky wages」，也不試圖證明個別或總體工資實際上就是僵固的（p. 51）。</p>
+</section>
+<section data-card="3"><div class="sh"><span class="num" aria-hidden="true">03</span><h2>突破架構與原理：把工資鎖在議價集合裡</h2></div>
+<p>Hall 保留 DMP 的搜尋與匹配結構，只更換工資的決定方式，並以 Proposition 及其 PROOF 推導常數工資成為均衡的條件。四個步驟如下。</p>
+<h3>1. 匹配摩擦與職缺創造：招募努力停在零利潤</h3>
+<p>勞動市場的候選配對由常報酬的匹配技術作用於職缺 <span class="m-in" data-tex="v"></span> 與失業 <span class="m-in" data-tex="u"></span> 而來（兩者都對勞動力正規化）。令 <span class="m-in" data-tex="x"></span> 為職缺對失業的比值、<span class="m-in" data-tex="\phi(x)"></span> 為求職者每期找到工作的機率、<span class="m-in" data-tex="\rho(x)=\phi(x)/x"></span> 為雇主每期補滿職缺的機率；<span class="m-in" data-tex="\phi"></span> 遞增、<span class="m-in" data-tex="\rho"></span> 遞減（p. 53）。匹配技術的標準設定為（原文式 (1)，p. 53）：</p>
+<span class="m-disp" data-tex="\phi(x) = \omega x^{\alpha}"></span>
+<p>其中 <span class="m-in" data-tex="\omega"></span> 控制匹配效率，<span class="m-in" data-tex="\alpha"></span> 把變異分配給求職者找到工作的機率與雇主補滿職缺的機率，也就是對職缺的彈性為 <span class="m-in" data-tex="\alpha"></span>、對失業的彈性為 <span class="m-in" data-tex="1-\alpha"></span>（p. 53）。雇主開職缺開到預期報酬為零為止；給定狀態 <span class="m-in" data-tex="s"></span> 的工資 <span class="m-in" data-tex="w_s"></span>，雇主從一筆配對得到的價值是（原文式 (4)，p. 54）：</p>
+<span class="m-disp" data-tex="J_s = z_s + \beta(1-\delta)\sum_{s&#x27;}\pi_{s,s&#x27;}(J_{s&#x27;} - w_{s&#x27;})"></span>
+<p>其中 <span class="m-in" data-tex="z_s"></span> 為 state <span class="m-in" data-tex="s"></span> 下的勞動生產力、<span class="m-in" data-tex="\delta"></span> 為固定的工作結束危險率、<span class="m-in" data-tex="\beta"></span> 為折現因子、<span class="m-in" data-tex="\pi_{s,s&#x27;}"></span> 為狀態轉移機率。職缺的零利潤條件為（原文式 (5)，p. 54）：</p>
+<span class="m-disp" data-tex="0 = -k + \beta\rho(x_s)\sum_{s&#x27;}\pi_{s,s&#x27;}(J_{s&#x27;} - w_{s&#x27;})"></span>
+<p><span class="m-in" data-tex="k"></span> 是持有一期職缺的招募成本；廠商開職缺直到預期報酬被 <span class="m-in" data-tex="k"></span> 抵銷，這個條件釘住狀態相依的職缺失業比 <span class="m-in" data-tex="x_s"></span>（p. 54）。</p>
+<h3>2. 議價集合：保留工資圍出可行區間</h3>
+<p>勞工的保留工資 <span class="m-in" data-tex="\underline{w}_s"></span> 使失業價值等於就業價值，雇主的保留工資 <span class="m-in" data-tex="\overline{w}_s"></span> 則是整筆預期利潤，兩者圍出議價集合 <span class="m-in" data-tex="B_s=[\underline{w}_s,\overline{w}_s]"></span>（原文式 (6)–(8)，p. 54）。集合內任何工資都會讓配對有效率地形成或維持。DMP 模型在此選擇對稱 Nash 議價，即兩條保留工資的平均（原文式 (9)，p. 54）：</p>
+<span class="m-disp" data-tex="\frac{\underline{w}_s + \overline{w}_s}{2}"></span>
+<p>Hall 不用這條規則，而以 Nash (1953) 的 demand game 或拍賣作為「非結構化議價」的比喻：勞工提出 <span class="m-in" data-tex="w_L"></span>、廠商在不知道對方提案的情況下提出 <span class="m-in" data-tex="w_H"></span>，若 <span class="m-in" data-tex="w_L \le w_H"></span> 則配對成立、工資為 <span class="m-in" data-tex="w=\kappa w_L+(1-\kappa)w_H"></span>（<span class="m-in" data-tex="0&lt;\kappa&lt;1"></span>），因此議價集合內任何一點都是 Nash equilibrium（pp. 54–55）。他明白表示這只是比喻，不是主張議價真的長成 demand game 的樣子，也承認拍賣設定留下未解的問題（p. 55）。</p>
+<h3>3. 均衡選擇：常數工資只要不越界就是均衡</h3>
+<p>接著他考慮「常數工資」這一類規則，<span class="m-in" data-tex="w_s=w"></span> 對所有狀態成立；先把無工資給付下的雇主價值 <span class="m-in" data-tex="\tilde{J}_s"></span> 定義為線性系統的解（原文式 (10)，p. 55）。論文以 Proposition 給出條件（原文式 (11)，p. 55）：</p>
+<span class="m-disp" data-tex="\lambda \le w \le \min_s \left[1-\beta(1-\delta)\right]\tilde{J}_s"></span>
+<p>也就是工資不低於失業的流量價值 <span class="m-in" data-tex="\lambda"></span>，且不高於最低預期利潤狀態的年金價值。PROOF 以式 (12)–(18) 驗證：常數工資不低於任何狀態的勞工保留工資，也不高於雇主的保留工資，故 <span class="m-in" data-tex="w\in B_s"></span>（pp. 55–56）。作者由此得到他要的結論：「Inefficient separations cannot occur」，僵固工資不妨礙有效率配對的形成，也不妨礙正剩餘工作的存續（p. 56）。</p>
+<h3>4. 非平穩環境：工資只跟著趨勢走</h3>
+<p>常數工資在成長經濟中不可能永遠留在議價集合裡，因為集合下緣終將升過它（p. 56）。作者把生產力拆成兩個成分（原文式 (19)–(20)，p. 56）：<span class="m-in" data-tex="z_t=z_t^{P}z_{st}^{M}"></span>，<span class="m-in" data-tex="z_t^{P}"></span> 是公眾已知的慢速趨勢、<span class="m-in" data-tex="z_{st}^{M}"></span> 是均數復歸的隨機成分；工資規則改為 <span class="m-in" data-tex="w_t=w z_t^{P}"></span>，只隨趨勢調整。作者指出，均數復歸成分對失業的效果與先前平穩經濟中的單一生產力變動相同，僵固工資規則在非平穩經濟中的配置後果也與平穩經濟完全相同（p. 57）。失業率本身是狀態變數，作者以（原文式 (23)，p. 59）</p>
+<span class="m-disp" data-tex="u_s^{*} = \frac{\delta}{\delta + \phi(x_s)}"></span>
+<p>描述它與狀態的關係，並在數值分析中暫時把失業率當成跳躍變數處理，之後才呈現完整的動態反應（p. 59）。</p>
+<p>作者也把這套工資規則接到名目慣性（nominal inertia）的討論：非平穩模型中若趨勢成分 <span class="m-in" data-tex="z_t^{P}"></span> 是名目的，部分漂移就來自有價格水準的漂移，模型因此與菲利浦曲線的概念相連；他認為式 (20) 的工資過程「captures the Friedman-Phelps hypothesis」，並以趨勢成分對應菲利浦曲線的移動、隨機成分對應沿線移動（p. 57）。</p>
+<p>§V 另檢查這組均衡工資規則的其他成員：部分平滑工資 <span class="m-in" data-tex="w_s^{P}=\alpha w+(1-\alpha)w_s^{N}"></span>（原文式 (24)）與適應性工資 <span class="m-in" data-tex="w_t^{A}=(1-\alpha)w_{t-1}^{A}+\alpha w_s^{N}"></span>（原文式 (25)）。作者指出，部分平滑下生產力衝擊對就業的效果會小於常數工資，波動由平滑參數 <span class="m-in" data-tex="\alpha"></span> 控制（此處 <span class="m-in" data-tex="\alpha"></span> 是原文式 (24) 的平滑參數，與式 (1) 的匹配彈性同字母但用途不同）；適應性工資則使工資成為新的狀態變數，且作者稱這個機制「essentially arbitrary and could take many other forms」（p. 64）。</p>
+</section>
+<section data-card="4"><div class="sh"><span class="num" aria-hidden="true">04</span><h2>決定性數據</h2></div>
+<h3>本篇論文（Hall 2005）之核心證據</h3>
+<ul><li><strong>職缺在衰退中同步下滑（Table 1）</strong>：JOLTS 資料中，2002 年 12 月對 2000 年 12 月的職缺率比值為 Mining 0.36、Construction 0.38、Durables 0.45、Nondurables 0.48、Transportation and utilities 0.80、Wholesale trade 0.52、Retail trade 0.60、Finance, insurance, and real estate 0.79、Services 0.68、Federal government 0.54、State and local government 0.70；所有產業的職缺都下降（p. 52，Table 1）。</li><li><strong>招募努力的波動幅度（Figure 1）</strong>：以 Conference Board 的 help-wanted advertising 指數衡量，招募努力「remarkably volatile」，從峰到谷下跌 50 percent 並不罕見，2000 至 2003 年就是如此（p. 52）。</li><li><strong>JOLTS 兩個月分的計算（Table 2）</strong>：New hires 4.070 與 3.187 million；Unemployed 5.264 與 8.209 million；Vacancies 4.036 與 2.558 million；Job-finding rate <span class="m-in" data-tex="\phi"></span> 0.773 與 0.388 per month；Job-filling rate <span class="m-in" data-tex="\rho"></span> 1.008 與 1.246 per month；Unemployment rate <span class="m-in" data-tex="u"></span> 3.6 與 5.7 percent；Vacancy rate <span class="m-in" data-tex="v"></span> 2.8 與 1.8 percent；<span class="m-in" data-tex="x"></span> 0.767 與 0.312 vacancies per unemployed worker（左欄 2000 年 12 月、右欄 2002 年 12 月，p. 58）。</li><li><strong>估計出的匹配參數（Table 2 下半）</strong>：<span class="m-in" data-tex="\alpha"></span>（elasticity of job finding with respect to <span class="m-in" data-tex="x"></span>）0.765；<span class="m-in" data-tex="\omega"></span>（efficiency of matching）0.947（p. 58）。</li><li><strong>校準參數（Table 3）</strong>：<span class="m-in" data-tex="\delta"></span> 0.034（separation rate）；<span class="m-in" data-tex="\lambda"></span> 0.4（flow value while searching，約為流量工資的 40 percent）；<span class="m-in" data-tex="k"></span> 0.986（flow cost of a vacancy）；<span class="m-in" data-tex="\beta"></span> 0.995（相當於年利率 5 percent）；<span class="m-in" data-tex="\theta"></span> 0.9899（生產力均數復歸成分的序列相關，取自 1948–2003 年美國失業率）；<span class="m-in" data-tex="\gamma"></span> 0.00565（dispersion parameter，使模型失業標準差對上美國的 1.54 percent）（p. 58，Table 3）。</li><li><strong>中位狀態的解（Table 4）</strong>：<span class="m-in" data-tex="U"></span> 229.34、<span class="m-in" data-tex="V"></span> 229.28、<span class="m-in" data-tex="J"></span> 1.8698、<span class="m-in" data-tex="w"></span> 0.96572（p. 58，Table 4）。作者據此說明：勞工對失業與就業的評價幾乎相同，保留工資接近零；雇主對這段關係的評價略低於兩個單位的月生產力；工資 0.96 單位是工作所創價值的 96 percent，其餘 4 percent 補償招募的初始成本（p. 58）。</li><li><strong>校準的關鍵中間量</strong>：2000 年 12 月至 2002 年 12 月的平均職缺失業比 <span class="m-in" data-tex="x"></span> 為 0.539（p. 57）；以 <span class="m-in" data-tex="z_3=1"></span> 正規化，解出 <span class="m-in" data-tex="k=0.986"></span>，作者把固定工資設為中位狀態的 Nash 議價工資，再解固定工資模型，並以 <span class="m-in" data-tex="\gamma"></span> 對上失業標準差（p. 58）。</li><li><strong>僵固工資放大招募報酬的敏感度</strong>：固定工資模型中，生產力由狀態 3 升到 4 時 <span class="m-in" data-tex="J"></span> 的斜率為 21 units of <span class="m-in" data-tex="J"></span> per unit of <span class="m-in" data-tex="z"></span>；同樣的模型改用對稱 Nash 議價，斜率只有 1.4 units（p. 60）。作者指出，這種高放大取決於典型勞工分到相當比例的聯合剩餘（p. 60）。</li><li><strong>動態反應</strong>：負向生產力衝擊後，模型中的 job-finding rate 由正常約 60 percent per month 下降 11 percentage points；失業最大效果約 one percentage point，約六個月時達到高點，之後隨生產力均數復歸而回落（p. 62；Figure 6，p. 63）。作者稱模型中的失業反應與美國實際資料的單變量移動平均表示「matches the actual response reasonably closely」（p. 62）。</li><li><strong>與 Shimer 的量化對照</strong>：Shimer (2005) 版本在 Nash 議價下的彈性為 1.7（其 Table 3；原文說明 1.7 是 log 職缺／失業比標準差對生產力標準差的比值），作者同一模型的版本為 1.8（Figure 4 中 log 失業／職缺比對 log 生產力的斜率）；Shimer 以 1951–2003 年美國季資料估計的迴歸係數為 7.2（相關係數 0.391 乘上兩變數標準差比值）；作者的固定工資模型彈性為 94（Figure 2 的斜率）（pp. 63–64）。作者結論是固定工資模型「is easily capable of explaining the observed high volatility of labor-market allocations, even if it does not apply everywhere in the market」（pp. 63–64）。</li><li><strong>議價集合的位置（Figure 3）</strong>：在中位生產力狀態，實際固定工資位於議價集合中間；就整組狀態來看，它接近最高可允許的工資，遠高於休閒價值 <span class="m-in" data-tex="\lambda"></span>；作者說若實際工資遠低於上限，勞動市場會異常緊繃，雇主可能改用模型外的招募手段（pp. 60–61）。</li></ul>
+<h3>後續領域關鍵證據（非本篇成果，標註出處）</h3>
+<ul><li><strong>工資僵固性能否解釋波動謎題</strong>：Pissarides (2009), <em>Econometrica</em> 77(5):1339–1369（doi:10.3982/ecta7562）。他檢視正準搜尋匹配模型無法對上 job finding rate 循環波動的問題，整理微觀計量證據指出新配對的工資其實是波動的，據此主張任何解釋都必須保留這份波動，並討論以 fixed matching costs 提高波動的修正。</li><li><strong>以可信威脅重寫議價</strong>：Hall &amp; Milgrom (2008), <em>American Economic Review</em> 98(4):1653–1674（doi:10.1257/aer.98.4.1653）。求職者唯一可信的威脅是拒絕成交、雇主的威脅是延後議價，議價結果因此取決於雙方等待的成本，而非退出談判的報酬；工資對失業較不敏感，就業波動大於標準 Mortensen-Pissarides 模型。</li><li><strong>交錯的多期工資契約</strong>：Gertler &amp; Trigari (2009), <em>Journal of Political Economy</em> 117(1):38–86（doi:10.1086/597302）。他們把 staggered multiperiod wage contracting 放進 Mortensen-Pissarides 框架，得到工資動態的關係式，並稱合理校準可解釋資料中的工資與勞動市場活動循環行為。</li><li><strong>不需要工資僵固性的另一條校準路線</strong>：Hagedorn &amp; Manovskii (2008), <em>American Economic Review</em> 98(4):1692–1706（doi:10.1257/aer.98.4.1692）。他們以職缺創造成本與工資循環性識別非市場活動價值與議價權重兩個參數，主張標準搜尋模型在此校準下與資料一致。</li><li><strong>失業進入新凱因斯政策分析</strong>：Blanchard &amp; Galí (2010), <em>American Economic Journal: Macroeconomics</em> 2(2):1–30（doi:10.1257/mac.2.2.1）。他們建構含名目僵固與失業的效用基礎模型，指出實質工資僵固會帶來無效率的失業波動，央行因此面臨通膨與失業穩定之間的取捨。</li></ul>
+</section>
+<section data-card="5"><div class="sh"><span class="num" aria-hidden="true">05</span><h2>時代典範轉移</h2></div>
+<p>本篇的主要處理方式，是把工資僵固性放在議價集合之內、當成均衡選擇機制，而不是外加的假設（pp. 50–51、55–56、64）。（以下依研究問題分為兩組，分組為 Wiki 整理。）</p>
+<p>第一組直接延續工資設定與波動放大的爭論。Pissarides (2009) 直接以〈The Unemployment Volatility Puzzle: Is Wage Stickiness the Answer?〉為題，整理微觀計量證據發現新配對的工資是波動的（wages in new matches are volatile），據此主張波動謎題的解釋必須保留這份波動，並討論以 fixed matching costs 提高循環失業波動的修正（doi:10.3982/ecta7562）。Gertler &amp; Trigari (2009) 則把逐期 Nash 議價推廣為交錯的多期工資契約（staggered multiperiod wage contracting），並稱合理校準可解釋資料中的工資與勞動市場活動（doi:10.1086/597302）。Hall 與 Milgrom (2008) 以可信威脅重寫議價，讓工資對失業較不敏感，在合理參數值下得到比標準 Mortensen-Pissarides 模型更大的就業波動（doi:10.1257/aer.98.4.1653）。</p>
+<p>第二組把工資僵固性放進不同的模型位置：有的改從校準著手，有的把它接到含名目僵固與失業的政策框架。Hagedorn &amp; Manovskii (2008) 不引入工資僵固性，改以職缺創造成本與工資循環性識別非市場活動價值與議價權重，主張在此校準下標準搜尋模型與資料一致（doi:10.1257/aer.98.4.1692）。Blanchard &amp; Galí (2010) 則把失業帶進新凱因斯模型，指出引入實質工資僵固會產生無效率的失業波動，央行因此在通膨與失業穩定之間面臨取捨，取捨的幅度取決於勞動市場特徵（doi:10.1257/mac.2.2.1）。</p>
+<p>作者在結論中明確界定模型的適用範圍：這個模型「achieves a strict standard of predictive power in one respect—that the wage never falls outside the bargaining set」，但對維持工資在集合內的各種決定機制則相當寬容（p. 64）；因此實際應用「needs to be guided by evidence about actual wage determination, because theory is unrestrictive apart from the role of the bargaining set」（p. 65）。</p>
+</section>
+<section data-card="6"><div class="sh"><span class="num" aria-hidden="true">06</span><h2>跨界思維與啟發</h2></div>
+<p>以下為 Wiki 詮釋：</p>
+<ol><li><strong>僵固不等於失靈，關鍵在約束的位置</strong>：同一句「工資不調整」，若發生在議價集合之外，會阻礙本可互利的配對成立或存續，造成無效率；若發生在集合之內，則只是把一個本來就未定的分配結果固定下來。這個區分把「摩擦」從缺陷重新描述為在一組可行解之中的選擇，與工程上「在容許區間內凍結控制變數」的想法相通，但兩者的成立條件不同：這裡的區間由雙方各自的保留價值內生決定，而且隨環境移動。</li><li><strong>放大的來源是分配，而不是衝擊</strong>：模型沒有引入更大的衝擊，只是改變雇主從一筆配對中分到多少剩餘，就讓同樣的生產力變動產生十餘倍的反應（<span class="m-in" data-tex="J"></span> 的斜率 21 對 1.4，p. 60）。這提醒我們，總體波動的解釋有時不在衝擊本身，而在衝擊通過制度性分配規則傳遞時被放大或吸收的方式。</li></ol>
+</section>
+</div>
+    </article>
+  </main>
+
+  <aside class="side" aria-label="論文資訊">
+    <div class="blk"><div class="yr"><b>2005</b><span>發表・American Economic Review</span></div>
+    <div class="yr award"><b>2026</b><span>諾貝爾經濟學獎</span></div>
+    </div>
+    <div class="blk"><span class="lab">作者</span><span>Robert E. Hall</span></div>
+    <div class="blk"><span class="lab">得獎者</span><span>Robert E. Hall<br>Michael Woodford</span><span class="note">Woodford 並非本篇作者；獎項表彰一系列工作。</span></div>
+    <div class="blk"><span class="lab">期刊</span><span>American Economic Review, 95(1), 50-65</span><a href="https://doi.org/10.1257/0002828053828482">doi:10.1257/0002828053828482</a></div>
+    <div class="blk"><span class="lab">標籤</span><div class="chips"><span class="chip">#宏觀經濟學</span></div></div>
+    <div class="blk"><span class="lab">關聯概念</span><span class="con"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M5 0.6 L9.4 5 L5 9.4 L0.6 5 Z" fill="none" stroke="#B5B0A6"/></svg>制度演化與宏觀經濟動態</span></div>
+    <div class="blk"><span class="lab">奠基論文</span><a href="https://doi.org/10.1086/260724" title="Hall, R. E. (1978) Stochastic Implications of the Life Cycle-Permanent Income Hypothesis: Theory and Evidence. Journal of Political Economy 86(6):971-987.">Hall（1978）</a><a href="https://doi.org/10.2307/1912638" title="Hall, R. E., &amp; Mishkin, F. S. (1982) The Sensitivity of Consumption to Transitory Income: Estimates from Panel Data on Households. Econometrica 50(2):461-481.">Hall 與 Mishkin（1982）</a><a href="https://doi.org/10.1257/0002828053828482" title="Hall, R. E. (2005) Employment Fluctuations with Equilibrium Wage Stickiness. American Economic Review 95(1):50-65.">Hall（2005）</a><span title="Woodford, M. (2003) Interest and Prices: Foundations of a Theory of Monetary Policy. Princeton University Press.">Woodford（2003）</span></div>
+    <div class="blk"><span class="lab">本頁範圍</span><span class="note">2026 年諾貝爾經濟學獎由 Robert E. Hall 與 Michael Woodford 共同獲得，官方表彰語為「for microeconomic foundations of macroeconomic stabilisation」（宏觀經濟穩定化的微觀基礎）。本頁以 Hall (2005) 之 <em>American Economic Review</em> 論文為主軸；<code>key_papers</code> 另列官方科學背景文件所述 Hall 的消費研究（Hall 1978；Hall &amp; Mishkin 1982）與共同得獎者 Woodford (2003) 之代表性專著。本頁正文只處理 Hall (2005) 這一篇的內容，其他各篇不在本頁敘述範圍；Hall (2005) 勞動市場模型的內容與評價，一律以本篇原文為據。須區分的是：Hall 是本篇的作者，也是 2026 年獎項的得獎者之一，但諾貝爾官方之科學背景文件（<em>Microeconomic foundations of macroeconomic stabilization</em>，2026）敘述 Hall 的得獎工作時講的是其消費研究（Hall 1978；Hall &amp; Mishkin 1982），本頁作者查閱該文件未見對本篇 2005 年勞動市場論文的討論；因此本頁不主張獎項係表彰本篇。</span></div>
+  </aside>
+</div>
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  var secs = Array.prototype.slice.call(document.querySelectorAll('.art section[data-card]'));
+  var pane = document.getElementById('pane'), stage = document.getElementById('stage');
+  var dots = document.getElementById('dots'), label = document.getElementById('label');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var mq = window.matchMedia('(max-width: 900px)');          // 與 CSS 上下疊放之斷點相同
+  var art = document.querySelector('.art'), deck = document.querySelector('.deck');
+  var mCard = document.getElementById('m-card'), mFull = document.getElementById('m-full');
+  var cur = -1, lock = 0, deckLock = 0, full = false;
+  function mobile() { return mq.matches; }
+  // 手機「隨卡片」：長文只顯示目前卡片之段落；「全文」與桌面：全部顯示
+  function layout() { art.classList.toggle('solo', mobile() && !full); }
+  function deckLeft(i) { return cards[i].offsetLeft - cards[0].offsetLeft; }
+  cards.forEach(function (c, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dot';
+    b.setAttribute('aria-label', '第 ' + (i + 1) + ' 張：' + c.dataset.name);
+    b.appendChild(document.createElement('span'));
+    b.addEventListener('click', function () { go(i, true); });
+    dots.appendChild(b);
+  });
+  function show(i) {
+    if (i === cur) return;
+    cur = i;
+    cards.forEach(function (c, k) {
+      c.classList.toggle('on', k === i);
+      c.classList.toggle('before', k < i);
+      c.setAttribute('aria-hidden', k === i ? 'false' : 'true');
+    });
+    Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+    secs.forEach(function (s, k) { s.classList.toggle('cur', k === i); });
+    label.textContent = '0' + (i + 1) + ' / 0' + cards.length + '　' + cards[i].dataset.name;
+    prev.disabled = i === 0; next.disabled = i === cards.length - 1;
+  }
+  function paneScrolls() { return pane.scrollHeight > pane.clientHeight + 4 && getComputedStyle(pane).overflowY !== 'visible'; }
+  function go(i, scroll) {
+    i = Math.max(0, Math.min(cards.length - 1, i));
+    show(i);
+    if (mobile()) {
+      // 手機：箭頭、圓點、方向鍵把卡片列捲到該張；長文是否跟著換段由 layout() 決定，不捲動頁面
+      if (scroll) {
+        deckLock = Date.now() + 700;
+        deck.scrollTo({ left: deckLeft(i), behavior: reduce ? 'auto' : 'smooth' });
+      }
+      return;
+    }
+    if (scroll && secs[i] && paneScrolls()) {
+      lock = Date.now() + 1000;
+      pane.scrollTo({ top: Math.max(0, secs[i].offsetTop - 32), behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
+  function spy() {
+    // 長文捲動帶動卡片：只用於桌面。手機「隨卡片」時長文只有一段，「全文」時依使用者決定互不連動
+    if (mobile() || Date.now() < lock || !secs.length) return;
+    var inPane = paneScrolls();
+    var edge = inPane ? pane.getBoundingClientRect().top + pane.clientHeight * 0.35 : window.innerHeight * 0.35;
+    var n = -1;
+    secs.forEach(function (s, k) { if (s.getBoundingClientRect().top <= edge) n = k; });
+    if (inPane && pane.scrollTop + pane.clientHeight >= pane.scrollHeight - 8) n = secs.length - 1;
+    // 桌面長文開頭（標題、導語）對應封面卡；手機版卡片在長文段落上方，長文尚未捲到第一節時不換卡，
+    // 以免捲動頁面時把讀者選好的卡片拉回第 1 張
+    if (n < 0 && inPane) n = 0;
+    if (n >= 0) show(n);
+  }
+  prev.addEventListener('click', function () { go(cur - 1, true); });
+  next.addEventListener('click', function () { go(cur + 1, true); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(cur + 1, true); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(cur - 1, true); }
+  });
+  pane.addEventListener('scroll', spy, { passive: true });
+  // 手機：手指滑動卡片列，停下時以最接近的一張為目前卡片
+  deck.addEventListener('scroll', function () {
+    if (!mobile() || Date.now() < deckLock || cards.length < 2) return;
+    show(Math.max(0, Math.min(cards.length - 1, Math.round(deck.scrollLeft / deckLeft(1)))));
+  }, { passive: true });
+  function setFull(on) {
+    full = on;
+    mCard.setAttribute('aria-pressed', on ? 'false' : 'true');
+    mFull.setAttribute('aria-pressed', on ? 'true' : 'false');
+    layout();
+    // 從全文切回隨卡片時長文變短，若已捲過卡片上緣，回到卡片上緣（手機版 .art 為 display:contents，不能取其位置）
+    var top = stage.getBoundingClientRect().top + window.scrollY;
+    if (!on && window.scrollY > top) window.scrollTo({ top: top, behavior: 'auto' });
+  }
+  mCard.addEventListener('click', function () { setFull(false); });
+  mFull.addEventListener('click', function () { setFull(true); });
+  function onMedia() {
+    layout();
+    if (mobile()) deck.scrollLeft = deckLeft(cur);
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onMedia); else mq.addListener(onMedia);
+  layout();
+  go(0, false);
+  window.addEventListener('load', function () {
+    if (!window.katex) return;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-tex]'), function (el) {
+      try {
+        window.katex.render(el.getAttribute('data-tex'), el, { displayMode: el.classList.contains('m-disp'), throwOnError: false, strict: 'ignore' });
+      } catch (err) { el.textContent = el.getAttribute('data-tex'); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

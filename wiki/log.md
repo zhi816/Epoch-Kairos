@@ -2821,3 +2821,14 @@
   - `AGENTS.md` 第七章第 4 節：「發現於」「處理」「複核」「總核」須寫代理名稱與模型（或「使用者」）；子代理找到的問題寫「<子代理>（模型）提出，<總指揮>（模型）核對」。第十章第 8 條：收回後該篇之日誌條目列出參與的子代理、模型、角色、輪數與問題編號；子代理不各自寫日誌。
   - `lint_wiki.py`：EK-234 以後之條目，上述欄位未寫代理名稱者報 ERROR；舊條目不回補。新增 `tools/tests/test_lint_issue_agents.py`（4 項），全部測試 41 項通過；全庫 lint ERROR 0。
   - `wiki-content-audit` 查核模式同步一行；使用者層級之 subagent-dispatch Skill（不在本倉庫）亦補記留言板不是紀錄。
+
+## [2026-11-28 06:59] ingest | 收錄 Hall (2005) 均衡工資僵固性與就業波動，上架群星（完成 TD-020 首篇） | #宏觀經濟學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：依 `paper-pipeline` S0 至 S10 收錄 Hall, R. E. (2005) "Employment Fluctuations with Equilibrium Wage Stickiness", *American Economic Review* 95(1):50–65（https://doi.org/10.1257/0002828053828482）。總指揮派子代理於獨立 worktree 撰寫與互審，外圈回原 PDF 查核後收回。
+  - 產出：[論文頁](papers/2005-hall-wage-stickiness.md)（`status: published`、`verification: partial`，區塊公式 6 條）、[證據表](evidence/2005-hall-wage-stickiness.md)（資料列 50、方法列 5、未來工作列 1、後續研究 5 筆附 DOI、獎項附 NobelPrize.org 官方來源）、[卡片檔](cards/2005-hall-wage-stickiness.md)、`web/papers/2005-hall-wage-stickiness/`；概念頁 [institutions-and-macro-dynamics](concepts/institutions-and-macro-dynamics.md) 之 `papers` 與關鍵突破支柱補入本篇；[索引](index.md) 由 planned 改為連結與 published，並註明本篇非 2026 年獎項表彰對象（官方科學背景所述 Hall 得獎工作為 1978、1982 年消費研究）；首頁以 `build_home.py --card` 重建。
+  - 子代理參與（第一階段：論文頁與證據表，4 輪）：作者 DeepSeek Harness（DeepSeek V4.1 Flash）第 1 至 4 輪；審查者 Command Code（GLM-5.3 Flash）第 1 輪，找到 EK-235、EK-236；審查者 Command Code（MiniMax M3.1 Flash，OpenCode 免費版無法使用而改走 Command Code）第 1 輪上下文爆掉未交出、第 2 至 4 輪找到 EK-237 至 EK-243（另一項欄位建議經作者反駁後由其撤回，併記於 EK-240）。EK-243 由總指揮下載 CEP DP 839 核對後自行修正。
+  - 子代理參與（卡片階段）：第一個迴圈作者 DeepSeek Harness（DeepSeek V4.1 Flash）寫出初稿並建置論文頁（中途 API 串流錯誤一次、接續完成），審查者 Command Code（GLM-5.3 Flash）找到 EK-244，Command Code（MiniMax M3.1 Flash）因 Command Code 額度用完經使用者指示停止、未交出。第二個迴圈（使用者指定）作者 Antigravity（Gemini 3.8 Flash）接手第 1、2 輪；審查者 Codex by OpenAI（GPT-6 Luna）第 1 輪找到 EK-245 至 EK-247，另一項（Card 3 方法標記應逐步分放）經作者依 `file-format.md` 第八節第 3 條反駁、總指揮核對成立，未改；審查者 OpenCode（Hy4 Flash）第 1、2 輪皆通過。
+  - 外圈查核（總指揮）：第一階段以 PyMuPDF 正規化全文比對引文與數字，表 1 至表 4、式 (4)(5)(9)(11) 對照頁面影像；諾貝爾獎得主與表彰語以 NobelPrize.org 確認。卡片階段 Card 3 公式、Card 4 四個數字（94、50%、21、1.4）與 Card 3 第 5 步、Card 6 條件句皆在原文 pp. 52、56、58、60、63 找到。
+  - 驗證：`check_cards.py` ERROR 0、WARN 0；`build_paper_prototype.py` 自我檢查 ERROR 0、WARN 0；`lint_wiki.py` ERROR 0；`verify_page.js` PASS（桌面與手機）；`verify_wall.js` PASS（WARN 39 項皆為我的星系既有卡片之標籤與期刊名截斷，與本篇無關）；`verify_star.js` PASS（桌面版原先 FAIL，係腳本只讀手機說明框 `#info`，另以下一筆提交修正）。
+  - 問題清單：登記 EK-235 至 EK-247 共 13 筆，均已於收錄過程中修正（`fixed`）。待辦：TD-020 更新進度，Hall 首篇完成，其餘儲備項目續留。

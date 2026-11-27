@@ -24,8 +24,8 @@
   * 得獎者：Francis Halzen。原始文獻：`raw/2013-icecube-neutrino.pdf`（Aartsen et al. (2013) *Science* 342(6161):1242856，https://doi.org/10.1126/science.1242856）。
 * `2026` ｜ [全球化與貨幣控制](papers/2007-woodford-globalization-monetary-control.md) ｜ `#宏觀經濟學` ｜ *2007 發表 ｜ 2026 諾貝爾經濟學獎* ｜ `[published]`
   * 得獎者：Robert E. Hall, Michael Woodford。原始文獻：`raw/2007-woodford-inflation-dynamics.pdf`（Woodford (2007) NBER Working Paper No. 13329，https://doi.org/10.3386/w13329）。
-* `2026` ｜ 勞動市場波動與均衡工資僵固性（Robert E. Hall） ｜ `#宏觀經濟學` ｜ *2005 發表 ｜ 2026 諾貝爾經濟學獎* ｜ `[planned]`
-  * 得獎者：Robert E. Hall, Michael Woodford。原始文獻：`raw/2005-hall-wage-stickiness.pdf`（Hall (2005) *American Economic Review* 95(1):50-65，https://doi.org/10.1257/0002828053828482）。
+* `2026` ｜ [均衡工資僵固性與就業波動](papers/2005-hall-wage-stickiness.md) ｜ `#宏觀經濟學` ｜ *2005 發表 ｜ 2026 諾貝爾經濟學獎* ｜ `[published]`
+  * 得獎者：Robert E. Hall, Michael Woodford（官方科學背景所述 Hall 的得獎工作為其 1978、1982 年消費研究，本篇為其勞動市場代表作，非獎項表彰對象）。原始文獻：`raw/2005-hall-wage-stickiness.pdf`（Hall (2005) *American Economic Review* 95(1):50-65，https://doi.org/10.1257/0002828053828482）。
 * `2026` ｜ [GLP-1 刺激胰島素基因表現：大鼠胰島細胞株中 cAMP 上升與胰島素釋放](papers/1987-glp1-insulinotropin.md) ｜ `#分子生物` `#生物科技` ｜ *1987 發表 ｜ 2026 引文桂冠獎* ｜ `[wiki]`
   * 得獎者：Daniel J. Drucker, Jens Juul Holst, Svetlana Mojsov（三位中 Drucker 與 Mojsov 為本篇作者）。原始文獻：`raw/1987-glp1-receptor-agonist.pdf`（Drucker et al. (1987) *PNAS* 84(10):3434-3438，https://doi.org/10.1073/pnas.84.10.3434）。
 
