@@ -56,11 +56,11 @@ description: >-
 | S0 同步與領件 | 同步兩個倉庫；找出要收錄的原始檔；確認沒有別人在做 | `git-sync-guardian`；`references/intake.md` 第一節 | 無 | `git fetch origin main`、`git status -sb` 不落後；`pipeline_status.py --new` 列出這份檔案；`wiki/todo.md` 沒有別人 `doing` 這篇 |
 | S1 收件與書目 | 驗證原始檔、決定 slug 與年份、核對書目、判斷群星或我的關注 | `references/intake.md` 第二至四節 | 收件紀錄（寫進交付說明） | slug、`paper_year`、作者、期刊卷期頁、DOI 皆已以 Crossref 或原文首頁核對；我的關注者 `focus_role` 已依資料夾決定 |
 | S2 讀原文 | 抽出全文文字，通讀原文，記下問題、方法、結果、限制與公開資源 | `paper-pdf-parser`；`references/intake.md` 第六節 | 抽取文字（只放 scratchpad，不進倉庫） | 能寫出四句：做了什麼、怎麼做、證據是什麼、限制是什麼，各附原文頁碼 |
-| S3 證據表 | 把要寫的強主張逐條對應到原文頁、表、圖 | `wiki-content-audit` 寫作模式第 1、2 步 | `wiki/evidence/<slug>.md` | 檔案存在；數值逐一寫出；每條預定的區塊公式都有式號或頁碼；`pipeline_status.py <slug>` 之 S3 為 OK（論文頁尚未建立時只檢查證據表，區塊公式條數於 S4 後再比對） |
+| S3 證據表 | 把要寫的強主張逐條對應到原文頁、表、圖 | `wiki-content-audit` 寫作模式第 1、2 步 | `wiki/evidence/<slug>.md` | 檔案存在；數值逐一寫出；每條預定的區塊公式都有式號或頁碼；每個方法步驟一列 `方法-N` 並附〔原文：…〕，未來工作另列；`pipeline_status.py <slug>` 之 S3 為 OK（論文頁尚未建立時只檢查證據表，區塊公式條數於 S4 後再比對） |
 | S4 論文頁 | 依骨架寫 Frontmatter 與正文六段 | `references/paper-page-template.md`；`wiki-content-audit` 寫作模式第 3 步 | `wiki/papers/<slug>.md` | `lint_wiki.py` 對本頁除概念頁相關者外無 ERROR；S4 為 OK（`card_line` 切得成封面斷行） |
 | S5 概念頁與索引 | 連結或建立概念頁（雙向）；登記索引（群星填 `wiki/index.md`；我的關注填 `raw/my-focus/my-index.md`） | `references/concepts-and-index.md` | 更新之 `wiki/concepts/*.md`、`wiki/index.md` 或 `raw/my-focus/my-index.md` | S5 為 OK；`lint_wiki.py` 無雙向對應與孤島 ERROR |
 | S6 核對與核實狀態 | 先宏觀、再微觀，回原文逐項核對；查到的問題修正並登記；設定 `verification` | `wiki-content-audit` 寫作模式第 4、5 步；`crossref_check.py` | `wiki/issues.md` 條目（若有）；`verification` | 本頁沒有 open 問題；`verification` 為 `verified`（或 `partial` 並寫明未核對範圍）；S6 為 OK |
-| S7 卡片檔 | 寫封面、Card 2 至 6 與 Card 3 示意圖 | `paper-card-writer` 第五節第 1 至 6 步（含第 2-1 步回原文抽查） | `wiki/cards/<slug>.md` | `check_cards.py <slug>` ERROR 0，WARN 逐條交代；S7 為 OK |
+| S7 卡片檔 | 寫封面、Card 2 至 6 與 Card 3 示意圖 | `paper-card-writer` 第五節第 1 至 6 步（含第 2-1 步回原文抽查、第 6-1 步方法定向審查） | `wiki/cards/<slug>.md` | `check_cards.py <slug>` ERROR 0（含 Card 3 方法出處），WARN 逐條交代；方法定向審查已做；S7 為 OK |
 | S8 論文頁網頁 | 建置論文頁並以瀏覽器驗證 | `paper-card-writer` 第五節第 7-1 步、`references/paper-page.md` | `web/papers/<slug>/index.html`；論文頁 `status: "published"` | 建置自我檢查 ERROR 0；`verify_page.js` 結果 PASS；截圖目視無拆詞折行、無重疊 |
 | S9 上架首頁 | 重建首頁，確認這篇出現在星圖或我的星系，封面卡出現在卡片牆；重建因本篇而編號後移之他篇論文頁 | `references/publish.md` 第一至四節；`paper-card-writer` 第五節第 7-2 步 | `web/index.html`；編號後移之 `web/papers/*/index.html` | `build_home.py --card <slug>` 卡片牆自我檢查 ERROR 0；`verify_wall.js` 與 `verify_star.js` 結果皆 PASS；`pipeline_status.py` 全庫總表沒有 S8 編號不一致之 NG |
 | S10 日誌與提交 | 寫日誌、一次提交本篇所有檔案、推送；`raw/` 有新檔時另行提交 | `references/publish.md` 第五、六節；`git-sync-guardian` | 一個主倉庫提交（必要時加一個 `raw/` 提交） | 推送成功（`Ahead: 0`）；`build_home.py --check` 一致；`pipeline_status.py <slug>` 全部 OK、結束碼 0 |
@@ -107,6 +107,7 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 1. 依 `wiki-content-audit` 寫作模式第 2 步建立 `wiki/evidence/<slug>.md`（格式見 `AGENTS.md` 第七章第 4 節）。
 2. 要列的主張：論文頁與卡片會用到的每個數字（逐一寫出數值與表列、欄位，不得只寫「表 3 各數值」）、每條區塊公式（依 `wiki-content-audit` 以 `區塊公式 1` 等序號一式一列，記原文式號或頁碼）、「首次／證明／導致／所有」等強斷言、獎項與後續研究之歸屬。
 3. 後續研究：每筆打開該研究本身（DOI 頁、摘要），確認它做了你要寫的事；書目以 Crossref 核對。不得把作者自述的未來工作寫成他人後續成果。
+3-1. 方法步驟（2026-11-27 起）：Card 3（我的關注論文為 03）要寫的每一步各一列，「位置」寫 `方法-N`，「主張」附〔原文：…〕照抄原文用詞；作者列為未來工作的事另寫「未來工作」列並附〔關鍵詞：…〕。S7 卡片以〔方法-N〕指到這些列（`paper-card-writer` 之 `references/file-format.md` 第八節）。
 4. 「類型」只能取五類之一：本篇研究結果、後續研究、作者解釋、依原文數據計算、Wiki 詮釋。
 5. 完成條件：`pipeline_status.py <slug>` 之 S3 為 OK；若為 `!`，依原因補齊或在交付說明交代。此時論文頁尚未建立，腳本只檢查證據表（存在、數值逐一寫出）；區塊公式條數是否都已登記，於 S4 寫完論文頁後由同一指令再比對。
 
@@ -132,7 +133,7 @@ python .agents/skills/paper-pipeline/scripts/pipeline_status.py --new      # raw
 
 ### S7 卡片檔
 
-1. 依 `paper-card-writer` 第五節第 1 至 6 步撰寫 `wiki/cards/<slug>.md`。第 2-1 步「回原文抽查」不得省略：即使 S3 至 S6 是你自己剛做的，也要在動筆前重新打開原文確認 Card 3 公式、Card 4 數字與 Card 5 出處。
+1. 依 `paper-card-writer` 第五節第 1 至 6 步撰寫 `wiki/cards/<slug>.md`；Card 3 方法步驟標〔方法-N〕，並做第 6-1 步方法定向審查（交給與作者不同模型，只看步驟與所引原文頁）。第 2-1 步「回原文抽查」不得省略：即使 S3 至 S6 是你自己剛做的，也要在動筆前重新打開原文確認 Card 3 公式、Card 4 數字與 Card 5 出處。
 2. 我的關注論文：Card 6 不得透露使用者碩論的題目、資料或結果（`paper-card-writer` 第二節第 13 條）；`focus_languages` 為空者在卡片檔填「研究類型」（`paper-card-writer` 之 `references/cover.md` 第七節）。
 3. 完成條件：`python .agents/skills/paper-card-writer/scripts/check_cards.py <slug>` ERROR 0，WARN 逐條寫出判斷依據；`pipeline_status.py <slug>` 之 S7 為 OK 或 `!`（已交代）。
 

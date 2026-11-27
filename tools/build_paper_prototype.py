@@ -216,7 +216,8 @@ def card_fields(path, slug):
     f = {}
     for sec, fields in sections.items():
         for key, value, _ln in fields:
-            f.setdefault((sec, key), []).append(value)
+            # Card 3 方法出處標記〔方法-N〕只供 check_cards.py 核對，不上網頁
+            f.setdefault((sec, key), []).append(cc.strip_method_refs(value))
     return f, svg[0] if svg else ''
 
 

@@ -5,6 +5,7 @@
     python .agents/skills/paper-card-writer/scripts/check_cards.py            # 檢查全部卡片檔
     python .agents/skills/paper-card-writer/scripts/check_cards.py <slug> ... # 只檢查指定論文
     python .agents/skills/paper-card-writer/scripts/check_cards.py --missing  # 另列出尚無卡片檔的論文
+    python .agents/skills/paper-card-writer/scripts/check_cards.py --method-gaps  # 另列出 Card 3 尚未標方法出處的卡片
 
 規則來源：.agents/skills/paper-card-writer/SKILL.md 與 references/。
 只用 Python 標準函式庫（3.7 以上）。有 ERROR 時以代碼 1 結束。
@@ -14,6 +15,7 @@ import datetime
 import glob
 import os
 import re
+import subprocess
 import sys
 import unicodedata
 import xml.etree.ElementTree as ET
@@ -58,6 +60,18 @@ BANNED = ['開創性', '顛覆性', '革命性', '劃時代', '史無前例', '�
 STRONG = ['首次', '第一次', '首創', '證明', '證實', '奠基', '奠定', '導致', '徹底', '完全', '全面', '所有', '唯一',
           '解決了', '突破性', '最早', '最大', '最快']
 ABBR_OK = {'AI', 'DNA', 'RNA'}
+
+# Card 3 方法出處（2026-11-27 起；references/file-format.md 第八節）：
+# 方法步驟行尾標〔方法-N〕，指到證據表「位置」為 方法-N 之列，該列「主張」須附〔原文：…〕。
+# 起因：常見錯誤第三類「方法寫成常見做法」27 筆，集中於 Card 3，原本只靠必讀清單。
+METHOD_FIELDS = {('Card 3｜突破原理', '說明'), ('03｜方法流程', '步驟')}
+METHOD_REF = re.compile(r'〔(方法-\d+(?:、方法-\d+)*)〕')
+METHOD_REF_SINCE = '2026-11-27'   # 此日（含）以後新增之卡片檔必須標方法出處；舊卡片檔有標記時同樣適用
+# 歷史上替換原文做法之常見中文用詞（取自常見錯誤第三類實例）；出現在方法步驟、卻不在所引方法列時報 WARN
+REPLACE_TERMS = ['句法樹', '成分樹', '句法分析', '剖析器', '稠密檢索', '向量檢索', '向量庫', '向量資料庫', '餘弦相似',
+                 '對齊模型', '語義對齊', '語言識別', '笛卡爾積', '線性加權', '加權融合', '溫度採樣', '香農熵',
+                 '損失函數', '懲罰項', '點互資訊', '多維尺度', '統計詞對齊']
+LATIN_TERM = re.compile(r'(?<![A-Za-z0-9_])[A-Za-z][A-Za-z0-9]*(?:[-_.:][A-Za-z0-9]+)*')
 SRC_MARK = re.compile(r'(p\.|pp\.|頁|Table|Fig|表|圖|§|式|Eq|依原文)')
 CJK = re.compile(r'[\u3400-\u9fff\uf900-\ufaff]')
 EMOJI = re.compile('[\U0001F000-\U0001FAFF\u2600-\u27BF\u2B00-\u2BFF\uFE0F]')
@@ -80,6 +94,7 @@ SVG_ATTRS = {
 PATH_ARGS = {'M': 'xy', 'L': 'xy', 'T': 'xy', 'C': 'xyxyxy', 'S': 'xyxy', 'Q': 'xyxy', 'H': 'x', 'V': 'y', 'Z': ''}
 
 results = []
+method_gaps = []   # Card 3 尚未標方法出處之卡片檔（--method-gaps 列出）
 
 
 def report(level, path, line, msg):
@@ -177,6 +192,106 @@ def plain(s):
     s = s.replace('$', '')
     s = re.sub(r'\\[A-Za-z]+', ' ', s)
     return s
+
+
+# ---------------------------------------------------------------- Card 3 方法出處
+
+def strip_method_refs(value):
+    """去掉行尾之〔方法-N〕標記；建置網頁時亦用此函式，標記不會出現在網頁上。"""
+    return METHOD_REF.sub('', value).rstrip()
+
+
+def evidence_rows(evidence):
+    """回傳證據表各列 [(行號, 位置欄, 整列文字)]；只讀表格列，略過表頭與分隔列。"""
+    rows, pos_col = [], None
+    for ln, line in enumerate(evidence.split('\n'), 1):
+        s = line.strip()
+        if not s.startswith('|'):
+            pos_col = None
+            continue
+        cells = [c.strip() for c in s.strip('|').split('|')]
+        if pos_col is None:
+            pos_col = next((i for i, c in enumerate(cells) if c == '位置'), 0)
+            continue
+        if set(s) <= set('|-: ') or pos_col >= len(cells):
+            continue
+        rows.append((ln, cells[pos_col], s))
+    return rows
+
+
+def method_rows(evidence):
+    """證據表中位置為「方法-N」之列：{'方法-N': [(行號, 整列文字)]}。"""
+    out = {}
+    for ln, pos, row in evidence_rows(evidence):
+        for tag in re.findall(r'方法-\d+', pos):
+            out.setdefault(tag, []).append((ln, row))
+    return out
+
+
+def future_keywords(evidence):
+    """證據表「未來工作」列之〔關鍵詞：甲、乙〕；回傳 [(關鍵詞, 行號)]。"""
+    out = []
+    for ln, pos, row in evidence_rows(evidence):
+        if '未來工作' not in pos:
+            continue
+        m = re.search(r'〔關鍵詞：([^〕]+)〕', row)
+        if m:
+            out.extend((k.strip(), ln) for k in m.group(1).split('、') if k.strip() and k.strip() != '無')
+    return out
+
+
+def is_new_card(path):
+    """卡片檔尚未提交，或首次提交於 METHOD_REF_SINCE 當日以後。查不到 Git 時視為舊卡片，不強制。"""
+    try:
+        out = subprocess.run(['git', 'log', '--follow', '--diff-filter=A', '--format=%cs', '--', path],
+                             cwd=ROOT, capture_output=True, text=True, timeout=20)
+    except (OSError, subprocess.SubprocessError):
+        return False
+    if out.returncode != 0:
+        return False
+    dates = out.stdout.split()
+    return not dates or dates[-1] >= METHOD_REF_SINCE
+
+
+def check_method_refs(path, items, evidence, enforced):
+    """items：[(區段, 欄位, 原始值, 去標記後之值, 行號)]，只含 METHOD_FIELDS 之欄位。"""
+    rows = method_rows(evidence)
+    futures = future_keywords(evidence)
+    for sec, key, raw, value, ln in items:
+        label = '%s「%s」' % (sec.split('｜')[0], key)
+        found = METHOD_REF.findall(raw)
+        text = re.sub(r'\$[^$]+\$', '', value)   # 行內數學不比對名詞
+        for kw, kln in futures:
+            if kw in text:
+                report('WARN', path, ln, '%s 含證據表第 %d 行列為作者未來工作之「%s」，請確認不是把未來工作寫成本篇已做' % (label, kln, kw))
+        if not found:
+            if enforced:
+                report('ERROR', path, ln, '%s 行尾須標〔方法-N〕，指到證據表中記錄原文做法的方法列（file-format.md 第八節）' % label)
+            continue
+        if len(found) > 1 or not raw.rstrip().endswith('〕'):
+            report('ERROR', path, ln, '%s 的方法標記須只有一個，且放在行尾（多列寫成〔方法-1、方法-2〕）' % label)
+        tags = [t for group in found for t in group.split('、')]
+        cited = []
+        for tag in tags:
+            if tag not in rows:
+                report('ERROR', path, ln, '%s 標記〔%s〕在證據表中找不到「位置」為 %s 的列' % (label, tag, tag))
+                continue
+            for rln, row in rows[tag]:
+                if '〔原文：' not in row:
+                    report('ERROR', path, ln, '證據表第 %d 行（%s）須在「主張」附〔原文：…〕，寫出原文的用詞或句子' % (rln, tag))
+                cited.append(row)
+        if not cited:
+            continue
+        pool = '\n'.join(cited)
+        low = pool.lower()
+        for term in sorted(set(LATIN_TERM.findall(text))):
+            if len(term) >= 2 and term not in ABBR_OK and term.lower() not in low:
+                report('WARN', path, ln, '%s 的「%s」不在所引方法列（%s）中；原文若沒有這個詞，可能把原文做法換成了常見技術'
+                       % (label, term, '、'.join(tags)))
+        for w in REPLACE_TERMS:
+            if w in text and w not in pool:
+                report('WARN', path, ln, '%s 的「%s」不在所引方法列（%s）中；這是歷史上替換原文做法的常見用詞，請回原文確認'
+                       % (label, w, '、'.join(tags)))
 
 
 # ---------------------------------------------------------------- 文字規則
@@ -476,12 +591,13 @@ def check_card(path, slug, all_cards):
         report('ERROR', path, 1, '六個區段須齊全且依序排列' + ('；缺少：' + '、'.join(missing) if missing else ''))
 
     vals = {}
+    method_items = []
     for sec in secs:
         fields = sections.get(sec, [])
         spec = specs[sec]
         names = [s[0] for s in spec]
         last = -1
-        for key, value, ln in fields:
+        for key, raw, ln in fields:
             if key not in names:
                 report('ERROR', path, ln, '%s 不得有欄位「%s」' % (sec, key))
                 continue
@@ -489,6 +605,11 @@ def check_card(path, slug, all_cards):
             if idx < last:
                 report('ERROR', path, ln, '%s 欄位順序錯誤：「%s」應在前面' % (sec, key))
             last = idx
+            value = strip_method_refs(raw)
+            if (sec, key) in METHOD_FIELDS:
+                method_items.append((sec, key, raw, value, ln))
+            elif value != raw:
+                report('ERROR', path, ln, '〔方法-N〕只能標在 Card 3「說明」或 03「步驟」，不得出現在%s「%s」' % (sec, key))
             if not value.strip():
                 report('ERROR', path, ln, '%s「%s」不得為空' % (sec, key))
             if (sec, key) not in NO_TEXT_CHECK:
@@ -498,6 +619,11 @@ def check_card(path, slug, all_cards):
             n = len(vals.get((sec, key), []))
             if not lo <= n <= hi and not (sec == 'Card 4｜決定性數據' and key in ('數字', '結論')) and (sec, key) not in V2_OPTIONAL_COUNT:
                 report('ERROR', path, 1, '%s「%s」須有 %s 筆，目前 %d 筆' % (sec, key, str(lo) if lo == hi else '%d 至 %d' % (lo, hi), n))
+
+    marked = any(METHOD_REF.search(raw) for _s, _k, raw, _v, _l in method_items)
+    if not marked:
+        method_gaps.append(path)
+    check_method_refs(path, method_items, evidence, marked or is_new_card(path))
 
     one = lambda sec, key: (vals.get((sec, key)) or [('', 1)])[0]
 
@@ -922,6 +1048,7 @@ def main():
     ap = argparse.ArgumentParser(description='檢查 wiki/cards/ 卡片文字檔')
     ap.add_argument('slugs', nargs='*', help='只檢查指定論文（不含 .md）')
     ap.add_argument('--missing', action='store_true', help='另列出尚無卡片檔的論文')
+    ap.add_argument('--method-gaps', action='store_true', help='另列出 Card 3 尚未標〔方法-N〕出處的卡片檔')
     args = ap.parse_args()
     files = sorted(p for p in glob.glob(os.path.join(WIKI, 'cards', '*.md')) if not is_redirect(p))
     if args.slugs:
@@ -943,6 +1070,9 @@ def main():
         for p in sorted(glob.glob(os.path.join(WIKI, 'papers', '*.md'))):
             if not is_redirect(p) and os.path.basename(p)[:-3] not in have:
                 report('INFO', p, 0, '尚無卡片檔 wiki/cards/%s' % os.path.basename(p))
+    if args.method_gaps:
+        for p in method_gaps:
+            report('INFO', p, 0, 'Card 3 尚未標〔方法-N〕出處（舊卡片不強制；改寫 Card 3 時一併補上）')
     try:
         sys.stdout.reconfigure(encoding='utf-8')
     except AttributeError:
