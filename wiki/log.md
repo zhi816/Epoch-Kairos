@@ -2832,3 +2832,10 @@
   - 外圈查核（總指揮）：第一階段以 PyMuPDF 正規化全文比對引文與數字，表 1 至表 4、式 (4)(5)(9)(11) 對照頁面影像；諾貝爾獎得主與表彰語以 NobelPrize.org 確認。卡片階段 Card 3 公式、Card 4 四個數字（94、50%、21、1.4）與 Card 3 第 5 步、Card 6 條件句皆在原文 pp. 52、56、58、60、63 找到。
   - 驗證：`check_cards.py` ERROR 0、WARN 0；`build_paper_prototype.py` 自我檢查 ERROR 0、WARN 0；`lint_wiki.py` ERROR 0；`verify_page.js` PASS（桌面與手機）；`verify_wall.js` PASS（WARN 39 項皆為我的星系既有卡片之標籤與期刊名截斷，與本篇無關）；`verify_star.js` PASS（桌面版原先 FAIL，係腳本只讀手機說明框 `#info`，另以下一筆提交修正）。
   - 問題清單：登記 EK-235 至 EK-247 共 13 筆，均已於收錄過程中修正（`fixed`）。待辦：TD-020 更新進度，Hall 首篇完成，其餘儲備項目續留。
+
+## [2026-11-28 07:00] fix | verify_star.js 桌面版改讀星圖浮動說明框 | 全域
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：收錄 Hall (2005) 驗證星圖時，`verify_star.js` 桌面 1440 x 900 一律報「點擊後，說明框未見論文名」。查明首頁桌面版說明框是星圖內浮動的 `.tip`（`starmap.js` 之 `renderTip`），`#info` 只在手機版填入（`renderInfo` 開頭 `if (!mobile) return`），腳本卻只讀 `#info`，故每篇桌面版都會 FAIL（以 Woodford 2007、LIGO 2016 實測相同）。
+  - 修正：`.agents/skills/paper-pipeline/scripts/verify_star.js` 讀取說明文字時一併讀未隱藏之 `.tip`。
+  - 驗證：以修正後腳本重跑 `2005-hall-wage-stickiness` 與 `2016-ligo-gravitational-waves`，桌面與手機皆 PASS。

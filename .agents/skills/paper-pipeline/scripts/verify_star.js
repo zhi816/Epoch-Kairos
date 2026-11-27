@@ -61,8 +61,10 @@
     btn.click();
     await wait(500);
     const pressed = btn.getAttribute('aria-pressed') === 'true';
+    // 手機說明框是 #info；桌面說明框是星圖內浮動的 .tip（starmap.js renderTip），#info 在桌面一律為空。
     const info = d.getElementById('info');
-    const infoText = info ? info.innerText : '';
+    const tipBox = d.querySelector('.tip');
+    const infoText = (info ? info.innerText : '') + '\n' + (tipBox && !tipBox.hidden ? tipBox.innerText : '');
     const hasName = norm(infoText).indexOf(norm(p.name)) >= 0 || norm(infoText).indexOf(norm(p.titleZh)) >= 0;
     if (pressed && hasName) out(true, tag, '點擊後為選取狀態，說明框顯示論文名');
     else if (w < 600) warn(tag, '手機點擊後' + (pressed ? '' : '未成為選取狀態') + (hasName ? '' : '，說明框未見論文名') + '（手機操作方式可能不同，請以截圖目視確認）');
