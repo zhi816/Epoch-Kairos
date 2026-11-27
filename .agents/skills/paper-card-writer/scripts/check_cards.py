@@ -72,6 +72,19 @@ REPLACE_TERMS = ['句法樹', '成分樹', '句法分析', '剖析器', '稠密�
                  '對齊模型', '語義對齊', '語言識別', '笛卡爾積', '線性加權', '加權融合', '溫度採樣', '香農熵',
                  '損失函數', '懲罰項', '點互資訊', '多維尺度', '統計詞對齊']
 LATIN_TERM = re.compile(r'(?<![A-Za-z0-9_])[A-Za-z][A-Za-z0-9]*(?:[-_.:][A-Za-z0-9]+)*')
+
+# 依位置比對（2026-11-27 起，file-format.md 第九節）：新卡片之強斷言、Card 4／05 數字與 Card 5 里程碑，
+# 只與證據表「位置」欄對應到本卡之列比對，不再接受「證據表任何地方出現過」。舊卡片維持整份比對。
+POSITION_LABELS = {
+    '封面': ['封面', 'Card 1', '導語', 'hook', 'card_line', '01'],
+    'Card 2｜世紀瓶頸': ['Card 2'], '02｜要解決的問題': ['02', 'Card 2'],
+    'Card 3｜突破原理': ['Card 3', '方法-'], '03｜方法流程': ['03', 'Card 3', '方法-'],
+    'Card 4｜決定性數據': ['Card 4'], '04｜資料與實驗': ['04', 'Card 4'], '05｜結果': ['05', 'Card 4', 'Card 5'],   # 我的關注舊證據表之結果列常標 Card 4 或 Card 5
+    'Card 5｜典範轉移': ['Card 5'], '06｜限制與可用性': ['06', 'Card 5', 'Card 6'],
+    'Card 6｜Kairos': ['Card 6'],
+}
+SRC_TOKEN = re.compile(r'(?:表|Table|Fig\.?|圖)\s*[A-Z]?\d+[A-Za-z]?|pp?\.\s*\d+|§\s*\d+(?:\.\d+)*')
+OFFICIAL_AWARD = re.compile(r'nobelprize\.org|官方')
 SRC_MARK = re.compile(r'(p\.|pp\.|頁|Table|Fig|表|圖|§|式|Eq|依原文)')
 CJK = re.compile(r'[\u3400-\u9fff\uf900-\ufaff]')
 EMOJI = re.compile('[\U0001F000-\U0001FAFF\u2600-\u27BF\u2B00-\u2BFF\uFE0F]')
@@ -219,6 +232,62 @@ def evidence_rows(evidence):
     return rows
 
 
+def pos_match(pos, labels):
+    for lab in labels:
+        if lab[0].isdigit():
+            if re.search(r'(?<!\d)%s(?!\d)' % lab, pos):
+                return True
+        elif lab in pos:
+            return True
+    return False
+
+
+def rows_for(evidence, sec):
+    """證據表中「位置」對應到此區段之列（整列文字）。"""
+    labels = POSITION_LABELS.get(sec, [])
+    return [row for _ln, pos, row in evidence_rows(evidence) if pos_match(pos, labels)]
+
+
+def norm_src(s):
+    """表、圖、頁、節之寫法正規化：Table→表、Fig.→圖、pp.→p.，去空白。"""
+    s = re.sub(r'\s+', '', s)
+    s = re.sub(r'Table', '表', s)
+    s = re.sub(r'Fig\.?', '圖', s)
+    return s.replace('pp.', 'p.')
+
+
+def src_tokens(source):
+    return [norm_src(t) for t in SRC_TOKEN.findall(source)]
+
+
+def src_in_row(token, row):
+    """頁碼只比對數字（證據表常寫頁碼範圍 pp. 2556–2557）；表、圖、節比對記號加編號。"""
+    if token.startswith('p.'):
+        return re.search(r'(?<!\d)%s(?!\d)' % re.escape(token[2:]), row) is not None
+    return token in norm_src(row)
+
+
+def num_in(n, text):
+    """數字以完整數值比對：1985 裡的 85、12.5 裡的 2.5 都不算。"""
+    return re.search(r'(?<![\d.])%s(?![\d.]*\d)' % re.escape(n), text) is not None
+
+
+def check_number_scope(path, ln, label, values, source, evidence, sec):
+    """新卡片：數字須出現在位置對應本卡之列，且卡片寫的表、頁、節要與該列一致。"""
+    scoped = rows_for(evidence, sec)
+    tokens = src_tokens(source)
+    for val in values:
+        for n in re.findall(r'\d+(?:\.\d+)?', plain(val)):
+            if not (len(n) >= 2 or '.' in n) or not num_in(n, evidence):
+                continue   # 找不到的數字由原本的 ERROR 處理
+            hits = [r for r in scoped if num_in(n, r)]
+            if not hits:
+                report('WARN', path, ln, '%s 數字「%s」只出現在證據表其他位置的列，未見於位置為 %s 的列；請確認是同一個表列、指標與資料集'
+                       % (label, n, '／'.join(POSITION_LABELS.get(sec, []))))
+            elif tokens and not any(src_in_row(t, r) for r in hits for t in tokens):
+                report('WARN', path, ln, '%s 數字「%s」的來源位置（%s）與證據表該數字所在列的出處對不上' % (label, n, '、'.join(tokens)))
+
+
 def method_rows(evidence):
     """證據表中位置為「方法-N」之列：{'方法-N': [(行號, 整列文字)]}。"""
     out = {}
@@ -296,7 +365,8 @@ def check_method_refs(path, items, evidence, enforced):
 
 # ---------------------------------------------------------------- 文字規則
 
-def check_text(path, line, sec, key, value, evidence):
+def check_text(path, line, sec, key, value, evidence, scoped=False):
+    """scoped 為真時，evidence 只含位置對應本卡之證據表列（新卡片，file-format.md 第九節）。"""
     where = '%s「%s」' % (sec, key)
     if EMOJI.search(value):
         report('ERROR', path, line, where + '含表情符號')
@@ -320,7 +390,9 @@ def check_text(path, line, sec, key, value, evidence):
             report('ERROR', path, line, where + '含禁用評價詞「%s」' % w)
     for w in STRONG:
         if w in value and w not in evidence:
-            report('WARN', path, line, where + '含強斷言「%s」，證據表中找不到同詞支持，請確認或降格' % w)
+            report('WARN', path, line, where + ('含強斷言「%s」，證據表位置為 %s 的列找不到同詞支持（須附原文同等強度的字句），請確認或降格'
+                                               % (w, '／'.join(POSITION_LABELS.get(sec, [])))
+                                               if scoped else '含強斷言「%s」，證據表中找不到同詞支持，請確認或降格' % w))
     if '網絡' in value and key != '封面標題':
         report('WARN', path, line, where + '「網絡」請用臺灣慣用之「網路」')
     if (sec, key) in SOURCE_FIELDS:
@@ -592,6 +664,8 @@ def check_card(path, slug, all_cards):
 
     vals = {}
     method_items = []
+    marked = any(METHOD_REF.search(raw) for fields in sections.values() for _k, raw, _l in fields)
+    strict = marked or is_new_card(path)   # 新卡片或已標方法出處者：方法出處與依位置比對（file-format.md 第八、九節）
     for sec in secs:
         fields = sections.get(sec, [])
         spec = specs[sec]
@@ -613,17 +687,19 @@ def check_card(path, slug, all_cards):
             if not value.strip():
                 report('ERROR', path, ln, '%s「%s」不得為空' % (sec, key))
             if (sec, key) not in NO_TEXT_CHECK:
-                check_text(path, ln, sec, key, value, evidence)
+                if strict:
+                    check_text(path, ln, sec, key, value, '\n'.join(rows_for(evidence, sec)), scoped=True)
+                else:
+                    check_text(path, ln, sec, key, value, evidence)
             vals.setdefault((sec, key), []).append((value, ln))
         for key, lo, hi in spec:
             n = len(vals.get((sec, key), []))
             if not lo <= n <= hi and not (sec == 'Card 4｜決定性數據' and key in ('數字', '結論')) and (sec, key) not in V2_OPTIONAL_COUNT:
                 report('ERROR', path, 1, '%s「%s」須有 %s 筆，目前 %d 筆' % (sec, key, str(lo) if lo == hi else '%d 至 %d' % (lo, hi), n))
 
-    marked = any(METHOD_REF.search(raw) for _s, _k, raw, _v, _l in method_items)
     if not marked:
         method_gaps.append(path)
-    check_method_refs(path, method_items, evidence, marked or is_new_card(path))
+    check_method_refs(path, method_items, evidence, strict)
 
     one = lambda sec, key: (vals.get((sec, key)) or [('', 1)])[0]
 
@@ -645,9 +721,11 @@ def check_card(path, slug, all_cards):
         for w in BANNED:
             if w in card_line:
                 report('ERROR', paper_path, 1, 'card_line 含禁用評價詞「%s」' % w)
+        cover_scope = '\n'.join(rows_for(evidence, '封面')) if strict else evidence
         for w in STRONG:
-            if w in card_line and w not in evidence:
-                report('WARN', paper_path, 1, 'card_line 含強斷言「%s」，證據表中找不到同詞支持' % w)
+            if w in card_line and w not in cover_scope:
+                report('WARN', paper_path, 1, 'card_line 含強斷言「%s」，證據表%s找不到同詞支持'
+                       % (w, '位置為封面／Card 1／hook／card_line 的列' if strict else '中'))
     brk, ln = one('封面', '封面斷行')
     if brk:
         rows = brk.split('／')
@@ -691,7 +769,7 @@ def check_card(path, slug, all_cards):
     if study:
         limit(path, ln, '研究類型', study, 6)
     if v2:
-        check_v2(path, vals, one, paper, evidence, all_cards)
+        check_v2(path, vals, one, paper, evidence, all_cards, strict)
         return
 
     # ---------- Card 2
@@ -793,8 +871,10 @@ def check_card(path, slug, all_cards):
             if not SRC_MARK.search(parts[2]):
                 report('ERROR', path, vln, 'Card 4 來源位置須寫出頁、表、圖或節（如 p. 12、Table 3、Fig. 2）')
             for n in re.findall(r'\d+(?:\.\d+)?', plain(parts[0])):
-                if (len(n) >= 2 or '.' in n) and evidence and n not in evidence:
+                if (len(n) >= 2 or '.' in n) and evidence and not num_in(n, evidence):
                     report('ERROR', path, vln, 'Card 4 數字「%s」在證據表中找不到；數字只能取自證據表' % n)
+            if strict:
+                check_number_scope(path, vln, 'Card 4', [parts[0]], parts[2], evidence, s)
     else:
         if nums:
             report('ERROR', path, nums[0][1], '結論模式不得有「數字」欄位')
@@ -808,6 +888,8 @@ def check_card(path, slug, all_cards):
             limit(path, vln, 'Card 4 結論的來源位置', parts[1], 40)
             if not SRC_MARK.search(parts[1]):
                 report('ERROR', path, vln, 'Card 4 來源位置須寫出頁、表、圖或節')
+            if strict:
+                check_number_scope(path, vln, 'Card 4', [parts[0]], parts[1], evidence, s)
     v, ln = one(s, '範圍')
     if v:
         limit(path, ln, 'Card 4 範圍', v, 32)
@@ -864,6 +946,9 @@ def check_card(path, slug, all_cards):
             names = re.findall(r'([A-Z][A-Za-z\'\-]+)(?=,|$)', laureates)
             if names and not any(n in content for n in names):
                 report('WARN', path, vln, '獎項列內容未提及 laureates 中的得獎者姓氏')
+            if strict and not OFFICIAL_AWARD.search(evidence):
+                report('WARN', path, vln, '獎項列須在證據表登記官方來源（如 nobelprize.org 頁面與表彰語）；'
+                       '得獎者不一定是本篇作者，獎項事實不能以論文本身為依據（file-format.md 第九節）')
         elif source == '本篇' or source.startswith('本篇 '):
             if newmode and not SRC_MARK.search(source):
                 report('ERROR', path, vln, '新論文模式之本篇列須寫出位置，如「本篇 §7」「本篇 p. 9」')
@@ -877,6 +962,18 @@ def check_card(path, slug, all_cards):
                 report('ERROR', path, vln, '里程碑出處作者「%s」不在論文頁中；後續研究須先寫進論文頁' % m.group(1))
             if year not in source:
                 report('WARN', path, vln, '里程碑出處未包含年份 %s' % year)
+            if strict and m:
+                follow = [row for _l, _p, row in evidence_rows(evidence)
+                          if '後續研究' in row and m.group(1) in row and year in row]
+                if not follow:
+                    report('ERROR', path, vln, '里程碑在證據表中找不到對應的「後續研究」列（須含作者「%s」與年份 %s）；'
+                           '每筆後續研究要先打開該研究本身、登記於證據表（file-format.md 第九節）' % (m.group(1), year))
+                else:
+                    if not any(re.search(r'doi|10\.\d{4,}/', r, re.I) for r in follow):
+                        report('WARN', path, vln, '里程碑對應之證據表後續研究列沒有 DOI')
+                    vol = re.findall(r'\d+:\d+', source)
+                    if vol and not any(all(x in r for x in v.split(':')) for r in follow for v in vol):
+                        report('WARN', path, vln, '里程碑出處之卷期頁（%s）與證據表後續研究列對不上，請確認是同一篇' % '、'.join(vol))
     if fm.get('honor') and not has_award:
         report('WARN', path, 1, '論文頁有 honor，Card 5 建議以獎項列收尾')
     v, ln = one(s, '註記')
@@ -909,7 +1006,7 @@ def check_card(path, slug, all_cards):
             all_cards.setdefault(key, []).append((value, path, ln))
 
 
-def check_v2(path, vals, one, paper, evidence, all_cards):
+def check_v2(path, vals, one, paper, evidence, all_cards, strict=False):
     """我的關注新六章之欄位檢查（references/focus/ 與 file-format.md 第七節）。"""
     def parts_of(sec, key, n, limits, label):
         out = []
@@ -998,8 +1095,10 @@ def check_v2(path, vals, one, paper, evidence, all_cards):
                 report('ERROR', path, mln, '05 指標來源位置須寫出頁、表、圖或節')
             for val in parts[2:4]:
                 for n in re.findall(r'\d+(?:\.\d+)?', plain(val)):
-                    if (len(n) >= 2 or '.' in n) and evidence and n not in evidence:
+                    if (len(n) >= 2 or '.' in n) and evidence and not num_in(n, evidence):
                         report('ERROR', path, mln, '05 數字「%s」在證據表中找不到；數字只能取自證據表' % n)
+            if strict:
+                check_number_scope(path, mln, '05', parts[2:4], parts[4], evidence, s)
     else:
         if groups or metrics:
             report('ERROR', path, ln, '結論模式不得有「對照組」或「指標」')
@@ -1009,8 +1108,10 @@ def check_v2(path, vals, one, paper, evidence, all_cards):
             if not SRC_MARK.search(parts[1]):
                 report('ERROR', path, cln, '05 結論來源位置須寫出頁、表、圖或節')
             for n in re.findall(r'\d+(?:\.\d+)?', plain(parts[0])):
-                if (len(n) >= 2 or '.' in n) and evidence and n not in evidence:
+                if (len(n) >= 2 or '.' in n) and evidence and not num_in(n, evidence):
                     report('ERROR', path, cln, '05 數字「%s」在證據表中找不到；數字只能取自證據表' % n)
+            if strict:
+                check_number_scope(path, cln, '05', [parts[0]], parts[1], evidence, s)
     v, ln = one(s, '註記')
     if v:
         limit(path, ln, '05「註記」', v, 30)
