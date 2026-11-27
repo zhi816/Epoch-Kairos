@@ -306,6 +306,11 @@ ISSUE_REQUIRED = ['問題', '來源', '發現於']
 ISSUES_CLOSED_DIR = 'wiki/issues/closed'
 # wiki/issues.md 中已結案、尚未歸檔之條目達此數時提醒執行 archive_issues.py。
 ARCHIVE_REMIND = 10
+# 自此編號起，「發現於」與每一行「處理」「複核」「總核」須寫出代理名稱與模型（或「使用者」），
+# 子代理發現者寫「<子代理>（模型）提出，<總指揮>（模型）核對」（AGENTS.md 第七章第 4 節，2026-11-27 起）。
+AGENT_NAMED_FROM = 234
+AGENT_FIELDS = ('發現於', '處理', '複核', '總核')
+AGENT_NAMED = re.compile(r'使用者|[A-Za-z][\w .\-]*（[^）]*[A-Za-z0-9][^）]*）')
 
 
 def link_ids(body):
@@ -359,6 +364,12 @@ def _parse_issue_file(root, rel, text, seen, archived_target=None):
                 report('ERROR', rel, ln, '%s 缺少「%s」行' % (iid, f))
         if state in ('fixed', 'wontfix') and '處理' not in fields:
             report('ERROR', rel, ln, '%s 已結案但沒有「處理」行' % iid)
+        if int(iid[3:]) >= AGENT_NAMED_FROM:
+            for f in AGENT_FIELDS:
+                for v in re.findall(r'(?m)^- \*\*%s\*\*：(.*)$' % f, body):
+                    if not AGENT_NAMED.search(v):
+                        report('ERROR', rel, ln, '%s 的「%s」須寫出代理名稱與模型，如「Codex by OpenAI（GPT-6）」；'
+                               '子代理發現者寫「<子代理>（模型）提出，<總指揮>（模型）核對」' % (iid, f))
         rel_ids = link_ids(body)
         out.append((iid, state, target, rel_ids, rel, ln))
     return out
