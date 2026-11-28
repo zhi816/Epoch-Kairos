@@ -3,7 +3,7 @@
 - **論文頁**：[2005-hall-wage-stickiness](../papers/2005-hall-wage-stickiness.md)
 - **證據表**：[2005-hall-wage-stickiness](../evidence/2005-hall-wage-stickiness.md)
 - **撰寫者**：DeepSeek Harness（DeepSeek V4.1 Flash），2026-11-28
-- **最後核對**：Antigravity by Google DeepMind（Gemini 3.8 Flash），2026-11-28
+- **最後核對**：Antigravity by Google DeepMind（Gemini 4 Hydrogen），2026-11-28
 
 ## 封面
 - 封面斷行：工資鎖在議價區間，／放大失業波動
@@ -29,11 +29,11 @@
   <path class="k-line" d="M26 24 C 100 20, 200 14, 274 10"/>
   <path class="k-line" d="M26 112 C 100 108, 200 102, 274 96"/>
   <line class="k-accent" x1="26" y1="68" x2="274" y2="68"/>
-  <line class="k-muted" x1="34" y1="134" x2="196" y2="134"/>
-  <polyline class="k-muted" points="190,129 196,134 190,139"/>
+  <line class="k-muted" x1="34" y1="128" x2="196" y2="128"/>
+  <polyline class="k-muted" points="190,123 196,128 190,133"/>
   <text class="k-label" x="78" y="84" text-anchor="middle">固定工資</text>
   <text class="k-label" x="164" y="46" text-anchor="middle">議價集合</text>
-  <text class="k-label" x="206" y="137" text-anchor="start">生產力</text>
+  <text class="k-label" x="206" y="131" text-anchor="start">生產力</text>
 </svg>
 ```
 
@@ -41,8 +41,8 @@
 - 模式：數字
 - 數字：94｜固定工資模型，職缺／失業比對生產力的彈性｜p. 63
 - 數字：50%｜求才廣告指數 2000 至 2003 年峰至谷跌幅｜p. 52
-- 數字：21｜生產力由狀態 3 升到 4，J 每單位 z 的斜率｜p. 60
-- 數字：1.4｜同一比較改用對稱 Nash 議價，J 每單位 z 的斜率｜p. 60
+- 數字：21｜固定工資，狀態 3 升到 4，雇主價值對生產力斜率｜p. 60
+- 數字：1.4｜同一比較改用對稱 Nash 議價，雇主價值對生產力斜率｜p. 60
 - 範圍：Hall 2005，美國職缺與失業資料校準；作者稱非處處適用
 
 ## Card 5｜典範轉移

@@ -2839,3 +2839,12 @@
 - **具體變更**：收錄 Hall (2005) 驗證星圖時，`verify_star.js` 桌面 1440 x 900 一律報「點擊後，說明框未見論文名」。查明首頁桌面版說明框是星圖內浮動的 `.tip`（`starmap.js` 之 `renderTip`），`#info` 只在手機版填入（`renderInfo` 開頭 `if (!mobile) return`），腳本卻只讀 `#info`，故每篇桌面版都會 FAIL（以 Woodford 2007、LIGO 2016 實測相同）。
   - 修正：`.agents/skills/paper-pipeline/scripts/verify_star.js` 讀取說明文字時一併讀未隱藏之 `.tip`。
   - 驗證：以修正後腳本重跑 `2005-hall-wage-stickiness` 與 `2016-ligo-gravitational-waves`，桌面與手機皆 PASS。
+
+## [2026-11-28 12:24] fix | Hall 2005 卡片全面重審：補 Card 4 條件、修正式 (19) 下標與錯字 | #宏觀經濟學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：上次卡片互審迴圈第 2 輪只剩 Hy4 一位審查者即判定通過，經使用者決定重開互審迴圈，對 [2005-hall-wage-stickiness](cards/2005-hall-wage-stickiness.md) 整份卡片從頭重審（獨立 worktree，起點 5523ca8）。
+  - 子代理參與：作者 Antigravity by Google DeepMind（Gemini 4 Hydrogen），第 1 輪逐卡逐欄回原 PDF 複核；審查者 Antigravity by Google DeepMind（Gemini 3.8 Flash）與 Codex by OpenAI（GPT-6 Luna），第 1 輪兩位皆通過，迴圈於第 1 輪結束（預定第 2 輪起之審查者 Hy4 與 Claude Haiku 5.5 未派出）。作者提出之問題登記為 EK-248 至 EK-250。
+  - 卡片：Card 4 數字 3 補「固定工資」條件，數字 3、4 之 J、z 改寫為「雇主價值對生產力斜率」（EK-248）；Card 3 示意圖底部「生產力」標籤與箭頭上移 6 單位，符合 diagram.md 離邊界至少 4 單位之規定。
+  - 外圈查核（Claude Code）：回原 PDF 核對 p. 54 之 J_s 定義、p. 56 式 (19) 與 p. 57 原句之頁面影像，修正論文頁式 (19) 下標為 $z_{s_t}^{M}$ 與「來自整體價格水準的漂移」（EK-249），證據表同兩處（EK-250）；重建 [論文頁網頁](../web/papers/2005-hall-wage-stickiness/index.html)。
+  - 驗證：check_cards.py ERROR 0、WARN 0；build_paper_prototype.py ERROR 0、WARN 0；verify_page.js 桌面與手機 PASS；build_home.py --card 未變更 web/index.html；lint_wiki.py ERROR 0。
