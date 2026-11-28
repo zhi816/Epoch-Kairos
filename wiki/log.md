@@ -2848,3 +2848,11 @@
   - 卡片：Card 4 數字 3 補「固定工資」條件，數字 3、4 之 J、z 改寫為「雇主價值對生產力斜率」（EK-248）；Card 3 示意圖底部「生產力」標籤與箭頭上移 6 單位，符合 diagram.md 離邊界至少 4 單位之規定。
   - 外圈查核（Claude Code）：回原 PDF 核對 p. 54 之 J_s 定義、p. 56 式 (19) 與 p. 57 原句之頁面影像，修正論文頁式 (19) 下標為 $z_{s_t}^{M}$ 與「來自整體價格水準的漂移」（EK-249），證據表同兩處（EK-250）；重建 [論文頁網頁](../web/papers/2005-hall-wage-stickiness/index.html)。
   - 驗證：check_cards.py ERROR 0、WARN 0；build_paper_prototype.py ERROR 0、WARN 0；verify_page.js 桌面與手機 PASS；build_home.py --card 未變更 web/index.html；lint_wiki.py ERROR 0。
+
+## [2026-11-28 12:53] fix | Hall 2005 卡片重審第 2、3 輪：補 Card 3 條件、Card 4 比較對象與 Card 5 註記 | #宏觀經濟學
+- **執行代理**：Claude Code by Anthropic
+- **模型版本**：Claude Opus 5.5
+- **具體變更**：接續 [2026-11-28 12:24] 之卡片重審迴圈，於同一路徑重建 worktree（起點 56f8a68），再跑第 2、3 輪。
+  - 子代理參與：作者 Antigravity by Google DeepMind（Gemini 4 Hydrogen），第 2 輪確認外圈修正無誤、未改檔，第 3 輪依退回單修正三處；審查者 OpenCode（Hy4 Flash）第 2、3 輪皆通過，未提出問題；Claude Code by Anthropic（Claude Haiku 5.5）第 2 輪提出 2 項必改與 5 項備註、第 3 輪通過。
+  - 外圈裁決（Claude Code）：回原 PDF p. 55 與 p. 63 核對，採納 Card 3 第 2 步漏條件（EK-251）與 Card 4 數字 1 缺比較對象，後者依 card-04 第二節改寫為「固定工資，職缺失業比對生產力彈性；Nash 版為 1.8」，不用審查者建議之「遠高於」；另併入兩位審查者都提過的 Card 5「Hall 延伸」無依據（EK-252）；備註中 θ 補列、中位 Nash 寫法等 3 項不採納。腳本列為越界的 wiki/issues.md、wiki/log.md 係重建 worktree 時 main 已含之前一提交，非作者改動。
+  - 驗證：check_cards.py ERROR 0、WARN 0；build_paper_prototype.py ERROR 0、WARN 0；verify_page.js 桌面與手機 PASS；build_home.py --card 未變更 web/index.html；lint_wiki.py ERROR 0。

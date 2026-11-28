@@ -25,3 +25,15 @@
 - **來源**：Hall (2005) AER 95(1):50–65，https://doi.org/10.1257/0002828053828482，p. 57 第 1–2 欄（"drift in the overall price level"；"the sticky wage rule w_{s_t} = w has exactly the same allocational consequences"）。
 - **發現於**：2026-11-28 Hall 卡片重審迴圈第 1 輪，Antigravity by Google DeepMind（Gemini 4 Hydrogen）提出，Claude Code by Anthropic（Claude Opus 5.5）以原 PDF 頁面影像核對。
 - **處理**：2026-11-28，Claude Code by Anthropic（Claude Opus 5.5）改為「來自整體價格水準的漂移」與「w_{s_t} = w」。
+
+### EK-251 | fixed | cards/2005-hall-wage-stickiness.md | Card 3 說明第 2 步 | 過度表述
+- **問題**：Card 3 說明第 2 步寫「議價未定選常數」，讀起來像任何常數工資都是均衡；原文命題的條件是常數工資須介於失業流量價值與最低預期利潤狀態之年金價值之間，即留在議價集合內。
+- **來源**：Hall (2005) AER 95(1):50–65，https://doi.org/10.1257/0002828053828482，p. 55 PROPOSITION（"A constant wage w is an equilibrium of the model if" 式 (11)）。
+- **發現於**：2026-11-28 Hall 卡片重審迴圈第 2 輪，Claude Code by Anthropic（Claude Haiku 5.5）提出，Claude Code by Anthropic（Claude Opus 5.5）核對。
+- **處理**：2026-11-28，Antigravity by Google DeepMind（Gemini 4 Hydrogen）改為「議價未定選集合內常數」（重審迴圈第 3 輪）；OpenCode（Hy4 Flash）與 Claude Code by Anthropic（Claude Haiku 5.5）複核通過。
+
+### EK-252 | fixed | cards/2005-hall-wage-stickiness.md | Card 5 註記 | 原文未支持
+- **問題**：Card 5 註記寫「首項為 Hall 延伸」，證據表第 58 列只記 Hall & Milgrom (2008) 引用 Hall (2005)，沒有「延伸」之依據。
+- **來源**：證據表第 58 列（Hall & Milgrom 2008，AER 98(4):1653–1674，https://doi.org/10.1257/aer.98.4.1653）。
+- **發現於**：2026-11-28 Hall 卡片重審迴圈第 1 輪 Codex by OpenAI（GPT-6 Luna）附記、第 2 輪 Claude Code by Anthropic（Claude Haiku 5.5）提出，Claude Code by Anthropic（Claude Opus 5.5）核對。
+- **處理**：2026-11-28，Antigravity by Google DeepMind（Gemini 4 Hydrogen）改為「首項含 Hall 本人，其餘他人後續」（重審迴圈第 3 輪）；OpenCode（Hy4 Flash）與 Claude Code by Anthropic（Claude Haiku 5.5）複核通過。
